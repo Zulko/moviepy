@@ -1,0 +1,12 @@
+Good Practices
+---------------
+
+How to use MoviePy efficiently ? Like for any other video software, the bottleneck of MoviePy is the heavy computations required to produce several pictures per second. If you write a very complex clip, the previews and the rendering to a file may be painfully slow. Here are a few tricks to ease things:
+
+
+- Use an interactive shell, like IPython or, better, the IPython notebook. If you don't know these, you don't know what you are missing !
+- Prefer the clip.show() option, only use clip.preview() when really necessary.
+- If some part of your video is particularly complex and long to render, save this part as either a video or directory of pictures (better, because no quality loss), then use this video instead of this part's script.
+- Prototype: design your clips separately. If your composition involves a clip that is not finished yet, replace it temporarily with a basic color clip.
+- There are often several ways to produce a same effect with MoviePy, but some ways are faster. For instance don't apply effects to a whole screen video if you are only using one region of the screen afterwards: first crop the selected region, then apply your effects.
+- Check on the internet or in the examples of this documentation that what you do hasn't been done before. Code shared on the internet has more chances to be optimized.

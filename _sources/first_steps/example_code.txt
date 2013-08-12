@@ -1,0 +1,27 @@
+Example code
+------------
+
+We start with some code to show you the MoviePy syntax. In a typical
+script, you load or generate some clips, modify them, combine them, and
+write the result to a video file. 
+::
+    from moviepy import *
+    
+    # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
+    clip = MovieClip("myHolidays.mp4",sound=True).subclip(50,60)
+
+    # Reduce the sound volume (volume x 0.8)
+    clip.sound = clip.sound.volumex(0.8) 
+    
+    # Generate a text clip
+    txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
+    # Say that you want it to appear at the center of the screen
+    txt_clip = txt_clip.set_pos(('center','center')).set_duration(10)
+    
+    # Overlay the text clip on the first clip
+    video = CompositeVideoClip(clip.res, [clip, txt_clip])
+    
+    # write the result to a file
+    video.write("myHolidays_edited.ogv",fps=25,bitrate=3000) 
+
+

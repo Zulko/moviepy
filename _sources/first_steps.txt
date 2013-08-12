@@ -1,0 +1,13 @@
+First steps with MoviePy
+========================
+
+This section will get you started in a few minutes. You will learn more by browsing the reference manual, the cookbook, and the sourcecode (try it,  it's very simple).
+
+.. contents::
+
+.. include:: first_steps/example_code.rst
+.. include:: first_steps/video_overview.rst
+.. include:: first_steps/sound_overview.rst
+.. include:: first_steps/good_practice.rst
+
+

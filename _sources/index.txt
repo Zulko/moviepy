@@ -1,0 +1,46 @@
+
+MoviePy
+=======
+
+MoviePy is a Python module for script-based movie editing, which enables
+basic operations (cuts, concatenations, title insertions) to be done
+in a few lines. It can also be used for advanced compositing ; let us
+put together several example clips (the software is not responsible
+for my bad taste):
+::
+    import os
+    from moviepy import *
+    clips = [MovieClip(m) for m in sorted(os.listdir("clips/"))]
+    video = concatenate(clips, transition = MovieClip("logo.mp4"))
+    video.write('demo.ogv')
+
+You will find the code for each clip in the Cookbook. You can do
+pretty much any effect you want with MoviePy, but in most cases you
+will need to code a little (or find someone who will !).
+
+MoviePy is an open source software written by Zulko_ and released under
+the MIT liscence. Everyone is welcome to help improve the project,
+fork it, share new effects, etc...
+
+User's Guide
+--------------
+
+.. toctree::
+   :maxdepth: 2
+
+   whatsnew/0.1
+   install
+   first_steps
+   cookbook
+   ref_manual
+
+Indices and tables
+------------------
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+.. _Zulko: https://github.com/Zulko/
+
+

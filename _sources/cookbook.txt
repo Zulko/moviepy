@@ -1,0 +1,22 @@
+Cookbook
+========
+
+The current policy of MoviePy is that most advanced features should not
+be included in the core program, but should rather be provided by
+individul coders as code snippets, by means of blogs, gits, etc.
+
+In this cookbook you will find a few examples to get you started (and,
+as promised, the code that was used for all the clips of the
+demonstration video.
+
+
+.. toctree::
+   :maxdepth: 2
+
+   cookbook/credits
+   cookbook/paintingfreeze
+   cookbook/ultracompositing
+   cookbook/manual_tracking
+   cookbook/blurred_face
+   cookbook/startext
+   cookbook/the_end

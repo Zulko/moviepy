@@ -1,0 +1,11 @@
+************
+VideoClip
+************
+
+:mod:`VideoClip`
+======================
+
+.. automodule:: moviepy
+   :members:
+   :undoc-members:
+   :show-inheritance:
