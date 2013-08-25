@@ -5,7 +5,7 @@ MoviePy is Python module for script-based movie editing, which enables
 basic operations (cuts, concatenations, title insertions) to be done
 in a few lines. It can also be used for advanced compositing.
 
-See the full documentation online _`here`.
+See the full documentation online `here`_.
 
 
 A typical MoviePy script looks like that:
