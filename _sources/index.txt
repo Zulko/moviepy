@@ -1,38 +1,49 @@
-
 MoviePy
 =======
 
-MoviePy is a Python module for script-based movie editing, which enables
-basic operations (cuts, concatenations, title insertions) to be done
-in a few lines. It can also be used for advanced compositing ; let us
-put together several example clips (the software is not responsible
-for my bad taste):
-::
+MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder: ::
+    
     import os
     from moviepy import *
-    clips = [MovieClip(m) for m in sorted(os.listdir("clips/"))]
-    video = concatenate(clips, transition = MovieClip("logo.mp4"))
-    video.write('demo.ogv')
+    files = sorted( os.listdir("clips/") )
+    clips = [ MovieClip('clips/'+f,audio=False) for f in files]
+    video = concat(clips, transition = MovieClip("logo.avi"))
+    video.to_movie("demos.avi",fps=25, codec='DIVX')
+    
+.. raw:: html
 
-You will find the code for each clip in the Cookbook. You can do
-pretty much any effect you want with MoviePy, but in most cases you
-will need to code a little (or find someone who will !).
+        <center>
+        <object><param name="movie"
+        value="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0">
+        </param><param name="allowFullScreen" value="true"></param><param
+        name="allowscriptaccess" value="always"></param><embed
+        src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
+        type="application/x-shockwave-flash" allowscriptaccess="always"
+        allowfullscreen="true" width="550" height="450"></embed></object>
+        </center>
 
-MoviePy is an open source software written by Zulko_ and released under
-the MIT liscence. Everyone is welcome to help improve the project,
-fork it, share new effects, etc...
+You will find the code for most clips in the :ref:`examples`.
+
+You can do pretty much any effect you want with MoviePy, but it is just a framework, and in most cases you will need to code a little (or find someone who will !) to come to your goal.
+
 
 User's Guide
 --------------
 
 .. toctree::
    :maxdepth: 2
-
-   whatsnew/0.1
+   
    install
    first_steps
+   examples
    cookbook
-   ref_manual
+   ref
+   forDevelopers
+
+
+MoviePy is a (still experimental) open source software written by Zulko_ and released under the MIT liscence. Everyone is welcome to help improve the project, fork it, blog on it, share new effects, etc...
+
+For troubleshooting and bug reports, the best for now is to ask on Stackoverflow_ (it will advertize for the project :) ) or on the Github project page.
 
 Indices and tables
 ------------------
@@ -41,6 +52,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. _Zulko: https://github.com/Zulko/
 
+
+.. _Zulko: https://github.com/Zulko/
+.. _Stackoverflow: http://stackoverflow.com/
 

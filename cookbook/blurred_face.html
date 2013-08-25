@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tracking and blurring someone’s face &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Cookbook" href="../cookbook.html" />
+    <link rel="next" title="Reference Manual" href="../ref.html" />
+    <link rel="prev" title="Placing clips according to a picture" href="compoFromImage.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../ref.html" title="Reference Manual"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="compoFromImage.html" title="Placing clips according to a picture"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../cookbook.html" accesskey="U">Cookbook</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="tracking-and-blurring-someone-s-face">
+<h1>Tracking and blurring someone&#8217;s face<a class="headerlink" href="#tracking-and-blurring-someone-s-face" title="Permalink to this headline">¶</a></h1>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/FWCKYTRCrBI&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/FWCKYTRCrBI&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>First we will need to track the face, i.e. to get two functions <tt class="docutils literal"><span class="pre">fx</span></tt> and <tt class="docutils literal"><span class="pre">fy</span></tt> such that <tt class="docutils literal"><span class="pre">(fx(t),fy(t))</span></tt> gives the position of the center of the head at time <tt class="docutils literal"><span class="pre">t</span></tt>. This will be easily done with
+<em class="xref std std-ref">VideoClip.manual_tracking</em>. Then we will need to blur the area of the video around the center of the head.</p>
+<p>To track an object in a video you write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">txy</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manual_tracking</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will display the frames of <tt class="docutils literal"><span class="pre">myClip</span></tt> between t=0s and t=5s and on each frame it will wait for you to click on the face. It then returns a list <tt class="docutils literal"><span class="pre">[(t1,x1,y1),(t2,x2,y2)]</span></tt> of the positions that you have clicked.</p>
+<p>The next snippet uses these data to make the two functions <tt class="docutils literal"><span class="pre">(fx(t),fy(t))</span></tt> discussed above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="k">def</span> <span class="nf">txy2functions</span><span class="p">(</span><span class="n">txyList</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the output of VideoClip.manual_tracking and returns</span>
+<span class="sd">    2 functions (fx,fy) where fx : t -&gt; x(t) and fy : t -&gt; y(t)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tt</span><span class="p">,</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">txyList</span><span class="p">)</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">xx</span><span class="p">,</span><span class="n">bounds_error</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">fy</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">bounds_error</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">yy</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">fx</span><span class="p">,</span><span class="n">fy</span>
+</pre></div>
+</div>
+<p>And the coming function makes a filter that blurs the regions around <tt class="docutils literal"><span class="pre">(fx(t),fy(t))</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cv2</span>
+
+<span class="k">def</span> <span class="nf">blur_filter</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_blur</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a filter that will blurr a moving part of</span>
+<span class="sd">    the frames. The position of the blur at time t is</span>
+<span class="sd">    defined by (fx(t), fy(t)), the radius of the blurring</span>
+<span class="sd">    by r_zone and the intensity of the blurring by r_blur.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">r_blur</span><span class="o">==</span><span class="bp">None</span><span class="p">:</span> <span class="n">r_blur</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">r_zone</span><span class="o">/</span><span class="mi">3</span>
+
+    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fx</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span><span class="nb">int</span><span class="p">(</span><span class="n">fy</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+        <span class="n">x1</span><span class="p">,</span><span class="n">x2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="o">-</span><span class="n">r_zone</span><span class="p">),</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">r_zone</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+        <span class="n">y1</span><span class="p">,</span><span class="n">y2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">r_zone</span><span class="p">),</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">r_zone</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">reg_res</span> <span class="o">=</span> <span class="n">y2</span><span class="o">-</span><span class="n">y1</span><span class="p">,</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">reg_res</span><span class="p">),</span>
+                <span class="p">(</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_zone</span><span class="p">),</span><span class="n">r_zone</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+        <span class="n">orig</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="n">y1</span><span class="p">:</span><span class="n">y2</span><span class="p">,</span><span class="n">x1</span><span class="p">:</span><span class="n">x2</span><span class="p">]</span>
+        <span class="n">blurred</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">orig</span><span class="p">,(</span><span class="n">r_blur</span><span class="p">,</span><span class="n">r_blur</span><span class="p">))</span>
+        <span class="n">im</span><span class="p">[</span><span class="n">y1</span><span class="p">:</span><span class="n">y2</span><span class="p">,</span><span class="n">x1</span><span class="p">:</span><span class="n">x2</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span><span class="o">*</span><span class="n">blurred</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">mask</span><span class="p">)</span><span class="o">*</span><span class="n">orig</span>
+        <span class="k">return</span> <span class="n">im</span>
+
+    <span class="k">return</span> <span class="n">fl</span>
+</pre></div>
+</div>
+<p>Finally, here is the script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Because we will work with sound and we do not want to carry around</span>
+<span class="c"># the sound of the whole original movie, we first extract the</span>
+<span class="c"># interesting part of the movie (run this line only once):</span>
+
+<span class="n">ffmpeg</span><span class="o">.</span><span class="n">extract_subclip</span><span class="p">(</span><span class="s">&quot;./videos/chaplin.mp4&quot;</span><span class="p">,</span><span class="mf">411.7</span><span class="p">,</span><span class="mf">421.7</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span>
+                       <span class="s">&quot;charlotSub.mp4&quot;</span><span class="p">)</span>
+
+<span class="c"># Now we have a shorter movie that we can load</span>
+<span class="n">chaplin</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;charlotSub.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">chaplin</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chaplin</span><span class="o">.</span><span class="n">duration</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="c"># THE THREE NEXT LINES ARE FOR THE MANUAL TRACKING AND</span>
+<span class="c"># MUST BE COMMENTED ONCE THE TRACKING HAS BEEN DONE</span>
+<span class="c"># (AT FIRST RUN OF THE SCRIPT)</span>
+<span class="n">txyList</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">manual_tracking</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">txyList</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c"># Load the tracking data (see comment above)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">fx</span><span class="p">,</span><span class="n">fy</span> <span class="o">=</span> <span class="n">txy2functions</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+
+
+<span class="c"># blur the head in the clip</span>
+<span class="n">clip_blurred</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">blur_filter</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span>
+
+<span class="c"># Generate the text</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;Hey you ! </span><span class="se">\n</span><span class="s"> You&#39;re blurry!&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&#39;grey&#39;</span><span class="p">,</span>
+               <span class="n">font</span> <span class="o">=</span> <span class="s">&quot;Century-Schoolbook-Italic&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="c"># Put the text on a grey background</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">on_color</span><span class="p">(</span><span class="n">chaplin</span><span class="o">.</span><span class="n">size</span><span class="p">,(</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">),(</span><span class="s">&quot;center&quot;</span><span class="p">,</span><span class="s">&quot;center&quot;</span><span class="p">))</span>
+
+<span class="c"># Concatenate the clip with the blur and the clip with text</span>
+<span class="c"># Set the audio of concat so that there will also be music</span>
+<span class="c"># when the text is playing.</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">concat</span><span class="p">([</span><span class="n">clip_blurred</span><span class="p">,</span><span class="n">txt</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="n">final</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">chaplin</span><span class="o">.</span><span class="n">audio</span><span class="p">)</span>
+
+<span class="c"># write to a file. Here we use the &#39;XVID&#39; codec because</span>
+<span class="c"># &#39;raw&#39; is too heavy and &#39;DIVX&#39; is too ugly.</span>
+
+<span class="n">final</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;blurredChaplin.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;XVID&#39;</span><span class="p">)</span>
+
+<span class="c"># This 13s movie with sound and special effects was generated</span>
+<span class="c"># in six seconds.</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../cookbook.html">Cookbook</a><ul>
+      <li>Previous: <a href="compoFromImage.html" title="previous chapter">Placing clips according to a picture</a></li>
+      <li>Next: <a href="../ref.html" title="next chapter">Reference Manual</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/cookbook/blurred_face.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>AudioClip &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for AudioClip</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">wavfile</span>
+
+<span class="kn">import</span> <span class="nn">pygame</span> <span class="kn">as</span> <span class="nn">pg</span>
+<span class="kn">import</span> <span class="nn">ffmpeg</span>
+
+<span class="kn">from</span> <span class="nn">Clip</span> <span class="kn">import</span> <span class="n">Clip</span><span class="p">,</span> <span class="n">requires_duration</span>
+
+
+<div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    Base class for audio clips. See ``SoundClip`` and ``CompositeSoundClip``</span>
+<span class="sd">    for usable classes. </span>
+<span class="sd">    </span>
+<span class="sd">    :ivar get_frame: A function `t-&gt; frame at time t`. the frame does not</span>
+<span class="sd">        mean much for a sound, it is just an integer.</span>
+<span class="sd">        </span>
+<span class="sd">    :ivar nchannels: Number of channels (one or two for mono or stereo)</span>
+<span class="sd">                     of the sound.</span>
+<span class="sd">         </span>
+<span class="sd">    :ivar nbits: Number of bits per frame (the more the better).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="AudioClip.toSoundClip"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.toSoundClip">[docs]</a>    <span class="k">def</span> <span class="nf">toSoundClip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24000</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Transforms the clip into a soundclip by (audio clip with a</span>
+<span class="sd">            precomputed sound array &quot;&quot;&quot;</span>
+
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="n">fps</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">tt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">SoundClip</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">fps</span><span class="p">)</span>
+</div>
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="AudioClip.preview"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.preview">[docs]</a>    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">22050</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Plays the sound clip with pygame. If ``sleep=True`` the</span>
+<span class="sd">            program is freezed while the sound is playing (necessary</span>
+<span class="sd">            when the sound is playing alone without video).&quot;&quot;&quot;</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toSoundClip</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span><span class="o">.</span><span class="n">array</span>
+        <span class="n">pg</span><span class="o">.</span><span class="n">mixer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">fps</span><span class="p">,</span> <span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbits</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span> <span class="mi">4096</span><span class="p">)</span>
+        <span class="n">snd</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">sndarray</span><span class="o">.</span><span class="n">make_sound</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+        <span class="n">snd</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sleep</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+</div>
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="AudioClip.to_soundfile"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.to_soundfile">[docs]</a>    <span class="k">def</span> <span class="nf">to_soundfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">22050</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Writes the soundclip to a .wav file &quot;&quot;&quot;</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">toSoundClip</span><span class="p">(</span><span class="n">fps</span><span class="p">)</span><span class="o">.</span><span class="n">array</span>
+        <span class="n">wavfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AudioClip.volumex"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.volumex">[docs]</a>    <span class="k">def</span> <span class="nf">volumex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns an audioclip playing the same sound but with a volume</span>
+<span class="sd">            multiplied by the ``factor``. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="AudioClip.fadein"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.fadein">[docs]</a>    <span class="k">def</span> <span class="nf">fadein</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a sound clip that is first mute, then the sound arrives</span>
+<span class="sd">            progressively over ``duration`` seconds. &quot;&quot;&quot;</span>
+        <span class="n">fading</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">t</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fading</span><span class="p">)</span>
+</div>
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="AudioClip.fadeout"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.AudioClip.fadeout">[docs]</a>    <span class="k">def</span> <span class="nf">fadeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return a sound clip where the sound fades out progressively</span>
+<span class="sd">            over ``duration`` seconds at the end of the clip. &quot;&quot;&quot;</span>
+        <span class="n">fading</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span>
+            <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fading</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nchannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nbits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">itemsize</span>
+
+</div>
+<div class="viewcode-block" id="SoundClip"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.SoundClip">[docs]</a><span class="k">class</span> <span class="nc">SoundClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    An audio clip read from a sound file, or an array.</span>
+<span class="sd">    </span>
+<span class="sd">    :param snd: Either a soundfile or an array representing a sound. If</span>
+<span class="sd">        the soundfile is not a .wav, it will be converted to .wav first,</span>
+<span class="sd">        using the ``fps`` and ``bitrate`` arguments. </span>
+<span class="sd">    </span>
+<span class="sd">    :param fps: If ``snd`` is an  array, this parameter is required.</span>
+<span class="sd">    :param bitrate: If ``snd`` is not a .wav, this prameter is required</span>
+<span class="sd">        for the conversion.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.wav&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.mp3&quot;, fps = 44100, bitrate=3000)</span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(mySoundArray,fps=44100) # from a numeric array</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">snd</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">):</span>
+
+        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">snd</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.wav&#39;</span><span class="p">):</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="s">&#39;temp.wav&#39;</span>
+                <span class="n">ffmpeg</span><span class="o">.</span><span class="n">extract_sound</span><span class="p">(</span><span class="n">snd</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">)</span>
+                <span class="n">fps</span><span class="p">,</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">wavfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                <span class="c"># os.remove(temp)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fps</span><span class="p">,</span> <span class="n">arr</span> <span class="o">=</span> <span class="n">wavfile</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">snd</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">arr</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">snd</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+
+        <span class="k">def</span> <span class="nf">gf</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">):</span>
+                <span class="k">return</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">gf</span>
+
+</div>
+<div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../ref/AudioClip_ref.html#AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    An audio clip made by putting together several audio clips.</span>
+<span class="sd">    </span>
+<span class="sd">    :param clips: a list of audio clips, which may start playing at</span>
+<span class="sd">        different times or together. If all have their ``duration``</span>
+<span class="sd">        attribute set, the duration of the composite clip is computed</span>
+<span class="sd">        automatically.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
+
+        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_duration</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">gf</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">0</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span><span class="o">+</span>
+                        <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+                                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_clips</span><span class="p">(</span><span class="n">t</span><span class="p">)])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">gf</span>
+
+    <span class="k">def</span> <span class="nf">compute_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">e</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

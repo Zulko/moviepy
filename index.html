@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="MoviePy 0.1 documentation" href="#" />
-    <link rel="next" title="Installation" href="install.html" />
+    <link rel="next" title="Download And Installation" href="install.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -47,7 +47,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="install.html" title="Installation"
+          <a href="install.html" title="Download And Installation"
              accesskey="N">next</a> |</li>
         <li><a href="#">MoviePy 0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -60,41 +60,70 @@
             
   <div class="section" id="moviepy">
 <h1>MoviePy<a class="headerlink" href="#moviepy" title="Permalink to this headline">¶</a></h1>
-<p>MoviePy is a Python module for script-based movie editing, which enables
-basic operations (cuts, concatenations, title insertions) to be done
-in a few lines. It can also be used for advanced compositing ; let us
-put together several example clips (the software is not responsible
-for my bad taste):</p>
+<p>MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="n">MovieClip</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;clips/&quot;</span><span class="p">))]</span>
-<span class="n">video</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">transition</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;logo.mp4&quot;</span><span class="p">))</span>
-<span class="n">video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;demo.ogv&#39;</span><span class="p">)</span>
+<span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;clips/&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;clips/&#39;</span><span class="o">+</span><span class="n">f</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+<span class="n">video</span> <span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">transition</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;logo.avi&quot;</span><span class="p">))</span>
+<span class="n">video</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;demos.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;DIVX&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You will find the code for each clip in the Cookbook. You can do
-pretty much any effect you want with MoviePy, but in most cases you
-will need to code a little (or find someone who will !).</p>
-<p>MoviePy is an open source software written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under
-the MIT liscence. Everyone is welcome to help improve the project,
-fork it, share new effects, etc...</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>You will find the code for most clips in the <a class="reference internal" href="examples.html#examples"><em>Example Scripts</em></a>.</p>
+<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in most cases you will need to code a little (or find someone who will !) to come to your goal.</p>
 <div class="section" id="user-s-guide">
 <h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Download And Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="first_steps.html">First steps with MoviePy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="first_steps.html#example-code">Example code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="first_steps.html#video-clips">Video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="first_steps.html#sound-clips">Sound clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="first_steps.html#good-practices">Good Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first_steps/example_code.html">Example code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first_steps/crash_course.html">A MoviePy crash-course</a></li>
+<li class="toctree-l2"><a class="reference internal" href="first_steps/good_practice.html">Good Practices</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a><ul class="simple">
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/textmovingletters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/musicVideo.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/soundExample.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/starwarslike.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/mountainMask.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/freezepainting.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/logo.html">MoviePy logo with a moving shadow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/gradientEffect.html">Gradient Effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/credits.html">Making Credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/compoFromImage.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook/blurred_face.html">Tracking and blurring someone&#8217;s face</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ref/Clip_ref.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/VideoClip_ref.html">VideoClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/AudioClip_ref.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ref/ffmpeg.html">FFMPEG-related functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forDevelopers.html">For developpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forDevelopers.html#todo-list">TODO list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forDevelopers.html#discussion-of-the-dependencies">Discussion of the dependencies</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<p>MoviePy is a (still experimental) open source software written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under the MIT liscence. Everyone is welcome to help improve the project, fork it, blog on it, share new effects, etc...</p>
+<p>For troubleshooting and bug reports, the best for now is to ask on <a class="reference external" href="http://stackoverflow.com/">Stackoverflow</a> (it will advertize for the project :) ) or on the Github project page.</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
@@ -125,7 +154,7 @@ fork it, share new effects, etc...</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="install.html" title="next chapter">Installation</a></li>
+      <li>Next: <a href="install.html" title="next chapter">Download And Installation</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

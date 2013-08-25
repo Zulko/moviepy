@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Gradient Effects &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Cookbook" href="../cookbook.html" />
+    <link rel="next" title="Making Credits" href="credits.html" />
+    <link rel="prev" title="Cookbook" href="../cookbook.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="credits.html" title="Making Credits"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../cookbook.html" title="Cookbook"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../cookbook.html" accesskey="U">Cookbook</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gradient-effects">
+<span id="gradients"></span><h1>Gradient Effects<a class="headerlink" href="#gradient-effects" title="Permalink to this headline">¶</a></h1>
+<p>Gradients effects are extremely useful, for instance to make custom masks.
+In most graphical softwares, if you point two positions <tt class="docutils literal"><span class="pre">x1</span></tt> and <tt class="docutils literal"><span class="pre">x2</span></tt>
+on the screen and choose two colors, you obtain a nice
+color gradient like this:</p>
+<div class="figure">
+<img alt="../_images/gradient.jpeg" src="../_images/gradient.jpeg" />
+</div>
+<p>Here is an efficient implementation of the gradient</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        size : size of the final picture</span>
+<span class="sd">        c1 : (x,y) of the border point of col1</span>
+<span class="sd">        c2 : (x,y) of the border point of col2</span>
+<span class="sd">        col1, col2: can be floats to create gradient masks, or</span>
+<span class="sd">                            RGB arrays to create gradient images.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
+                        <span class="p">[</span><span class="n">c1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">c2</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">])</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">c2</span> <span class="o">-</span> <span class="n">c1</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+        <span class="n">n_vec</span> <span class="o">=</span> <span class="n">vector</span><span class="o">/</span><span class="n">norm</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span><span class="nb">range</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">dstack</span><span class="p">(</span><span class="n">M</span><span class="p">)</span><span class="o">-</span><span class="n">c1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n_vec</span><span class="p">)</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">arr</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">col2</span><span class="o">*</span><span class="n">arr</span> <span class="o">+</span> <span class="n">col1</span><span class="o">-</span> <span class="n">col1</span><span class="o">*</span><span class="n">arr</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+</div>
+<p>And while we are at it, here is the code for a bilateral gradient:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">biGradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">vector</span><span class="p">,</span><span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns a picture of size `res` where the pixel</span>
+<span class="sd">        at position `center` is of color `col1` and the color</span>
+<span class="sd">        is fading is fading to `col2` in the direction of</span>
+<span class="sd">        `vector` AND the opposite direction &quot;&quot;&quot;</span>
+    <span class="n">c1</span><span class="p">,</span> <span class="n">vector</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,[</span><span class="n">c1</span><span class="p">,</span><span class="n">vector</span><span class="p">])</span>
+    <span class="n">l1</span> <span class="o">=</span>  <span class="n">gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">c1</span><span class="o">+</span><span class="n">vector</span><span class="p">,</span><span class="n">col1</span><span class="p">,</span><span class="n">col2</span><span class="p">)</span>
+    <span class="n">l2</span> <span class="o">=</span>  <span class="n">gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">c1</span><span class="o">-</span><span class="n">vector</span><span class="p">,</span><span class="n">col1</span><span class="p">,</span><span class="n">col2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span><span class="n">l2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../cookbook.html">Cookbook</a><ul>
+      <li>Previous: <a href="../cookbook.html" title="previous chapter">Cookbook</a></li>
+      <li>Next: <a href="credits.html" title="next chapter">Making Credits</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/cookbook/gradientEffect.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

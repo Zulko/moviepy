@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FFMPEG-related functions &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference Manual" href="../ref.html" />
+    <link rel="next" title="For developpers" href="../forDevelopers.html" />
+    <link rel="prev" title="AudioClip" href="AudioClip_ref.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../forDevelopers.html" title="For developpers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AudioClip_ref.html" title="AudioClip"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-ffmpeg">
+<span id="ffmpeg-related-functions"></span><span id="ffmpegtools"></span><h1>FFMPEG-related functions<a class="headerlink" href="#module-ffmpeg" title="Permalink to this headline">¶</a></h1>
+<p>Very experimental &#8216;bindings&#8217; to ffmpeg and ImageMagick.</p>
+<dl class="function">
+<dt id="ffmpeg.extract_audio">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">extract_audio</tt><big>(</big><em>inputfile</em>, <em>output</em>, <em>bitrate=3000</em>, <em>fps=44100</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#extract_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.extract_audio" title="Permalink to this definition">¶</a></dt>
+<dd><p>extract the sound from a video file and save it in <tt class="docutils literal"><span class="pre">output</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffmpeg.extract_subclip">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">extract_subclip</tt><big>(</big><em>filename</em>, <em>t1</em>, <em>t2</em>, <em>targetname=None</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#extract_subclip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.extract_subclip" title="Permalink to this definition">¶</a></dt>
+<dd><p>makes a new video file playing video file <tt class="docutils literal"><span class="pre">filename</span></tt> between
+the times <tt class="docutils literal"><span class="pre">t1</span></tt> and <tt class="docutils literal"><span class="pre">t2</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffmpeg.gif_to_directory">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">gif_to_directory</tt><big>(</big><em>gif_file</em>, <em>dirName=None</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#gif_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.gif_to_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores all the frames of the given .gif file
+into the directory <tt class="docutils literal"><span class="pre">dirName</span></tt>. If <tt class="docutils literal"><span class="pre">dirName</span></tt>
+is not provided, the directory has the same name
+as the .gif file. Supports transparency.
+Returns the directory name.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">gif_to_directory</span><span class="p">(</span><span class="s">&quot;animated-earth.gif&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">DirectoryClip</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffmpeg.merge_video_audio">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">merge_video_audio</tt><big>(</big><em>video</em>, <em>audio</em>, <em>output</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#merge_video_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.merge_video_audio" title="Permalink to this definition">¶</a></dt>
+<dd><p>merges video file <tt class="docutils literal"><span class="pre">video</span></tt> and audio file <tt class="docutils literal"><span class="pre">audio</span></tt> into one
+movie file <tt class="docutils literal"><span class="pre">output</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffmpeg.movie_from_frames">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">movie_from_frames</tt><big>(</big><em>filename</em>, <em>folder</em>, <em>fps</em>, <em>digits=6</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#movie_from_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.movie_from_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a movie out of the frames (picture files) in a folder</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ffmpeg.resize">
+<tt class="descclassname">ffmpeg.</tt><tt class="descname">resize</tt><big>(</big><em>video</em>, <em>output</em>, <em>size</em><big>)</big><a class="reference internal" href="../_modules/ffmpeg.html#resize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ffmpeg.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>resizes <tt class="docutils literal"><span class="pre">video</span></tt> to new size <tt class="docutils literal"><span class="pre">size</span></tt> and write the result
+in file <tt class="docutils literal"><span class="pre">output</span></tt>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../ref.html">Reference Manual</a><ul>
+      <li>Previous: <a href="AudioClip_ref.html" title="previous chapter">AudioClip</a></li>
+      <li>Next: <a href="../forDevelopers.html" title="next chapter">For developpers</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/ref/ffmpeg.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

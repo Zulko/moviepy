@@ -1,22 +1,22 @@
+.. _cookbook:
+
 Cookbook
 ========
-
 The current policy of MoviePy is that most advanced features should not
 be included in the core program, but should rather be provided by
-individul coders as code snippets, by means of blogs, gits, etc.
+individual coders as code snippets, by means of blogs, gits, etc.
+Then one can make a customized ``moviepytools.py`` module containing
+the advanced methods that one uses most.
 
-In this cookbook you will find a few examples to get you started (and,
-as promised, the code that was used for all the clips of the
-demonstration video.
+In this cookbook you will find a few scripts for useful tasks
+such as tracking an object, generating end credits, etc...
+For more artistic and less general functionalities, see the :ref:`examples` .
 
 
 .. toctree::
    :maxdepth: 2
-
+   
+   cookbook/gradientEffect
    cookbook/credits
-   cookbook/paintingfreeze
-   cookbook/ultracompositing
-   cookbook/manual_tracking
+   cookbook/compoFromImage
    cookbook/blurred_face
-   cookbook/startext
-   cookbook/the_end

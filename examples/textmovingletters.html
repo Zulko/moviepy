@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Text with moving letters &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Example Scripts" href="../examples.html" />
+    <link rel="next" title="A simple music video" href="musicVideo.html" />
+    <link rel="prev" title="Example Scripts" href="../examples.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="musicVideo.html" title="A simple music video"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../examples.html" title="Example Scripts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../examples.html" accesskey="U">Example Scripts</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="text-with-moving-letters">
+<h1>Text with moving letters<a class="headerlink" href="#text-with-moving-letters" title="Permalink to this headline">¶</a></h1>
+<p>I think this example illustrates well the interest of script-based editing (imagine doing that by hand).</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/jj5qrHl5ZS0&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/jj5qrHl5ZS0&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>Here is the code I used to generate the video above: we first define four ways of moving the letters, with four functions, then we make a clip for each of these movements, and concatenate everything.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c"># A nerdy tool for rotations.</span>
+<span class="n">rotMatrix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span>
+                                <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)]])</span>
+
+
+<span class="c"># The letters appear from all directions</span>
+<span class="k">def</span> <span class="nf">vortex</span><span class="p">(</span><span class="n">fpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">nletters</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">0.3</span><span class="o">+</span><span class="n">t</span><span class="o">**</span><span class="mi">8</span><span class="p">)</span> <span class="c">#damping</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span> <span class="n">nletters</span> <span class="c"># angle of the movement</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">rotMatrix</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span> <span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">fpos</span><span class="o">+</span><span class="mi">400</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">rotMatrix</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+
+<span class="c"># The letters appear from above</span>
+<span class="k">def</span> <span class="nf">cascade</span><span class="p">(</span><span class="n">fpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">nletters</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">t</span><span class="o">&lt;</span><span class="mi">0</span> <span class="k">else</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sinc</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">t</span><span class="o">**</span><span class="mi">4</span><span class="p">))</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">fpos</span><span class="o">+</span><span class="n">v</span><span class="o">*</span><span class="mi">400</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mf">0.15</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
+
+
+<span class="c"># The letters arrive from the right</span>
+<span class="k">def</span> <span class="nf">arrive</span><span class="p">(</span><span class="n">fpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">nletters</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="o">-</span><span class="mi">3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">fpos</span><span class="o">-</span><span class="mi">400</span><span class="o">*</span><span class="n">v</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mf">0.2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span>
+
+
+<span class="c"># The letters &#39;explode&#39;</span>
+<span class="k">def</span> <span class="nf">vortexout</span><span class="p">(</span><span class="n">fpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">nletters</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">t</span><span class="p">)</span> <span class="c">#damping</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span> <span class="n">nletters</span> <span class="c"># angle of the movement</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">rotMatrix</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span> <span class="p">:</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">fpos</span><span class="o">+</span><span class="mi">400</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="mf">0.1</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">rotMatrix</span><span class="p">(</span><span class="o">-</span><span class="mf">0.2</span><span class="o">*</span><span class="n">d</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+
+<span class="n">screensize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">720</span><span class="p">,</span><span class="mi">460</span><span class="p">)</span>
+<span class="n">txtClip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&#39;Cool effect&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s">&quot;Amiri-Bold&quot;</span><span class="p">,</span>
+                   <span class="n">kerning</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">screensize</span><span class="p">,</span>
+          <span class="n">moveLetters</span><span class="p">(</span><span class="n">txtClip</span><span class="p">,</span><span class="n">screensize</span><span class="p">,</span><span class="n">funcpos</span><span class="p">))</span><span class="o">.</span>
+          <span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">funcpos</span> <span class="ow">in</span> <span class="p">[</span><span class="n">vortex</span><span class="p">,</span> <span class="n">cascade</span><span class="p">,</span> <span class="n">arrive</span><span class="p">,</span> <span class="n">vortexout</span><span class="p">]</span> <span class="p">]</span>
+
+<span class="n">concat</span><span class="p">(</span><span class="n">clips</span><span class="p">)</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;coolTextEffects.avi&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ok, maybe you saw it, the central function in the script above is a function called <tt class="docutils literal"><span class="pre">moveLetters</span></tt>. This is the function that recognizes the letters in the text clip and make them move, which is far from trivial. So here is the code for <tt class="docutils literal"><span class="pre">moveLetters</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">label</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ndi</span>
+
+<span class="k">def</span> <span class="nf">moveLetters</span><span class="p">(</span><span class="n">txtClip</span><span class="p">,</span><span class="n">screensize</span><span class="p">,</span> <span class="n">funcpos</span><span class="p">,</span><span class="n">rem_thr</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Takes the textclip,centers it, separates the letters,</span>
+<span class="sd">    sets the position of each letter according to funcpos</span>
+
+<span class="sd">    funcpos : funcpos(fpos,i,nletters) where</span>
+<span class="sd">       - fpos : final position of the letter</span>
+<span class="sd">       - i : index of the letter</span>
+<span class="sd">       - nletters : total number of letters</span>
+<span class="sd">       Returns: a position function t-&gt; (x(t),y(t))</span>
+
+<span class="sd">    rem_thr : all &#39;letters&#39; with size &lt; rem_Thr will be</span>
+<span class="sd">         considered false positives and will be removed</span>
+
+
+<span class="sd">    &gt;&gt;&gt; letters = vortexLetters(txtClip,screensize,funcpos)</span>
+<span class="sd">    &gt;&gt;&gt; CompositeVideoClip(screensize,letters,transparent=True)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># First place the text at the center of the clip</span>
+    <span class="c"># This will only be useful to get the position of</span>
+    <span class="c"># the letters in the clip</span>
+    <span class="n">cvc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">screensize</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">txtClip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">([</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">])],</span>
+             <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">cvc</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">cvc</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># segment/label the image with scikit-image&#39;s function</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">image</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c">#find the positions of the objects in the image</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">find_objects</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span>
+    <span class="c">#cool trick to remove letter holes (in &#39;o&#39;,&#39;e&#39;,&#39;a&#39;, etc.)</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">slices</span> <span class="k">if</span>  <span class="n">mask</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">&gt;</span><span class="mf">0.2</span><span class="p">]</span>
+    <span class="c"># remove very small slices</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">slices</span> <span class="k">if</span>  <span class="n">image</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">rem_thr</span><span class="p">]</span>
+    <span class="c"># Sort the slices from left to right</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span> <span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+
+
+    <span class="n">letters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">slices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; crop each letter separately and set position &quot;&quot;&quot;</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">sy</span><span class="o">.</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sx</span><span class="o">.</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">sx</span><span class="o">.</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">letter</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">])</span>
+        <span class="n">letter</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">],</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">finalpos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">sx</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">sy</span><span class="o">.</span><span class="n">start</span><span class="p">))</span> <span class="c"># final position</span>
+        <span class="n">letter</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">funcpos</span><span class="p">(</span><span class="n">finalpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">slices</span><span class="p">))</span>
+        <span class="n">letters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">letters</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Example Scripts</a><ul>
+      <li>Previous: <a href="../examples.html" title="previous chapter">Example Scripts</a></li>
+      <li>Next: <a href="musicVideo.html" title="next chapter">A simple music video</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/textmovingletters.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

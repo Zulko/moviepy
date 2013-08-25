@@ -1,0 +1,44 @@
+===============================
+Discussion of the dependencies
+===============================
+
+I have found that complicated dependencies are a main reason why people get
+discouraged by a software, so all advices are welcome !
+
+
+Movie writing
+--------------
+
+For now ffmpeg is used to generate movies (instead of OpenCV's movie
+writers) because I like how you can tune the quality of the movie with
+ffmpeg.
+  
+Movie Rendering
+----------------
+
+I am using Pygame instead of the original OpenCV frontend because Pygame
+can also generate sound (maybe later movie previews will also play the
+sound).
+  
+I know there is a war between ffmpeg/avconv/mencoder. I think ffmpeg
+is the most spread software. And no, it's not deprecated.
+
+  
+Movie and Image manimulation
+-----------------------------
+
+The python package SimpleCV is an attempt at making OpenCV easier to use.
+It is totally cool, but the OpenCV devs are also trying to make it easier
+so they always make a lot of changes which break SimpleCV. They use
+the Python Imaging Library for image processing.
+
+The package Wand (a Python binder for ImageMagick) is nice and is starting
+to accept numpy array images input/output.
+   
+
+Sound
+------
+
+The python package Pydub is really good but working with numpy arrays
+gives more freedom so I stick with Scipy.
+

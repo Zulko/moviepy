@@ -1,26 +1,27 @@
-Installation
-------------
+Download And Installation
+--------------------------
 
+You can `download MoviePy`_ on Github. Just unzip everything in one folder, open a terminal and type ::
+    
+    sudo python setup.py install
 
-MoviePy is very light (~1000 lines of code) but it uses many existing
-Python libraries:
+MoviePy is a very small program but it relies on many existing Python libraries that you will need to install first:
 
-- `OpenCV 2.4.6`_ to read the movies
-- PyGame_ for video/sound previews
-- `Scipy and Numpy`_, for image/sound manipulation
+- `OpenCV 2.4.6`_ or more recent, to read and write movie files. 
+- PyGame_ for video and sound previews
+- `Scipy and Numpy`_, for image and sound manipulation
 - `Scikit Image`_ for advanced image manipulation 
 - The Decorator_ module for better code readability
 
-And needs some software:
-- ffmpeg_, for writing movies and many useful operations.
-- imageMagick_ for text generation (and much more in the future)
+And it needs some external software:
 
-All these are normally easy to install (on linux, most of these will be in your repos).
+- ffmpeg_, for writing movies and many other useful operations.
+- imageMagick_ for text generation, GIF support, and much more in the future.
 
-Then you open a console in the moviepy source directory and type
+All these are normally easy to install (on linux, they will certainly be in your repos).
 
-    sudo python setup.py install
 
+.. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 .. _Pygame: http://www.pygame.org/download.shtml
 .. _`Scipy and Numpy`: http://www.scipy.org/install.html
@@ -30,4 +31,3 @@ Then you open a console in the moviepy source directory and type
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html 
 .. _imageMagick: http://www.imagemagick.org/script/index.php
-

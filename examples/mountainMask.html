@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Partially Hidden credits &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Example Scripts" href="../examples.html" />
+    <link rel="next" title="“The End” effect" href="the_end.html" />
+    <link rel="prev" title="A Star-Wars like opening title" href="starwarslike.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="the_end.html" title="“The End” effect"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="starwarslike.html" title="A Star-Wars like opening title"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../examples.html" accesskey="U">Example Scripts</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="partially-hidden-credits">
+<span id="mountainmask"></span><h1>Partially Hidden credits<a class="headerlink" href="#partially-hidden-credits" title="Permalink to this headline">¶</a></h1>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/NsTgBah6Ebk&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/NsTgBah6Ebk&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>First, see in <a class="reference internal" href="../cookbook/credits.html#autocredits"><em>Making Credits</em></a> how to make credits automatically with MoviePy. Before seeing the code for this video, here is a tutorial video that explains the different steps (also made with MoviePy):</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/7tKABfc0Yzw&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/7tKABfc0Yzw&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>And here is the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Load the mountains clip, cut it, slow it down, make it look darker</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;./mountain.mov&#39;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span><span class="mi">46</span><span class="p">)</span><span class="o">.</span><span class="n">speedx</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pic</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.7</span><span class="o">*</span><span class="n">pic</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">))</span>
+
+<span class="c"># Save the first frame to later make a mask with GIMP (only once)</span>
+<span class="c"># clip.save_frame(&#39;mountain.png&#39;)</span>
+
+<span class="c"># Load the mountain mask made with GIMP</span>
+<span class="n">mountainmask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&#39;./credits/mountainMask2.png&#39;</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># Generate the credits from a text file</span>
+<span class="n">credits</span> <span class="o">=</span> <span class="n">make_credits</span><span class="p">(</span><span class="s">&#39;./credits/credits.txt&#39;</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="n">clip</span><span class="o">.</span><span class="n">w</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c"># Make the credits scroll. Here, 10 pixels per second</span>
+<span class="n">mov_credits</span><span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,[</span>
+                <span class="n">clip</span><span class="p">,</span>
+                <span class="n">credits</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:(</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">t</span><span class="p">)),</span>
+                <span class="n">clip</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">mountainmask</span><span class="p">)])</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,[</span><span class="n">clip</span><span class="p">,</span><span class="n">mov_credits</span><span class="o">.</span><span class="n">set_end</span><span class="p">(</span><span class="mi">25</span><span class="p">)])</span>
+<span class="n">final</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;credits_mount.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;DIVX&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Example Scripts</a><ul>
+      <li>Previous: <a href="starwarslike.html" title="previous chapter">A Star-Wars like opening title</a></li>
+      <li>Next: <a href="the_end.html" title="next chapter">&#8220;The End&#8221; effect</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/mountainMask.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

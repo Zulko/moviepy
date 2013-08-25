@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="MoviePy 0.1 documentation" href="index.html" />
-    <link rel="next" title="Cookbook" href="cookbook.html" />
-    <link rel="prev" title="Installation" href="install.html" />
+    <link rel="next" title="Example code" href="first_steps/example_code.html" />
+    <link rel="prev" title="Download And Installation" href="install.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -46,10 +46,10 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="cookbook.html" title="Cookbook"
+          <a href="first_steps/example_code.html" title="Example code"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="install.html" title="Installation"
+          <a href="install.html" title="Download And Installation"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
       </ul>
@@ -61,150 +61,13 @@
           <div class="body">
             
   <div class="section" id="first-steps-with-moviepy">
-<h1><a class="toc-backref" href="#id3">First steps with MoviePy</a><a class="headerlink" href="#first-steps-with-moviepy" title="Permalink to this headline">¶</a></h1>
+<h1>First steps with MoviePy<a class="headerlink" href="#first-steps-with-moviepy" title="Permalink to this headline">¶</a></h1>
 <p>This section will get you started in a few minutes. You will learn more by browsing the reference manual, the cookbook, and the sourcecode (try it,  it&#8217;s very simple).</p>
-<div class="contents topic" id="contents">
-<p class="topic-title first">Contents</p>
-<ul class="simple">
-<li><a class="reference internal" href="#first-steps-with-moviepy" id="id3">First steps with MoviePy</a><ul>
-<li><a class="reference internal" href="#example-code" id="id4">Example code</a></li>
-<li><a class="reference internal" href="#video-clips" id="id5">Video clips</a><ul>
-<li><a class="reference internal" href="#classes-of-video-clips" id="id6">Classes of video clips</a></li>
-<li><a class="reference internal" href="#modifying-a-clip" id="id7">Modifying a clip</a></li>
-<li><a class="reference internal" href="#composite-video-clips" id="id8">Composite video clips</a></li>
-<li><a class="reference internal" href="#rendering-a-clip" id="id9">Rendering a clip</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sound-clips" id="id10">Sound clips</a></li>
-<li><a class="reference internal" href="#good-practices" id="id11">Good Practices</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="section" id="example-code">
-<h2><a class="toc-backref" href="#id4">Example code</a><a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
-<p>We start with some code to show you the MoviePy syntax. In a typical
-script, you load or generate some clips, modify them, combine them, and
-write the result to a video file.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span><span class="n">sound</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
-
-<span class="c"># Reduce the sound volume (volume x 0.8)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">sound</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">sound</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
-
-<span class="c"># Generate a text clip</span>
-<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;My Holidays 2013&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
-<span class="c"># Say that you want it to appear at the center of the screen</span>
-<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">txt_clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-
-<span class="c"># Overlay the text clip on the first clip</span>
-<span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="p">[</span><span class="n">clip</span><span class="p">,</span> <span class="n">txt_clip</span><span class="p">])</span>
-
-<span class="c"># write the result to a file</span>
-<span class="n">video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.ogv&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span><span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="video-clips">
-<h2><a class="toc-backref" href="#id5">Video clips</a><a class="headerlink" href="#video-clips" title="Permalink to this headline">¶</a></h2>
-<p>A video clip is an object with an attribute <tt class="docutils literal"><span class="pre">get_frame</span></tt> which for a given time returns a picture (more precisely, an array of numbers representing a picture). For instance if you wanted to render a clip you could (but you will not have to) do something like that:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="n">t</span><span class="o">&lt;</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">:</span>
-    <span class="n">display</span><span class="p">(</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span> <span class="c"># for 24 frames/second</span>
-</pre></div>
-</div>
-<p>A clip has some fundamental attributes:</p>
-<ul class="simple">
-<li><strong>The resolution</strong> (height,width), <tt class="docutils literal"><span class="pre">clip.res</span></tt>, indicates the dimensions in pixels of the clip.</li>
-<li><strong>The duration</strong>, <tt class="docutils literal"><span class="pre">clip.duration</span></tt>, is the time after which the clip   stops playing</li>
-<li><strong>The soundtrack</strong>,  <tt class="docutils literal"><span class="pre">clip.sound</span></tt>, which contains the sound data (an array actually) of the clip.</li>
-</ul>
-<p>When you mix several clips together (see <a href="#id1"><span class="problematic" id="id2">``</span></a>Composite video clips``_), you may have to worry about some other attributes:</p>
-<ul class="simple">
-<li><strong>The position</strong> indicates where the clip will appear if you display it as part of a bigger screen.</li>
-<li><strong>The mask</strong>, <tt class="docutils literal"><span class="pre">clip.mask</span></tt>, is an array of numbers  between 0 and 1, a 0 at some position meaning that the pixel at the same position in the picture should not be displayed. If you are not going to do anything complicated, you shouldn&#8217;t worry about the mask (by default, all video clips have a mask with only ones, meaning that the picture should be completely visible). Just know that  <tt class="docutils literal"><span class="pre">clip.mask</span></tt> is actually... a clip ! More precisely, its method <tt class="docutils literal"><span class="pre">clip.mask.get_frame</span></tt> returns, for a given time, the mask that should be used when blitting the clip&#8217;s frame over another picture.</li>
-</ul>
-<div class="section" id="classes-of-video-clips">
-<h3><a class="toc-backref" href="#id6">Classes of video clips</a><a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h3>
-<p>A video clip can be created using one of the following commands:</p>
-<ul class="simple">
-<li><strong>MovieClips</strong> created with <tt class="docutils literal"><span class="pre">MovieClip('myHolidays.mp4')</span></tt> are clips read from a movie file.</li>
-<li><strong>Image clips</strong> created with <tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> are clips displaying a picture, for an <em>a priori</em> infinite duration.</li>
-<li><strong>Color clips</strong> created with <tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> are special ImageClips of a single color.</li>
-<li><strong>Text clips</strong> created with <tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">public',font='Impact-Regular')</span></tt> are special ImageClips representing a text. They are automatically generated using ImageMagick.</li>
-</ul>
-<p>To that list we should add the <tt class="docutils literal"><span class="pre">CompositeVideoClips</span></tt> that are obtained by mixing several clips together (see <a class="reference internal" href="#composite-video-clips">Composite video clips</a>).</p>
-<p>Finally, a clip can be of the base class VideoClip, and have a very custom <tt class="docutils literal"><span class="pre">get_frame</span></tt> method. For instance the following clip represents a 320x460
-screen (caution: 320 is the height), that will go from black (color [1,1,1])
-to white (color [255,255,255]) in 255 seconds.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">dark_picture</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">320</span><span class="p">,</span><span class="mi">460</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">custom_get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="mi">255</span><span class="p">)</span> <span class="o">*</span> <span class="n">dark_picture</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">()</span><span class="o">.</span><span class="n">set_get_frame</span><span class="p">(</span><span class="n">custom_get_frame</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="modifying-a-clip">
-<h3><a class="toc-backref" href="#id7">Modifying a clip</a><a class="headerlink" href="#modifying-a-clip" title="Permalink to this headline">¶</a></h3>
-<p>You will find many pre-implemented methods to modify a clip in the reference manual. For instance <tt class="docutils literal"><span class="pre">clip.subclip(15,20)</span></tt> returns the part of <tt class="docutils literal"><span class="pre">clip</span></tt> that is between 20 seconds and 50 seconds, <tt class="docutils literal"><span class="pre">clip.resize((heigth,width))</span></tt> will change the resolution of the clip, while <tt class="docutils literal"><span class="pre">clip.crop</span></tt> will enable you to keep only a region of the clip and <tt class="docutils literal"><span class="pre">clip.speedx(0.5)</span></tt> will make your clip play two times slower. When it is relevant, these methods are also applied to the sound and the mask of the clip, so that you don&#8217;t have to worry about modifying these.</p>
-<p>The current policy is that <strong>no modification of a clip occurs inplace</strong>, which means that when you modify some clip, the result will be a new clip and the original clip will be untouched.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;myHolidays&#39;</span><span class="p">)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">320</span><span class="p">,</span><span class="mi">460</span><span class="p">))</span> <span class="c"># clip is NOT modified</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">320</span><span class="p">,</span><span class="mi">460</span><span class="p">))</span> <span class="c"># clip is modified</span>
-</pre></div>
-</div>
-<p>Another important aspect is that modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see section Rendering). The good news is, all the clips you will create through modifications of other clips take virtually no place in the memory.</p>
-<p>Apart from the pre-implemented modifications, you can modify a clip as you want using filters. You can change the timeline of the clip like this:</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd>modifiedClip1 = myClip.fl_time(lambda t: 3*t)
-modifiedClip2 = myClip.fl_time(lambda t: 1+sin(t))</dd>
-</dl>
-<p>Now the clip <tt class="docutils literal"><span class="pre">modifiedClip1</span></tt> plays the same as <tt class="docutils literal"><span class="pre">myClip</span></tt>, only two times faster, while <tt class="docutils literal"><span class="pre">modifiedClip2</span></tt> will play <cite>myClip`</cite> by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem).</p>
-<p>You can also modify the display of a clip. The following takes a clip and inverts the green and blue channels:</p>
-<div class="highlight-python"><pre>modified clip1 = myClip.fl_image(lambda im: im[:,:,[0,2,1]])</pre>
-</div>
-<p>Finally, you may want to process both The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function which given a time returns a picture), and the second argument is the time.</p>
-<div class="highlight-python"><pre>modifiedClip = myClip.fl(lambda gf,t: np.minimum(int(t),gf(2*t))</pre>
-</div>
-<p>This one is a little complicated to grasp.</p>
-</div>
-<div class="section" id="composite-video-clips">
-<h3><a class="toc-backref" href="#id8">Composite video clips</a><a class="headerlink" href="#composite-video-clips" title="Permalink to this headline">¶</a></h3>
-<p>The simplest compositing is concatenation:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
-</pre></div>
-</div>
-<p>Now <tt class="docutils literal"><span class="pre">myVideo</span></tt> is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option <tt class="docutils literal"><span class="pre">transition=myClip</span></tt>.  You can also ask that every clip fades in, with the option <tt class="docutils literal"><span class="pre">fadein=d</span></tt> where <tt class="docutils literal"><span class="pre">d</span></tt> is the duration of the fadein.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeClip</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">clip1</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="p">[</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="rendering-a-clip">
-<h3><a class="toc-backref" href="#id9">Rendering a clip</a><a class="headerlink" href="#rendering-a-clip" title="Permalink to this headline">¶</a></h3>
-<dl class="docutils">
-<dt>The <tt class="docutils literal"><span class="pre">duration</span></tt> attribute must be set (with <tt class="docutils literal"><span class="pre">clip.set_duration</span></tt>)</dt>
-<dd>to be able to preview or write the movie to a file (some clips, like clips displaying a picture, have <em>a priori</em> an infinite duration).</dd>
-</dl>
-</div>
-</div>
-<div class="section" id="sound-clips">
-<h2><a class="toc-backref" href="#id10">Sound clips</a><a class="headerlink" href="#sound-clips" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="good-practices">
-<h2><a class="toc-backref" href="#id11">Good Practices</a><a class="headerlink" href="#good-practices" title="Permalink to this headline">¶</a></h2>
-<p>How to use MoviePy efficiently ? Like for any other video software, the bottleneck of MoviePy is the heavy computations required to produce several pictures per second. If you write a very complex clip, the previews and the rendering to a file may be painfully slow. Here are a few tricks to ease things:</p>
-<ul class="simple">
-<li>Use an interactive shell, like IPython or, better, the IPython notebook. If you don&#8217;t know these, you don&#8217;t know what you are missing !</li>
-<li>Prefer the clip.show() option, only use clip.preview() when really necessary.</li>
-<li>If some part of your video is particularly complex and long to render, save this part as either a video or directory of pictures (better, because no quality loss), then use this video instead of this part&#8217;s script.</li>
-<li>Prototype: design your clips separately. If your composition involves a clip that is not finished yet, replace it temporarily with a basic color clip.</li>
-<li>There are often several ways to produce a same effect with MoviePy, but some ways are faster. For instance don&#8217;t apply effects to a whole screen video if you are only using one region of the screen afterwards: first crop the selected region, then apply your effects.</li>
-<li>Check on the internet or in the examples of this documentation that what you do hasn&#8217;t been done before. Code shared on the internet has more chances to be optimized.</li>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="first_steps/example_code.html">Example code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_steps/crash_course.html">A MoviePy crash-course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="first_steps/good_practice.html">Good Practices</a></li>
 </ul>
 </div>
 </div>
@@ -214,28 +77,11 @@ modifiedClip2 = myClip.fl_time(lambda t: 1+sin(t))</dd>
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">First steps with MoviePy</a><ul>
-<li><a class="reference internal" href="#example-code">Example code</a></li>
-<li><a class="reference internal" href="#video-clips">Video clips</a><ul>
-<li><a class="reference internal" href="#classes-of-video-clips">Classes of video clips</a></li>
-<li><a class="reference internal" href="#modifying-a-clip">Modifying a clip</a></li>
-<li><a class="reference internal" href="#composite-video-clips">Composite video clips</a></li>
-<li><a class="reference internal" href="#rendering-a-clip">Rendering a clip</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#sound-clips">Sound clips</a></li>
-<li><a class="reference internal" href="#good-practices">Good Practices</a></li>
-</ul>
-</li>
-</ul>
-<h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
-      <li>Next: <a href="cookbook.html" title="next chapter">Cookbook</a></li>
+      <li>Previous: <a href="install.html" title="previous chapter">Download And Installation</a></li>
+      <li>Next: <a href="first_steps/example_code.html" title="next chapter">Example code</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

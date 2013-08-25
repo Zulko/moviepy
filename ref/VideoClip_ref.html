@@ -1,0 +1,697 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>VideoClip &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Reference Manual" href="../ref.html" />
+    <link rel="next" title="AudioClip" href="AudioClip_ref.html" />
+    <link rel="prev" title="Clip" href="Clip_ref.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="AudioClip_ref.html" title="AudioClip"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Clip_ref.html" title="Clip"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="videoclip">
+<h1>VideoClip<a class="headerlink" href="#videoclip" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">VideoClip</span></tt><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VideoClip.VideoClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">VideoClip</tt><big>(</big><em>ismask=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Clip_ref.html#Clip.Clip" title="Clip.Clip"><tt class="xref py py-class docutils literal"><span class="pre">Clip.Clip</span></tt></a></p>
+<p>Base class for video clips. See <tt class="docutils literal"><span class="pre">MovieClip</span></tt>, <tt class="docutils literal"><span class="pre">ImageClip</span></tt> etc. for
+more user-friendly classes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>ismask</strong> &#8211; <cite>True</cite> if the clip is going to be used as a mask.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> &#8211; the size of the clip, (width,heigth), in pixels.</li>
+<li><strong>w</strong> &#8211; te width of the clip, in pixels.</li>
+<li><strong>h</strong> &#8211; te height of the clip, in pixels.</li>
+<li><strong>get_frame</strong> &#8211; A function <cite>t-&gt; frame at time t</cite></li>
+<li><strong>mask</strong> &#8211; VideoClip mask attached to this clip. If mask is <tt class="docutils literal"><span class="pre">None</span></tt>,
+The video clip is fully opaque.</li>
+<li><strong>audio</strong> &#8211; A :class:AudioClip attached to the video clip.</li>
+<li><strong>pos</strong> &#8211; a function <tt class="docutils literal"><span class="pre">t-&gt;(x,y)</span></tt> where <tt class="docutils literal"><span class="pre">x,y</span></tt> is the position
+in pixels of the clip when it is composed with other clips.
+See <tt class="docutils literal"><span class="pre">VideoClip.set_pos</span></tt></li>
+<li><strong>relative_pos</strong> &#8211; see variable <tt class="docutils literal"><span class="pre">pos</span></tt>.</li>
+<li><strong>ismask</strong> &#8211; Boolean set to <cite>True</cite> if the clip is a mask.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="VideoClip.VideoClip.blit_on">
+<tt class="descname">blit_on</tt><big>(</big><em>picture</em>, <em>t</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.blit_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.blit_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the result of the blit of the clip&#8217;s frame at time <cite>t</cite>
+on the given <cite>picture</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.fadein">
+<tt class="descname">fadein</tt><big>(</big><em>duration</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.fadein"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.fadein" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip appear progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
+Only works when the clip is include in a CompositeVideoClip.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.fadeout">
+<tt class="descname">fadeout</tt><big>(</big><em>duration</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.fadeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.fadeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip disappear progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
+Only works when the clip is include in a CompositeVideoClip.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.fl_image">
+<tt class="descname">fl_image</tt><big>(</big><em>image_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.fl_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.fl_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies the images of a clip by replacing the frame
+<cite>get_frame(t)</cite> by another frame,  <cite>image_func(get_frame(t))</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.manual_tracking">
+<tt class="descname">manual_tracking</tt><big>(</big><em>t1=None</em>, <em>t2=None</em>, <em>fps=5</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.manual_tracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.manual_tracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows manual tracking of an object in the video clip between
+times <cite>t1</cite> and <cite>t2</cite>. This displays the clip frame by frame
+and you must click on the object in each frame. If <tt class="docutils literal"><span class="pre">t2=None</span></tt>
+only the frame at <tt class="docutils literal"><span class="pre">t1</span></tt> is taken into account.</p>
+<p>Returns a list [(t1,x1,y1),(t2,x2,y2) etc... ]</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># To print 5 points coordinates at t=5 : </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Tip: To avoid redoing the tracking each time you run your script,
+better save the result the first time and then load it at each run.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># First time:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">txy</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">txy</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Next times:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">txy</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">txy</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.margin">
+<tt class="descname">margin</tt><big>(</big><em>mar=None</em>, <em>left=0</em>, <em>right=0</em>, <em>top=0</em>, <em>bottom=0</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>opacity=1.0</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.margin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an external margin all around the frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mar</strong> &#8211; if not <tt class="docutils literal"><span class="pre">None</span></tt>, then the new clip has a margin of
+size <tt class="docutils literal"><span class="pre">mar</span></tt> in pixels on the left, right, top, and bottom.</li>
+<li><strong>right, top, bottom</strong> (<em>left,</em>) &#8211; width of the margin in pixel
+in these directions.</li>
+<li><strong>color</strong> &#8211; color of the margin.</li>
+<li><strong>mask_margin</strong> &#8211; value of the mask on the margin. Setting
+this value to 0 yields transparent margins.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.on_color">
+<tt class="descname">on_color</tt><big>(</big><em>size=None</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>pos=None</em>, <em>col_opacity=None</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.on_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.on_color" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Returns a clip made of the current clip overlaid on a color</dt>
+<dd>clip of bigger size.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> &#8211; size of the final clip. By default it will be the
+size of the current clip.</li>
+<li><strong>bg_color</strong> &#8211; the background color of the final clip</li>
+<li><strong>pos</strong> &#8211; the position of the clip in the final clip.</li>
+<li><strong>col_opacity</strong> &#8211; should the added zones be transparent ?</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.padded">
+<tt class="descname">padded</tt><big>(</big><em>size</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.padded"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.padded" title="Permalink to this definition">¶</a></dt>
+<dd><p>internal margin by shrinking the frame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.preview">
+<tt class="descname">preview</tt><big>(</big><em>fps=15</em>, <em>audio=True</em>, <em>audiofps=22050</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the clip in a window, at the given frames per second
+(of movie) rate. It will avoid that the clip be played faster
+than normal, but it cannot avoid the clip to be played slower
+than normal if the computations are complex. In this case, try
+reducing the <tt class="docutils literal"><span class="pre">fps</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fps</strong> &#8211; Number of frames per second to be displayed.</li>
+<li><strong>audio</strong> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt> (default) if you want the clip&#8217;s audio
+to be played in playback. The synchronization is not garanteed.</li>
+<li><strong>audiofps</strong> &#8211; The frames per second to use when generating the
+audio sound. The lower, the cheaper the sound will be.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.resize">
+<tt class="descname">resize</tt><big>(</big><em>newsize=None</em>, <em>height=None</em>, <em>width=None</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.resize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a video clip that is a resized version of the clip.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>newsize</strong> &#8211; can be either <tt class="docutils literal"><span class="pre">(height,width)</span></tt> in pixels or
+a float representing a scaling factor.</li>
+<li><strong>width</strong> &#8211; width of the new clip in pixel. The height is
+then computed so that the width/height ratio is conserved.</li>
+<li><strong>height</strong> &#8211; height of the new clip in pixel. The width is
+then computed so that the width/height ratio is conserved.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span> <span class="p">(</span><span class="mi">460</span><span class="p">,</span><span class="mi">720</span><span class="p">)</span> <span class="p">)</span> <span class="c"># New resolution: (460,720)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span> <span class="c"># width and heigth multiplied by 0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span> <span class="c"># height computed automatically.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.save_frame">
+<tt class="descname">save_frame</tt><big>(</big><em>filename</em>, <em>t=0</em>, <em>savemask=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.save_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the frame of clip corresponding to time <tt class="docutils literal"><span class="pre">t</span></tt> in
+&#8216;filename&#8217;. If <tt class="docutils literal"><span class="pre">savemask</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> the mask is saved in the
+alpha layer of the picture.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.set_audio">
+<tt class="descname">set_audio</tt><big>(</big><em>audioclip</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.set_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.set_audio" title="Permalink to this definition">¶</a></dt>
+<dd><p>mask must be a greyscale (0-1) Clip</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.set_mask">
+<tt class="descname">set_mask</tt><big>(</big><em>mask</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.set_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.set_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>mask must be a greyscale (0-1) Clip</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.set_opacity">
+<tt class="descname">set_opacity</tt><big>(</big><em>op</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.set_opacity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.set_opacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>op is any float (normaly between 0 and 1) by which the
+clip&#8217;s mask will be multiplied</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.set_pos">
+<tt class="descname">set_pos</tt><big>(</big><em>pos</em>, <em>relative=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.set_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.set_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the position that the clip will have when included
+in compositions. The argument <tt class="docutils literal"><span class="pre">pos</span></tt> can be either a couple
+<tt class="docutils literal"><span class="pre">(x,y)</span></tt> or a function <tt class="docutils literal"><span class="pre">t-&gt;</span> <span class="pre">(x,y)</span></tt>. <cite>x</cite> and <cite>y</cite> mark the
+location of the top left corner of the clip, and can be
+of several types:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c"># x=45, y=150</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># clip horizontally centered, at the top of the picture</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&quot;center&quot;</span><span class="p">,</span><span class="s">&quot;top&quot;</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># clip is at 40% of the width, 70% of the height:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># clip&#39;s position is horizontally centered, and moving up !</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="o">+</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.show">
+<tt class="descname">show</tt><big>(</big><em>t=0</em>, <em>with_mask=True</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.show"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splashes the frame of clip corresponding to time <tt class="docutils literal"><span class="pre">t</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t</strong> &#8211; time in seconds of the frame to display.</li>
+<li><strong>with_mask</strong> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt> if the clip has a mask but you
+want to see the clip without the mask.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.subapply">
+<tt class="descname">subapply</tt><big>(</big><em>fun</em>, <em>ta=0</em>, <em>tb=None</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.subapply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.subapply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new clip in which the function <tt class="docutils literal"><span class="pre">fun</span></tt> (clip-&gt;clip) has
+been applied to the subclip between times <cite>ta</cite> and <cite>tb</cite> (in
+seconds).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># The scene between times t=3s and t=6s in ``clip`` will be</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># be played twice slower in ``newclip``</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">subapply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span><span class="o">.</span><span class="n">speedx</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span> <span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.to_ImageClip">
+<tt class="descname">to_ImageClip</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.to_ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.to_ImageClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an ImageClip made out of the clip&#8217;s first frame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.to_RGB">
+<tt class="descname">to_RGB</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.to_RGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.to_RGB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a non-mask video clip made from the mask video clip.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.to_directory">
+<tt class="descname">to_directory</tt><big>(</big><em>foldername</em>, <em>fps</em>, <em>transparent=True</em>, <em>overwrite=True</em>, <em>startFrame=0</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.to_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the frames of the clip into a folder as png format,
+and returns the :class:DirectoryClip associated with this
+folder</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>foldername</strong> &#8211; name of the folder (what did you expect ?)</li>
+<li><strong>fps</strong> &#8211; Number of frames per second of movie.</li>
+<li><strong>transparent</strong> &#8211; If <cite>True</cite>, the png images generated will
+possess an alpha layer representing the mask of the clip.</li>
+<li><strong>overwrite</strong> &#8211; If <cite>True</cite>, will overwrite the content of
+<cite>folder</cite> if already existing.</li>
+<li><strong>startFrame</strong> &#8211; Useless for the moment, but may come in handy
+once parallelization is implemented.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.to_mask">
+<tt class="descname">to_mask</tt><big>(</big><em>canal=0</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.to_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.to_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a mask a video clip made from the clip.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.to_movie">
+<tt class="descname">to_movie</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='DIVX'</em>, <em>audio=True</em>, <em>audiofps=44100</em>, <em>temp_wav='temp.wav'</em>, <em>remove_temp=True</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.to_movie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.to_movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a video file out of the clip.
+First the clip is transformed into a directory clip, which means
+that the frames of the future movie are computed and stored in a
+folder as png files.
+Then a <tt class="docutils literal"><span class="pre">DirectoryClip</span></tt> is made out of this folder and
+transformed into a movie using ffmpeg (see DirectoryClip.to_movie)</p>
+<p>Returns the directory clip.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> &#8211; name of the video file. Whatever the codec used,
+it is best to write the movie name as .avi</li>
+<li><strong>fps</strong> &#8211; Frames per second in the final movie.</li>
+<li><strong>codec</strong> &#8211; <p>Codec to use for image encoding. Can be 
+- &#8216;raw&#8217; : will produce a raw video, of perfect quality, but</p>
+<blockquote>
+<div>possibly very huge size.</div></blockquote>
+<ul>
+<li>&#8216;DIVX&#8217; : For nice quality, very well compressed videos.</li>
+<li>&#8216;XVID&#8217; : A little better than &#8216;DVIX&#8217;, a little heavier.</li>
+<li>Any of the (many) other codec supported by OpenCV, written
+as a string of four characters. See here for a list:<blockquote>
+<div><a class="reference external" href="http://remisoft.ath.cx/article14/fourcc">http://remisoft.ath.cx/article14/fourcc</a></div></blockquote>
+</li>
+</ul>
+</li>
+<li><strong>audio</strong> &#8211; Either <tt class="docutils literal"><span class="pre">True</span></tt>, <tt class="docutils literal"><span class="pre">False</span></tt>, or a file name.
+If <tt class="docutils literal"><span class="pre">True</span></tt> and the clip has an audio clip attached, this
+audio clip will be incorporated as a soundtrack in the movie.
+If <tt class="docutils literal"><span class="pre">audio</span></tt> is the name of a .wav file, this wav file will
+be incorporated as a soundtrack in the movie.</li>
+<li><strong>audiofps</strong> &#8211; frame rate to use when writing the sound.</li>
+<li><strong>temp_wav</strong> &#8211; the name of the temporary audiofile to be
+generated and incorporated in the the movie, if any.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="VideoClip.VideoClip.with_mask">
+<tt class="descname">with_mask</tt><big>(</big><em>constant_size=True</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#VideoClip.with_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.VideoClip.with_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the clip with a completely opaque mask
+(made of ones). This makes computations slow compared to having
+a None mask but can be useful in many cases. Choose</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>constant_size</strong> &#8211; <cite>False</cite> for clips with moving image size.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="movieclip">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">MovieClip</span></tt><a class="headerlink" href="#movieclip" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VideoClip.MovieClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">MovieClip</tt><big>(</big><em>source</em>, <em>ismask=False</em>, <em>audio=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#MovieClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.MovieClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoClip.VideoClip" title="VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip.VideoClip</span></tt></a></p>
+<p>A video clip originating from a movie file. For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip2</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;myMaskVideo.avi&quot;</span><span class="p">,</span><span class="n">ismask</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> &#8211; Any video file: .ogv, .mp4, .mpeg, .avi, .mov etc.</li>
+<li><strong>ismask</strong> &#8211; <cite>True</cite> if the clip is a mask.</li>
+<li><strong>audio</strong> &#8211; If <cite>True</cite>, then the audio is extracted from the video
+file, in wav format, and it attributed to the clip.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>source</strong> &#8211; Name of the original video file</li>
+<li><strong>fps</strong> &#8211; Frames per second in the original file.</li>
+<li><strong>nframes</strong> &#8211; Total number of frames in the original file.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="imageclip">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt><a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VideoClip.ImageClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoClip.VideoClip" title="VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip.VideoClip</span></tt></a></p>
+<p>A video clip originating from a picture. For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;myHouse.jpeg&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span> <span class="n">someNumpyArray</span> <span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> &#8211; Any picture file (png, tif, jpeg, etc.) or any array
+representing an image, for instance a frame from a VideoClip
+or a picture read with scipy of skimage&#8217;s imread method.</li>
+<li><strong>ismask</strong> &#8211; <cite>True</cite> if the clip is a mask.</li>
+<li><strong>transparent</strong> &#8211; <cite>True</cite> (default) if you want the alpha layer
+of the picture (if it exists) to be used as a mask.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><p class="first last"><strong>img</strong> &#8211; array representing the image of the clip.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="colorclip">
+<h3><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt><a class="headerlink" href="#colorclip" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="VideoClip.ColorClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#ColorClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoClip.VideoClip" title="VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip.VideoClip</span></tt></a></p>
+<p>To be written</p>
+</dd></dl>
+
+</div>
+<div class="section" id="textclip">
+<h3><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt><a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="VideoClip.TextClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Times-New-Roman-Regular'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoClip.ImageClip" title="VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip.ImageClip</span></tt></a></p>
+<p>A VideoClip originating from a script-generated text image.
+Makes a text PNG using ImageMagick.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>txt</strong> &#8211; either a string, or a filename. If txt is in a file and
+whose name is <tt class="docutils literal"><span class="pre">mytext.txt</span></tt> for instance, then txt must be
+equal to <tt class="docutils literal"><span class="pre">&#64;mytext.txt</span></tt> .</li>
+<li><strong>size</strong> &#8211; Size of the picture in pixels. Can be auto-set if
+method=&#8217;label&#8217;, but mandatory if method=&#8217;caption&#8217;.
+the height can be None, it will then be auto-determined.</li>
+<li><strong>bg_color</strong> &#8211; Color of the background. See <tt class="docutils literal"><span class="pre">TextClip.list('color')</span></tt>
+for a list of acceptable names.</li>
+<li><strong>color</strong> &#8211; Color of the background. See <tt class="docutils literal"><span class="pre">TextClip.list('color')</span></tt>
+for a list of acceptable names.</li>
+<li><strong>font</strong> &#8211; Name of the font to use. See <tt class="docutils literal"><span class="pre">TextClip.list('font')</span></tt> for
+the list of fonts you can use on your computer.</li>
+<li><strong>stroke_color</strong> &#8211; Color of the stroke (=contour line) of the text.
+if <tt class="docutils literal"><span class="pre">None</span></tt>, there will be no stroke.</li>
+<li><strong>stroke_width</strong> &#8211; Width of the strocke, in pixels. Can be a float,
+like 1.5.</li>
+<li><strong>method</strong> &#8211; &#8216;label&#8217; (autosized) or &#8216;caption&#8217; (presized, wrapped)</li>
+<li><strong>align</strong> &#8211; center | East | West | South | North</li>
+<li><strong>transparent</strong> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt> (default) if you want to take into account
+the transparency in the image.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="VideoClip.TextClip.list">
+<em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#TextClip.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of all valid entries for the argument given
+(can be <tt class="docutils literal"><span class="pre">font</span></tt>, <tt class="docutils literal"><span class="pre">color</span></tt>, etc...)
+argument of <tt class="docutils literal"><span class="pre">TextClip</span></tt></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="compositevideoclip">
+<h2><tt class="xref py py-class docutils literal"><span class="pre">CompositeVideoClip</span></tt><a class="headerlink" href="#compositevideoclip" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="VideoClip.CompositeVideoClip">
+<em class="property">class </em><tt class="descclassname">VideoClip.</tt><tt class="descname">CompositeVideoClip</tt><big>(</big><em>size</em>, <em>clips</em>, <em>bg_color=None</em>, <em>transparent=False</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#CompositeVideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.CompositeVideoClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#VideoClip.VideoClip" title="VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip.VideoClip</span></tt></a></p>
+<p>A VideoClip made of other videoclips displayed together.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> &#8211; The size (height x width) of the final clip.</li>
+<li><strong>clips</strong> &#8211; <p>A list of videoclips. Each clip of the list will
+be displayed below the clips appearing after it in the list.
+For each clip:</p>
+<ul>
+<li><dl class="first docutils">
+<dt>The attribute <tt class="docutils literal"><span class="pre">pos</span></tt> determines where the clip is placed.</dt>
+<dd>See <tt class="docutils literal"><span class="pre">VideoClip.set_pos</span></tt></dd>
+</dl>
+</li>
+<li>The mask of the clip determines which parts are visible.</li>
+</ul>
+<p>Finally, if all the clips in the list have their <tt class="docutils literal"><span class="pre">duration</span></tt>
+attribute set, then the duration of the composite video clip
+is computed automatically</p>
+</li>
+<li><strong>transparent</strong> &#8211; if False, the clips are overlaid on a surface
+of the color <cite>bg_color</cite>. If True, the clips are overlaid on
+a transparent surface, so that all pixels that are transparent
+for all clips will be transparent in the composite clip. More
+precisely, the mask of the composite clip is then the composite
+of the masks of the different clips. Only use <cite>transparent=True</cite>
+when you intend to use your composite clip as part of another
+composite clip and you care about its transparency.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="VideoClip.CompositeVideoClip.playing_clips">
+<tt class="descname">playing_clips</tt><big>(</big><em>t=0</em><big>)</big><a class="reference internal" href="../_modules/VideoClip.html#CompositeVideoClip.playing_clips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#VideoClip.CompositeVideoClip.playing_clips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the clips in the composite clips that are
+actually playing at the given time <cite>t</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="useful-methods">
+<h3>Useful Methods<a class="headerlink" href="#useful-methods" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">VideoClip</a><ul>
+<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">VideoClip</span></tt></a></li>
+<li><a class="reference internal" href="#movieclip"><tt class="docutils literal"><span class="pre">MovieClip</span></tt></a></li>
+<li><a class="reference internal" href="#imageclip"><tt class="docutils literal"><span class="pre">ImageClip</span></tt></a><ul>
+<li><a class="reference internal" href="#colorclip"><tt class="docutils literal"><span class="pre">ColorClip</span></tt></a></li>
+<li><a class="reference internal" href="#textclip"><tt class="docutils literal"><span class="pre">TextClip</span></tt></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#compositevideoclip"><tt class="docutils literal"><span class="pre">CompositeVideoClip</span></tt></a><ul>
+<li><a class="reference internal" href="#useful-methods">Useful Methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../ref.html">Reference Manual</a><ul>
+      <li>Previous: <a href="Clip_ref.html" title="previous chapter">Clip</a></li>
+      <li>Next: <a href="AudioClip_ref.html" title="next chapter">AudioClip</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/ref/VideoClip_ref.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

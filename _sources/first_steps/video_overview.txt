@@ -1,19 +1,19 @@
-Video clips
------------
+Video clips : an overview
+--------------------------
 
-A video clip is an object with an attribute ``get_frame`` which for a given time returns a picture (more precisely, an array of numbers representing a picture). For instance if you wanted to render a clip you could (but you will not have to) do something like that:
-::
+A video clip in its simplest form is just an object with a ``get_frame`` attribute. ``get_frame`` is a function which for a given time ``t`` returns a picture of the clip at time ``t`` (more precisely, an array of numbers representing a picture). As an example, to play a clip frame by frame, you can (but you won't have to) write something like that: ::
+    
     while t< clip.duration:
         display( clip.get_frame(t) )
         t = t + 1.0/24 # for 24 frames/second
 
 A clip has some fundamental attributes:
 
-- **The resolution** (height,width), ``clip.res``, indicates the dimensions in pixels of the clip.
+- **The size** (width,height), ``clip.size``, indicates the dimensions in pixels of the clip.
 - **The duration**, ``clip.duration``, is the time after which the clip   stops playing 
 - **The soundtrack**,  ``clip.sound``, which contains the sound data (an array actually) of the clip.
 
-When you mix several clips together (see ``Composite video clips``_), you may have to worry about some other attributes:
+When you mix several clips together (see `Composite video clips`_), you may have to worry about some other attributes:
 
 - **The position** indicates where the clip will appear if you display it as part of a bigger screen.
 - **The mask**, ``clip.mask``, is an array of numbers  between 0 and 1, a 0 at some position meaning that the pixel at the same position in the picture should not be displayed. If you are not going to do anything complicated, you shouldn't worry about the mask (by default, all video clips have a mask with only ones, meaning that the picture should be completely visible). Just know that  ``clip.mask`` is actually... a clip ! More precisely, its method ``clip.mask.get_frame`` returns, for a given time, the mask that should be used when blitting the clip's frame over another picture.
@@ -32,8 +32,8 @@ To that list we should add the ``CompositeVideoClips`` that are obtained by mixi
 
 Finally, a clip can be of the base class VideoClip, and have a very custom ``get_frame`` method. For instance the following clip represents a 320x460
 screen (caution: 320 is the height), that will go from black (color [1,1,1])
-to white (color [255,255,255]) in 255 seconds.
-::
+to white (color [255,255,255]) in 255 seconds. ::
+    
     import numpy
     from moviepy import *
     dark_picture = np.ones((320,460,3))
@@ -44,48 +44,111 @@ to white (color [255,255,255]) in 255 seconds.
 Modifying a clip
 ~~~~~~~~~~~~~~~~
 
-You will find many pre-implemented methods to modify a clip in the reference manual. For instance ``clip.subclip(15,20)`` returns the part of ``clip`` that is between 20 seconds and 50 seconds, ``clip.resize((heigth,width))`` will change the resolution of the clip, while ``clip.crop`` will enable you to keep only a region of the clip and ``clip.speedx(0.5)`` will make your clip play two times slower. When it is relevant, these methods are also applied to the sound and the mask of the clip, so that you don't have to worry about modifying these.
+You will find many pre-implemented methods to modify a clip  ( see :class:`VideoClip`). For instance ``clip.subclip(15,20)`` returns the part of ``clip`` that is between 20 seconds and 50 seconds, ``clip.resize((heigth,width))`` will change the resolution of the clip, while ``clip.crop`` will enable you to keep only a region of the clip and ``clip.speedx(0.5)`` will make your clip play two times slower. When it is relevant, these methods are also applied to the sound and the mask of the clip, so that you don't have to worry about modifying these.
 
 
-The current policy is that **no modification of a clip occurs inplace**, which means that when you modify some clip, the result will be a new clip and the original clip will be untouched.
-::
+The current policy is that **no modification of a clip occurs inplace**, which means that when you modify some clip, the result will be a new clip and the original clip will be untouched. ::
+    
     clip = MovieClip('myHolidays')
     clip.resize((320,460)) # clip is NOT modified
     clip = clip.resize((320,460)) # clip is modified
 
-Another important aspect is that modified clips are just *special views* of the original clip, they do not carry all the video data with them. Actually, the *real* modifications are only performed when you are rendering the clip (see section Rendering). The good news is, all the clips you will create through modifications of other clips take virtually no place in the memory.
+Another important aspect is that modified clips are just *special views* of the original clip, they do not carry all the video data with them. Actually, the *real* modifications are only performed when you are rendering the clip (see `Rendering a clip`_). The good news is, all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created instantly.
 
-Apart from the pre-implemented modifications, you can modify a clip as you want using filters. You can change the timeline of the clip like this:
-
-::
-     modifiedClip1 = myClip.fl_time(lambda t: 3*t)
-     modifiedClip2 = myClip.fl_time(lambda t: 1+sin(t))
+Apart from the pre-implemented modifications, you can modify a clip as you want using filters. You can change the timeline of the clip like this: ::
+    
+    modifiedClip1 = myClip.fl_time(lambda t: 3*t)
+    modifiedClip2 = myClip.fl_time(lambda t: 1+sin(t))
      
 Now the clip ``modifiedClip1`` plays the same as ``myClip``, only two times faster, while ``modifiedClip2`` will play `myClip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem).
 
-You can also modify the display of a clip. The following takes a clip and inverts the green and blue channels:
-::
+You can also modify the display of a clip. The following takes a clip and inverts the green and blue channels: ::
     modified clip1 = myClip.fl_image(lambda im: im[:,:,[0,2,1]])
 
-Finally, you may want to process both The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function which given a time returns a picture), and the second argument is the time.  
-::
+Finally, you may want to process both The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function which given a time returns a picture), and the second argument is the time.  ::
+    
     modifiedClip = myClip.fl(lambda gf,t: np.minimum(int(t),gf(2*t))
+
 This one is a little complicated to grasp.
 
 Composite video clips
 ~~~~~~~~~~~~~~~~~~~~~
 
-The simplest compositing is concatenation:
-::
-    video = VideoClip.concatenate([clip1,clip2,clip3])
+The simplest compositing is concatenation with :meth:`~VideoClip.concat`: ::
+    
+    video = concat([clip1,clip2,clip3])
 
-Now ``myVideo`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.  You can also ask that every clip fades in, with the option ``fadein=d`` where ``d`` is the duration of the fadein.
-::
-    video = CompositeClip.concatenate(clip1.res, [clip1,clip2,clip3])
+Now ``myVideo`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
 
+Next, you have the composite videoclip: ::
+    
+    video = CompositeVideoClip(clip.res, [clip1,clip2,clip3])
+ 
+Now ``myVideo`` is a clip that has the size of ``clip1``, and plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of
+``clip1``, and ``clip2``. Of course, if ``clip2`` and ``clip3`` have the same size as ``clip1``, then only ``clip3``, which is on top, will be
+visible in the video... unless  ``clip3`` and ``clip2`` have masks which hide parts of them.
+
+You can set the starting time of each clip as follows: ::
+    
+    video = CompositeVideoClip(clip.res, [clip1,clip2,clip3])
+
+Because the three clips overlap, we can make them appear with a fading-in effect. Here we go for fadein effects that last 1.5 seconds: ::
+    
+    video = CompositeVideoClip(clip.res, [clip1, # starts at t=0
+                                          clip2.set_start(50).fadein(1.5),
+                                          clip3.set_start(90).fadein(1.5)])
+
+Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear: ::
+    
+    video = CompositeVideoClip(clip.res,
+                              [clip1,
+                               clip2.set_pos((45,150)),
+                               clip3.set_pos((90,100))])
+
+Note that there are many ways to specify the position: ::
+    
+    clip2.set_pos((45,150)) # x=45, y=150
+    
+    # clip2 is horizontally centered, and at the top of the picture
+    clip2.set_pos(("center","top"))
+    
+    # clip2 is at 40% of the width, 70% of the height:
+    clip2.set_pos((0.4,0.7), relative=True)
+    
+    # clip2's position is horizontally centered, and moving up !
+    clip2.set_pos(lambda t: ('center', 50+t) )
+
+Be careful when indicating the position that the ``y`` position has its
+zero at the top of the picture:
+
+.. figure:: videoWH.jpeg
 
 Rendering a clip
 ~~~~~~~~~~~~~~~~
 
-The ``duration`` attribute must be set (with ``clip.set_duration``)
-  to be able to preview or write the movie to a file (some clips, like clips displaying a picture, have *a priori* an infinite duration). 
+The ``duration`` attribute must be set (with ``clip.set_duration``) to be able to preview or write the movie to a file (some clips, like clips displaying a picture, have *a priori* an infinite duration).
+
+To display one frame of the clip, you type one of these: ::
+    
+    myClip.show() # shows the first frame of the clip
+    myClip.show(10.5) # shows the frame of the clip at t=10.5s
+    myClip.show(10.5,frontend="matplotlib") # show in a matplotlib window
+
+To preview the clip, you type::
+    
+    myClip.preview() # preview with default fps=15
+    myClip.preview(fps=25)
+    myClip.preview(fps=15, sound=False) # Play the clip with no sound.
+
+It is important to note that the ``fps`` can be any number, independently of the ``fps`` of your different sources.
+
+To write a clip as a video file, use ::
+    
+    myClip.to_movie("myEditedMovie.ogv") # default = 15 fps, 3000 kb/s
+    myClip.to_movie("myEditedMovie.mp4",fps=24,bitrate=5000) # 5000kb/s
+    myClip.to_movie("myEditedMovie.mp4",sound=False) # don't render the sound.
+
+
+    
+
+

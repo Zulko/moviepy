@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>An example with sound &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Example Scripts" href="../examples.html" />
+    <link rel="next" title="A Star-Wars like opening title" href="starwarslike.html" />
+    <link rel="prev" title="A simple music video" href="musicVideo.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="starwarslike.html" title="A Star-Wars like opening title"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="musicVideo.html" title="A simple music video"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../examples.html" accesskey="U">Example Scripts</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="an-example-with-sound">
+<h1>An example with sound<a class="headerlink" href="#an-example-with-sound" title="Permalink to this headline">¶</a></h1>
+<p>An example of using MoviePy to assemble movie clips with sounds. Here are two scenes of Charade put together:</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/gtyFuIoH7W0&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/gtyFuIoH7W0&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>Here is the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c"># LOAD MOVIE</span>
+
+<span class="n">charade</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;./charadePhone.mp4&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">size</span>
+<span class="n">duration</span><span class="o">=</span><span class="mi">6</span>
+
+
+
+<span class="c"># MAKE THE LEFT CLIP</span>
+
+<span class="c"># cut and crop the clip</span>
+<span class="n">xleft</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">clip_left</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span>
+<span class="n">clip_left</span> <span class="o">=</span> <span class="n">clip_left</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">x1</span><span class="o">=</span><span class="n">xleft</span><span class="p">,</span><span class="n">x2</span><span class="o">=</span><span class="n">xleft</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c"># make the mask. Yeah it&#39;s complicated, there must be a simpler way.</span>
+<span class="c"># It is just a mask that is black on the right bottom corner.</span>
+<span class="n">c1a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">v1</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">v1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+<span class="n">c1b</span> <span class="o">=</span> <span class="n">c1a</span><span class="o">-</span> <span class="n">v1</span>
+<span class="n">g1</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">clip_left</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="n">c1a</span><span class="p">,</span><span class="n">c1b</span><span class="p">,</span><span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">clip_left</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">g1</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+
+<span class="c"># MAKE THE RIGHT CLIP</span>
+
+<span class="c"># cut and crop the clip</span>
+<span class="n">xright</span> <span class="o">=</span> <span class="mi">70</span>
+<span class="n">clip_right</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="mi">21</span><span class="o">+</span><span class="n">duration</span><span class="p">)</span>
+<span class="n">clip_right</span> <span class="o">=</span> <span class="n">clip_right</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">x1</span><span class="o">=</span><span class="n">xright</span><span class="p">,</span><span class="n">x2</span><span class="o">=</span><span class="n">xright</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c"># make the mask</span>
+<span class="n">c2a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">c2b</span> <span class="o">=</span> <span class="n">c2a</span><span class="o">+</span><span class="n">v1</span>
+<span class="n">g2</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">clip_right</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="n">c2a</span><span class="p">,</span><span class="n">c2b</span><span class="p">,</span><span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">clip_right</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">g2</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+<span class="c"># ASSEMBLE AND WRITE THE MOVIE</span>
+
+<span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">charade</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">clip_right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+             <span class="n">clip_left</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">))])</span>
+
+<span class="n">cc</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;biphone.avi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A few remarks:</p>
+<ul>
+<li><p class="first">In this script we never explicitly consider the sound. MoviePy does all the cutting and the mixing automatically.</p>
+</li>
+<li><p class="first">We do not load the whole movie but just a part of it (never load a 2h00 movie when you are going to use its sound, see the remark in <a class="reference internal" href="../first_steps/good_practice.html#goodpractices"><em>Good Practices</em></a>). Rather, we first extract the part of interest with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">moviepy.ffmpeg</span> <span class="kn">as</span> <span class="nn">ff</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="mi">3050</span> <span class="c">#seconds</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="mi">3095</span>
+<span class="n">ff</span><span class="o">.</span><span class="n">extract_subclip</span><span class="p">(</span><span class="s">&quot;charade.mp4&quot;</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">,</span><span class="s">&quot;charadePhone.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">We use a nerdy and complicated way of cutting the clips with the <tt class="docutils literal"><span class="pre">gradient</span></tt> function (defined in <a class="reference internal" href="../cookbook/gradientEffect.html#gradients"><em>Gradient Effects</em></a>) but you could have done it with masks from images for instance.</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Example Scripts</a><ul>
+      <li>Previous: <a href="musicVideo.html" title="previous chapter">A simple music video</a></li>
+      <li>Next: <a href="starwarslike.html" title="next chapter">A Star-Wars like opening title</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/soundExample.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

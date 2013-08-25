@@ -1,0 +1,8 @@
+==========
+TODO list
+==========
+
+Ideas of improvement:
+
+- Parallelize movie file writing (or even GUI movie previews ?) for faster renderings.
+- Improve the ``set_pos`` functions, give it functionalities inspired from CSS/HTML, like margin-right, etc...

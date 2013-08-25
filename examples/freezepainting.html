@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Freezing a movie frame with a painting effect &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Example Scripts" href="../examples.html" />
+    <link rel="next" title="MoviePy logo with a moving shadow" href="logo.html" />
+    <link rel="prev" title="“The End” effect" href="the_end.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="logo.html" title="MoviePy logo with a moving shadow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="the_end.html" title="“The End” effect"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
+          <li><a href="../examples.html" accesskey="U">Example Scripts</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="freezing-a-movie-frame-with-a-painting-effect">
+<h1>Freezing a movie frame with a painting effect<a class="headerlink" href="#freezing-a-movie-frame-with-a-painting-effect" title="Permalink to this headline">¶</a></h1>
+<p>That&#8217;s an effect that we have seen a lot in westerns and such.</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/aC5CifkacSI&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/aC5CifkacSI&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>Before
+starting let us see how to make a photo look more like a painting. It
+can be done easy as follows:</p>
+<ul class="simple">
+<li>Find the edges of the image with the Sobel algorithm. What you obtain
+is what looks like a hand-drawing of the photo.</li>
+<li>Multiply the image to make the colors flashier, and add the contours
+obtained at the previous step.</li>
+</ul>
+<p>Which is implemented in just a few lines of code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">skimage.filter</span> <span class="kn">import</span> <span class="n">sobel</span>
+
+<span class="k">def</span> <span class="nf">to_painting</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">saturation</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span><span class="n">black</span> <span class="o">=</span> <span class="mf">0.006</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; transforms any photo into some kind of painting &quot;&quot;&quot;</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">sobel</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="n">darkening</span> <span class="o">=</span>  <span class="n">black</span><span class="o">*</span><span class="p">(</span><span class="mi">255</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">edges</span><span class="p">]))</span>
+    <span class="n">painting</span> <span class="o">=</span> <span class="n">saturation</span><span class="o">*</span><span class="n">image</span><span class="o">-</span><span class="n">darkening</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="n">painting</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now let us see the actual script. We work on an Audrey Hepburn clip taken
+from <em>Charade</em>, a movie which is not copyrighted due to a copyright
+omission (good for us).</p>
+<p>The final clip will be the concatenation of three part: the part before
+the effect, the part with the effect, and the part after the effect.
+The part with the effect is obtained as follows:</p>
+<ul class="simple">
+<li>Take the frame to freeze and make a &#8220;painted image&#8221; of it. Make it a clip.</li>
+<li>Add a text clip saying &#8220;Audrey&#8221; to the &#8220;painted image&#8221; clip.</li>
+<li>Overlay the painted clip over the original frame, but make it appear and
+disappear with a fading effect.</li>
+</ul>
+<p>Here you are for the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">charade</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;./videos/charade.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">tf</span> <span class="o">=</span> <span class="mi">19</span><span class="o">*</span><span class="mi">60</span><span class="o">+</span><span class="mf">21.0</span> <span class="c"># Time of the freeze, 19&#39;21</span>
+
+<span class="c"># WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE</span>
+
+<span class="n">clip_before</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tf</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="n">tf</span> <span class="p">)</span>
+<span class="n">clip_after</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tf</span> <span class="p">,</span><span class="n">tf</span> <span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="c"># THE FRAME TO FREEZE</span>
+
+<span class="n">im_freeze</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+<span class="n">painting</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">to_painting</span><span class="p">(</span><span class="n">im_freeze</span><span class="p">))</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&#39;Audrey&#39;</span><span class="p">,</span><span class="n">font</span><span class="o">=</span><span class="s">&#39;Amiri-regular&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">painting_txt</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">charade</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                <span class="p">[</span><span class="n">painting</span><span class="p">,</span><span class="n">txt</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">180</span><span class="p">))])</span>
+
+<span class="c"># FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE</span>
+
+<span class="n">painting_fading</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">charade</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                    <span class="p">[</span><span class="n">ImageClip</span><span class="p">(</span><span class="n">im_freeze</span><span class="p">),</span>
+                     <span class="n">painting_txt</span><span class="o">.</span><span class="n">with_mask</span><span class="p">()</span><span class="o">.</span><span class="n">fadein</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span><span class="o">.</span>
+                                         <span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>
+                                            <span class="n">fadeout</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)])</span>
+
+<span class="c"># FINAL CLIP AND RENDERING</span>
+
+<span class="n">final_clip</span> <span class="o">=</span>  <span class="n">concat</span><span class="p">([</span> <span class="n">clip_before</span><span class="p">,</span>
+                       <span class="n">painting_fading</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mf">3.6</span><span class="p">),</span>
+                       <span class="n">clip_after</span><span class="p">])</span>
+
+<span class="n">final_clip</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../examples.html">Example Scripts</a><ul>
+      <li>Previous: <a href="the_end.html" title="previous chapter">&#8220;The End&#8221; effect</a></li>
+      <li>Next: <a href="logo.html" title="next chapter">MoviePy logo with a moving shadow</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/freezepainting.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>For developpers &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="index.html" />
+    <link rel="prev" title="FFMPEG-related functions" href="ref/ffmpeg.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ref/ffmpeg.html" title="FFMPEG-related functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="for-developpers">
+<h1>For developpers<a class="headerlink" href="#for-developpers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="todo-list">
+<h2>TODO list<a class="headerlink" href="#todo-list" title="Permalink to this headline">¶</a></h2>
+<p>Ideas of improvement (suggestions, help and commits are welcome !):</p>
+<ul class="simple">
+<li>Find users.</li>
+<li>Improve the <tt class="docutils literal"><span class="pre">set_pos</span></tt> functions, give it functionalities inspired from CSS/HTML, like margin-right, etc...</li>
+<li>Improve readability/naming.</li>
+<li>Make an installer for all the dependencies ?</li>
+</ul>
+</div>
+<div class="section" id="discussion-of-the-dependencies">
+<h2>Discussion of the dependencies<a class="headerlink" href="#discussion-of-the-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>I have found that complicated dependencies are a main reason why people get
+discouraged by a software, so I take all the advices on the subject.</p>
+<div class="section" id="movie-writing">
+<h3>Movie writing<a class="headerlink" href="#movie-writing" title="Permalink to this headline">¶</a></h3>
+<p>To write a movie, I used to generate pictures of the frames and then put them together using ffmpeg, because this is what matplotlib does. But it can be up to fifty times slower than writing the movie directly with OpenCV, and it is less memory efficient.</p>
+<p>However, I like how you can tune the quality of the movie with ffmpeg, and I can&#8217;t think of something else to merge sound and image. I know there is a war between ffmpeg/avconv/mencoder. I think ffmpeg is the most spread software. And no, it&#8217;s not deprecated.</p>
+</div>
+<div class="section" id="movie-rendering">
+<h3>Movie Rendering<a class="headerlink" href="#movie-rendering" title="Permalink to this headline">¶</a></h3>
+<p>For movie previews I am using Pygame instead of the original OpenCV frontend because Pygame
+can also generate sound.</p>
+</div>
+<div class="section" id="movie-and-image-manimulation">
+<h3>Movie and Image manimulation<a class="headerlink" href="#movie-and-image-manimulation" title="Permalink to this headline">¶</a></h3>
+<p>The python package SimpleCV is an attempt at making OpenCV easier to use. It is totally cool, but the OpenCV devs are also trying to make it easier so they always make a lot of changes which break SimpleCV. They use the Python Imaging Library for image processing.</p>
+<p>The package Wand (a Python binder for ImageMagick) is nice and is starting to accept numpy array images input/output.</p>
+</div>
+<div class="section" id="sound">
+<h3>Sound<a class="headerlink" href="#sound" title="Permalink to this headline">¶</a></h3>
+<p>The python package Pydub is really good but working with numpy arrays gives more freedom so I stick with Scipy.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">For developpers</a><ul>
+<li><a class="reference internal" href="#todo-list">TODO list</a></li>
+<li><a class="reference internal" href="#discussion-of-the-dependencies">Discussion of the dependencies</a><ul>
+<li><a class="reference internal" href="#movie-writing">Movie writing</a></li>
+<li><a class="reference internal" href="#movie-rendering">Movie Rendering</a></li>
+<li><a class="reference internal" href="#movie-and-image-manimulation">Movie and Image manimulation</a></li>
+<li><a class="reference internal" href="#sound">Sound</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ref/ffmpeg.html" title="previous chapter">FFMPEG-related functions</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/forDevelopers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

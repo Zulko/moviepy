@@ -1,0 +1,14 @@
+=================================
+Gradient Effects
+=================================
+
+Gradients effects are extremely useful, for instance to make custom masks.
+In most graphical softwares, if you point two positions ``x1`` and ``x2``
+on the screen and choose two colors, you obtain a nice
+color gradient like this: 
+
+.. figure:: gradient.jpeg
+
+Here is the code for that (with the difference that you do not chose two
+points here, but rather one point and one vector). ::
+
