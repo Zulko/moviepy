@@ -8,7 +8,7 @@ in a few lines. It can also be used for advanced compositing.
 See the full documentation online here_ .
 
 
-A typical MoviePy script looks like that:
+A typical MoviePy script looks like that: ::
 
     from moviepy import *
     
