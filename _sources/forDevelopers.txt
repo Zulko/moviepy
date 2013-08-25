@@ -30,7 +30,7 @@ To write a movie, I used to generate pictures of the frames and then put them to
 
 However, I like how you can tune the quality of the movie with ffmpeg, and I can't think of something else to merge sound and image. I know there is a war between ffmpeg/avconv/mencoder. I think ffmpeg is the most spread software. And no, it's not deprecated.
 
-Movie Rendering
+Movie rendering
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 For movie previews I am using Pygame instead of the original OpenCV frontend because Pygame
@@ -38,7 +38,7 @@ can also generate sound.
   
 
   
-Movie and Image manimulation
+Movie and image manipulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The python package SimpleCV is an attempt at making OpenCV easier to use. It is totally cool, but the OpenCV devs are also trying to make it easier so they always make a lot of changes which break SimpleCV. They use the Python Imaging Library for image processing.

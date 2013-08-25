@@ -5,7 +5,10 @@ You can `download MoviePy`_ on Github. Just unzip everything in one folder, open
     
     sudo python setup.py install
 
-MoviePy is a very small program but it relies on many existing Python libraries that you will need to install first:
+
+**This should install the python packages listed below, but NOT OpenCV, which you will have to download manually for the moment.**
+
+MoviePy is a very small program but it relies on many existing Python packages:
 
 - `OpenCV 2.4.6`_ or more recent, to read and write movie files. 
 - PyGame_ for video and sound previews
@@ -13,7 +16,9 @@ MoviePy is a very small program but it relies on many existing Python libraries 
 - `Scikit Image`_ for advanced image manipulation 
 - The Decorator_ module for better code readability
 
-And it needs some external software:
+
+
+MoviePy also needs some external software:
 
 - ffmpeg_, for writing movies and many other useful operations.
 - imageMagick_ for text generation, GIF support, and much more in the future.

@@ -557,8 +557,15 @@ the list of fonts you can use on your computer.</li>
 if <tt class="docutils literal"><span class="pre">None</span></tt>, there will be no stroke.</li>
 <li><strong>stroke_width</strong> &#8211; Width of the strocke, in pixels. Can be a float,
 like 1.5.</li>
-<li><strong>method</strong> &#8211; &#8216;label&#8217; (autosized) or &#8216;caption&#8217; (presized, wrapped)</li>
-<li><strong>align</strong> &#8211; center | East | West | South | North</li>
+<li><strong>method</strong> &#8211; &#8216;label&#8217; (the picture will be autosized so as to fit
+exactly the size) or &#8216;caption&#8217; (the text will be drawn in a picture
+with fixed size (provided with the <tt class="docutils literal"><span class="pre">size</span></tt> argument) it will be
+wrapped automatically (sometimes it is buggy, not my fault, complain
+to the ImageMagick crew) and can be aligned or centered (see
+parameter <tt class="docutils literal"><span class="pre">align</span></tt>).</li>
+<li><strong>kerning</strong> &#8211; Changes the default spacing between letters</li>
+<li><strong>align</strong> &#8211; center | East | West | South | North . Will work if
+<tt class="docutils literal"><span class="pre">method</span></tt> is set to <tt class="docutils literal"><span class="pre">caption</span></tt></li>
 <li><strong>transparent</strong> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt> (default) if you want to take into account
 the transparency in the image.</li>
 </ul>
