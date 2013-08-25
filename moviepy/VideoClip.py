@@ -947,9 +947,17 @@ class TextClip(ImageClip):
     :param stroke_width: Width of the strocke, in pixels. Can be a float,
         like 1.5.
        
-    :param method: 'label' (autosized) or 'caption' (presized, wrapped)
+    :param method: 'label' (the picture will be autosized so as to fit
+        exactly the size) or 'caption' (the text will be drawn in a picture
+        with fixed size (provided with the ``size`` argument) it will be
+        wrapped automatically (sometimes it is buggy, not my fault, complain
+        to the ImageMagick crew) and can be aligned or centered (see
+        parameter ``align``).
     
-    :param align: center | East | West | South | North
+    :param kerning: Changes the default spacing between letters 
+    
+    :param align: center | East | West | South | North . Will work if
+        ``method`` is set to ``caption``
     
     :param transparent: ``True`` (default) if you want to take into account
         the transparency in the image.
