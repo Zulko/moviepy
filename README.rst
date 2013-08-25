@@ -5,7 +5,7 @@ MoviePy is Python module for script-based movie editing, which enables
 basic operations (cuts, concatenations, title insertions) to be done
 in a few lines. It can also be used for advanced compositing.
 
-See the full documentation online `here`_.
+See the full documentation online here_ .
 
 
 A typical MoviePy script looks like that:
@@ -51,7 +51,7 @@ MoviePy also needs some external software:
 
 All these are normally easy to install (on linux, they will certainly be in your repos).
 
-.. _`here`: http://zulko.github.io/moviepy/`
+.. _here: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 .. _Pygame: http://www.pygame.org/download.shtml
