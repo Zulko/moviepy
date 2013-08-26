@@ -8,7 +8,13 @@ MoviePy works fine on my 1.5 petaflops supercomputer, but like for any other vid
 
 - Use an interactive shell, like IPython or, better, the IPython notebook. If you don't know these, you don't know what you are missing !
 - Prefer the clip.show() option, and use it a lot. Only use clip.preview() when really necessary.
-- If some part of your video is particularly complex and long to render, save this part as either a raw video or in directory of pictures (better, because it enables to also save the mask), then use this video instead of this part's script.
+- For the moment the audio is generated for each preview and before the preview. So if you want to preview a lengthy clip with sound, it may take a few seconds before the preview actually launches, and the sound may take lots of place in memory. Therefore, it is advised to only preview small bits of a movie with audio. Reducing the audio fps when previewing reduces the problem. 
+- If some part of your video is particularly complex and long to render, save this part as either a raw video (enables to save the sound) or in a directory of pictures (enables to save the mask), then use this video instead of this part's script. ::
+      
+      myVideo.to_movie('save.avi',fps=24,codec='raw', audio=True)
+      # or
+      myVideo.to_directory('./mySaveDirectory',fps=24)
+      
 - If you are going to use extracts of big movies with sound, do NOT write ::
       
       # "Charade" is a 2h00 long movie

@@ -70,7 +70,14 @@
 </li>
 <li><p class="first">Prefer the clip.show() option, and use it a lot. Only use clip.preview() when really necessary.</p>
 </li>
-<li><p class="first">If some part of your video is particularly complex and long to render, save this part as either a raw video or in directory of pictures (better, because it enables to also save the mask), then use this video instead of this part&#8217;s script.</p>
+<li><p class="first">For the moment the audio is generated for each preview and before the preview. So if you want to preview a lengthy clip with sound, it may take a few seconds before the preview actually launches, and the sound may take lots of place in memory. Therefore, it is advised to only preview small bits of a movie with audio. Reducing the audio fps when previewing reduces the problem.</p>
+</li>
+<li><p class="first">If some part of your video is particularly complex and long to render, save this part as either a raw video (enables to save the sound) or in a directory of pictures (enables to save the mask), then use this video instead of this part&#8217;s script.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">myVideo</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;save.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c"># or</span>
+<span class="n">myVideo</span><span class="o">.</span><span class="n">to_directory</span><span class="p">(</span><span class="s">&#39;./mySaveDirectory&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+</pre></div>
+</div>
 </li>
 <li><p class="first">If you are going to use extracts of big movies with sound, do NOT write</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># &quot;Charade&quot; is a 2h00 long movie</span>

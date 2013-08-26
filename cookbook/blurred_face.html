@@ -113,9 +113,18 @@ allowfullscreen="true" width="550" height="450"></embed></object>
         <span class="n">x1</span><span class="p">,</span><span class="n">x2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">x</span><span class="o">-</span><span class="n">r_zone</span><span class="p">),</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">r_zone</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
         <span class="n">y1</span><span class="p">,</span><span class="n">y2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">r_zone</span><span class="p">),</span><span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="n">r_zone</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
         <span class="n">reg_res</span> <span class="o">=</span> <span class="n">y2</span><span class="o">-</span><span class="n">y1</span><span class="p">,</span><span class="n">x2</span><span class="o">-</span><span class="n">x1</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">reg_res</span><span class="p">),</span>
-                <span class="p">(</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_zone</span><span class="p">),</span><span class="n">r_zone</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+
+        <span class="c"># We will now make a circled mask.</span>
+        <span class="c"># IN older OpenCV, instead of the next two lines, write</span>
+        <span class="c"># mask = cv2.circle(np.zeros(reg_res).astype(&#39;uint8&#39;),</span>
+        <span class="c">#   (r_zone,r_zone),r_zone,255,-1, lineType=cv2.LINE_AA)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">reg_res</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="p">(</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_zone</span><span class="p">),</span><span class="n">r_zone</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                               <span class="n">lineType</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CV_AA</span><span class="p">)</span>
+        <span class="c">#-----</span>
+
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[(</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">255</span><span class="p">)</span><span class="o">*</span><span class="n">mask</span><span class="p">])</span>
+
         <span class="n">orig</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="n">y1</span><span class="p">:</span><span class="n">y2</span><span class="p">,</span><span class="n">x1</span><span class="p">:</span><span class="n">x2</span><span class="p">]</span>
         <span class="n">blurred</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">blur</span><span class="p">(</span><span class="n">orig</span><span class="p">,(</span><span class="n">r_blur</span><span class="p">,</span><span class="n">r_blur</span><span class="p">))</span>
         <span class="n">im</span><span class="p">[</span><span class="n">y1</span><span class="p">:</span><span class="n">y2</span><span class="p">,</span><span class="n">x1</span><span class="p">:</span><span class="n">x2</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span><span class="o">*</span><span class="n">blurred</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">mask</span><span class="p">)</span><span class="o">*</span><span class="n">orig</span>
@@ -125,7 +134,10 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 </pre></div>
 </div>
 <p>Finally, here is the script:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># Because we will work with sound and we do not want to carry around</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="c"># Because we will work with sound and we do not want to carry around</span>
 <span class="c"># the sound of the whole original movie, we first extract the</span>
 <span class="c"># interesting part of the movie (run this line only once):</span>
 

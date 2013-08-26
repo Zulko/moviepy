@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Download And Installation &mdash; MoviePy 0.1 documentation</title>
+    <title>Download, Installation, Github repository &mdash; MoviePy 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -60,12 +60,13 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="download-and-installation">
-<h1>Download And Installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h1>
-<p>You can <a class="reference external" href="https://github.com/Zulko/moviepy">download MoviePy</a> on Github. Just unzip everything in one folder, open a terminal and type</p>
+  <div class="section" id="download-installation-github-repository">
+<h1>Download, Installation, Github repository<a class="headerlink" href="#download-installation-github-repository" title="Permalink to this headline">¶</a></h1>
+<p>You can <a class="reference external" href="https://github.com/Zulko/moviepy">download MoviePy</a> on ts Github repository.</p>
+<p>Just unzip everything in one folder, open a terminal and type</p>
 <div class="highlight-python"><pre>sudo python setup.py install</pre>
 </div>
-<p><strong>This should install the python packages listed below, but NOT OpenCV, which you will have to download manually for the moment.</strong></p>
+<p>This should install the python packages listed below, <strong>but NOT OpenCV</strong>, which you will have to download and install manually (see below).</p>
 <p>MoviePy is a very small program but it relies on many existing Python packages:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> or more recent, to read and write movie files.</li>
@@ -74,12 +75,46 @@
 <li><a class="reference external" href="http://scikit-image.org/download.html">Scikit Image</a> for advanced image manipulation</li>
 <li>The <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a> module for better code readability</li>
 </ul>
-<p>MoviePy also needs some external software:</p>
+<p>MoviePy also needs some external software that you will need to install:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a>, for writing movies and many other useful operations.</li>
 <li><a class="reference external" href="http://www.imagemagick.org/script/index.php">imageMagick</a> for text generation, GIF support, and much more in the future.</li>
 </ul>
 <p>All these are normally easy to install (on linux, they will certainly be in your repos).</p>
+<div class="section" id="installing-opencv-2-4-6">
+<h2>Installing OpenCV 2.4.6<a class="headerlink" href="#installing-opencv-2-4-6" title="Permalink to this headline">¶</a></h2>
+<p>That will depend on your system. It seems easy for Windows. On linux, here is what I found on the Internet:</p>
+<ul>
+<li><p class="first">Remove any other version of OpenCV if you installed it through a package manager.</p>
+</li>
+<li><p class="first">Unzip the source code of <a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> in some folder. open a terminal in this folder.</p>
+</li>
+<li><p class="first">Make a new directory and go into this directory:</p>
+<div class="highlight-python"><pre>mkdir release
+cd release</pre>
+</div>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">cmake</span></tt>. Here is the line I used:</p>
+<div class="highlight-python"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..</pre>
+</div>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">make</span></tt>. This may take a few minutes (15 minutes on my computer).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, install.</p>
+<div class="highlight-python"><pre>sudo make install</pre>
+</div>
+</li>
+</ul>
+<p>And voilà !</p>
+<p>You can check if it worked by opeing a Python console and typing</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="k">print</span> <span class="n">cv2</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -87,7 +122,15 @@
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Download, Installation, Github repository</a><ul>
+<li><a class="reference internal" href="#installing-opencv-2-4-6">Installing OpenCV 2.4.6</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">MoviePy</a></li>
