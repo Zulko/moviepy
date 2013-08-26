@@ -13,6 +13,41 @@ import ffmpeg
 from Clip import Clip, apply_to_mask, requires_duration
 from AudioClip import SoundClip, CompositeAudioClip
 
+
+
+# We start with an horrible hack due to be able to find the right
+# constants across the different OpenCV versions.
+
+try:
+    CAP_PROP_POS_FRAMES = cv2.CAP_PROP_POS_FRAMES
+    CAP_PROP_FPS = cv2.CAP_PROP_FPS
+    CAP_PROP_FRAME_COUNT = cv2.CAP_PROP_FRAME_COUNT
+except:
+    try:
+        CAP_PROP_POS_FRAMES = cv2.cv.CV_CAP_PROP_POS_FRAMES
+        CAP_PROP_FPS = cv2.cv.CV_CAP_PROP_FPS
+        CAP_PROP_FRAME_COUNT = cv2.cv.CV_CAP_PROP_FRAME_COUNT
+    except:
+        print "Error: unable to find CAP_PROP_POS_FRAMES etc."
+        raise
+
+
+try:
+    FOURCC = cv2.cv.FOURCC
+except:
+    try:
+        FOURCC = cv2.VideoWriter_fourcc
+    except:
+        print "Error : unable to find FOURCC."
+        raise
+
+# End of the hack
+
+
+
+
+
+
 # Initiates a Pygame window
 pg.init()
 pg.display.set_caption('MoviePy')
@@ -298,6 +333,15 @@ class VideoClip(Clip):
         """
         
         print "Making file %s ..."%filename
+        
+        if codec == 'raw':
+            codec = 0
+        else:
+            codec = FOURCC(*codec)
+        
+        
+        
+        
         # Prepare audio
         
         if isinstance(audio, str):  # audio is a file
@@ -320,8 +364,6 @@ class VideoClip(Clip):
         # Write the movie
         print "Rendering video :",
         
-        codec = 0 if (codec=='raw') else cv2.VideoWriter_fourcc(*codec)
-        
         writer = cv2.VideoWriter(videofile, codec, fps, self.size)
         tt = np.arange(0, self.duration, 1.0/fps)
         lentt = len(tt)
@@ -329,7 +371,10 @@ class VideoClip(Clip):
             writer.write(self.get_frame(t)[:,:,::-1].astype('uint8'))
             if i % (len(tt)/10) == 0:
                 print "%d"%(100 * i / len(tt)) + "% ",
-        writer.release()
+        try:
+            writer.release() # some versions of opencv don't have that one
+        except:
+            pass
         print "done !"
         
         # Merge with audio if any and trash temporary files.
@@ -731,9 +776,9 @@ class MovieClip(VideoClip):
 
         self.source = source
 
-        self.fps = self.cap.get(cv2.CAP_PROP_FPS)
+        self.fps = self.cap.get(CAP_PROP_FPS)
 
-        self.nframes = self.cap.get(cv2.CAP_PROP_FRAME_COUNT)
+        self.nframes = self.cap.get(CAP_PROP_FRAME_COUNT)
 
         duration = 1.0 * (self.nframes) / self.fps
         self.duration = duration
@@ -759,7 +804,7 @@ class MovieClip(VideoClip):
                     self.cap.read()
 
             else:
-                self.cap.set(cv2.CAP_PROP_POS_FRAMES, nframe - 1)
+                self.cap.set(CAP_PROP_POS_FRAMES, nframe - 1)
 
             frame = self.cap.read()[1]
             if frame is None:
@@ -774,12 +819,12 @@ class MovieClip(VideoClip):
 
         if audio:
             temp = 'temp.wav'
-            # try:
-            ffmpeg.extract_audio(source, temp)
-            self.audio = SoundClip(temp)
-            os.remove(temp)
-            # except:
-            #    print "No audio detected in %s."%source
+            try:
+                ffmpeg.extract_audio(source, temp)
+                self.audio = SoundClip(temp)
+                os.remove(temp)
+            except:
+                print "No audio detected in %s."%source
 
 
 class DirectoryClip(VideoClip):
