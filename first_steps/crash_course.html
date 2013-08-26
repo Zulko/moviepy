@@ -70,8 +70,10 @@
 <h2>What is a video clip ?<a class="headerlink" href="#what-is-a-video-clip" title="Permalink to this headline">¶</a></h2>
 <p>A video clip is basically an object with a <tt class="docutils literal"><span class="pre">get_frame</span></tt> attribute. <tt class="docutils literal"><span class="pre">get_frame</span></tt> is a function which for a given time <tt class="docutils literal"><span class="pre">t</span></tt> returns a picture of the clip at time <tt class="docutils literal"><span class="pre">t</span></tt> (more precisely, an array of numbers representing a picture). As an example, to play a clip frame by frame, you can (but you won&#8217;t have to) write something like that:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">:</span>
-    <span class="n">display</span><span class="p">(</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
-    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span>   <span class="c"># for 24 frames/second</span>
+    <span class="n">picture</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="c"># gets the picture at time ``t``</span>
+    <span class="n">imdisplay</span><span class="p">(</span> <span class="n">picture</span> <span class="p">)</span>        <span class="c"># display the picture</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span>              <span class="c"># increment time</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span> <span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span> <span class="p">)</span>        <span class="c"># wait for 1/24 seconds</span>
 </pre></div>
 </div>
 <p>A video clip has some fundamental attributes:</p>

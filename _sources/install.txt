@@ -1,7 +1,7 @@
-Download, Installation, Github repository
-------------------------------------------
+Download and Installation
+----------------------------
 
-You can `download MoviePy`_ on ts Github repository.
+You can `download MoviePy`_ on its Github repository.
 
 
 Just unzip everything in one folder, open a terminal and type ::

@@ -11,8 +11,10 @@ What is a video clip ?
 A video clip is basically an object with a ``get_frame`` attribute. ``get_frame`` is a function which for a given time ``t`` returns a picture of the clip at time ``t`` (more precisely, an array of numbers representing a picture). As an example, to play a clip frame by frame, you can (but you won't have to) write something like that: ::
     
     while t < clip.duration:
-        display( clip.get_frame(t) )
-        t = t + 1.0/24   # for 24 frames/second
+        picture = clip.get_frame(t) # gets the picture at time ``t``
+        imdisplay( picture )        # display the picture
+        t = t + 1.0/24              # increment time
+        time.sleep( 1.0/24 )        # wait for 1/24 seconds 
 
 A video clip has some fundamental attributes:
 
