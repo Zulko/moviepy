@@ -53,6 +53,13 @@ Indices and tables
 * :ref:`search`
 
 
+.. raw:: html
+
+        <a href="https://github.com/Zulko/moviepy">
+        <img style="position: absolute; top: 0; right: 0; border: 0;"
+        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+        alt="Fork me on GitHub"></a>
+
 
 .. _Zulko: https://github.com/Zulko/
 .. _Stackoverflow: http://stackoverflow.com/

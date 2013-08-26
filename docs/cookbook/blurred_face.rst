@@ -60,9 +60,18 @@ And the coming function makes a filter that blurs the regions around ``(fx(t),fy
             x1,x2 = max(0,x-r_zone),min(x+r_zone,w)
             y1,y2 = max(0,y-r_zone),min(y+r_zone,h)
             reg_res = y2-y1,x2-x1
-            mask = cv2.circle(np.zeros(reg_res),
-                    (r_zone,r_zone),r_zone,1,-1, lineType=cv2.LINE_AA)
-            mask = np.dstack(3*[mask])
+            
+            # We will now make a circled mask. 
+            # IN older OpenCV, instead of the next two lines, write
+            # mask = cv2.circle(np.zeros(reg_res).astype('uint8'),
+            #   (r_zone,r_zone),r_zone,255,-1, lineType=cv2.LINE_AA)
+            mask = np.zeros(reg_res).astype('uint8')
+            cv2.circle(mask, (r_zone,r_zone),r_zone,255,-1,
+                                   lineType=cv2.CV_AA)
+            #-----
+            
+            mask = np.dstack(3*[(1.0/255)*mask])
+            
             orig = im[y1:y2,x1:x2]
             blurred = cv2.blur(orig,(r_blur,r_blur))
             im[y1:y2,x1:x2] = mask*blurred + (1-mask)*orig
@@ -71,6 +80,9 @@ And the coming function makes a filter that blurs the regions around ``(fx(t),fy
         return fl
 
 Finally, here is the script: ::
+    
+    from moviepy import *
+    import pickle
     
     # Because we will work with sound and we do not want to carry around
     # the sound of the whole original movie, we first extract the
