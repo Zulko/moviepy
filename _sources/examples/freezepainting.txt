@@ -52,7 +52,7 @@ The part with the effect is obtained as follows:
 
 Here you are for the code: ::
     
-    charade = MovieClip("./videos/charade.mp4", audio=False)
+    charade = VideoFileClip("./videos/charade.mp4", audio=False)
     tf = 19*60+21.0 # Time of the freeze, 19'21
 
     # WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
@@ -83,4 +83,4 @@ Here you are for the code: ::
                            painting_fading.set_duration(3.6),
                            clip_after])
     
-    final_clip.to_movie('audrey.avi',fps=charade.fps)
+    final_clip.to_videofile('audrey.avi',fps=charade.fps)

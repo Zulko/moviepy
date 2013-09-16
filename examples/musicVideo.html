@@ -44,9 +44,6 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="soundExample.html" title="An example with sound"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -82,16 +79,16 @@ I will just have to copy/paste this code, and modify a few lines.</p>
 <span class="c"># UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING</span>
 <span class="c"># RAW FOOTAGE</span>
 
-<span class="n">ukulele</span> <span class="o">=</span> <span class="p">(</span><span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;./videos/moi_ukulele.MOV&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>
+<span class="n">ukulele</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;./videos/moi_ukulele.MOV&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>
                <span class="n">subclip</span><span class="p">(</span><span class="mi">60</span><span class="o">+</span><span class="mi">33</span><span class="p">,</span><span class="mi">60</span><span class="o">+</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span>
                <span class="n">crop</span><span class="p">(</span><span class="mi">486</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">1196</span><span class="p">,</span><span class="mi">570</span><span class="p">))</span>
 
 <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">moviesize</span> <span class="o">=</span> <span class="n">ukulele</span><span class="o">.</span><span class="n">size</span>
 
 <span class="c"># THE PIANO FOOTAGE IS DOWNSIZED, HAS A WHITE MARGIN, IS</span>
-<span class="c"># IN THE BOTTOM LEFT CORNER</span>
+<span class="c"># IN THE BOTTOM LEFT CORNER AT 20 PIXELS FROM THE BORDER</span>
 
-<span class="n">piano</span> <span class="o">=</span> <span class="p">(</span><span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;./videos/douceamb.mp4&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>
+<span class="n">piano</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;./videos/douceamb.mp4&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>
              <span class="n">subclip</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span>
              <span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span>
              <span class="n">margin</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span><span class="o">.</span> <span class="c">#white margin</span>
@@ -114,7 +111,7 @@ I will just have to copy/paste this code, and modify a few lines.</p>
 
 <span class="c"># FINAL ASSEMBLY</span>
 <span class="n">final</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">moviesize</span><span class="p">,[</span><span class="n">ukulele</span><span class="p">,</span><span class="n">txt_mov</span><span class="p">,</span><span class="n">piano</span><span class="p">])</span>
-<span class="n">final</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;ukulele.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;DIVX&#39;</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;ukulele.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;DIVX&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

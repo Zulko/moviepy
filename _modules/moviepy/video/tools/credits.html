@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.tools.credits &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.video.tools.credits</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains different fonctions to make end and opening</span>
+<span class="sd">credits, even though it is difficult to fill everyone needs in this</span>
+<span class="sd">matter.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.fx</span> <span class="kn">import</span> <span class="n">resize</span>
+
+<div class="viewcode-block" id="credits1"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.credits.credits1">[docs]</a><span class="k">def</span> <span class="nf">credits1</span><span class="p">(</span><span class="n">creditfile</span><span class="p">,</span><span class="n">width</span><span class="p">,</span><span class="n">stretch</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span>
+                 <span class="n">stroke_color</span><span class="o">=</span><span class="s">&#39;black&#39;</span><span class="p">,</span> <span class="n">stroke_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                 <span class="n">font</span><span class="o">=</span><span class="s">&#39;Impact-Normal&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    The first credits I imagined. They take as argument a file like: ::</span>
+<span class="sd">        </span>
+<span class="sd">        # This is a comment</span>
+<span class="sd">        # The next line says : leave 4 blank lines</span>
+<span class="sd">        .blank 4</span>
+<span class="sd">        </span>
+<span class="sd">        ..Executive Story Editor</span>
+<span class="sd">        MARCEL DURAND</span>
+<span class="sd">        </span>
+<span class="sd">        ..Associate Producers</span>
+<span class="sd">        MARTIN MARCEL</span>
+<span class="sd">        DIDIER MARTIN</span>
+<span class="sd">        </span>
+<span class="sd">        ..Music Supervisor</span>
+<span class="sd">        JEAN DIDIER</span>
+<span class="sd">        </span>
+<span class="sd">    And produce an ImageClip that looks like :</span>
+<span class="sd">    </span>
+<span class="sd">        Executive Story Editor    MARCEL DURAND</span>
+<span class="sd">           Associate Producers    MARTIN MARCEL</span>
+<span class="sd">                                  DIDIER MARTIN</span>
+<span class="sd">              Music Supervisor    JEAN DIDIER</span>
+<span class="sd">    </span>
+<span class="sd">    :param width: total width of the credits text</span>
+<span class="sd">    :param stretch: stretch in pixels between the jobs and the names.</span>
+<span class="sd">    </span>
+<span class="sd">    The other keywords are passed to the ``TextClip``s</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="c"># PARSE THE TXT FILE</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">creditfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    
+    <span class="n">lines</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">),</span><span class="n">lines</span><span class="p">)</span> 
+    <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">oneline</span><span class="o">=</span><span class="bp">True</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span>  <span class="n">lines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;#&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;.blank&#39;</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])):</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">])</span>
+            <span class="k">elif</span>  <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;..&#39;</span><span class="p">):</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span><span class="s">&#39;&#39;</span><span class="p">])</span>
+                <span class="n">oneline</span><span class="o">=</span><span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">oneline</span><span class="p">:</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">])</span>
+                    <span class="n">oneline</span><span class="o">=</span><span class="bp">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">])</span>
+               
+    <span class="n">left</span><span class="p">,</span><span class="n">right</span> <span class="o">=</span> <span class="p">[</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">texts</span><span class="p">)]</span>
+    
+    <span class="c"># MAKE TWO COLUMNS FOR THE CREDITS</span>
+    
+    <span class="n">left</span><span class="p">,</span><span class="n">right</span> <span class="o">=</span>  <span class="p">[</span><span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span><span class="n">stroke_color</span><span class="o">=</span><span class="n">stroke_color</span><span class="p">,</span>
+                                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span><span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                                <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span><span class="n">align</span><span class="o">=</span><span class="n">al</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">txt</span><span class="p">,</span><span class="n">al</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">left</span><span class="p">,</span><span class="s">&#39;East&#39;</span><span class="p">),(</span><span class="n">right</span><span class="p">,</span><span class="s">&#39;West&#39;</span><span class="p">)]]</span>
+               
+
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">stretch</span><span class="p">,</span><span class="mi">0</span><span class="p">))],</span>
+                             <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">right</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">stretch</span><span class="p">,</span><span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
+                             <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="c"># SCALE TO THE REQUIRED SIZE</span>
+    
+    <span class="n">scaled</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">resize</span> <span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+    
+    <span class="c"># TRANSFORM THE WHOLE CREDIT CLIP INTO AN ImageCLip</span>
+    
+    <span class="n">imclip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">amask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">imclip</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">amask</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

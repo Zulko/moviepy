@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>video.tools &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="video-tools">
+<h1>video.tools<a class="headerlink" href="#video-tools" title="Permalink to this headline">¶</a></h1>
+<p>This module regroups advanced, useful (and less useful) functions for editing videos.</p>
+<div class="section" id="module-moviepy.video.tools.drawing">
+<span id="drawing"></span><h2>Drawing<a class="headerlink" href="#module-moviepy.video.tools.drawing" title="Permalink to this headline">¶</a></h2>
+<p>This module deals with making images (np arrays). It provides drawing
+methods that are difficult to do with the existing Python libraries.</p>
+<dl class="function">
+<dt id="moviepy.video.tools.drawing.blit">
+<tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">blit</tt><big>(</big><em>im1, im2, pos=[0, 0], mask=None, ismask=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#blit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.blit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blits <tt class="docutils literal"><span class="pre">im1</span></tt> on <tt class="docutils literal"><span class="pre">im2</span></tt> as position <tt class="docutils literal"><span class="pre">pos=(x,y)</span></tt>, using the
+<tt class="docutils literal"><span class="pre">mask</span></tt> if provided. If <tt class="docutils literal"><span class="pre">im1</span></tt> and <tt class="docutils literal"><span class="pre">im2</span></tt> are mask pictures
+(2D float arrays) then <tt class="docutils literal"><span class="pre">ismask</span></tt> must be <tt class="docutils literal"><span class="pre">True</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.drawing.circle">
+<tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">circle</tt><big>(</big><em>screensize</em>, <em>center</em>, <em>radius</em>, <em>col1=1.0</em>, <em>col2=0</em>, <em>blur=1</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a circle of color <tt class="docutils literal"><span class="pre">col1</span></tt>, on a background of color <tt class="docutils literal"><span class="pre">col2</span></tt>,
+on a screen of size <tt class="docutils literal"><span class="pre">screensize</span></tt> at the position <tt class="docutils literal"><span class="pre">center=(x,y)</span></tt>,
+with a radius <tt class="docutils literal"><span class="pre">radius</span></tt> but slightly blurred on the border by <tt class="docutils literal"><span class="pre">blur</span></tt>
+pixels</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.drawing.color_gradient">
+<tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">color_gradient</tt><big>(</big><em>size</em>, <em>p1</em>, <em>p2=None</em>, <em>vector=None</em>, <em>r=None</em>, <em>col1=0</em>, <em>col2=1.0</em>, <em>shape='linear'</em>, <em>offset=0</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#color_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.color_gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes linear, bilinear, or radial gradients.</p>
+<p>The result is a picture of size <tt class="docutils literal"><span class="pre">size</span></tt>, whose color varies gradually: from
+color <cite>col1</cite> in position <tt class="docutils literal"><span class="pre">p1</span></tt> to color <tt class="docutils literal"><span class="pre">col2</span></tt> in position <tt class="docutils literal"><span class="pre">p2</span></tt>.</p>
+<dl class="docutils">
+<dt>If it is a RGB picture the result must be transformed into</dt>
+<dd><p class="first">a &#8216;uint8&#8217; array to be displayed normally:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">grad</span> <span class="o">=</span> <span class="n">colorGradient</span><span class="p">(</span><span class="n">blabla</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;unit8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> &#8211; size of the final picture/array</li>
+<li><strong>p2</strong> (<em>p1,</em>) &#8211; coordinates (x,y) of the border point for
+<tt class="docutils literal"><span class="pre">col1</span></tt> and <tt class="docutils literal"><span class="pre">col2</span></tt></li>
+<li><strong>vector</strong> &#8211; can be provided instead of <tt class="docutils literal"><span class="pre">p2</span></tt>. <tt class="docutils literal"><span class="pre">p2</span></tt> is then
+defined as (p1 + vector).</li>
+<li><strong>col2</strong> (<em>col1,</em>) &#8211; can be floats to create gradient masks, or
+[R,G,B] arrays to create gradient images.</li>
+<li><strong>shape</strong> &#8211; &#8216;linear&#8217;, &#8216;bilinear&#8217;, or &#8216;circular&#8217;. In a linear gradient
+the color varies in one direction, from point <tt class="docutils literal"><span class="pre">p1</span></tt> to point <tt class="docutils literal"><span class="pre">p2</span></tt>.</li>
+<li><strong>offset</strong> &#8211; percentage of the vector at which the gradient actually
+starts. for instance if offset is 0.9 in a gradient going from
+p1 to p2, then the gradient will only occur near p2. If the offset
+is 0.9 in a radial gradient, the gradient will occur in the region
+located between 90% and 100% of the radius.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.drawing.color_split">
+<tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">color_split</tt><big>(</big><em>size</em>, <em>x=None</em>, <em>y=None</em>, <em>p1=None</em>, <em>p2=None</em>, <em>vector=None</em>, <em>col1=0</em>, <em>col2=1.0</em>, <em>grad_width=0</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#color_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.color_split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes an array of size <tt class="docutils literal"><span class="pre">size</span></tt> divided in two regions by a
+straight line, the two regions having different colors.
+provide either x, or y, or (c1,c2), or (c1,vector). See below.</p>
+<p>Use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># an image with all pixels with x&lt;50 =0, the others =1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colorSplit</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># an image with all pixels with y&lt;50 red, the others green</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colorSplit</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">col2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># An image splitted along an arbitrary line (see below) </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">colorSplit</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">p2</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mi">70</span><span class="p">]</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>(int)</strong> (<em>y</em>) &#8211; If provided, the image is splitted horizontally in x,
+the left region being region 1.</li>
+<li><strong>(int)</strong> &#8211; If provided, the image is splitted vertically in y,
+the top region being region 1.</li>
+<li><strong>p1,p2</strong> &#8211; Positions (x1,y1),(x2,y2), where the numbers can be floats,
+of two points. Region 1 is defined as the region on the left when
+going from p1 to p2.</li>
+<li><strong>vector</strong> (<em>p1,</em>) &#8211; p1 is (x1,y1) and vector (v1,v2), where the numbers
+can be floats. Region 1 is then the region on the left when starting
+in position p1 and going in the direction given by <tt class="docutils literal"><span class="pre">vector</span></tt>.</li>
+<li><strong>gradient_width</strong> &#8211; if not null, the split is not sharp, but gradual
+over a region of width <tt class="docutils literal"><span class="pre">gradient_width</span></tt> (in pixels). This is
+preferable in many situations (for instance for antialiasing).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moviepy.video.tools.segmenting">
+<span id="segmenting"></span><h2>Segmenting<a class="headerlink" href="#module-moviepy.video.tools.segmenting" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="moviepy.video.tools.segmenting.findObjects">
+<tt class="descclassname">moviepy.video.tools.segmenting.</tt><tt class="descname">findObjects</tt><big>(</big><em>clip</em>, <em>rem_thr=500</em>, <em>preview=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/segmenting.html#findObjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.segmenting.findObjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of ImageClips representing each a separate object on
+the screen.</p>
+<dl class="docutils">
+<dt>rem_thr <span class="classifier-delimiter">:</span> <span class="classifier">all objects found with size &lt; rem_Thr will be</span></dt>
+<dd>considered false positives and will be removed</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moviepy.video.tools.tracking">
+<span id="tracking"></span><h2>Tracking<a class="headerlink" href="#module-moviepy.video.tools.tracking" title="Permalink to this headline">¶</a></h2>
+<p>This module contains different fonctions for tracking objects in videos,
+manually or automatically. The tracking functions return results under
+the form:  <tt class="docutils literal"><span class="pre">(</span> <span class="pre">txy,</span> <span class="pre">(fx,fy)</span> <span class="pre">)</span></tt> where txy is of the form [(ti, xi, yi)...]
+and (fx(t),fy(t)) give the position of the track for all times t (if the
+time t is out of the time bounds of the tracking time interval
+fx and fy return the position of the object at the start or at the end
+of the tracking time interval).</p>
+<dl class="function">
+<dt id="moviepy.video.tools.tracking.autoTrack">
+<tt class="descclassname">moviepy.video.tools.tracking.</tt><tt class="descname">autoTrack</tt><big>(</big><em>clip</em>, <em>pattern</em>, <em>tt=None</em>, <em>fps=None</em>, <em>radius=20</em>, <em>xy0=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/tracking.html#autoTrack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.tracking.autoTrack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tracks a given pattern (small image array) in a video clip.
+Returns [(x1,y1),(x2,y2)...] where xi,yi are
+the coordinates of the pattern in the clip on frame i.
+To select the frames you can either specify a list of times with <tt class="docutils literal"><span class="pre">tt</span></tt>
+or select a frame rate with <tt class="docutils literal"><span class="pre">fps</span></tt>.
+This algorithm assumes that the pattern&#8217;s aspect does not vary much
+and that the distance between two occurences of the pattern in
+two consecutive frames is smaller than <tt class="docutils literal"><span class="pre">radius</span></tt> (if you set <tt class="docutils literal"><span class="pre">radius</span></tt>
+to -1 the pattern will be searched in the whole screen at each frame).
+You can also provide the original position of the pattern with xy0.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.tracking.findAround">
+<tt class="descclassname">moviepy.video.tools.tracking.</tt><tt class="descname">findAround</tt><big>(</big><em>pic</em>, <em>pat</em>, <em>xy=None</em>, <em>r=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/tracking.html#findAround"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.tracking.findAround" title="Permalink to this definition">¶</a></dt>
+<dd><p>find image pattern <tt class="docutils literal"><span class="pre">pat</span></tt> in <tt class="docutils literal"><span class="pre">pic[x</span> <span class="pre">+/-</span> <span class="pre">r,</span> <span class="pre">y</span> <span class="pre">+/-</span> <span class="pre">r]</span></tt>.
+if xy is none, consider the whole picture.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.tracking.manual_tracking">
+<tt class="descclassname">moviepy.video.tools.tracking.</tt><tt class="descname">manual_tracking</tt><big>(</big><em>clip</em>, <em>t1=None</em>, <em>t2=None</em>, <em>fps=5</em>, <em>nobjects=1</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/tracking.html#manual_tracking"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.tracking.manual_tracking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows manual tracking of an object(s) in the video clip between
+times <cite>t1</cite> and <cite>t2</cite>. This displays the clip frame by frame
+and you must click on the object(s) in each frame. If <tt class="docutils literal"><span class="pre">t2=None</span></tt>
+only the frame at <tt class="docutils literal"><span class="pre">t1</span></tt> is taken into account.</p>
+<p>Returns a list [(t1,x1,y1),(t2,x2,y2) etc... ] if there is one
+object per frame, else returns a list whose elements are of the 
+form (ti, [(xi1,yi1), (xi2,yi2), ...] )</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>t1,t2</strong> &#8211; times during which to track (defaults are start and
+end of the clip)</li>
+<li><strong>fps</strong> &#8211; Number of frames per second to freeze on.</li>
+<li><strong>nobjects</strong> &#8211; Number of objects to click on each frame</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># To print 5 points coordinates at t=5 : </span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">print</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Tip: To avoid redoing the tracking each time you run your script,
+better save the result the first time and then load it at each run.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># First time:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">txy</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">manTrack</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">txy</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># Next times:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pickle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;chaplin_txy.dat&quot;</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">txy</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">txy</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.tools.tracking.to_fxfy">
+<tt class="descclassname">moviepy.video.tools.tracking.</tt><tt class="descname">to_fxfy</tt><big>(</big><em>txy_list</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/tracking.html#to_fxfy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.tracking.to_fxfy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms a list [ (ti, (xi,yi)) ] into 2 functions (fx,fy)
+where fx : t -&gt; x(t)  and  fy : t -&gt; y(t).
+If the time t is out of the bounds of the tracking time interval
+fx and fy return the position of the object at the start or at
+the end of the tracking time interval.
+Keywords can be passed to decide the kind of interpolation,
+see the doc of <tt class="docutils literal"><span class="pre">scipy.interpolate.interp1d</span></tt>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-moviepy.video.tools.credits">
+<span id="credits"></span><h2>Credits<a class="headerlink" href="#module-moviepy.video.tools.credits" title="Permalink to this headline">¶</a></h2>
+<p>This module contains different fonctions to make end and opening
+credits, even though it is difficult to fill everyone needs in this
+matter.</p>
+<dl class="function">
+<dt id="moviepy.video.tools.credits.credits1">
+<tt class="descclassname">moviepy.video.tools.credits.</tt><tt class="descname">credits1</tt><big>(</big><em>creditfile</em>, <em>width</em>, <em>stretch=30</em>, <em>color='white'</em>, <em>stroke_color='black'</em>, <em>stroke_width=2</em>, <em>font='Impact-Normal'</em>, <em>fontsize=60</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/credits.html#credits1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.credits.credits1" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first credits I imagined. They take as argument a file like:</p>
+<div class="highlight-python"><pre># This is a comment
+# The next line says : leave 4 blank lines
+.blank 4
+
+..Executive Story Editor
+MARCEL DURAND
+
+..Associate Producers
+MARTIN MARCEL
+DIDIER MARTIN
+
+..Music Supervisor
+JEAN DIDIER</pre>
+</div>
+<p>And produce an ImageClip that looks like :</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Executive Story Editor    MARCEL DURAND</dt>
+<dd><dl class="first last docutils">
+<dt>Associate Producers    MARTIN MARCEL</dt>
+<dd><blockquote class="first">
+<div>DIDIER MARTIN</div></blockquote>
+<p class="last">Music Supervisor    JEAN DIDIER</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>width</strong> &#8211; total width of the credits text</li>
+<li><strong>stretch</strong> &#8211; stretch in pixels between the jobs and the names.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The other keywords are passed to the <a href="#id1"><span class="problematic" id="id2">``</span></a>TextClip``s</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">video.tools</a><ul>
+<li><a class="reference internal" href="#module-moviepy.video.tools.drawing">Drawing</a></li>
+<li><a class="reference internal" href="#module-moviepy.video.tools.segmenting">Segmenting</a></li>
+<li><a class="reference internal" href="#module-moviepy.video.tools.tracking">Tracking</a></li>
+<li><a class="reference internal" href="#module-moviepy.video.tools.credits">Credits</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/ref/videotools.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

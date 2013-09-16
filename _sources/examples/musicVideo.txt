@@ -26,16 +26,16 @@ I will just have to copy/paste this code, and modify a few lines. ::
     # UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING
     # RAW FOOTAGE
 
-    ukulele = (MovieClip("./videos/moi_ukulele.MOV",audio=False).
+    ukulele = (VideoFileClip("./videos/moi_ukulele.MOV",audio=False).
                    subclip(60+33,60+50).
                    crop(486,180,1196,570))
 
     w,h = moviesize = ukulele.size
 
     # THE PIANO FOOTAGE IS DOWNSIZED, HAS A WHITE MARGIN, IS
-    # IN THE BOTTOM LEFT CORNER 
+    # IN THE BOTTOM LEFT CORNER AT 20 PIXELS FROM THE BORDER
 
-    piano = (MovieClip("./videos/douceamb.mp4",audio=False).
+    piano = (VideoFileClip("./videos/douceamb.mp4",audio=False).
                  subclip(30,50).
                  resize((w/3,h/3)).
                  margin(6,color=(255,255,255)). #white margin
@@ -58,4 +58,4 @@ I will just have to copy/paste this code, and modify a few lines. ::
 
     # FINAL ASSEMBLY
     final = CompositeVideoClip(moviesize,[ukulele,txt_mov,piano])
-    final.subclip(0,5).to_movie("ukulele.avi",fps=24,codec='DIVX')
+    final.subclip(0,5).to_videofile("ukulele.avi",fps=24,codec='DIVX')

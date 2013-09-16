@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.io.VideoFileClip &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.video.io.VideoFileClip</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span> <span class="nn">readers</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
+
+<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    A video clip originating from a movie file. For instance:</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; clip2 = VideofileClip(&quot;myMaskVideo.avi&quot;,ismask = True)</span>
+<span class="sd">    </span>
+<span class="sd">    :param filename: Any video file: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
+<span class="sd">    :param ismask: `True` if the clip is a mask.</span>
+<span class="sd">    :param has_mask: &#39;True&#39; if there is a mask included in the videofile.</span>
+<span class="sd">       Commonly, video files don&#39;t have mask, but you can save the mask</span>
+<span class="sd">       for the videos that you make with MoviePy (see the doc from</span>
+<span class="sd">       ``VideoClip.to_videofile`` for more details).</span>
+<span class="sd">    :param audio: If `True`, then the audio is extracted from the video</span>
+<span class="sd">                  file, in wav format, and it attributed to the clip.</span>
+<span class="sd">    </span>
+<span class="sd">    :ivar filename: Name of the original video file</span>
+<span class="sd">    :ivar fps: Frames per second in the original file. </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">audio_buffersize</span> <span class="o">=</span> <span class="mi">200000</span><span class="p">,</span>
+                 <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        
+        <span class="n">VideoClip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ismask</span><span class="p">)</span>
+        
+        <span class="c"># We store the construction parameters in case we need to make</span>
+        <span class="c"># a copy (a &#39;co-reader&#39;).</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;filename&#39;</span><span class="p">:</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;ismask&#39;</span><span class="p">:</span><span class="n">ismask</span><span class="p">,</span>
+                           <span class="s">&#39;has_mask&#39;</span><span class="p">:</span><span class="n">has_mask</span><span class="p">,</span> <span class="s">&#39;audio&#39;</span><span class="p">:</span><span class="n">audio</span><span class="p">,</span>
+                           <span class="s">&#39;audio_buffersize&#39;</span><span class="p">:</span><span class="n">audio_buffersize</span><span class="p">}</span>
+        
+        <span class="c"># Make a reader</span>
+        <span class="n">pix_fmt</span><span class="o">=</span> <span class="s">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s">&quot;rgb24&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="n">pix_fmt</span><span class="p">)</span>
+        
+        <span class="c"># Make some of the reader&#39;s attributes accessible from the clip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">fps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        
+        <span class="c"># Make a reader for the audio, if any.</span>
+        <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span> <span class="n">audio_buffersize</span><span class="p">,</span>
+                    <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span> <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;No audio found in </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">filename</span>
+                <span class="k">pass</span>
+    
+<div class="viewcode-block" id="VideoFileClip.coreader"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a new entrance point</span>
+<span class="sd">            to the video file. Use copy when you have different clips</span>
+<span class="sd">            watching the same video file at different times. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

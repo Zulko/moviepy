@@ -20,7 +20,7 @@ A video clip has some fundamental attributes:
 
 - **The size** (width,height), ``clip.size``, indicates the dimensions in pixels of the clip. You can also access the clips's width and height with ``clip.w`` and ``clip.h`` respectively.
 - **The duration**, ``clip.duration``, is the time after which the clip   stops playing 
-- **The soundtrack**,  ``clip.sound``, which contains the sound data (an array actually) of the clip. See :ref:`CCaudioClips`
+- **The soundtrack**,  ``clip.audio``, which contains the sound data (an array actually) of the clip. See :ref:`CCaudioClips`
 
 When you put several clips together (see :ref:`CompositeVideoClips`), you may have to worry about some other attributes:
 
@@ -33,7 +33,7 @@ Classes of video clips
 
 Video clips can be of one of these sorts:
 
-- ``MovieClip('myHolidays.mp4')`` for clips read from a movie file. See :class:`~VideoClip.MovieClip`.
+- ``VideoFileClip('myHolidays.mp4')`` for clips read from a movie file. See :class:`~VideoClip.VideoFileClip`.
 - ``ImageClip('myPic.png')`` for clips displaying a picture, for an *a priori* infinite duration. See :class:`~VideoClip.ImageClip`.
 - ``ColorClip((height,width),color=(R,G,B))`` for special ImageClips of a single color. See :class:`~VideoClip.ColorClip`.
 - ``TextClip('Hello public',font='Impact-Regular')`` for special ImageClips representing a text. They are automatically generated using ImageMagick. See :class:`~VideoClip.TextClip`.
@@ -59,7 +59,7 @@ You will find many pre-implemented methods to modify a clip  in the reference ma
 
 In MoviePy **no modification of a clip occurs inplace**, which means that the result of ``clip.resize``, ``clip.speedx``, etc., will be a new clip and the original clip will be untouched. ::
     
-    clip = MovieClip('myHolidays.mp4')
+    clip = VideoFileClip('myHolidays.mp4')
     clip.resize((460,320)) # ``clip`` is NOT modified
     clip = clip.resize((460,320)) # ``clip`` is modified
 
@@ -164,9 +164,9 @@ It is important to note that the ``fps`` can be any number, independently of the
 
 To write a clip as a video file, use ::
     
-    myClip.to_movie("myEditedMovie.avi") # default codec: 'DIVX' fps: 24
-    myClip.to_movie("myEditedMovie.avi",fps=24, codec='raw') # raw movie
-    myClip.to_movie("myEditedMovie.avi",audio=False) # don't render the audio.
+    myClip.to_videofile("myEditedMovie.avi") # default codec: 'DIVX' fps: 24
+    myClip.to_videofile("myEditedMovie.avi",fps=24, codec='raw') # raw movie
+    myClip.to_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
 
 The codec *DIVX* will produce very light yet good quality movies, while the *raw* codec will produce very large movies with perfect quality. Many other codecs are available.
 
@@ -178,12 +178,12 @@ Audio clips
 
 The second important objects of MoviePy are the audio clips. If ``myHolidays.mp4`` is a video with sound, then ::
     
-    clip = MovieClip('myHolidays.mp4', audio=True)
+    clip = VideoFileClip('myHolidays.mp4', audio=True)
 
-will create a clip with a ``clip.sound`` attribute which is an audio clip. This is the sound that you will hear if you render the clip with ``clip.preview`` or ``clip.to_movie``. You can also create an audio clip from a sound file and then attach it to a video clip: ::
+will create a clip with a ``clip.audio`` attribute which is an audio clip. This is the sound that you will hear if you render the clip with ``clip.preview`` or ``clip.to_videofile``. You can also create an audio clip from a sound file and then attach it to a video clip: ::
         
-    audio = SoundClip('mySong.wav')
-    video = MovieClip('myHolidays.mp4').set_audio(audio)
+    audio = AudioFileClip('mySong.wav')
+    video = VideoFileClip('myHolidays.mp4').set_audio(audio)
 
 Like video clips, audio clips can be cut (with ``clip.subclip``) modified (with for instance ``clip.volumex`` which multiplies the volume) and combined (with ``CompositeAudioClip``). But most of the time, MoviePy will do that for you:
 

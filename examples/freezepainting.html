@@ -44,9 +44,6 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
           <a href="logo.html" title="MoviePy logo with a moving shadow"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -107,7 +104,7 @@ The part with the effect is obtained as follows:</p>
 disappear with a fading effect.</li>
 </ul>
 <p>Here you are for the code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">charade</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;./videos/charade.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">charade</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;./videos/charade.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">tf</span> <span class="o">=</span> <span class="mi">19</span><span class="o">*</span><span class="mi">60</span><span class="o">+</span><span class="mf">21.0</span> <span class="c"># Time of the freeze, 19&#39;21</span>
 
 <span class="c"># WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE</span>
@@ -138,7 +135,7 @@ disappear with a fading effect.</li>
                        <span class="n">painting_fading</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mf">3.6</span><span class="p">),</span>
                        <span class="n">clip_after</span><span class="p">])</span>
 
-<span class="n">final_clip</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

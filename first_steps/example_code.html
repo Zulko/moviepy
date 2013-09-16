@@ -25,9 +25,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="First steps with MoviePy" href="../first_steps.html" />
-    <link rel="next" title="A MoviePy crash-course" href="crash_course.html" />
-    <link rel="prev" title="First steps with MoviePy" href="../first_steps.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -43,17 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="crash_course.html" title="A MoviePy crash-course"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../first_steps.html" title="First steps with MoviePy"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../first_steps.html" accesskey="U">First steps with MoviePy</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -69,10 +56,10 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
 
-<span class="c"># Reduce the sound volume (volume x 0.8)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">sound</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">sound</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="c"># Reduce the audio volume (volume x 0.8)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
 
 <span class="c"># Generate a text clip. You can customize the font, color, etc.</span>
 <span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;My Holidays 2013&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
@@ -85,7 +72,7 @@
 <span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="p">[</span><span class="n">clip</span><span class="p">,</span> <span class="n">txt_clip</span><span class="p">])</span>
 
 <span class="c"># Write the result to a file. The default encoding will be DIVX.</span>
-<span class="n">video</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">video</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See ? That was easy !</p>
@@ -99,10 +86,6 @@
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../first_steps.html">First steps with MoviePy</a><ul>
-      <li>Previous: <a href="../first_steps.html" title="previous chapter">First steps with MoviePy</a></li>
-      <li>Next: <a href="crash_course.html" title="next chapter">A MoviePy crash-course</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

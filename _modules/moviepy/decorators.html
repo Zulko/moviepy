@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.decorators &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.decorators</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">all decorators used in moviepy go there</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">decorator</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
+
+<span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="apply_to_mask"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_mask">[docs]</a><span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This decorator will apply the same function f to the mask of</span>
+<span class="sd">        the clip created with f &quot;&quot;&quot;</span>
+    <span class="n">newclip</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s">&#39;mask&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">newclip</span>
+
+</div>
+<span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="apply_to_audio"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_audio">[docs]</a><span class="k">def</span> <span class="nf">apply_to_audio</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This decorator will apply the function f to the audio of</span>
+<span class="sd">        the clip created with f &quot;&quot;&quot;</span>
+    <span class="n">newclip</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s">&#39;audio&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">newclip</span>
+
+</div>
+<span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="requires_duration"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.requires_duration">[docs]</a><span class="k">def</span> <span class="nf">requires_duration</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; will raise an error if the clip has no duration.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+</div>
+<span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="audio_video_fx"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.audio_video_fx">[docs]</a><span class="k">def</span> <span class="nf">audio_video_fx</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This decorator tells that the function f (audioclip -&gt; audioclip)</span>
+<span class="sd">    can be also used on a video clip, at which case it returns a</span>
+<span class="sd">    videoclip with modified audio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s">&quot;audio&quot;</span><span class="p">):</span>
+        <span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span>  <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">newclip</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+</div>
+<span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="time_can_be_tuple"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.time_can_be_tuple">[docs]</a><span class="k">def</span> <span class="nf">time_can_be_tuple</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This decorator tells that the function f (audioclip -&gt; audioclip)</span>
+<span class="sd">    can be also used on a video clip, at which case it returns a</span>
+<span class="sd">    videoclip with modified audio.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span> <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="n">cvsecs</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span> <span class="p">[(</span><span class="n">m</span><span class="p">,</span> <span class="n">fun</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="ow">in</span> <span class="n">k</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

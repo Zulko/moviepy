@@ -92,7 +92,7 @@ Finally, here is the script: ::
                            "charlotSub.mp4")
 
     # Now we have a shorter movie that we can load
-    chaplin = MovieClip("charlotSub.mp4", audio=True)
+    chaplin = VideoFileClip("charlotSub.mp4", audio=True)
     clip = chaplin.subclip(0, chaplin.duration-3)
 
 
@@ -128,7 +128,7 @@ Finally, here is the script: ::
     # write to a file. Here we use the 'XVID' codec because
     # 'raw' is too heavy and 'DIVX' is too ugly.
     
-    final.to_movie('blurredChaplin.avi',fps=24, codec='XVID')
+    final.to_videofile('blurredChaplin.avi',fps=24, codec='XVID')
     
     # This 13s movie with sound and special effects was generated
     # in six seconds.

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>MoviePy logo with a moving shadow &mdash; MoviePy 0.1 documentation</title>
+    <title>MoviePy logo with a moving shadow &mdash; MoviePy 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="Example Scripts" href="../examples.html" />
-    <link rel="next" title="Cookbook" href="../cookbook.html" />
-    <link rel="prev" title="Freezing a movie frame with a painting effect" href="freezepainting.html" />
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -46,14 +42,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="../cookbook.html" title="Cookbook"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="freezepainting.html" title="Freezing a movie frame with a painting effect"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../examples.html" accesskey="U">Example Scripts</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -88,7 +77,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="n">shade</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">moviesize</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span>
 <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">moviesize</span><span class="p">,[</span><span class="n">im</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="s">&quot;center&quot;</span><span class="p">]),</span><span class="n">shade</span><span class="p">])</span>
 
-<span class="n">cc</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;moviepy_logo.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+<span class="n">cc</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;moviepy_logo.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -101,10 +90,6 @@ allowfullscreen="true" width="550" height="450"></embed></object>
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../examples.html">Example Scripts</a><ul>
-      <li>Previous: <a href="freezepainting.html" title="previous chapter">Freezing a movie frame with a painting effect</a></li>
-      <li>Next: <a href="../cookbook.html" title="next chapter">Cookbook</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

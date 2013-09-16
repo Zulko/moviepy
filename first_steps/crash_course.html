@@ -25,9 +25,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="First steps with MoviePy" href="../first_steps.html" />
-    <link rel="next" title="Good Practices" href="good_practice.html" />
-    <link rel="prev" title="Example code" href="example_code.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -43,17 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="good_practice.html" title="Good Practices"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="example_code.html" title="Example code"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../first_steps.html" accesskey="U">First steps with MoviePy</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -80,7 +67,7 @@
 <ul class="simple">
 <li><strong>The size</strong> (width,height), <tt class="docutils literal"><span class="pre">clip.size</span></tt>, indicates the dimensions in pixels of the clip. You can also access the clips&#8217;s width and height with <tt class="docutils literal"><span class="pre">clip.w</span></tt> and <tt class="docutils literal"><span class="pre">clip.h</span></tt> respectively.</li>
 <li><strong>The duration</strong>, <tt class="docutils literal"><span class="pre">clip.duration</span></tt>, is the time after which the clip   stops playing</li>
-<li><strong>The soundtrack</strong>,  <tt class="docutils literal"><span class="pre">clip.sound</span></tt>, which contains the sound data (an array actually) of the clip. See <a class="reference internal" href="#ccaudioclips"><em>Audio clips</em></a></li>
+<li><strong>The soundtrack</strong>,  <tt class="docutils literal"><span class="pre">clip.audio</span></tt>, which contains the sound data (an array actually) of the clip. See <a class="reference internal" href="#ccaudioclips"><em>Audio clips</em></a></li>
 </ul>
 <p>When you put several clips together (see <a class="reference internal" href="#compositevideoclips"><em>Composite video clips</em></a>), you may have to worry about some other attributes:</p>
 <ul class="simple">
@@ -92,13 +79,13 @@
 <h2>Classes of video clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h2>
 <p>Video clips can be of one of these sorts:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">MovieClip('myHolidays.mp4')</span></tt> for clips read from a movie file. See <a class="reference internal" href="../ref/VideoClip_ref.html#VideoClip.MovieClip" title="VideoClip.MovieClip"><tt class="xref py py-class docutils literal"><span class="pre">MovieClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration. See <a class="reference internal" href="../ref/VideoClip_ref.html#VideoClip.ImageClip" title="VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color. See <a class="reference internal" href="../ref/VideoClip_ref.html#VideoClip.ColorClip" title="VideoClip.ColorClip"><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">public',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick. See <a class="reference internal" href="../ref/VideoClip_ref.html#VideoClip.TextClip" title="VideoClip.TextClip"><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt></a>.</li>
+<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> for clips read from a movie file. See <tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration. See <tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color. See <tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">public',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick. See <tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt>.</li>
 </ul>
 <p>To that list we should add the <tt class="docutils literal"><span class="pre">CompositeVideoClips</span></tt> that are obtained by mixing several clips together (see <a class="reference internal" href="#compositevideoclips"><em>Composite video clips</em></a>).</p>
-<p>Finally, a clip can be of the base class <a class="reference internal" href="../ref/VideoClip_ref.html#VideoClip.VideoClip" title="VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoClip</span></tt></a>, and have any arbitrary <tt class="docutils literal"><span class="pre">get_frame</span></tt> method. For instance the following clip represents a 460x320
+<p>Finally, a clip can be of the base class <tt class="xref py py-class docutils literal"><span class="pre">VideoClip</span></tt>, and have any arbitrary <tt class="docutils literal"><span class="pre">get_frame</span></tt> method. For instance the following clip represents a 460x320
 screen, that will go from black (color <tt class="docutils literal"><span class="pre">[1,1,1]</span></tt>) to white (color <tt class="docutils literal"><span class="pre">[255,255,255]</span></tt>) in 255 seconds.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
@@ -113,7 +100,7 @@ screen, that will go from black (color <tt class="docutils literal"><span class=
 <h2>Modifying a clip<a class="headerlink" href="#modifying-a-clip" title="Permalink to this headline">¶</a></h2>
 <p>You will find many pre-implemented methods to modify a clip  in the reference manual. For instance <tt class="docutils literal"><span class="pre">clip.subclip(15,20)</span></tt> returns the part of <tt class="docutils literal"><span class="pre">clip</span></tt> that is playing between 15 seconds and 20 seconds, <tt class="docutils literal"><span class="pre">clip.resize((width,</span> <span class="pre">height))</span></tt> will change the resolution of the clip, while <tt class="docutils literal"><span class="pre">clip.crop</span></tt> will enable you to keep only a region of the clip and <tt class="docutils literal"><span class="pre">clip.speedx(0.5)</span></tt> will make your clip play two times slower. When it is relevant, these methods are also applied to the sound and the mask of the clip, so that you don&#8217;t have to worry about modifying these.</p>
 <p>In MoviePy <strong>no modification of a clip occurs inplace</strong>, which means that the result of <tt class="docutils literal"><span class="pre">clip.resize</span></tt>, <tt class="docutils literal"><span class="pre">clip.speedx</span></tt>, etc., will be a new clip and the original clip will be untouched.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span>
 <span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">460</span><span class="p">,</span><span class="mi">320</span><span class="p">))</span> <span class="c"># ``clip`` is NOT modified</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">460</span><span class="p">,</span><span class="mi">320</span><span class="p">))</span> <span class="c"># ``clip`` is modified</span>
 </pre></div>
@@ -201,9 +188,9 @@ zero at the top of the picture:</p>
 </div>
 <p>It is important to note that the <tt class="docutils literal"><span class="pre">fps</span></tt> can be any number, independently of the <tt class="docutils literal"><span class="pre">fps</span></tt> of your different sources.</p>
 <p>To write a clip as a video file, use</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">)</span> <span class="c"># default codec: &#39;DIVX&#39; fps: 24</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">)</span> <span class="c"># raw movie</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render the audio.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">)</span> <span class="c"># default codec: &#39;DIVX&#39; fps: 24</span>
+<span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">)</span> <span class="c"># raw movie</span>
+<span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render the audio.</span>
 </pre></div>
 </div>
 <p>The codec <em>DIVX</em> will produce very light yet good quality movies, while the <em>raw</em> codec will produce very large movies with perfect quality. Many other codecs are available.</p>
@@ -211,12 +198,12 @@ zero at the top of the picture:</p>
 <div class="section" id="audio-clips">
 <span id="ccaudioclips"></span><h2>Audio clips<a class="headerlink" href="#audio-clips" title="Permalink to this headline">¶</a></h2>
 <p>The second important objects of MoviePy are the audio clips. If <tt class="docutils literal"><span class="pre">myHolidays.mp4</span></tt> is a video with sound, then</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>will create a clip with a <tt class="docutils literal"><span class="pre">clip.sound</span></tt> attribute which is an audio clip. This is the sound that you will hear if you render the clip with <tt class="docutils literal"><span class="pre">clip.preview</span></tt> or <tt class="docutils literal"><span class="pre">clip.to_movie</span></tt>. You can also create an audio clip from a sound file and then attach it to a video clip:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">audio</span> <span class="o">=</span> <span class="n">SoundClip</span><span class="p">(</span><span class="s">&#39;mySong.wav&#39;</span><span class="p">)</span>
-<span class="n">video</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+<p>will create a clip with a <tt class="docutils literal"><span class="pre">clip.audio</span></tt> attribute which is an audio clip. This is the sound that you will hear if you render the clip with <tt class="docutils literal"><span class="pre">clip.preview</span></tt> or <tt class="docutils literal"><span class="pre">clip.to_videofile</span></tt>. You can also create an audio clip from a sound file and then attach it to a video clip:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&#39;mySong.wav&#39;</span><span class="p">)</span>
+<span class="n">video</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Like video clips, audio clips can be cut (with <tt class="docutils literal"><span class="pre">clip.subclip</span></tt>) modified (with for instance <tt class="docutils literal"><span class="pre">clip.volumex</span></tt> which multiplies the volume) and combined (with <tt class="docutils literal"><span class="pre">CompositeAudioClip</span></tt>). But most of the time, MoviePy will do that for you:</p>
@@ -259,10 +246,6 @@ zero at the top of the picture:</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../first_steps.html">First steps with MoviePy</a><ul>
-      <li>Previous: <a href="example_code.html" title="previous chapter">Example code</a></li>
-      <li>Next: <a href="good_practice.html" title="next chapter">Good Practices</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

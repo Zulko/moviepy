@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Making Credits &mdash; MoviePy 0.1 documentation</title>
+    <title>Making Credits &mdash; MoviePy 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="Cookbook" href="../cookbook.html" />
-    <link rel="next" title="Placing clips according to a picture" href="compoFromImage.html" />
-    <link rel="prev" title="Gradient Effects" href="gradientEffect.html" />
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -46,14 +42,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="compoFromImage.html" title="Placing clips according to a picture"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="gradientEffect.html" title="Gradient Effects"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../cookbook.html" accesskey="U">Cookbook</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -148,14 +137,14 @@ MARIVONNE ANDRE
 </div>
 <p>Applied on the previous text file, this function returns something like this:</p>
 <div class="figure">
-<img alt="../_images/credits.jpeg" src="../_images/credits.jpeg" />
+<img alt="cookbook/credits.jpeg" src="cookbook/credits.jpeg" />
 </div>
 <p>Now, you can make this picture move with something like</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">myVideo</span><span class="o">.</span><span class="n">res</span><span class="p">,</span>
            <span class="p">[</span><span class="n">credits</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:(</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="o">-</span><span class="n">speed</span><span class="o">*</span><span class="n">t</span><span class="p">))])</span>
 </pre></div>
 </div>
-<p>You can also do much more ! See for instance <a class="reference internal" href="../examples/mountainMask.html#mountainmask"><em>Partially Hidden credits</em></a>.</p>
+<p>You can also do much more ! See for instance <a class="reference internal" href="../examples/masked_credits.html#mountainmask"><em>Partially Hidden credits</em></a>.</p>
 </div>
 
 
@@ -166,10 +155,6 @@ MARIVONNE ANDRE
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../cookbook.html">Cookbook</a><ul>
-      <li>Previous: <a href="gradientEffect.html" title="previous chapter">Gradient Effects</a></li>
-      <li>Next: <a href="compoFromImage.html" title="next chapter">Placing clips according to a picture</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

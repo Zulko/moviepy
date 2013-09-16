@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.tools.tracking &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.video.tools.tracking</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains different fonctions for tracking objects in videos,</span>
+<span class="sd">manually or automatically. The tracking functions return results under</span>
+<span class="sd">the form:  ``( txy, (fx,fy) )`` where txy is of the form [(ti, xi, yi)...]</span>
+<span class="sd">and (fx(t),fy(t)) give the position of the track for all times t (if the</span>
+<span class="sd">time t is out of the time bounds of the tracking time interval</span>
+<span class="sd">fx and fy return the position of the object at the start or at the end</span>
+<span class="sd">of the tracking time interval).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">interp1d</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.video.io.preview</span> <span class="kn">import</span> <span class="n">imdisplay</span>
+
+<span class="k">try</span><span class="p">:</span>
+	<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="k">except</span><span class="p">:</span>
+	<span class="c"># Note: this will be later fixed with scipy/skimage replacements</span>
+	<span class="c"># but for the moment OpenCV is mandatory, so...</span>
+	<span class="k">print</span> <span class="s">&quot;WARNING: OpenCV not found: automated tracking not possible&quot;</span>
+
+
+
+<span class="c"># WE START WITH A TOOL FUNCTION</span>
+
+<div class="viewcode-block" id="to_fxfy"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.tracking.to_fxfy">[docs]</a><span class="k">def</span> <span class="nf">to_fxfy</span><span class="p">(</span><span class="n">txy_list</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Transforms a list [ (ti, (xi,yi)) ] into 2 functions (fx,fy)</span>
+<span class="sd">        where fx : t -&gt; x(t)  and  fy : t -&gt; y(t).</span>
+<span class="sd">        If the time t is out of the bounds of the tracking time interval</span>
+<span class="sd">        fx and fy return the position of the object at the start or at</span>
+<span class="sd">        the end of the tracking time interval.</span>
+<span class="sd">        Keywords can be passed to decide the kind of interpolation,</span>
+<span class="sd">        see the doc of ``scipy.interpolate.interp1d``.&quot;&quot;&quot;</span>
+        
+    <span class="n">tt</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">txy_list</span><span class="p">)</span>
+    <span class="n">interp_x</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">interp_y</span> <span class="o">=</span> <span class="n">interp1d</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">fx</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">else</span> <span class="p">(</span> <span class="n">xx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                          <span class="k">else</span> <span class="p">(</span> <span class="n">interp_x</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="n">fy</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">yy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">else</span> <span class="p">(</span> <span class="n">yy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;=</span> <span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                          <span class="k">else</span> <span class="p">(</span> <span class="n">interp_y</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">fx</span><span class="p">,</span><span class="n">fy</span>
+
+
+<span class="c"># MANUAL TRACKING</span>
+</div>
+<div class="viewcode-block" id="manual_tracking"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.tracking.manual_tracking">[docs]</a><span class="k">def</span> <span class="nf">manual_tracking</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">t2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">nobjects</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Allows manual tracking of an object(s) in the video clip between</span>
+<span class="sd">    times `t1` and `t2`. This displays the clip frame by frame</span>
+<span class="sd">    and you must click on the object(s) in each frame. If ``t2=None``</span>
+<span class="sd">    only the frame at ``t1`` is taken into account.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns a list [(t1,x1,y1),(t2,x2,y2) etc... ] if there is one</span>
+<span class="sd">    object per frame, else returns a list whose elements are of the </span>
+<span class="sd">    form (ti, [(xi1,yi1), (xi2,yi2), ...] )</span>
+<span class="sd">    </span>
+<span class="sd">    :param t1,t2: times during which to track (defaults are start and</span>
+<span class="sd">        end of the clip)</span>
+<span class="sd">    :param fps: Number of frames per second to freeze on.</span>
+<span class="sd">    :param nobjects: Number of objects to click on each frame</span>
+<span class="sd">    </span>
+
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; print myClip.manTrack(10, 13,fps=7)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # To print 5 points coordinates at t=5 : </span>
+<span class="sd">    &gt;&gt;&gt; for i in range(5):</span>
+<span class="sd">    &gt;&gt;&gt;     print myClip.manTrack(5)</span>
+<span class="sd">    </span>
+<span class="sd">    Tip: To avoid redoing the tracking each time you run your script,</span>
+<span class="sd">    better save the result the first time and then load it at each run. </span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; # First time:</span>
+<span class="sd">    &gt;&gt;&gt; import pickle</span>
+<span class="sd">    &gt;&gt;&gt; txy = myClip.manTrack(20, 10,fps=10)</span>
+<span class="sd">    &gt;&gt;&gt; with open(&quot;chaplin_txy.dat&quot;,&#39;w+&#39;) as f:</span>
+<span class="sd">    &gt;&gt;&gt;     pickle.dump(txy,f)</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Next times:</span>
+<span class="sd">    &gt;&gt;&gt; import pickle</span>
+<span class="sd">    &gt;&gt;&gt; with open(&quot;chaplin_txy.dat&quot;,&#39;r&#39;) as f:</span>
+<span class="sd">    &gt;&gt;&gt;     txy = pickle.load(txy,f)</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="kn">import</span> <span class="nn">pygame</span> <span class="kn">as</span> <span class="nn">pg</span>
+    
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">fps</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">t1</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">t1</span><span class="p">,</span><span class="n">t2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">t2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">t2</span> <span class="o">=</span> <span class="n">t1</span> <span class="o">+</span> <span class="n">step</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">t1</span>
+    <span class="n">txy_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span> <span class="nf">gatherClicks</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        
+        <span class="n">imdisplay</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">screen</span><span class="p">)</span>
+        <span class="n">objects_to_click</span> <span class="o">=</span> <span class="n">nobjects</span>
+        <span class="n">clicks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">while</span> <span class="n">objects_to_click</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">pg</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">():</span>
+
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">KEYDOWN</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">key</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">K_BACKSLASH</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="s">&quot;return&quot;</span>
+                        
+
+                <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pg</span><span class="o">.</span><span class="n">MOUSEBUTTONDOWN</span><span class="p">:</span>
+                    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">mouse</span><span class="o">.</span><span class="n">get_pos</span><span class="p">()</span>
+                    <span class="n">clicks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+                    <span class="n">objects_to_click</span> <span class="o">-=</span> <span class="mi">1</span>
+                    
+        <span class="k">return</span> <span class="n">clicks</span> <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clicks</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="n">clicks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">t2</span><span class="p">:</span>
+        
+        <span class="n">clicks</span>  <span class="o">=</span><span class="n">gatherClicks</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">clicks</span> <span class="o">==</span> <span class="s">&#39;return&#39;</span><span class="p">:</span>
+            <span class="n">txy_list</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">t</span> <span class="o">-=</span> <span class="n">step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">txy_list</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">t</span><span class="p">,</span><span class="n">clicks</span><span class="p">))</span>
+            <span class="n">t</span> <span class="o">+=</span> <span class="n">step</span>
+
+    <span class="k">return</span> <span class="n">txy_list</span><span class="p">,</span> <span class="n">to_fxfy</span><span class="p">(</span><span class="n">txy_list</span><span class="p">)</span>
+
+
+
+
+
+
+<span class="c"># AUTOMATED TRACKING OF A PATTERN</span>
+</div>
+<div class="viewcode-block" id="findAround"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.tracking.findAround">[docs]</a><span class="k">def</span> <span class="nf">findAround</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="n">pat</span><span class="p">,</span><span class="n">xy</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    find image pattern ``pat`` in ``pic[x +/- r, y +/- r]``.</span>
+<span class="sd">    if xy is none, consider the whole picture.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">xy</span> <span class="ow">and</span> <span class="n">r</span><span class="p">:</span>
+        <span class="n">h</span><span class="p">,</span><span class="n">w</span> <span class="o">=</span> <span class="n">pat</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">xy</span>
+        <span class="n">pic</span> <span class="o">=</span> <span class="n">pic</span><span class="p">[</span><span class="n">y</span><span class="o">-</span><span class="n">r</span> <span class="p">:</span> <span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="o">+</span><span class="n">r</span> <span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="n">r</span> <span class="p">:</span> <span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="o">+</span><span class="n">r</span><span class="p">]</span>
+        
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">pat</span><span class="p">,</span><span class="n">pic</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">TM_CCOEFF_NORMED</span><span class="p">)</span>
+    <span class="n">yf</span><span class="p">,</span><span class="n">xf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">matches</span><span class="o">.</span><span class="n">argmax</span><span class="p">(),</span><span class="n">matches</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">r</span><span class="o">+</span><span class="n">xf</span><span class="p">,</span><span class="n">y</span><span class="o">-</span><span class="n">r</span><span class="o">+</span><span class="n">yf</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">xy</span> <span class="ow">and</span> <span class="n">r</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">xf</span><span class="p">,</span><span class="n">yf</span><span class="p">)</span>
+        
+        </div>
+<div class="viewcode-block" id="autoTrack"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.tracking.autoTrack">[docs]</a><span class="k">def</span> <span class="nf">autoTrack</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">xy0</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tracks a given pattern (small image array) in a video clip.</span>
+<span class="sd">    Returns [(x1,y1),(x2,y2)...] where xi,yi are</span>
+<span class="sd">    the coordinates of the pattern in the clip on frame i.</span>
+<span class="sd">    To select the frames you can either specify a list of times with ``tt``</span>
+<span class="sd">    or select a frame rate with ``fps``.</span>
+<span class="sd">    This algorithm assumes that the pattern&#39;s aspect does not vary much</span>
+<span class="sd">    and that the distance between two occurences of the pattern in</span>
+<span class="sd">    two consecutive frames is smaller than ``radius`` (if you set ``radius``</span>
+<span class="sd">    to -1 the pattern will be searched in the whole screen at each frame).</span>
+<span class="sd">    You can also provide the original position of the pattern with xy0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">xy0</span><span class="p">:</span>
+        <span class="n">xy0</span> <span class="o">=</span> <span class="n">findAround</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">pattern</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">tt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+		<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
+		
+    <span class="n">xys</span> <span class="o">=</span> <span class="p">[</span><span class="n">xy0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">xys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">findAround</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">pattern</span><span class="p">,</span>
+                               <span class="n">xy</span><span class="o">=</span><span class="n">xys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">r</span><span class="o">=</span><span class="n">radius</span><span class="p">))</span>
+    
+    <span class="n">xx</span><span class="p">,</span><span class="n">yy</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">xys</span><span class="p">)</span>
+    <span class="n">txy_list</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">txy_list</span><span class="p">,</span> <span class="n">to_fxfy</span><span class="p">(</span><span class="n">txy_list</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

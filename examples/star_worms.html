@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A Star-Wars like opening title &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="a-star-wars-like-opening-title">
+<h1>A Star-Wars like opening title<a class="headerlink" href="#a-star-wars-like-opening-title" title="Permalink to this headline">¶</a></h1>
+<p>This is an approximate effect (the perspective would require some more complex transformations) but it is a nice exercice. Achtung: clip with sound.</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/5euLdo8L0o0&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/5euLdo8L0o0&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>Let us also have a look at this tutorial which shows the different steps:</p>
+<center>
+<object><param name="movie"
+value="http://www.youtube.com/v/dGrP7GhzWEE&hl=en_US&fs=1&rel=0">
+</param><param name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/dGrP7GhzWEE&hl=en_US&fs=1&rel=0"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="550" height="450"></embed></object>
+</center><p>And here you are for the code, and for the code of the tutorial.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Description of the video:</span>
+<span class="sd">Mimic of Star Wars&#39; opening title. A text with a (false)</span>
+<span class="sd">perspective effect goes towards the end of space, on a</span>
+<span class="sd">background made of stars. Slight fading effect on the text.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">color_gradient</span>
+
+
+<span class="c"># RESOLUTION</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="mi">720</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="mi">9</span><span class="o">/</span><span class="mi">16</span> <span class="c"># 16/9 screen</span>
+<span class="n">moviesize</span> <span class="o">=</span> <span class="n">w</span><span class="p">,</span><span class="n">h</span>
+
+
+
+<span class="c"># THE RAW TEXT</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+<span class="s">&quot;A long time ago, in a faraway galaxy,&quot;</span><span class="p">,</span>
+<span class="s">&quot;there lived a prince and a princess&quot;</span><span class="p">,</span>
+<span class="s">&quot;who had never seen the stars, for they&quot;</span><span class="p">,</span>
+<span class="s">&quot;lived deep underground.&quot;</span><span class="p">,</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot;Many years before, the prince&#39;s&quot;</span><span class="p">,</span>
+<span class="s">&quot;grandfather had ventured out to the&quot;</span><span class="p">,</span>
+<span class="s">&quot;surface and had been burnt to ashes by&quot;</span><span class="p">,</span>
+<span class="s">&quot;solar winds.&quot;</span><span class="p">,</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot;One day, as the princess was coding&quot;</span><span class="p">,</span>
+<span class="s">&quot;and the prince was shopping online, a&quot;</span><span class="p">,</span>
+<span class="s">&quot;meteor landed just a few megameters&quot;</span><span class="p">,</span>
+<span class="s">&quot;from the couple&#39;s flat.&quot;</span>
+<span class="p">])</span>
+
+
+<span class="c"># Add blanks</span>
+<span class="n">txt</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span><span class="n">txt</span> <span class="o">+</span> <span class="mi">10</span><span class="o">*</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+
+
+<span class="c"># CREATE THE TEXT IMAGE</span>
+
+
+<span class="n">clip_txt</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s">&#39;West&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+                    <span class="n">font</span><span class="o">=</span><span class="s">&#39;Xolonium-Bold&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;label&#39;</span><span class="p">)</span>
+
+
+<span class="c"># SCROLL THE TEXT IMAGE BY CROPPING A MOVING AREA</span>
+
+<span class="n">txt_speed</span> <span class="o">=</span> <span class="mi">27</span>
+<span class="n">fl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span><span class="n">t</span> <span class="p">:</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">txt_speed</span><span class="o">*</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">txt_speed</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">h</span><span class="p">,:]</span>
+<span class="n">moving_txt</span><span class="o">=</span> <span class="n">clip_txt</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span> <span class="n">applyto</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;mask&#39;</span><span class="p">])</span>
+
+
+<span class="c"># ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK</span>
+
+<span class="n">grad</span> <span class="o">=</span> <span class="n">color_gradient</span><span class="p">(</span><span class="n">moving_txt</span><span class="o">.</span><span class="n">size</span><span class="p">,</span><span class="n">p1</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">),</span>
+                <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">h</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span><span class="n">col1</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">gradmask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">fl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">pic</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="n">gradmask</span><span class="o">.</span><span class="n">img</span><span class="p">)</span>
+<span class="n">moving_txt</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">moving_txt</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="n">fl</span><span class="p">)</span>
+
+
+<span class="c"># WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)</span>
+
+<span class="k">def</span> <span class="nf">trapzWarp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="n">cx</span><span class="p">,</span><span class="n">cy</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Complicated function (will be latex packaged as a fx) &quot;&quot;&quot;</span>
+    <span class="n">Y</span><span class="p">,</span><span class="n">X</span> <span class="o">=</span> <span class="n">pic</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="n">X</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="n">Y</span><span class="p">]])</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cx</span><span class="o">*</span><span class="n">X</span><span class="p">,</span><span class="n">cy</span><span class="o">*</span><span class="n">Y</span><span class="p">],[(</span><span class="mi">1</span><span class="o">-</span><span class="n">cx</span><span class="p">)</span><span class="o">*</span><span class="n">X</span><span class="p">,</span><span class="n">cy</span><span class="o">*</span><span class="n">Y</span><span class="p">],[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="n">Y</span><span class="p">]])</span>
+    <span class="n">tform</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">ProjectiveTransform</span><span class="p">()</span>
+    <span class="n">tform</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">warp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">tform</span><span class="o">.</span><span class="n">inverse</span><span class="p">,</span> <span class="n">output_shape</span><span class="o">=</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">X</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">im</span> <span class="k">if</span> <span class="n">ismask</span> <span class="k">else</span> <span class="p">(</span><span class="n">im</span><span class="o">*</span><span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
+
+<span class="n">fl_im</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">pic</span> <span class="p">:</span> <span class="n">trapzWarp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">fl_mask</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">pic</span> <span class="p">:</span> <span class="n">trapzWarp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">warped_txt</span><span class="o">=</span> <span class="n">moving_txt</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="n">fl_im</span><span class="p">)</span>
+<span class="n">warped_txt</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">warped_txt</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="n">fl_mask</span><span class="p">)</span>
+
+
+<span class="c"># BACKGROUND IMAGE, DARKENED AT 60%</span>
+
+<span class="n">stars</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&#39;../../starworms/stars.jpg&#39;</span><span class="p">)</span>
+<span class="n">stars_darkened</span> <span class="o">=</span> <span class="n">stars</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pic</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.6</span><span class="o">*</span><span class="n">pic</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">))</span>
+
+
+<span class="c"># COMPOSE THE MOVIE</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span>
+         <span class="n">stars</span><span class="p">,</span> <span class="n">warped_txt</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;bottom&#39;</span><span class="p">))],</span>
+         <span class="n">size</span> <span class="o">=</span> <span class="n">moviesize</span><span class="p">)</span>
+
+
+<span class="c"># WRITE TO A FILE</span>
+
+<span class="n">final</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;starworms.avi&quot;</span><span class="p">)</span>
+
+<span class="c"># This script is heavy (30s of computations to render 8s of video)</span>
+
+
+
+<span class="sd">&quot;&quot;&quot;=====================================================================</span>
+
+<span class="sd">    CODE FOR THE VIDEO TUTORIAL</span>
+
+<span class="sd">  We will now code the video tutorial for this video.</span>
+<span class="sd">  When you think about it, it is a code for a video explaining how to</span>
+<span class="sd">  make another video using some code (this is so meta !).</span>
+<span class="sd">  This code uses the variables of the previous code (it should be placed</span>
+<span class="sd">  after that previous code to work).</span>
+
+<span class="sd">=====================================================================&quot;&quot;&quot;</span>
+
+
+
+<span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span><span class="n">txt_color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">,</span><span class="n">bg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot; Writes a text at the bottom of the clip. &quot;&quot;&quot;</span>
+    
+    <span class="n">txtclip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s">&#39;Ubuntu-bold&#39;</span><span class="p">,</span>
+                       <span class="n">color</span><span class="o">=</span><span class="n">txt_color</span><span class="p">)</span>
+                       
+    <span class="n">txtclip</span> <span class="o">=</span> <span class="n">txtclip</span><span class="o">.</span><span class="n">on_color</span><span class="p">((</span><span class="n">clip</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="n">txtclip</span><span class="o">.</span><span class="n">h</span><span class="o">+</span><span class="mi">6</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span>
+                        <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">))</span>
+                        
+    <span class="n">cvc</span> <span class="o">=</span>  <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span> <span class="p">,</span> <span class="n">txtclip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="s">&#39;bottom&#39;</span><span class="p">))])</span>
+    
+    <span class="k">return</span> <span class="n">cvc</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">resizeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
+
+    
+<span class="k">def</span> <span class="nf">composeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)],</span><span class="n">size</span><span class="o">=</span><span class="n">moviesize</span><span class="p">)</span>
+
+
+
+<span class="n">annotated_clips</span> <span class="o">=</span> <span class="p">[</span> <span class="n">annotate</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">clip</span><span class="p">,</span><span class="n">text</span> <span class="ow">in</span> <span class="p">[</span>
+               
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">resizeCenter</span><span class="p">(</span><span class="n">stars</span><span class="p">))</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+    <span class="s">&quot;This is a public domain picture of stars&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">stars</span><span class="p">],</span><span class="n">moviesize</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+    <span class="s">&quot;We only keep one part.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">stars_darkened</span><span class="p">],</span><span class="n">moviesize</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+    <span class="s">&quot;We darken it a little.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">resizeCenter</span><span class="p">(</span><span class="n">clip_txt</span><span class="p">))</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span>
+    <span class="s">&quot;We generate a text image.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">moving_txt</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="bp">None</span><span class="p">))</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+    <span class="s">&quot;We scroll the text by cropping a moving region of it.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">gradmask</span><span class="o">.</span><span class="n">to_RGB</span><span class="p">())</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s">&quot;We add this mask to the clip.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">moving_txt</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+    <span class="s">&quot;Here is the result&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">composeCenter</span><span class="p">(</span><span class="n">warped_txt</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+    <span class="s">&quot;We now warp this clip in a trapezoid.&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="n">final</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">9</span><span class="p">),</span>
+    <span class="s">&quot;We finally superimpose with the stars.&quot;</span><span class="p">)</span>
+<span class="p">]]</span>
+
+<span class="c"># Concatenate and write to a file</span>
+
+<span class="n">concatenate</span><span class="p">(</span><span class="n">annotated_clips</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;tutorial.avi&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/star_worms.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

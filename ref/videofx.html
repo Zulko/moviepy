@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>video.fx &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="video-fx">
+<h1>video.fx<a class="headerlink" href="#video-fx" title="Permalink to this headline">¶</a></h1>
+<p>This module regroups functions meant to be used with <tt class="docutils literal"><span class="pre">videoclip.fx</span></tt>. When you type <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>, the module <tt class="docutils literal"><span class="pre">video.fx</span></tt> is loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and you can use <tt class="docutils literal"><span class="pre">vfx.colorx</span></tt>, <tt class="docutils literal"><span class="pre">vfx.resize</span></tt>, etc.</p>
+<span class="target" id="module-moviepy.video.fx"></span><p>Contains transformation functions (clip-&gt;clip)
+One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
+<dl class="function">
+<dt id="moviepy.video.fx.headblur">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">headblur</tt><big>(</big><em>clip</em>, <em>fx</em>, <em>fy</em>, <em>r_zone</em>, <em>r_blur=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.headblur" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a filter that will blurr a moving part (a head ?) of
+the frames. The position of the blur at time t is
+defined by (fx(t), fy(t)), the radius of the blurring
+by <tt class="docutils literal"><span class="pre">r_zone</span></tt> and the intensity of the blurring by <tt class="docutils literal"><span class="pre">r_blur</span></tt>.
+Requires OpenCV for the circling and the blurring.
+Automatically deals with the case where part of the image goes
+offscreen.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.fadeout">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadeout</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
+For more advanced fading, see <tt class="docutils literal"><span class="pre">composition.crossfade</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.margin">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">margin</tt><big>(</big><em>clip</em>, <em>mar=None</em>, <em>left=0</em>, <em>right=0</em>, <em>top=0</em>, <em>bottom=0</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>opacity=1.0</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an external margin all around the frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mar</strong> &#8211; if not <tt class="docutils literal"><span class="pre">None</span></tt>, then the new clip has a margin of
+size <tt class="docutils literal"><span class="pre">mar</span></tt> in pixels on the left, right, top, and bottom.</li>
+<li><strong>right, top, bottom</strong> (<em>left,</em>) &#8211; width of the margin in pixel
+in these directions.</li>
+<li><strong>color</strong> &#8211; color of the margin.</li>
+<li><strong>mask_margin</strong> &#8211; value of the mask on the margin. Setting
+this value to 0 yields transparent margins.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.colorx">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">colorx</tt><big>(</big><em>clip</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.colorx" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiplies the clip&#8217;s colors by the given factor, can be used
+to decrease or increase the clip&#8217;s brightness (is that the
+reight word ?)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.ymirror">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">ymirror</tt><big>(</big><em>clip</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.ymirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the clip horizontally (and its mask too, by default)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.blink">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blink</tt><big>(</big><em>clip</em>, <em>d_on</em>, <em>d_off</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip blink. At each blink it will be displayed <tt class="docutils literal"><span class="pre">d_on</span></tt>
+seconds and disappear <tt class="docutils literal"><span class="pre">d_off</span></tt> seconds. Will only work in
+composite clips.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.scroll">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">scroll</tt><big>(</big><em>clip</em>, <em>h=None</em>, <em>w=None</em>, <em>x_speed=0</em>, <em>y_speed=0</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.scroll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scrolls horizontally or vertically a clip, e.g. to make end
+credits</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.time_mirror">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">time_mirror</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.time_mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a clip that plays the current clip backwards.
+The clip must have its <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set.
+The same effect is applied to the clip&#8217;s audio and mask if any.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.loop">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">loop</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a clip that plays the current clip in an infinite loop.
+Ideal for clips coming from gifs.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.resize">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">resize</tt><big>(</big><em>clip</em>, <em>newsize=None</em>, <em>height=None</em>, <em>width=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a video clip that is a resized version of the clip.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>newsize</strong> &#8211; can be either <tt class="docutils literal"><span class="pre">(height,width)</span></tt> in pixels or
+a float representing a scaling factor. Or a function of time
+returning one of these.</li>
+<li><strong>width</strong> &#8211; width of the new clip in pixel. The height is
+then computed so that the width/height ratio is conserved.</li>
+<li><strong>height</strong> &#8211; height of the new clip in pixel. The width is
+then computed so that the width/height ratio is conserved.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span> <span class="p">(</span><span class="mi">460</span><span class="p">,</span><span class="mi">720</span><span class="p">)</span> <span class="p">)</span> <span class="c"># New resolution: (460,720)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span> <span class="c"># width and heigth multiplied by 0.6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span> <span class="c"># height computed automatically.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.02</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="c"># slow swelling of the clip</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.xmirror">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">xmirror</tt><big>(</big><em>clip</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.xmirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the clip horizontally (and its mask too, by default)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.speedx">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">speedx</tt><big>(</big><em>self</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.speedx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a clip playing the current clip but at a speed multiplied
+by <tt class="docutils literal"><span class="pre">factor</span></tt>.
+The same effect is applied to the clip&#8217;s audio and mask if any.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.fadein">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadein</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadein" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
+For more advanced fading, see <tt class="docutils literal"><span class="pre">composition.crossfade</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.painting">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">painting</tt><big>(</big><em>clip</em>, <em>saturation=1.4</em>, <em>black=0.006</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.painting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms any photo into some kind of painting. Saturation
+tells at which point the colors of the result should be
+flashy. <tt class="docutils literal"><span class="pre">black</span></tt> gives the anount of black lines wanted.
+Requires Scikit-image or Scipy installed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.blackwhite">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blackwhite</tt><big>(</big><em>clip, RGB=[1, 1, 1], preserve_luminosity=True</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blackwhite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Desaturates the picture, makes it black and white.
+method = sum (TODO: others)</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/ref/videofx.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Tracking and blurring someone’s face &mdash; MoviePy 0.1 documentation</title>
+    <title>Tracking and blurring someone’s face &mdash; MoviePy 0.2 documentation</title>
     
     <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,11 +23,7 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="Cookbook" href="../cookbook.html" />
-    <link rel="next" title="Reference Manual" href="../ref.html" />
-    <link rel="prev" title="Placing clips according to a picture" href="compoFromImage.html" />
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -46,14 +42,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="right" >
-          <a href="../ref.html" title="Reference Manual"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="compoFromImage.html" title="Placing clips according to a picture"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../cookbook.html" accesskey="U">Cookbook</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -145,7 +134,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
                        <span class="s">&quot;charlotSub.mp4&quot;</span><span class="p">)</span>
 
 <span class="c"># Now we have a shorter movie that we can load</span>
-<span class="n">chaplin</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;charlotSub.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">chaplin</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;charlotSub.mp4&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">chaplin</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chaplin</span><span class="o">.</span><span class="n">duration</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
 
 
@@ -181,7 +170,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="c"># write to a file. Here we use the &#39;XVID&#39; codec because</span>
 <span class="c"># &#39;raw&#39; is too heavy and &#39;DIVX&#39; is too ugly.</span>
 
-<span class="n">final</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;blurredChaplin.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;XVID&#39;</span><span class="p">)</span>
+<span class="n">final</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;blurredChaplin.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;XVID&#39;</span><span class="p">)</span>
 
 <span class="c"># This 13s movie with sound and special effects was generated</span>
 <span class="c"># in six seconds.</span>
@@ -197,10 +186,6 @@ allowfullscreen="true" width="550" height="450"></embed></object>
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../cookbook.html">Cookbook</a><ul>
-      <li>Previous: <a href="compoFromImage.html" title="previous chapter">Placing clips according to a picture</a></li>
-      <li>Next: <a href="../ref.html" title="next chapter">Reference Manual</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

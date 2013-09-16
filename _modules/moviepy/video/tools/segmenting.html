@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.tools.segmenting &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.video.tools.segmenting</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.ndimage</span> <span class="kn">as</span> <span class="nn">ndi</span>
+<span class="kn">from</span> <span class="nn">moviepy.video</span> <span class="kn">import</span> <span class="n">ImageClip</span>
+
+
+<div class="viewcode-block" id="findObjects"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.segmenting.findObjects">[docs]</a><span class="k">def</span> <span class="nf">findObjects</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">rem_thr</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">preview</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Returns a list of ImageClips representing each a separate object on</span>
+<span class="sd">    the screen.</span>
+<span class="sd">        </span>
+<span class="sd">    rem_thr : all objects found with size &lt; rem_Thr will be</span>
+<span class="sd">         considered false positives and will be removed</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">image</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">add_mask</span><span class="p">()</span>
+        
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">labelled</span><span class="p">,</span> <span class="n">num_features</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">label</span><span class="p">(</span><span class="n">image</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="c">#find the objects</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="n">ndi</span><span class="o">.</span><span class="n">find_objects</span><span class="p">(</span><span class="n">labelled</span><span class="p">)</span>
+    <span class="c"># cool trick to remove letter holes (in o,e,a, etc.)</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">slices</span> <span class="k">if</span>  <span class="n">mask</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">&gt;</span><span class="mf">0.2</span><span class="p">]</span>
+    <span class="c"># remove very small slices</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">slices</span> <span class="k">if</span>  <span class="n">image</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">rem_thr</span><span class="p">]</span>
+    <span class="c"># Sort the slices from left to right</span>
+    <span class="n">islices</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">slices</span><span class="p">),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span> <span class="p">:</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+    
+    <span class="n">letters</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">ind</span><span class="p">,(</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">islices</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; crop each letter separately &quot;&quot;&quot;</span>
+        <span class="n">sy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sy</span><span class="o">.</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">sy</span><span class="o">.</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="n">sx</span><span class="o">.</span><span class="n">start</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">sx</span><span class="o">.</span><span class="n">stop</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">letter</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">]</span>
+        <span class="n">labletter</span> <span class="o">=</span> <span class="n">labelled</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">]</span>
+        <span class="n">maskletter</span> <span class="o">=</span> <span class="p">(</span><span class="n">labletter</span><span class="o">==</span><span class="p">(</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">mask</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">]</span>
+        <span class="n">letter</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">image</span><span class="p">[</span><span class="n">sy</span><span class="p">,</span><span class="n">sx</span><span class="p">])</span>
+        <span class="n">letter</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span> <span class="n">maskletter</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">letter</span><span class="o">.</span><span class="n">screenpos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">sx</span><span class="o">.</span><span class="n">start</span><span class="p">,</span><span class="n">sy</span><span class="o">.</span><span class="n">start</span><span class="p">))</span>
+        <span class="n">letters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">preview</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+        <span class="k">print</span> <span class="s">&quot;found </span><span class="si">%d</span><span class="s"> objects&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">num_features</span><span class="p">)</span>
+        <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">labelled</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">([</span><span class="nb">range</span><span class="p">(</span><span class="n">num_features</span><span class="p">)],</span><span class="n">interpolation</span><span class="o">=</span><span class="s">&#39;nearest&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">letters</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

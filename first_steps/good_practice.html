@@ -25,9 +25,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="MoviePy 0.1 documentation" href="../index.html" />
-    <link rel="up" title="First steps with MoviePy" href="../first_steps.html" />
-    <link rel="next" title="Example Scripts" href="../examples.html" />
-    <link rel="prev" title="A MoviePy crash-course" href="crash_course.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -43,17 +40,7 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../examples.html" title="Example Scripts"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="crash_course.html" title="A MoviePy crash-course"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li>
-          <li><a href="../first_steps.html" accesskey="U">First steps with MoviePy</a> &raquo;</li> 
+        <li><a href="../index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -64,7 +51,7 @@
             
   <div class="section" id="good-practices">
 <span id="goodpractices"></span><h1>Good Practices<a class="headerlink" href="#good-practices" title="Permalink to this headline">¶</a></h1>
-<p>MoviePy works fine on my 1.5 petaflops supercomputer, but like for any other video software, the bottleneck is the heavy computations required to produce several pictures per second. If you write a very complex clip, the previews and the rendering to a file may be very slow. Here are a few tricks to ease things:</p>
+<p>MoviePy works fine on my 1.5 petaflops supercomputer, but like for any other video software, the bottleneck is the heavy computations required to produce pictures and sounds. If you write a very complex clip, the previews and the rendering to a file may be slow. Here are a few tricks to ease things:</p>
 <ul>
 <li><p class="first">Use an interactive shell, like IPython or, better, the IPython notebook. If you don&#8217;t know these, you don&#8217;t know what you are missing !</p>
 </li>
@@ -73,7 +60,7 @@
 <li><p class="first">For the moment the audio is generated for each preview and before the preview. So if you want to preview a lengthy clip with sound, it may take a few seconds before the preview actually launches, and the sound may take lots of place in memory. Therefore, it is advised to only preview small bits of a movie with audio. Reducing the audio fps when previewing reduces the problem.</p>
 </li>
 <li><p class="first">If some part of your video is particularly complex and long to render, save this part as either a raw video (enables to save the sound) or in a directory of pictures (enables to save the mask), then use this video instead of this part&#8217;s script.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myVideo</span><span class="o">.</span><span class="n">to_movie</span><span class="p">(</span><span class="s">&#39;save.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">myVideo</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;save.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span><span class="n">codec</span><span class="o">=</span><span class="s">&#39;raw&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 <span class="c"># or</span>
 <span class="n">myVideo</span><span class="o">.</span><span class="n">to_directory</span><span class="p">(</span><span class="s">&#39;./mySaveDirectory&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 </pre></div>
@@ -81,13 +68,13 @@
 </li>
 <li><p class="first">If you are going to use extracts of big movies with sound, do NOT write</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># &quot;Charade&quot; is a 2h00 long movie</span>
-<span class="n">myVideo</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;charade.mp4&quot;</span><span class="p">,</span><span class="n">sound</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">myVideo</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;charade.mp4&quot;</span><span class="p">,</span><span class="n">sound</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The reason is that in the snippet above the whole sound of the movie will be converted into a .wav file and then loaded into the memory. Instead, extract the subclip  between t=30s and t=35s as a new video file and use this one instead. Like this</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">moviepy.ffmpeg</span> <span class="kn">as</span> <span class="nn">mf</span>
 <span class="n">mf</span><span class="o">.</span><span class="n">extract_subclip</span><span class="p">(</span><span class="s">&quot;charade.mp4&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">35</span><span class="p">,</span> <span class="s">&quot;charadeSUB30_35.mp4&quot;</span><span class="p">)</span>
-<span class="n">myVideo</span> <span class="o">=</span> <span class="n">MovieClip</span><span class="p">(</span><span class="s">&quot;charadeSUB30_35.mp4&quot;</span><span class="p">,</span><span class="n">sound</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">myVideo</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;charadeSUB30_35.mp4&quot;</span><span class="p">,</span><span class="n">sound</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -108,10 +95,6 @@
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="../first_steps.html">First steps with MoviePy</a><ul>
-      <li>Previous: <a href="crash_course.html" title="previous chapter">A MoviePy crash-course</a></li>
-      <li>Next: <a href="../examples.html" title="next chapter">Example Scripts</a></li>
-  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

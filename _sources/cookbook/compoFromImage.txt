@@ -85,7 +85,7 @@ So here is the final script: ::
     
     # We load height clips from the US National Parks.
     # These are public domain. :D
-    clips = [MovieClip(n).subclip(20,25) for n in
+    clips = [VideoFileClip(n).subclip(20,25) for n in
          [ "./videos/romo_0004.mov",
           "./videos/apis-0001.mov",
           "./videos/romo_0001.mov",

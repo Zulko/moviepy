@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.audio.io.AudioFileClip &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../../../../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.audio.io.AudioFileClip</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">wave</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">AudioClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.audio.io.readers</span> <span class="kn">import</span> <span class="n">FFMPEG_AudioReader</span>
+
+<div class="viewcode-block" id="AudioFileClip"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip">[docs]</a><span class="k">class</span> <span class="nc">AudioFileClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    An audio clip read from a sound file, or an array.</span>
+<span class="sd">    The whole file is not loaded in memory. Instead, only a portion is</span>
+<span class="sd">    read and stored in memory. this portion includes frames before</span>
+<span class="sd">    and after the last frames read, so that it is fast to read the sound</span>
+<span class="sd">    backward and forward.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    :param snd: Either a soundfile or an array representing a sound. If</span>
+<span class="sd">        the soundfile is not a .wav, it will be converted to .wav first,</span>
+<span class="sd">        using the ``fps`` and ``bitrate`` arguments. </span>
+<span class="sd">    </span>
+<span class="sd">    :param buffersize: Size to load in memory (in number of frames)</span>
+<span class="sd">    :param temp_wav: name for the temporary wav file in case conversion</span>
+<span class="sd">        is required. If not provided, the default will be filename.wav</span>
+<span class="sd">        with some prefix. If the temp_wav already exists it will not</span>
+<span class="sd">        be rewritten.</span>
+<span class="sd">        </span>
+<span class="sd">    :ivar nbytes: Number of bits per frame of the original audio file</span>
+<span class="sd">        (the more the better).</span>
+<span class="sd">    :ivar fps, buffersize: see above.</span>
+<span class="sd">    </span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.wav&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.mp3&quot;, fps = 44100, bitrate=3000)</span>
+<span class="sd">    &gt;&gt;&gt; snd = SoundClip(mySoundArray,fps=44100) # from a numeric array</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
+        
+
+        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_AudioReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span><span class="n">nbytes</span><span class="o">=</span><span class="n">nbytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nframes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nframes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">=</span> <span class="n">buffersize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nchannels</span>
+        
+        <span class="k">def</span> <span class="nf">gf</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">bufsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+                <span class="c"># lazy implementation, but should not cause problems in</span>
+                <span class="c"># 99.99 %  of the cases</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="mi">2</span><span class="p">))</span>
+                <span class="n">in_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">&gt;=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+                <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="o">*</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="n">in_time</span><span class="p">]</span>
+                <span class="n">f_tmin</span><span class="p">,</span> <span class="n">f_tmax</span> <span class="o">=</span> <span class="n">inds</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">inds</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmin</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">bufsize</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">f_tmin</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">bufsize</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">f_tmax</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="n">in_time</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">inds</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="n">result</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="p">(</span><span class="s">&quot;Error: wrong indices in video buffer. Maybe&quot;</span><span class="o">+</span>
+                           <span class="s">&quot; buffer too small.&quot;</span><span class="p">)</span>
+                    <span class="k">raise</span>
+            <span class="k">else</span><span class="p">:</span>            
+                
+                <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="n">ind</span><span class="o">&lt;</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">ind</span><span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nframes</span><span class="p">:</span> <span class="c"># out of time: return 0</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">)</span>
+                    
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">):</span>
+                    <span class="c"># out of the buffer: recenter the buffer</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+                    
+                <span class="c"># read the frame in the buffer</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">gf</span>
+    
+    <span class="k">def</span> <span class="nf">_buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">framenumber</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; buffer &quot;&quot;&quot;</span>
+        
+        <span class="c"># start frame for the buffer</span>
+        <span class="n">fbuffer</span> <span class="o">=</span> <span class="n">framenumber</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">fbuffer</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fbuffer</span><span class="p">)</span>
+        
+        
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">!=</span><span class="bp">None</span><span class="p">):</span>
+            <span class="n">current_f_end</span>  <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">fbuffer</span> <span class="o">&lt;</span> <span class="n">current_f_end</span>  <span class="o">&lt;</span> <span class="n">fbuffer</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot; We already have one bit of what is going to be read&quot;&quot;&quot;</span>
+                <span class="n">conserved</span> <span class="o">=</span> <span class="n">current_f_end</span> <span class="o">-</span> <span class="n">fbuffer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">current_f_end</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">-</span><span class="n">conserved</span>
+                <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="o">-</span><span class="n">conserved</span><span class="p">:],</span> <span class="n">array</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">fbuffer</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">fbuffer</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">=</span> <span class="n">fbuffer</span>
+    
+<div class="viewcode-block" id="AudioFileClip.coreader"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a new entrance point</span>
+<span class="sd">            to the audio file. Use copy when you have different clips</span>
+<span class="sd">            watching the audio file at different times. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

@@ -24,7 +24,7 @@ Here is the code: ::
     
     # LOAD MOVIE
 
-    charade = MovieClip("./charadePhone.mp4",audio=True)
+    charade = VideoFileClip("./charadePhone.mp4",audio=True)
     w,h = charade.size
     duration=6
 
@@ -68,7 +68,7 @@ Here is the code: ::
                 [clip_right.set_pos(('right',0)),
                  clip_left.set_pos(('left',0))])
 
-    cc.to_movie("biphone.avi")
+    cc.to_videofile("biphone.avi")
 
  
 A few remarks:

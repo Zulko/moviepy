@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>audio.fx &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="audio-fx">
+<h1>audio.fx<a class="headerlink" href="#audio-fx" title="Permalink to this headline">¶</a></h1>
+<p>This module regroups functions meant to be used with <tt class="docutils literal"><span class="pre">audio.fx</span></tt> or <tt class="docutils literal"><span class="pre">videoclip.fx</span></tt>. When you type <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>, the module <tt class="docutils literal"><span class="pre">audio.fx</span></tt> is loaded as <tt class="docutils literal"><span class="pre">afx</span></tt> and you can use <tt class="docutils literal"><span class="pre">afx.volumex</span></tt> etc.</p>
+<span class="target" id="module-moviepy.audio.fx"></span><p>Contains transformation functions (clip-&gt;clip)
+One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
+<dl class="function">
+<dt id="moviepy.audio.fx.audio_fadein">
+<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadein</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadein" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an audio (or video) clip that is first mute, then the
+sound arrives progressively over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.audio.fx.audio_fadeout">
+<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadeout</tt><big>(</big><em>self</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sound clip where the sound fades out progressively
+over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds at the end of the clip.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.audio.fx.volumex">
+<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">volumex</tt><big>(</big><em>clip</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.volumex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a (video or audio) clip with increased sound volume</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/ref/audiofx.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>

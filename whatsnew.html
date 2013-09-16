@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is new in MoviePy ? &mdash; MoviePy 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="MoviePy 0.1 documentation" href="index.html" />
+   
+  
+  <link media="only screen and (max-device-width: 480px)" href="_static/small_flask.css" type= "text/css" rel="stylesheet" />
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="index.html">MoviePy 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="what-is-new-in-moviepy">
+<h1>What is new in MoviePy ?<a class="headerlink" href="#what-is-new-in-moviepy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="august-31-2013">
+<h2>August 31, 2013<a class="headerlink" href="#august-31-2013" title="Permalink to this headline">¶</a></h2>
+<p>There is now a <em>what is new ?</em> page in the documentation :)</p>
+<div class="section" id="api-changes">
+<h3>API changes:<a class="headerlink" href="#api-changes" title="Permalink to this headline">¶</a></h3>
+<p>Many import names have changed (while it is still time). <tt class="docutils literal"><span class="pre">MovieClip</span></tt> becomes <tt class="docutils literal"><span class="pre">VideoFileClip</span></tt>. <tt class="docutils literal"><span class="pre">SoundClip</span></tt> becomes <tt class="docutils literal"><span class="pre">AudioFileClip</span></tt>. <tt class="docutils literal"><span class="pre">concat</span></tt> becomes <tt class="docutils literal"><span class="pre">ConcatVideoClip</span></tt>. The method <tt class="docutils literal"><span class="pre">to_movie</span></tt> becomes <tt class="docutils literal"><span class="pre">to_videofile</span></tt></p>
+<p>Names sould not change so much in the future, but be careful and read the docs !</p>
+<p>In <tt class="docutils literal"><span class="pre">CompositeVideoClip</span></tt> the size is now optional. The default size will be the size of the background image (first image of the clips list).</p>
+</div>
+<div class="section" id="under-the-hood">
+<h3>Under the hood:<a class="headerlink" href="#under-the-hood" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The sound is now generated on the flight by threading during previews (reduces the latency before the preview launches).</li>
+<li>By default the generation of the sound is now parallelized when writing a video. Depending on how complicated your composition is, the sound may be the limiting factor. It takes more than 1 second to produce 6 seconds of stereo 44100Hz sound, which is 5-10 times slower than simple video writing.</li>
+<li>Sounds are now streamed, they take a moderate place in the memory.</li>
+<li>Audio frames are now represented by floats. It is converted in 8-, 16-, or 32-bit integer format when rendering to a file or previewing. Now all sounds can be mixed together whatever their original framerates and sample width.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">What is new in MoviePy ?</a><ul>
+<li><a class="reference internal" href="#august-31-2013">August 31, 2013</a><ul>
+<li><a class="reference internal" href="#api-changes">API changes:</a></li>
+<li><a class="reference internal" href="#under-the-hood">Under the hood:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/whatsnew.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2013, Zulko.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+  </div>
+  
+  </body>
+</html>
