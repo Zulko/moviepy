@@ -1,41 +1,14 @@
-import decorator
-from copy import copy, deepcopy
+"""
+This module implements the central object of MoviePy, the Clip, and
+all the methods that are common to the two subclasses of Clip, VideoClip
+and AudioClip.
+"""
 
+from copy import copy
+import numpy as np
 
-@decorator.decorator
-def apply_to_mask(f, clip, *a, **k):
-    """ This decorator will apply the same function f to the mask of
-        the clip created with f """
-    newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'mask') and (newclip.mask != None):
-        newclip.mask = f(newclip.mask, *a, **k)
-    return newclip
-
-
-@decorator.decorator
-def apply_to_audio(f, clip, *a, **k):
-    """ This decorator will apply the function f to the audio of
-        the clip created with f """
-    newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'audio') and (newclip.audio != None):
-        newclip.audio = f(newclip.audio, *a, **k)
-    return newclip
-
-
-@decorator.decorator
-def requires_duration(f, clip, *a, **k):
-    """ will raise an error if the clip has no duration."""
-    if clip.duration is None:
-        raise ValueError("Attribute 'duration' not set")
-    else:
-        return f(clip, *a, **k)
-
-
-#
-#
-#                         C L I P
-#
-#
+from moviepy.decorators import ( apply_to_mask, apply_to_audio,
+                                   time_can_be_tuple)
 
 
 class Clip:
@@ -56,12 +29,21 @@ class Clip:
          are infinite and do not have any duration.
      
      """
+    
+    # prefix for all tmeporary video and audio files.
+    # You can overwrite it with 
+    # >>> Clip._TEMP_FILES_PREFIX = "temp_"
+    
+    _TEMP_FILES_PREFIX = 'TEMP_MPY_'
 
     def __init__(self):
 
         self.start = 0
         self.end = None
         self.duration = None
+        
+    def copy(self):
+        return copy(self)
 
     def fl(self, fl, applyto=[], keep_duration=True):
         """
@@ -93,9 +75,9 @@ class Clip:
         newclip = self.set_get_frame(lambda t: fl(gf, t))
         
         if not keep_duration:
-			newclip.duration = None
-			newclip.end = None
-			
+            newclip.duration = None
+            newclip.end = None
+            
         if isinstance(applyto, str):
             applyto = [applyto]
 
@@ -107,7 +89,8 @@ class Clip:
                     
         return newclip
 
-    def fl_time(self, t_func, applyto=['mask', 'sound'], keep_duration=False):
+    
+    def fl_time(self, t_func, applyto=[], keep_duration=False):
         """
         Returns a clip playing the content of the current clip but with a
         modified timeline, time ``t`` being replaced by another
@@ -131,32 +114,60 @@ class Clip:
         
         return self.fl(lambda gf, t: gf(t_func(t)), applyto,
                                     keep_duration=keep_duration)
+    
+    def fx(self, func, *args, **kwargs):
+        """
+        
+        Returns the result of ``func(self, *args, **kwargs)``.
+        for instance
+        
+        >>> newclip = clip.fx(resize,0.2,method='bilinear')
+        
+        is equivalent to
+        
+        >>> newclip = resize(clip,0.2, method='bilinear')
+        
+        The motivation of fx is to keep the name of the effect near its
+        parameters, when the effects are chained:
+        
+        >>> from moviepy.fx import volumex, resize, mirrorx
+        >>> clip.fx( volumex, 0.5).fx( resize, 0.3).fx( mirrorx )
+        >>> # Is equivalent, but clearer than
+        >>> resize( volumex( mirrorx( clip ), 0.5), 0.3)
+        
+        """
+        
+        return func(self, *args, **kwargs)
+            
 
     @apply_to_mask
     @apply_to_audio
-    def set_start(self, t):
+    @time_can_be_tuple
+    def set_start(self, t, change_end=True):
         """
         Returns a copy of the clip, with the ``start`` attribute set to ``t``.
-        Also sets the duration of the returned clip's mask and audio, if any.
+        Automatically changes the end of the clip if the clip has a duration
+        and ``change_end`` is True. Else, sets the duration of the
+        returned clip's mask and audio, if any.
         """
-        newclip = copy(self)
+        newclip = self.copy()
         newclip.start = t
-        if newclip.end is None:
-            if newclip.duration != None:
-                newclip.end = t + newclip.duration
-        else:
+        if (newclip.duration != None) and change_end:
+            newclip.end = t + newclip.duration
+        elif (newclip.end !=None):
             newclip.duration = newclip.end - newclip.start
 
         return newclip
 
     @apply_to_mask
     @apply_to_audio
+    @time_can_be_tuple
     def set_end(self, t):
         """
         Returns a copy of the clip, with the ``end`` attribute set to ``t``.
         Also sets the duration of the returned clip's mask and audio, if any.
         """
-        newclip = copy(self)
+        newclip = self.copy()
         newclip.end = t
         if newclip.start is None:
             if newclip.duration != None:
@@ -168,6 +179,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
+    @time_can_be_tuple
     def set_duration(self, t):
         """
         Returns a copy of the clip, with the  ``duration`` attribute set
@@ -188,25 +200,44 @@ class Clip:
         newclip = copy(self)
         newclip.get_frame = gf
         return newclip
-
+    
+    @time_can_be_tuple
     def is_playing(self, t):
         """
         Return true if t is between the start and the end of the clip """
+        if isinstance(t, np.ndarray):
+            t = t.max()
         return (((self.end is None) and (t >= self.start)) or
                 (self.start <= t <= self.end))
     
+    @time_can_be_tuple
     @apply_to_mask
     @apply_to_audio
     def subclip(self, ta=0, tb=None):
         """
         Returns a clip playing the content of the current clip
-        between times ``ta`` and ``tb`` (in seconds). If tb is not
+        between times ``ta`` and ``tb`` (in seconds). If ``tb`` is not
         provided, plays until the end of the clip, potentially forever.
-        If ``tb`` is provided, the duration of the returned clip is
-        set automatically.
+        If ``tb`` is a negative value, ``tb`` is set to 
+        `` clip.duration - tb. ``, for instance:
+        
+        >>> # cut the last two seconds of the clip:
+        >>> newclip = clip.subclip(0,-2)
+        
+        If ``tb`` is provided or if the clip has a duration attribute,
+        the duration of the returned clip is set automatically.
         The same effect is applied to the clip's audio and mask if any.
         """
-        newclip = self.fl_time(lambda t: t + ta)
+        
+        newclip = self.fl_time(lambda t: t + ta, applyto=[])
+        if (tb is None) and (self.duration != None):
+            tb = self.duration
+        elif tb<0:
+            if self.duration is None:
+                print ("Error: subclip with negative times can only be"+
+                        "be taken from clips with a ``duration``")
+            else:
+                tb = self.duration - tb
         if (tb != None):
             return newclip.set_duration(tb - ta)
         else:
@@ -214,6 +245,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
+    @time_can_be_tuple
     def cutout(self, ta, tb):
         """
         Returns a clip playing the content of the current clip but
@@ -226,39 +258,5 @@ class Clip:
         newclip = self.fl_time(fl)
         if self.duration != None:
             return newclip.set_duration(self.duration - (tb - ta))
-        else:
-            return newclip
-
-    @requires_duration
-    @apply_to_mask
-    @apply_to_audio
-    def time_mirror(self):
-        """
-        Returns a clip that plays the current clip backwards (who said
-        useless ???). The clip must have its ``duration`` attribute set.
-        The same effect is applied to the clip's audio and mask if any.
-        """
-        return self.fl_time(lambda t: self.duration - t)
-    
-    @requires_duration
-    @apply_to_mask
-    @apply_to_audio
-    def loop(self):
-        """
-        Returns a clip that plays the current clip in an infinite loop.
-        """
-        return self.fl_time(lambda t: t % self.duration)	
-        
-    @apply_to_mask
-    @apply_to_audio
-    def speedx(self, factor):
-        """
-        Returns a clip playing the current clip but at a speed multiplied
-        by ``factor``.
-        The same effect is applied to the clip's audio and mask if any.
-        """
-        newclip = self.fl_time(lambda t: factor * t)
-        if self.duration != None:
-            return newclip.set_duration(1.0 * self.duration / factor)
         else:
             return newclip

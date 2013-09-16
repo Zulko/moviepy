@@ -1,9 +1,9 @@
 .. _ffmpegTools:
 
-FFMPEG-related functions
+FFMPEG tools
 ----------------------------
 
-.. automodule:: ffmpeg
+.. automodule:: moviepy.video.io.ffmpeg
    :members:
    :undoc-members:
    :show-inheritance:

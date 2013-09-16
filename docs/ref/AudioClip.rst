@@ -7,14 +7,14 @@ AudioClip
 :class:`AudioClip`
 ==========================
 
-.. autoclass:: AudioClip.AudioClip
+.. autoclass:: moviepy.audio.AudioClip.AudioClip
    :members:
    :show-inheritance:
 
-:class:`SoundClip`
+:class:`AudioFileClip`
 ==========================
 
-.. autoclass:: AudioClip.SoundClip
+.. autoclass:: moviepy.audio.io.AudioFileClip.AudioFileClip
    :members:
    :show-inheritance:
    
@@ -22,7 +22,7 @@ AudioClip
 :class:`CompositeAudioClip`
 ================================
 
-.. autoclass:: AudioClip.CompositeAudioClip
+.. autoclass:: moviepy.audio.AudioClip.CompositeAudioClip
    :members:
    :show-inheritance:
 

@@ -6,9 +6,9 @@ MoviePy is a Python module for script-based movie editing, which enables basic o
     import os
     from moviepy import *
     files = sorted( os.listdir("clips/") )
-    clips = [ MovieClip('clips/'+f,audio=False) for f in files]
-    video = concat(clips, transition = MovieClip("logo.avi"))
-    video.to_movie("demos.avi",fps=25, codec='DIVX')
+    clips = [ VideoFileClip('clips/%s'%f) for f in files]
+    video = concatenate(clips, transition = VideoFileClip("logo.avi"))
+    video.to_videofile("demos.avi",fps=25, codec="mpeg4")
     
 .. raw:: html
 
@@ -31,17 +31,15 @@ User's Guide
 --------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    install
-   first_steps
-   examples
-   cookbook
-   ref
-   forDevelopers
+   crash_course/crash_course
+   examples/examples
+   ref/ref
 
 
-MoviePy is a (still experimental) open source software written by Zulko_ and released under the MIT liscence. Everyone is welcome to help improve the project, fork it, blog on it, share new effects, etc...
+MoviePy is a (still experimental) open source software written by Zulko_ and released under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !
 
 For troubleshooting and bug reports, the best for now is to ask on Stackoverflow_ (it will advertize for the project :) ) or on the Github project page.
 

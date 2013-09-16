@@ -13,17 +13,17 @@ A typical MoviePy script looks like that: ::
     from moviepy import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
-    clip = MovieClip("myHolidays.mp4").subclip(50,60)
+    clip =VideoFileClip("myHolidays.mp4").subclip(50,60)
     
     # Generate a text clip (many options available ! )
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
-    txt_clip = txt_clip.set_pos(('center','center')).set_duration(10)
+    txt_clip = txt_clip.set_pos('center').set_duration(10)
     
     # Overlay the text clip above the first clip
-    video = CompositeVideoClip(clip.size, [clip, txt_clip])
+    final_clip = CompositeVideoClip([clip, txt_clip])
     
     # write the result to a file in any format
-    video.write("myHolidays_edited.avi",fps=25, codec='DIVX')
+    final_clip.to_videofile("myHolidays_edited.avi",fps=25, codec='mpeg4')
 
 
 Download and Installation

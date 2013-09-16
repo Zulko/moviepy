@@ -30,4 +30,4 @@ Here the logo is a picture, while the shadow is actually a black rectangle takin
     shade.mask.get_frame = lambda t : f(t,moviesize,duration)
     cc = CompositeVideoClip(moviesize,[im.set_pos(2*["center"]),shade])
 
-    cc.subclip(0,duration).to_movie("moviepy_logo.avi",fps=24)
+    cc.subclip(0,duration).to_videofile("moviepy_logo.avi",fps=24)
