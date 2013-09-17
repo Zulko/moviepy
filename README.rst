@@ -10,10 +10,10 @@ See the full documentation and demo videos here_ .
 
 A typical MoviePy script looks like that: ::
 
-    from moviepy import *
+    from moviepy.all import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
-    clip =VideoFileClip("myHolidays.mp4").subclip(50,60)
+    clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
     
     # Generate a text clip (many options available ! )
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
