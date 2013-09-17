@@ -5,7 +5,7 @@ talking at the same time, because it is actually two scenes of a same
 movie put together.
 """
 
-from moviepy import *
+from moviepy.all import *
 from moviepy.video.tools.drawing import color_split
 
 
@@ -48,5 +48,5 @@ clip_right.mask = ImageClip(mask, ismask=True)
 cc = CompositeVideoClip([clip_right.set_pos('right').fx(afx.volumex, 0.4),
                          clip_left.set_pos('left').fx(afx.volumex, 0.4)],
                          size = (W,H))
-                          
-cc.to_videofile("../../biphone3.avi",fps=24, codec='mpeg4')
+cc.preview()
+#cc.to_videofile("../../biphone3.avi",fps=24, codec='mpeg4')

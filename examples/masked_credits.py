@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy.all import *
 from moviepy.video.tools.credits import credits1
 
 # Load the mountains clip, cut it, slow it down, make it look darker

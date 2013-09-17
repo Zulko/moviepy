@@ -1,6 +1,6 @@
 import numpy as np
-from moviepy import *
-from moviepy.plugins.segmenting import findObjects
+from moviepy.all import *
+from moviepy.video.tools.segmenting import findObjects
 
 # WE CREATE THE TEXT THAT IS GOING TO MOVE, WE CENTER IT.
 

@@ -1,8 +1,7 @@
 import pickle
 
-from moviepy import *
+from moviepy.all import *
 from moviepy.video.tools.tracking import manual_tracking, to_fxfy
-import moviepy.video.io.ffmpeg as ffmpeg
 
 
 # LOAD THE CLIP (subclip 6'51 - 7'01 of a chaplin movie)

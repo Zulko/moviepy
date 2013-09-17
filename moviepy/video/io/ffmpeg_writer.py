@@ -95,43 +95,4 @@ def write_image(filename, image):
     pix_fmt = "rgba" if (image.shape[2] == 4) else "rgb24"
     vf = FFMPEG_VideoWriter(filename, pix_fmt='rgba')
     vf.writer_frame(image)
-    vf.close() 
-        
-        
-# SAFETY WHEEL: opencv writer
-        #~ 
-#~ try:
-    #~ import cv2
-#~ except:
-    #~ print "OpenCV not found"
-#~ else:
-    #~ try:
-        #~ FOURCC = cv2.cv.FOURCC
-    #~ except:
-        #~ try:
-            #~ FOURCC = cv2.VideoWriter_fourcc
-        #~ except:
-            #~ print "Error : unable to find FOURCC in OpenCV."
-            #~ raise
-#~ 
-#~ def opencv_write(clip, filename, fps, codec, verbose=True):
-    #~ 
-    #~ if verbose:
-        #~ def verbose_print(s):
-            #~ sys.stdout.write(s)
-            #~ sys.stdout.flush()
-    #~ else:
-        #~ verbose_print = lambda *a : None
-    #~ 
-    #~ verbose_print("Rendering video %s\n"%filename)
-    #~ codec = 0 if (codec == 'raw') else FOURCC(*codec)
-    #~ writer = cv2.VideoWriter(filename, codec, fps, clip.size)
-    #~ i=0
-    #~ nframes = clip.duration*fps
-    #~ while (i < nframes):
-        #~ writer.write(clip.get_frame(1.0*i/fps)[:,:,::-1].astype('uint8'))
-        #~ if  ((i+1) % (nframes/10)) == 0:
-            #~ verbose_print("=")
-        #~ i += 1 
-            #~ 
-    #~ verbose_print("video done !")
+    vf.close()

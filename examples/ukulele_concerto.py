@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy.all import *
 
 # UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING
 # RAW FOOTAGE

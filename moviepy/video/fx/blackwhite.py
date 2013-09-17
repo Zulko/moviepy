@@ -1,4 +1,3 @@
-
 def blackwhite(clip, RGB = [1,1,1], preserve_luminosity=True):
 	""" Desaturates the picture, makes it black and white.
 	    method = sum (TODO: others) """

@@ -6,9 +6,8 @@ ImageClip, ColorClip, TextClip
 import subprocess
 import os
 import numpy as np
-
-import VideoClip as VC
-import io.readers as readers
+import moviepy.video.VideoClip as VC
+import moviepy.video.io.readers as readers
 
 
 

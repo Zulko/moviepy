@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy.all import *
 from moviepy.video.tools.drawing import circle
 
 clip = VideoFileClip("../../videos/badl-0006.mov", audio=False).\

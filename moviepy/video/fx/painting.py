@@ -1,3 +1,4 @@
+#------- CHECKING DEPENDENCIES ----------------------------------------- 
 painting_possible = True
 try:
     from skimage.filter import sobel
@@ -6,7 +7,9 @@ except:
         from scipy.ndimage.filters import sobel
     except:
         painting_possible = False
-    
+#-----------------------------------------------------------------------    
+
+
 
 import numpy as np
 
@@ -27,9 +30,14 @@ def painting(clip, saturation = 1.4,black = 0.006):
     return clip.fl_image(lambda im : to_painting(im,saturation,black))
         
 
+
+#------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------
+
 if not painting_possible:
     doc = painting.__doc__
     def painting(clip, newsize=None, height=None, width=None):
         raise IOError("fx painting needs scikit-image or scipy")
     
     painting.__doc__ = doc
+#----------------------------------------------------------------------- 
+

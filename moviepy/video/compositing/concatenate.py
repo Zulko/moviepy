@@ -2,7 +2,7 @@ import numpy as np
 
 
 from moviepy.video.VideoClip import VideoClip
-from CompositeVideoClip import CompositeVideoClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
 from on_color import on_color 
@@ -83,7 +83,6 @@ def concatenate(clipslist, method = 'chain', transition=None,
     # Compute the audio, if any.
     
     audio_t = [(c.audio,t) for c,t in zip(clipslist,tt) if c.audio!=None]
-    print audio_t
     if len(audio_t)>0:
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])

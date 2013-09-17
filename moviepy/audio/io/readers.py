@@ -80,7 +80,6 @@ class FFMPEG_AudioReader:
             self.initialize()
         else:
             offset = min(1,starttime)
-            print "OFFFFSET, start", offset, starttime
             cmd = [ FFMPEG_BINARY,
                     "-ss", "%.05f"%(starttime-offset),
                     '-i', self.filename, '-vn',

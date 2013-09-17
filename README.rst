@@ -5,7 +5,7 @@ MoviePy is a Python module for script-based movie editing, which enables
 basic operations (cuts, concatenations, title insertions) to be done
 in a few lines. It can also be used for advanced compositing.
 
-See the full documentation online here_ .
+See the full documentation and demo videos here_ .
 
 
 A typical MoviePy script looks like that: ::
@@ -30,8 +30,8 @@ Download and Installation
 ---------------------------
 
 
-Core dependencies
-~~~~~~~~~~~~~~~~~~
+Dependencies
+~~~~~~~~~~~~~
 
 MoviePy cannot run without these dependencies:
 
@@ -43,7 +43,8 @@ Numpy and Decorator will be automatically installed during MoviePy's installatio
 
 Installation with PIP
 ~~~~~~~~~~~~~~~~~~~~~~
-Coming soon.
+Just type ::
+    sudo pip install moviepy
 
 
 .. _manual_install:
@@ -63,7 +64,7 @@ Before doing that, you should make sure that MoviePy can locate ffmpeg on your c
 
  
 (Not so) Optional dependencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------
 
 You are not obliged to install these but for many uses MoviePy will scream at you and say that the package or the software is missing. All these dependencies can be installed any time after the installation of MoviePy.
 
@@ -81,7 +82,7 @@ If you are on linux, these will surely be in your repos.
 
 
 Installing OpenCV 2.4.6
-'''''''''''''''''''''''''
+------------------------
 
 OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned. The installation seems easy for Windows. On linux, here is what I found on the Internet:
 

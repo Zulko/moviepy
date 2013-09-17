@@ -1,13 +1,9 @@
 import subprocess as sp
 import re
-import time
 
 import numpy as np
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.tools import cvsecs
-
-
-
     
 class FFMPEG_VideoReader:
     

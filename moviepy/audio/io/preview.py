@@ -1,11 +1,15 @@
 import time
 import numpy as np
 import threading
+import sys
 
 import numpy as np
 
 from moviepy.decorators import requires_duration
 import pygame as pg
+
+pg.init()
+pg.display.set_caption('MoviePy')
 
 @requires_duration
 def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
@@ -47,11 +51,10 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
         videoFlag.wait()
         
     channel = chunk.play()
-    t0 = time.time()
     for i in range(1,len(pospos)-1):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt,nbytes)
         chunk = pg.sndarray.make_sound(sndarray)
+        while channel.get_queue():
+            time.sleep(0.003)
         channel.queue(chunk)
-        t1 = time.time()
-        time.sleep(max(0,tt[i]-Delta- (t1-t0)))

@@ -1,7 +1,12 @@
+from moviepy.video.VideoClip import VideoClip
+
+class DirectoryClip(VideoClip)
     """
     
     A VideoClip read from a directory containing pictures.
     Still experimental and subject to changes.
+    
+    DEPRECATED - needs update
     
     """
 

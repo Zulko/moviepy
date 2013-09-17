@@ -1,5 +1,5 @@
 """ A simple test script on how to put a soundtrack to a movie """
-from moviepy import *
+from moviepy.all import *
 
 
 # We load a movie and replace the sound with some music:
@@ -16,8 +16,5 @@ movie = VideoFileClip("../../videos/dam.mov").\
 
 #soundtrack.subclip(0,25).preview(fps=22050,buffersize=20000)
 
-movie.fx( vfx.resize, 0.5).\
-      set_audio(soundtrack).\
-      to_videofile("../../test_soundtrack.avi",
-                   codec="mpeg4",bitrate="4000k")
+movie.to_videofile("../../test_soundtrack.avi", codec="mpeg4")
 

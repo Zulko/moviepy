@@ -38,3 +38,7 @@ nosetests.xml
 # Temp files
 
 *~
+
+# Pipy codes
+
+.pypirc

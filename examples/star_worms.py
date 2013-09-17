@@ -9,7 +9,7 @@ background made of stars. Slight fading effect on the text.
 import numpy as np
 from skimage import transform as tf
 
-from moviepy import *
+from moviepy.all import *
 from moviepy.video.tools.drawing import color_gradient
 
 

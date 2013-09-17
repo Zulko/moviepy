@@ -1,6 +1,5 @@
 import numpy as np
-from moviepy.video.VideoClip import VideoClip
-from moviepy.video.ImageClip  import ColorClip
+from moviepy.video.VideoClip import VideoClip, ColorClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
 #  CompositeVideoClip

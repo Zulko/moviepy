@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy.all import *
 from moviepy.plugins.segmenting import findObjects
 
 # Load the image specifying the regions.

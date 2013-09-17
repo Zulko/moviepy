@@ -5,6 +5,9 @@ import pygame as pg
 import numpy as np
 
 
+pg.init()
+pg.display.set_caption('MoviePy')
+
 def imdisplay(imarray, screen=None):
 	""" splashes the given image array on the given pygame screen """
 	a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
@@ -97,8 +100,9 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
                         
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     x,y = pg.mouse.get_pos()
-                    rgb = img[x,y]
-                    print "time, position, color : ", t,(x,y),rgb
+                    rgb = img[y,x]
+                    print "time, position, color : ", "%.03f, %s, %s"%(
+                                 t,str((x,y)),str(rgb))
                     
         t1 = time.time()
         time.sleep(max(0, t - (t1-t0)) )
