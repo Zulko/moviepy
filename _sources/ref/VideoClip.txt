@@ -21,14 +21,14 @@ VideoClip
 :class:`ImageClip`
 ==========================
 
-.. autoclass:: moviepy.video.ImageClip.ImageClip
+.. autoclass:: moviepy.video.VideoClip.ImageClip
    :members:
    :show-inheritance:
    
 :class:`ColorClip`
 ------------------
 
-.. autoclass::  moviepy.video.ImageClip.ColorClip
+.. autoclass::  moviepy.video.VideoClip.ColorClip
    :members:
    :show-inheritance:
    
@@ -36,7 +36,7 @@ VideoClip
 :class:`TextClip`
 ---------------------
 
-.. autoclass::  moviepy.video.ImageClip.TextClip
+.. autoclass::  moviepy.video.VideoClip.TextClip
    :members:
    :show-inheritance:
    
@@ -50,4 +50,4 @@ VideoClip
 Useful Methods
 --------------
 
-.. automethod:: moviepy.video.compositing.concatenate.concatenate
+.. automodule:: moviepy.video.compositing.concatenate

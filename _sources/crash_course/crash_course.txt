@@ -9,7 +9,7 @@ Example code
 In a typical script, you load or generate some clips, modify them, combine them, and write the result to a video file.
 So let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the ten first seconds, and write the result in a file: ::
     
-    from moviepy import *
+    from moviepy.all import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
@@ -185,9 +185,9 @@ but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: 
                    fx( effect_2, args2).\
                    fx( effect_3, args3)
 
-Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
+Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import.all *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
-    from moviepy import *
+    from moviepy import.all *
     clip = VideoFileClip("myvideo.avi").\
                fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
                fx( vfx.speedx, 2).\ # double speed

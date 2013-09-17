@@ -80,7 +80,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="sd">movie put together.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">color_split</span>
 
 
@@ -123,8 +123,8 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip_right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;right&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">afx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
                          <span class="n">clip_left</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;left&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">afx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)],</span>
                          <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">H</span><span class="p">))</span>
-                          
-<span class="n">cc</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;../../biphone3.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+<span class="n">cc</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+<span class="c">#cc.to_videofile(&quot;../../biphone3.avi&quot;,fps=24, codec=&#39;mpeg4&#39;)</span>
 </pre></div>
 </div>
 </div>

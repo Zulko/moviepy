@@ -24,6 +24,9 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+    <link rel="up" title="Reference Manual" href="ref.html" />
+    <link rel="next" title="video.fx" href="videofx.html" />
+    <link rel="prev" title="Clip" href="Clip.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -42,7 +45,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="videofx.html" title="video.fx"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Clip.html" title="Clip"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -390,8 +400,8 @@ watching the same video file at different times.</p>
 <div class="section" id="imageclip">
 <h2><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt><a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="moviepy.video.ImageClip.ImageClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.ImageClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.ImageClip" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.ImageClip">
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.VideoClip</span></tt></a></p>
 <p>A video clip originating from a picture. This clip will simply
 display the given picture at all times. For instance:</p>
@@ -419,23 +429,23 @@ of the picture (if it exists) to be used as a mask.</li>
 </tbody>
 </table>
 <dl class="method">
-<dt id="moviepy.video.ImageClip.ImageClip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#ImageClip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.ImageClip.fl">
+<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent to VideoClip.fl . The result is no more an
 ImageClip, it has the class VideoClip (as it may be animated)</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.ImageClip.ImageClip.fl_image">
-<tt class="descname">fl_image</tt><big>(</big><em>image_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#ImageClip.fl_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.ImageClip.fl_image" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.ImageClip.fl_image">
+<tt class="descname">fl_image</tt><big>(</big><em>image_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to VideoClip.fl_image, but for ImageClip the
 tranformed clip is computed once and for all at the beginning,
 and not for each &#8216;frame&#8217;.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.ImageClip.ImageClip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>applyto=['mask', 'audio']</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#ImageClip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.ImageClip.fl_time">
+<tt class="descname">fl_time</tt><big>(</big><em>applyto=['mask', 'audio']</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does nothing for ImageClips (but it may affect their
 masks of their audios). The result is still an ImageClip</p>
 </dd></dl>
@@ -445,20 +455,22 @@ masks of their audios). The result is still an ImageClip</p>
 <div class="section" id="colorclip">
 <h3><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt><a class="headerlink" href="#colorclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="moviepy.video.ImageClip.ColorClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.ImageClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#ColorClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.ColorClip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moviepy.video.ImageClip.ImageClip" title="moviepy.video.ImageClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.ImageClip.ImageClip</span></tt></a></p>
-<p>An ImageClip showing just one color.
-:param size: Size (width, height) in pixels of the clip
-:param color: If argument <tt class="docutils literal"><span class="pre">ismask</span></tt> is False, <tt class="docutils literal"><span class="pre">color</span></tt> indicates</p>
-<blockquote>
-<div>the color in RGB of the clip (default is black). If <cite>ismask`</cite>
-is True, <tt class="docutils literal"><span class="pre">color</span></tt> must be  a float between 0 and 1 (default is 1)</div></blockquote>
+<dt id="moviepy.video.VideoClip.ColorClip">
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
+<p>An ImageClip showing just one color.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ismask</strong> &#8211; Is the clip a mask clip ?</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>size</strong> &#8211; Size (width, height) in pixels of the clip</li>
+<li><strong>color</strong> &#8211; If argument <tt class="docutils literal"><span class="pre">ismask</span></tt> is False, <tt class="docutils literal"><span class="pre">color</span></tt> indicates
+the color in RGB of the clip (default is black). If <cite>ismask`</cite>
+is True, <tt class="docutils literal"><span class="pre">color</span></tt> must be  a float between 0 and 1 (default is 1)</li>
+<li><strong>ismask</strong> &#8211; Is the clip a mask clip ?</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -468,9 +480,9 @@ is True, <tt class="docutils literal"><span class="pre">color</span></tt> must b
 <div class="section" id="textclip">
 <h3><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt><a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="moviepy.video.ImageClip.TextClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.ImageClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Times-New-Roman-Regular'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.TextClip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#moviepy.video.ImageClip.ImageClip" title="moviepy.video.ImageClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.ImageClip.ImageClip</span></tt></a></p>
+<dt id="moviepy.video.VideoClip.TextClip">
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Times-New-Roman-Regular'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>An image clip originating from a script-generated text image.
 Makes a text PNG using ImageMagick.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -513,8 +525,8 @@ the transparency in the image.</li>
 </tbody>
 </table>
 <dl class="staticmethod">
-<dt id="moviepy.video.ImageClip.TextClip.list">
-<em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/ImageClip.html#TextClip.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.ImageClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.TextClip.list">
+<em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of all valid entries for the argument given
 (can be <tt class="docutils literal"><span class="pre">font</span></tt>, <tt class="docutils literal"><span class="pre">color</span></tt>, etc...)
 argument of <tt class="docutils literal"><span class="pre">TextClip</span></tt></p>
@@ -575,47 +587,8 @@ actually playing at the given time <cite>t</cite>.</p>
 
 </dd></dl>
 
-<div class="section" id="useful-methods">
-<h3>Useful Methods<a class="headerlink" href="#useful-methods" title="Permalink to this headline">¶</a></h3>
-<dl class="staticmethod">
-<dt id="moviepy.video.compositing.concatenate.concatenate">
-<em class="property">static </em><tt class="descclassname">concatenate.</tt><tt class="descname">concatenate</tt><big>(</big><em>clipslist</em>, <em>method='chain'</em>, <em>transition=None</em>, <em>bg_color=(0</em>, <em>0</em>, <em>0)</em>, <em>transparent=False</em>, <em>ismask=False</em>, <em>crossover=0</em><big>)</big><a class="headerlink" href="#moviepy.video.compositing.concatenate.concatenate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a video clip made by clip by concatenating several video clips.
-(Concatenated means that they will be played one after another).
-if the clips do not have the same resolution, the final
-resolution will be such that no clip has to be resized. As
-a consequence the final clip has the height of the highest
-clip and the width of the widest clip of the list. All the
-clips with smaller dimensions will appear centered. The border
-will be transparent if mask=True, else it will be of the
-color specified by <tt class="docutils literal"><span class="pre">bg_color</span></tt>.</p>
-<p>Returns a VideoClip instance if all clips have the same size and
-there is no transition, else a composite clip.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>clipslist</strong> &#8211; a list of video clips which must all have
-their <tt class="docutils literal"><span class="pre">duration</span></tt> attributes set.</li>
-<li><strong>transition</strong> &#8211; a clip that will be played between each two
-clips of the list.</li>
-<li><strong>bg_color</strong> &#8211; color of the background ()</li>
-<li><strong>transparent</strong> &#8211; if True, the resulting clip&#8217;s mask will be the
-concatenation of the masks of the clips in the list. If
-the clips do not have the same resolution, the border around
-the smaller clips will be transparent.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><p class="first last"><strong>(list)</strong> (<em>start_times</em>) &#8211; <tt class="docutils literal"><span class="pre">start_times[i]</span></tt> gives the time at which
-the i-th clip starts playing.</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
+<div class="section" id="module-moviepy.video.compositing.concatenate">
+<span id="useful-methods"></span><h3>Useful Methods<a class="headerlink" href="#module-moviepy.video.compositing.concatenate" title="Permalink to this headline">¶</a></h3>
 </div>
 </div>
 </div>
@@ -639,7 +612,7 @@ the i-th clip starts playing.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#compositevideoclip"><tt class="docutils literal"><span class="pre">CompositeVideoClip</span></tt></a><ul>
-<li><a class="reference internal" href="#useful-methods">Useful Methods</a></li>
+<li><a class="reference internal" href="#module-moviepy.video.compositing.concatenate">Useful Methods</a></li>
 </ul>
 </li>
 </ul>
@@ -648,6 +621,10 @@ the i-th clip starts playing.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="ref.html">Reference Manual</a><ul>
+      <li>Previous: <a href="Clip.html" title="previous chapter">Clip</a></li>
+      <li>Next: <a href="videofx.html" title="next chapter">video.fx</a></li>
+  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

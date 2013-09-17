@@ -66,7 +66,7 @@
 <h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
 <p>In a typical script, you load or generate some clips, modify them, combine them, and write the result to a video file.
 So let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the ten first seconds, and write the result in a file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
@@ -93,15 +93,15 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
 <p>Video clips are the building blocks of longer videos. They can be created with one of the following:</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> for clips read from a movie file. See <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration. See <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.ImageClip.ImageClip" title="moviepy.video.ImageClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color. See <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.ImageClip.ColorClip" title="moviepy.video.ImageClip.ColorClip"><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt></a>.</li>
-<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick. See <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.ImageClip.TextClip" title="moviepy.video.ImageClip.TextClip"><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt></a>.</li>
+<li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration. See <tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color. See <tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick. See <tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt>.</li>
 </ul>
 <p>To that list we should add the <tt class="docutils literal"><span class="pre">CompositeVideoClips</span></tt> that are obtained by mixing several clips together.</p>
 </div>
 <div class="section" id="composite-video-clips">
 <span id="compositevideoclips"></span><h2>Composite video clips<a class="headerlink" href="#composite-video-clips" title="Permalink to this headline">¶</a></h2>
-<p>Composite video clips are video clips which will display the contents of several other video clips. The simplest compositing is concatenation with <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.compositing.concatenate.concatenate" title="moviepy.video.compositing.concatenate.concatenate"><tt class="xref py py-meth docutils literal"><span class="pre">concatenate()</span></tt></a>:</p>
+<p>Composite video clips are video clips which will display the contents of several other video clips. The simplest compositing is concatenation with <tt class="xref py py-meth docutils literal"><span class="pre">concatenate()</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -226,8 +226,8 @@ effect_3(clip, args3) -&gt; new clip</pre>
                <span class="n">fx</span><span class="p">(</span> <span class="n">effect_3</span><span class="p">,</span> <span class="n">args3</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
-<div class="highlight-python"><pre>from moviepy import *
+<p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import.all</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
+<div class="highlight-python"><pre>from moviepy import.all *
 clip = VideoFileClip("myvideo.avi").\
            fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
            fx( vfx.speedx, 2).\ # double speed

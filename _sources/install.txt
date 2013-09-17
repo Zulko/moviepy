@@ -13,9 +13,16 @@ MoviePy cannot run without these dependencies:
 
 Numpy and Decorator will be automatically installed during MoviePy's installation if not present on your computer. As for ffmpeg, you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (see manual_install_).
 
+.. _pip_install:
+
 Installation with PIP
 ------------------------
-Coming soon.
+
+On Linux, if you have pip installed, just type this in a terminal ::
+    
+    sudo pip install moviepy
+
+Maybe it works with easy_install too, but it hasn't been fully tested yet.
 
 
 .. _manual_install:
@@ -23,9 +30,9 @@ Coming soon.
 Manual installation
 ----------------------
 
-If you want the cutting edge version you can `download MoviePy`_ on its Github repository.
+You can install moviepy manually by downloading the sources, either on PYPI_ or (if you want the development version) on Github_ .
 
-Just unzip everything in one folder, open a terminal and type ::
+Then just unzip everything in one folder, open a terminal and type ::
     
     sudo python setup.py install
 
@@ -89,8 +96,8 @@ Advice: do not throw your ``release`` folder away. If later you have strange bug
 
 
 
-
-.. _`download MoviePy`: https://github.com/Zulko/moviepy
+.. _PYPI https://pypi.python.org/pypi/moviepy
+.. _Github: https://github.com/Zulko/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 .. _Pygame: http://www.pygame.org/download.shtml
 .. _`Numpy`: http://www.scipy.org/install.html
