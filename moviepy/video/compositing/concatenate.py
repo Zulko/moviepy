@@ -5,7 +5,7 @@ from moviepy.video.VideoClip import VideoClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
-from on_color import on_color 
+from moviepy.video.compositing.on_color import on_color 
 
 def concatenate(clipslist, method = 'chain', transition=None,
            bg_color=(0, 0, 0), transparent=False, ismask=False, crossover = 0):

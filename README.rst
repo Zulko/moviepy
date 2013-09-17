@@ -39,22 +39,31 @@ MoviePy cannot run without these dependencies:
 - `Numpy`_ is needed for image and sound manipulation
 - The Decorator_ module is used in the MoviePy code for better code readability
 
-Numpy and Decorator will be automatically installed during MoviePy's installation if not present on your computer. As for ffmpeg, you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (see manual_install_).
+Numpy and Decorator will be automatically installed during MoviePy's installation if not present on your computer. As for ffmpeg, you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (see `Manual installation`_).
+
 
 Installation with PIP
-~~~~~~~~~~~~~~~~~~~~~~
-Just type ::
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+On Linux, if you have pip installed, just type this in a terminal ::
+    
     sudo pip install moviepy
+
+Maybe it works with easy_install too, but it hasn't been fully tested yet.
+
 
 
 .. _manual_install:
 
+
 Manual installation
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want the cutting edge version you can `download MoviePy`_ on its Github repository.
+You can install moviepy manually by downloading the sources, either on PYPI_ or (if you want the development version) on Github_ .
 
-Just unzip everything in one folder, open a terminal and type ::
+Then just unzip everything in one folder, open a terminal and type ::
+    
+    sudo python setup.py install
     
     sudo python setup.py install
 
@@ -64,7 +73,7 @@ Before doing that, you should make sure that MoviePy can locate ffmpeg on your c
 
  
 (Not so) Optional dependencies
--------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You are not obliged to install these but for many uses MoviePy will scream at you and say that the package or the software is missing. All these dependencies can be installed any time after the installation of MoviePy.
 
@@ -82,7 +91,7 @@ If you are on linux, these will surely be in your repos.
 
 
 Installing OpenCV 2.4.6
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned. The installation seems easy for Windows. On linux, here is what I found on the Internet:
 
@@ -117,7 +126,8 @@ Advice: do not throw your ``release`` folder away. If later you have strange bug
 
 
 
-
+.. _PYPI: https://pypi.python.org/pypi/moviepy
+.. _Github: https://github.com/Zulko/moviepy
 .. _here: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/

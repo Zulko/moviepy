@@ -625,11 +625,15 @@ class ImageClip(VideoClip):
 class ColorClip(ImageClip):
     """
     An ImageClip showing just one color.
+    
     :param size: Size (width, height) in pixels of the clip
+    
     :param color: If argument ``ismask`` is False, ``color`` indicates
-        the color in RGB of the clip (default is black). If `ismask``
-        is True, ``color`` must be  a float between 0 and 1 (default is 1) 
+      the color in RGB of the clip (default is black). If `ismask``
+      is True, ``color`` must be  a float between 0 and 1 (default is 1) 
+      
     :param ismask: Is the clip a mask clip ?
+    
     """
     def __init__(self,size, col=(0, 0, 0), ismask=False):
         w, h = size
