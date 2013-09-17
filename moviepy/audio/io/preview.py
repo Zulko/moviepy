@@ -58,4 +58,8 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
         chunk = pg.sndarray.make_sound(sndarray)
         while channel.get_queue():
             time.sleep(0.003)
+            if not videoFlag.is_set():
+                channel.stop()
+                del channel
+                return
         channel.queue(chunk)
