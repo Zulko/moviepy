@@ -52,13 +52,12 @@ def extract_subclip(filename, t1, t2, targetname=None):
     
 
 @subprocess_call
-def merge_video_audio(video,audio,output, acodec='libvorbis',
+def merge_video_audio(video,audio,output, vcodec='copy', acodec='copy',
                        ffmpeg_output=False):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     return ["ffmpeg", "-y", "-i", audio,"-i", video,
-             "-vcodec", "copy",
-             "-acodec", acodec, output]
+             "-vcodec", vcodec, "-acodec", acodec, output]
     
 @subprocess_call
 def extract_audio(inputfile,output,bitrate=3000,fps=44100):

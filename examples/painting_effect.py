@@ -35,4 +35,4 @@ final_clip =  concatenate([ clip_before,
                             painting_fading.set_duration(3),
                             clip_after])
 
-final_clip.to_videofile('../../audrey.avi',fps=charade.fps, codec = "mpeg4")
+final_clip.to_videofile('../../audrey.avi',fps=charade.fps, codec = "mpeg4", audio_bitrate="3000k")

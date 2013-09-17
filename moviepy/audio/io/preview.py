@@ -11,6 +11,7 @@ import pygame as pg
 pg.init()
 pg.display.set_caption('MoviePy')
 
+
 @requires_duration
 def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
                  audioFlag=None, videoFlag=None):

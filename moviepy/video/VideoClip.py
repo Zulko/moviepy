@@ -20,10 +20,10 @@ from moviepy.decorators import  apply_to_mask, requires_duration
 
 import moviepy.audio.io as aio
 import moviepy.video.io.ffmpeg_writer as ffmpeg_writer
+import moviepy.video.io.ffmpeg_reader as ffmpeg_reader
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 
 from  moviepy.video.tools.drawing import blit
-import moviepy.video.io as vio
 from moviepy.Clip import Clip
 
 
@@ -140,8 +140,9 @@ class VideoClip(Clip):
 
 
     def to_videofile(self, filename, fps=24, codec='libx264',
-                 bitrate=None, audio=True, audio_fps=44100,
-                 audio_nbytes = 2, audio_bufsize = 40000, temp_wav=None,
+                 bitrate=None, audio=True, audio_fps=44100, 
+                 audio_nbytes = 2, audio_codec= 'libvorbis',
+                 audio_bitrate = None, audio_bufsize = 40000, temp_wav=None,
                  rewrite_audio = True, remove_temp = True,
                  para = True, verbose = True):
         """
@@ -180,6 +181,11 @@ class VideoClip(Clip):
         
         """
         
+        if audio_codec == 'raw16':
+            audio_codec = 'pcm_s16le'
+        elif audio_codec == 'raw32':
+            audio_codec = 'pcm_s32le'
+        
         if verbose:
             def verbose_print(s):
                 sys.stdout.write(s)
@@ -202,9 +208,13 @@ class VideoClip(Clip):
             # The audio will be the clip's audio
             if temp_wav is None:
                 # make a name for the temporary folder
-                temp_wav = Clip._TEMP_FILES_PREFIX + "to_videofile.wav"
+                ext = {'libvorbis':'.ogg',
+                       'libfdk_aac':'.m4a',
+                       'pcm_s16le':'.wav',
+                       'pcm_s32le': '.wav'}[audio_codec]
+                temp_wav = (Clip._TEMP_FILES_PREFIX +
+                            "to_videofile_SOUND" + ext)
             
-            temp_wav = Clip._TEMP_FILES_PREFIX + "to_videofile.wav"
             make_audio = (not os.path.exists(temp_wav)) or rewrite_audio
             merge_audio = True
             
@@ -229,7 +239,7 @@ class VideoClip(Clip):
             audioproc = multiprocessing.Process(
                     target=self.audio.to_audiofile,
                     args=(temp_wav,audio_fps,audio_nbytes,
-                          audio_bufsize,verbose))
+                          audio_bufsize,audio_codec, audio_bitrate,verbose))
             audioproc.start()
             ffmpeg_writer.ffmpeg_write(self,  videofile, fps, codec,
                          bitrate=bitrate, verbose=verbose)
@@ -495,7 +505,7 @@ class VideoClip(Clip):
 
 try:
     # Add methods preview and show (only if pygame installed)
-    from io.preview import show, preview
+    from moviepy.video.io.preview import show, preview
     VideoClip.preview = preview
     VideoClip.show = show
 except:
@@ -551,7 +561,7 @@ class ImageClip(VideoClip):
         VideoClip.__init__(self, ismask=ismask)
 
         if isinstance(img, str):
-            img = vio.readers.read_image(img,with_mask=transparent)
+            img = ffmpeg_reader.read_image(img,with_mask=transparent)
         
         if len(img.shape) == 3: # img is (now) a RGB(a) numpy array
             

@@ -30,7 +30,6 @@ mask = color_split((2*W/3,H), p1=(W/3,H), p2=(2*W/3,0),
 clip_left.mask = ImageClip(mask, ismask=True)
 
 
-
 # MAKE THE RIGHT CLIP : cut, crop, add a mask 
 
 clip_right = main_clip.coreader().subclip(21,21+duration).\
@@ -48,5 +47,5 @@ clip_right.mask = ImageClip(mask, ismask=True)
 cc = CompositeVideoClip([clip_right.set_pos('right').fx(afx.volumex, 0.4),
                          clip_left.set_pos('left').fx(afx.volumex, 0.4)],
                          size = (W,H))
-cc.preview()
-#cc.to_videofile("../../biphone3.avi",fps=24, codec='mpeg4')
+#cc.preview()
+cc.to_videofile("../../biphone3.avi",fps=24, codec='mpeg4')

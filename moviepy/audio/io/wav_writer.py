@@ -1,7 +1,7 @@
 import sys
 import wave
 import numpy as np
-
+import subprocess as sp
 
 def wave_write(clip, filename,fps, nbytes, buffersize, verbose):
     """ Writes an audioclip down to a wav file. Deprecated if the

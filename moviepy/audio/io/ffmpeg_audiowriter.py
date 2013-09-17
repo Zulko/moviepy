@@ -1,14 +1,13 @@
-"""
-On the long term this will implement several methods to make videos
-out of VideoClips
-"""
-
 import sys
+import wave
 import numpy as np
 import subprocess as sp
-from moviepy.conf import FFMPEG_BINARY
 
-class FFMPEG_VideoWriter:
+from moviepy.conf import FFMPEG_BINARY
+from moviepy.decorators import requires_duration
+
+
+class FFMPEG_AudioWriter:
     """ A class to read videos using ffmpeg. ffmpeg will read any kind
         of videos and transform them into raw data (a long string that
         can be reshaped into a RGB array).
@@ -35,65 +34,59 @@ class FFMPEG_VideoWriter:
     
     
         
-    def __init__(self, filename, size, fps, codec="libx264",
-                  bitrate=None, withmask=False):
+    def __init__(self, filename, fps_input, nbytes=2, nchannels = 2,
+                  codec='libfdk_aac', bitrate=None, input_video=None):
         
         self.filename = filename
         cmd = [ FFMPEG_BINARY, '-y',
-            "-f", 'rawvideo',
-            "-vcodec","rawvideo",
-            '-s', "%dx%d"%(size[0],size[1]),
-            '-pix_fmt', "rgba" if withmask else "rgb24",
-            '-r', "%.02f"%fps,
-            '-i', '-', '-an',
-            '-vcodec', codec] + (
+            "-f", 's%dle'%(8*nbytes),
+            "-acodec",'pcm_s%dle'%(8*nbytes),
+            '-r', "%d"%fps_input,
+            '-ac',"%d"%nchannels,
+            '-i', '-']+ ([
+            '-vn'] if input_video==None else [
+            "-i", input_video, '-vcodec', 'copy'])+[
+            '-acodec', codec] + (
             ['-b',bitrate] if (bitrate!=None) else []) + [
-            '-r', "%d"%fps,
             filename ]
         self.proc = sp.Popen(cmd,stdin=sp.PIPE,
                                  stdout=sp.PIPE,
                                  stderr=sp.PIPE)
         
-    def write_frame(self,img_array):
+    def write_frames(self,frames_array):
         #self.proc.stdin.write(img_array.tostring())
-        img_array.tofile(self.proc.stdin)
+        frames_array.tofile(self.proc.stdin)
         
     def close(self):
         self.proc.stdin.close()
         del self.proc
         
-def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
-                  withmask=False, verbose=True):
-    
+        
+        
+@requires_duration       
+def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
+                      codec='libvorbis', bitrate=None, verbose=True):
     if verbose:
         def verbose_print(s):
             sys.stdout.write(s)
             sys.stdout.flush()
     else:
         verbose_print = lambda *a : None
+        
+    verbose_print("Rendering audio %s\n"%filename)
+     
+    writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
+                                codec=codec, bitrate=bitrate)
+                                
+    totalsize = int(fps*clip.duration)
+    nchunks = totalsize / buffersize + 1
+    pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
+    ifeedback = max(1,nchunks/10)
+    for i in range(nchunks):
+        if ( (i% ifeedback) == 0): verbose_print("=")
+        tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
+        sndarray = clip.to_soundarray(tt,nbytes)
+        writer.write_frames(sndarray)
     
-    verbose_print("Rendering video %s\n"%filename)
-    writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
-             bitrate=bitrate)
-    i=0
-    nframes = clip.duration*fps
-    
-    while (i < nframes):
-        frame = clip.get_frame(1.0*i/fps)
-        if withmask:
-            mask = (255*clip.mask.get_frame(1.0*i/fps))
-            frame = np.dstack([frame,mask])
-            
-        writer.write_frame(frame.astype("uint8"))
-        if  ((i+1) % (nframes/10)) == 0:
-            verbose_print("=")
-        i += 1
     writer.close()
-    verbose_print("video done !")
-        
-        
-def write_image(filename, image):
-    pix_fmt = "rgba" if (image.shape[2] == 4) else "rgb24"
-    vf = FFMPEG_VideoWriter(filename, pix_fmt='rgba')
-    vf.writer_frame(image)
-    vf.close()
+    verbose_print("audio done !")

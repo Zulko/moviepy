@@ -1,6 +1,6 @@
 from moviepy.video.VideoClip import VideoClip
 
-class DirectoryClip(VideoClip)
+class DirectoryClip(VideoClip):
     """
     
     A VideoClip read from a directory containing pictures.

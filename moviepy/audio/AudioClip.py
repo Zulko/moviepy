@@ -5,8 +5,7 @@ import wave
 from copy import copy
 
 import numpy as np
-from io.writers import wave_write
-from io.preview import preview
+from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import  requires_duration
 
 from moviepy.Clip import Clip
@@ -65,47 +64,30 @@ class AudioClip(Clip):
         inttype = {1:'int8',2:'int16',4:'int32'}[nbytes]
         return (2**(8*nbytes-1)*snd_array).astype(inttype)
 
-
-    @requires_duration
-    def preview(self, fps=22050,  buffersize=10000, nbytes= 2,
-                 audioFlag=None, videoFlag=None):
-        """
-        Plays the sound clip with pygame.
-        
-        :param fps: frame rate of the sound. 44100 gives top quality, but
-            may cause problems if your computer is not fast enough and
-            your clip is complicated. If the sound jumps during the
-            preview lower it (11025 is still fine, 5000 is tolerable).
-            
-        :param buffersize: The sound is not generated all at once, but
-            rather made by bunches of frames (chunks). ``buffersize``
-            is the size of such a chunk. Try varying it if you meet
-            audio problems (but you shouldn't have to).
-        
-        :param nbytes: number of bytes to encode the sound: 1 for 8bit
-            sound, 2 for 16bit, 4 for 32bit sound. 2 bytes is fine.
-        
-        :param audioFlag, videoFlag: parameters whose sole purpose is to
-            enable a good synchronization of the start of video and sound
-            when the audio clip is played as the background of a video
-            clip. ``audioFlag`` and ``videoFlag`` are threading.Event
-            objects (from Python's standard threading module).
-            """
-        
-        preview(self, fps, buffersize, nbytes, audioFlag, videoFlag)
-
     @requires_duration
     def to_audiofile(self, filename, fps=44100, nbytes = 2,
-                      buffersize=80000, verbose=True):
-        """ Writes the soundclip to a .wav file. """
+                   codec ='libvorbis', bitrate=None,
+                      buffersize=60000, verbose=True):
+        """ Writes the soundclip to a file using FFMPEG """
         
-        wave_write(self, filename,fps, nbytes, buffersize, verbose)
+        ffmpeg_audiowrite(clip, filename, fps, nbytes=nbytes,
+              buffersize=buffersize, codec=codec, bitrate=bitrate, verbose=True)
 
     @property
     def nchannels(self):
         return len(list(self.get_frame(0)))
+
+AudioClip.to_audiofile = ffmpeg_audiowrite
+
+try:
+    # Add methods preview (only if pygame installed)
+    from moviepy.audio.io.preview import preview
+    AudioClip.preview = preview
+except:
+    pass
+from moviepy.audio.io.preview import preview
         
-        
+
 class AudioArrayClip(AudioClip):
     """
     

@@ -14,7 +14,5 @@ movie = VideoFileClip("../../videos/dam.mov").\
 
 #~ movie.audio = movie.audio.set_duration(movie.duration)
 
-#soundtrack.subclip(0,25).preview(fps=22050,buffersize=20000)
-
 movie.to_videofile("../../test_soundtrack.avi", codec="mpeg4")
 
