@@ -1,5 +1,14 @@
-import cv2
 import numpy as np
+
+
+#------- CHECKING DEPENDENCIES ----------------------------------------- 
+try:
+    import cv2
+    headblur_possible = True
+except:
+    headblur_possible = False
+#-----------------------------------------------------------------------
+
 
 def headblur(clip,fx,fy,r_zone,r_blur=None):
     """
@@ -35,3 +44,14 @@ def headblur(clip,fx,fy,r_zone,r_blur=None):
         return im
     
     return clip.fl(fl)
+
+
+
+#------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------
+if not headblur_possible:
+    doc = headblur.__doc__
+    def headblur(clip,fx,fy,r_zone,r_blur=None):
+        raise IOError("fx painting needs scikit-image or scipy")
+    
+    headblur.__doc__ = doc
+#----------------------------------------------------------------------- 

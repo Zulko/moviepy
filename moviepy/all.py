@@ -9,7 +9,7 @@ by simply typing: from moviepy.all import *
 # Clips
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ImageClip, ColorClip, TextClip
+from moviepy.video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate
 from moviepy.audio.io.AudioFileClip import AudioFileClip
