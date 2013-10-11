@@ -31,14 +31,14 @@ def show(clip, t=0, with_mask=True):
     if clip.ismask:
         clip = clip.to_RGB()
     if with_mask and (clip.mask != None):
-        from moviepy.video.compositing import CompositeVideoClip
-        clip = CompositeVideoClip([clip])
+        import moviepy.video.compositing.CompositeVideoClip as cvc
+        clip = cvc.CompositeVideoClip([clip])
     imdisplay(clip.get_frame(t))
 
 
 @requires_duration
 def preview(clip, fps=15, audio=True, audio_fps=22050,
-             audio_buffersize=10000, audio_nbytes=2):
+             audio_buffersize=3000, audio_nbytes=2):
     """ 
     Displays the clip in a window, at the given frames per second
     (of movie) rate. It will avoid that the clip be played faster

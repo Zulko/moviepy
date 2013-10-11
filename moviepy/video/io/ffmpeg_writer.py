@@ -60,6 +60,7 @@ class FFMPEG_VideoWriter:
         
     def close(self):
         self.proc.stdin.close()
+        self.proc.wait()
         del self.proc
         
 def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
@@ -76,7 +77,7 @@ def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
              bitrate=bitrate)
     i=0
-    nframes = clip.duration*fps
+    nframes = int(clip.duration*fps)
     
     while (i < nframes):
         frame = clip.get_frame(1.0*i/fps)
@@ -88,6 +89,7 @@ def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
         if  ((i+1) % (nframes/10)) == 0:
             verbose_print("=")
         i += 1
+    
     writer.close()
     verbose_print("video done !")
         

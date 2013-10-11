@@ -251,17 +251,16 @@ class VideoClip(Clip):
             # Don't parallelize
             if make_audio:
                 self.audio.to_audiofile(temp_wav,audio_fps, audio_nbytes,
-                              audio_bufsize, verbose)
+                    audio_bufsize, audio_codec, audio_bitrate, verbose)
             ffmpeg_writer.ffmpeg_write(self, videofile, fps, codec,
                                        bitrate=bitrate, verbose=verbose)
         
         # Merge with audio if any and trash temporary files.
-        
         if merge_audio:
             
             verbose_print("\nNow merging video and audio...\n")
             ffmpeg_tools.merge_video_audio(videofile,temp_wav,filename,
-                                     ffmpeg_output=False)
+                                     ffmpeg_output=True)
             if remove_temp:
                 os.remove(videofile)
                 if not isinstance(audio,str):
@@ -517,20 +516,12 @@ except:
 
 """---------------------------------------------------------------------
 
-    ImageClip (bas class for all 'static clips') and its subclasses
+    ImageClip (base class for all 'static clips') and its subclasses
     ColorClip and TextClip.
     I would have liked to put these in a separate file but Python is bad
     at cyclic imports.
 
 ---------------------------------------------------------------------"""
-
-
-    
-    
-"""
-Classes for advantageous handling of static clips.
-ImageClip, ColorClip, TextClip
-"""
 
 
 

@@ -76,8 +76,11 @@ class AudioClip(Clip):
     @property
     def nchannels(self):
         return len(list(self.get_frame(0)))
-
-AudioClip.to_audiofile = ffmpeg_audiowrite
+    
+    def to_audiofile(self,filename, fps=44100, nbytes=2, buffersize=5000,
+                      codec='libvorbis', bitrate=None, verbose=True):
+        return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
+                      codec, bitrate, verbose)
 
 try:
     # Add methods preview (only if pygame installed)
@@ -110,11 +113,11 @@ class AudioArrayClip(AudioClip):
             is a list of the form sin(t) """
             
             if isinstance(t, np.ndarray):
-                array_inds = int(self.fps*t)
+                array_inds = (self.fps*t).astype(int)
                 in_array = (array_inds>0) & (array_inds < len(self.array))
                 result = np.zeros((len(t),2))
-                result[in_array] = self.array(array_inds[in_array])
-                return results
+                result[in_array] = self.array[array_inds[in_array]]
+                return result
             else:
                 i = int(self.fps * t)
                 if i < 0 or i >= len(self.array):

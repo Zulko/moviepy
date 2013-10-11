@@ -61,7 +61,7 @@ def concatenate(clipslist, method = 'chain', transition=None,
         
     elif method == 'compose':
         tt = np.maximum(0, tt - crossover*np.arange(len(tt)))
-        result = CompositeVideoClip( [c.set_start(t).set_pos('center')
+        result = concatenate( [c.set_start(t).set_pos('center')
                                     for (c, t) in zip(clipslist, tt)],
                    size = (w, h), bg_color=bg_color, ismask=ismask,
                    transparent=transparent)

@@ -2,9 +2,10 @@ import subprocess as sp
 import re
 
 import numpy as np
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.conf import FFMPEG_BINARY # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
-    
+
+
 class FFMPEG_VideoReader:
     
     def __init__(self, filename, print_infos=False, pix_fmt="rgb24"):
@@ -144,6 +145,7 @@ class FFMPEG_VideoReader:
             result =  self.read_frame()
             self.pos = pos
             return result
+            
 
 def read_image(filename,with_mask=True):
     pix_fmt='rgba' if with_mask else "rgb24"

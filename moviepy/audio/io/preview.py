@@ -47,7 +47,8 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
     sndarray = clip.to_soundarray(tt,nbytes)
     chunk = pg.sndarray.make_sound(sndarray)
     Delta = tt[1]-tt[0]
-    if audioFlag and videoFlag:
+    
+    if (audioFlag !=None) and (videoFlag!= None):
         audioFlag.set()
         videoFlag.wait()
         
@@ -58,8 +59,9 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
         chunk = pg.sndarray.make_sound(sndarray)
         while channel.get_queue():
             time.sleep(0.003)
-            if not videoFlag.is_set():
-                channel.stop()
-                del channel
-                return
+            if (videoFlag!= None):
+                if not videoFlag.is_set():
+                    channel.stop()
+                    del channel
+                    return
         channel.queue(chunk)

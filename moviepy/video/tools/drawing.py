@@ -196,11 +196,10 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
         print shape
-        if x != None:
+        if x:
             arr[:,:x] = col1
             arr[:,x:] = col2
-            
-        elif y != None:
+        elif y:
             arr[:y] = col1
             arr[y:] = col2
      

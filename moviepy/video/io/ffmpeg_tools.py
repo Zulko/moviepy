@@ -19,7 +19,8 @@ def subprocess_call(f, *a, **k):
     proc = sp.Popen(cmd, stdout=sp.PIPE, stdin = sp.PIPE, stderr = sp.PIPE)
     proc.wait()
     if proc.returncode:
-        sys.stdout.write( "WARNING: this command failed.")
+        sys.stdout.write( "\nWARNING: this command returned an error:")
+        sys.stdout.write(proc.stderr.read())
     else:
 		sys.stdout.write( "\n... ffmpeg command successful.\n")
     sys.stdout.flush()
