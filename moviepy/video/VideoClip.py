@@ -425,7 +425,11 @@ class VideoClip(Clip):
         multiplied by ``op`` (any float, normally between 0 and 1).
         """
         newclip = copy(self)
-        newclip.mask = self.mask.fl_image(lambda pic: op * pic)
+        
+        if not newclip.mask:
+            newclip = newclip.add_mask()
+            
+        newclip.mask = newclip.mask.fl_image(lambda pic: op * pic)
         return newclip
 
     @apply_to_mask
@@ -498,6 +502,14 @@ class VideoClip(Clip):
         newclip = copy(self)
         newclip.audio = None
         return newclip
+    
+    def afx(self, fun, *a, **k):
+        """
+        Returns a new clip whose audio has been transformed by ``fun``.
+        """
+        newclip = self.copy()
+        newclip.audio = newclip.audio.fx(fun, *a, **k)
+        return newclip 
         
     #-----------------------------------------------------------------
     # Previews:
@@ -606,12 +618,12 @@ class ImageClip(VideoClip):
                     
         return newclip
     
-    def fl_time(self, applyto =['mask', 'audio']):
+    def fl_time(self, timefun, applyto =['mask', 'audio']):
         """
         This method does nothing for ImageClips (but it may affect their
         masks of their audios). The result is still an ImageClip
         """
-        newclip = copy(self, keep_class=True)
+        newclip = self.copy()
         
         for attr in applyto:
             if hasattr(newclip, attr):

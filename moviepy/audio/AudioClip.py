@@ -49,7 +49,7 @@ class AudioClip(Clip):
         Clip.__init__(self)
 
     @requires_duration
-    def to_soundarray(self,tt, nbytes=2):
+    def to_soundarray(self,tt=None,fps=None, nbytes=2):
         """
         Transforms the sound into an array that can be played by pygame
         or written in a wav file. See ``AudioClip.preview``.
@@ -59,6 +59,9 @@ class AudioClip(Clip):
         :param nbytes: number of bytes to encode the sound: 1 for 8bit
             sound, 2 for 16bit, 4 for 32bit sound.
         """
+        if tt is None:
+            tt = np.arange(0,self.duration, 1.0/fps)
+        
         snd_array = self.get_frame(tt)
         snd_array = np.maximum(-0.999, np.minimum(0.999,snd_array))
         inttype = {1:'int8',2:'int16',4:'int32'}[nbytes]

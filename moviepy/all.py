@@ -25,3 +25,8 @@ import moviepy.video.compositing.transitions as transfx
 import moviepy.video.tools as videotools
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 from moviepy.tools import cvsecs
+
+try:
+    from moviepy.video.io.sliders import sliders
+except:
+    pass
