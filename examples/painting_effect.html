@@ -91,13 +91,15 @@ disappear with a fading effect.</li>
 <p>Here you are for the code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot; requires scikit-image installed (for vfx.painting) &quot;&quot;&quot;</span>
  
-<span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE</span>
 
 <span class="n">charade</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/charade.mp4&quot;</span><span class="p">)</span>
 <span class="n">tfreeze</span> <span class="o">=</span> <span class="n">cvsecs</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">21</span><span class="p">)</span> <span class="c"># Time of the freeze, 19&#39;21</span>
 
+<span class="c"># when using several subclips of a same clip, it can be faster</span>
+<span class="c"># to create &#39;coreaders&#39; of the clip (=other entrance points).</span>
 <span class="n">clip_before</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tfreeze</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="n">tfreeze</span><span class="p">)</span>
 <span class="n">clip_after</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tfreeze</span> <span class="p">,</span><span class="n">tfreeze</span> <span class="o">+</span><span class="mi">2</span><span class="p">)</span>
 
@@ -113,8 +115,8 @@ disappear with a fading effect.</li>
 <span class="n">painting_txt</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">painting</span><span class="p">,</span><span class="n">txt</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">180</span><span class="p">))])</span><span class="o">.</span>\
                    <span class="n">add_mask</span><span class="p">()</span><span class="o">.</span>\
                    <span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">fx</span><span class="p">(</span> <span class="n">transfx</span><span class="o">.</span><span class="n">crossfadein</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">fx</span><span class="p">(</span> <span class="n">transfx</span><span class="o">.</span><span class="n">crossfadeout</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+                   <span class="n">crossfadein</span><span class="p">(</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span>\
+                   <span class="n">crossfadeout</span><span class="p">(</span> <span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c"># FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE</span>
 
@@ -126,7 +128,8 @@ disappear with a fading effect.</li>
                             <span class="n">painting_fading</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
                             <span class="n">clip_after</span><span class="p">])</span>
 
-<span class="n">final_clip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;../../audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span> <span class="n">codec</span> <span class="o">=</span> <span class="s">&quot;mpeg4&quot;</span><span class="p">)</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;../../audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
+                        <span class="n">codec</span> <span class="o">=</span> <span class="s">&quot;mpeg4&quot;</span><span class="p">,</span> <span class="n">audio_bitrate</span><span class="o">=</span><span class="s">&quot;3000k&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

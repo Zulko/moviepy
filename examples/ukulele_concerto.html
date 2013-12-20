@@ -75,14 +75,14 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 replaced with a real music video example (the code will be 99% the same).
 The philosophy of MoviePy is that for each new music video I will make,
 I will just have to copy/paste this code, and modify a few lines.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING</span>
 <span class="c"># RAW FOOTAGE</span>
 
 <span class="n">ukulele</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/moi_ukulele.MOV&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>\
                <span class="n">subclip</span><span class="p">(</span><span class="mi">60</span><span class="o">+</span><span class="mi">33</span><span class="p">,</span> <span class="mi">60</span><span class="o">+</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span>\
-               <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">crop</span><span class="p">,</span> <span class="mi">486</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">1196</span><span class="p">,</span> <span class="mi">570</span><span class="p">)</span>
+               <span class="n">crop</span><span class="p">(</span><span class="mi">486</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">1196</span><span class="p">,</span> <span class="mi">570</span><span class="p">)</span>
 
 <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">moviesize</span> <span class="o">=</span> <span class="n">ukulele</span><span class="o">.</span><span class="n">size</span>
 
@@ -91,9 +91,9 @@ I will just have to copy/paste this code, and modify a few lines.</p>
 
 <span class="n">piano</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/douceamb.mp4&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>
          <span class="n">subclip</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span>
-         <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span>    <span class="c"># one third of the total screen</span>
-         <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">margin</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span><span class="o">.</span>  <span class="c">#white margin</span>
-         <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">margin</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span> <span class="c"># transparent</span>
+         <span class="n">resize</span><span class="p">((</span><span class="n">w</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">h</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span>    <span class="c"># one third of the total screen</span>
+         <span class="n">margin</span><span class="p">(</span> <span class="mi">6</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span><span class="o">.</span>  <span class="c">#white margin</span>
+         <span class="n">margin</span><span class="p">(</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span> <span class="c"># transparent</span>
          <span class="n">set_pos</span><span class="p">((</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="s">&#39;bottom&#39;</span><span class="p">))</span> <span class="p">)</span>
 
 

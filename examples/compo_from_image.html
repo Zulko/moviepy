@@ -78,8 +78,8 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <img alt="../_images/compo_from_image.jpeg" src="../_images/compo_from_image.jpeg" />
 </div>
 <p>We will find the regions of this image and fit the different clips into these regions:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.plugins.segmenting</span> <span class="kn">import</span> <span class="n">findObjects</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.segmenting</span> <span class="kn">import</span> <span class="n">findObjects</span>
 
 <span class="c"># Load the image specifying the regions.</span>
 <span class="n">im</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;../../ultracompositing/motif.png&quot;</span><span class="p">)</span>
@@ -99,13 +99,13 @@ allowfullscreen="true" width="550" height="450"></embed></object>
       <span class="s">&quot;../../videos/grsm_0005.mov&quot;</span><span class="p">]]</span>
 
 <span class="c"># fit each clip into its region</span>
-<span class="n">comp_clips</span> <span class="o">=</span>  <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span>\
+<span class="n">comp_clips</span> <span class="o">=</span>  <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span>\
                  <span class="n">set_mask</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span>\
                  <span class="n">set_pos</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">screenpos</span><span class="p">)</span>
                <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span><span class="n">regions</span><span class="p">)]</span>
 
 <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">comp_clips</span><span class="p">,</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-<span class="n">cc</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;../../bigcompo.avi&quot;</span><span class="p">)</span>
+<span class="n">cc</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;../../bigcompo.avi&quot;</span><span class="p">)</span>
 
 <span class="c"># Note that this particular composition takes quite a long time of</span>
 <span class="c"># rendering (about 20s on my computer for just 4s of video).</span>

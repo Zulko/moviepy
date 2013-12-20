@@ -81,13 +81,13 @@ src="http://www.youtube.com/v/7tKABfc0Yzw&hl=en_US&fs=1&rel=0"
 type="application/x-shockwave-flash" allowscriptaccess="always"
 allowfullscreen="true" width="550" height="450"></embed></object>
 </center><p>And here is the code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.tools.credits</span> <span class="kn">import</span> <span class="n">credits1</span>
 
 <span class="c"># Load the mountains clip, cut it, slow it down, make it look darker</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;../../videos/badl-0001.mov&#39;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>\
            <span class="n">subclip</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span><span class="mi">46</span><span class="p">)</span><span class="o">.</span>\
-           <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">speedx</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span><span class="o">.</span>\
+           <span class="n">speedx</span><span class="p">(</span> <span class="mf">0.4</span><span class="p">)</span><span class="o">.</span>\
            <span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">colorx</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
 
 <span class="c"># Save the first frame to later make a mask with GIMP (only once)</span>

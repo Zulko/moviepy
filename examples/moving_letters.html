@@ -74,7 +74,7 @@ type="application/x-shockwave-flash" allowscriptaccess="always"
 allowfullscreen="true" width="550" height="450"></embed></object>
 </center><p>Here is the code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.tools.segmenting</span> <span class="kn">import</span> <span class="n">findObjects</span>
 
 <span class="c"># WE CREATE THE TEXT THAT IS GOING TO MOVE, WE CENTER IT.</span>
@@ -85,9 +85,11 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="n">cvc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span> <span class="p">[</span><span class="n">txtClip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)],</span>
                         <span class="n">size</span><span class="o">=</span><span class="n">screensize</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-<span class="c"># WE DEFINE FOUR WAYS OF MOVING THE LETTERS</span>
+<span class="c"># THE NEXT FOUR FUNCTIONS DEFINE FOUR WAYS OF MOVING THE LETTERS</span>
 
-<span class="n">rotMatrix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span>
+
+<span class="c"># helper function</span>
+<span class="n">rotMatrix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)],</span> 
                                  <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)]]</span> <span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">vortex</span><span class="p">(</span><span class="n">screenpos</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">nletters</span><span class="p">):</span>
@@ -116,7 +118,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 
 
 
-<span class="c"># WE USE THE PLUGIN TO LOCATE AND SEPARATE EACH LETTER</span>
+<span class="c"># WE USE THE PLUGIN findObjects TO LOCATE AND SEPARATE EACH LETTER</span>
 
 <span class="n">letters</span> <span class="o">=</span> <span class="n">findObjects</span><span class="p">(</span><span class="n">cvc</span><span class="p">)</span> <span class="c"># a list of ImageClips</span>
 

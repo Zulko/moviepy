@@ -24,6 +24,8 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+    <link rel="up" title="Reference Manual" href="ref.html" />
+    <link rel="prev" title="FFMPEG tools" href="ffmpeg.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -42,7 +44,11 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="ffmpeg.html" title="FFMPEG tools"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -55,6 +61,13 @@
 <h1>Decorators<a class="headerlink" href="#decorators" title="Permalink to this headline">¶</a></h1>
 <p>These decorators are implemented to ease the writing of methods and effects in MoviePy</p>
 <span class="target" id="module-moviepy.decorators"></span><p>all decorators used in moviepy go there</p>
+<dl class="function">
+<dt id="moviepy.decorators.add_mask_if_none">
+<tt class="descclassname">moviepy.decorators.</tt><tt class="descname">add_mask_if_none</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#moviepy.decorators.add_mask_if_none" title="Permalink to this definition">¶</a></dt>
+<dd><p>This decorator will apply the function f to the audio of
+the clip created with f</p>
+</dd></dl>
+
 <dl class="function">
 <dt id="moviepy.decorators.apply_to_audio">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">apply_to_audio</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#apply_to_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.apply_to_audio" title="Permalink to this definition">¶</a></dt>
@@ -101,6 +114,9 @@ videoclip with modified audio.</p>
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="ref.html">Reference Manual</a><ul>
+      <li>Previous: <a href="ffmpeg.html" title="previous chapter">FFMPEG tools</a></li>
+  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

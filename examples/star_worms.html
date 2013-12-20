@@ -93,7 +93,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">color_gradient</span>
 
 
@@ -219,7 +219,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 
 
 <span class="k">def</span> <span class="nf">resizeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)</span>
 
     
 <span class="k">def</span> <span class="nf">composeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>

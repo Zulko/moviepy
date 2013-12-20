@@ -100,7 +100,7 @@ are the variations of that float in the time.</li>
 </table>
 <dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.preview">
-<tt class="descname">preview</tt><big>(</big><em>fps=22050</em>, <em>buffersize=10000</em>, <em>nbytes=2</em>, <em>audioFlag=None</em>, <em>videoFlag=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.preview" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=22050</em>, <em>buffersize=50000</em>, <em>nbytes=2</em>, <em>audioFlag=None</em>, <em>videoFlag=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.preview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plays the sound clip with pygame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -130,14 +130,8 @@ objects (from Python&#8217;s standard threading module).</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.audio.AudioClip.AudioClip.to_audiofile">
-<tt class="descname">to_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=80000</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Writes the soundclip to a .wav file.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.to_soundarray">
-<tt class="descname">to_soundarray</tt><big>(</big><em>tt</em>, <em>nbytes=2</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_soundarray" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_soundarray</tt><big>(</big><em>tt=None</em>, <em>fps=None</em>, <em>nbytes=2</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_soundarray" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transforms the sound into an array that can be played by pygame
 or written in a wav file. See <tt class="docutils literal"><span class="pre">AudioClip.preview</span></tt>.</p>
 <table class="docutils field-list" frame="void" rules="none">

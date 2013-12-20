@@ -113,6 +113,12 @@ a None mask but can be useful in many cases. Choose</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="moviepy.video.VideoClip.VideoClip.afx">
+<tt class="descname">afx</tt><big>(</big><em>fun</em>, <em>*a</em>, <em>**k</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.afx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new clip whose audio has been transformed by <tt class="docutils literal"><span class="pre">fun</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.blit_on">
 <tt class="descname">blit_on</tt><big>(</big><em>picture</em>, <em>t</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.blit_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.blit_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the result of the blit of the clip&#8217;s frame at time <cite>t</cite>
@@ -152,7 +158,7 @@ size of the current clip.</li>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.preview">
-<tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=15</em>, <em>audio=True</em>, <em>audio_fps=22050</em>, <em>audio_buffersize=10000</em>, <em>audio_nbytes=2</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.preview" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=15</em>, <em>audio=True</em>, <em>audio_fps=22050</em>, <em>audio_buffersize=3000</em>, <em>audio_nbytes=2</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.preview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays the clip in a window, at the given frames per second
 (of movie) rate. It will avoid that the clip be played faster
 than normal, but it cannot avoid the clip to be played slower
@@ -304,7 +310,7 @@ once parallelization is implemented.</li>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.to_videofile">
-<tt class="descname">to_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>audio_nbytes=2</em>, <em>audio_bufsize=40000</em>, <em>temp_wav=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>para=True</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.to_videofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_videofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>audio_nbytes=2</em>, <em>audio_codec='libvorbis'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=40000</em>, <em>temp_wav=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>para=True</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.to_videofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_videofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Makes a video file out of the clip.
 First the clip is transformed into a directory clip, which means
 that the frames of the future movie are computed and stored in a
@@ -445,7 +451,7 @@ and not for each &#8216;frame&#8217;.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>applyto=['mask', 'audio']</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_time</tt><big>(</big><em>timefun, applyto=['mask', 'audio']</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does nothing for ImageClips (but it may affect their
 masks of their audios). The result is still an ImageClip</p>
 </dd></dl>

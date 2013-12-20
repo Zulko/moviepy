@@ -24,6 +24,9 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
+    <link rel="up" title="Reference Manual" href="ref.html" />
+    <link rel="next" title="audio.tools" href="audiotools.html" />
+    <link rel="prev" title="AudioClip" href="AudioClip.html" />
    
   
   <link media="only screen and (max-device-width: 480px)" href="../_static/small_flask.css" type= "text/css" rel="stylesheet" />
@@ -42,7 +45,14 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="audiotools.html" title="audio.tools"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AudioClip.html" title="AudioClip"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -65,9 +75,19 @@ sound arrives progressively over <tt class="docutils literal"><span class="pre">
 
 <dl class="function">
 <dt id="moviepy.audio.fx.audio_fadeout">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadeout</tt><big>(</big><em>self</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadeout" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadeout</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadeout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a sound clip where the sound fades out progressively
 over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds at the end of the clip.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.audio.fx.audio_left_right">
+<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_left_right</tt><big>(</big><em>audioclip</em>, <em>left=1</em>, <em>right=1</em>, <em>merge=False</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_left_right" title="Permalink to this definition">¶</a></dt>
+<dd><p>For a stereo audioclip, this function enables to change the volume
+of the left and right channel separately (with the factors <cite>left</cite>
+and <cite>right</cite>)
+Makes a stereo audio clip in which the volume of left and right
+is controlable</p>
 </dd></dl>
 
 <dl class="function">
@@ -86,6 +106,10 @@ over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds
         <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="ref.html">Reference Manual</a><ul>
+      <li>Previous: <a href="AudioClip.html" title="previous chapter">AudioClip</a></li>
+      <li>Next: <a href="audiotools.html" title="next chapter">audio.tools</a></li>
+  </ul></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

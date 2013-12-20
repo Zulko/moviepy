@@ -59,9 +59,9 @@
             
   <div class="section" id="moviepy">
 <h1>MoviePy<a class="headerlink" href="#moviepy" title="Permalink to this headline">¶</a></h1>
-<p>MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder:</p>
+<p>MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder (you will find the code for most clips in the <a class="reference internal" href="examples/examples.html#examples"><em>Example Scripts</em></a>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">moviepy.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;clips/&quot;</span><span class="p">)</span> <span class="p">)</span>
 <span class="n">clips</span> <span class="o">=</span> <span class="p">[</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;clips/</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
 <span class="n">video</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">transition</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;logo.avi&quot;</span><span class="p">))</span>
@@ -76,8 +76,12 @@ name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
 type="application/x-shockwave-flash" allowscriptaccess="always"
 allowfullscreen="true" width="550" height="450"></embed></object>
-</center><p>You will find the code for most clips in the <a class="reference internal" href="examples/examples.html#examples"><em>Example Scripts</em></a>.</p>
-<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in most cases you will need to code a little (or find someone who will !) to come to your goal.</p>
+</center><div class="section" id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>MoviePy uses mainly <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.</p>
+<a class="reference internal image-reference" href="_images/explications.jpeg"><img alt="_images/explications.jpeg" class="align-center" src="_images/explications.jpeg" style="width: 570px;" /></a>
+<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.</p>
+</div>
 <div class="section" id="user-s-guide">
 <h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
@@ -88,6 +92,9 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <li class="toctree-l1"><a class="reference internal" href="ref/ref.html">Reference Manual</a></li>
 </ul>
 </div>
+</div>
+<div class="section" id="contribute">
+<h2>Contribute !<a class="headerlink" href="#contribute" title="Permalink to this headline">¶</a></h2>
 <p>MoviePy is a (still experimental) open source software written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !</p>
 <p>For troubleshooting and bug reports, the best for now is to ask on <a class="reference external" href="http://stackoverflow.com/">Stackoverflow</a> (it will advertize for the project :) ) or on the Github project page.</p>
 </div>
@@ -113,9 +120,11 @@ alt="Fork me on GitHub"></a></div>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">MoviePy</a><ul>
+<li><a class="reference internal" href="#how-it-works">How it works</a></li>
 <li><a class="reference internal" href="#user-s-guide">User&#8217;s Guide</a><ul>
 </ul>
 </li>
+<li><a class="reference internal" href="#contribute">Contribute !</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>

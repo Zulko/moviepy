@@ -1,10 +1,10 @@
 MoviePy
 =======
 
-MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder: ::
+MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder (you will find the code for most clips in the :ref:`examples`): ::
     
     import os
-    from moviepy.all import *
+    from moviepy.editor import *
     files = sorted( os.listdir("clips/") )
     clips = [ VideoFileClip('clips/%s'%f) for f in files]
     video = concatenate(clips, transition = VideoFileClip("logo.avi"))
@@ -22,9 +22,16 @@ MoviePy is a Python module for script-based movie editing, which enables basic o
         allowfullscreen="true" width="550" height="450"></embed></object>
         </center>
 
-You will find the code for most clips in the :ref:`examples`.
+How it works
+-------------
 
-You can do pretty much any effect you want with MoviePy, but it is just a framework, and in most cases you will need to code a little (or find someone who will !) to come to your goal.
+MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
+
+.. image:: explications.jpeg
+    :width: 570px
+    :align: center
+
+You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
 
 
 User's Guide
@@ -38,6 +45,8 @@ User's Guide
    examples/examples
    ref/ref
 
+Contribute !
+-------------
 
 MoviePy is a (still experimental) open source software written by Zulko_ and released under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !
 
