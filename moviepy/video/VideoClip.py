@@ -394,7 +394,7 @@ class VideoClip(Clip):
             pos = 'center'
         colorclip = ColorClip(size, color)
         if col_opacity:
-            colorclip = colorclip.add_mask().set_opacity(col_opacity)
+            colorclip = colorclip.set_opacity(col_opacity)
 
         return CompositeVideoClip([colorclip, self.set_pos(pos)],
                                   transparent=(col_opacity != None))

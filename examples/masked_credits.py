@@ -1,10 +1,10 @@
-from moviepy.all import *
+from moviepy.editor import *
 from moviepy.video.tools.credits import credits1
 
 # Load the mountains clip, cut it, slow it down, make it look darker
 clip = VideoFileClip('../../videos/badl-0001.mov', audio=False).\
            subclip(37,46).\
-           fx( vfx.speedx, 0.4).\
+           speedx( 0.4).\
            fx( vfx.colorx, 0.7)
 
 # Save the first frame to later make a mask with GIMP (only once)

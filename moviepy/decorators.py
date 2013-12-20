@@ -23,6 +23,15 @@ def apply_to_audio(f, clip, *a, **k):
     if hasattr(newclip, 'audio') and (newclip.audio != None):
         newclip.audio = f(newclip.audio, *a, **k)
     return newclip
+    
+    
+@decorator.decorator
+def add_mask_if_none(f, clip, *a, **k):
+    """ This decorator will apply the function f to the audio of
+        the clip created with f """
+    if clip.mask is None:
+        clip = clip.add_mask()
+    return f(clip, *a, **k)
 
 
 @decorator.decorator

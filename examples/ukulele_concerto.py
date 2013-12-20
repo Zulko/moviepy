@@ -1,11 +1,11 @@
-from moviepy.all import *
+from moviepy.editor import *
 
 # UKULELE CLIP, OBTAINED BY CUTTING AND CROPPING
 # RAW FOOTAGE
 
 ukulele = VideoFileClip("../../videos/moi_ukulele.MOV", audio=False).\
                subclip(60+33, 60+50).\
-               fx( vfx.crop, 486, 180, 1196, 570)
+               crop(486, 180, 1196, 570)
 
 w,h = moviesize = ukulele.size
 
@@ -14,9 +14,9 @@ w,h = moviesize = ukulele.size
 
 piano = (VideoFileClip("../../videos/douceamb.mp4",audio=False).
          subclip(30,50).
-         fx( vfx.resize, (w/3,h/3)).    # one third of the total screen
-         fx( vfx.margin, 6,color=(255,255,255)).  #white margin
-         fx( vfx.margin, bottom=20, right=20, opacity=0). # transparent
+         resize((w/3,h/3)).    # one third of the total screen
+         margin( 6,color=(255,255,255)).  #white margin
+         margin( bottom=20, right=20, opacity=0). # transparent
          set_pos(('right','bottom')) )
 
 

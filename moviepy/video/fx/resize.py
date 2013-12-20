@@ -58,12 +58,12 @@ def resize(clip, newsize=None, height=None, width=None):
             else:
                 return ns
         if hasattr(newsize, "__call__"):
-            newsize = lambda t : trans_newsize(newsize(t))
+            newsize2 = lambda t : trans_newsize(newsize(t))
             if clip.ismask:
                 fl = lambda gf,t: 1.0*resizer((255 * gf(t)).astype('uint8'),
-                    newsize(t))/255
+                    newsize2(t))/255
             else:
-                fl = lambda gf,t: resizer(gf(t).astype('uint8'),newsize(t))
+                fl = lambda gf,t: resizer(gf(t).astype('uint8'),newsize2(t))
                 
             return clip.fl(fl)
             

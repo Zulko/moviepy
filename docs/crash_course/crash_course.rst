@@ -9,7 +9,7 @@ Example code
 In a typical script, you load or generate some clips, modify them, combine them, and write the result to a video file.
 So let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the ten first seconds, and write the result in a file: ::
     
-    from moviepy.all import *
+    from moviepy.editor import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
@@ -193,6 +193,7 @@ Much better ! There are already many effects implemented in the modules ``moviep
                fx( vfx.speedx, 2).\ # double speed
                fx( vfx.colorx, 0.5) # darken (decreases the RGB values)
 
+For convenience, frequently used methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
 
 
 clip.fl

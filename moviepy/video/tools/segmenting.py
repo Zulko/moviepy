@@ -1,6 +1,6 @@
 import numpy as np
 import scipy.ndimage as ndi
-from moviepy.video.ImageClip import ImageClip
+from moviepy.video.VideoClip import ImageClip
 
 
 def findObjects(clip,rem_thr=500, preview=False):

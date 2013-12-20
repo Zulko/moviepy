@@ -1,6 +1,6 @@
 import pickle
 
-from moviepy.all import *
+from moviepy.editor import *
 from moviepy.video.tools.tracking import manual_tracking, to_fxfy
 
 

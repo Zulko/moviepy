@@ -30,3 +30,23 @@ try:
     from moviepy.video.io.sliders import sliders
 except:
     pass
+
+# The next loop transforms many effects into VideoClip methods so that
+# they can be walled with myclip.resize(width=500) instead of 
+# myclip.fx( vfx.resize, width= 500)
+for method in ["vfx.crop",
+               "vfx.resize",
+               "vfx.margin",
+               "vfx.fadein",
+               "vfx.fadeout",
+               "vfx.speedx",
+               "afx.volumex",
+               "afx.audio_fadein",
+               "afx.audio_fadeout",
+               "transfx.crossfadein",
+               "transfx.crossfadeout"]:
+    exec("VideoClip.%s = %s"%( method.split('.')[1], method))
+               
+VideoClip.crop = vfx.crop
+VideoClip.resize = vfx.resize
+

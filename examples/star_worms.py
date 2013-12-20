@@ -9,7 +9,7 @@ background made of stars. Slight fading effect on the text.
 import numpy as np
 from skimage import transform as tf
 
-from moviepy.all import *
+from moviepy.editor import *
 from moviepy.video.tools.drawing import color_gradient
 
 
@@ -135,7 +135,7 @@ def annotate(clip,txt,txt_color='white',bg_color=(0,0,255)):
 
 
 def resizeCenter(clip):
-    return clip.fx( vfx.resize, height=h).set_pos('center')
+    return clip.resize( height=h).set_pos('center')
 
     
 def composeCenter(clip):

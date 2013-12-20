@@ -1,5 +1,5 @@
 import numpy as np
-from moviepy.all import *
+from moviepy.editor import *
 from moviepy.video.tools.segmenting import findObjects
 
 # WE CREATE THE TEXT THAT IS GOING TO MOVE, WE CENTER IT.
@@ -10,9 +10,11 @@ txtClip = TextClip('Cool effect',color='white', font="Amiri-Bold",
 cvc = CompositeVideoClip( [txtClip.set_pos('center')],
                         size=screensize, transparent=True)
 
-# WE DEFINE FOUR WAYS OF MOVING THE LETTERS
+# THE NEXT FOUR FUNCTIONS DEFINE FOUR WAYS OF MOVING THE LETTERS
 
-rotMatrix = lambda a: np.array( [[np.cos(a),np.sin(a)],
+
+# helper function
+rotMatrix = lambda a: np.array( [[np.cos(a),np.sin(a)], 
                                  [-np.sin(a),np.cos(a)]] )
 
 def vortex(screenpos,i,nletters):
@@ -41,7 +43,7 @@ def vortexout(screenpos,i,nletters):
 
 
 
-# WE USE THE PLUGIN TO LOCATE AND SEPARATE EACH LETTER
+# WE USE THE PLUGIN findObjects TO LOCATE AND SEPARATE EACH LETTER
 
 letters = findObjects(cvc) # a list of ImageClips
 
