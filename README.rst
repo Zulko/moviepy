@@ -10,7 +10,7 @@ See the full documentation and demo videos here_ .
 
 A typical MoviePy script looks like that: ::
 
-    from moviepy.all import *
+    from moviepy.editor import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
