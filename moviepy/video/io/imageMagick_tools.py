@@ -1,3 +1,7 @@
+import os
+import subprocess
+from moviepy.conf import FFMPEG_BINARY
+
 @subprocess_call
 def gif_to_directory(gif_file,dirName=None):
     """

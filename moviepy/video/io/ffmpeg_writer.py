@@ -95,7 +95,15 @@ def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
         
         
 def write_image(filename, image):
-    pix_fmt = "rgba" if (image.shape[2] == 4) else "rgb24"
-    vf = FFMPEG_VideoWriter(filename, pix_fmt='rgba')
-    vf.writer_frame(image)
-    vf.close()
+    """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
+        ffmpeg. """
+    proc = sp.Popen([ "ffmpeg", '-y',
+            '-s', "%dx%d"%(image.shape[:2][::-1]),
+            "-f", 'rawvideo',
+            '-pix_fmt', "rgba" if (image.shape[2] == 4) else "rgb24",
+            '-i','-', filename],
+            stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
+    image.tofile(proc.stdin)
+    proc.stdin.close()
+    proc.wait()
+    del proc

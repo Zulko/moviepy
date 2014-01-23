@@ -2,27 +2,37 @@
 resize_possible = True
 
 try:
+    
     import cv2
     resizer = lambda pic, newsize : cv2.resize(pic.astype('uint8'),
                 tuple(map(int, newsize)),
                 interpolation=cv2.INTER_AREA)
-except:
+                
+except ImportError:
+    
     try:
+        
         import Image
+        import numpy as np
         def resizer(pic, newsize):
             newsize = map(int, newsize)[::-1]
             shape = pic.shape
-            newshape = (newsize[0],newsize[2],shape[1])
+            newshape = (newsize[0],newsize[1],shape[2])
             pilim = Image.fromarray(pic)
-            resized_pil = pilim.resize(newsize, Image.ANTIALIAS)
+            resized_pil = pilim.resize(newsize[::-1], Image.ANTIALIAS)
             arr = np.fromstring(resized_pil.tostring(), dtype='uint8')
             return arr.reshape(newshape)
-    except:
+            
+    except ImportError:
+        
         try:
+            
             import scipy.misc.imresize as imresize
             resizer = lambda pic, newsize : imresize(pic,
                                                map(int, newsize[::-1]))
-        except:
+                                               
+        except ImportError:
+            
             resize_possible = False
         
     
@@ -88,5 +98,5 @@ def resize(clip, newsize=None, height=None, width=None):
 if not resize_possible:
     doc = resize.__doc__
     def resize(clip, newsize=None, height=None, width=None):
-        raise IOError("fx resize needs OpenCV or Scipy or PIL")
+        raise ImportError("fx resize needs OpenCV or Scipy or PIL")
     resize.__doc__ = doc

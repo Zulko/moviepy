@@ -25,7 +25,7 @@ import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 
 from  moviepy.video.tools.drawing import blit
 from moviepy.Clip import Clip
-
+from moviepy.conf import FFMPEG_BINARY
 
 
 
@@ -85,10 +85,10 @@ class VideoClip(Clip):
         alpha layer of the picture.
         """
         im = self.get_frame(t)
-        if savemask:
+        if savemask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
-        write_image(filename, im)
+        ffmpeg_writer.write_image(filename, im)
 
     @requires_duration
     def to_directory(self, foldername, fps, transparent=True,
@@ -320,6 +320,86 @@ class VideoClip(Clip):
         pos = map(int, pos)
 
         return blit(img, picture, pos, mask=mask, ismask=self.ismask)
+        
+        
+        
+    def to_gif(self, filename, fps=None, program= 'ImageMagick',
+            opt="OptimizeTransparency", fuzz=1, verbose=True,
+            loop=0, dispose=False):
+        """
+        Converts a VideoClip into an animated GIF using ImageMagick or
+        ffmpeg.
+        :param clip: the VideoClip to be converted.
+        :param filename: name of the gif, like 'myAnimation.gif'
+        :param fps: number of frames per second (see note below). If it
+            isn't provided, then the function will look for the clip's
+            ``fps`` attribute (VideoFileClip, for instance, have one).
+        :param program: software to use for the conversion, either
+            'ImageMagick' or 'ffmpeg'.
+        :param opt: (ImageMagick only) optimalization to apply, either
+            'optimizeplus' or 'OptimizeTransparency'.
+        :param fuzz: (ImageMagick only) Compresses the GIF by considering
+            that the colors that are less than fuzz% different are in fact
+            the same.
+        
+        
+        *Note:* The gif will be playing the clip in real time (you can
+        only change the frame rate). If you want the gif to be slower
+        than the clip you will write
+            
+            >>> # slow down clip 50% and make it a gif
+            >>> myClip.speedx(0.5).
+        
+        """
+        
+        def verboseprint(s):
+            if verbose: print "MoviePy: " + s
+        
+        if fps is None:
+            fps = self.fps
+        
+        fileName, fileExtension = os.path.splitext(filename)
+        tt = np.arange(0,self.duration, 1.0/fps)
+        tempfiles = []
+        
+        verboseprint( "Generating GIF frames" )
+        
+        for i, t in enumerate(tt):
+            
+            name = "%s_TEMP%04d.png"%(fileName,i+1)
+            tempfiles.append(name)
+            self.save_frame(name, t, savemask=True)
+            
+        delay = int(100.0/fps)
+        
+        if program == "ImageMagick":
+            
+            cmd = ("convert -delay %d"%delay +
+                  " -dispose %d"%(2 if dispose else 1)+
+                  " -loop %d"%loop+
+                  " `seq -f %s"%fileName +"_TEMP%04g.png"+
+                  " 1 1 %d`"%len(tt) +
+                  " -coalesce -fuzz %02d"%fuzz + "%"+
+                  " -layers %s %s"%(opt,filename))
+            os.system(cmd)
+            
+        elif program == "ffmpeg":
+            
+            cmd = [FFMPEG_BINARY,'-y', '-f', 'image2',
+                   '-i', fileName+'_TEMP%04d.png',
+                   '-r',str(fps),
+                   filename]
+                   
+            proc = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+            proc.wait()
+            print proc.stderr
+            
+        for f in tempfiles:
+            os.remove(f)
+        
+        verboseprint('GIF generated !')
 
     #-----------------------------------------------------------------
     # F I L T E R I N G
@@ -369,11 +449,12 @@ class VideoClip(Clip):
         :param constant_size: `False` for clips with moving image size.
         """
         if constant_size:
-            return self.set_mask(ColorClip(self.size, 1.0, ismask=True))
+            mask = ColorClip(self.size, 1.0, ismask=True)
+            return self.set_mask( mask.set_duration(self.duration))
         else:
             mask = VideoClip(ismask=True).set_get_frame(
                 lambda t: np.ones(self.get_frame(t).shape))
-            return self.set_mask(mask)
+            return self.set_mask(mask.set_duration(self.duration))
             
     def on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
         """ 
@@ -396,8 +477,11 @@ class VideoClip(Clip):
         if col_opacity:
             colorclip = colorclip.set_opacity(col_opacity)
 
-        return CompositeVideoClip([colorclip, self.set_pos(pos)],
+        result = CompositeVideoClip([colorclip, self.set_pos(pos)],
                                   transparent=(col_opacity != None))
+        if hasattr(self,'duration'):
+            result.duration = self.duration
+        return result
     
     
     def set_get_frame(self, gf):

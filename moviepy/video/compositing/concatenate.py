@@ -67,7 +67,7 @@ def concatenate(clipslist, method = 'chain', transition=None,
                    transparent=transparent)
     
     result.start_times = tt[:-1]
-    result.duration = tt[-1]
+    result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
     
     # Compute the mask if any
     
