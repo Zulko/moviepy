@@ -64,8 +64,6 @@ You can install moviepy manually by downloading the sources, either on PYPI_ or 
 Then just unzip everything in one folder, open a terminal and type ::
     
     sudo python setup.py install
-    
-    sudo python setup.py install
 
 Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script ``moviepy/conf.py``. It it fails, then you must enter the path in the first line of this file ::
     
@@ -80,11 +78,11 @@ You are not obliged to install these but for many uses MoviePy will scream at yo
 - PyGame_ is needed for video and sound previews (really essential for advanced editing).
 - imageMagick_  is needed for all text generation, GIF support, and much more in the future.
 
-There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.
+There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient. For instance, the feature ``clip.resize`` will be available if you have either Scikit Image *or* the PIL *or* OpenCV installed (PIL or OpenCV are to be prefered). 
 
 - Scipy is needed for many advanced functionalities (tracking, segmenting, etc.)
 - `Scikit Image`_ may be needed for some advanced image manipulation.
-- The Python Imaging Library is not used yet (I don't like the copyright) but it is coming. 
+- The Python Imaging Library can be used for resizing videos. 
 - `OpenCV 2.4.6`_ (which provides the python package ``cv2``) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.
 
 If you are on linux, these will surely be in your repos.

@@ -15,7 +15,7 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
 
     # Reduce the audio volume (volume x 0.8)
-    clip = clip.fx( afx.volumex, 0.8) 
+    clip = clip.volumex(0.8) 
     
     # Generate a text clip. You can customize the font, color, etc.
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
