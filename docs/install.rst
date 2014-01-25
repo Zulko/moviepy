@@ -13,6 +13,11 @@ MoviePy cannot run without these dependencies:
 
 **Make sure to use a recent version of ffmpeg**. You can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
 
+Numpy can be installed with most software managers on Linux distributions. Both Numpy and Decorator can be installed as follows with pip: ::
+
+    (sudo) pip install decorator
+    (sudo) pip install numpy
+
 .. _pip_install:
 
 Installation with PIP
@@ -20,7 +25,7 @@ Installation with PIP
 
 If you have ``pip`` installed, just type this in a terminal ::
     
-    sudo pip install moviepy
+    (sudo) pip install moviepy
 
 .. _manual_install:
 
