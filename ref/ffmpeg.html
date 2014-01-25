@@ -61,63 +61,8 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-moviepy.video.io.ffmpeg">
-<span id="ffmpeg-tools"></span><span id="ffmpegtools"></span><h1>FFMPEG tools<a class="headerlink" href="#module-moviepy.video.io.ffmpeg" title="Permalink to this headline">¶</a></h1>
-<p>Very experimental &#8216;bindings&#8217; to ffmpeg and ImageMagick.</p>
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.extract_audio">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">extract_audio</tt><big>(</big><em>inputfile</em>, <em>output</em>, <em>bitrate=3000</em>, <em>fps=44100</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#extract_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.extract_audio" title="Permalink to this definition">¶</a></dt>
-<dd><p>extract the sound from a video file and save it in <tt class="docutils literal"><span class="pre">output</span></tt></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.extract_subclip">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">extract_subclip</tt><big>(</big><em>filename</em>, <em>t1</em>, <em>t2</em>, <em>targetname=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#extract_subclip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.extract_subclip" title="Permalink to this definition">¶</a></dt>
-<dd><p>makes a new video file playing video file <tt class="docutils literal"><span class="pre">filename</span></tt> between
-the times <tt class="docutils literal"><span class="pre">t1</span></tt> and <tt class="docutils literal"><span class="pre">t2</span></tt>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.gif_to_directory">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">gif_to_directory</tt><big>(</big><em>gif_file</em>, <em>dirName=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#gif_to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.gif_to_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores all the frames of the given .gif file
-into the directory <tt class="docutils literal"><span class="pre">dirName</span></tt>. If <tt class="docutils literal"><span class="pre">dirName</span></tt>
-is not provided, the directory has the same name
-as the .gif file. Supports transparency.
-Returns the directory name.</p>
-<p>Example:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">gif_to_directory</span><span class="p">(</span><span class="s">&quot;animated-earth.gif&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">DirectoryClip</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.merge_video_audio">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">merge_video_audio</tt><big>(</big><em>video</em>, <em>audio</em>, <em>output</em>, <em>acodec='libvorbis'</em>, <em>ffmpeg_output=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#merge_video_audio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.merge_video_audio" title="Permalink to this definition">¶</a></dt>
-<dd><p>merges video file <tt class="docutils literal"><span class="pre">video</span></tt> and audio file <tt class="docutils literal"><span class="pre">audio</span></tt> into one
-movie file <tt class="docutils literal"><span class="pre">output</span></tt>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.movie_from_frames">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">movie_from_frames</tt><big>(</big><em>filename</em>, <em>folder</em>, <em>fps</em>, <em>digits=6</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#movie_from_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.movie_from_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Writes a movie out of the frames (picture files) in a folder</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.resize">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">resize</tt><big>(</big><em>video</em>, <em>output</em>, <em>size</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#resize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.resize" title="Permalink to this definition">¶</a></dt>
-<dd><p>resizes <tt class="docutils literal"><span class="pre">video</span></tt> to new size <tt class="docutils literal"><span class="pre">size</span></tt> and write the result
-in file <tt class="docutils literal"><span class="pre">output</span></tt>.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.io.ffmpeg.subprocess_call">
-<tt class="descclassname">moviepy.video.io.ffmpeg.</tt><tt class="descname">subprocess_call</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/ffmpeg.html#subprocess_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg.subprocess_call" title="Permalink to this definition">¶</a></dt>
-<dd><p>executes the outputed subprocess command</p>
-</dd></dl>
-
+  <div class="section" id="ffmpeg-tools">
+<span id="ffmpegtools"></span><h1>FFMPEG tools<a class="headerlink" href="#ffmpeg-tools" title="Permalink to this headline">¶</a></h1>
 </div>
 
 

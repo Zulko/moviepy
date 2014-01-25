@@ -303,6 +303,43 @@ once parallelization is implemented.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="moviepy.video.VideoClip.VideoClip.to_gif">
+<tt class="descname">to_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_gif" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a VideoClip into an animated GIF using ImageMagick or
+ffmpeg.
+:param clip: the VideoClip to be converted.
+:param filename: name of the gif, like &#8216;myAnimation.gif&#8217;
+:param fps: number of frames per second (see note below). If it</p>
+<blockquote>
+<div>isn&#8217;t provided, then the function will look for the clip&#8217;s
+<tt class="docutils literal"><span class="pre">fps</span></tt> attribute (VideoFileClip, for instance, have one).</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>program</strong> &#8211; software to use for the conversion, either
+&#8216;ImageMagick&#8217; or &#8216;ffmpeg&#8217;.</li>
+<li><strong>opt</strong> &#8211; (ImageMagick only) optimalization to apply, either
+&#8216;optimizeplus&#8217; or &#8216;OptimizeTransparency&#8217;.</li>
+<li><strong>fuzz</strong> &#8211; (ImageMagick only) Compresses the GIF by considering
+that the colors that are less than fuzz% different are in fact
+the same.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><em>Note:</em> The gif will be playing the clip in real time (you can
+only change the frame rate). If you want the gif to be slower
+than the clip you will write</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># slow down clip 50% and make it a gif</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">speedx</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.to_mask">
 <tt class="descname">to_mask</tt><big>(</big><em>canal=0</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.to_mask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a mask a video clip made from the clip.</p>

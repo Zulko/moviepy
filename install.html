@@ -65,26 +65,25 @@
 <h2>Core dependencies<a class="headerlink" href="#core-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>MoviePy cannot run without these dependencies:</p>
 <ul class="simple">
-<li>The software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> is needed for writing, reading, converting the sound and the video. Normally any version of FFMPEG should work but it is recommended to use a recent version for better results.</li>
+<li>The software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> is needed for writing, reading, converting the sound and the video.</li>
 <li><a class="reference external" href="http://www.scipy.org/install.html">Numpy</a> is needed for image and sound manipulation</li>
 <li>The <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a> module is used in the MoviePy code for better code readability</li>
 </ul>
-<p>Numpy and Decorator will be automatically installed during MoviePy&#8217;s installation if not present on your computer. As for ffmpeg, you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (see <a class="reference internal" href="#manual-install">manual_install</a>).</p>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>Make sure to use a recent version of <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> <a href="#id3"><span class="problematic" id="id4">**</span></a>. you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see <a class="reference internal" href="#manual-installation">Manual installation</a> below).</p>
 </div>
 <div class="section" id="installation-with-pip">
 <span id="pip-install"></span><h2>Installation with PIP<a class="headerlink" href="#installation-with-pip" title="Permalink to this headline">¶</a></h2>
-<p>On Linux, if you have pip installed, just type this in a terminal</p>
+<p>If you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal</p>
 <div class="highlight-python"><pre>sudo pip install moviepy</pre>
 </div>
-<p>Maybe it works with easy_install too, but it hasn&#8217;t been fully tested yet.</p>
 </div>
 <div class="section" id="manual-installation">
 <span id="manual-install"></span><h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
-<p>You can install moviepy manually by downloading the sources, either on <a href="#id1"><span class="problematic" id="id2">PYPI_</span></a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> .</p>
+<p>You can install moviepy manually by downloading the sources, either on <a href="#id5"><span class="problematic" id="id6">PYPI_</span></a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> .</p>
 <p>Then just unzip everything in one folder, open a terminal and type</p>
 <div class="highlight-python"><pre>sudo python setup.py install</pre>
 </div>
-<p>Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt>. It it fails, then you must enter the path in the first line of this file</p>
+<p>Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt>. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
 </pre></div>
 </div>
@@ -98,15 +97,16 @@
 </ul>
 <p>There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.</p>
 <ul class="simple">
-<li>Scipy is needed for many advanced functionalities (tracking, segmenting, etc.)</li>
+<li>Scipy is needed for many advanced functionalities (tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren&#8217;t installed on your computer.</li>
 <li><a class="reference external" href="http://scikit-image.org/download.html">Scikit Image</a> may be needed for some advanced image manipulation.</li>
 <li>The Python Imaging Library is not used yet (I don&#8217;t like the copyright) but it is coming.</li>
 <li><a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> (which provides the python package <tt class="docutils literal"><span class="pre">cv2</span></tt>) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.</li>
 </ul>
-<p>If you are on linux, these will surely be in your repos.</p>
+<p>If you are on linux, these softwares will surely be in your repos.</p>
 <div class="section" id="installing-opencv-2-4-6">
 <h3>Installing OpenCV 2.4.6<a class="headerlink" href="#installing-opencv-2-4-6" title="Permalink to this headline">¶</a></h3>
-<p>OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned. The installation seems easy for Windows. On linux, here is what I found on the Internet:</p>
+<p>OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned !
+The installation seems easy for Windows. On linux, here is what I found on the Internet:</p>
 <ul>
 <li><p class="first">Remove any other version of OpenCV if you installed it through a package manager.</p>
 </li>

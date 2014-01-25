@@ -7,23 +7,20 @@ Core dependencies
 
 MoviePy cannot run without these dependencies:
 
-- The software ffmpeg_ is needed for writing, reading, converting the sound and the video. Normally any version of FFMPEG should work but it is recommended to use a recent version for better results.
+- The software ffmpeg_ is needed for writing, reading, converting the sound and the video. 
 - `Numpy`_ is needed for image and sound manipulation
 - The Decorator_ module is used in the MoviePy code for better code readability
 
-Numpy and Decorator will be automatically installed during MoviePy's installation if not present on your computer. As for ffmpeg, you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (see manual_install_).
+**Make sure to use a recent version of ffmpeg_ **. you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
 
 .. _pip_install:
 
 Installation with PIP
 ------------------------
 
-On Linux, if you have pip installed, just type this in a terminal ::
+If you have ``pip`` installed, just type this in a terminal ::
     
     sudo pip install moviepy
-
-Maybe it works with easy_install too, but it hasn't been fully tested yet.
-
 
 .. _manual_install:
 
@@ -36,7 +33,7 @@ Then just unzip everything in one folder, open a terminal and type ::
     
     sudo python setup.py install
 
-Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script ``moviepy/conf.py``. It it fails, then you must enter the path in the first line of this file ::
+Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script ``moviepy/conf.py``. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file ::
     
     FFMPEG_BINARY = path/to/your/ffmpeg
 
@@ -51,18 +48,19 @@ You are not obliged to install these but for many uses MoviePy will scream at yo
 
 There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.
 
-- Scipy is needed for many advanced functionalities (tracking, segmenting, etc.)
+- Scipy is needed for many advanced functionalities (tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - The Python Imaging Library is not used yet (I don't like the copyright) but it is coming. 
 - `OpenCV 2.4.6`_ (which provides the python package ``cv2``) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.
 
-If you are on linux, these will surely be in your repos.
+If you are on linux, these softwares will surely be in your repos.
 
 
 Installing OpenCV 2.4.6
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned. The installation seems easy for Windows. On linux, here is what I found on the Internet:
+OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned !
+The installation seems easy for Windows. On linux, here is what I found on the Internet:
 
 - Remove any other version of OpenCV if you installed it through a package manager.
 - Unzip the source code of `OpenCV 2.4.6`_ in some folder. open a terminal in this folder.
