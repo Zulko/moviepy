@@ -838,7 +838,8 @@ class TextClip(ImageClip):
         proc.wait()
         if proc.returncode:
             print ("Error: problem in the generation of the text file"+
-                   "by ImageMagick. Certainly wrong arguments in TextClip")
+                "by ImageMagick. Certainly wrong arguments in TextClip")
+        
         ImageClip.__init__(self, tempfile, transparent=transparent)
         self.txt = txt
         self.color = color

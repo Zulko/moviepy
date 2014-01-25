@@ -1,7 +1,7 @@
 MoviePy
 =======
 
-MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder (you will find the code for most clips in the :ref:`examples`): ::
+MoviePy is a Python module for script-based movie editing, which enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, but can also be used for advanced compositing and special effects. Let me put together the clips in my demonstration folder (you will find the code for most clips in the :ref:`examples`): ::
     
     import os
     from moviepy.editor import *
@@ -21,18 +21,8 @@ MoviePy is a Python module for script-based movie editing, which enables basic o
         type="application/x-shockwave-flash" allowscriptaccess="always"
         allowfullscreen="true" width="550" height="450"></embed></object>
         </center>
-
-How it works
--------------
-
-MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
-
-.. image:: explications.jpeg
-    :width: 570px
-    :align: center
-
-You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
-
+        
+You can also do animated GIFs with MoviePy ([examples](http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/)). 
 
 User's Guide
 --------------
@@ -44,6 +34,20 @@ User's Guide
    crash_course/crash_course
    examples/examples
    ref/ref
+
+How it works, in a nutshell
+-----------------------------
+
+MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
+
+.. image:: explications.jpeg
+    :width: 570px
+    :align: center
+
+You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
+
+
+
 
 Contribute !
 -------------
