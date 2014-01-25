@@ -11,7 +11,7 @@ MoviePy cannot run without these dependencies:
 - `Numpy`_ is needed for image and sound manipulation
 - The Decorator_ module is used in the MoviePy code for better code readability
 
-**Make sure to use a recent version of ffmpeg_ **. you can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
+**Make sure to use a recent version of ffmpeg**. You can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
 
 .. _pip_install:
 
