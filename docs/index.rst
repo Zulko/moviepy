@@ -52,7 +52,7 @@ You can do pretty much any effect you want with MoviePy, but it is just a framew
 Contribute !
 -------------
 
-MoviePy is a (still experimental) open source software written by Zulko_ and released under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !
+MoviePy is a (still experimental) open source software written by Zulko_ and released on Github_ and PyPI_ under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !
 
 For troubleshooting and bug reports, the best for now is to ask on Stackoverflow_ (it will advertize for the project :) ) or on the Github project page.
 
@@ -71,7 +71,8 @@ Indices and tables
         src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
         alt="Fork me on GitHub"></a>
 
-
+.. _PyPI: https://pypi.python.org/pypi/moviepy
+.. _Github: https://github.com/Zulko/moviepy
 .. _Zulko: https://github.com/Zulko/
 .. _Stackoverflow: http://stackoverflow.com/
 
