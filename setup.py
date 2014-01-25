@@ -12,4 +12,5 @@ setup(name='moviepy',
     long_description=open('README.rst').read(),
     license='LICENSE.txt',
     keywords="movie editing film mixing script-based",
-    packages= find_packages(exclude='docs'))
+    packages= find_packages(exclude='docs'),
+    requires=['numpy', 'decorator'])
