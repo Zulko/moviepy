@@ -22,7 +22,7 @@ MoviePy is a Python module for script-based movie editing, which enables basic o
         allowfullscreen="true" width="550" height="450"></embed></object>
         </center>
         
-You can also do animated GIFs with MoviePy ([examples](http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/)). 
+You can also do animated GIFs with MoviePy (`examples <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_). 
 
 User's Guide
 --------------
