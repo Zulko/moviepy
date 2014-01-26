@@ -86,12 +86,13 @@ class AudioClip(Clip):
                       codec, bitrate, verbose)
 
 try:
-    # Add methods preview (only if pygame installed)
+    
+    # Add method preview (only if pygame installed)
     from moviepy.audio.io.preview import preview
     AudioClip.preview = preview
+    
 except:
     pass
-from moviepy.audio.io.preview import preview
         
 
 class AudioArrayClip(AudioClip):
@@ -129,7 +130,6 @@ class AudioArrayClip(AudioClip):
                     return self.array[i]
 
         self.get_frame = gf
-        
         
         
 class CompositeAudioClip(AudioClip):
