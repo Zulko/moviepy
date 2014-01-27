@@ -7,11 +7,8 @@ import numpy as np
 
 #from moviepy.clip import Clip
 from moviepy.tools import cvsecs
-from moviepy.video.io.preview import imdisplay
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.tools import cvsecs
-
-
 
     
 class FFMPEG_AudioReader:
@@ -28,8 +25,6 @@ class FFMPEG_AudioReader:
         self.load_infos()
         self.initialize()
        
-        
-        
     
     def initialize(self):
         """ Opens the file, creates the pipe. """
