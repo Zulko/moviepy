@@ -50,13 +50,13 @@ Composite video clips are video clips which will display the contents of several
     
     video = concatenate([clip1,clip2,clip3])
 
-Now ``myVideo`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
+Now ``video`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
 
 Next, you have the `~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`: ::
     
     video = CompositeVideoClip(clip1.size, [clip1,clip2,clip3])
  
-Now ``myVideo`` is a clip that has the size of ``clip1``, and plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of
+Now ``video`` is a clip that has the size of ``clip1``, and plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of
 ``clip1``, and ``clip2``. Of course, if ``clip2`` and ``clip3`` have the same size as ``clip1``, then only ``clip3``, which is on top, will be
 visible in the video... unless  ``clip3`` and ``clip2`` have masks which hide parts of them.
 
