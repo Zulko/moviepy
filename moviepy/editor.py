@@ -12,6 +12,8 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate
+
+from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 # FX
@@ -46,7 +48,13 @@ for method in ["vfx.crop",
                "transfx.crossfadein",
                "transfx.crossfadeout"]:
     exec("VideoClip.%s = %s"%( method.split('.')[1], method))
-               
+
+
+for method in ["afx.audio_fadein",
+               "afx.audio_fadeout"]:
+    exec("AudioClip.%s = %s"%( method.split('.')[1], method))
+
+
 VideoClip.crop = vfx.crop
 VideoClip.resize = vfx.resize
 
