@@ -5,7 +5,9 @@ if you load them with ``from moviepy.all import *``
 """
 
 from moviepy.decorators import requires_duration, add_mask_if_none
-from moviepy.video.fx import fadein, fadeout
+from .CompositeVideoClip import CompositeVideoClip
+from moviepy.video.fx.fadein import fadein
+from moviepy.video.fx.fadeout import fadeout
 
 @add_mask_if_none
 def crossfadein(clip, duration):
@@ -28,3 +30,23 @@ def crossfadeout(clip, duration):
 	newclip = clip.copy()
 	newclip.mask = clip.mask.fx(fadeout, duration)
 	return newclip
+
+
+
+
+
+
+
+
+
+
+@requires_duration
+def make_loopable(clip, cross_duration):
+    """ Makes the clip fade in progressively at its own end, this way
+    it can be looped indefinitely. ``cross`` is the duration in seconds
+    of the fade-in.  """  
+    d = clip.duration
+    clip2 = clip.fx(crossfadein, cross_duration).\
+                 set_start(d - cross_duration)
+    return CompositeVideoClip([ clip, clip2 ]).\
+                 subclip(cross_duration,d)

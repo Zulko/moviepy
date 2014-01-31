@@ -32,7 +32,7 @@ def show(clip, t=0, with_mask=True):
         clip = clip.to_RGB()
     if with_mask and (clip.mask != None):
         import moviepy.video.compositing.CompositeVideoClip as cvc
-        clip = cvc.CompositeVideoClip([clip])
+        clip = cvc.CompositeVideoClip([clip.set_pos((0,0))])
     imdisplay(clip.get_frame(t))
 
 
@@ -85,25 +85,50 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     if audio: # synchronize with audio
         videoFlag.set() # say to the audio: video is ready
         audioFlag.wait() # wait for the audio to be ready
-        
+    
+    result = []
+    
     t0 = time.time()
     for t in np.arange(1.0 / fps, clip.duration, 1.0 / fps):
         
         img = clip.get_frame(t)
         
         for event in pg.event.get():
-                if event.type == pg.KEYDOWN:
-                    if (event.key == pg.K_ESCAPE):
-                        videoFlag.clear()
-                        print "Keyboard interrupt"
-                        return
-                        
-                elif event.type == pg.MOUSEBUTTONDOWN:
-                    x,y = pg.mouse.get_pos()
-                    rgb = img[y,x]
-                    print "time, position, color : ", "%.03f, %s, %s"%(
-                                 t,str((x,y)),str(rgb))
+            if event.type == pg.KEYDOWN:
+                if (event.key == pg.K_ESCAPE):
+                    videoFlag.clear()
+                    print "Keyboard interrupt"
+                    return result
+                    
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                x,y = pg.mouse.get_pos()
+                rgb = img[y,x]
+                result.append({'time':t, 'position':(x,y),
+                                'color':rgb})
+                print "time, position, color : ", "%.03f, %s, %s"%(
+                             t,str((x,y)),str(rgb))
                     
         t1 = time.time()
         time.sleep(max(0, t - (t1-t0)) )
         imdisplay(img, screen)
+
+def image_preview(clip):
+    
+    clip.show()
+    result=[]
+    while True:
+        for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                if (event.key == pg.K_ESCAPE):
+                    videoFlag.clear()
+                    print "Keyboard interrupt"
+                    return result
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                 x,y = pg.mouse.get_pos()
+                 rgb = img[y,x]
+                 result.append({'time':t, 'position':(x,y),
+                            'color':rgb})
+                 print "time, position, color : ", "%.03f, %s, %s"%(
+                         t,str((x,y)),str(rgb))
+    return result
+    

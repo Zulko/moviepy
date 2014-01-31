@@ -39,7 +39,10 @@ MoviePy cannot run without these dependencies:
 - `Numpy`_ is needed for image and sound manipulation.
 - The Decorator_ module is used in the MoviePy code for better code readability.
 
-**Make sure to use a recent version of ffmpeg**. You can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
+**Make sure to use a recent version of ffmpeg**.
+You can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see `Manual installation`_ below).
+
+*Debian and Ubuntu users*, you certainly have an out-of-date version of ffmpeg, you *must* download a recent version from the ffmpeg_ website.
 
 Normally Numpy and Decorator will be automatically installed when you install MoviePy. In case of doubt/problem they can also be installed manually.
 Numpy can be installed with most software managers on Linux distributions. Both Numpy and Decorator can be installed as follows with pip: ::
