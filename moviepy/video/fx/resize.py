@@ -1,4 +1,3 @@
-
 resize_possible = True
 
 try:
@@ -12,7 +11,7 @@ except ImportError:
     
     try:
         
-        import Image
+        from PIL import Image
         import numpy as np
         def resizer(pic, newsize):
             newsize = map(int, newsize)[::-1]
