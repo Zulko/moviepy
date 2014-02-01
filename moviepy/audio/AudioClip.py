@@ -67,21 +67,16 @@ class AudioClip(Clip):
         inttype = {1:'int8',2:'int16',4:'int32'}[nbytes]
         return (2**(8*nbytes-1)*snd_array).astype(inttype)
 
-    @requires_duration
-    def to_audiofile(self, filename, fps=44100, nbytes = 2,
-                   codec ='libvorbis', bitrate=None,
-                      buffersize=60000, verbose=True):
-        """ Writes the soundclip to a file using FFMPEG """
-        
-        ffmpeg_audiowrite(clip, filename, fps, nbytes=nbytes,
-              buffersize=buffersize, codec=codec, bitrate=bitrate, verbose=True)
-
     @property
     def nchannels(self):
         return len(list(self.get_frame(0)))
     
-    def to_audiofile(self,filename, fps=44100, nbytes=2, buffersize=5000,
-                      codec='libvorbis', bitrate=None, verbose=True):
+    
+    @requires_duration
+    def to_audiofile(self,filename, fps=44100, nbytes=2,
+                     buffersize=5000, codec='libvorbis',
+                     bitrate=None, verbose=True):
+                         
         return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
                       codec, bitrate, verbose)
 
@@ -112,7 +107,7 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
         
         
-        def gf(t):
+        def get_framef(t):
             """ complicated, but must be able to handle the case where t
             is a list of the form sin(t) """
             
@@ -129,7 +124,7 @@ class AudioArrayClip(AudioClip):
                 else:
                     return self.array[i]
 
-        self.get_frame = gf
+        self.get_frame = get_frame
         
         
 class CompositeAudioClip(AudioClip):
@@ -154,13 +149,17 @@ class CompositeAudioClip(AudioClip):
         if not any([(e is None) for e in ends]):
             self.duration = max(ends)
 
-        def gf(t):
+        def get_frame(t):
+            
             sounds= [c.get_frame(t - c.start)
                      for c in clips if c.is_playing(t)]
+                     
             if isinstance(t,np.ndarray):
                 zero = np.zeros((len(t),2))
+                
             else:
                 zero = np.zeros(2)
+                
             return zero + sum(sounds)
 
-        self.get_frame = gf
+        self.get_frame = get_frame

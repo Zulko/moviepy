@@ -142,7 +142,8 @@ class VideoClip(Clip):
     def to_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100, 
                  audio_nbytes = 2, audio_codec= 'libvorbis',
-                 audio_bitrate = None, audio_bufsize = 40000, temp_wav=None,
+                 audio_bitrate = None, audio_bufsize = 40000,
+                 temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
                  para = True, verbose = True):
         """
@@ -196,7 +197,7 @@ class VideoClip(Clip):
         if isinstance(audio, str): 
             # audio is some audiofile it is maybe not a wav file. It is
             # NOT temporary file, it will NOT be removed at the end.
-            temp_wav = audio
+            temp_audiofile = audio
             make_audio = False
             merge_audio = True
             
@@ -206,16 +207,30 @@ class VideoClip(Clip):
             
         elif audio:
             # The audio will be the clip's audio
-            if temp_wav is None:
-                # make a name for the temporary folder
-                ext = {'libvorbis':'.ogg',
-                       'libfdk_aac':'.m4a',
-                       'pcm_s16le':'.wav',
-                       'pcm_s32le': '.wav'}[audio_codec]
-                temp_wav = (Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND" + ext)
+            if temp_audiofile is None:
+                
+                # make a name for the temporary file
+                
+                D_ext = {'libmp3lame': 'mp3',
+                       'libvorbis':'ogg',
+                       'libfdk_aac':'m4a',
+                       'pcm_s16le':'wav',
+                       'pcm_s32le': 'wav'}
+                
+                if audio_codec in D_ext.values():
+                    ext = audio_codec
+                else:
+                    if audio_codec in D_ext.keys():
+                        ext = D_ext[audio_codec]
+                    else:
+                        raise ValueError('audio_codec for file'
+                                          '%d unkown !'%filename)
+                    
+                temp_audiofile = (Clip._TEMP_FILES_PREFIX +
+                            "to_videofile_SOUND." + ext)
             
-            make_audio = (not os.path.exists(temp_wav)) or rewrite_audio
+            make_audio = ( (not os.path.exists(temp_audiofile)) 
+                            or rewrite_audio)
             merge_audio = True
             
         else:
@@ -224,21 +239,25 @@ class VideoClip(Clip):
             merge_audio = False
         
         if merge_audio:
+            
             name, ext = os.path.splitext(os.path.basename(filename))
             videofile = Clip._TEMP_FILES_PREFIX + "to_videofile" + ext
+            
         else:
+            
             videofile = filename
             
-        
+        # enough cpu for multiprocessing ?
         enough_cpu = (multiprocessing.cpu_count() > 2)
         
         verbose_print("Making file %s ...\n"%filename)
+        
         if para and make_audio and  enough_cpu:
             # Parallelize
             verbose_print("Writing audio/video in parrallel.\n")
             audioproc = multiprocessing.Process(
                     target=self.audio.to_audiofile,
-                    args=(temp_wav,audio_fps,audio_nbytes,
+                    args=(temp_audiofile,audio_fps,audio_nbytes,
                           audio_bufsize,audio_codec, audio_bitrate,verbose))
             audioproc.start()
             ffmpeg_writer.ffmpeg_write(self,  videofile, fps, codec,
@@ -250,7 +269,7 @@ class VideoClip(Clip):
         else:
             # Don't parallelize
             if make_audio:
-                self.audio.to_audiofile(temp_wav,audio_fps, audio_nbytes,
+                self.audio.to_audiofile(temp_audiofile,audio_fps, audio_nbytes,
                     audio_bufsize, audio_codec, audio_bitrate, verbose)
             ffmpeg_writer.ffmpeg_write(self, videofile, fps, codec,
                                        bitrate=bitrate, verbose=verbose)
@@ -259,12 +278,12 @@ class VideoClip(Clip):
         if merge_audio:
             
             verbose_print("\nNow merging video and audio...\n")
-            ffmpeg_tools.merge_video_audio(videofile,temp_wav,filename,
+            ffmpeg_tools.merge_video_audio(videofile,temp_audiofile,filename,
                                      ffmpeg_output=True)
             if remove_temp:
                 os.remove(videofile)
                 if not isinstance(audio,str):
-                    os.remove(temp_wav)
+                    os.remove(temp_audiofile)
             verbose_print("\nYour video is ready ! Fingers crossed"+
                           " for the Oscars !")
                 
@@ -829,7 +848,7 @@ class TextClip(ImageClip):
             cmd += ["-interline-spacing", "%d"%interline]
             
         cmd += ["%s:%s" %(method, txt),
-        "-type",  "truecolormatte", tempfile]
+        "-type",  "truecolormatte", "PNG32:%s"%tempfile]
         
         if print_cmd:
             print " ".join(cmd)

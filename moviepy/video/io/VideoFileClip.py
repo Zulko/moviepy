@@ -54,12 +54,15 @@ class VideoFileClip(VideoClip):
         # Make a reader for the audio, if any.
         if audio:
             try:
-                self.audio = AudioFileClip(filename, buffersize= audio_buffersize,
-                    fps = audio_fps, nbytes = audio_nbytes)
+                self.audio = AudioFileClip(filename,
+                                           buffersize= audio_buffersize,
+                                           fps = audio_fps,
+                                           nbytes = audio_nbytes)
             except:
                 if verbose:
                     print "No audio found in %s"%filename
                 pass
+                
     
     def coreader(self, audio=True):
         """ Returns a copy of the AudioFileClip, i.e. a new entrance point

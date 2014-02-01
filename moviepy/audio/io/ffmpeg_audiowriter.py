@@ -38,17 +38,17 @@ class FFMPEG_AudioWriter:
                   codec='libfdk_aac', bitrate=None, input_video=None):
         
         self.filename = filename
-        cmd = [ FFMPEG_BINARY, '-y',
+        cmd = ([ FFMPEG_BINARY, '-y',
             "-f", 's%dle'%(8*nbytes),
             "-acodec",'pcm_s%dle'%(8*nbytes),
             '-r', "%d"%fps_input,
             '-ac',"%d"%nchannels,
-            '-i', '-']+ ([
-            '-vn'] if input_video==None else [
-            "-i", input_video, '-vcodec', 'copy'])+[
-            '-acodec', codec] + (
-            ['-b',bitrate] if (bitrate!=None) else []) + [
-            filename ]
+            '-i', '-']
+            + (['-vn'] if input_video==None else
+                 [ "-i", input_video, '-vcodec', 'copy'])
+            + ['-acodec', codec]
+            + (['-b',bitrate] if (bitrate!=None) else [])
+            + [ filename ])
         self.proc = sp.Popen(cmd,stdin=sp.PIPE,
                                  stdout=sp.PIPE,
                                  stderr=sp.PIPE)
