@@ -50,19 +50,25 @@ Composite video clips are video clips which will display the contents of several
     
     video = concatenate([clip1,clip2,clip3])
 
-Now ``myVideo`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
+Now ``video`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
 
 Next, you have the `~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`: ::
     
-    video = CompositeVideoClip(clip1.size, [clip1,clip2,clip3])
+    video = CompositeVideoClip([clip1,clip2,clip3])
  
-Now ``myVideo`` is a clip that has the size of ``clip1``, and plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of
-``clip1``, and ``clip2``. Of course, if ``clip2`` and ``clip3`` have the same size as ``clip1``, then only ``clip3``, which is on top, will be
-visible in the video... unless  ``clip3`` and ``clip2`` have masks which hide parts of them.
+Now ``video`` plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of ``clip1``, and ``clip2``. For instance, if ``clip2`` and ``clip3`` have the same size as ``clip1``, then only ``clip3``, which is on top, will be visible in the video... unless  ``clip3`` and ``clip2`` have masks which hide parts of them. Note that by default the composition has the size of its first clip (as it is generally a *background*). But sometimes you will want to make your clips *float* in a bigger composition, so you will specify the size of the final composition as follows ::
 
-You can set the starting time of each clip as follows: ::
+    video = CompositeVideoClip([clip1,clip2,clip3], size=(720,460))
     
-    video = CompositeVideoClip(clip.size, [clip1,clip2,clip3])
+In a CompositionClip, all the clips start to play at a time that is specified by the ``clip.start`` attribute. You can set this starting time as follows: ::
+    
+    clip2 = clip1.set_start(5) # start after 5 seconds 
+
+So for instance your composition will look like ::
+
+    video = CompositeVideoClip([clip1, # starts at t=0
+                                clip2.set_start(5), # start at t=5s
+                                clip3.set_start(9)]) # start at t=9s
 
 Because the three clips overlap, we can make them appear with a fading-in effect. Here we go for fadein effects that last 1.5 seconds: ::
     
@@ -70,17 +76,11 @@ Because the three clips overlap, we can make them appear with a fading-in effect
                                 clip2.set_start(50).fadein(1.5),
                                 clip3.set_start(90).fadein(1.5)])
 
-Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear: ::
+Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition: ::
     
     video = CompositeVideoClip([clip1,
                                clip2.set_pos((45,150)),
                                clip3.set_pos((90,100))])
-
-The size of the final clip is by default the size of the first clip in the list. If you want all your clips to appear in a composition of arbitrary size use argument ``size``: ::
-    
-    video = CompositeVideoClip([clip1.set_pos((45,150)),
-                                clip2.set_pos((45,150))],
-                                size = (720,460))
 
 Note that there are many ways to specify the position: ::
     
@@ -125,9 +125,10 @@ To write a clip as a video file, use ::
     myClip.to_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
 
 
-Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like clips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
+Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
 
-    myClip = Image("floawer.jpeg") # has infinite duration
+    myClip = Image("flower.jpeg") # has infinite duration
+    Image("flower.jpeg").preview() # Will fail ! NO DURATION !
     myClip.set_duration(5).preview() # will show flowers for 5 seconds
 
 .. _CCaudioClips:
