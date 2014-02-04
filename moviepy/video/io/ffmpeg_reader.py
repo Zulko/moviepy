@@ -13,7 +13,7 @@ class FFMPEG_VideoReader:
         self.filename = filename
         self.pix_fmt = pix_fmt
         self.initialize()
-        if pix_ftm == 'rgba':
+        if pix_fmt == 'rgba':
             self.depth = 4
         else:
             self.depth = 3
