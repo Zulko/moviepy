@@ -1,9 +1,10 @@
 """
-Misc. useful functions
+Misc. useful functions that can be used at many places in the program.
 """
 
 def cvsecs(*args):
-    """ converts a time to second. Either cvsecs(min,secs) or
+    """
+    Converts a time to second. Either cvsecs(min,secs) or
     cvsecs(hours,mins,secs).
     >>> cvsecs(5.5) # -> 5.5 seconds
     >>> cvsecs(10, 4.5) # -> 604.5 seconds

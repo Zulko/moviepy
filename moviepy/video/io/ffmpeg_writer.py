@@ -6,7 +6,11 @@ out of VideoClips
 import sys
 import numpy as np
 import subprocess as sp
+
+from tqdm import tqdm
+
 from moviepy.conf import FFMPEG_BINARY
+
 
 class FFMPEG_VideoWriter:
     """ A class to read videos using ffmpeg. ffmpeg will read any kind
@@ -76,19 +80,16 @@ def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
     verbose_print("Rendering video %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
              bitrate=bitrate)
-    i=0
+             
     nframes = int(clip.duration*fps)
     
-    while (i < nframes):
+    for i in tqdm(range(nframes)):
         frame = clip.get_frame(1.0*i/fps)
         if withmask:
             mask = (255*clip.mask.get_frame(1.0*i/fps))
             frame = np.dstack([frame,mask])
             
         writer.write_frame(frame.astype("uint8"))
-        if  ((i+1) % (nframes/10)) == 0:
-            verbose_print("=")
-        i += 1
     
     writer.close()
     verbose_print("video done !")

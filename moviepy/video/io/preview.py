@@ -96,7 +96,9 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if (event.key == pg.K_ESCAPE):
-                    videoFlag.clear()
+                    
+                    if audio:
+                        videoFlag.clear()
                     print "Keyboard interrupt"
                     return result
                     

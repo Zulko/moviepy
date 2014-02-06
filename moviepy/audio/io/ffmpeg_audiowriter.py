@@ -3,6 +3,7 @@ import wave
 import numpy as np
 import subprocess as sp
 
+from tqdm import tqdm
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 
@@ -82,8 +83,8 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     nchunks = totalsize / buffersize + 1
     pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
     ifeedback = max(1,nchunks/10)
-    for i in range(nchunks):
-        if ( (i% ifeedback) == 0): verbose_print("=")
+    
+    for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt,nbytes)
         writer.write_frames(sndarray)

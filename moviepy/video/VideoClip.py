@@ -269,8 +269,10 @@ class VideoClip(Clip):
         else:
             # Don't parallelize
             if make_audio:
-                self.audio.to_audiofile(temp_audiofile,audio_fps, audio_nbytes,
-                    audio_bufsize, audio_codec, audio_bitrate, verbose)
+                self.audio.to_audiofile(temp_audiofile,audio_fps,
+                                        audio_nbytes, audio_bufsize,
+                                        audio_codec, audio_bitrate,
+                                        verbose)
             ffmpeg_writer.ffmpeg_write(self, videofile, fps, codec,
                                        bitrate=bitrate, verbose=verbose)
         
@@ -278,8 +280,9 @@ class VideoClip(Clip):
         if merge_audio:
             
             verbose_print("\nNow merging video and audio...\n")
-            ffmpeg_tools.merge_video_audio(videofile,temp_audiofile,filename,
-                                     ffmpeg_output=True)
+            ffmpeg_tools.merge_video_audio(videofile,temp_audiofile,
+                                  filename, ffmpeg_output=True)
+                                  
             if remove_temp:
                 os.remove(videofile)
                 if not isinstance(audio,str):

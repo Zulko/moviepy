@@ -17,6 +17,6 @@ def speedx(clip, factor = None, final_duration=None):
     newclip = clip.fl_time(lambda t: factor * t)
     
     if clip.duration != None:
-        newclip.duration = 1.0 * clip.duration / factor
+        newclip = newclip.set_duration(1.0 * clip.duration / factor)
     
     return newclip

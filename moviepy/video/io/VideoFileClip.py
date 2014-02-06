@@ -47,6 +47,8 @@ class VideoFileClip(VideoClip):
         
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
+        self.end = self.reader.duration
+        
         self.fps = self.reader.fps
         self.size = self.reader.size
         self.get_frame = lambda t: self.reader.get_frame(t)

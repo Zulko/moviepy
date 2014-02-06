@@ -2,15 +2,6 @@
 
 .indexwrapper .sphinxsidebar { visibility: hidden; }
 
-.indexwrapper div.body #wand.section h1 {
-  background-image: url(wand.png);
-  background-size: 75px 75px;
-  background-repeat: no-repeat;
-  padding-left: 75px;
-  padding-top: 10px;
-  height: 75px;
-}
-
 .logo img.logo { width: 120px; height: 120px; padding-right: 30px; }
 
 div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6

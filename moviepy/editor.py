@@ -1,6 +1,11 @@
 """
 This file is meant to make it easy to load the main features of MoviePy
 by simply typing: from moviepy.all import *
+In particular it will load many effects from the video.fx and audio.fx
+folders and turn them into VideoClip methods, so that instead of
+>>> clip.fx( vfx.resize, 2 ) # or equivalently vfx.resize(clip, 2)
+we can write
+>>> clip.resize(2)
 """
 
 # Note that these imports could have been performed in the __init__.py
