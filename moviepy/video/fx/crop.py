@@ -1,5 +1,12 @@
 def crop(clip, x1=None, y1=None, x2=None, y2=None,
-          width = None, height=None, x_center= None, y_center=None):
+         width = None, height=None,
+         x_center= None, y_center=None):
+    """
+    >>> crop(clip, x1,y1,x2,y2) # defines the rectangle of the crop
+    >>> crop(clip, x1=10, width=200)
+    
+    
+    """
     
     
     if width:

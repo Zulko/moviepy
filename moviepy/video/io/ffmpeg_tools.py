@@ -20,9 +20,9 @@ def subprocess_call(f, *a, **k):
     proc.wait()
     if proc.returncode:
         sys.stdout.write( "\nWARNING: this command returned an error:")
-        sys.stdout.write(proc.stderr.read())
+        sys.stdout.write(proc.stderr.read().decode('utf8'))
     else:
-		sys.stdout.write( "\n... ffmpeg command successful.\n")
+        sys.stdout.write( "\n... ffmpeg command successful.\n")
     sys.stdout.flush()
 
 @subprocess_call

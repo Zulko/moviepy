@@ -195,20 +195,19 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         w,h = size
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
-        print shape
         if x:
             arr[:,:x] = col1
             arr[:,x:] = col2
         elif y:
             arr[:y] = col1
             arr[y:] = col2
+            
+        return arr
      
     # if we are here, it means we didn't exit with a proper 'return'
-    print "Arguments in color_plit not understood !"
+    print( "Arguments in color_split not understood !" )
     raise
     
-# to come: circles, squares, rectangles
-
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     """
     Draws a circle of color ``col1``, on a background of color ``col2``,

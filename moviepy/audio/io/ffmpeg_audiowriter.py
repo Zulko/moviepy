@@ -1,3 +1,5 @@
+from __future__ import division
+
 import sys
 import wave
 import numpy as np
@@ -55,8 +57,8 @@ class FFMPEG_AudioWriter:
                                  stderr=sp.PIPE)
         
     def write_frames(self,frames_array):
-        #self.proc.stdin.write(img_array.tostring())
-        frames_array.tofile(self.proc.stdin)
+        self.proc.stdin.write(frames_array.tostring())
+        #frames_array.tofile(self.proc.stdin) # only python 2.7
         
     def close(self):
         self.proc.stdin.close()
@@ -80,9 +82,8 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                                 codec=codec, bitrate=bitrate)
                                 
     totalsize = int(fps*clip.duration)
-    nchunks = totalsize / buffersize + 1
+    nchunks = totalsize // buffersize + 1
     pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
-    ifeedback = max(1,nchunks/10)
     
     for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])

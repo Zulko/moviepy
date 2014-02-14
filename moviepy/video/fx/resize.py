@@ -16,7 +16,11 @@ except ImportError:
         def resizer(pic, newsize):
             newsize = map(int, newsize)[::-1]
             shape = pic.shape
-            newshape = (newsize[0],newsize[1],shape[2])
+            if len(shape)==3:
+                newshape = (newsize[0],newsize[1], shape[2] )
+            else:
+                newshape = (newsize[0],newsize[1])
+                
             pilim = Image.fromarray(pic)
             resized_pil = pilim.resize(newsize[::-1], Image.ANTIALIAS)
             arr = np.fromstring(resized_pil.tostring(), dtype='uint8')

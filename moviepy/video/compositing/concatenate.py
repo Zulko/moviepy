@@ -75,8 +75,8 @@ def concatenate(clipslist, method = 'chain', transition=None,
         # add a mask to the clips which have none
         clips_withmask = [(c if (c.mask!=None) else c.add_mask())
                           for c in clipslist] 
-        result.mask = ConcatVideoClip([c.mask for c in clips_withmask],
-                    bg_color=0, ismask=True)
+        result.mask = concatenate([c.mask for c in clips_withmask],
+                    bg_color=0, ismask=True, transparent=False)
                     
                     
     # Compute the audio, if any.

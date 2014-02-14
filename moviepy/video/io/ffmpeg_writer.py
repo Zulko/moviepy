@@ -59,8 +59,8 @@ class FFMPEG_VideoWriter:
                                  stderr=sp.PIPE)
         
     def write_frame(self,img_array):
-        #self.proc.stdin.write(img_array.tostring())
-        img_array.tofile(self.proc.stdin)
+        self.proc.stdin.write(img_array.tostring())
+        #img_array.tofile(self.proc.stdin) only python 2.7
         
     def close(self):
         self.proc.stdin.close()

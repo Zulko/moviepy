@@ -1,3 +1,5 @@
+from __future__ import division
+
 import wave
 import numpy as np
 
@@ -42,15 +44,17 @@ class AudioFileClip(AudioClip):
         Clip.__init__(self)
             
         self.filename = filename
-        self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes)
+        self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
+                                         bufsize=buffersize+100)
         self.fps = fps
         self.duration = self.reader.duration
+        self.end = self.duration
+        
         self.nframes = self.reader.nframes
         self.buffersize= buffersize
-        self.buffer=None
+        self.buffer= None
         self._fstart_buffer = 1
         self._buffer_around(1)
-        self.nchannels = self.reader.nchannels
         
         def gf(t):
             bufsize = self.buffersize
@@ -75,7 +79,7 @@ class AudioFileClip(AudioClip):
                            " buffer too small.")
                     raise
             else:
-                ind = int(self.fps*t)+1
+                ind = int(self.fps*t)#+1
                 if ind<1 or ind> self.nframes: # out of time: return 0
                     return np.zeros(self.nchannels)
                     
@@ -87,13 +91,22 @@ class AudioFileClip(AudioClip):
                 return self.buffer[ind - self._fstart_buffer]
 
         self.get_frame = gf
-    
-    def _buffer_around(self,framenumber):
-        """ fill the buffer with frames, centered on ``framenumber``
-            if possible
+
+    @property
+    def nchannels(self):
         """
-        # start frame for the buffer
-        fbuffer = framenumber - self.buffersize/2
+        returns the number of channels of the reader
+        (1: mono, 2: stereo)
+        """
+        return self.reader.nchannels
+
+    def _buffer_around(self,framenumber):
+        """
+        fill the buffer with frames, centered on ``framenumber``
+        if possible
+        """
+                # start frame for the buffer
+        fbuffer = framenumber - self.buffersize//2
         fbuffer = max(1, fbuffer)
         
         

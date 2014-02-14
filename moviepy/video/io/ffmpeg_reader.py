@@ -1,3 +1,5 @@
+from __future__ import division
+
 import subprocess as sp
 import re
 
@@ -8,16 +10,25 @@ from moviepy.tools import cvsecs
 
 class FFMPEG_VideoReader:
 
-    def __init__(self, filename, print_infos=False, pix_fmt="rgb24"):
+    def __init__(self, filename, print_infos=False, bufsize = None,
+                 pix_fmt="rgb24"):
 
         self.filename = filename
+        self.load_infos(print_infos)
         self.pix_fmt = pix_fmt
-        self.initialize()
         if pix_fmt == 'rgba':
             self.depth = 4
         else:
             self.depth = 3
-        self.load_infos(print_infos)
+
+        if bufsize is None:
+            w, h = self.size
+            bufsize = self.depth * w * h +100
+
+        self.bufsize= bufsize
+        self.initialize()
+
+
         self.pos = 1
         self.lastread = self.read_frame()
 
@@ -28,7 +39,11 @@ class FFMPEG_VideoReader:
                 '-f', 'image2pipe',
                 "-pix_fmt", self.pix_fmt,
                 '-vcodec', 'rawvideo', '-']
-        self.proc = sp.Popen(cmd, stdin=sp.PIPE,
+        if hasattr(self,'proc'):
+            self.proc.kill()
+            del self.proc
+        self.proc = sp.Popen(cmd, bufsize= self.bufsize,
+                                   stdin=sp.PIPE,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
 
@@ -42,10 +57,10 @@ class FFMPEG_VideoReader:
                 stderr=sp.PIPE)
         proc.stdout.readline()
         proc.terminate()
-        infos = proc.stderr.read()
+        infos = proc.stderr.read().decode('utf8')
         if print_infos:
             # print the whole info text returned by FFMPEG
-            print infos
+            print( infos )
 
         lines = infos.splitlines()
         if "No such file or directory" in lines[-1]:
@@ -56,7 +71,7 @@ class FFMPEG_VideoReader:
 
         # get the size, of the form 460x320 (w x h)
         match = re.search(" [0-9]*x[0-9]*(,| )", line)
-        self.size = map(int, line[match.start():match.end()-1].split('x'))
+        self.size = list(map(int, line[match.start():match.end()-1].split('x')))
 
         # get the frame rate
         match = re.search("( [0-9]*.| )[0-9]* (tbr|fps)", line)
@@ -83,20 +98,23 @@ class FFMPEG_VideoReader:
             self.proc.stdout.flush()
         self.pos += n
 
+
     def read_frame(self):
         w, h = self.size
         try:
             # Normally, the readr should not read after the last frame...
             # if it does, raise an error.
-            s = self.proc.stdout.read(self.depth*w*h)
+            nbytes= self.depth*w*h
+            s = self.proc.stdout.read(nbytes)
+            assert len(s) == nbytes
             result = np.fromstring(s,
-                             dtype='uint8').reshape((h, w, len(s)/(w*h)))
+                             dtype='uint8').reshape((h, w, len(s)//(w*h)))
             self.proc.stdout.flush()
-        except:
+        except IOError:
             self.proc.terminate()
             serr = self.proc.stderr.read()
-            print "error: string: %s, stderr: %s" % (s, serr)
-            raise
+            print( "error: string: %s, stderr: %s" % (s, serr))
+            raise IOError
 
         self.lastread = result
 

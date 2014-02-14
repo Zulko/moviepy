@@ -107,7 +107,7 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
         
         
-        def get_framef(t):
+        def get_frame(t):
             """ complicated, but must be able to handle the case where t
             is a list of the form sin(t) """
             

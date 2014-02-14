@@ -12,6 +12,7 @@ import subprocess
 import multiprocessing
 import threading
 from copy import copy
+from tqdm import tqdm
 
 
 import numpy as np
@@ -112,18 +113,18 @@ class VideoClip(Clip):
             once parallelization is implemented.
         
         """
-        print "writing frames in [%s]" % foldername,
+        print( "writing frames in [%s]" % foldername )
 
         try:
             os.mkdir(foldername)
         except:
             if not overwrite:
-                print "Error: Maybe set overwrite =true "
+                print( "Error: Maybe set overwrite =true ")
 
         tt = np.arange(0, self.duration, 1.0 / fps)
         tt_feedback = tt[::len(tt) / 10]
 
-        for i, t in list(enumerate(tt))[startFrame:]:
+        for i, t in tqdm(list(enumerate(tt))[startFrame:]):
 
             picname = "%s/%s%06d.png" % (foldername, foldername, i)
             pic = self.get_frame(t)
@@ -131,10 +132,8 @@ class VideoClip(Clip):
                 fmask = self.mask.get_frame(t)
                 pic = np.dstack([pic, 255 * fmask]).astype('uint8')
             imsave(picname, pic)
-            if t in tt_feedback:
-                print "%d" % (int(100 * t / tt[-1])) + "%",
 
-        print "done."
+        print( "done." )
         return DirectoryClip(foldername, fps=fps)
 
 
@@ -375,7 +374,7 @@ class VideoClip(Clip):
         """
         
         def verboseprint(s):
-            if verbose: print "MoviePy: " + s
+            if verbose: print( "MoviePy: " + s )
         
         if fps is None:
             fps = self.fps
@@ -416,7 +415,7 @@ class VideoClip(Clip):
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE)
             proc.wait()
-            print proc.stderr
+            print( proc.stderr )
             
         for f in tempfiles:
             os.remove(f)
@@ -442,7 +441,7 @@ class VideoClip(Clip):
         center = self.subclip(ta, tb).fx(**kwargs)
         right = None if (tb is None) else self.subclip(ta=tb)
 
-        clips = [c for c in left, center, right if c != None]
+        clips = [c for c in [left, center, right] if c != None]
         cc = VideoClip.concat(clips)
 
         if self.start != None:
@@ -478,7 +477,8 @@ class VideoClip(Clip):
                 lambda t: np.ones(self.get_frame(t).shape))
             return self.set_mask(mask.set_duration(self.duration))
             
-    def on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
+    def on_color(self, size=None, color=(0, 0, 0), pos=None,
+                 col_opacity=None):
         """ 
         Returns a clip made of the current clip overlaid on a color
         clip of a possibly bigger size. Can serve to flatten transparent
@@ -498,11 +498,13 @@ class VideoClip(Clip):
         colorclip = ColorClip(size, color)
         if col_opacity:
             colorclip = colorclip.set_opacity(col_opacity)
+            
+        if self.duration != None:
+            colorclip = colorclip.set_duration(self.duration)
 
         result = CompositeVideoClip([colorclip, self.set_pos(pos)],
                                   transparent=(col_opacity != None))
-        if hasattr(self,'duration'):
-            result.duration = self.duration
+                                  
         return result
     
     
@@ -812,7 +814,7 @@ class TextClip(ImageClip):
     """
 
     def __init__(self, txt, size=None, color='black', bg_color='transparent',
-             fontsize=None, font='Times-New-Roman-Regular',
+             fontsize=None, font='Courier',
              stroke_color=None, stroke_width=1, method='label',
              kerning=None, align='center', interline=None,
              tempfile='temp.png',
@@ -854,7 +856,7 @@ class TextClip(ImageClip):
         "-type",  "truecolormatte", "PNG32:%s"%tempfile]
         
         if print_cmd:
-            print " ".join(cmd)
+            print( " ".join(cmd) )
 
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
         proc.wait()

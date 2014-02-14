@@ -11,4 +11,4 @@ fx_list = [f for f in files if ( f.endswith('.py') and not f.startswith('_'))]
 __all__ = [c[:-3] for c in fx_list]
 
 for name in __all__:
-    exec("from %s import %s"%(name,name))
+    exec("from .%s import %s"%(name,name))

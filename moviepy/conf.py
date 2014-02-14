@@ -41,8 +41,8 @@ if FFMPEG_BINARY is None:
 
 if __name__ == "__main__":
     if tryffmpeg(FFMPEG_BINARY):
-        print "MoviePy : ffmpeg successfully found."
+        print( "MoviePy : ffmpeg successfully found." )
     else:
-        print "MoviePy : can't find ffmpeg."
+        print( "MoviePy : can't find ffmpeg." )
         
         

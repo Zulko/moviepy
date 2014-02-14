@@ -1,23 +1,19 @@
 import subprocess as sp
 import re
-import time
-import os
 
 import numpy as np
-
-#from moviepy.clip import Clip
 from moviepy.tools import cvsecs
 from moviepy.conf import FFMPEG_BINARY
-from moviepy.tools import cvsecs
 
     
 class FFMPEG_AudioReader:
     """ streams any file (audio or video) and outputs a 16bit 44100HZ
         wav that can be read by the moviepy AudioFileClip. """
         
-    def __init__(self, filename, print_infos=False, fps=44100, nbytes=2):
+    def __init__(self, filename, bufsize, print_infos=False, fps=44100, nbytes=2):
         self.filename = filename
         self.nbytes = nbytes
+        self.bufsize=bufsize
         self.fps = fps
         self.f = 's%dle'%(8*nbytes)
         self.acodec = 'pcm_s%dle'%(8*nbytes)
@@ -34,7 +30,13 @@ class FFMPEG_AudioReader:
                '-acodec', self.acodec,
                '-ar', "%d"%self.fps,
                '-ac', '%d'%self.nchannels, '-']
-        self.proc = sp.Popen( cmd, stdin=sp.PIPE,
+
+        if hasattr(self, 'proc'):
+            self.proc.kill()
+            del self.proc
+
+        self.proc = sp.Popen( cmd, bufsize=self.bufsize,
+                                   stdin=sp.PIPE,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
         self.pos = 1
@@ -49,10 +51,11 @@ class FFMPEG_AudioReader:
                 stderr=sp.PIPE)
         proc.stdout.readline()
         proc.terminate()
-        infos = proc.stderr.read()
+        infos = proc.stderr.read().decode('utf8')
+
         if print_infos:
             # print the whole info text returned by FFMPEG
-            print infos
+            print( infos )
             
         lines = infos.splitlines()
         
@@ -129,8 +132,13 @@ class FFMPEG_AudioReader:
         
         
 class WaveReader:
+    """ DEPRECATED - Do not use if you can avoid. """
     
     def __init__(self, filename):
+        
+        import os
+        from moviepy.Clip import Clip
+        
         if not filename.endswith('.wav'):
             name, ext = os.path.splitext(os.path.basename(filename))
             if temp_wav is None:
