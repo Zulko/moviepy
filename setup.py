@@ -6,7 +6,7 @@ ez_setup.use_setuptools()
 from setuptools import setup, find_packages
 
 setup(name='moviepy',
-      version='0.2.1.6.94',
+      version='0.2.1.7',
       author='Zulko 2013',
     description='Module for script-based video editing',
     long_description=open('README.rst').read(),
