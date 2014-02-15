@@ -23,7 +23,7 @@ class FFMPEG_VideoReader:
 
         if bufsize is None:
             w, h = self.size
-            bufsize = self.depth * w * h +100
+            bufsize = self.depth * w * h + 100
 
         self.bufsize= bufsize
         self.initialize()

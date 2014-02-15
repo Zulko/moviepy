@@ -402,6 +402,9 @@ class VideoClip(Clip):
                   " 1 1 %d`"%len(tt) +
                   " -coalesce -fuzz %02d"%fuzz + "%"+
                   " -layers %s %s"%(opt,filename))
+                  
+            verboseprint("running %s"%cmd)
+            
             os.system(cmd)
             
         elif program == "ffmpeg":

@@ -10,7 +10,6 @@ from moviepy.audio.io.readers import FFMPEG_AudioReader
 class AudioFileClip(AudioClip):
 
     """
-    
     An audio clip read from a sound file, or an array.
     The whole file is not loaded in memory. Instead, only a portion is
     read and stored in memory. this portion includes frames before
@@ -74,13 +73,14 @@ class AudioFileClip(AudioClip):
                 try:
                     result[in_time] = self.buffer[inds - self._fstart_buffer]
                     return result
-                except:
+                except IndexError:
                     print ("Error: wrong indices in video buffer. Maybe"+
                            " buffer too small.")
-                    raise
+                    raise IndexError
+                    
             else:
-                ind = int(self.fps*t)#+1
-                if ind<1 or ind> self.nframes: # out of time: return 0
+                ind = int(self.fps*t)
+                if ind<0 or ind> self.nframes: # out of time: return 0
                     return np.zeros(self.nchannels)
                     
                 if not (0 <= (ind - self._fstart_buffer) <len(self.buffer)):
@@ -107,7 +107,8 @@ class AudioFileClip(AudioClip):
         """
                 # start frame for the buffer
         fbuffer = framenumber - self.buffersize//2
-        fbuffer = max(1, fbuffer)
+        
+        fbuffer = max(0, fbuffer)
         
         
         if (self.buffer!=None):

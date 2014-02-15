@@ -10,7 +10,9 @@ class FFMPEG_AudioReader:
     """ streams any file (audio or video) and outputs a 16bit 44100HZ
         wav that can be read by the moviepy AudioFileClip. """
         
-    def __init__(self, filename, bufsize, print_infos=False, fps=44100, nbytes=2):
+    def __init__(self, filename, bufsize, print_infos=False,
+                 fps=44100, nbytes=2):
+                     
         self.filename = filename
         self.nbytes = nbytes
         self.bufsize=bufsize
@@ -19,27 +21,8 @@ class FFMPEG_AudioReader:
         self.acodec = 'pcm_s%dle'%(8*nbytes)
         self.nchannels = 2
         self.load_infos()
+        self.proc = None
         self.initialize()
-       
-    
-    def initialize(self):
-        """ Opens the file, creates the pipe. """
-        
-        cmd = [  FFMPEG_BINARY, '-i', self.filename, '-vn',
-               '-f', self.f,
-               '-acodec', self.acodec,
-               '-ar', "%d"%self.fps,
-               '-ac', '%d'%self.nchannels, '-']
-
-        if hasattr(self, 'proc'):
-            self.proc.kill()
-            del self.proc
-
-        self.proc = sp.Popen( cmd, bufsize=self.bufsize,
-                                   stdin=sp.PIPE,
-                                   stdout=sp.PIPE,
-                                   stderr=sp.PIPE)
-        self.pos = 1
     
     def load_infos(self, print_infos=False):
         """ reads the FFMPEG info on the file and sets self.size
@@ -69,27 +52,32 @@ class FFMPEG_AudioReader:
         self.duration = cvsecs(*hms)
         self.nframes = int(self.duration*self.fps)
     
+    def initialize(self, starttime = 0):
+        """ Opens the file, creates the pipe. """
     
-    def reinitialize(self,starttime=0):
-        """ Restarts the reading, starts at an arbitrary
-            location (!! SLOW !!) """
-        self.close()
-        if starttime==0:
-            self.initialize()
-        else:
+        self.close_proc() # if any
+        
+        if starttime !=0 :
             offset = min(1,starttime)
-            cmd = [ FFMPEG_BINARY,
+            i_arg = [ FFMPEG_BINARY,
                     "-ss", "%.05f"%(starttime-offset),
                     '-i', self.filename, '-vn',
-                    "-ss", "%.05f"%offset,
-                    '-f', self.f,
-                    '-acodec', self.acodec,
-                    '-ar', "%d"%self.fps,
-                    '-ac', '%d'%self.nchannels, '-']
-            self.proc = sp.Popen(cmd, stdin=sp.PIPE,
-                                       stdout=sp.PIPE,
-                                      stderr=sp.PIPE)
-            self.pos = int(self.fps*starttime)+1
+                    "-ss", "%.05f"%offset]
+        else:
+            i_arg = [ '-i', self.filename,  '-vn']
+             
+        
+        cmd = ([FFMPEG_BINARY] + i_arg + 
+               ['-f', self.f,
+                '-acodec', self.acodec,
+                '-ar', "%d"%self.fps,
+                '-ac', '%d'%self.nchannels, '-'])
+
+        self.proc = sp.Popen( cmd, bufsize=self.bufsize,
+                                   stdin=sp.PIPE,
+                                   stdout=sp.PIPE,
+                                   stderr=sp.PIPE)
+        self.pos = int(self.fps*starttime)
      
     def skip_chunk(self,chunksize):
         s = self.proc.stdout.read(self.nchannels*chunksize*self.nbytes)
@@ -116,16 +104,20 @@ class FFMPEG_AudioReader:
             """
         if (pos < self.pos) or (pos> (self.pos+1000000)):
             t = 1.0*pos/self.fps
-            self.reinitialize(t)  
+            self.initialize(t)  
         elif pos > self.pos:
             self.skip_chunk(pos-self.pos)
+        # last case standing: pos = current pos
         self.pos = pos
     
-    def close(self):
-        self.proc.terminate()
-        for std in self.proc.stdin,self.proc.stdout,self.proc.stderr:
-            std.close()
-        del self.proc
+    def close_proc(self):
+        if self.proc is not None:
+            self.proc.terminate()
+            for std in [self.proc.stdin,
+                         self.proc.stdout,
+                         self.proc.stderr]:
+                std.close()
+            del self.proc
         
         
         

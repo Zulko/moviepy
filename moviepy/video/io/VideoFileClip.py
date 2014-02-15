@@ -61,7 +61,8 @@ class VideoFileClip(VideoClip):
                                        nbytes = audio_nbytes)
     
     def coreader(self, audio=True):
-        """ Returns a copy of the AudioFileClip, i.e. a new entrance point
-            to the video file. Use copy when you have different clips
-            watching the same video file at different times. """
+        """ Returns a copy of the AudioFileClip, i.e. a 
+            new entrance point to the video file. Use copy
+            when you have different clips watching the same
+            video file at different times. """
         return VideoFileClip(**self.parameters)
