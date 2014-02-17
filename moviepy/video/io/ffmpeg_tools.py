@@ -53,8 +53,8 @@ def extract_subclip(filename, t1, t2, targetname=None):
     
 
 @subprocess_call
-def merge_video_audio(video,audio,output, vcodec='copy', acodec='copy',
-                       ffmpeg_output=False):
+def ffmpeg_merge_video_audio(video,audio,output,
+                vcodec='copy', acodec='copy', ffmpeg_output=False):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     return ["ffmpeg", "-y", "-i", audio,"-i", video,

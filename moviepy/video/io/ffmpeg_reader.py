@@ -162,7 +162,7 @@ class FFMPEG_VideoReader:
             return result
 
 
-def read_image(filename, with_mask=True):
+def ffmpeg_read_image(filename, with_mask=True):
     if with_mask:
         pix_fmt = 'rgba'
     else:

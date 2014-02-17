@@ -20,13 +20,13 @@ import numpy as np
 from moviepy.decorators import  apply_to_mask, requires_duration
 
 import moviepy.audio.io as aio
-import moviepy.video.io.ffmpeg_writer as ffmpeg_writer
-import moviepy.video.io.ffmpeg_reader as ffmpeg_reader
-import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
+from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
+from .io.ffmpeg_reader import ffmpeg_read_image
+from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 
-from  moviepy.video.tools.drawing import blit
-from moviepy.Clip import Clip
-from moviepy.conf import FFMPEG_BINARY
+from .tools.drawing import blit
+from ..Clip import Clip
+from ..conf import FFMPEG_BINARY
 
 
 
@@ -89,7 +89,7 @@ class VideoClip(Clip):
         if savemask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
-        ffmpeg_writer.write_image(filename, im)
+        ffmpeg_write_image(filename, im)
 
     @requires_duration
     def to_directory(self, foldername, fps, transparent=True,
@@ -259,7 +259,7 @@ class VideoClip(Clip):
                     args=(temp_audiofile,audio_fps,audio_nbytes,
                           audio_bufsize,audio_codec, audio_bitrate,verbose))
             audioproc.start()
-            ffmpeg_writer.ffmpeg_write(self,  videofile, fps, codec,
+            ffmpeg_write_video(self,  videofile, fps, codec,
                          bitrate=bitrate, verbose=verbose)
             audioproc.join()
             if audioproc.exitcode:
@@ -272,14 +272,14 @@ class VideoClip(Clip):
                                         audio_nbytes, audio_bufsize,
                                         audio_codec, audio_bitrate,
                                         verbose)
-            ffmpeg_writer.ffmpeg_write(self, videofile, fps, codec,
+            ffmpeg_write_video(self, videofile, fps, codec,
                                        bitrate=bitrate, verbose=verbose)
         
         # Merge with audio if any and trash temporary files.
         if merge_audio:
             
             verbose_print("\nNow merging video and audio...\n")
-            ffmpeg_tools.merge_video_audio(videofile,temp_audiofile,
+            ffmpeg_merge_video_audio(videofile,temp_audiofile,
                                   filename, ffmpeg_output=True)
                                   
             if remove_temp:
@@ -681,7 +681,7 @@ class ImageClip(VideoClip):
         VideoClip.__init__(self, ismask=ismask)
 
         if isinstance(img, str):
-            img = ffmpeg_reader.read_image(img,with_mask=transparent)
+            img = ffmpeg_read_image(img,with_mask=transparent)
         
         if len(img.shape) == 3: # img is (now) a RGB(a) numpy array
             

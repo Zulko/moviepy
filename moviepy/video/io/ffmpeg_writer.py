@@ -67,7 +67,7 @@ class FFMPEG_VideoWriter:
         self.proc.wait()
         del self.proc
         
-def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
+def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                   withmask=False, verbose=True):
     
     if verbose:
@@ -95,7 +95,7 @@ def ffmpeg_write(clip, filename, fps, codec="libx264", bitrate=None,
     verbose_print("video done !")
         
         
-def write_image(filename, image):
+def ffmpeg_write_image(filename, image):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
     proc = sp.Popen([ FFMPEG_BINARY, '-y',

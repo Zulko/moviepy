@@ -17,7 +17,6 @@ def sliders(f, sliders_properties, wait_for_validation = False):
         
     nVars = len(sliders_properties)
     slider_width = 1.0/nVars
-    print slider_width
     
     # CREATE THE CANVAS
     
@@ -59,7 +58,7 @@ def sliders(f, sliders_properties, wait_for_validation = False):
         
         if res is not None:
             
-            print res
+            print( res )
     
     def on_key_press(event):
         
