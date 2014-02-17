@@ -52,6 +52,8 @@ class FFMPEG_AudioReader:
         self.duration = cvsecs(*hms)
         self.nframes = int(self.duration*self.fps)
     
+    
+    
     def initialize(self, starttime = 0):
         """ Opens the file, creates the pipe. """
     
@@ -77,10 +79,14 @@ class FFMPEG_AudioReader:
                                    stderr=sp.PIPE)
         self.pos = int(self.fps*starttime)
      
+     
+     
     def skip_chunk(self,chunksize):
         s = self.proc.stdout.read(self.nchannels*chunksize*self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos+chunksize
+        
+        
         
     def read_chunk(self,chunksize):
         L = self.nchannels*chunksize*self.nbytes

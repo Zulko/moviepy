@@ -29,13 +29,11 @@ except ImportError:
     except ImportError:
         
         try:
-            
-            import scipy.misc.imresize as imresize
+            from scipy.misc import imresize
             resizer = lambda pic, newsize : imresize(pic,
                                                map(int, newsize[::-1]))
                                                
         except ImportError:
-            
             resize_possible = False
         
     

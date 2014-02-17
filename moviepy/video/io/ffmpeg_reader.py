@@ -25,6 +25,7 @@ class FFMPEG_VideoReader:
             w, h = self.size
             bufsize = self.depth * w * h + 100
 
+        self.proc= None
         self.bufsize= bufsize
         self.initialize()
 
@@ -32,20 +33,31 @@ class FFMPEG_VideoReader:
         self.pos = 1
         self.lastread = self.read_frame()
 
-    def initialize(self):
+    def initialize(self, starttime=0):
         """ Opens the file, creates the pipe. """
-
-        cmd = [FFMPEG_BINARY, '-i', self.filename,
-                '-f', 'image2pipe',
+        
+        self.close_proc() # if any
+        
+        if starttime !=0 :
+            offset = min(1,starttime)
+            i_arg = ['-ss', "%.03f" % (starttime - offset),
+                    '-i', self.filename,
+                    '-ss', "%.03f" % offset]
+        else:
+            i_arg = [ '-i', self.filename]
+        
+        
+        cmd = ([FFMPEG_BINARY]+ i_arg +
+                ['-f', 'image2pipe',
                 "-pix_fmt", self.pix_fmt,
-                '-vcodec', 'rawvideo', '-']
-        if hasattr(self,'proc'):
-            self.proc.kill()
-            del self.proc
+                '-vcodec', 'rawvideo', '-'])
+        
+        
         self.proc = sp.Popen(cmd, bufsize= self.bufsize,
                                    stdin=sp.PIPE,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
+                                   
 
     def load_infos(self, print_infos=False):
         """ reads the FFMPEG info on the file and sets self.size
@@ -84,11 +96,14 @@ class FFMPEG_VideoReader:
         self.duration = cvsecs(*hms)
         self.nframes = int(self.duration*self.fps)
 
-    def close(self):
-        self.proc.terminate()
-        for std in self.proc.stdin, self.proc.stdout, self.proc.stderr:
-            std.close()
-        del self.proc
+    def close_proc(self):
+        if self.proc is not None:
+            self.proc.terminate()
+            for std in (self.proc.stdin,
+                        self.proc.stdout,
+                        self.proc.stderr):
+                std.close()
+            del self.proc
 
     def skip_frames(self, n=1):
         """ Reads and throws away n frames """
@@ -106,6 +121,8 @@ class FFMPEG_VideoReader:
             # if it does, raise an error.
             nbytes= self.depth*w*h
             s = self.proc.stdout.read(nbytes)
+            #self.proc.terminate()
+            #print( self.proc.stderr.read(10000))
             assert len(s) == nbytes
             result = np.fromstring(s,
                              dtype='uint8').reshape((h, w, len(s)//(w*h)))
@@ -119,24 +136,6 @@ class FFMPEG_VideoReader:
         self.lastread = result
 
         return result
-
-    def reinitialize(self, starttime=0):
-        """ Restarts the reading, starts at an arbitrary
-            location (!! SLOW !!) """
-        self.close()
-        if starttime == 0:
-            self.initialize()
-        else:
-            offset = min(1, starttime)
-            cmd = [FFMPEG_BINARY, '-ss', "%.03f" % (starttime - offset),
-                    '-i', self.filename,
-                    '-ss', "%.03f" % offset,
-                    '-f', 'image2pipe',
-                    "-pix_fmt", self.pix_fmt,
-                    '-vcodec', 'rawvideo', '-']
-            self.proc = sp.Popen(cmd, stdin=sp.PIPE,
-                                       stdout=sp.PIPE,
-                                      stderr=sp.PIPE)
 
     def get_frame(self, t):
         """ Reads a frame at time t. Note for coders:
@@ -155,7 +154,7 @@ class FFMPEG_VideoReader:
             return self.lastread
         else:
             if(pos < self.pos) or (pos > self.pos+100):
-                self.reinitialize(t)
+                self.initialize(t)
             else:
                 self.skip_frames(pos-self.pos-1)
             result = self.read_frame()
