@@ -71,12 +71,14 @@ class AudioFileClip(AudioClip):
                     self._buffer_around(f_tmax)
                     
                 try:
+                    tup = in_time.nonzero()
+                    inds2 = inds - self._fstart_buffer
                     result[in_time] = self.buffer[inds - self._fstart_buffer]
                     return result
-                except IndexError:
+                except IndexError as error:
                     print ("Error: wrong indices in video buffer. Maybe"+
                            " buffer too small.")
-                    raise IndexError
+                    raise error
                     
             else:
                 ind = int(self.fps*t)
@@ -105,7 +107,8 @@ class AudioFileClip(AudioClip):
         fill the buffer with frames, centered on ``framenumber``
         if possible
         """
-                # start frame for the buffer
+        
+        # start-frame for the buffer
         fbuffer = framenumber - self.buffersize//2
         
         fbuffer = max(0, fbuffer)

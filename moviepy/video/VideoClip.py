@@ -625,15 +625,21 @@ class VideoClip(Clip):
     #-----------------------------------------------------------------
     # Previews:
 
+
+
+# Add methods preview and show (only if pygame installed)
 try:
-    # Add methods preview and show (only if pygame installed)
     from moviepy.video.io.preview import show, preview
-    VideoClip.preview = preview
-    VideoClip.show = show
-except:
-    pass
+except ImportError:
+    def preview(self, *args, **kwargs):
+        """ NOT AVAILABLE : clip.preview requires Pygame installed  """
+        raise ImportError("clip.preview requires Pygame installed")
+    def show(self, *args, **kwargs):
+        """ NOT AVAILABLE : clip.show requires Pygame installed  """
+        raise ImportError("clip.show requires Pygame installed")
 
-
+VideoClip.preview = preview
+VideoClip.show = show
 
 
 

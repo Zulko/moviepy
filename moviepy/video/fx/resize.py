@@ -99,6 +99,7 @@ def resize(clip, newsize=None, height=None, width=None):
 
 
 if not resize_possible:
+    
     doc = resize.__doc__
     def resize(clip, newsize=None, height=None, width=None):
         raise ImportError("fx resize needs OpenCV or Scipy or PIL")

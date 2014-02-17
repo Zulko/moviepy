@@ -59,8 +59,7 @@ class FFMPEG_AudioReader:
         
         if starttime !=0 :
             offset = min(1,starttime)
-            i_arg = [ FFMPEG_BINARY,
-                    "-ss", "%.05f"%(starttime-offset),
+            i_arg = ["-ss", "%.05f"%(starttime-offset),
                     '-i', self.filename, '-vn',
                     "-ss", "%.05f"%offset]
         else:
@@ -72,7 +71,6 @@ class FFMPEG_AudioReader:
                 '-acodec', self.acodec,
                 '-ar', "%d"%self.fps,
                 '-ac', '%d'%self.nchannels, '-'])
-
         self.proc = sp.Popen( cmd, bufsize=self.bufsize,
                                    stdin=sp.PIPE,
                                    stdout=sp.PIPE,
@@ -85,7 +83,8 @@ class FFMPEG_AudioReader:
         self.pos = self.pos+chunksize
         
     def read_chunk(self,chunksize):
-        s = self.proc.stdout.read(self.nchannels*chunksize*self.nbytes)
+        L = self.nchannels*chunksize*self.nbytes
+        s = self.proc.stdout.read(L)
         dt = {1: 'int8',2:'int16',4:'int32'}[self.nbytes]
         result = np.fromstring(s, dtype=dt)
         result = (1.0*result / 2**(8*self.nbytes-1)).\
