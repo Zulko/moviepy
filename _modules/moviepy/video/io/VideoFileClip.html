@@ -59,7 +59,7 @@
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">readers</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
 
 <div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 
@@ -103,24 +103,24 @@
         
         <span class="c"># Make some of the reader&#39;s attributes accessible from the clip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         
         <span class="c"># Make a reader for the audio, if any.</span>
         <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span> <span class="n">audio_buffersize</span><span class="p">,</span>
-                    <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span> <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                    <span class="k">print</span> <span class="s">&quot;No audio found in </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">filename</span>
-                <span class="k">pass</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                                       <span class="n">buffersize</span><span class="o">=</span> <span class="n">audio_buffersize</span><span class="p">,</span>
+                                       <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span>
+                                       <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span>
     
 <div class="viewcode-block" id="VideoFileClip.coreader"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a new entrance point</span>
-<span class="sd">            to the video file. Use copy when you have different clips</span>
-<span class="sd">            watching the same video file at different times. &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a </span>
+<span class="sd">            new entrance point to the video file. Use copy</span>
+<span class="sd">            when you have different clips watching the same</span>
+<span class="sd">            video file at different times. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -128,7 +128,10 @@
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
   <li><a href="../../../index.html">Module code</a><ul>

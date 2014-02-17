@@ -214,9 +214,10 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
 <div class="section" id="clip-fx">
 <h3>clip.fx<a class="headerlink" href="#clip-fx" title="Permalink to this headline">¶</a></h3>
 <p>Suppose that you have some functions implementing effects on clips:</p>
-<div class="highlight-python"><pre>effect_1(clip, args1) -&gt; new clip
+<div class="highlight-python"><div class="highlight"><pre>effect_1(clip, args1) -&gt; new clip
 effect_2(clip, args2) -&gt; new clip
-effect_3(clip, args3) -&gt; new clip</pre>
+effect_3(clip, args3) -&gt; new clip
+</pre></div>
 </div>
 <p>where <tt class="docutils literal"><span class="pre">args</span></tt> represent arguments and/or keyword arguments. To apply these functions, in that order, to one clip, you would write something like</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">newclip</span> <span class="o">=</span>  <span class="n">effect_3</span><span class="p">(</span> <span class="n">effect_2</span><span class="p">(</span> <span class="n">effect_1</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">args3</span><span class="p">),</span> <span class="n">args2</span><span class="p">),</span> <span class="n">args1</span><span class="p">)</span>
@@ -229,11 +230,12 @@ effect_3(clip, args3) -&gt; new clip</pre>
 </pre></div>
 </div>
 <p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import.all</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
-<div class="highlight-python"><pre>from moviepy import.all *
-clip = VideoFileClip("myvideo.avi").\
+<div class="highlight-python"><div class="highlight"><pre>from moviepy import.all *
+clip = VideoFileClip(&quot;myvideo.avi&quot;).\
            fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
            fx( vfx.speedx, 2).\ # double speed
-           fx( vfx.colorx, 0.5) # darken (decreases the RGB values)</pre>
+           fx( vfx.colorx, 0.5) # darken (decreases the RGB values)
+</pre></div>
 </div>
 <p>For convenience, frequently used methods such as <tt class="docutils literal"><span class="pre">resize</span></tt> can be called in a simpler way: <tt class="docutils literal"><span class="pre">clip.resize(...)</span></tt> instead of <tt class="docutils literal"><span class="pre">clip.fx(</span> <span class="pre">vfx.resize,</span> <span class="pre">...)</span></tt></p>
 </div>
@@ -251,7 +253,8 @@ clip = VideoFileClip("myvideo.avi").\
 </pre></div>
 </div>
 <p>Finally, you may want to process the clip by taking into account the time and the picture at the same time. This is possible with <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function <tt class="docutils literal"><span class="pre">g(t)</span></tt> which given a time returns the clip&#8217;s frame at that time), and the second argument is the time.</p>
-<div class="highlight-python"><pre>modifiedClip = myClip.fl(lambda gf,t: gf(t)[int(t):int(t)+360,:]</pre>
+<div class="highlight-python"><div class="highlight"><pre>modifiedClip = myClip.fl(lambda gf,t: gf(t)[int(t):int(t)+360,:]
+</pre></div>
 </div>
 <p>This will scroll down the clip with a constant height of 360 pixels.</p>
 <p>Prefer using <tt class="docutils literal"><span class="pre">fl_time</span></tt> and <tt class="docutils literal"><span class="pre">fl_image</span></tt> if possible when implementing new effects. The reason is that for image clips MoviePy will recognize that these methods do not need to be applied to each frames, which will result in shorter computation times.</p>
@@ -283,6 +286,9 @@ clip = VideoFileClip("myvideo.avi").\
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">A MoviePy crash-course</a><ul>

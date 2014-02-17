@@ -97,7 +97,7 @@ The same effect is applied to the clip&#8217;s audio and mask if any.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip whose frames are a transformation (through <tt class="docutils literal"><span class="pre">fl</span></tt>)
 of the frames of the current clip.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -133,7 +133,7 @@ of the clip be discarded.</li>
 
 <dl class="method">
 <dt id="Clip.Clip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>t_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=False</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_time</tt><big>(</big><em>t_func</em>, <em>applyto=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=False</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the content of the current clip but with a
 modified timeline, time <tt class="docutils literal"><span class="pre">t</span></tt> being replaced by another
 time <cite>t_func(t)</cite>. By default the attributes <tt class="docutils literal"><span class="pre">duration</span></tt> and <tt class="docutils literal"><span class="pre">end</span></tt>
@@ -242,6 +242,9 @@ The same effect is applied to the clip&#8217;s audio and mask if any.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Clip</a><ul>

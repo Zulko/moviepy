@@ -67,115 +67,10 @@
 <span class="target" id="module-moviepy.video.fx"></span><p>Contains transformation functions (clip-&gt;clip)
 One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
 <dl class="function">
-<dt id="moviepy.video.fx.freeze_at_end">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">freeze_at_end</tt><big>(</big><em>clip</em>, <em>freeze_duration=None</em>, <em>total_duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.freeze_at_end" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes the clip freeze on its last frame.  With <tt class="docutils literal"><span class="pre">duration</span></tt> you can
-specify the duration of the freeze. With <tt class="docutils literal"><span class="pre">total_duration</span></tt> you can
-specify the total duration of the clip and the freeze (i.e. the
-duration of the freeze is automatically calculated). If neither
-is provided, the freeze will have an infinite length.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.mirror_x">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">mirror_x</tt><big>(</big><em>clip</em>, <em>applyto='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.mirror_x" title="Permalink to this definition">¶</a></dt>
-<dd><p>flips the clip horizontally (and its mask too, by default)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.headblur">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">headblur</tt><big>(</big><em>clip</em>, <em>fx</em>, <em>fy</em>, <em>r_zone</em>, <em>r_blur=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.headblur" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a filter that will blurr a moving part (a head ?) of
-the frames. The position of the blur at time t is
-defined by (fx(t), fy(t)), the radius of the blurring
-by <tt class="docutils literal"><span class="pre">r_zone</span></tt> and the intensity of the blurring by <tt class="docutils literal"><span class="pre">r_blur</span></tt>.
-Requires OpenCV for the circling and the blurring.
-Automatically deals with the case where part of the image goes
-offscreen.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.fadeout">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadeout</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadeout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
-For more advanced fading, see <tt class="docutils literal"><span class="pre">composition.crossfade</span></tt></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.freeze_at_start">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">freeze_at_start</tt><big>(</big><em>clip</em>, <em>freeze_duration=None</em>, <em>total_duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.freeze_at_start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes the clip freeze on its last frame.  With <tt class="docutils literal"><span class="pre">duration</span></tt> you can
-specify the duration of the freeze. With <tt class="docutils literal"><span class="pre">total_duration</span></tt> you can
-specify the total duration of the clip and the freeze (i.e. the
-duration of the freeze is automatically calculated). If neither
-is provided, the freeze will have an infinite length.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.margin">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">margin</tt><big>(</big><em>clip</em>, <em>mar=None</em>, <em>left=0</em>, <em>right=0</em>, <em>top=0</em>, <em>bottom=0</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>opacity=1.0</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.margin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws an external margin all around the frame.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>mar</strong> &#8211; if not <tt class="docutils literal"><span class="pre">None</span></tt>, then the new clip has a margin of
-size <tt class="docutils literal"><span class="pre">mar</span></tt> in pixels on the left, right, top, and bottom.</li>
-<li><strong>right, top, bottom</strong> (<em>left,</em>) &#8211; width of the margin in pixel
-in these directions.</li>
-<li><strong>color</strong> &#8211; color of the margin.</li>
-<li><strong>mask_margin</strong> &#8211; value of the mask on the margin. Setting
-this value to 0 yields transparent margins.</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.mirror_y">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">mirror_y</tt><big>(</big><em>clip</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.mirror_y" title="Permalink to this definition">¶</a></dt>
-<dd><p>flips the clip vertically (and its mask too, by default)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.colorx">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">colorx</tt><big>(</big><em>clip</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.colorx" title="Permalink to this definition">¶</a></dt>
-<dd><p>multiplies the clip&#8217;s colors by the given factor, can be used
-to decrease or increase the clip&#8217;s brightness (is that the
-reight word ?)</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.blink">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blink</tt><big>(</big><em>clip</em>, <em>d_on</em>, <em>d_off</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blink" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes the clip blink. At each blink it will be displayed <tt class="docutils literal"><span class="pre">d_on</span></tt>
-seconds and disappear <tt class="docutils literal"><span class="pre">d_off</span></tt> seconds. Will only work in
-composite clips.</p>
-</dd></dl>
-
-<dl class="function">
 <dt id="moviepy.video.fx.scroll">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">scroll</tt><big>(</big><em>clip</em>, <em>h=None</em>, <em>w=None</em>, <em>x_speed=0</em>, <em>y_speed=0</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.scroll" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">scroll</tt><big>(</big><em>clip</em>, <em>h=None</em>, <em>w=None</em>, <em>x_speed=0</em>, <em>y_speed=0</em>, <em>x_start=0</em>, <em>y_start=0</em>, <em>applyto='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.scroll" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scrolls horizontally or vertically a clip, e.g. to make end
 credits</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.time_mirror">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">time_mirror</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.time_mirror" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a clip that plays the current clip backwards.
-The clip must have its <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set.
-The same effect is applied to the clip&#8217;s audio and mask if any.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.video.fx.loop">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">loop</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.loop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a clip that plays the current clip in an infinite loop.
-Ideal for clips coming from gifs.</p>
 </dd></dl>
 
 <dl class="function">
@@ -208,6 +103,124 @@ then computed so that the width/height ratio is conserved.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="moviepy.video.fx.freeze_at_start">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">freeze_at_start</tt><big>(</big><em>clip</em>, <em>freeze_duration=None</em>, <em>total_duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.freeze_at_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip freeze on its last frame.  With <tt class="docutils literal"><span class="pre">duration</span></tt> you can
+specify the duration of the freeze. With <tt class="docutils literal"><span class="pre">total_duration</span></tt> you can
+specify the total duration of the clip and the freeze (i.e. the
+duration of the freeze is automatically calculated). If neither
+is provided, the freeze will have an infinite length.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.colorx">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">colorx</tt><big>(</big><em>clip</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.colorx" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiplies the clip&#8217;s colors by the given factor, can be used
+to decrease or increase the clip&#8217;s brightness (is that the
+reight word ?)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.fadein">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadein</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadein" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt>
+seconds. For more advanced fading, see 
+<tt class="docutils literal"><span class="pre">moviepy.video.composition.crossfadein</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.make_loopable">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">make_loopable</tt><big>(</big><em>clip</em>, <em>cross</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.make_loopable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip fade in progressively at its own end, this way
+it can be looped indefinitely. <tt class="docutils literal"><span class="pre">cross</span></tt> is the duration in seconds
+of the fade-in.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.blink">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blink</tt><big>(</big><em>clip</em>, <em>d_on</em>, <em>d_off</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip blink. At each blink it will be displayed <tt class="docutils literal"><span class="pre">d_on</span></tt>
+seconds and disappear <tt class="docutils literal"><span class="pre">d_off</span></tt> seconds. Will only work in
+composite clips.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.fadeout">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadeout</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
+For more advanced fading, see <tt class="docutils literal"><span class="pre">composition.crossfade</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.time_symetrize">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">time_symetrize</tt><big>(</big><em>clip</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.time_symetrize" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Returns a clip that plays the current clip once forwards and</div></blockquote>
+<p>then once backwards. This is very practival to make video that
+loop well, e.g. to create animated GIFs.
+This effect is automatically applied to the clip&#8217;s mask and audio
+if they exist.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.lum_contrast">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">lum_contrast</tt><big>(</big><em>clip</em>, <em>lum=0</em>, <em>contrast=0</em>, <em>contrast_thr=127</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.lum_contrast" title="Permalink to this definition">¶</a></dt>
+<dd><p>luminosity-contrast correction of a clip</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.blackwhite">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blackwhite</tt><big>(</big><em>clip, RGB=[1, 1, 1], preserve_luminosity=True</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blackwhite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Desaturates the picture, makes it black and white.
+If RBG is &#8216;CRT_phosphor&#8217; a special set of values is used.
+preserve_luminosity does nothing right now.
+method = sum (TODO: others)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.headblur">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">headblur</tt><big>(</big><em>clip</em>, <em>fx</em>, <em>fy</em>, <em>r_zone</em>, <em>r_blur=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.headblur" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a filter that will blurr a moving part (a head ?) of
+the frames. The position of the blur at time t is
+defined by (fx(t), fy(t)), the radius of the blurring
+by <tt class="docutils literal"><span class="pre">r_zone</span></tt> and the intensity of the blurring by <tt class="docutils literal"><span class="pre">r_blur</span></tt>.
+Requires OpenCV for the circling and the blurring.
+Automatically deals with the case where part of the image goes
+offscreen.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.crop">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">crop</tt><big>(</big><em>clip</em>, <em>x1=None</em>, <em>y1=None</em>, <em>x2=None</em>, <em>y2=None</em>, <em>width=None</em>, <em>height=None</em>, <em>x_center=None</em>, <em>y_center=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new clip in which just a rectangular subregion of the
+original clip is conserved. x1,y1 indicates the top left corner and
+x2,y2 is the lower right corner of the croped region.
+All coordinates are in pixels. Float numbers are accepted.</p>
+<p>To crop an arbitrary rectangle:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="mi">275</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Only remove the part above y=30:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Crop a rectangle that starts 10 pixels left and is 200px wide</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Crop a rectangle centered in x,y=(300,400), width=50, height=150 :</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span>  <span class="n">x_center</span><span class="o">=</span><span class="mi">300</span> <span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<span class="go">                    width=50, height=150)</span>
+</pre></div>
+</div>
+<p>Any combination of the above should work, like for this rectangle
+centered in x=300, with explicit y-boundaries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">x_center</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
 <dt id="moviepy.video.fx.speedx">
 <tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">speedx</tt><big>(</big><em>clip</em>, <em>factor=None</em>, <em>final_duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.speedx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the current clip but at a speed multiplied
@@ -218,10 +231,72 @@ The same effect is applied to the clip&#8217;s audio and mask if any.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="moviepy.video.fx.fadein">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">fadein</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.fadein" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.
-For more advanced fading, see <tt class="docutils literal"><span class="pre">composition.crossfade</span></tt></p>
+<dt id="moviepy.video.fx.loop">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">loop</tt><big>(</big><em>self</em>, <em>n=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a clip that plays the current clip in an infinite loop.
+Ideal for clips coming from gifs.
+:param n: number of times the clip should be played. If <cite>None</cite> the</p>
+<blockquote>
+<div>the clip will loop indefinitely (i.e. with no set duration).</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.mirror_y">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">mirror_y</tt><big>(</big><em>clip</em>, <em>apply_to='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.mirror_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the clip vertically (and its mask too, by default)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.margin">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">margin</tt><big>(</big><em>clip</em>, <em>mar=None</em>, <em>left=0</em>, <em>right=0</em>, <em>top=0</em>, <em>bottom=0</em>, <em>color=(0</em>, <em>0</em>, <em>0)</em>, <em>opacity=1.0</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an external margin all around the frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mar</strong> &#8211; if not <tt class="docutils literal"><span class="pre">None</span></tt>, then the new clip has a margin of
+size <tt class="docutils literal"><span class="pre">mar</span></tt> in pixels on the left, right, top, and bottom.</li>
+<li><strong>right, top, bottom</strong> (<em>left,</em>) &#8211; width of the margin in pixel
+in these directions.</li>
+<li><strong>color</strong> &#8211; color of the margin.</li>
+<li><strong>mask_margin</strong> &#8211; value of the mask on the margin. Setting
+this value to 0 yields transparent margins.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.mirror_x">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">mirror_x</tt><big>(</big><em>clip</em>, <em>applyto='mask'</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.mirror_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>flips the clip horizontally (and its mask too, by default)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.freeze_at_end">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">freeze_at_end</tt><big>(</big><em>clip</em>, <em>freeze_duration=None</em>, <em>total_duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.freeze_at_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes the clip freeze on its last frame.  With <tt class="docutils literal"><span class="pre">duration</span></tt> you can
+specify the duration of the freeze. With <tt class="docutils literal"><span class="pre">total_duration</span></tt> you can
+specify the total duration of the clip and the freeze (i.e. the
+duration of the freeze is automatically calculated). If neither
+is provided, the freeze will have an infinite length.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.time_mirror">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">time_mirror</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.time_mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a clip that plays the current clip backwards.
+The clip must have its <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set.
+The same effect is applied to the clip&#8217;s audio and mask if any.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.video.fx.gamma_corr">
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">gamma_corr</tt><big>(</big><em>clip</em>, <em>gamma</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.gamma_corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gamma-correction of a video clip</p>
 </dd></dl>
 
 <dl class="function">
@@ -233,13 +308,6 @@ flashy. <tt class="docutils literal"><span class="pre">black</span></tt> gives t
 Requires Scikit-image or Scipy installed.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="moviepy.video.fx.blackwhite">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">blackwhite</tt><big>(</big><em>clip, RGB=[1, 1, 1], preserve_luminosity=True</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.blackwhite" title="Permalink to this definition">¶</a></dt>
-<dd><p>Desaturates the picture, makes it black and white.
-method = sum (TODO: others)</p>
-</dd></dl>
-
 </div>
 
 
@@ -247,7 +315,10 @@ method = sum (TODO: others)</p>
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="ref.html">Reference Manual</a><ul>

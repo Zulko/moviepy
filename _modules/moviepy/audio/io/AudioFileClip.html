@@ -54,6 +54,8 @@
           <div class="body">
             
   <h1>Source code for moviepy.audio.io.AudioFileClip</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
 <span class="kn">import</span> <span class="nn">wave</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
@@ -64,7 +66,6 @@
 <div class="viewcode-block" id="AudioFileClip"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip">[docs]</a><span class="k">class</span> <span class="nc">AudioFileClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    </span>
 <span class="sd">    An audio clip read from a sound file, or an array.</span>
 <span class="sd">    The whole file is not loaded in memory. Instead, only a portion is</span>
 <span class="sd">    read and stored in memory. this portion includes frames before</span>
@@ -92,21 +93,23 @@
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
         
 
         <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_AudioReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span><span class="n">nbytes</span><span class="o">=</span><span class="n">nbytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_AudioReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span><span class="n">nbytes</span><span class="o">=</span><span class="n">nbytes</span><span class="p">,</span>
+                                         <span class="n">bufsize</span><span class="o">=</span><span class="n">buffersize</span><span class="o">+</span><span class="mi">100</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">nframes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nframes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">=</span> <span class="n">buffersize</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span> <span class="bp">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nchannels</span>
         
         <span class="k">def</span> <span class="nf">gf</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">bufsize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span>
@@ -118,24 +121,27 @@
                 <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="o">*</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="n">in_time</span><span class="p">]</span>
                 <span class="n">f_tmin</span><span class="p">,</span> <span class="n">f_tmax</span> <span class="o">=</span> <span class="n">inds</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">inds</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
                 
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmin</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">bufsize</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmin</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">f_tmin</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">bufsize</span><span class="p">):</span>
+                <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">f_tmax</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">f_tmax</span><span class="p">)</span>
+                    
                 <span class="k">try</span><span class="p">:</span>
+                    <span class="n">tup</span> <span class="o">=</span> <span class="n">in_time</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span>
+                    <span class="n">inds2</span> <span class="o">=</span> <span class="n">inds</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span>
                     <span class="n">result</span><span class="p">[</span><span class="n">in_time</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">inds</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">]</span>
                     <span class="k">return</span> <span class="n">result</span>
-                <span class="k">except</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                     <span class="k">print</span> <span class="p">(</span><span class="s">&quot;Error: wrong indices in video buffer. Maybe&quot;</span><span class="o">+</span>
                            <span class="s">&quot; buffer too small.&quot;</span><span class="p">)</span>
-                    <span class="k">raise</span>
-            <span class="k">else</span><span class="p">:</span>            
-                
-                <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
-                <span class="k">if</span> <span class="n">ind</span><span class="o">&lt;</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">ind</span><span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nframes</span><span class="p">:</span> <span class="c"># out of time: return 0</span>
+                    <span class="k">raise</span> <span class="n">error</span>
+                    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">ind</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">ind</span><span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nframes</span><span class="p">:</span> <span class="c"># out of time: return 0</span>
                     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">)</span>
                     
-                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">)</span> <span class="o">&lt;</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
                     <span class="c"># out of the buffer: recenter the buffer</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_buffer_around</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
                     
@@ -143,21 +149,32 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">gf</span>
-    
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="AudioFileClip.nchannels"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels">[docs]</a>    <span class="k">def</span> <span class="nf">nchannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the number of channels of the reader</span>
+<span class="sd">        (1: mono, 2: stereo)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nchannels</span>
+</div>
     <span class="k">def</span> <span class="nf">_buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">framenumber</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; buffer &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fill the buffer with frames, centered on ``framenumber``</span>
+<span class="sd">        if possible</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="c"># start frame for the buffer</span>
-        <span class="n">fbuffer</span> <span class="o">=</span> <span class="n">framenumber</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">fbuffer</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fbuffer</span><span class="p">)</span>
+        <span class="c"># start-frame for the buffer</span>
+        <span class="n">fbuffer</span> <span class="o">=</span> <span class="n">framenumber</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">//</span><span class="mi">2</span>
+        
+        <span class="n">fbuffer</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fbuffer</span><span class="p">)</span>
         
         
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">!=</span><span class="bp">None</span><span class="p">):</span>
-            <span class="n">current_f_end</span>  <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span>
+            <span class="n">current_f_end</span>  <span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_fstart_buffer</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">-</span><span class="mi">1</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">fbuffer</span> <span class="o">&lt;</span> <span class="n">current_f_end</span>  <span class="o">&lt;</span> <span class="n">fbuffer</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">):</span>
-                <span class="sd">&quot;&quot;&quot; We already have one bit of what is going to be read&quot;&quot;&quot;</span>
-                <span class="n">conserved</span> <span class="o">=</span> <span class="n">current_f_end</span> <span class="o">-</span> <span class="n">fbuffer</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">current_f_end</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c"># We already have one bit of what must be read</span>
+                <span class="n">conserved</span> <span class="o">=</span> <span class="n">current_f_end</span> <span class="o">-</span> <span class="n">fbuffer</span><span class="o">+</span><span class="mi">1</span>
                 <span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="o">-</span><span class="n">conserved</span>
                 <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="o">-</span><span class="n">conserved</span><span class="p">:],</span> <span class="n">array</span><span class="p">])</span>
@@ -181,7 +198,10 @@
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
   <li><a href="../../../index.html">Module code</a><ul>

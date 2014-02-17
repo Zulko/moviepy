@@ -146,7 +146,7 @@
         <span class="k">return</span> <span class="n">newclip</span>
 
     </div>
-<div class="viewcode-block" id="Clip.fl_time"><a class="viewcode-back" href="../ref/Clip.html#Clip.Clip.fl_time">[docs]</a>    <span class="k">def</span> <span class="nf">fl_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_func</span><span class="p">,</span> <span class="n">applyto</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;mask&#39;</span><span class="p">,</span> <span class="s">&#39;audio&#39;</span><span class="p">],</span> <span class="n">keep_duration</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Clip.fl_time"><a class="viewcode-back" href="../ref/Clip.html#Clip.Clip.fl_time">[docs]</a>    <span class="k">def</span> <span class="nf">fl_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_func</span><span class="p">,</span> <span class="n">applyto</span><span class="o">=</span><span class="p">[],</span> <span class="n">keep_duration</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a clip playing the content of the current clip but with a</span>
 <span class="sd">        modified timeline, time ``t`` being replaced by another</span>
@@ -285,7 +285,7 @@
 <span class="sd">        The same effect is applied to the clip&#39;s audio and mask if any.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">ta</span><span class="p">)</span>
+        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">ta</span><span class="p">,</span> <span class="n">applyto</span><span class="o">=</span><span class="p">[])</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">tb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
             <span class="n">tb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
         <span class="k">elif</span> <span class="n">tb</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
@@ -322,7 +322,10 @@
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Module code</a><ul>

@@ -73,24 +73,8 @@
 <p><strong>Debian and Ubuntu users</strong>, you certainly have an out-of-date version of FFMPEG, you <em>must</em> download a recent version from the <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> website.</p>
 <p>Normally Numpy and Decorator will be automatically installed when you install MoviePy. In case of doubt/problem they can also be installed manually.
 Numpy can be installed with most software managers on Linux distributions. Both Numpy and Decorator can be installed as follows with pip:</p>
-<div class="highlight-python"><pre>(sudo) pip install decorator
-(sudo) pip install numpy</pre>
-</div>
-</div>
-<div class="section" id="installation-with-pip">
-<span id="pip-install"></span><h2>Installation with PIP<a class="headerlink" href="#installation-with-pip" title="Permalink to this headline">¶</a></h2>
-<p>If you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal</p>
-<div class="highlight-python"><pre>(sudo) pip install moviepy</pre>
-</div>
-</div>
-<div class="section" id="manual-installation">
-<span id="manual-install"></span><h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
-<p>You can install moviepy manually by downloading the sources, either on <a href="#id1"><span class="problematic" id="id2">PYPI_</span></a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> .</p>
-<p>Then just unzip everything in one folder, open a terminal and type</p>
-<div class="highlight-python"><pre>sudo python setup.py install</pre>
-</div>
-<p>Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt>. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
+<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install decorator
+(sudo) pip install numpy
 </pre></div>
 </div>
 </div>
@@ -109,6 +93,25 @@ Numpy can be installed with most software managers on Linux distributions. Both 
 <li><a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> (which provides the python package <tt class="docutils literal"><span class="pre">cv2</span></tt>) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.</li>
 </ul>
 <p>If you are on linux, these softwares will surely be in your repos.</p>
+</div>
+<div class="section" id="installation-with-pip">
+<span id="pip-install"></span><h2>Installation with PIP<a class="headerlink" href="#installation-with-pip" title="Permalink to this headline">¶</a></h2>
+<p>If you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal</p>
+<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install moviepy
+</pre></div>
+</div>
+</div>
+<div class="section" id="manual-installation">
+<span id="manual-install"></span><h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
+<p>You can install moviepy manually by downloading the sources, either on <a href="#id1"><span class="problematic" id="id2">PYPI_</span></a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> .</p>
+<p>Then just unzip everything in one folder, open a terminal and type</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo python setup.py install
+</pre></div>
+</div>
+<p>Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt>. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
+</pre></div>
+</div>
 <div class="section" id="installing-opencv-2-4-6">
 <h3>Installing OpenCV 2.4.6<a class="headerlink" href="#installing-opencv-2-4-6" title="Permalink to this headline">¶</a></h3>
 <p>OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned !
@@ -119,12 +122,14 @@ The installation seems easy for Windows. On linux, here is what I found on the I
 <li><p class="first">Unzip the source code of <a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> in some folder. open a terminal in this folder.</p>
 </li>
 <li><p class="first">Make a new directory and go into this directory:</p>
-<div class="highlight-python"><pre>mkdir release
-cd release</pre>
+<div class="highlight-python"><div class="highlight"><pre>mkdir release
+cd release
+</pre></div>
 </div>
 </li>
 <li><p class="first">Run <tt class="docutils literal"><span class="pre">cmake</span></tt>. Here is the line I used:</p>
-<div class="highlight-python"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..</pre>
+<div class="highlight-python"><div class="highlight"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..
+</pre></div>
 </div>
 </li>
 <li><p class="first">Run <tt class="docutils literal"><span class="pre">make</span></tt>. This may take a few minutes (15 minutes on my computer).</p>
@@ -133,7 +138,8 @@ cd release</pre>
 </div>
 </li>
 <li><p class="first">Finally, install.</p>
-<div class="highlight-python"><pre>sudo make install</pre>
+<div class="highlight-python"><div class="highlight"><pre>sudo make install
+</pre></div>
 </div>
 </li>
 </ul>
@@ -154,13 +160,16 @@ cd release</pre>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.jpeg" alt="Logo"/>
+            </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Download and Installation</a><ul>
 <li><a class="reference internal" href="#core-dependencies">Core dependencies</a></li>
+<li><a class="reference internal" href="#not-so-optional-dependencies">(Not so) Optional dependencies</a></li>
 <li><a class="reference internal" href="#installation-with-pip">Installation with PIP</a></li>
-<li><a class="reference internal" href="#manual-installation">Manual installation</a></li>
-<li><a class="reference internal" href="#not-so-optional-dependencies">(Not so) Optional dependencies</a><ul>
+<li><a class="reference internal" href="#manual-installation">Manual installation</a><ul>
 <li><a class="reference internal" href="#installing-opencv-2-4-6">Installing OpenCV 2.4.6</a></li>
 </ul>
 </li>

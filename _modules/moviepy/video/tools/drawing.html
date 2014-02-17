@@ -251,21 +251,19 @@
         <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">col1</span><span class="p">))</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
-        <span class="k">print</span> <span class="n">shape</span>
-        <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
             <span class="n">arr</span><span class="p">[:,:</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">col1</span>
             <span class="n">arr</span><span class="p">[:,</span><span class="n">x</span><span class="p">:]</span> <span class="o">=</span> <span class="n">col2</span>
-            
-        <span class="k">elif</span> <span class="n">y</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">y</span><span class="p">:</span>
             <span class="n">arr</span><span class="p">[:</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">col1</span>
             <span class="n">arr</span><span class="p">[</span><span class="n">y</span><span class="p">:]</span> <span class="o">=</span> <span class="n">col2</span>
+            
+        <span class="k">return</span> <span class="n">arr</span>
      
     <span class="c"># if we are here, it means we didn&#39;t exit with a proper &#39;return&#39;</span>
-    <span class="k">print</span> <span class="s">&quot;Arguments in color_plit not understood !&quot;</span>
+    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;Arguments in color_split not understood !&quot;</span> <span class="p">)</span>
     <span class="k">raise</span>
-    
-<span class="c"># to come: circles, squares, rectangles</span>
-</div>
+    </div>
 <div class="viewcode-block" id="circle"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.circle">[docs]</a><span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="n">screensize</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blur</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draws a circle of color ``col1``, on a background of color ``col2``,</span>
@@ -282,7 +280,10 @@
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../../../../index.html">Documentation overview</a><ul>
   <li><a href="../../../index.html">Module code</a><ul>

@@ -21,6 +21,26 @@ Numpy can be installed with most software managers on Linux distributions. Both 
     (sudo) pip install decorator
     (sudo) pip install numpy
 
+ 
+(Not so) Optional dependencies
+-------------------------------
+
+You are not obliged to install these but for many uses MoviePy will scream at you and say that the package or the software is missing. All these dependencies can be installed any time after the installation of MoviePy.
+
+- PyGame_ is needed for video and sound previews (really essential for advanced editing).
+- imageMagick_  is needed for all text generation, GIF support, and much more in the future.
+
+There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.
+
+- Scipy is needed for many advanced functionalities (tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
+- `Scikit Image`_ may be needed for some advanced image manipulation.
+- The Python Imaging Library is not used yet (I don't like the copyright) but it is coming. 
+- `OpenCV 2.4.6`_ (which provides the python package ``cv2``) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.
+
+If you are on linux, these softwares will surely be in your repos.
+
+
+
 .. _pip_install:
 
 Installation with PIP
@@ -44,24 +64,6 @@ Then just unzip everything in one folder, open a terminal and type ::
 Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script ``moviepy/conf.py``. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file ::
     
     FFMPEG_BINARY = path/to/your/ffmpeg
-
- 
-(Not so) Optional dependencies
--------------------------------
-
-You are not obliged to install these but for many uses MoviePy will scream at you and say that the package or the software is missing. All these dependencies can be installed any time after the installation of MoviePy.
-
-- PyGame_ is needed for video and sound previews (really essential for advanced editing).
-- imageMagick_  is needed for all text generation, GIF support, and much more in the future.
-
-There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.
-
-- Scipy is needed for many advanced functionalities (tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
-- `Scikit Image`_ may be needed for some advanced image manipulation.
-- The Python Imaging Library is not used yet (I don't like the copyright) but it is coming. 
-- `OpenCV 2.4.6`_ (which provides the python package ``cv2``) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.
-
-If you are on linux, these softwares will surely be in your repos.
 
 
 Installing OpenCV 2.4.6

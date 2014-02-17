@@ -114,7 +114,7 @@ a None mask but can be useful in many cases. Choose</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.afx">
-<tt class="descname">afx</tt><big>(</big><em>fun</em>, <em>*a</em>, <em>**k</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.afx" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">afx</tt><big>(</big><em>fun</em>, <em>*a</em>, <em>**k</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.afx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.afx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a new clip whose audio has been transformed by <tt class="docutils literal"><span class="pre">fun</span></tt>.</p>
 </dd></dl>
 
@@ -304,7 +304,7 @@ once parallelization is implemented.</li>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.to_gif">
-<tt class="descname">to_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_gif" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#VideoClip.to_gif"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_gif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts a VideoClip into an animated GIF using ImageMagick or
 ffmpeg.
 :param clip: the VideoClip to be converted.
@@ -431,9 +431,10 @@ file, in wav format, and it attributed to the clip.</li>
 <dl class="method">
 <dt id="moviepy.video.io.VideoFileClip.VideoFileClip.coreader">
 <tt class="descname">coreader</tt><big>(</big><em>audio=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/io/VideoFileClip.html#VideoFileClip.coreader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.VideoFileClip.VideoFileClip.coreader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the AudioFileClip, i.e. a new entrance point
-to the video file. Use copy when you have different clips
-watching the same video file at different times.</p>
+<dd><p>Returns a copy of the AudioFileClip, i.e. a 
+new entrance point to the video file. Use copy
+when you have different clips watching the same
+video file at different times.</p>
 </dd></dl>
 
 </dd></dl>
@@ -444,7 +445,7 @@ watching the same video file at different times.</p>
 <h2><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt><a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.ImageClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.VideoClip</span></tt></a></p>
 <p>A video clip originating from a picture. This clip will simply
 display the given picture at all times. For instance:</p>
@@ -473,14 +474,14 @@ of the picture (if it exists) to be used as a mask.</li>
 </table>
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>applyto=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#ImageClip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Equivalent to VideoClip.fl . The result is no more an
 ImageClip, it has the class VideoClip (as it may be animated)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl_image">
-<tt class="descname">fl_image</tt><big>(</big><em>image_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_image" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_image</tt><big>(</big><em>image_func</em>, <em>applyto=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#ImageClip.fl_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_image" title="Permalink to this definition">¶</a></dt>
 <dd><p>Similar to VideoClip.fl_image, but for ImageClip the
 tranformed clip is computed once and for all at the beginning,
 and not for each &#8216;frame&#8217;.</p>
@@ -488,7 +489,7 @@ and not for each &#8216;frame&#8217;.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>timefun, applyto=['mask', 'audio']</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_time</tt><big>(</big><em>timefun, applyto=['mask', 'audio']</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#ImageClip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does nothing for ImageClips (but it may affect their
 masks of their audios). The result is still an ImageClip</p>
 </dd></dl>
@@ -499,7 +500,7 @@ masks of their audios). The result is still an ImageClip</p>
 <h3><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt><a class="headerlink" href="#colorclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.ColorClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#ColorClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>An ImageClip showing just one color.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -524,7 +525,7 @@ is True, <tt class="docutils literal"><span class="pre">color</span></tt> must b
 <h3><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt><a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.TextClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Times-New-Roman-Regular'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Courier'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>An image clip originating from a script-generated text image.
 Makes a text PNG using ImageMagick.</p>
@@ -569,7 +570,7 @@ the transparency in the image.</li>
 </table>
 <dl class="staticmethod">
 <dt id="moviepy.video.VideoClip.TextClip.list">
-<em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/VideoClip.html#TextClip.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of all valid entries for the argument given
 (can be <tt class="docutils literal"><span class="pre">font</span></tt>, <tt class="docutils literal"><span class="pre">color</span></tt>, etc...)
 argument of <tt class="docutils literal"><span class="pre">TextClip</span></tt></p>
@@ -642,6 +643,9 @@ actually playing at the given time <cite>t</cite>.</p>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p>
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">VideoClip</a><ul>

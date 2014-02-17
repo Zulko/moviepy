@@ -67,14 +67,17 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">fx_list</span><span class="p">]</span>
 
 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">__all__</span><span class="p">:</span>
-    <span class="k">exec</span><span class="p">(</span><span class="s">&quot;from </span><span class="si">%s</span><span class="s"> import </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">name</span><span class="p">))</span>
+    <span class="k">exec</span><span class="p">(</span><span class="s">&quot;from .</span><span class="si">%s</span><span class="s"> import </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">name</span><span class="p">))</span>
 </pre></div>
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper"><h3>Related Topics</h3>
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
   <li><a href="../../index.html">Module code</a><ul>

@@ -89,6 +89,7 @@ div.sphinxsidebar #searchbox input[type="submit"] {
 
 img {
     border: 0;
+    max-width: 100%;
 }
 
 /* -- search page ----------------------------------------------------------- */
@@ -399,10 +400,6 @@ dl.glossary dt {
 
 .field-list p {
     margin: 0;
-}
-
-.refcount {
-    color: #060;
 }
 
 .optional {
