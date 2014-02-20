@@ -1,0 +1,35 @@
+
+  <a href="https://twitter.com/share" class="twitter-share-button"
+data-url="http://zulko.github.io/moviepy/"
+data-text="MoviePy - Video Editing with Python"
+data-size="large" data-hashtags="MoviePy">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+</script>
+
+<h3><a href="{{ pathto(master_doc) }}">{{ _('Table Of Contents') }}</a></h3>
+
+
+<ul class="custom-index container"></ul>
+<script type="text/javascript">
+
+$(function() {
+    var ul = $('ul.custom-index');
+    $('dl.class').each(function(i, el) {
+        var name = $('tt.descname', el).html(), id = $('dt', el).attr('id'),
+            li = $('<li><a href="#' + id + '">' + name + '</a></li>');
+        ul.append(li);
+        var ul_ = $('<ul />');
+        li.append(ul_);
+        $('dl.method', el).each(function(i, el) {
+            var name = $('tt.descname', el).html(), id = $('dt', el).attr('id');
+            ul_.append('<li><a href="#' + id + '">' + name + '</a></li>');
+        });
+    });
+
+});
+
+</script>
+
+

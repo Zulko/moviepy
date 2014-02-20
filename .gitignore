@@ -6,6 +6,7 @@
 # Packages
 *.egg
 *.egg-info
+*.tar.gz
 dist
 build
 eggs
