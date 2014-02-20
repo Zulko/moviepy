@@ -98,13 +98,21 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 def ffmpeg_write_image(filename, image):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
-    proc = sp.Popen([ FFMPEG_BINARY, '-y',
-            '-s', "%dx%d"%(image.shape[:2][::-1]),
-            "-f", 'rawvideo',
-            '-pix_fmt', "rgba" if (image.shape[2] == 4) else "rgb24",
-            '-i','-', filename],
-            stdin=sp.PIPE, stdout=sp.PIPE, stderr=sp.PIPE)
-    image.tofile(proc.stdin)
+    cmd = [ FFMPEG_BINARY, '-y',
+           '-s', "%dx%d"%(image.shape[:2][::-1]),
+           "-f", 'rawvideo',
+           '-pix_fmt', "rgba" if (image.shape[2] == 4) else "rgb24",
+           '-i','-', filename]
+           
+    proc = sp.Popen( cmd, stdin=sp.PIPE, stderr=sp.PIPE)
+    proc.stdin.write(image.tostring())
     proc.stdin.close()
     proc.wait()
+    
+    if proc.returncode:
+        err = "\n".join(["MoviePy running : %s"%cmd,
+                          "WARNING: this command returned an error:",
+                          proc.stderr.read().decode('utf8')])
+        raise IOError(err)
+    
     del proc

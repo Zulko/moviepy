@@ -15,7 +15,7 @@ except ImportError:
         from PIL import Image
         import numpy as np
         def resizer(pic, newsize):
-            newsize = map(int, newsize)[::-1]
+            newsize = list(map(int, newsize))[::-1]
             shape = pic.shape
             if len(shape)==3:
                 newshape = (newsize[0],newsize[1], shape[2] )
