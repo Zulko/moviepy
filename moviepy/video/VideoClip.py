@@ -147,7 +147,7 @@ class VideoClip(Clip):
                  audio_bitrate = None, audio_bufsize = 40000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
-                 para = True, verbose = True):
+                 para = False, verbose = True):
         """
         Makes a video file out of the clip.
         First the clip is transformed into a directory clip, which means

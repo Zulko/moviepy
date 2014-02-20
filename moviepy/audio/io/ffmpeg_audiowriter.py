@@ -52,9 +52,7 @@ class FFMPEG_AudioWriter:
             + ['-acodec', codec]
             + (['-b',bitrate] if (bitrate!=None) else [])
             + [ filename ])
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE,
-                                 stdout=sp.PIPE,
-                                 stderr=sp.PIPE)
+        self.proc = sp.Popen(cmd,stdin=sp.PIPE,  stderr=sp.PIPE)
         
     def write_frames(self,frames_array):
         self.proc.stdin.write(frames_array.tostring())
