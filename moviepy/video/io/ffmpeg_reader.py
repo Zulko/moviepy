@@ -168,5 +168,5 @@ def ffmpeg_read_image(filename, with_mask=True):
     else:
         pix_fmt = "rgb24"
     vf = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
-    vf.close()
+    vf.close_proc()
     return vf.lastread
