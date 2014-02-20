@@ -1,8 +1,7 @@
 import os
 import subprocess
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.tools import subprocess_call
 
-@subprocess_call
 def gif_to_directory(gif_file,dirName=None):
     """
     Stores all the frames of the given .gif file
@@ -27,5 +26,5 @@ def gif_to_directory(gif_file,dirName=None):
     except:
         pass
     
-    return ["convert", "-coalesce", gif_file,
-             os.path.join(dirName,"%04d.png")]
+    subprocess_call ["convert", "-coalesce", gif_file,
+             os.path.join(dirName,"%04d.png")])

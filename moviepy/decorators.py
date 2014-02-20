@@ -5,6 +5,7 @@ all decorators used in moviepy go there
 import decorator
 from moviepy.tools import cvsecs
 
+
 @decorator.decorator
 def apply_to_mask(f, clip, *a, **k):
     """ This decorator will apply the same function f to the mask of

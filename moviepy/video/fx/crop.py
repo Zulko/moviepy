@@ -8,19 +8,25 @@ def crop(clip, x1=None, y1=None, x2=None, y2=None,
     All coordinates are in pixels. Float numbers are accepted.
     
     To crop an arbitrary rectangle:
+    
     >>> crop(clip, x1=50, y1=60, x2=460, y2=275)
     
     Only remove the part above y=30:
+    
     >>> crop(clip, y1=30)
     
     Crop a rectangle that starts 10 pixels left and is 200px wide
+    
     >>> crop(clip, x1=10, width=200)
     
     Crop a rectangle centered in x,y=(300,400), width=50, height=150 :
-    >>> crop(clip,  x_center=300 , y_center=400, width=50, height=150)
     
-    Any combination of the above should work:
-    Rectangle centered in x=300, with explicit y-boundaries:
+    >>> crop(clip,  x_center=300 , y_center=400,
+                        width=50, height=150)
+    
+    Any combination of the above should work, like for this rectangle
+    centered in x=300, with explicit y-boundaries:
+    
     >>> crop(x_center=300, width=400, y1=100, y2=600)
     
     """

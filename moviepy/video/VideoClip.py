@@ -17,7 +17,10 @@ from tqdm import tqdm
 
 import numpy as np
 
-from moviepy.decorators import  apply_to_mask, requires_duration
+from moviepy.decorators import  (apply_to_mask,
+                                 requires_duration)
+                                 
+from moviepy.tools import subprocess_call, sys_write_flush
 
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
@@ -186,12 +189,8 @@ class VideoClip(Clip):
         elif audio_codec == 'raw32':
             audio_codec = 'pcm_s32le'
         
-        if verbose:
-            def verbose_print(s):
-                sys.stdout.write(s)
-                sys.stdout.flush()
-        else:
-            verbose_print = lambda *a : None
+        verbose_print = (sys_write_flush if verbose 
+                                         else (lambda *a : None) )
         
         if isinstance(audio, str): 
             # audio is some audiofile it is maybe not a wav file. It is
@@ -291,9 +290,11 @@ class VideoClip(Clip):
                 
                 
     def blit_on(self, picture, t):
-        """ Returns the result of the blit of the clip's frame at time `t`
-            on the given `picture`, the position of the clip being given
-            by the clip's ``pos`` attribute. Meant for compositing.  """
+        """
+        Returns the result of the blit of the clip's frame at time `t`
+        on the given `picture`, the position of the clip being given
+        by the clip's ``pos`` attribute. Meant for compositing.
+        """
 
         hf, wf = sizef = picture.shape[:2]
 
@@ -387,7 +388,7 @@ class VideoClip(Clip):
         
         for i, t in enumerate(tt):
             
-            name = "%s_TEMP%04d.png"%(fileName,i+1)
+            name = "%s_GIFTEMP%04d.png"%(fileName,i+1)
             tempfiles.append(name)
             self.save_frame(name, t, savemask=True)
             
@@ -395,35 +396,29 @@ class VideoClip(Clip):
         
         if program == "ImageMagick":
             
-            cmd = ("convert -delay %d"%delay +
-                  " -dispose %d"%(2 if dispose else 1)+
-                  " -loop %d"%loop+
-                  " `seq -f %s"%fileName +"_TEMP%04g.png"+
-                  " 1 1 %d`"%len(tt) +
-                  " -coalesce -fuzz %02d"%fuzz + "%"+
-                  " -layers %s %s"%(opt,filename))
-                  
-            verboseprint("running %s"%cmd)
-            
-            os.system(cmd)
+            cmd = ["convert",
+                  '-delay' , '%d'%delay,
+                  "-dispose" ,"%d"%(2 if dispose else 1),
+                  "-loop" , "%d"%loop,
+                  "%s_GIFTEMP*.png"%fileName,
+                  "-coalesce",
+                  "-fuzz", "%02d"%fuzz + "%",
+                  "-layers", "%s"%opt,
+                  "%s"%filename]
             
         elif program == "ffmpeg":
             
-            cmd = [FFMPEG_BINARY,'-y', '-f', 'image2',
-                   '-i', fileName+'_TEMP%04d.png',
+            cmd = [FFMPEG_BINARY, '-y',
+                   '-f', 'image2',
+                   '-i', fileName+'_GIFTEMP%04d.png',
                    '-r',str(fps),
                    filename]
-                   
-            proc = subprocess.Popen(cmd, stdin=subprocess.PIPE,
-                                     stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE)
-            proc.wait()
-            print( proc.stderr )
-            
+                            
+        
+        subprocess_call( cmd )
+        
         for f in tempfiles:
             os.remove(f)
-        
-        verboseprint('GIF generated !')
 
     #-----------------------------------------------------------------
     # F I L T E R I N G
@@ -867,11 +862,7 @@ class TextClip(ImageClip):
         if print_cmd:
             print( " ".join(cmd) )
 
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-        proc.wait()
-        if proc.returncode:
-            print ("Error: problem in the generation of the text file"+
-                "by ImageMagick. Certainly wrong arguments in TextClip")
+        subprocess_call(cmd)
         
         ImageClip.__init__(self, tempfile, transparent=transparent)
         self.txt = txt

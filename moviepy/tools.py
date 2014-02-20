@@ -2,6 +2,37 @@
 Misc. useful functions that can be used at many places in the program.
 """
 
+import subprocess as sp
+import sys
+
+def sys_write_flush(s):
+    """ writes and flushes witout delay a text in the console """
+    sys.stdout.write(s)
+    sys.stdout.flush()
+
+
+def subprocess_call(cmd, stdout=None, stdin = None,
+                    stderr = sp.PIPE, verbose=True, errorprint=True):
+    """
+    executes the subprocess command
+    """
+    
+    verboseprint = sys_write_flush if verbose else (lambda *a : None)
+    
+    verboseprint( "\nMoviePy Running:\n>>> "+ " ".join(cmd) )
+    
+    proc = sp.Popen(cmd, stdout=stdout,
+                         stdin = stdin,
+                         stderr = stderr)
+    proc.wait()
+    
+    if proc.returncode and errorprint:
+        sys_write_flush( "\nWARNING: this command returned an error:")
+        sys_write_flush( proc.stderr.read().decode('utf8'))
+    else:
+        verboseprint( "\n... command successful.\n")
+
+
 def cvsecs(*args):
     """
     Converts a time to second. Either cvsecs(min,secs) or

@@ -162,6 +162,15 @@ div.body h6 {
     padding: 0;
 }
 
+ 
+div.body h1 { margin-top: 0; padding-top: 0; font-size: 240%; }
+div.body h2 { font-size: 180%; }
+div.body h3 { font-size: 150%; }
+div.body h4 { font-size: 130%; }
+div.body h5 { font-size: 100%; }
+div.body h6 { font-size: 100%; }
+ 
+ 
 {% if theme_index_logo %}
 div.indexwrapper h1 {
     text-indent: -999999px;
@@ -170,12 +179,6 @@ div.indexwrapper h1 {
 }
 {% endif %}
  
-div.body h1 { margin-top: 0; padding-top: 0; font-size: 240%; }
-div.body h2 { font-size: 180%; }
-div.body h3 { font-size: 150%; }
-div.body h4 { font-size: 130%; }
-div.body h5 { font-size: 100%; }
-div.body h6 { font-size: 100%; }
  
 a.headerlink {
     color: #ddd;

@@ -9,6 +9,7 @@ try:
                 
 except ImportError:
     
+    
     try:
         
         from PIL import Image
@@ -35,6 +36,8 @@ except ImportError:
                                                
         except ImportError:
             resize_possible = False
+            
+        
         
     
 from moviepy.decorators import apply_to_mask
