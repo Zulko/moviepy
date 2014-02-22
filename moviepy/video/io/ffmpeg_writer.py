@@ -54,9 +54,7 @@ class FFMPEG_VideoWriter:
             ['-b',bitrate] if (bitrate!=None) else []) + [
             '-r', "%d"%fps,
             filename ]
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE,
-                                 stdout=sp.PIPE,
-                                 stderr=sp.PIPE)
+        self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
         
     def write_frame(self,img_array):
         self.proc.stdin.write(img_array.tostring())
@@ -77,7 +75,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     else:
         verbose_print = lambda *a : None
     
-    verbose_print("Rendering video %s\n"%filename)
+    verbose_print("\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
              bitrate=bitrate)
              
@@ -92,7 +90,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
         writer.write_frame(frame.astype("uint8"))
     
     writer.close()
-    verbose_print("video done !")
+    verbose_print("Done writing video in %s !"%filename)
         
         
 def ffmpeg_write_image(filename, image):

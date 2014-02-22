@@ -61,4 +61,4 @@ def crop(clip, x1=None, y1=None, x2=None, y2=None,
     
     return clip.fl_image(
             lambda pic: pic[int(y1):int(y2), int(x1):int(x2)],
-            applyto=['mask'])
+            apply_to=['mask'])

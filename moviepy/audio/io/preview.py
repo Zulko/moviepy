@@ -1,11 +1,8 @@
 import time
 import numpy as np
-import threading
-import sys
-
-import numpy as np
 
 from moviepy.decorators import requires_duration
+
 import pygame as pg
 
 pg.init()
@@ -18,24 +15,29 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
     """
     Plays the sound clip with pygame.
     
-    :param fps: frame rate of the sound. 44100 gives top quality, but
-        may cause problems if your computer is not fast enough and
-        your clip is complicated. If the sound jumps during the
-        preview lower it (11025 is still fine, 5000 is tolerable).
+    Parameters
+    -----------
+    
+    fps
+       Frame rate of the sound. 44100 gives top quality, but may cause
+       problems if your computer is not fast enough and your clip is
+       complicated. If the sound jumps during the preview, lower it
+       (11025 is still fine, 5000 is tolerable).
         
-    :param buffersize: The sound is not generated all at once, but
-        rather made by bunches of frames (chunks). ``buffersize``
-        is the size of such a chunk. Try varying it if you meet
-        audio problems (but you shouldn't have to).
+    buffersize
+      The sound is not generated all at once, but rather made by bunches
+      of frames (chunks). ``buffersize`` is the size of such a chunk.
+      Try varying it if you meet audio problems (but you shouldn't
+      have to).
     
-    :param nbytes: number of bytes to encode the sound: 1 for 8bit
-        sound, 2 for 16bit, 4 for 32bit sound. 2 bytes is fine.
+    nbytes:
+      Number of bytes to encode the sound: 1 for 8bit sound, 2 for
+      16bit, 4 for 32bit sound. 2 bytes is fine.
     
-    :param audioFlag, videoFlag: parameters whose sole purpose is to
-        enable a good synchronization of the start of video and sound
-        when the audio clip is played as the background of a video
-        clip. ``audioFlag`` and ``videoFlag`` are threading.Event
-        objects (from Python's standard threading module).
+    audioFlag, videoFlag:
+      Instances of class threading events that are used to synchronize
+      video and audio during ``VideoClip.preview()``.
+    
     """
                  
     pg.mixer.quit()

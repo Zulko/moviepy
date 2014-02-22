@@ -34,7 +34,7 @@ class FFMPEG_VideoReader:
         self.lastread = self.read_frame()
 
     def initialize(self, starttime=0):
-        """ Opens the file, creates the pipe. """
+        """Opens the file, creates the pipe. """
         
         self.close_proc() # if any
         
@@ -54,16 +54,19 @@ class FFMPEG_VideoReader:
         
         
         self.proc = sp.Popen(cmd, bufsize= self.bufsize,
-                                   stdin=sp.PIPE,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
                                    
-
+    
     def load_infos(self, print_infos=False):
-        """ reads the FFMPEG info on the file and sets self.size
-            and self.fps """
+        """Get file infos using ffmpeg.
+        
+        Grabs the FFMPEG info on the file and use them to set the
+        attributes ``self.size`` and ``self.fps`` """
+            
         # open the file in a pipe, provoke an error, read output
         proc = sp.Popen([FFMPEG_BINARY, "-i", self.filename, "-"],
+                bufsize=10**6,
                 stdin=sp.PIPE,
                 stdout=sp.PIPE,
                 stderr=sp.PIPE)
@@ -96,17 +99,8 @@ class FFMPEG_VideoReader:
         self.duration = cvsecs(*hms)
         self.nframes = int(self.duration*self.fps)
 
-    def close_proc(self):
-        if self.proc is not None:
-            self.proc.terminate()
-            for std in (self.proc.stdin,
-                        self.proc.stdout,
-                        self.proc.stderr):
-                std.close()
-            del self.proc
-
     def skip_frames(self, n=1):
-        """ Reads and throws away n frames """
+        """Reads and throws away n frames """
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth*w*h)
@@ -116,18 +110,18 @@ class FFMPEG_VideoReader:
 
     def read_frame(self):
         w, h = self.size
+        nbytes= self.depth*w*h
         try:
-            # Normally, the readr should not read after the last frame...
+            # Normally, the reader should not read after the last frame.
             # if it does, raise an error.
-            nbytes= self.depth*w*h
             s = self.proc.stdout.read(nbytes)
-            #self.proc.terminate()
-            #print( self.proc.stderr.read(10000))
             assert len(s) == nbytes
             result = np.fromstring(s,
                              dtype='uint8').reshape((h, w, len(s)//(w*h)))
             self.proc.stdout.flush()
+            
         except IOError:
+            
             self.proc.terminate()
             serr = self.proc.stderr.read()
             print( "error: string: %s, stderr: %s" % (s, serr))
@@ -138,11 +132,12 @@ class FFMPEG_VideoReader:
         return result
 
     def get_frame(self, t):
-        """ Reads a frame at time t. Note for coders:
-            getting an arbitrary frame in the video with ffmpeg can be
-            painfully slow if some decoding has to be done. This
-            function tries to avoid fectching arbitrary frames whenever
-            possible, by moving between adjacent frames.
+        """ Read a file video frame at time t.
+        
+        Note for coders: getting an arbitrary frame in the video with
+        ffmpeg can be painfully slow if some decoding has to be done.
+        This function tries to avoid fectching arbitrary frames whenever
+        possible, by moving between adjacent frames.
             """
         if t < 0:
             t = 0
@@ -160,13 +155,42 @@ class FFMPEG_VideoReader:
             result = self.read_frame()
             self.pos = pos
             return result
+    
+    def close_proc(self):
+        if self.proc is not None:
+            self.proc.terminate()
+            self.proc.stdout.close()
+            self.proc.stderr.close()
+            del self.proc
+    
+    def __del__(self):
+        self.close_proc()
+        del self.lastread
+    
 
 
 def ffmpeg_read_image(filename, with_mask=True):
+    """ Read one image from a file.
+    
+    Wraps FFMPEG_Videoreader to read just one image. Returns an
+    ImageClip.
+    
+    Parameters
+    -----------
+    
+    filename
+      Name of the image file. Can be of any format supported by ffmpeg.
+    
+    with_mask
+      If the image has a transparency layer, ``with_mask=true`` will save
+      this layer as the mask of the returned ImageClip
+    
+    """
     if with_mask:
         pix_fmt = 'rgba'
     else:
         pix_fmt = "rgb24"
-    vf = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
-    vf.close_proc()
-    return vf.lastread
+    reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
+    im = reader.lastread
+    del reader
+    return im

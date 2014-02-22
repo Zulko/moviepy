@@ -1,9 +1,7 @@
 from __future__ import division
 
-import wave
 import numpy as np
 
-from moviepy.Clip import Clip
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
 
@@ -16,20 +14,38 @@ class AudioFileClip(AudioClip):
     and after the last frames read, so that it is fast to read the sound
     backward and forward.
     
+    Parameters
+    ------------
     
-    :param snd: Either a soundfile or an array representing a sound. If
-        the soundfile is not a .wav, it will be converted to .wav first,
-        using the ``fps`` and ``bitrate`` arguments. 
+    snd
+      Either a soundfile name (of any extension supported by ffmpeg)
+      or an array representing a sound. If the soundfile is not a .wav,
+      it will be converted to .wav first, using the ``fps`` and
+      ``bitrate`` arguments. 
     
-    :param buffersize: Size to load in memory (in number of frames)
-    :param temp_wav: name for the temporary wav file in case conversion
-        is required. If not provided, the default will be filename.wav
-        with some prefix. If the temp_wav already exists it will not
-        be rewritten.
+    buffersize:
+      Size to load in memory (in number of frames)
+    
+    temp_wav:
+      Name for the temporary wav file in case conversion is required.
+      If not provided, the default will be filename.wav with some prefix.
+      If the temp_wav already exists it will not be rewritten.
         
-    :ivar nbytes: Number of bits per frame of the original audio file
-        (the more the better).
-    :ivar fps, buffersize: see above.
+        
+    Attributes
+    ------------
+    
+    nbytes
+      Number of bits per frame of the original audio file.
+      
+    fps
+      Number of frames per second in the audio file
+      
+    buffersize
+      See Parameters.
+      
+    Examples
+    ----------
     
     >>> snd = SoundClip("song.wav")
     >>> snd = SoundClip("song.mp3", fps = 44100, bitrate=3000)
@@ -40,7 +56,7 @@ class AudioFileClip(AudioClip):
     def __init__(self, filename, buffersize=200000, nbytes=2, fps=44100):
         
 
-        Clip.__init__(self)
+        AudioClip.__init__(self)
             
         self.filename = filename
         self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
@@ -97,14 +113,14 @@ class AudioFileClip(AudioClip):
     @property
     def nchannels(self):
         """
-        returns the number of channels of the reader
+        R eturns the number of channels of the reader
         (1: mono, 2: stereo)
         """
         return self.reader.nchannels
 
     def _buffer_around(self,framenumber):
         """
-        fill the buffer with frames, centered on ``framenumber``
+        Fills the buffer with frames, centered on ``framenumber``
         if possible
         """
         

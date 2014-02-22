@@ -1,12 +1,9 @@
-import time
-import os
 import sys
-import wave
 from copy import copy
 
 import numpy as np
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
-from moviepy.decorators import  requires_duration
+from moviepy.decorators import requires_duration
 
 from moviepy.Clip import Clip
 
@@ -23,25 +20,31 @@ class AudioClip(Clip):
     Base class for audio clips. See ``SoundClip`` and ``CompositeSoundClip``
     for usable classes.
     An audio clip is a special clip with a ``get_frame``  attribute of
-    the form ` t -> [ f_t ]` for mono sound and `t -> [ f1_t, f2_t ]`
-    for stereo sound.  The `f_t` are floats between -1 and 1. These
-    bounds can be trespassed wihtout problems (the program will put the
+    the form `` t -> [ f_t ]`` for mono sound and ``t -> [ f1_t, f2_t ]``
+    for stereo sound (the arrays are Numpy arrays).
+    The `f_t` are floats between -1 and 1. These bounds can be
+    trespassed wihtout problems (the program will put the
     sound back into the bounds at conversion time, without much impact). 
     
-    Example :
+    Attributes
+    -----------
+    
+    get_frame
+      A function `t-> frame at time t`. The frame does not mean much
+      for a sound, it is just a float. What 'makes' the sound are
+      the variations of that float in the time.
+        
+    nchannels:
+      Number of channels (one or two for mono or stereo).
+    
+    Examples
+    ---------
     
     >>> # Plays the note A (a sine wave of frequency 404HZ)
     >>> import numpy as np
     >>> gf = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
     >>> clip = AudioClip().set_get_frame(gf)
     >>> clip.set_duration(5).preview()
-    
-    
-    :ivar get_frame: A function `t-> frame at time t`. The frame does not
-        mean much for a sound, it is just a float. What 'makes' the sound
-        are the variations of that float in the time.
-        
-    :ivar nchannels: Number of channels (one or two for mono or stereo).
                      
     """
     
@@ -54,10 +57,16 @@ class AudioClip(Clip):
         Transforms the sound into an array that can be played by pygame
         or written in a wav file. See ``AudioClip.preview``.
         
-        :param fps: frame rate of the sound. 44100 gives top quality.
+        Parameters
+        ------------
         
-        :param nbytes: number of bytes to encode the sound: 1 for 8bit
-            sound, 2 for 16bit, 4 for 32bit sound.
+        fps
+          Frame rate of the sound for the conversion.
+          44100 for top quality.
+        
+        nbytes
+          Number of bytes to encode the sound: 1 for 8bit sound,
+          2 for 16bit, 4 for 32bit sound.
         """
         if tt is None:
             tt = np.arange(0,self.duration, 1.0/fps)
@@ -81,7 +90,6 @@ class AudioClip(Clip):
                       codec, bitrate, verbose)
 
 try:
-    
     # Add method preview (only if pygame installed)
     from moviepy.audio.io.preview import preview
     AudioClip.preview = preview
@@ -95,7 +103,16 @@ class AudioArrayClip(AudioClip):
     
     An audio clip made from a sound array.
     
-    :param fps: Frames per rate
+    Parameters
+    -------------
+    
+    array
+      A Numpy array representing the sound, of size Nx1 for mono,
+      Nx2 for stereo.
+       
+    fps
+      Frames per second : speed at which the sound is supposed to be
+      played.
     
     """
     
@@ -133,10 +150,13 @@ class CompositeAudioClip(AudioClip):
     
     An audio clip made by putting together several audio clips.
     
-    :param clips: a list of audio clips, which may start playing at
-        different times or together. If all have their ``duration``
-        attribute set, the duration of the composite clip is computed
-        automatically.
+    Parameters
+    ------------
+    
+    clips
+      List of audio clips, which may start playing at different times or
+      together. If all have their ``duration`` attribute set, the
+      duration of the composite clip is computed automatically.
     
     """
 

@@ -1,9 +1,9 @@
 MoviePy
 =======
 
-MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects.
+MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects. It can read and save to many formats, including `animated GIFs <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_.
 
-Let us put together a few demonstration clips (you will find the code for most clips in the :ref:`examples`): ::
+Let us put together a few demonstration clips (you will find the code for most of these in the :ref:`examples`): ::
     
     import os
     from moviepy.editor import *
@@ -21,10 +21,30 @@ Let us put together a few demonstration clips (you will find the code for most c
         name="allowscriptaccess" value="always"></param><embed
         src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
         type="application/x-shockwave-flash" allowscriptaccess="always"
-        allowfullscreen="true" width="550" height="450"></embed></object>
+        allowfullscreen="true" width="490" height="390"></embed></object>
         </center>
-        
-You can also do animated GIFs with MoviePy (`examples <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_). 
+
+MoviePy is an open source software originally written by Zulko_ and released under the MIT licence.
+It is hosted on Github_, where you can push improvements or ask for help.
+
+.. raw:: html
+
+    <a href="https://twitter.com/share" class="twitter-share-button"
+    data-text="MoviePy, script-based video editing" data-size="large" data-hashtags="MoviePy">Tweet
+    </a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+    if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+    fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    </script>
+    
+    <iframe src="http://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
+    allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
+    
+    <a href="https://github.com/Zulko/moviepy">
+    <img style="position: absolute; top: 0; right: 0; border: 0;"
+    src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+    alt="Fork me on GitHub"></a>
+
 
 User's Guide
 --------------
@@ -37,41 +57,10 @@ User's Guide
    examples/examples
    ref/ref
 
-How it works, in a nutshell
------------------------------
-
-MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
-
-.. image:: explications.jpeg
-    :width: 570px
-    :align: center
-
-You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
-
-
-
-
-Contribute !
--------------
-
-MoviePy is a (still experimental) open source software written by Zulko_ and released on Github_ and PyPI_ under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !
-
-For troubleshooting and bug reports, the best for now is to ask on Stackoverflow_ (it will advertize for the project :) ) or on the Github project page.
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
 
 .. raw:: html
 
-        <a href="https://github.com/Zulko/moviepy">
-        <img style="position: absolute; top: 0; right: 0; border: 0;"
-        src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-        alt="Fork me on GitHub"></a>
+
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Github: https://github.com/Zulko/moviepy

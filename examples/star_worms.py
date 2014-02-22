@@ -55,7 +55,7 @@ clip_txt = TextClip(txt,color='white', align='West',fontsize=25,
 
 txt_speed = 27
 fl = lambda gf,t : gf(t)[int(txt_speed*t):int(txt_speed*t)+h,:]
-moving_txt= clip_txt.fl(fl, applyto=['mask'])
+moving_txt= clip_txt.fl(fl, apply_to=['mask'])
 
 
 # ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK

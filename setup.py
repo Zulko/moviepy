@@ -3,11 +3,13 @@
 import ez_setup
 ez_setup.use_setuptools()
 
+exec(open('moviepy/version.py').read()) # loads __version__
+
 from setuptools import setup, find_packages
 
 setup(name='moviepy',
-      version='0.2.1.7.05',
-      author='Zulko 2013',
+    version=__version__,
+    author='Zulko 2013',
     description='Module for script-based video editing',
     long_description=open('README.rst').read(),
     license='see LICENSE.txt',

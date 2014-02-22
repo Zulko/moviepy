@@ -1,7 +1,6 @@
 from __future__ import division
 
 import sys
-import wave
 import numpy as np
 import subprocess as sp
 
@@ -11,28 +10,29 @@ from moviepy.decorators import requires_duration
 
 
 class FFMPEG_AudioWriter:
-    """ A class to read videos using ffmpeg. ffmpeg will read any kind
-        of videos and transform them into raw data (a long string that
-        can be reshaped into a RGB array).
-        
-        :param filename: Any filename like 'video.mp4' etc. but if you
-           want to avoid complications it is recommended to use the
-           generic extension '.avi' for all your videos.
-        :param size: size (width,height) of the output video.
-        :param fps: frames per second of the output video.
-        :param codec: ffmpeg codec. It seems that in terms of quality
-            the hierarchy is
-        
-            'rawvideo' = 'png' > 'mpeg4' > 'libx264'
-        
-            'png' manages the same lossless quality as 'rawvideo' but
-            yields smaller files.
-        
-            (type ffmpeg -codecs in a terminal)
-        :param bitrate: only relevant for codecs which accept a bitrate
-           bitrate = "5000k" offers nice results in general
-        :param withmask: True if there is a mask in the video to be
-            decoded.
+    """
+    A class to write an AudioClip into an audio file.
+    
+    Parameters
+    ------------
+    
+    filename
+      Name of any video or audio file, like ``video.mp4`` or ``sound.wav`` etc.
+    
+    size
+      Size (width,height) in pixels of the output video.
+    
+    fps_input
+      Frames per second of the input audio (given by the AUdioClip being
+      written down).
+    
+    codec
+      Name of the ffmpeg codec to use for the output.
+    
+    bitrate:
+      A string indicating the bitrate of the final video. Only
+      relevant for codecs which accept a bitrate.
+      
     """
     
     
@@ -52,14 +52,15 @@ class FFMPEG_AudioWriter:
             + ['-acodec', codec]
             + (['-b',bitrate] if (bitrate!=None) else [])
             + [ filename ])
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE,  stderr=sp.PIPE)
+        self.proc = sp.Popen(cmd,stdin=sp.PIPE,
+                                 stderr=sp.PIPE)
         
     def write_frames(self,frames_array):
         self.proc.stdin.write(frames_array.tostring())
-        #frames_array.tofile(self.proc.stdin) # only python 2.7
         
     def close(self):
         self.proc.stdin.close()
+        self.proc.stderr.close()
         del self.proc
         
         
@@ -67,6 +68,11 @@ class FFMPEG_AudioWriter:
 @requires_duration       
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None, verbose=True):
+    """
+    A function that wraps the FFMPEG_AudioWriter to write an AudioClip
+    to a file.
+    """
+    
     if verbose:
         def verbose_print(s):
             sys.stdout.write(s)
@@ -74,7 +80,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     else:
         verbose_print = lambda *a : None
         
-    verbose_print("Rendering audio %s\n"%filename)
+    verbose_print("Writing audio in %s\n"%filename)
      
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate)
@@ -89,4 +95,4 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         writer.write_frames(sndarray)
     
     writer.close()
-    verbose_print("audio done !")
+    verbose_print("Done writing Audio in %s !\n"%filename)

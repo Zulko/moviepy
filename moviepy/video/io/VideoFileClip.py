@@ -9,22 +9,41 @@ class VideoFileClip(VideoClip):
 
     """
     
-    A video clip originating from a movie file. For instance:
+    A video clip originating from a movie file. For instance: ::
     
-    >>> clip = VideofileClip("myHolidays.mp4")
-    >>> clip2 = VideofileClip("myMaskVideo.avi",ismask = True)
+        >>> clip = VideofileClip("myHolidays.mp4")
+        >>> clip2 = VideofileClip("myMaskVideo.avi",ismask = True)
     
-    :param filename: Any video file: .ogv, .mp4, .mpeg, .avi, .mov etc.
-    :param ismask: `True` if the clip is a mask.
-    :param has_mask: 'True' if there is a mask included in the videofile.
-       Commonly, video files don't have mask, but you can save the mask
-       for the videos that you make with MoviePy (see the doc from
+    
+    Parameters
+    ------------
+    
+    filename:
+      The name of the video file. It can have any extension supported
+      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.
+    
+    ismask:
+      Set this to `True` if the clip is going to be used as a mask.
+      
+    has_mask:
+      Set this to 'True' if there is a mask included in the videofile.
+       Video files rarely contain masks, but some video codecs enable
+       that. For istance if you have a MoviePy VideoClip with a mask you
+       can save it to a videofile with a mask. (see also 
        ``VideoClip.to_videofile`` for more details).
-    :param audio: If `True`, then the audio is extracted from the video
-                  file, in wav format, and it attributed to the clip.
     
-    :ivar filename: Name of the original video file
-    :ivar fps: Frames per second in the original file. 
+    audio:
+      Set to `False` if the clip doesn't have any audio or if you do not
+      wish to read the audio.
+      
+    Attributes
+    -----------
+    
+    filename:
+      Name of the original video file.
+    
+    fps:
+      Frames per second in the original file. 
         
     """
 
@@ -61,8 +80,17 @@ class VideoFileClip(VideoClip):
                                        nbytes = audio_nbytes)
     
     def coreader(self, audio=True):
-        """ Returns a copy of the AudioFileClip, i.e. a 
-            new entrance point to the video file. Use copy
-            when you have different clips watching the same
-            video file at different times. """
+        """
+        Returns a copy of the AudioFileClip with an autonomous reader.
+        Maybe REMOVED in the coming versions. Wait and see. ::
+        
+            >>> clip = VideofileClip("myHolidays.mp4", ismask=True)
+            >>> clip2 = VideofileClip("myHolidays.mp4", ismask=True)
+        
+        is equivalent to ::
+        
+            >>> clip = VideofileClip("myHolidays.mp4", ismask=True)
+            >>> clip2 = clip.coreader()
+        """
+            
         return VideoFileClip(**self.parameters)

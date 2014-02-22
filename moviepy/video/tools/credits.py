@@ -13,7 +13,12 @@ def credits1(creditfile,width,stretch=30,color='white',
                  font='Impact-Normal',fontsize=60):
     """
     
-    The first credits I imagined. They take as argument a file like: ::
+    
+    Parameters
+    -----------
+    
+    creditfile:
+      A text file whose content must be as follows: ::
         
         # This is a comment
         # The next line says : leave 4 blank lines
@@ -28,18 +33,30 @@ def credits1(creditfile,width,stretch=30,color='white',
         
         ..Music Supervisor
         JEAN DIDIER
+    
+    width:
+      Total width of the credits text in pixels
+      
+    gap:
+      Gap in pixels between the jobs and the names.
+    
+    **txt_kw:
+      Additional argument passed to TextClip (font, colors, etc.)
+    
+    
+    
         
-    And produce an ImageClip that looks like :
+    Returns
+    ---------
+    
+    An ImageClip instance that looks like this and can be scrolled
+    to make some credits :
     
         Executive Story Editor    MARCEL DURAND
            Associate Producers    MARTIN MARCEL
                                   DIDIER MARTIN
               Music Supervisor    JEAN DIDIER
-    
-    :param width: total width of the credits text
-    :param stretch: stretch in pixels between the jobs and the names.
-    
-    The other keywords are passed to the ``TextClip``s
+              
     """
     
     
@@ -76,8 +93,8 @@ def credits1(creditfile,width,stretch=30,color='white',
                for txt,al in [(left,'East'),(right,'West')]]
                
 
-    cc = CompositeVideoClip( [left, right.set_pos((left.w+stretch,0))],
-                             size = (left.w+right.w+stretch,right.h),
+    cc = CompositeVideoClip( [left, right.set_pos((left.w+gap,0))],
+                             size = (left.w+right.w+gap,right.h),
                              transparent=True)
     
     # SCALE TO THE REQUIRED SIZE

@@ -7,8 +7,34 @@ from moviepy.conf import FFMPEG_BINARY
 
     
 class FFMPEG_AudioReader:
-    """ streams any file (audio or video) and outputs a 16bit 44100HZ
-        wav that can be read by the moviepy AudioFileClip. """
+    """
+    A class to read the audio in either video files or audio files
+    using ffmpeg. ffmpeg will read any audio and transform them into
+    raw data.
+    
+    Parameters
+    ------------
+    
+    filename
+      Name of any video or audio file, like ``video.mp4`` or
+      ``sound.wav`` etc.
+      
+    bufsize
+      The size of the buffer to use. Should be bigger than the buffer
+      used by ``to_audiofile``
+    
+    print_infos
+      Print the ffmpeg infos on the file being read (for debugging)
+      
+    fps
+      Desired frames per second in the decoded signal that will be
+      received from ffmpeg
+      
+    nbytes
+      Desired number of bytes (1,2,4) in the signal that will be
+      received from ffmpeg
+          
+    """
         
     def __init__(self, filename, bufsize, print_infos=False,
                  fps=44100, nbytes=2):
@@ -74,7 +100,6 @@ class FFMPEG_AudioReader:
                 '-ar', "%d"%self.fps,
                 '-ac', '%d'%self.nchannels, '-'])
         self.proc = sp.Popen( cmd, bufsize=self.bufsize,
-                                   stdin=sp.PIPE,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
         self.pos = int(self.fps*starttime)
@@ -101,12 +126,13 @@ class FFMPEG_AudioReader:
         return result
                     
     def seek(self,pos):
-        """ Reads a frame at time t. Note for coders:
-            getting an arbitrary frame in the video with ffmpeg can be
-            painfully slow if some decoding has to be done. This
-            function tries to avoid fectching arbitrary frames whenever
-            possible, by moving between adjacent frames.
-            """
+        """
+        Reads a frame at time t. Note for coders: getting an arbitrary
+        frame in the video with ffmpeg can be painfully slow if some
+        decoding has to be done. This function tries to avoid fectching
+        arbitrary frames whenever possible, by moving between adjacent
+        frames.
+        """
         if (pos < self.pos) or (pos> (self.pos+1000000)):
             t = 1.0*pos/self.fps
             self.initialize(t)  
@@ -118,16 +144,17 @@ class FFMPEG_AudioReader:
     def close_proc(self):
         if self.proc is not None:
             self.proc.terminate()
-            for std in [self.proc.stdin,
-                         self.proc.stdout,
+            for std in [ self.proc.stdout,
                          self.proc.stderr]:
                 std.close()
             del self.proc
+            
+    def __del__(self):
+        self.close_proc()
+        del self.lastread
         
         
-        
-        
-        
+
 class WaveReader:
     """ DEPRECATED - Do not use if you can avoid. """
     
