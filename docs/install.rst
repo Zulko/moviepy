@@ -15,7 +15,7 @@ First method : if you have ``pip`` installed, just type this in a terminal (sudo
     
     (sudo) pip install moviepy
 
-Second method : by hand. Download the sources, either on PYPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
+Second method : by hand. Download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
     
     (sudo) python setup.py install
     
@@ -95,6 +95,7 @@ Advice: do not throw your ``release`` folder away. If later you have strange bug
 .. _`Scikit Image`: http://scikit-image.org/download.html
 
 .. _Github: https://github.com/Zulko/moviepy
+.. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 
 

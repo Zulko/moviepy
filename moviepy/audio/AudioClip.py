@@ -14,19 +14,18 @@ if sys.version_info < (3,):
 
 
 class AudioClip(Clip):
-
-    """
+    """Base class for audio clips.
     
-    Base class for audio clips. See ``SoundClip`` and ``CompositeSoundClip``
-    for usable classes.
-    An audio clip is a special clip with a ``get_frame``  attribute of
-    the form `` t -> [ f_t ]`` for mono sound and ``t -> [ f1_t, f2_t ]``
-    for stereo sound (the arrays are Numpy arrays).
+    See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.
+    
+    An AudioClip is a Clip with a ``get_frame``  attribute of
+    the form `` t -> [ f_t ]`` for mono sound and
+    ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
     trespassed wihtout problems (the program will put the
     sound back into the bounds at conversion time, without much impact). 
     
-    Attributes
+    Parameters
     -----------
     
     get_frame
@@ -34,7 +33,7 @@ class AudioClip(Clip):
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
         
-    nchannels:
+    nchannels
       Number of channels (one or two for mono or stereo).
     
     Examples
@@ -67,6 +66,7 @@ class AudioClip(Clip):
         nbytes
           Number of bytes to encode the sound: 1 for 8bit sound,
           2 for 16bit, 4 for 32bit sound.
+          
         """
         if tt is None:
             tt = np.arange(0,self.duration, 1.0/fps)
@@ -104,7 +104,7 @@ class AudioArrayClip(AudioClip):
     An audio clip made from a sound array.
     
     Parameters
-    -------------
+    -----------
     
     array
       A Numpy array representing the sound, of size Nx1 for mono,
@@ -146,7 +146,7 @@ class AudioArrayClip(AudioClip):
         
 class CompositeAudioClip(AudioClip):
 
-    """
+    """ Clip made by composing several AudioClips.
     
     An audio clip made by putting together several audio clips.
     

@@ -1,7 +1,9 @@
 MoviePy
 =======
 
-MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects. It can read and save to many formats, including `animated GIFs <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_.
+MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects.
+
+It can read and write to many formats, `including animated GIFs <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_.
 
 Let us put together a few demonstration clips (you will find the code for most of these in the :ref:`examples`): ::
     
@@ -56,10 +58,6 @@ User's Guide
    crash_course/crash_course
    examples/examples
    ref/ref
-
-
-.. raw:: html
-
 
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy

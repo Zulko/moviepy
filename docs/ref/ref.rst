@@ -7,7 +7,7 @@ The documentation may be a little messy for the moment, it will get better with 
    :maxdepth: 3
 
    Clip
-   VideoClip
+   VideoClip/VideoClip
    AudioClip
    videofx
    audiofx

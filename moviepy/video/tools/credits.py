@@ -17,7 +17,7 @@ def credits1(creditfile,width,stretch=30,color='white',
     Parameters
     -----------
     
-    creditfile:
+    creditfile
       A text file whose content must be as follows: ::
         
         # This is a comment
@@ -34,13 +34,13 @@ def credits1(creditfile,width,stretch=30,color='white',
         ..Music Supervisor
         JEAN DIDIER
     
-    width:
+    width
       Total width of the credits text in pixels
       
-    gap:
+    gap
       Gap in pixels between the jobs and the names.
     
-    **txt_kw:
+    **txt_kw
       Additional argument passed to TextClip (font, colors, etc.)
     
     
@@ -49,9 +49,10 @@ def credits1(creditfile,width,stretch=30,color='white',
     Returns
     ---------
     
-    An ImageClip instance that looks like this and can be scrolled
-    to make some credits :
-    
+    image
+       An ImageClip instance that looks like this and can be scrolled
+       to make some credits :
+        
         Executive Story Editor    MARCEL DURAND
            Associate Producers    MARTIN MARCEL
                                   DIDIER MARTIN

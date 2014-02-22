@@ -86,7 +86,7 @@ class VideoClip(Clip):
         self.relative_pos = False
         if get_frame:
             self.get_frame = get_frame
-            newclip.size = newclip.get_frame(0).shape[:2][::-1]
+            self.size =get_frame(0).shape[:2][::-1]
         self.ismask = ismask
         
         
@@ -182,7 +182,7 @@ class VideoClip(Clip):
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
                  para = False, verbose = True):
-        """ Write the clip to a videofile.
+        """Write the clip to a videofile.
         
         Parameters
         -----------
@@ -195,14 +195,18 @@ class VideoClip(Clip):
           Number of frames per second in the resulting video file.
         
         codec
-          Codec to use for image encoding. Can be 
-          - 'rawvideo','png' : will produce a raw video, of perfect
-            quality, but possibly very huge size. 'png' is still
-            lossless but produces smaller files.
-          - 'mpeg4' : For nice quality, very well compressed videos.
-          - 'libx264' : A little better than 'mpeg4', a little heavier.
-          - Any of the (many) other codec supported by ffmpeg.
-            
+          Codec to use for image encoding. Can be any codec supported
+          by ffmpeg.
+          
+          ``'rawvideo'``, ``'png'`` will produce a raw video,
+          of perfect quality, but possibly very huge size. 'png' is
+          is lossless and produces smaller files than 'rawvideo'.
+          
+          ``'mpeg4'`` produces nice quality, very well compressed videos.
+          
+          ``'libx264'`` (default) is a little better than 'mpeg4',
+          a little heavier.
+          
         audio
           Either ``True``, ``False``, or a file name.
           If ``True`` and the clip has an audio clip attached, this

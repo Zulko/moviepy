@@ -82,8 +82,8 @@ class Clip:
           audio or the mask of the clip, if any.
         
         keep_duration
-          Set to True if the transformation does not change the clip's
-          ``duration``.
+          Set to True if the transformation does not change the
+          ``duration`` of the clip.
           
         Examples
         --------
@@ -215,8 +215,9 @@ class Clip:
     @time_can_be_tuple
     def set_end(self, t):
         """
-        Returns a copy of the clip, with the ``end`` attribute set to ``t``.
-        Also sets the duration of the returned clip's mask and audio, if any.
+        Returns a copy of the clip, with the ``end`` attribute set to
+        ``t``. Also sets the duration of the mask and audio, if any,
+        of the returned clip.
         """
         newclip = self.copy()
         newclip.end = t
@@ -237,8 +238,8 @@ class Clip:
         """
         Returns a copy of the clip, with the  ``duration`` attribute
         set to ``t``.
-        Also sets the duration of the returned clip's mask and audio,
-        if any.
+        Also sets the duration of the mask and audio, if any, of the
+        returned clip.
         """
         newclip = copy(self)
         newclip.duration = t
@@ -294,8 +295,9 @@ class Clip:
         If ``tb`` is provided or if the clip has a duration attribute,
         the duration of the returned clip is set automatically.
         
-        The resulting subclip's ``mask`` and ``audio`` will be subclips
-        of the original clip's ``mask`` and ``audio``, if they exist.
+        The ``mask`` and ``audio`` of the resulting subclip will be
+        subclips of ``mask`` and ``audio`` the original clip, if
+        they exist.
         """
         
         newclip = self.fl_time(lambda t: t + ta, apply_to=[])
@@ -322,7 +324,7 @@ class Clip:
         Returns a clip playing the content of the current clip but
         skips the extract between ``ta`` and ``tb`` (in seconds).
         If the original clip has a ``duration`` attribute set,
-        the returned clip's duration is automatically computed as
+        the duration of the returned clip  is automatically computed as
         `` duration - (tb - ta)``.
         
         The resulting clip's ``audio`` and ``mask`` will also be cutout
