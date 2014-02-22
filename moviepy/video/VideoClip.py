@@ -32,7 +32,7 @@ from ..conf import FFMPEG_BINARY
 
 
 class VideoClip(Clip):
-    """Base class for video clips
+    """Base class for video clips.
     
     See ``VideofileClip``, ``ImageClip`` etc. for more user-friendly
     classes. 
@@ -41,7 +41,7 @@ class VideoClip(Clip):
     Parameters
     -----------
     
-    ismask :
+    ismask
       `True` if the clip is going to be used as a mask.
     
     
@@ -104,7 +104,7 @@ class VideoClip(Clip):
         
 
     def save_frame(self, filename, t=0, savemask=False):
-        """Save a clip's frame to an image file.
+        """ Save a clip's frame to an image file.
         
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. If ``savemask`` is ``True`` the mask is saved in the
@@ -122,7 +122,7 @@ class VideoClip(Clip):
     @requires_duration
     def to_directory(self, foldername, fps, transparent=True,
                      overwrite=True, startFrame=0):
-        """Writes the frames of the clip into a folder.
+        """ Write the frames of the clip into a folder.
         
         Writes the frames of the clip into a folder as png format,
         and returns the :class:DirectoryClip associated with this

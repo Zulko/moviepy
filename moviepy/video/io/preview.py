@@ -9,22 +9,27 @@ pg.init()
 pg.display.set_caption('MoviePy')
 
 def imdisplay(imarray, screen=None):
-	""" splashes the given image array on the given pygame screen """
-	a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
-	if screen == None:
-		screen = pg.display.set_mode(imarray.shape[:2][::-1])
-	screen.blit(a, (0, 0))
-	pg.display.flip()
+    """Splashes the given image array on the given pygame screen """
+    a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
+    if screen == None:
+        screen = pg.display.set_mode(imarray.shape[:2][::-1])
+    screen.blit(a, (0, 0))
+    pg.display.flip()
 
 
 def show(clip, t=0, with_mask=True):
     """
     Splashes the frame of clip corresponding to time ``t``.
     
-    :param t: time in seconds of the frame to display.
+    Parameters
+    ------------
     
-    :param with_mask: ``False`` if the clip has a mask but you
-         want to see the clip without the mask.
+    t
+      Time in seconds of the frame to display.
+    
+    with_mask
+      ``False`` if the clip has a mask but you want to see the clip
+      without the mask.
     
     """
 
@@ -46,14 +51,19 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     than normal if the computations are complex. In this case, try
     reducing the ``fps``.
     
-    :param fps: Number of frames per second to be displayed.
-        
-    :param audio: ``True`` (default) if you want the clip's audio
-        to be played in playback. The synchronization is not garanteed.
-        
-    :param audiofps: The frames per second to use when generating the
-         audio sound. The lower, the cheaper the sound will be.
+    Parameters
+    ------------
     
+    fps
+      Number of frames per seconds in the displayed video.
+        
+    audio
+      ``True`` (default) if you want the clip's audio be played during
+      the preview.
+        
+    audiofps
+      The frames per second to use when generating the audio sound.
+      
     """
     
     import pygame as pg

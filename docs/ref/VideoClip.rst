@@ -4,22 +4,22 @@
 VideoClip
 ************
 
+.. currentmodule:: moviepy
+
 :class:`VideoClip`
 ==========================
 
 .. autoclass:: moviepy.video.VideoClip.VideoClip
-   :members:
    :show-inheritance:
 
 :class:`VideoFileClip`
 ------------------------
 
 .. autoclass:: moviepy.video.io.VideoFileClip.VideoFileClip
-   :members:
    :show-inheritance:
    
 :class:`ImageClip`
-==========================
+----------------------
 
 .. autoclass:: moviepy.video.VideoClip.ImageClip
    :members:
@@ -41,7 +41,7 @@ VideoClip
    :show-inheritance:
    
 :class:`CompositeVideoClip`
-============================
+-------------------------------
 
 .. autoclass::  moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip
    :members:
@@ -50,4 +50,4 @@ VideoClip
 Useful Methods
 --------------
 
-.. automodule:: moviepy.video.compositing.concatenate
+.. automodule:: moviepy.video.compositing.concatenate.concatenate
