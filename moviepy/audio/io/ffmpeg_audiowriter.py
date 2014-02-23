@@ -8,6 +8,7 @@ from tqdm import tqdm
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 
+from moviepy.tools import sys_write_flush
 
 class FFMPEG_AudioWriter:
     """
@@ -52,15 +53,16 @@ class FFMPEG_AudioWriter:
             + ['-acodec', codec]
             + (['-b',bitrate] if (bitrate!=None) else [])
             + [ filename ])
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE,
-                                 stderr=sp.PIPE)
+        
+        self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
         
     def write_frames(self,frames_array):
         self.proc.stdin.write(frames_array.tostring())
         
+        
     def close(self):
         self.proc.stdin.close()
-        self.proc.stderr.close()
+        self.proc.wait()
         del self.proc
         
         
@@ -73,12 +75,8 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     to a file.
     """
     
-    if verbose:
-        def verbose_print(s):
-            sys.stdout.write(s)
-            sys.stdout.flush()
-    else:
-        verbose_print = lambda *a : None
+    def verbose_print(s):
+        if verbose: sys_write_flush(s)
         
     verbose_print("Writing audio in %s\n"%filename)
      
@@ -86,13 +84,18 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                                 codec=codec, bitrate=bitrate)
                                 
     totalsize = int(fps*clip.duration)
-    nchunks = totalsize // buffersize + 1
-    pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
     
-    for i in tqdm(range(nchunks)):
+    if (totalsize % buffersize == 0):
+        nchunks = totalsize // buffersize
+    else:
+        nchunks = totalsize // buffersize + 1
+        
+    pospos = list(range(0, totalsize,  buffersize))+[totalsize]
+    for i in range(nchunks):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt,nbytes)
         writer.write_frames(sndarray)
     
     writer.close()
+    
     verbose_print("Done writing Audio in %s !\n"%filename)

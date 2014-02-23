@@ -23,12 +23,14 @@ def subprocess_call(cmd, stdout=None, stdin = None,
     
     proc = sp.Popen(cmd, stdout=stdout,
                          stdin = stdin,
-                         stderr = stderr)
+                         stderr = stderr )
     proc.wait()
     
     if proc.returncode and errorprint:
-        sys_write_flush( "\nWARNING: this command returned an error:")
+        sys_write_flush( "\nMoviePy: WARNING !\n"
+                    "   The following command returned an error:\n")
         sys_write_flush( proc.stderr.read().decode('utf8'))
+        raise IOError
     else:
         verboseprint( "\n... command successful.\n")
 

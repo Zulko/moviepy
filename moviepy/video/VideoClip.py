@@ -322,6 +322,7 @@ class VideoClip(Clip):
                                   filename, ffmpeg_output=True)
                                   
             if remove_temp:
+                print("print")
                 os.remove(videofile)
                 if not isinstance(audio,str):
                     os.remove(temp_audiofile)

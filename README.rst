@@ -31,13 +31,12 @@ Download and Installation
 ---------------------------
 
 MoviePy requires the Python modules Numpy_, Decorator_, and tqdm_. All of these will all be automatically installed during MoviePy's installation.
+
 You will also need a **recent version** of the software ffmpeg_ , preferably downloaded directly from the ffmpeg website.
-If you intend to use advanced features you will also need a few other dependencies like ImageMagick_ , Pygame_ etc. (see `the docs <http://zulko.github.io/moviepy/install.html>`_).
 
-Installation
---------------
+If you intend to use advanced features you must install a few other dependencies like ImageMagick_ , Pygame_ etc. (see `the docs <http://zulko.github.io/moviepy/install.html>`_).
 
-First method : if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
+First installation method : if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
     
     (sudo) pip install moviepy
 
