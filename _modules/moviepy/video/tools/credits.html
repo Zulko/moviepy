@@ -44,6 +44,9 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
@@ -70,7 +73,12 @@
                  <span class="n">font</span><span class="o">=</span><span class="s">&#39;Impact-Normal&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
-<span class="sd">    The first credits I imagined. They take as argument a file like: ::</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    </span>
+<span class="sd">    creditfile</span>
+<span class="sd">      A text file whose content must be as follows: ::</span>
 <span class="sd">        </span>
 <span class="sd">        # This is a comment</span>
 <span class="sd">        # The next line says : leave 4 blank lines</span>
@@ -85,18 +93,31 @@
 <span class="sd">        </span>
 <span class="sd">        ..Music Supervisor</span>
 <span class="sd">        JEAN DIDIER</span>
-<span class="sd">        </span>
-<span class="sd">    And produce an ImageClip that looks like :</span>
 <span class="sd">    </span>
+<span class="sd">    width</span>
+<span class="sd">      Total width of the credits text in pixels</span>
+<span class="sd">      </span>
+<span class="sd">    gap</span>
+<span class="sd">      Gap in pixels between the jobs and the names.</span>
+<span class="sd">    </span>
+<span class="sd">    **txt_kw</span>
+<span class="sd">      Additional argument passed to TextClip (font, colors, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">        </span>
+<span class="sd">    Returns</span>
+<span class="sd">    ---------</span>
+<span class="sd">    </span>
+<span class="sd">    image</span>
+<span class="sd">       An ImageClip instance that looks like this and can be scrolled</span>
+<span class="sd">       to make some credits :</span>
+<span class="sd">        </span>
 <span class="sd">        Executive Story Editor    MARCEL DURAND</span>
 <span class="sd">           Associate Producers    MARTIN MARCEL</span>
 <span class="sd">                                  DIDIER MARTIN</span>
 <span class="sd">              Music Supervisor    JEAN DIDIER</span>
-<span class="sd">    </span>
-<span class="sd">    :param width: total width of the credits text</span>
-<span class="sd">    :param stretch: stretch in pixels between the jobs and the names.</span>
-<span class="sd">    </span>
-<span class="sd">    The other keywords are passed to the ``TextClip``s</span>
+<span class="sd">              </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     
@@ -133,8 +154,8 @@
                <span class="k">for</span> <span class="n">txt</span><span class="p">,</span><span class="n">al</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">left</span><span class="p">,</span><span class="s">&#39;East&#39;</span><span class="p">),(</span><span class="n">right</span><span class="p">,</span><span class="s">&#39;West&#39;</span><span class="p">)]]</span>
                
 
-    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">stretch</span><span class="p">,</span><span class="mi">0</span><span class="p">))],</span>
-                             <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">right</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">stretch</span><span class="p">,</span><span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">gap</span><span class="p">,</span><span class="mi">0</span><span class="p">))],</span>
+                             <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">right</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">gap</span><span class="p">,</span><span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
                              <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
     
     <span class="c"># SCALE TO THE REQUIRED SIZE</span>
@@ -190,6 +211,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" >Module code</a> &raquo;</li> 

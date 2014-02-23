@@ -29,6 +29,18 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
     # Write the result to a file
     video.to_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
 
+How it works, in a nutshell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
+
+.. image:: explanations.jpeg
+    :width: 570px
+    :align: center
+
+You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
+
+
 Classes of video clips
 ~~~~~~~~~~~~~~~~~~~~~~
 

@@ -47,6 +47,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="../ref/ref.html" title="Reference Manual"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -78,7 +81,31 @@ a white (=opaque) circle on a black (=transparent) background. At the begining,
 that circle is so large that you see all the actual movie and you don&#8217;t see
 the &#8220;The End&#8221; clip. Then the circle becomes progressively smaller and as a
 consequence you see less of the actual movie and more of the &#8220;The End&#8221; clip.</p>
-<p>../../examples/the_end.py</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">circle</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/badl-0006.mov&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span>\
+           <span class="n">subclip</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">31</span><span class="p">)</span><span class="o">.</span>\
+           <span class="n">add_mask</span><span class="p">()</span>
+           
+<span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
+
+<span class="c"># The mask is a circle with vanishing radius r(t) = 800-200*t               </span>
+<span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">circle</span><span class="p">(</span><span class="n">screensize</span><span class="o">=</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">w</span><span class="p">,</span><span class="n">clip</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
+                                       <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">clip</span><span class="o">.</span><span class="n">h</span><span class="o">/</span><span class="mi">4</span><span class="p">),</span>
+                                       <span class="n">radius</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="mi">800</span><span class="o">-</span><span class="mi">200</span><span class="o">*</span><span class="n">t</span><span class="p">)),</span>
+                                       <span class="n">col1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blur</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+
+<span class="n">the_end</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;The End&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s">&quot;Amiri-bold&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span>
+                   <span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+<span class="n">final</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">the_end</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">),</span><span class="n">clip</span><span class="p">],</span>
+                           <span class="n">size</span> <span class="o">=</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                           
+<span class="n">final</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;../../theEnd.avi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
 
@@ -130,6 +157,9 @@ consequence you see less of the actual movie and more of the &#8220;The End&#822
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="../ref/ref.html" title="Reference Manual"

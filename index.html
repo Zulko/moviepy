@@ -47,6 +47,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="install.html" title="Download and Installation"
              accesskey="N">next</a> |</li>
         <li><a href="#">MoviePy 0.2 documentation</a> &raquo;</li> 
@@ -61,7 +64,8 @@
   <div class="section" id="moviepy">
 <h1>MoviePy<a class="headerlink" href="#moviepy" title="Permalink to this headline">¶</a></h1>
 <p>MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects.</p>
-<p>Let us put together a few demonstration clips (you will find the code for most clips in the <a class="reference internal" href="examples/examples.html#examples"><em>Example Scripts</em></a>):</p>
+<p>It can read and write to many formats, <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">including animated GIFs</a>.</p>
+<p>Let us put together a few demonstration clips (you will find the code for most of these in the <a class="reference internal" href="examples/examples.html#examples"><em>Example Scripts</em></a>):</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;clips/&quot;</span><span class="p">)</span> <span class="p">)</span>
@@ -77,9 +81,24 @@ value="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0">
 name="allowscriptaccess" value="always"></param><embed
 src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
 type="application/x-shockwave-flash" allowscriptaccess="always"
-allowfullscreen="true" width="550" height="450"></embed></object>
-</center><p>You can also do animated GIFs with MoviePy (<a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">examples</a>).</p>
-<div class="section" id="user-s-guide">
+allowfullscreen="true" width="490" height="390"></embed></object>
+</center><p>MoviePy is an open source software originally written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under the MIT licence.
+It is hosted on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, where you can push improvements or ask for help.</p>
+<a href="https://twitter.com/share" class="twitter-share-button"
+data-text="MoviePy, script-based video editing" data-size="large" data-hashtags="MoviePy">Tweet
+</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
+fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+</script>
+
+<iframe src="http://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
+allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
+
+<a href="https://github.com/Zulko/moviepy">
+<img style="position: absolute; top: 0; right: 0; border: 0;"
+src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+alt="Fork me on GitHub"></a><div class="section" id="user-s-guide">
 <h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -90,28 +109,6 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 </ul>
 </div>
 </div>
-<div class="section" id="how-it-works-in-a-nutshell">
-<h2>How it works, in a nutshell<a class="headerlink" href="#how-it-works-in-a-nutshell" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy uses mainly <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.</p>
-<a class="reference internal image-reference" href="_images/explications.jpeg"><img alt="_images/explications.jpeg" class="align-center" src="_images/explications.jpeg" style="width: 570px;" /></a>
-<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.</p>
-</div>
-<div class="section" id="contribute">
-<h2>Contribute !<a class="headerlink" href="#contribute" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy is a (still experimental) open source software written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> and <a class="reference external" href="https://pypi.python.org/pypi/moviepy">PyPI</a> under the MIT licence. Everyone is very welcome to help improve the project, fork it, blog on it, share code for new effects, etc... The more, the merrier !</p>
-<p>For troubleshooting and bug reports, the best for now is to ask on <a class="reference external" href="http://stackoverflow.com/">Stackoverflow</a> (it will advertize for the project :) ) or on the Github project page.</p>
-</div>
-<div class="section" id="indices-and-tables">
-<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
-<a href="https://github.com/Zulko/moviepy">
-<img style="position: absolute; top: 0; right: 0; border: 0;"
-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-alt="Fork me on GitHub"></a></div>
 </div>
 
 
@@ -128,9 +125,6 @@ alt="Fork me on GitHub"></a></div>
   <ul>
 <li><a class="reference internal" href="#">MoviePy</a><ul>
 <li><a class="reference internal" href="#user-s-guide">User&#8217;s Guide</a></li>
-<li><a class="reference internal" href="#how-it-works-in-a-nutshell">How it works, in a nutshell</a></li>
-<li><a class="reference internal" href="#contribute">Contribute !</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 </ul>
@@ -171,6 +165,9 @@ alt="Fork me on GitHub"></a></div>
              >index</a></li>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="install.html" title="Download and Installation"

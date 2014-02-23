@@ -21,4 +21,4 @@ that circle is so large that you see all the actual movie and you don't see
 the "The End" clip. Then the circle becomes progressively smaller and as a
 consequence you see less of the actual movie and more of the "The End" clip.
     
-../../examples/the_end.py
+.. literalinclude:: ../../examples/the_end.py

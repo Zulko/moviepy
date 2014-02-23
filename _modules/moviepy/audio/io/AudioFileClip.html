@@ -44,6 +44,9 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
@@ -57,10 +60,8 @@
   <h1>Source code for moviepy.audio.io.AudioFileClip</h1><div class="highlight"><pre>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">wave</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
 <span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">AudioClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.audio.io.readers</span> <span class="kn">import</span> <span class="n">FFMPEG_AudioReader</span>
 
@@ -73,20 +74,38 @@
 <span class="sd">    and after the last frames read, so that it is fast to read the sound</span>
 <span class="sd">    backward and forward.</span>
 <span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
 <span class="sd">    </span>
-<span class="sd">    :param snd: Either a soundfile or an array representing a sound. If</span>
-<span class="sd">        the soundfile is not a .wav, it will be converted to .wav first,</span>
-<span class="sd">        using the ``fps`` and ``bitrate`` arguments. </span>
+<span class="sd">    snd</span>
+<span class="sd">      Either a soundfile name (of any extension supported by ffmpeg)</span>
+<span class="sd">      or an array representing a sound. If the soundfile is not a .wav,</span>
+<span class="sd">      it will be converted to .wav first, using the ``fps`` and</span>
+<span class="sd">      ``bitrate`` arguments. </span>
 <span class="sd">    </span>
-<span class="sd">    :param buffersize: Size to load in memory (in number of frames)</span>
-<span class="sd">    :param temp_wav: name for the temporary wav file in case conversion</span>
-<span class="sd">        is required. If not provided, the default will be filename.wav</span>
-<span class="sd">        with some prefix. If the temp_wav already exists it will not</span>
-<span class="sd">        be rewritten.</span>
+<span class="sd">    buffersize:</span>
+<span class="sd">      Size to load in memory (in number of frames)</span>
+<span class="sd">    </span>
+<span class="sd">    temp_wav:</span>
+<span class="sd">      Name for the temporary wav file in case conversion is required.</span>
+<span class="sd">      If not provided, the default will be filename.wav with some prefix.</span>
+<span class="sd">      If the temp_wav already exists it will not be rewritten.</span>
 <span class="sd">        </span>
-<span class="sd">    :ivar nbytes: Number of bits per frame of the original audio file</span>
-<span class="sd">        (the more the better).</span>
-<span class="sd">    :ivar fps, buffersize: see above.</span>
+<span class="sd">        </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ------------</span>
+<span class="sd">    </span>
+<span class="sd">    nbytes</span>
+<span class="sd">      Number of bits per frame of the original audio file.</span>
+<span class="sd">      </span>
+<span class="sd">    fps</span>
+<span class="sd">      Number of frames per second in the audio file</span>
+<span class="sd">      </span>
+<span class="sd">    buffersize</span>
+<span class="sd">      See Parameters.</span>
+<span class="sd">      </span>
+<span class="sd">    Examples</span>
+<span class="sd">    ----------</span>
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.wav&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; snd = SoundClip(&quot;song.mp3&quot;, fps = 44100, bitrate=3000)</span>
@@ -97,7 +116,7 @@
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
         
 
-        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">AudioClip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_AudioReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span><span class="n">nbytes</span><span class="o">=</span><span class="n">nbytes</span><span class="p">,</span>
@@ -154,14 +173,14 @@
     <span class="nd">@property</span>
 <div class="viewcode-block" id="AudioFileClip.nchannels"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels">[docs]</a>    <span class="k">def</span> <span class="nf">nchannels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the number of channels of the reader</span>
+<span class="sd">        R eturns the number of channels of the reader</span>
 <span class="sd">        (1: mono, 2: stereo)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nchannels</span>
 </div>
     <span class="k">def</span> <span class="nf">_buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">framenumber</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        fill the buffer with frames, centered on ``framenumber``</span>
+<span class="sd">        Fills the buffer with frames, centered on ``framenumber``</span>
 <span class="sd">        if possible</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
@@ -236,6 +255,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" >Module code</a> &raquo;</li> 

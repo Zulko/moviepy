@@ -43,6 +43,9 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -63,24 +66,6 @@ src="http://www.youtube.com/v/TG86KzL18NA&hl=en_US&fs=1&rel=0"
 type="application/x-shockwave-flash" allowscriptaccess="always"
 allowfullscreen="true" width="550" height="450"></embed></object>
 </center><p>Here the logo is a picture, while the shadow is actually a black rectangle taking the whole screen, overlaid over the logo, but with a moving mask composed of a bi-gradient, such that only one (moving) part of the rectangle is visible. See <em class="xref std std-ref">gradients</em> for the code of the function <cite>biGradient</cite>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">duration</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">thickness</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
-    <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">thickness</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="n">w</span><span class="o">/</span><span class="n">duration</span><span class="p">),</span><span class="n">h</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">biGradientScreen</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">center</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)</span>
-
-<span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">moviesize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">720</span><span class="p">,</span><span class="mi">380</span><span class="p">)</span>
-<span class="n">im</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;./logo_descr.png&quot;</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">duration</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">shade</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">moviesize</span><span class="p">,</span><span class="n">col</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">with_mask</span><span class="p">()</span>
-<span class="n">shade</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">moviesize</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span>
-<span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">moviesize</span><span class="p">,[</span><span class="n">im</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">[</span><span class="s">&quot;center&quot;</span><span class="p">]),</span><span class="n">shade</span><span class="p">])</span>
-
-<span class="n">cc</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;moviepy_logo.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
-</pre></div>
-</div>
 </div>
 
 
@@ -128,6 +113,9 @@ allowfullscreen="true" width="550" height="450"></embed></object>
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
       </ul>

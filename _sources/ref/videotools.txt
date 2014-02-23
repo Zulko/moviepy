@@ -6,6 +6,8 @@ video.tools
 
 This module regroups advanced, useful (and less useful) functions for editing videos.
 
+
+
 Drawing
 --------
 .. automodule:: moviepy.video.tools.drawing

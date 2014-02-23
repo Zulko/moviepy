@@ -46,6 +46,9 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="../examples/examples.html" title="Example Scripts"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -89,11 +92,17 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
 </pre></div>
 </div>
 </div>
+<div class="section" id="how-it-works-in-a-nutshell">
+<h2>How it works, in a nutshell<a class="headerlink" href="#how-it-works-in-a-nutshell" title="Permalink to this headline">¶</a></h2>
+<p>MoviePy uses mainly <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.</p>
+<a class="reference internal image-reference" href="../_images/explanations.jpeg"><img alt="../_images/explanations.jpeg" class="align-center" src="../_images/explanations.jpeg" style="width: 570px;" /></a>
+<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.</p>
+</div>
 <div class="section" id="classes-of-video-clips">
 <h2>Classes of video clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h2>
 <p>Video clips are the building blocks of longer videos. They can be created with one of the following:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> for clips read from a movie file. See <a class="reference internal" href="../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt></a>.</li>
+<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> for clips read from a movie file. See <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt></a>.</li>
 <li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration. See <tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt>.</li>
 <li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color. See <tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt>.</li>
 <li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick. See <tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt>.</li>
@@ -295,6 +304,7 @@ clip = VideoFileClip(&quot;myvideo.avi&quot;).\
   <ul>
 <li><a class="reference internal" href="#">A MoviePy crash-course</a><ul>
 <li><a class="reference internal" href="#example-code">Example code</a></li>
+<li><a class="reference internal" href="#how-it-works-in-a-nutshell">How it works, in a nutshell</a></li>
 <li><a class="reference internal" href="#classes-of-video-clips">Classes of video clips</a></li>
 <li><a class="reference internal" href="#composite-video-clips">Composite video clips</a></li>
 <li><a class="reference internal" href="#rendering-a-video-clip">Rendering a video clip</a></li>
@@ -347,6 +357,9 @@ clip = VideoFileClip(&quot;myvideo.avi&quot;).\
              >index</a></li>
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="../examples/examples.html" title="Example Scripts"

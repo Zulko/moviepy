@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
     <link rel="up" title="Reference Manual" href="ref.html" />
-    <link rel="next" title="AudioClip" href="AudioClip.html" />
-    <link rel="prev" title="video.fx" href="videofx.html" />
+    <link rel="next" title="audio.tools" href="audiotools.html" />
+    <link rel="prev" title="audio.fx" href="audiofx.html" />
    
   <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
   
@@ -47,10 +47,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="AudioClip.html" title="AudioClip"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="audiotools.html" title="audio.tools"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="videofx.html" title="video.fx"
+          <a href="audiofx.html" title="audio.fx"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
@@ -72,7 +75,8 @@ methods that are difficult to do with the existing Python libraries.</p>
 <dl class="function">
 <dt id="moviepy.video.tools.drawing.blit">
 <tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">blit</tt><big>(</big><em>im1, im2, pos=[0, 0], mask=None, ismask=False</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#blit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.blit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Blits <tt class="docutils literal"><span class="pre">im1</span></tt> on <tt class="docutils literal"><span class="pre">im2</span></tt> as position <tt class="docutils literal"><span class="pre">pos=(x,y)</span></tt>, using the
+<dd><p>Blit an image over another.</p>
+<p>Blits <tt class="docutils literal"><span class="pre">im1</span></tt> on <tt class="docutils literal"><span class="pre">im2</span></tt> as position <tt class="docutils literal"><span class="pre">pos=(x,y)</span></tt>, using the
 <tt class="docutils literal"><span class="pre">mask</span></tt> if provided. If <tt class="docutils literal"><span class="pre">im1</span></tt> and <tt class="docutils literal"><span class="pre">im2</span></tt> are mask pictures
 (2D float arrays) then <tt class="docutils literal"><span class="pre">ismask</span></tt> must be <tt class="docutils literal"><span class="pre">True</span></tt>.</p>
 </dd></dl>
@@ -80,7 +84,8 @@ methods that are difficult to do with the existing Python libraries.</p>
 <dl class="function">
 <dt id="moviepy.video.tools.drawing.circle">
 <tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">circle</tt><big>(</big><em>screensize</em>, <em>center</em>, <em>radius</em>, <em>col1=1.0</em>, <em>col2=0</em>, <em>blur=1</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#circle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draws a circle of color <tt class="docutils literal"><span class="pre">col1</span></tt>, on a background of color <tt class="docutils literal"><span class="pre">col2</span></tt>,
+<dd><p>Draw an image with a circle.</p>
+<p>Draws a circle of color <tt class="docutils literal"><span class="pre">col1</span></tt>, on a background of color <tt class="docutils literal"><span class="pre">col2</span></tt>,
 on a screen of size <tt class="docutils literal"><span class="pre">screensize</span></tt> at the position <tt class="docutils literal"><span class="pre">center=(x,y)</span></tt>,
 with a radius <tt class="docutils literal"><span class="pre">radius</span></tt> but slightly blurred on the border by <tt class="docutils literal"><span class="pre">blur</span></tt>
 pixels</p>
@@ -89,50 +94,118 @@ pixels</p>
 <dl class="function">
 <dt id="moviepy.video.tools.drawing.color_gradient">
 <tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">color_gradient</tt><big>(</big><em>size</em>, <em>p1</em>, <em>p2=None</em>, <em>vector=None</em>, <em>r=None</em>, <em>col1=0</em>, <em>col2=1.0</em>, <em>shape='linear'</em>, <em>offset=0</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#color_gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.color_gradient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes linear, bilinear, or radial gradients.</p>
-<p>The result is a picture of size <tt class="docutils literal"><span class="pre">size</span></tt>, whose color varies gradually: from
-color <cite>col1</cite> in position <tt class="docutils literal"><span class="pre">p1</span></tt> to color <tt class="docutils literal"><span class="pre">col2</span></tt> in position <tt class="docutils literal"><span class="pre">p2</span></tt>.</p>
-<dl class="docutils">
-<dt>If it is a RGB picture the result must be transformed into</dt>
-<dd><p class="first">a &#8216;uint8&#8217; array to be displayed normally:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">grad</span> <span class="o">=</span> <span class="n">colorGradient</span><span class="p">(</span><span class="n">blabla</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;unit8&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd>
-</dl>
+<dd><p>Draw a linear, bilinear, or radial gradient.</p>
+<p>The result is a picture of size <tt class="docutils literal"><span class="pre">size</span></tt>, whose color varies
+gradually from color <cite>col1</cite> in position <tt class="docutils literal"><span class="pre">p1</span></tt> to color <tt class="docutils literal"><span class="pre">col2</span></tt>
+in position <tt class="docutils literal"><span class="pre">p2</span></tt>.</p>
+<p>If it is a RGB picture the result must be transformed into
+a &#8216;uint8&#8217; array to be displayed normally:</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>size</strong> &#8211; size of the final picture/array</li>
-<li><strong>p2</strong> (<em>p1,</em>) &#8211; coordinates (x,y) of the border point for
-<tt class="docutils literal"><span class="pre">col1</span></tt> and <tt class="docutils literal"><span class="pre">col2</span></tt></li>
-<li><strong>vector</strong> &#8211; can be provided instead of <tt class="docutils literal"><span class="pre">p2</span></tt>. <tt class="docutils literal"><span class="pre">p2</span></tt> is then
-defined as (p1 + vector).</li>
-<li><strong>col2</strong> (<em>col1,</em>) &#8211; can be floats to create gradient masks, or
-[R,G,B] arrays to create gradient images.</li>
-<li><strong>shape</strong> &#8211; &#8216;linear&#8217;, &#8216;bilinear&#8217;, or &#8216;circular&#8217;. In a linear gradient
-the color varies in one direction, from point <tt class="docutils literal"><span class="pre">p1</span></tt> to point <tt class="docutils literal"><span class="pre">p2</span></tt>.</li>
-<li><strong>offset</strong> &#8211; percentage of the vector at which the gradient actually
-starts. for instance if offset is 0.9 in a gradient going from
-p1 to p2, then the gradient will only occur near p2. If the offset
-is 0.9 in a radial gradient, the gradient will occur in the region
-located between 90% and 100% of the radius.</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>size</strong> :</p>
+<blockquote>
+<div><p>Size (width, height) in pixels of the final picture/array.</p>
+</div></blockquote>
+<p><strong>p1, p2</strong> :</p>
+<blockquote>
+<div><p>Coordinates (x,y) in pixels of the limit point for <tt class="docutils literal"><span class="pre">col1</span></tt>
+and <tt class="docutils literal"><span class="pre">col2</span></tt>. The color &#8216;before&#8217; <tt class="docutils literal"><span class="pre">p1</span></tt> is <tt class="docutils literal"><span class="pre">col1</span></tt> and it
+gradually changes in the direction of <tt class="docutils literal"><span class="pre">p2</span></tt> until it is <tt class="docutils literal"><span class="pre">col2</span></tt>
+when it reaches <tt class="docutils literal"><span class="pre">p2</span></tt>.</p>
+</div></blockquote>
+<p><strong>vector</strong> :</p>
+<blockquote>
+<div><p>A vector [x,y] in pixels that can be provided instead of <tt class="docutils literal"><span class="pre">p2</span></tt>.
+<tt class="docutils literal"><span class="pre">p2</span></tt> is then defined as (p1 + vector).</p>
+</div></blockquote>
+<p><strong>col1, col2</strong> :</p>
+<blockquote>
+<div><p>Either floats between 0 and 1 (for gradients used in masks)
+or [R,G,B] arrays (for colored gradients).</p>
+</div></blockquote>
+<p><strong>shape</strong> :</p>
+<blockquote>
+<div><p>&#8216;linear&#8217;, &#8216;bilinear&#8217;, or &#8216;circular&#8217;.
+In a linear gradient the color varies in one direction,
+from point <tt class="docutils literal"><span class="pre">p1</span></tt> to point <tt class="docutils literal"><span class="pre">p2</span></tt>.
+In a bilinear gradient it also varies symetrically form <tt class="docutils literal"><span class="pre">p1</span></tt>
+in the other direction.
+In a circular gradient it goes from <tt class="docutils literal"><span class="pre">col1</span></tt> to <tt class="docutils literal"><span class="pre">col2</span></tt> in all
+directions.</p>
+</div></blockquote>
+<p><strong>offset</strong> :</p>
+<blockquote>
+<div><p>Real number between 0 and 1 indicating the fraction of the vector
+at which the gradient actually starts. For instance if <tt class="docutils literal"><span class="pre">offset</span></tt>
+is 0.9 in a gradient going from p1 to p2, then the gradient will
+only occur near p2 (before that everything is of color <tt class="docutils literal"><span class="pre">col1</span></tt>)
+If the offset is 0.9 in a radial gradient, the gradient will
+occur in the region located between 90% and 100% of the radius,
+this creates a blurry disc of radius d(p1,p2).</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>image</strong> :</p>
+<blockquote class="last">
+<div><p>An Numpy array of dimensions (W,H,ncolors) of type float
+representing the image of the gradient.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">grad</span> <span class="o">=</span> <span class="n">colorGradient</span><span class="p">(</span><span class="n">blabla</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;unit8&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="moviepy.video.tools.drawing.color_split">
 <tt class="descclassname">moviepy.video.tools.drawing.</tt><tt class="descname">color_split</tt><big>(</big><em>size</em>, <em>x=None</em>, <em>y=None</em>, <em>p1=None</em>, <em>p2=None</em>, <em>vector=None</em>, <em>col1=0</em>, <em>col2=1.0</em>, <em>grad_width=0</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/drawing.html#color_split"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.drawing.color_split" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes an array of size <tt class="docutils literal"><span class="pre">size</span></tt> divided in two regions by a
-straight line, the two regions having different colors.
-provide either x, or y, or (c1,c2), or (c1,vector). See below.</p>
-<p>Use:</p>
+<dd><p>Make an image splitted in 2 colored regions.</p>
+<p>Returns an array of size <tt class="docutils literal"><span class="pre">size</span></tt> divided in two regions called 1 and
+2 in wht follows, and which will have colors col&amp; and col2
+respectively.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>x: (int)</strong> :</p>
+<blockquote>
+<div><p>If provided, the image is splitted horizontally in x, the left
+region being region 1.</p>
+</div></blockquote>
+<p><strong>y: (int)</strong> :</p>
+<blockquote>
+<div><p>If provided, the image is splitted vertically in y, the top region
+being region 1.</p>
+</div></blockquote>
+<p><strong>p1,p2:</strong> :</p>
+<blockquote>
+<div><p>Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
+floats. Region 1 is defined as the whole region on the left when
+going from <tt class="docutils literal"><span class="pre">p1</span></tt> to <tt class="docutils literal"><span class="pre">p2</span></tt>.</p>
+</div></blockquote>
+<p><strong>p1, vector:</strong> :</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">p1</span></tt> is (x1,y1) and vector (v1,v2), where the numbers can be
+floats. Region 1 is then the region on the left when starting
+in position <tt class="docutils literal"><span class="pre">p1</span></tt> and going in the direction given by <tt class="docutils literal"><span class="pre">vector</span></tt>.</p>
+</div></blockquote>
+<p><strong>gradient_width</strong> :</p>
+<blockquote class="last">
+<div><p>If not zero, the split is not sharp, but gradual over a region of
+width <tt class="docutils literal"><span class="pre">gradient_width</span></tt> (in pixels). This is preferable in many
+situations (for instance for antialiasing).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span><span class="mi">200</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># an image with all pixels with x&lt;50 =0, the others =1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colorSplit</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -142,29 +215,6 @@ provide either x, or y, or (c1,c2), or (c1,vector). See below.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">colorSplit</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">],</span> <span class="n">p2</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mi">70</span><span class="p">]</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>(int)</strong> (<em>y</em>) &#8211; If provided, the image is splitted horizontally in x,
-the left region being region 1.</li>
-<li><strong>(int)</strong> &#8211; If provided, the image is splitted vertically in y,
-the top region being region 1.</li>
-<li><strong>p1,p2</strong> &#8211; Positions (x1,y1),(x2,y2), where the numbers can be floats,
-of two points. Region 1 is defined as the region on the left when
-going from p1 to p2.</li>
-<li><strong>vector</strong> (<em>p1,</em>) &#8211; p1 is (x1,y1) and vector (v1,v2), where the numbers
-can be floats. Region 1 is then the region on the left when starting
-in position p1 and going in the direction given by <tt class="docutils literal"><span class="pre">vector</span></tt>.</li>
-<li><strong>gradient_width</strong> &#8211; if not null, the split is not sharp, but gradual
-over a region of width <tt class="docutils literal"><span class="pre">gradient_width</span></tt> (in pixels). This is
-preferable in many situations (for instance for antialiasing).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 </div>
@@ -281,7 +331,13 @@ matter.</p>
 <dl class="function">
 <dt id="moviepy.video.tools.credits.credits1">
 <tt class="descclassname">moviepy.video.tools.credits.</tt><tt class="descname">credits1</tt><big>(</big><em>creditfile</em>, <em>width</em>, <em>stretch=30</em>, <em>color='white'</em>, <em>stroke_color='black'</em>, <em>stroke_width=2</em>, <em>font='Impact-Normal'</em>, <em>fontsize=60</em><big>)</big><a class="reference internal" href="../_modules/moviepy/video/tools/credits.html#credits1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.tools.credits.credits1" title="Permalink to this definition">¶</a></dt>
-<dd><p>The first credits I imagined. They take as argument a file like:</p>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>creditfile</strong> :</p>
+<blockquote>
+<div><p>A text file whose content must be as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre># This is a comment
 # The next line says : leave 4 blank lines
 .blank 4
@@ -297,33 +353,44 @@ DIDIER MARTIN
 JEAN DIDIER
 </pre></div>
 </div>
-<p>And produce an ImageClip that looks like :</p>
+</div></blockquote>
+<p><strong>width</strong> :</p>
+<blockquote>
+<div><p>Total width of the credits text in pixels</p>
+</div></blockquote>
+<p><strong>gap</strong> :</p>
+<blockquote>
+<div><p>Gap in pixels between the jobs and the names.</p>
+</div></blockquote>
+<p><strong>**txt_kw</strong> :</p>
+<blockquote>
+<div><p>Additional argument passed to TextClip (font, colors, etc.)</p>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>image</strong> :</p>
+<blockquote class="last">
+<div><p>An ImageClip instance that looks like this and can be scrolled
+to make some credits :</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>Executive Story Editor    MARCEL DURAND</dt>
 <dd><dl class="first last docutils">
 <dt>Associate Producers    MARTIN MARCEL</dt>
 <dd><blockquote class="first">
-<div>DIDIER MARTIN</div></blockquote>
+<div><p>DIDIER MARTIN</p>
+</div></blockquote>
 <p class="last">Music Supervisor    JEAN DIDIER</p>
 </dd>
 </dl>
 </dd>
 </dl>
 </div></blockquote>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>width</strong> &#8211; total width of the credits text</li>
-<li><strong>stretch</strong> &#8211; stretch in pixels between the jobs and the names.</li>
-</ul>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
-<p>The other keywords are passed to the <a href="#id1"><span class="problematic" id="id2">``</span></a>TextClip``s</p>
 </dd></dl>
 
 </div>
@@ -353,8 +420,8 @@ JEAN DIDIER
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="ref.html">Reference Manual</a><ul>
-      <li>Previous: <a href="videofx.html" title="previous chapter">video.fx</a></li>
-      <li>Next: <a href="AudioClip.html" title="next chapter">AudioClip</a></li>
+      <li>Previous: <a href="audiofx.html" title="previous chapter">audio.fx</a></li>
+      <li>Next: <a href="audiotools.html" title="next chapter">audio.tools</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -391,10 +458,13 @@ JEAN DIDIER
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="AudioClip.html" title="AudioClip"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="audiotools.html" title="audio.tools"
              >next</a> |</li>
         <li class="right" >
-          <a href="videofx.html" title="video.fx"
+          <a href="audiofx.html" title="audio.fx"
              >previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" >Reference Manual</a> &raquo;</li> 

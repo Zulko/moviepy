@@ -44,6 +44,9 @@
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
@@ -55,15 +58,12 @@
           <div class="body">
             
   <h1>Source code for moviepy.audio.AudioClip</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">wave</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span>  <span class="n">requires_duration</span>
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
 
 <span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
 
@@ -74,31 +74,36 @@
 
 
 <div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Base class for audio clips.</span>
 <span class="sd">    </span>
-<span class="sd">    Base class for audio clips. See ``SoundClip`` and ``CompositeSoundClip``</span>
-<span class="sd">    for usable classes.</span>
-<span class="sd">    An audio clip is a special clip with a ``get_frame``  attribute of</span>
-<span class="sd">    the form ` t -&gt; [ f_t ]` for mono sound and `t -&gt; [ f1_t, f2_t ]`</span>
-<span class="sd">    for stereo sound.  The `f_t` are floats between -1 and 1. These</span>
-<span class="sd">    bounds can be trespassed wihtout problems (the program will put the</span>
+<span class="sd">    See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.</span>
+<span class="sd">    </span>
+<span class="sd">    An AudioClip is a Clip with a ``get_frame``  attribute of</span>
+<span class="sd">    the form `` t -&gt; [ f_t ]`` for mono sound and</span>
+<span class="sd">    ``t-&gt; [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).</span>
+<span class="sd">    The `f_t` are floats between -1 and 1. These bounds can be</span>
+<span class="sd">    trespassed wihtout problems (the program will put the</span>
 <span class="sd">    sound back into the bounds at conversion time, without much impact). </span>
 <span class="sd">    </span>
-<span class="sd">    Example :</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    </span>
+<span class="sd">    get_frame</span>
+<span class="sd">      A function `t-&gt; frame at time t`. The frame does not mean much</span>
+<span class="sd">      for a sound, it is just a float. What &#39;makes&#39; the sound are</span>
+<span class="sd">      the variations of that float in the time.</span>
+<span class="sd">        </span>
+<span class="sd">    nchannels</span>
+<span class="sd">      Number of channels (one or two for mono or stereo).</span>
+<span class="sd">    </span>
+<span class="sd">    Examples</span>
+<span class="sd">    ---------</span>
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; # Plays the note A (a sine wave of frequency 404HZ)</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
 <span class="sd">    &gt;&gt;&gt; gf = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]</span>
 <span class="sd">    &gt;&gt;&gt; clip = AudioClip().set_get_frame(gf)</span>
 <span class="sd">    &gt;&gt;&gt; clip.set_duration(5).preview()</span>
-<span class="sd">    </span>
-<span class="sd">    </span>
-<span class="sd">    :ivar get_frame: A function `t-&gt; frame at time t`. The frame does not</span>
-<span class="sd">        mean much for a sound, it is just a float. What &#39;makes&#39; the sound</span>
-<span class="sd">        are the variations of that float in the time.</span>
-<span class="sd">        </span>
-<span class="sd">    :ivar nchannels: Number of channels (one or two for mono or stereo).</span>
 <span class="sd">                     </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -111,10 +116,17 @@
 <span class="sd">        Transforms the sound into an array that can be played by pygame</span>
 <span class="sd">        or written in a wav file. See ``AudioClip.preview``.</span>
 <span class="sd">        </span>
-<span class="sd">        :param fps: frame rate of the sound. 44100 gives top quality.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ------------</span>
 <span class="sd">        </span>
-<span class="sd">        :param nbytes: number of bytes to encode the sound: 1 for 8bit</span>
-<span class="sd">            sound, 2 for 16bit, 4 for 32bit sound.</span>
+<span class="sd">        fps</span>
+<span class="sd">          Frame rate of the sound for the conversion.</span>
+<span class="sd">          44100 for top quality.</span>
+<span class="sd">        </span>
+<span class="sd">        nbytes</span>
+<span class="sd">          Number of bytes to encode the sound: 1 for 8bit sound,</span>
+<span class="sd">          2 for 16bit, 4 for 32bit sound.</span>
+<span class="sd">          </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">tt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
@@ -138,7 +150,6 @@
                       <span class="n">codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 </div>
 <span class="k">try</span><span class="p">:</span>
-    
     <span class="c"># Add method preview (only if pygame installed)</span>
     <span class="kn">from</span> <span class="nn">moviepy.audio.io.preview</span> <span class="kn">import</span> <span class="n">preview</span>
     <span class="n">AudioClip</span><span class="o">.</span><span class="n">preview</span> <span class="o">=</span> <span class="n">preview</span>
@@ -152,7 +163,16 @@
 <span class="sd">    </span>
 <span class="sd">    An audio clip made from a sound array.</span>
 <span class="sd">    </span>
-<span class="sd">    :param fps: Frames per rate</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    </span>
+<span class="sd">    array</span>
+<span class="sd">      A Numpy array representing the sound, of size Nx1 for mono,</span>
+<span class="sd">      Nx2 for stereo.</span>
+<span class="sd">       </span>
+<span class="sd">    fps</span>
+<span class="sd">      Frames per second : speed at which the sound is supposed to be</span>
+<span class="sd">      played.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -186,14 +206,17 @@
         
 <div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Clip made by composing several AudioClips.</span>
 <span class="sd">    </span>
 <span class="sd">    An audio clip made by putting together several audio clips.</span>
 <span class="sd">    </span>
-<span class="sd">    :param clips: a list of audio clips, which may start playing at</span>
-<span class="sd">        different times or together. If all have their ``duration``</span>
-<span class="sd">        attribute set, the duration of the composite clip is computed</span>
-<span class="sd">        automatically.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    </span>
+<span class="sd">    clips</span>
+<span class="sd">      List of audio clips, which may start playing at different times or</span>
+<span class="sd">      together. If all have their ``duration`` attribute set, the</span>
+<span class="sd">      duration of the composite clip is computed automatically.</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -263,6 +286,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../index.html" >Module code</a> &raquo;</li> 

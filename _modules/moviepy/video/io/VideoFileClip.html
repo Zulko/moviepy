@@ -44,6 +44,9 @@
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
       </ul>
@@ -62,26 +65,45 @@
 <span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
 
-<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
-<span class="sd">    A video clip originating from a movie file. For instance:</span>
+<span class="sd">    A video clip originating from a movie file. For instance: ::</span>
 <span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; clip2 = VideofileClip(&quot;myMaskVideo.avi&quot;,ismask = True)</span>
+<span class="sd">        &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; clip2 = VideofileClip(&quot;myMaskVideo.avi&quot;,ismask = True)</span>
 <span class="sd">    </span>
-<span class="sd">    :param filename: Any video file: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
-<span class="sd">    :param ismask: `True` if the clip is a mask.</span>
-<span class="sd">    :param has_mask: &#39;True&#39; if there is a mask included in the videofile.</span>
-<span class="sd">       Commonly, video files don&#39;t have mask, but you can save the mask</span>
-<span class="sd">       for the videos that you make with MoviePy (see the doc from</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    </span>
+<span class="sd">    filename:</span>
+<span class="sd">      The name of the video file. It can have any extension supported</span>
+<span class="sd">      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
+<span class="sd">    </span>
+<span class="sd">    ismask:</span>
+<span class="sd">      Set this to `True` if the clip is going to be used as a mask.</span>
+<span class="sd">      </span>
+<span class="sd">    has_mask:</span>
+<span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
+<span class="sd">       Video files rarely contain masks, but some video codecs enable</span>
+<span class="sd">       that. For istance if you have a MoviePy VideoClip with a mask you</span>
+<span class="sd">       can save it to a videofile with a mask. (see also </span>
 <span class="sd">       ``VideoClip.to_videofile`` for more details).</span>
-<span class="sd">    :param audio: If `True`, then the audio is extracted from the video</span>
-<span class="sd">                  file, in wav format, and it attributed to the clip.</span>
 <span class="sd">    </span>
-<span class="sd">    :ivar filename: Name of the original video file</span>
-<span class="sd">    :ivar fps: Frames per second in the original file. </span>
+<span class="sd">    audio:</span>
+<span class="sd">      Set to `False` if the clip doesn&#39;t have any audio or if you do not</span>
+<span class="sd">      wish to read the audio.</span>
+<span class="sd">      </span>
+<span class="sd">    Attributes</span>
+<span class="sd">    -----------</span>
+<span class="sd">    </span>
+<span class="sd">    filename:</span>
+<span class="sd">      Name of the original video file.</span>
+<span class="sd">    </span>
+<span class="sd">    fps:</span>
+<span class="sd">      Frames per second in the original file. </span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -117,11 +139,20 @@
                                        <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span>
                                        <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span>
     
-<div class="viewcode-block" id="VideoFileClip.coreader"><a class="viewcode-back" href="../../../../ref/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a </span>
-<span class="sd">            new entrance point to the video file. Use copy</span>
-<span class="sd">            when you have different clips watching the same</span>
-<span class="sd">            video file at different times. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="VideoFileClip.coreader"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a copy of the AudioFileClip with an autonomous reader.</span>
+<span class="sd">        Maybe REMOVED in the coming versions. Wait and see. ::</span>
+<span class="sd">        </span>
+<span class="sd">            &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
+<span class="sd">            &gt;&gt;&gt; clip2 = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
+<span class="sd">        </span>
+<span class="sd">        is equivalent to ::</span>
+<span class="sd">        </span>
+<span class="sd">            &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
+<span class="sd">            &gt;&gt;&gt; clip2 = clip.coreader()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+            
         <span class="k">return</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -166,6 +197,9 @@
              >index</a></li>
         <li class="right" >
           <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="../../../index.html" >Module code</a> &raquo;</li> 

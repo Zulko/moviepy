@@ -46,6 +46,9 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
           <a href="crash_course/crash_course.html" title="A MoviePy crash-course"
              accesskey="N">next</a> |</li>
         <li class="right" >
@@ -64,57 +67,41 @@
 <h1>Download and Installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="core-dependencies">
 <h2>Core dependencies<a class="headerlink" href="#core-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy cannot run without these dependencies:</p>
-<ul class="simple">
-<li>The software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> is needed for writing, reading, converting the sound and the video.</li>
-<li><a class="reference external" href="http://www.scipy.org/install.html">Numpy</a> is needed for image and sound manipulation</li>
-<li>The <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a> module is used in the MoviePy code for better code readability</li>
-</ul>
-<p><strong>Make sure to use a recent version of ffmpeg</strong>. You can either install it or save the binary files in any folder and specify the path to these folders before installing MoviePy (for the latter, see <a class="reference internal" href="#manual-installation">Manual installation</a> below).</p>
-<p><strong>Debian and Ubuntu users</strong>, you certainly have an out-of-date version of FFMPEG, you <em>must</em> download a recent version from the <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> website.</p>
-<p>Normally Numpy and Decorator will be automatically installed when you install MoviePy. In case of doubt/problem they can also be installed manually.
-Numpy can be installed with most software managers on Linux distributions. Both Numpy and Decorator can be installed as follows with pip:</p>
-<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install decorator
-(sudo) pip install numpy
+<p>MoviePy requires the Python modules <a class="reference external" href="http://www.scipy.org/install.html">Numpy</a>, <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a>, and <a class="reference external" href="https://pypi.python.org/pypi/tqdm">tqdm</a>. All of these will all be automatically installed during MoviePy&#8217;s installation.</p>
+<p>You will also need a <strong>recent version</strong> of the software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> , preferably downloaded directly from the ffmpeg website.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>First method : if you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal (sudo is optional on some systems)</p>
+<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install moviepy
 </pre></div>
+</div>
+<p>Second method : by hand. Download the sources, either on <a class="reference external" href="https://pypi.python.org/pypi/moviepy">PyPI</a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, unzip everything in one folder, open a terminal and type</p>
+<div class="highlight-python"><div class="highlight"><pre>(sudo) python setup.py install
+</pre></div>
+</div>
+<div class="section" id="linking-to-ffmpeg">
+<h3>Linking to ffmpeg<a class="headerlink" href="#linking-to-ffmpeg" title="Permalink to this headline">¶</a></h3>
+<p>If you put have a ffmpeg binary in you executable folder (on Linux it will be <tt class="docutils literal"><span class="pre">/usr/bin</span></tt>) it will be detected automatically by MoviePy. Else make sure that MoviePy can locate ffmpeg on your computer by running the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt> that is in the sources. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="not-so-optional-dependencies">
 <h2>(Not so) Optional dependencies<a class="headerlink" href="#not-so-optional-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>You are not obliged to install these but for many uses MoviePy will scream at you and say that the package or the software is missing. All these dependencies can be installed any time after the installation of MoviePy.</p>
+<p><a class="reference external" href="http://www.pygame.org/download.shtml">PyGame</a> is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing).</p>
+<p><a class="reference external" href="http://www.imagemagick.org/script/index.php">ImageMagick</a>  is needed for all text generation, GIF import/export, and much more .</p>
+<p>For advanced image processing you will need one or several of these packages. for instance <tt class="docutils literal"><span class="pre">clip.resize</span></tt> requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.pygame.org/download.shtml">PyGame</a> is needed for video and sound previews (really essential for advanced editing).</li>
-<li><a class="reference external" href="http://www.imagemagick.org/script/index.php">imageMagick</a>  is needed for all text generation, GIF support, and much more in the future.</li>
-</ul>
-<p>There are many packages for image manipulation/processing in python.  Most effects are coded such that none of these packages are needed, or such that having at least one of these packages is sufficient.</p>
-<ul class="simple">
-<li>Scipy is needed for many advanced functionalities (tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren&#8217;t installed on your computer.</li>
+<li>The Python Imaging Library (PIL) or, better, its branch <a class="reference external" href="http://pillow.readthedocs.org/en/latest/">Pillow</a> .</li>
+<li><a class="reference external" href="http://www.scipy.org/">Scipy</a> (for tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren&#8217;t installed on your computer.</li>
 <li><a class="reference external" href="http://scikit-image.org/download.html">Scikit Image</a> may be needed for some advanced image manipulation.</li>
-<li>The Python Imaging Library is not used yet (I don&#8217;t like the copyright) but it is coming.</li>
-<li><a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> (which provides the python package <tt class="docutils literal"><span class="pre">cv2</span></tt>) or more recent may be needed for some advanced image manipulation. See below for the installation of OpenCV.</li>
+<li><a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> (provides the package <tt class="docutils literal"><span class="pre">cv2</span></tt>) or more recent may be needed for some advanced image manipulation. See below.</li>
 </ul>
 <p>If you are on linux, these softwares will surely be in your repos.</p>
-</div>
-<div class="section" id="installation-with-pip">
-<span id="pip-install"></span><h2>Installation with PIP<a class="headerlink" href="#installation-with-pip" title="Permalink to this headline">¶</a></h2>
-<p>If you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal</p>
-<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install moviepy
-</pre></div>
-</div>
-</div>
-<div class="section" id="manual-installation">
-<span id="manual-install"></span><h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
-<p>You can install moviepy manually by downloading the sources, either on <a href="#id1"><span class="problematic" id="id2">PYPI_</span></a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a> .</p>
-<p>Then just unzip everything in one folder, open a terminal and type</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo python setup.py install
-</pre></div>
-</div>
-<p>Before doing that, you should make sure that MoviePy can locate ffmpeg on your computer. To do that, run the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt>. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
-</pre></div>
-</div>
-<div class="section" id="installing-opencv-2-4-6">
-<h3>Installing OpenCV 2.4.6<a class="headerlink" href="#installing-opencv-2-4-6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="so-you-want-to-install-opencv-2-4-6">
+<h3>So you want to install OpenCV 2.4.6 ?<a class="headerlink" href="#so-you-want-to-install-opencv-2-4-6" title="Permalink to this headline">¶</a></h3>
 <p>OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned !
 The installation seems easy for Windows. On linux, here is what I found on the Internet:</p>
 <ul>
@@ -169,10 +156,12 @@ cd release
   <ul>
 <li><a class="reference internal" href="#">Download and Installation</a><ul>
 <li><a class="reference internal" href="#core-dependencies">Core dependencies</a></li>
-<li><a class="reference internal" href="#not-so-optional-dependencies">(Not so) Optional dependencies</a></li>
-<li><a class="reference internal" href="#installation-with-pip">Installation with PIP</a></li>
-<li><a class="reference internal" href="#manual-installation">Manual installation</a><ul>
-<li><a class="reference internal" href="#installing-opencv-2-4-6">Installing OpenCV 2.4.6</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#linking-to-ffmpeg">Linking to ffmpeg</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#not-so-optional-dependencies">(Not so) Optional dependencies</a><ul>
+<li><a class="reference internal" href="#so-you-want-to-install-opencv-2-4-6">So you want to install OpenCV 2.4.6 ?</a></li>
 </ul>
 </li>
 </ul>
@@ -216,6 +205,9 @@ cd release
              >index</a></li>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
           <a href="crash_course/crash_course.html" title="A MoviePy crash-course"

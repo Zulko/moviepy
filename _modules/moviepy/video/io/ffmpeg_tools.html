@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.io.ffmpeg_tools &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+   
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for moviepy.video.io.ffmpeg_tools</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot; Misc. bindings to ffmpeg and ImageMagick.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="kn">as</span> <span class="nn">sp</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">subprocess_call</span>
+    
+
+<div class="viewcode-block" id="ffmpeg_movie_from_frames"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_movie_from_frames">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_movie_from_frames</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">folder</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">digits</span><span class="o">=</span><span class="mi">6</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Writes a movie out of the frames (picture files) in a folder.</span>
+<span class="sd">    Almost deprecated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="s">&quot;%&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="si">%02d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">digits</span> <span class="o">+</span> <span class="s">&quot;d.png&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;-f&quot;</span><span class="p">,</span><span class="s">&quot;image2&quot;</span><span class="p">,</span>
+             <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="n">fps</span><span class="p">,</span>
+             <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span><span class="n">folder</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span>
+             <span class="s">&quot;-b&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">k&quot;</span><span class="o">%</span><span class="n">bitrate</span><span class="p">,</span>
+             <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
+             <span class="n">filename</span><span class="p">]</span>
+    
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ffmpeg_extract_subclip"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_extract_subclip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">targetname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; makes a new video file playing video file ``filename`` between</span>
+<span class="sd">        the times ``t1`` and ``t2``. &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">,</span><span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">targetname</span><span class="p">:</span>
+        <span class="n">T1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="p">[</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">]]</span>
+        <span class="n">targetname</span> <span class="o">=</span> <span class="n">name</span><span class="o">+</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">SUB</span><span class="si">%d</span><span class="s">_</span><span class="si">%d</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+    
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span><span class="s">&quot;-y&quot;</span><span class="p">,</span>
+      <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span>
+      <span class="s">&quot;-ss&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f</span><span class="s">&quot;</span><span class="o">%</span><span class="n">t1</span><span class="p">,</span>
+      <span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">),</span>
+      <span class="s">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="s">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="n">targetname</span><span class="p">]</span>
+      
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ffmpeg_merge_video_audio"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_merge_video_audio</span><span class="p">(</span><span class="n">video</span><span class="p">,</span><span class="n">audio</span><span class="p">,</span><span class="n">output</span><span class="p">,</span>
+                <span class="n">vcodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span> <span class="n">acodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span> <span class="n">ffmpeg_output</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; merges video file ``video`` and audio file ``audio`` into one</span>
+<span class="sd">        movie file ``output``. &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span>
+             <span class="s">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="n">vcodec</span><span class="p">,</span> <span class="s">&quot;-acodec&quot;</span><span class="p">,</span> <span class="n">acodec</span><span class="p">,</span> <span class="n">output</span><span class="p">]</span>
+             
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    
+</div>
+<div class="viewcode-block" id="ffmpeg_extract_audio"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_extract_audio</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; extract the sound from a video file and save it in ``output`` &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="s">&quot;-ab&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">k&quot;</span><span class="o">%</span><span class="n">bitrate</span><span class="p">,</span>
+         <span class="s">&quot;-ar&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="n">fps</span><span class="p">,</span> <span class="n">output</span><span class="p">]</span>
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    
+</div>
+<div class="viewcode-block" id="ffmpeg_resize"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_resize">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_resize</span><span class="p">(</span><span class="n">video</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; resizes ``video`` to new size ``size`` and write the result</span>
+<span class="sd">        in file ``output``. &quot;&quot;&quot;</span>
+    <span class="n">cmd</span><span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span> <span class="s">&quot;-vf&quot;</span><span class="p">,</span> <span class="s">&quot;scale=</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+             <span class="n">output</span><span class="p">]</span>
+             
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+  
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" style="position:relative">
+      &copy; Copyright 2013, Zulko.
+    </div>
+    <div>
+
+    </div>
+
+  </body>
+</html>

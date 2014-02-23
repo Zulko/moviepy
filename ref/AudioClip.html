@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
     <link rel="up" title="Reference Manual" href="ref.html" />
-    <link rel="next" title="audio.fx" href="audiofx.html" />
-    <link rel="prev" title="video.tools" href="videotools.html" />
+    <link rel="next" title="moviepy.video.fx (vfx)" href="videofx.html" />
+    <link rel="prev" title="Classes of Video Clips" href="VideoClip/VideoClip.html" />
    
   <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
   
@@ -47,10 +47,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="audiofx.html" title="audio.fx"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="videofx.html" title="moviepy.video.fx (vfx)"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="videotools.html" title="video.tools"
+          <a href="VideoClip/VideoClip.html" title="Classes of Video Clips"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
@@ -70,14 +73,33 @@
 <dt id="moviepy.audio.AudioClip.AudioClip">
 <em class="property">class </em><tt class="descclassname">moviepy.audio.AudioClip.</tt><tt class="descname">AudioClip</tt><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moviepy.Clip.Clip</span></tt></p>
-<p>Base class for audio clips. See <tt class="docutils literal"><span class="pre">SoundClip</span></tt> and <tt class="docutils literal"><span class="pre">CompositeSoundClip</span></tt>
-for usable classes.
-An audio clip is a special clip with a <tt class="docutils literal"><span class="pre">get_frame</span></tt>  attribute of
-the form ` t -&gt; [ f_t ]` for mono sound and <cite>t -&gt; [ f1_t, f2_t ]</cite>
-for stereo sound.  The <cite>f_t</cite> are floats between -1 and 1. These
-bounds can be trespassed wihtout problems (the program will put the
+<p>Base class for audio clips.</p>
+<p>See <tt class="docutils literal"><span class="pre">SoundClip</span></tt> and <tt class="docutils literal"><span class="pre">CompositeSoundClip</span></tt> for usable classes.</p>
+<p>An AudioClip is a Clip with a <tt class="docutils literal"><span class="pre">get_frame</span></tt>  attribute of
+the form `` t -&gt; [ f_t ]`` for mono sound and
+<tt class="docutils literal"><span class="pre">t-&gt;</span> <span class="pre">[</span> <span class="pre">f1_t,</span> <span class="pre">f2_t</span> <span class="pre">]</span></tt> for stereo sound (the arrays are Numpy arrays).
+The <cite>f_t</cite> are floats between -1 and 1. These bounds can be
+trespassed wihtout problems (the program will put the
 sound back into the bounds at conversion time, without much impact).</p>
-<p>Example :</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>get_frame</strong> :</p>
+<blockquote>
+<div><p>A function <cite>t-&gt; frame at time t</cite>. The frame does not mean much
+for a sound, it is just a float. What &#8216;makes&#8217; the sound are
+the variations of that float in the time.</p>
+</div></blockquote>
+<p><strong>nchannels</strong> :</p>
+<blockquote class="last">
+<div><p>Number of channels (one or two for mono or stereo).</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Plays the note A (a sine wave of frequency 404HZ)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">gf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="p">[</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">404</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span> <span class="p">]</span>
@@ -85,20 +107,6 @@ sound back into the bounds at conversion time, without much impact).</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
 </pre></div>
 </div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
-<li><strong>get_frame</strong> &#8211; A function <cite>t-&gt; frame at time t</cite>. The frame does not
-mean much for a sound, it is just a float. What &#8216;makes&#8217; the sound
-are the variations of that float in the time.</li>
-<li><strong>nchannels</strong> &#8211; Number of channels (one or two for mono or stereo).</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.preview">
 <tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=22050</em>, <em>buffersize=50000</em>, <em>nbytes=2</em>, <em>audioFlag=None</em>, <em>videoFlag=None</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.preview" title="Permalink to this definition">¶</a></dt>
@@ -107,23 +115,30 @@ are the variations of that float in the time.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fps</strong> &#8211; frame rate of the sound. 44100 gives top quality, but
-may cause problems if your computer is not fast enough and
-your clip is complicated. If the sound jumps during the
-preview lower it (11025 is still fine, 5000 is tolerable).</li>
-<li><strong>buffersize</strong> &#8211; The sound is not generated all at once, but
-rather made by bunches of frames (chunks). <tt class="docutils literal"><span class="pre">buffersize</span></tt>
-is the size of such a chunk. Try varying it if you meet
-audio problems (but you shouldn&#8217;t have to).</li>
-<li><strong>nbytes</strong> &#8211; number of bytes to encode the sound: 1 for 8bit
-sound, 2 for 16bit, 4 for 32bit sound. 2 bytes is fine.</li>
-<li><strong>videoFlag</strong> (<em>audioFlag,</em>) &#8211; parameters whose sole purpose is to
-enable a good synchronization of the start of video and sound
-when the audio clip is played as the background of a video
-clip. <tt class="docutils literal"><span class="pre">audioFlag</span></tt> and <tt class="docutils literal"><span class="pre">videoFlag</span></tt> are threading.Event
-objects (from Python&#8217;s standard threading module).</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
+<blockquote>
+<div><p>Frame rate of the sound. 44100 gives top quality, but may cause
+problems if your computer is not fast enough and your clip is
+complicated. If the sound jumps during the preview, lower it
+(11025 is still fine, 5000 is tolerable).</p>
+</div></blockquote>
+<p><strong>buffersize</strong> :</p>
+<blockquote>
+<div><p>The sound is not generated all at once, but rather made by bunches
+of frames (chunks). <tt class="docutils literal"><span class="pre">buffersize</span></tt> is the size of such a chunk.
+Try varying it if you meet audio problems (but you shouldn&#8217;t
+have to).</p>
+</div></blockquote>
+<p><strong>nbytes:</strong> :</p>
+<blockquote>
+<div><p>Number of bytes to encode the sound: 1 for 8bit sound, 2 for
+16bit, 4 for 32bit sound. 2 bytes is fine.</p>
+</div></blockquote>
+<p><strong>audioFlag, videoFlag:</strong> :</p>
+<blockquote class="last">
+<div><p>Instances of class threading events that are used to synchronize
+video and audio during <tt class="docutils literal"><span class="pre">VideoClip.preview()</span></tt>.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -139,11 +154,16 @@ or written in a wav file. See <tt class="docutils literal"><span class="pre">Aud
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fps</strong> &#8211; frame rate of the sound. 44100 gives top quality.</li>
-<li><strong>nbytes</strong> &#8211; number of bytes to encode the sound: 1 for 8bit
-sound, 2 for 16bit, 4 for 32bit sound.</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
+<blockquote>
+<div><p>Frame rate of the sound for the conversion.
+44100 for top quality.</p>
+</div></blockquote>
+<p><strong>nbytes</strong> :</p>
+<blockquote class="last">
+<div><p>Number of bytes to encode the sound: 1 for 8bit sound,
+2 for 16bit, 4 for 32bit sound.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
@@ -168,32 +188,51 @@ backward and forward.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>snd</strong> &#8211; Either a soundfile or an array representing a sound. If
-the soundfile is not a .wav, it will be converted to .wav first,
-using the <tt class="docutils literal"><span class="pre">fps</span></tt> and <tt class="docutils literal"><span class="pre">bitrate</span></tt> arguments.</li>
-<li><strong>buffersize</strong> &#8211; Size to load in memory (in number of frames)</li>
-<li><strong>temp_wav</strong> &#8211; name for the temporary wav file in case conversion
-is required. If not provided, the default will be filename.wav
-with some prefix. If the temp_wav already exists it will not
-be rewritten.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
-<li><strong>nbytes</strong> &#8211; Number of bits per frame of the original audio file
-(the more the better).</li>
-<li><strong>buffersize</strong> (<em>fps,</em>) &#8211; see above.</li>
-</ul>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>snd</strong> :</p>
+<blockquote>
+<div><p>Either a soundfile name (of any extension supported by ffmpeg)
+or an array representing a sound. If the soundfile is not a .wav,
+it will be converted to .wav first, using the <tt class="docutils literal"><span class="pre">fps</span></tt> and
+<tt class="docutils literal"><span class="pre">bitrate</span></tt> arguments.</p>
+</div></blockquote>
+<p><strong>buffersize:</strong> :</p>
+<blockquote>
+<div><p>Size to load in memory (in number of frames)</p>
+</div></blockquote>
+<p><strong>temp_wav:</strong> :</p>
+<blockquote class="last">
+<div><p>Name for the temporary wav file in case conversion is required.
+If not provided, the default will be filename.wav with some prefix.
+If the temp_wav already exists it will not be rewritten.</p>
+</div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Examples</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SoundClip</span><span class="p">(</span><span class="s">&quot;song.wav&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SoundClip</span><span class="p">(</span><span class="s">&quot;song.mp3&quot;</span><span class="p">,</span> <span class="n">fps</span> <span class="o">=</span> <span class="mi">44100</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">snd</span> <span class="o">=</span> <span class="n">SoundClip</span><span class="p">(</span><span class="n">mySoundArray</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="c"># from a numeric array</span>
 </pre></div>
 </div>
+<p class="rubric">Attributes</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>nbytes</td>
+<td>Number of bits per frame of the original audio file.</td>
+</tr>
+<tr class="row-even"><td>fps</td>
+<td>Number of frames per second in the audio file</td>
+</tr>
+<tr class="row-odd"><td>buffersize</td>
+<td>See Parameters.</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="moviepy.audio.io.AudioFileClip.AudioFileClip.coreader">
 <tt class="descname">coreader</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/io/AudioFileClip.html#AudioFileClip.coreader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.coreader" title="Permalink to this definition">¶</a></dt>
@@ -205,7 +244,7 @@ watching the audio file at different times.</p>
 <dl class="attribute">
 <dt id="moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels">
 <tt class="descname">nchannels</tt><a class="reference internal" href="../_modules/moviepy/audio/io/AudioFileClip.html#AudioFileClip.nchannels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels" title="Permalink to this definition">¶</a></dt>
-<dd><p>returns the number of channels of the reader
+<dd><p>R eturns the number of channels of the reader
 (1: mono, 2: stereo)</p>
 </dd></dl>
 
@@ -218,15 +257,19 @@ watching the audio file at different times.</p>
 <dt id="moviepy.audio.AudioClip.CompositeAudioClip">
 <em class="property">class </em><tt class="descclassname">moviepy.audio.AudioClip.</tt><tt class="descname">CompositeAudioClip</tt><big>(</big><em>clips</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#CompositeAudioClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.CompositeAudioClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.audio.AudioClip.AudioClip</span></tt></a></p>
+<p>Clip made by composing several AudioClips.</p>
 <p>An audio clip made by putting together several audio clips.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>clips</strong> &#8211; a list of audio clips, which may start playing at
-different times or together. If all have their <tt class="docutils literal"><span class="pre">duration</span></tt>
-attribute set, the duration of the composite clip is computed
-automatically.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>clips</strong> :</p>
+<blockquote class="last">
+<div><p>List of audio clips, which may start playing at different times or
+together. If all have their <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set, the
+duration of the composite clip is computed automatically.</p>
+</div></blockquote>
+</td>
 </tr>
 </tbody>
 </table>
@@ -258,8 +301,8 @@ automatically.</td>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="ref.html">Reference Manual</a><ul>
-      <li>Previous: <a href="videotools.html" title="previous chapter">video.tools</a></li>
-      <li>Next: <a href="audiofx.html" title="next chapter">audio.fx</a></li>
+      <li>Previous: <a href="VideoClip/VideoClip.html" title="previous chapter">Classes of Video Clips</a></li>
+      <li>Next: <a href="videofx.html" title="next chapter">moviepy.video.fx (vfx)</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -296,10 +339,13 @@ automatically.</td>
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="audiofx.html" title="audio.fx"
+          <a href="../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="videofx.html" title="moviepy.video.fx (vfx)"
              >next</a> |</li>
         <li class="right" >
-          <a href="videotools.html" title="video.tools"
+          <a href="VideoClip/VideoClip.html" title="Classes of Video Clips"
              >previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" >Reference Manual</a> &raquo;</li> 
