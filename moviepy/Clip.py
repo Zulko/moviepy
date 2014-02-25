@@ -243,8 +243,11 @@ class Clip:
         """
         self.duration = t
         if change_end:
-            self.end = self.start + t
+            self.end = None if (t is None) else (self.start + t)
         else:
+            if duration is None:
+                raise Exception("Cannot change clip start when new"
+                                 "duration is None")
             self.start = self.end - t
 
 
