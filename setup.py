@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 
 setup(name='moviepy',
     version=__version__,
-    author='Zulko 2013',
+    author='Zulko 2014',
     description='Module for script-based video editing',
     long_description=open('README.rst').read(),
     license='see LICENSE.txt',

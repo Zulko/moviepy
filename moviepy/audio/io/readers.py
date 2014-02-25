@@ -19,7 +19,7 @@ class FFMPEG_AudioReader:
       Name of any video or audio file, like ``video.mp4`` or
       ``sound.wav`` etc.
       
-    bufsize
+    buffersize
       The size of the buffer to use. Should be bigger than the buffer
       used by ``to_audiofile``
     
@@ -36,19 +36,24 @@ class FFMPEG_AudioReader:
           
     """
         
-    def __init__(self, filename, bufsize, print_infos=False,
-                 fps=44100, nbytes=2):
-                     
+    def __init__(self, filename, buffersize, print_infos=False,
+                 fps=44100, nbytes=2, nchannels=2):
+        
         self.filename = filename
         self.nbytes = nbytes
-        self.bufsize=bufsize
         self.fps = fps
         self.f = 's%dle'%(8*nbytes)
         self.acodec = 'pcm_s%dle'%(8*nbytes)
-        self.nchannels = 2
+        self.nchannels = nchannels
         self.load_infos()
         self.proc = None
+        
+        self.buffersize=buffersize
+        self.buffer= None
+        self.buffer_startframe = 1
         self.initialize()
+        self.buffer_around(1)
+        
     
     def load_infos(self, print_infos=False):
         """ reads the FFMPEG info on the file and sets self.size
@@ -99,10 +104,10 @@ class FFMPEG_AudioReader:
                 '-acodec', self.acodec,
                 '-ar', "%d"%self.fps,
                 '-ac', '%d'%self.nchannels, '-'])
-        self.proc = sp.Popen( cmd, bufsize=self.bufsize,
+        self.proc = sp.Popen( cmd, bufsize=self.buffersize,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
-        self.pos = int(self.fps*starttime)
+        self.pos = int(self.fps*starttime+1)
      
      
      
@@ -148,40 +153,85 @@ class FFMPEG_AudioReader:
                          self.proc.stderr]:
                 std.close()
             del self.proc
+    
+    def get_frame(self, tt):
+        
+        buffersize = self.buffersize
+        if isinstance(tt,np.ndarray):
+            # lazy implementation, but should not cause problems in
+            # 99.99 %  of the cases
             
+            
+            # elements of t that are actually in time
+            in_time = (tt>=0) & (tt < self.duration)
+            
+            frames = (self.fps*tt+1).astype(int)[in_time]
+            fr_min, fr_max = frames.min(), frames.max()
+            
+            if not (0 <=
+                     (fr_min - self.buffer_startframe)
+                          < len(self.buffer)):
+                self.buffer_around(fr_min)
+            elif not (0 <=
+                        (fr_max - self.buffer_startframe)
+                             < len(self.buffer)):
+                self.buffer_around(fr_max)
+                
+            try:
+                result = np.zeros((len(tt),self.nchannels))
+                result[in_time] = self.buffer[frames - self.buffer_startframe]
+                return result
+            except IndexError as error:
+                print ("Error: wrong indices in video buffer. Maybe"+
+                       " buffer too small.")
+                raise error
+                
+        else:
+            
+            ind = int(self.fps*tt)
+            if ind<0 or ind> self.nframes: # out of time: return 0
+                return np.zeros(self.nchannels)
+                
+            if not (0 <= (ind - self.buffer_startframe) <len(self.buffer)):
+                # out of the buffer: recenter the buffer
+                self.buffer_around(ind)
+                
+            # read the frame in the buffer
+            return self.buffer[ind - self.buffer_startframe]
+                
+
+    def buffer_around(self,framenumber):
+        """
+        Fills the buffer with frames, centered on ``framenumber``
+        if possible
+        """
+        
+        # start-frame for the buffer
+        new_bufferstart = max(0,  framenumber - self.buffersize // 2)
+        
+        
+        if (self.buffer!=None):
+            current_f_end  = self.buffer_startframe + self.buffersize
+            if (new_bufferstart <
+                        current_f_end  <
+                               new_bufferstart + self.buffersize):
+                # We already have one bit of what must be read
+                conserved = current_f_end - new_bufferstart + 1
+                chunksize = self.buffersize-conserved
+                array = self.read_chunk(chunksize)
+                self.buffer = np.vstack([self.buffer[-conserved:], array])
+            else:
+                self.seek(new_bufferstart)
+                self.buffer =  self.read_chunk(self.buffersize)
+        else:
+            self.seek(new_bufferstart)
+            self.buffer =  self.read_chunk(self.buffersize)
+        
+        self.buffer_startframe = new_bufferstart
+    
+    
     def __del__(self):
         self.close_proc()
-        del self.lastread
         
         
 
-class WaveReader:
-    """ DEPRECATED - Do not use if you can avoid. """
-    
-    def __init__(self, filename):
-        
-        import os
-        from moviepy.Clip import Clip
-        
-        if not filename.endswith('.wav'):
-            name, ext = os.path.splitext(os.path.basename(filename))
-            if temp_wav is None:
-                filename = Clip._TEMP_FILES_PREFIX + filename+'.wav'
-            if not os.exists(filename):
-                ffmpeg.extract_sound(filename, temp, fps, bitrate)
-                
-        self.filename = filename
-
-        wavf = wave.open(filename)
-        self.nchannels = wavf.getnchannels()
-        self.fps = wavf.getframerate()
-        self.nframes = wavf.getnframes()
-        self.nbytes = wavf.getsampwidth()
-        self._wavfile = wavf
-        
-        self.duration = (1.0*self.nframes/self.fps)
-        self.end = self.duration
-        self.np_dtype = {1:'int8',2:'int16',4:'int32'}[self.nbytes]
-        
-        self.buffersize= buffersize
-        self._buffer_around(0)

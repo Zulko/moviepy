@@ -17,7 +17,8 @@ def subprocess_call(cmd, stdout=None, stdin = None,
     executes the subprocess command
     """
     
-    verboseprint = sys_write_flush if verbose else (lambda *a : None)
+    def verboseprint(s):
+        if verbose: sys_write_flush(s)
     
     verboseprint( "\nMoviePy Running:\n>>> "+ " ".join(cmd) )
     
@@ -26,10 +27,11 @@ def subprocess_call(cmd, stdout=None, stdin = None,
                          stderr = stderr )
     proc.wait()
     
-    if proc.returncode and errorprint:
-        sys_write_flush( "\nMoviePy: WARNING !\n"
+    if proc.returncode:
+        if errorprint:
+            sys_write_flush( "\nMoviePy: WARNING !\n"
                     "   The following command returned an error:\n")
-        sys_write_flush( proc.stderr.read().decode('utf8'))
+            sys_write_flush( proc.stderr.read().decode('utf8'))
         raise IOError
     else:
         verboseprint( "\n... command successful.\n")

@@ -15,7 +15,9 @@ from tqdm import tqdm
 import numpy as np
 
 from moviepy.decorators import  (apply_to_mask,
-                                 requires_duration)
+                                 requires_duration,
+                                 outplace,
+                                 add_mask_if_none)
                                  
 from moviepy.tools import subprocess_call, sys_write_flush
 
@@ -27,8 +29,6 @@ from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 from .tools.drawing import blit
 from ..Clip import Clip
 from ..conf import FFMPEG_BINARY
-
-
 
 
 class VideoClip(Clip):
@@ -89,8 +89,6 @@ class VideoClip(Clip):
             self.size =get_frame(0).shape[:2][::-1]
         self.ismask = ismask
         
-        
-        
     @property
     def w(self):
         return self.size[0]
@@ -116,69 +114,12 @@ class VideoClip(Clip):
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
         ffmpeg_write_image(filename, im)
-        
-        
-
-    @requires_duration
-    def to_directory(self, foldername, fps, transparent=True,
-                     overwrite=True, startFrame=0):
-        """ Write the frames of the clip into a folder.
-        
-        Writes the frames of the clip into a folder as png format,
-        and returns the :class:DirectoryClip associated with this
-        folder
-        
-        Parameters
-        ----------
-        
-        foldername
-          Name of the folder (what did you expect ?)
-        
-        fps
-          Number of frames per second of movie.
-        
-        transparent
-          If `True`, the png images generated will possess an alpha
-          layer representing the mask of the clip.
-            
-        overwrite
-          If `True`, will overwrite the content of `folder`
-          if already existing.
-            
-        startFrame:
-          Useless for the moment, but may come in handy once
-          parallelization is fully implemented.
-        
-        """
-        print( "writing frames in [%s]" % foldername )
-
-        try:
-            os.mkdir(foldername)
-        except:
-            if not overwrite:
-                print( "Error: Maybe set overwrite =true ")
-
-        tt = np.arange(0, self.duration, 1.0 / fps)
-        tt_feedback = tt[::len(tt) / 10]
-
-        for i, t in tqdm(list(enumerate(tt))[startFrame:]):
-
-            picname = "%s/%s%06d.png" % (foldername, foldername, i)
-            pic = self.get_frame(t)
-            if transparent and (self.mask is not None):
-                fmask = self.mask.get_frame(t)
-                pic = np.dstack([pic, 255 * fmask]).astype('uint8')
-            imsave(picname, pic)
-
-        print( "done." )
-        return DirectoryClip(foldername, fps=fps)
-
-
+    
 
     def to_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100, 
                  audio_nbytes = 2, audio_codec= 'libvorbis',
-                 audio_bitrate = None, audio_bufsize = 40000,
+                 audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
                  para = False, verbose = True):
@@ -322,7 +263,6 @@ class VideoClip(Clip):
                                   filename, ffmpeg_output=True)
                                   
             if remove_temp:
-                print("print")
                 os.remove(videofile)
                 if not isinstance(audio,str):
                     os.remove(temp_audiofile)
@@ -596,60 +536,51 @@ class VideoClip(Clip):
         return result
     
     
-    
+    @outplace
     def set_get_frame(self, gf):
         """ Change the clip's ``get_frame``.
         
         Returns a copy of the VideoClip instance, with the get_frame
         attribute set to `gf`.
         """
-        newclip = Clip.set_get_frame(self, gf)
-        newclip.size = newclip.get_frame(0).shape[:2][::-1]
-        return newclip
+        self.get_frame = gf
+        self.size = gf(0).shape[:2][::-1]
     
     
-    
+    @outplace
     def set_audio(self, audioclip):
         """ Attach an AudioClip to the VideoClip.
         
         Returns a copy of the VideoClip instance, with the `audio`
         attribute set to ``audio``, hich must be an AudioClip instance.
         """
-        newclip = copy(self)
-        newclip.audio = audioclip
-        return newclip
+        self.audio = audioclip
     
     
-    
+    @outplace
     def set_mask(self, mask):
         """ Set the clip's mask.
         
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip"""
-        assert mask.ismask
-        newclip = copy(self)
-        newclip.mask = mask
-        return newclip
+        assert ( (mask is None) or mask.ismask )
+        self.mask = mask
     
-    
-    
+    @outplace
+    @add_mask_if_none
     def set_opacity(self, op):
         """ Set the opacity/transparency level of the clip.
         
         Returns a semi-transparent copy of the clip where the mask is
         multiplied by ``op`` (any float, normally between 0 and 1).
         """
-        newclip = copy(self)
         
-        if not newclip.mask:
-            newclip = newclip.add_mask()
-            
-        newclip.mask = newclip.mask.fl_image(lambda pic: op * pic)
-        return newclip
+        self.mask = self.mask.fl_image(lambda pic: op * pic)
     
     
     
     @apply_to_mask
+    @outplace
     def set_pos(self, pos, relative=False):
         """ Set the clip's position in compositions.
         
@@ -674,15 +605,13 @@ class VideoClip(Clip):
         >>> clip.set_pos(lambda t: ('center', 50+t) )
         
         """
-
-        newclip = copy(self)
-        newclip.relative_pos = relative
+        
+        self.relative_pos = relative
         if hasattr(pos, '__call__'):
-            newclip.pos = pos
+            self.pos = pos
         else:
-            newclip.pos = lambda t: pos
-
-        return newclip
+            self.pos = lambda t: pos
+            
 
     #--------------------------------------------------------------
     # CONVERSIONS
@@ -716,9 +645,8 @@ class VideoClip(Clip):
         Return a non-mask video clip made from the mask video clip.
         """
         if self.ismask:
-            newclip = self.fl_image(
-                lambda pic: np.dstack(3 * [255 * pic]
-                ).astype('uint8'))
+            f = lambda pic: np.dstack(3 * [255 * pic]).astype('uint8')
+            newclip = self.fl_image( f )
             newclip.ismask = False
             return newclip
         else:
@@ -729,28 +657,24 @@ class VideoClip(Clip):
     # Audio
     
     
-    
+    @outplace
     def without_audio(self):
         """ Remove the clip's audio.
         
         Return a copy of the clip with audio set to None.
         
         """
-        newclip = copy(self)
-        newclip.audio = None
-        return newclip
+        self.audio = None
     
     
-    
+    @outplace
     def afx(self, fun, *a, **k):
         """ Transform the clip's audio.
         
         Return a new clip whose audio has been transformed by ``fun``.
         
         """
-        newclip = self.copy()
-        newclip.audio = newclip.audio.fx(fun, *a, **k)
-        return newclip 
+        self.audio = self.audio.fx(fun, *a, **k)
         
     #-----------------------------------------------------------------
     # Previews:
@@ -850,11 +774,12 @@ class ImageClip(VideoClip):
     
     
     def fl(self, fl,  apply_to=[], keep_duration=True):
-        """ General filter
+        """ General transformation filter.
         
         Equivalent to VideoClip.fl . The result is no more an
         ImageClip, it has the class VideoClip (since it may be animated)
         """
+        
         # When we use fl on an image clip it may become animated.
         #Therefore the result is not an ImageClip, just a VideoClip.
         newclip = VideoClip.fl(self,fl, apply_to=apply_to,
@@ -863,7 +788,7 @@ class ImageClip(VideoClip):
         return newclip
     
     
-    
+    @outplace
     def fl_image(self, image_func, apply_to= []):
         """ Image-transformation filter.
         
@@ -872,23 +797,21 @@ class ImageClip(VideoClip):
         and not for each 'frame'.
         """
             
-        newclip = self.copy()
         arr = image_func(self.get_frame(0))
-        newclip.size = arr.shape[:2][::-1]
-        newclip.get_frame = lambda t: arr
-        newclip.img = arr
+        self.size = arr.shape[:2][::-1]
+        self.get_frame = lambda t: arr
+        self.img = arr
         
         for attr in apply_to:
-            if hasattr(newclip, attr):
-                a = getattr(newclip, attr)
+            if hasattr(self, attr):
+                a = getattr(self, attr)
                 if a != None:
-                    setattr(newclip, attr, a.fl_image(image_func))
-                    
-        return newclip
+                    new_a =  a.fl(image_func)
+                    setattr(newclip, attr, new_a)
     
     
-    
-    def fl_time(self, timefun, apply_to =['mask', 'audio']):
+    @outplace
+    def fl_time(self, time_func, apply_to =['mask', 'audio']):
         """ Time-transformation filter.
         
         Applies a transformation to the clip's timeline
@@ -897,15 +820,13 @@ class ImageClip(VideoClip):
         This method does nothing for ImageClips (but it may affect their
         masks of their audios). The result is still an ImageClip.
         """
-        newclip = self.copy()
         
         for attr in apply_to:
-            if hasattr(newclip, attr):
-                a = getattr(newclip, attr)
+            if hasattr(self, attr):
+                a = getattr(self, attr)
                 if a != None:
-                    setattr(newclip, attr, a.fl_image(image_func))
-        
-        return newclip
+                    new_a = a.fl_image(time_func)
+                    setattr(self, attr, new_a)
 
 
 
@@ -1045,7 +966,7 @@ class TextClip(ImageClip):
         if print_cmd:
             print( " ".join(cmd) )
 
-        subprocess_call(cmd)
+        subprocess_call(cmd, verbose=False )
         
         ImageClip.__init__(self, tempfile, transparent=transparent)
         self.txt = txt

@@ -87,7 +87,7 @@ warped_txt.mask = warped_txt.mask.fl_image(fl_mask)
 
 # BACKGROUND IMAGE, DARKENED AT 60%
 
-stars = ImageClip('../../starworms/stars.jpg')
+stars = ImageClip('../../videos/stars.jpg')
 stars_darkened = stars.fl_image(lambda pic: (0.6*pic).astype('int16'))
 
 
@@ -100,7 +100,7 @@ final = CompositeVideoClip([
 
 # WRITE TO A FILE
 
-final.set_duration(8).to_videofile("starworms.avi")
+final.set_duration(8).to_videofile("starworms.avi", fps=5)
 
 # This script is heavy (30s of computations to render 8s of video)
 
@@ -175,5 +175,5 @@ annotated_clips = [ annotate(clip,text) for clip,text in [
 
 # Concatenate and write to a file
 
-concatenate(annotated_clips).to_videofile('tutorial.avi')
+concatenate(annotated_clips).to_videofile('tutorial.avi', fps=5)
 

@@ -60,92 +60,15 @@ class AudioFileClip(AudioClip):
             
         self.filename = filename
         self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
-                                         bufsize=buffersize+100)
+                                         buffersize=buffersize)
         self.fps = fps
         self.duration = self.reader.duration
         self.end = self.duration
         
         self.nframes = self.reader.nframes
-        self.buffersize= buffersize
-        self.buffer= None
-        self._fstart_buffer = 1
-        self._buffer_around(1)
-        
-        def gf(t):
-            bufsize = self.buffersize
-            if isinstance(t,np.ndarray):
-                # lazy implementation, but should not cause problems in
-                # 99.99 %  of the cases
-                result = np.zeros((len(t),2))
-                in_time = (t>=0) & (t < self.duration)
-                inds = (self.fps*t+1).astype(int)[in_time]
-                f_tmin, f_tmax = inds.min(), inds.max()
-                
-                if not (0 <= (f_tmin - self._fstart_buffer) < len(self.buffer)):
-                    self._buffer_around(f_tmin)
-                elif not (0 <= (f_tmax - self._fstart_buffer) < len(self.buffer)):
-                    self._buffer_around(f_tmax)
-                    
-                try:
-                    tup = in_time.nonzero()
-                    inds2 = inds - self._fstart_buffer
-                    result[in_time] = self.buffer[inds - self._fstart_buffer]
-                    return result
-                except IndexError as error:
-                    print ("Error: wrong indices in video buffer. Maybe"+
-                           " buffer too small.")
-                    raise error
-                    
-            else:
-                ind = int(self.fps*t)
-                if ind<0 or ind> self.nframes: # out of time: return 0
-                    return np.zeros(self.nchannels)
-                    
-                if not (0 <= (ind - self._fstart_buffer) <len(self.buffer)):
-                    # out of the buffer: recenter the buffer
-                    self._buffer_around(ind)
-                    
-                # read the frame in the buffer
-                return self.buffer[ind - self._fstart_buffer]
-
-        self.get_frame = gf
-
-    @property
-    def nchannels(self):
-        """
-        R eturns the number of channels of the reader
-        (1: mono, 2: stereo)
-        """
-        return self.reader.nchannels
-
-    def _buffer_around(self,framenumber):
-        """
-        Fills the buffer with frames, centered on ``framenumber``
-        if possible
-        """
-        
-        # start-frame for the buffer
-        fbuffer = framenumber - self.buffersize//2
-        
-        fbuffer = max(0, fbuffer)
-        
-        
-        if (self.buffer!=None):
-            current_f_end  =self._fstart_buffer + self.buffersize-1
-            if (fbuffer < current_f_end  < fbuffer+ self.buffersize):
-                # We already have one bit of what must be read
-                conserved = current_f_end - fbuffer+1
-                chunksize = self.buffersize-conserved
-                array = self.reader.read_chunk(chunksize)
-                self.buffer = np.vstack([self.buffer[-conserved:], array])
-            else:
-                self.reader.seek(fbuffer)
-                self.buffer =  self.reader.read_chunk(self.buffersize)
-        else:
-            self.reader.seek(fbuffer)
-            self.buffer =  self.reader.read_chunk(self.buffersize)
-        
-        self._fstart_buffer = fbuffer
+        self.get_frame =  lambda t: self.reader.get_frame(t)
+        self.nchannels = self.reader.nchannels
+    
     
     def coreader(self):
         """ Returns a copy of the AudioFileClip, i.e. a new entrance point

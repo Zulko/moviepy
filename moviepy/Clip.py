@@ -7,8 +7,10 @@ and AudioClip.
 from copy import copy
 import numpy as np
 
-from moviepy.decorators import ( apply_to_mask, apply_to_audio,
-                                   time_can_be_tuple)
+from moviepy.decorators import ( apply_to_mask,
+                                 apply_to_audio,
+                                 time_can_be_tuple,
+                                 outplace)
 
 
 class Clip:
@@ -46,7 +48,6 @@ class Clip:
         self.start = 0
         self.end = None
         self.duration = None
-        
         
         
     def copy(self):
@@ -111,7 +112,8 @@ class Clip:
             if hasattr(newclip, attr):
                 a = getattr(newclip, attr)
                 if a != None:
-                    setattr(newclip, attr, a.fl(fl))
+                    new_a =  a.fl(fun, keep_duration=keep_duration)
+                    setattr(newclip, attr, new_a)
                     
         return newclip
 
@@ -183,6 +185,7 @@ class Clip:
     @apply_to_mask
     @apply_to_audio
     @time_can_be_tuple
+    @outplace
     def set_start(self, t, change_end=True):
         """
         Returns a copy of the clip, with the ``start`` attribute set
@@ -199,41 +202,38 @@ class Clip:
         These changes are also applied to the ``audio`` and ``mask``
         clips of the current clip, if they exist.
         """
-        newclip = self.copy()
-        newclip.start = t
-        if (newclip.duration != None) and change_end:
-            newclip.end = t + newclip.duration
-        elif (newclip.end !=None):
-            newclip.duration = newclip.end - newclip.start
-
-        return newclip
+        
+        self.start = t
+        if (self.duration != None) and change_end:
+            self.end = t + self.duration
+        elif (self.end !=None):
+            self.duration = self.end - self.start
     
     
     
     @apply_to_mask
     @apply_to_audio
     @time_can_be_tuple
+    @outplace
     def set_end(self, t):
         """
         Returns a copy of the clip, with the ``end`` attribute set to
         ``t``. Also sets the duration of the mask and audio, if any,
         of the returned clip.
         """
-        newclip = self.copy()
-        newclip.end = t
-        if newclip.start is None:
-            if newclip.duration != None:
-                newclip.start = max(0, t - newclip.duration)
+        self.end = t
+        if self.start is None:
+            if self.duration != None:
+                self.start = max(0, t - newclip.duration)
         else:
-            newclip.duration = newclip.end - newclip.start
-
-        return newclip
+            self.duration = self.end - self.start
 
 
     
     @apply_to_mask
     @apply_to_audio
     @time_can_be_tuple
+    @outplace
     def set_duration(self, t, change_end=True):
         """
         Returns a copy of the clip, with the  ``duration`` attribute
@@ -241,41 +241,54 @@ class Clip:
         Also sets the duration of the mask and audio, if any, of the
         returned clip.
         """
-        newclip = copy(self)
-        newclip.duration = t
+        self.duration = t
         if change_end:
-            newclip.end = newclip.start + t
+            self.end = self.start + t
         else:
-            newclip.start = newclip.end - t
-            
-            
-        return newclip
+            self.start = self.end - t
 
 
-    
+    @outplace
     def set_get_frame(self, gf):
         """
         Sets a ``get_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
         """
-        
-        newclip = copy(self)
-        newclip.get_frame = gf
-        return newclip
+        self.get_frame = gf
     
     
     
     @time_can_be_tuple
     def is_playing(self, t):
         """
-        Return true if t is between the start and the end of the clip.
+        
+        If t is a number, returns true if t is between the start and the
+        end of the clip.
+        If t is a numpy array, returns False if none of the t is in the
+        clip, else returns a vector [b_1, b_2, b_3...] where b_i is true
+        iff tti is in the clip. 
         """
+        
         if isinstance(t, np.ndarray):
-            t = t.max()
-        return (((self.end is None) and (t >= self.start)) or
-                (self.start <= t <= self.end))
-    
-    
+            # is the whole list of t outside the clip ?
+            tmin, tmax = t.min(), t.max()
+            
+            if (self.end != None) and (tmin > self.end) :
+                return False
+            
+            if tmax < self.start:
+                return False
+            
+            # If we arrive here, a part of t falls in the clip
+            result = 1 * (t >= self.start)
+            if (self.end != None):
+                result *= (t <= self.end)
+            return result
+        
+        else:
+            
+            return( (t >= self.start) and
+                    ((self.end is None) or (t <= self.end) ) )
     
     @time_can_be_tuple
     @apply_to_mask

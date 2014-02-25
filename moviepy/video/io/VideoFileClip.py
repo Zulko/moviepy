@@ -27,10 +27,10 @@ class VideoFileClip(VideoClip):
       
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
-       Video files rarely contain masks, but some video codecs enable
-       that. For istance if you have a MoviePy VideoClip with a mask you
-       can save it to a videofile with a mask. (see also 
-       ``VideoClip.to_videofile`` for more details).
+      Video files rarely contain masks, but some video codecs enable
+      that. For istance if you have a MoviePy VideoClip with a mask you
+      can save it to a videofile with a mask. (see also 
+      ``VideoClip.to_videofile`` for more details).
     
     audio:
       Set to `False` if the clip doesn't have any audio or if you do not
@@ -53,13 +53,6 @@ class VideoFileClip(VideoClip):
         
         VideoClip.__init__(self, ismask)
         
-        # We store the construction parameters in case we need to make
-        # a copy (a 'co-reader').
-        
-        self.parameters = {'filename':filename, 'ismask':ismask,
-                           'has_mask':has_mask, 'audio':audio,
-                           'audio_buffersize':audio_buffersize}
-        
         # Make a reader
         pix_fmt= "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
@@ -78,19 +71,3 @@ class VideoFileClip(VideoClip):
                                        buffersize= audio_buffersize,
                                        fps = audio_fps,
                                        nbytes = audio_nbytes)
-    
-    def coreader(self, audio=True):
-        """
-        Returns a copy of the AudioFileClip with an autonomous reader.
-        Maybe REMOVED in the coming versions. Wait and see. ::
-        
-            >>> clip = VideofileClip("myHolidays.mp4", ismask=True)
-            >>> clip2 = VideofileClip("myHolidays.mp4", ismask=True)
-        
-        is equivalent to ::
-        
-            >>> clip = VideofileClip("myHolidays.mp4", ismask=True)
-            >>> clip2 = clip.coreader()
-        """
-            
-        return VideoFileClip(**self.parameters)

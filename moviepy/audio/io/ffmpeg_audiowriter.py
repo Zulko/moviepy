@@ -45,13 +45,14 @@ class FFMPEG_AudioWriter:
         cmd = ([ FFMPEG_BINARY, '-y',
             "-f", 's%dle'%(8*nbytes),
             "-acodec",'pcm_s%dle'%(8*nbytes),
-            '-r', "%d"%fps_input,
+            '-ar', "%d"%fps_input,
             '-ac',"%d"%nchannels,
             '-i', '-']
             + (['-vn'] if input_video==None else
                  [ "-i", input_video, '-vcodec', 'copy'])
             + ['-acodec', codec]
-            + (['-b',bitrate] if (bitrate!=None) else [])
+            + ['-ar', "%d"%fps_input]
+            + (['-ab',bitrate] if (bitrate!=None) else [])
             + [ filename ])
         
         self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)

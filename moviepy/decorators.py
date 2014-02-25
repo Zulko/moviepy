@@ -7,6 +7,14 @@ from moviepy.tools import cvsecs
 
 
 @decorator.decorator
+def outplace(f, clip, *a, **k):
+    """ Enables to make operations outplace """
+    newclip = clip.copy()
+    f(newclip, *a, **k)
+    return newclip
+    
+
+@decorator.decorator
 def apply_to_mask(f, clip, *a, **k):
     """ This decorator will apply the same function f to the mask of
         the clip created with f """
@@ -30,8 +38,7 @@ def apply_to_audio(f, clip, *a, **k):
     
 @decorator.decorator
 def add_mask_if_none(f, clip, *a, **k):
-    """ This decorator will apply the function f to the audio of
-        the clip created with f """
+    """ Add a mask to the clip if there is none. """
         
     if clip.mask is None:
         clip = clip.add_mask()
@@ -40,7 +47,7 @@ def add_mask_if_none(f, clip, *a, **k):
 
 @decorator.decorator
 def requires_duration(f, clip, *a, **k):
-    """ will raise an error if the clip has no duration."""
+    """ Raise an error if the clip has no duration."""
     
     if clip.duration is None:
         raise ValueError("Attribute 'duration' not set")
@@ -49,10 +56,11 @@ def requires_duration(f, clip, *a, **k):
 
 @decorator.decorator
 def audio_video_fx(f, clip, *a, **k):
-    """
+    """ Use an audio function on a video/audio clip
+    
     This decorator tells that the function f (audioclip -> audioclip)
     can be also used on a video clip, at which case it returns a
-    videoclip with modified audio.
+    videoclip with unmodified video and modified audio.
     """
     
     if hasattr(clip, "audio"):
@@ -66,9 +74,8 @@ def audio_video_fx(f, clip, *a, **k):
 @decorator.decorator
 def time_can_be_tuple(f, clip, *a, **k):
     """
-    This decorator tells that the function f (audioclip -> audioclip)
-    can be also used on a video clip, at which case it returns a
-    videoclip with modified audio.
+    All tuples in the arguments of f will be considered as time and
+    converted to seconds.
     """
     
     fun = lambda e: e if (not isinstance(e,tuple)) else cvsecs(*e)

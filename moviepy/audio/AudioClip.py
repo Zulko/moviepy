@@ -47,8 +47,15 @@ class AudioClip(Clip):
                      
     """
     
-    def __init__(self):
+    def __init__(self, get_frame = None):
         Clip.__init__(self)
+        if get_frame:
+            self.get_frame = get_frame
+            frame0 = self.get_frame(0)
+            if hasattr(frame0, '__iter__'):
+                self.nchannels = len(list(frame0))
+            else:
+                self.nchannels = 1
 
     @requires_duration
     def to_soundarray(self,tt=None,fps=None, nbytes=2):
@@ -72,19 +79,24 @@ class AudioClip(Clip):
             tt = np.arange(0,self.duration, 1.0/fps)
         
         snd_array = self.get_frame(tt)
-        snd_array = np.maximum(-0.999, np.minimum(0.999,snd_array))
+        snd_array = np.maximum(-0.99,
+                       np.minimum(0.99,snd_array))
         inttype = {1:'int8',2:'int16',4:'int32'}[nbytes]
         return (2**(8*nbytes-1)*snd_array).astype(inttype)
-
-    @property
-    def nchannels(self):
-        return len(list(self.get_frame(0)))
+    
     
     
     @requires_duration
     def to_audiofile(self,filename, fps=44100, nbytes=2,
-                     buffersize=5000, codec='libvorbis',
+                     buffersize=2000, codec='libvorbis',
                      bitrate=None, verbose=True):
+        """ 
+        codecs  = {        'libmp3lame': 'mp3',
+                       'libvorbis':'ogg',
+                       'libfdk_aac':'m4a',
+                       'pcm_s16le':'wav',
+                       'pcm_s32le': 'wav'}
+        """
                          
         return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
                       codec, bitrate, verbose)
@@ -142,6 +154,7 @@ class AudioArrayClip(AudioClip):
                     return self.array[i]
 
         self.get_frame = get_frame
+        self.nchannels = len(list(self.get_frame(0)))
         
         
 class CompositeAudioClip(AudioClip):
@@ -166,19 +179,26 @@ class CompositeAudioClip(AudioClip):
         self.clips = clips
         
         ends = [c.end for c in self.clips]
+        self.nchannels = max([c.nchannels for c in self.clips])
         if not any([(e is None) for e in ends]):
             self.duration = max(ends)
+            self.end = max(ends)
 
         def get_frame(t):
+            # buggy
             
-            sounds= [c.get_frame(t - c.start)
-                     for c in clips if c.is_playing(t)]
+            
+            played_parts = [c.is_playing(t) for c in self.clips]
+            
+            sounds= [c.get_frame(t - c.start)*np.array([part]).T
+                     for c,part in zip(self.clips, played_parts)
+                     if (part is not False) ]
                      
             if isinstance(t,np.ndarray):
-                zero = np.zeros((len(t),2))
+                zero = np.zeros((len(t),self.nchannels))
                 
             else:
-                zero = np.zeros(2)
+                zero = np.zeros(self.nchannels)
                 
             return zero + sum(sounds)
 

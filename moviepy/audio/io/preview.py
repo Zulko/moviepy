@@ -10,7 +10,7 @@ pg.display.set_caption('MoviePy')
 
 
 @requires_duration
-def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
+def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
                  audioFlag=None, videoFlag=None):
     """
     Plays the sound clip with pygame.
@@ -48,7 +48,6 @@ def preview(clip, fps=22050,  buffersize=50000, nbytes= 2,
     tt = (1.0/fps)*np.arange(pospos[0],pospos[1])
     sndarray = clip.to_soundarray(tt,nbytes)
     chunk = pg.sndarray.make_sound(sndarray)
-    Delta = tt[1]-tt[0]
     
     if (audioFlag !=None) and (videoFlag!= None):
         audioFlag.set()

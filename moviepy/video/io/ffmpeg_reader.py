@@ -67,7 +67,6 @@ class FFMPEG_VideoReader:
         # open the file in a pipe, provoke an error, read output
         proc = sp.Popen([FFMPEG_BINARY, "-i", self.filename, "-"],
                 bufsize=10**6,
-                stdin=sp.PIPE,
                 stdout=sp.PIPE,
                 stderr=sp.PIPE)
         proc.stdout.readline()
