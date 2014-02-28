@@ -10,31 +10,44 @@ import subprocess as sp
 from tqdm import tqdm
 
 from moviepy.conf import FFMPEG_BINARY
+from moviepy.tools import sys_write_flush
 
 
 class FFMPEG_VideoWriter:
-    """ A class to read videos using ffmpeg. ffmpeg will read any kind
-        of videos and transform them into raw data (a long string that
-        can be reshaped into a RGB array).
-        
-        :param filename: Any filename like 'video.mp4' etc. but if you
-           want to avoid complications it is recommended to use the
-           generic extension '.avi' for all your videos.
-        :param size: size (width,height) of the output video.
-        :param fps: frames per second of the output video.
-        :param codec: ffmpeg codec. It seems that in terms of quality
-            the hierarchy is
-        
-            'rawvideo' = 'png' > 'mpeg4' > 'libx264'
-        
-            'png' manages the same lossless quality as 'rawvideo' but
-            yields smaller files.
-        
-            (type ffmpeg -codecs in a terminal)
-        :param bitrate: only relevant for codecs which accept a bitrate
-           bitrate = "5000k" offers nice results in general
-        :param withmask: True if there is a mask in the video to be
-            decoded.
+    """ A class for FFMPEG-based video writing.
+    
+    A class to write videos using ffmpeg. ffmpeg will write in a large
+    choice of formats.
+    
+    Parameters
+    -----------
+    
+    filename
+      Any filename like 'video.mp4' etc. but if you want to avoid
+      complications it is recommended to use the generic extension
+      '.avi' for all your videos.
+    
+    size
+      Size (width,height) of the output video in pixels.
+      
+    fps
+      Frames per second in the output video file.
+      
+    codec
+      FFMPEG codec. It seems that in terms of quality the hierarchy is
+      'rawvideo' = 'png' > 'mpeg4' > 'libx264'
+      'png' manages the same lossless quality as 'rawvideo' but yields
+      smaller files. Type ``ffmpeg -codecs`` in a terminal to get a list
+      of accepted codecs.
+      
+    bitrate
+      Only relevant for codecs which accept a bitrate. "5000k" offers
+      nice results in general.
+    
+    withmask
+      Boolean. Set to ``True`` if there is a mask in the video to be
+      encoded.
+      
     """
     
     
@@ -58,22 +71,19 @@ class FFMPEG_VideoWriter:
         self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
         
     def write_frame(self,img_array):
+        """ Writes 1 frame in the file ! """
         self.proc.stdin.write(img_array.tostring())
         
     def close(self):
+        out, err = self.proc.communicate() # proc.wait()
         self.proc.stdin.close()
-        self.proc.wait()
         del self.proc
         
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                   withmask=False, verbose=True):
     
-    if verbose:
-        def verbose_print(s):
-            sys.stdout.write(s)
-            sys.stdout.flush()
-    else:
-        verbose_print = lambda *a : None
+    def verbose_print(s):
+        if verbose: sys_write_flush(s)
     
     verbose_print("\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
@@ -90,6 +100,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
         writer.write_frame(frame.astype("uint8"))
     
     writer.close()
+    
     verbose_print("Done writing video in %s !"%filename)
         
         
@@ -105,7 +116,7 @@ def ffmpeg_write_image(filename, image):
     proc = sp.Popen( cmd, stdin=sp.PIPE, stderr=sp.PIPE)
     proc.stdin.write(image.tostring())
     proc.stdin.close()
-    proc.wait()
+    proc.communicate() # proc.wait()
     
     if proc.returncode:
         err = "\n".join(["MoviePy running : %s"%cmd,

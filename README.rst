@@ -63,6 +63,7 @@ If you put have a ffmpeg binary in you executable folder (on Linux it will be ``
 .. _`Numpy`: http://www.scipy.org/install.html
 .. _`Scikit Image`: http://scikit-image.org/download.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
+.. _tqdm: https://github.com/noamraph/tqdm
 
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html 

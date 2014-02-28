@@ -20,7 +20,7 @@ def tryffmpeg(FFMPEG_BINARY):
             proc = sp.Popen([FFMPEG_BINARY],
                              stdout=sp.PIPE,
                              stderr=sp.PIPE)
-            proc.wait()
+            proc.communicate()
         except:
             return False
         else:

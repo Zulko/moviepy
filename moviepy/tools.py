@@ -25,7 +25,8 @@ def subprocess_call(cmd, stdout=None, stdin = None,
     proc = sp.Popen(cmd, stdout=stdout,
                          stdin = stdin,
                          stderr = stderr )
-    proc.wait()
+                         
+    proc.communicate() # proc.wait()
     
     if proc.returncode:
         if errorprint:
