@@ -11,8 +11,7 @@ def sys_write_flush(s):
     sys.stdout.flush()
 
 
-def subprocess_call(cmd, stdout=None, stdin = None,
-                    stderr = sp.PIPE, verbose=True, errorprint=True):
+def subprocess_call(cmd, verbose=True, errorprint=True):
     """
     executes the subprocess command
     """
@@ -22,20 +21,21 @@ def subprocess_call(cmd, stdout=None, stdin = None,
     
     verboseprint( "\nMoviePy Running:\n>>> "+ " ".join(cmd) )
     
-    proc = sp.Popen(cmd, stdout=stdout,
-                         stdin = stdin,
-                         stderr = stderr )
+    proc = sp.Popen(cmd, stderr = sp.PIPE)
                          
-    proc.communicate() # proc.wait()
+    out, err = proc.communicate() # proc.wait()
+    proc.stderr.close()
     
     if proc.returncode:
         if errorprint:
             sys_write_flush( "\nMoviePy: WARNING !\n"
                     "   The following command returned an error:\n")
-            sys_write_flush( proc.stderr.read().decode('utf8'))
+            sys_write_flush( err.decode('utf8'))
         raise IOError
     else:
         verboseprint( "\n... command successful.\n")
+    
+    del proc
 
 
 def cvsecs(*args):

@@ -51,18 +51,29 @@ class Clip:
         
         
     def copy(self):
-        """
-        Shallow copy of the clip. This method is intensively used
-        to produce new clips every time there is an outplace
-        transformation of the clip (clip.resize, clip.subclip, etc.)
+        """ Shallow copy of the clip. 
+        
+        Returns a shwallow copy of the clip whose mask and audio will
+        be shallow copies of the clip's mask and audio if they exist.
+        
+        This method is intensively used to produce new clips every time
+        there is an outplace transformation of the clip (clip.resize,
+        clip.subclip, etc.)
         """
         
-        return copy(self)
+        newclip = copy(self)
+        if hasattr(self, 'audio'):
+            newclip.audio = copy(self.audio)
+        if hasattr(self, 'mask'):
+            newclip.mask = copy(self.mask)
+            
+        return newclip
 
 
 
     def fl(self, fun, apply_to=[] , keep_duration=True):
-        """
+        """ General processing of a clip.
+        
         Returns a new Clip whose frames are a transformation
         (through function ``fun``) of the frames of the current clip.
         
@@ -325,10 +336,11 @@ class Clip:
                         "be taken from clips with a ``duration``")
             else:
                 tb = self.duration - tb
-        if (tb != None):
-            return newclip.set_duration(tb - ta)
-        else:
-            return newclip
+        if (tb is not None):
+            newclip.duration = tb - ta
+            newclip.end = newclip.start + newclip.duration
+            
+        return newclip
     
     
     

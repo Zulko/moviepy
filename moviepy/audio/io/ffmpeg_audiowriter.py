@@ -63,6 +63,7 @@ class FFMPEG_AudioWriter:
         
     def close(self):
         self.proc.stdin.close()
+        self.proc.stderr.close()
         self.proc.wait()
         del self.proc
         
@@ -92,7 +93,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         nchunks = totalsize // buffersize + 1
         
     pospos = list(range(0, totalsize,  buffersize))+[totalsize]
-    for i in range(nchunks):
+    for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt,nbytes)
         writer.write_frames(sndarray)

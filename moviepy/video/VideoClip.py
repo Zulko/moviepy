@@ -417,7 +417,7 @@ class VideoClip(Clip):
                    filename]
                             
         
-        subprocess_call( cmd )
+        subprocess_call( cmd, verbose = verbose )
         
         for f in tempfiles:
             os.remove(f)

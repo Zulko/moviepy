@@ -75,8 +75,10 @@ class FFMPEG_VideoWriter:
         self.proc.stdin.write(img_array.tostring())
         
     def close(self):
-        out, err = self.proc.communicate() # proc.wait()
         self.proc.stdin.close()
+        self.proc.stderr.close()
+        self.proc.wait()
+        
         del self.proc
         
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,

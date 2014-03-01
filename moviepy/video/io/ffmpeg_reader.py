@@ -36,7 +36,7 @@ class FFMPEG_VideoReader:
     def initialize(self, starttime=0):
         """Opens the file, creates the pipe. """
         
-        self.close_proc() # if any
+        self.close() # if any
         
         if starttime !=0 :
             offset = min(1,starttime)
@@ -155,7 +155,7 @@ class FFMPEG_VideoReader:
             self.pos = pos
             return result
     
-    def close_proc(self):
+    def close(self):
         if self.proc is not None:
             self.proc.terminate()
             self.proc.stdout.close()
@@ -163,7 +163,7 @@ class FFMPEG_VideoReader:
             del self.proc
     
     def __del__(self):
-        self.close_proc()
+        self.close()
         del self.lastread
     
 

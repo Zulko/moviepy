@@ -20,7 +20,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
              "-r", "%d"%self.fps,
              filename]
     
-    subprocess_call(cmd, stdin=None, stdout=None)
+    subprocess_call(cmd)
 
 
 def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
@@ -36,25 +36,26 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
       "-ss", "%0.2f"%t1,
       "-t", "%0.2f"%(t2-t1),
       "-vcodec", "copy", "-acodec", "copy", targetname]
-      
-    subprocess_call(cmd, stdin=None, stdout=None)
+    
+    subprocess_call(cmd)
 
 
-def ffmpeg_merge_video_audio(video,audio,output,
-                vcodec='copy', acodec='copy', ffmpeg_output=False):
+def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
+                             acodec='copy', ffmpeg_output=False,
+                             verbose = True):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = ["ffmpeg", "-y", "-i", audio,"-i", video,
              "-vcodec", vcodec, "-acodec", acodec, output]
              
-    subprocess_call(cmd, stdin=None, stdout=None)
+    subprocess_call(cmd, verbose = verbose)
     
 
 def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
     cmd = ["ffmpeg", "-y", "-i", inputfile, "-ab", "%dk"%bitrate,
          "-ar", "%d"%fps, output]
-    subprocess_call(cmd, stdin=None, stdout=None)
+    subprocess_call(cmd)
     
 
 def ffmpeg_resize(video,output,size):
@@ -63,5 +64,5 @@ def ffmpeg_resize(video,output,size):
     cmd= ["ffmpeg", "-i", video, "-vf", "scale=%d:%d"%(res[0], res[1]),
              output]
              
-    subprocess_call(cmd, stdin=None, stdout=None)
+    subprocess_call(cmd)
 
