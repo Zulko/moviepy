@@ -101,14 +101,6 @@ class AudioClip(Clip):
         return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
                       codec, bitrate, verbose)
 
-try:
-    # Add method preview (only if pygame installed)
-    from moviepy.audio.io.preview import preview
-    AudioClip.preview = preview
-    
-except:
-    pass
-        
 
 class AudioArrayClip(AudioClip):
     """

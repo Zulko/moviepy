@@ -117,7 +117,7 @@ class FFMPEG_VideoReader:
             assert len(s) == nbytes
             result = np.fromstring(s,
                              dtype='uint8').reshape((h, w, len(s)//(w*h)))
-            self.proc.stdout.flush()
+            #self.proc.stdout.flush()
             
         except IOError:
             

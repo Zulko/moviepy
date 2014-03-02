@@ -73,6 +73,7 @@ class FFMPEG_VideoWriter:
     def write_frame(self,img_array):
         """ Writes 1 frame in the file ! """
         self.proc.stdin.write(img_array.tostring())
+        #self.proc.stdin.flush()
         
     def close(self):
         self.proc.stdin.close()

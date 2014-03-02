@@ -675,25 +675,6 @@ class VideoClip(Clip):
         
         """
         self.audio = self.audio.fx(fun, *a, **k)
-        
-    #-----------------------------------------------------------------
-    # Previews:
-
-
-
-# Add methods preview and show (only if pygame installed)
-try:
-    from moviepy.video.io.preview import show, preview
-except ImportError:
-    def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.preview requires Pygame installed  """
-        raise ImportError("clip.preview requires Pygame installed")
-    def show(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.show requires Pygame installed  """
-        raise ImportError("clip.show requires Pygame installed")
-
-VideoClip.preview = preview
-VideoClip.show = show
 
 
 
