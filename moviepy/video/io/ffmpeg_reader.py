@@ -48,7 +48,8 @@ class FFMPEG_VideoReader:
         
         
         cmd = ([FFMPEG_BINARY]+ i_arg +
-                ['-f', 'image2pipe',
+                ['-loglevel', 'error', 
+                '-f', 'image2pipe',
                 "-pix_fmt", self.pix_fmt,
                 '-vcodec', 'rawvideo', '-'])
         
