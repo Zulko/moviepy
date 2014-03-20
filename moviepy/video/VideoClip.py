@@ -747,10 +747,12 @@ class ImageClip(VideoClip):
                 elif ismask:
                         img = 1.0 * img[:, :, 0] / 255
         
-        # if the image was just a 2D mask, it should arrive here unchanged
+        # if the image was just a 2D mask, it should arrive here
+        # unchanged
         self.get_frame = lambda t: img
         self.size = img.shape[:2][::-1]
         self.img = img
+    
     
     
     
@@ -767,6 +769,7 @@ class ImageClip(VideoClip):
                                keep_duration=keep_duration)
         newclip.__class__ = VideoClip
         return newclip
+    
     
     
     @outplace
@@ -787,8 +790,9 @@ class ImageClip(VideoClip):
             if hasattr(self, attr):
                 a = getattr(self, attr)
                 if a != None:
-                    new_a =  a.fl(image_func)
+                    new_a =  a.fl_image(image_func)
                     setattr(newclip, attr, new_a)
+    
     
     
     @outplace
@@ -806,9 +810,9 @@ class ImageClip(VideoClip):
             if hasattr(self, attr):
                 a = getattr(self, attr)
                 if a != None:
-                    new_a = a.fl_image(time_func)
+                    new_a = a.fl_time(time_func)
                     setattr(self, attr, new_a)
-
+                    
 
 
 class ColorClip(ImageClip):
