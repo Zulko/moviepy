@@ -69,6 +69,7 @@ class FFMPEG_VideoWriter:
             filename ]
             
         self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
+        self.proc.stderr.close()
         
     def write_frame(self,img_array):
         """ Writes 1 frame in the file ! """
