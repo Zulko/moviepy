@@ -118,9 +118,9 @@ def ffmpeg_write_image(filename, image):
            '-i','-', filename]
            
     proc = sp.Popen( cmd, stdin=sp.PIPE, stderr=sp.PIPE)
-    proc.stdin.write(image.tostring())
-    proc.stdin.close()
-    proc.communicate() # proc.wait()
+    #proc.stdin.write()
+    #proc.stdin.close()
+    proc.communicate(image.tostring()) # proc.wait()
     
     if proc.returncode:
         err = "\n".join(["MoviePy running : %s"%cmd,
