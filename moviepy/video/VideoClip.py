@@ -28,7 +28,7 @@ from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 
 from .tools.drawing import blit
 from ..Clip import Clip
-from ..conf import FFMPEG_BINARY
+from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 
 
 class VideoClip(Clip):
@@ -398,7 +398,7 @@ class VideoClip(Clip):
         
         if program == "ImageMagick":
             
-            cmd = ["convert",
+            cmd = [IMAGEMAGICK_BINARY,
                   '-delay' , '%d'%delay,
                   "-dispose" ,"%d"%(2 if dispose else 1),
                   "-loop" , "%d"%loop,
@@ -926,7 +926,7 @@ class TextClip(ImageClip):
             size = ('' if size[0] is None else str(size[0]),
                     '' if size[1] is None else str(size[1]))
 
-        cmd = ( ["convert",
+        cmd = ( [IMAGEMAGICK_BINARY,
                "-background", bg_color,
                "-fill", color,
                "-font", font])
@@ -972,7 +972,7 @@ class TextClip(ImageClip):
         Returns the list of all valid entries for the argument given
         (can be ``font``, ``color``, etc...) argument of ``TextClip``
         """
-        process = subprocess.Popen(['convert', '-list', arg],
+        process = subprocess.Popen([IMAGEMAGICK_BINARY, '-list', arg],
                                    stdout=subprocess.PIPE)
         result = process.communicate()[0]
         lines = result.splitlines()

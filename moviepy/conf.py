@@ -1,23 +1,38 @@
 """
-Name (and location if needed) of the FFMPEG binary. It will be
-"ffmpeg" on linux, certainly "ffmpeg.exe" on windows, else any path.
-If not provided (None), the system will look for the right version
-automatically each time you launch moviepy.
-If you run this script file it will check that the
-path to the ffmpeg binary (FFMPEG_BINARY)
+Instructions
+--------------
+
+This file enables you to specify a configuration for MoviePy. In
+particular you can enter the path to the FFMPEG and ImageMagick
+binaries.
+
+FFMPEG_BINARY
+    Normally you can leave this one to its default (None) and MoviePy
+    will detect automatically the right name, which will be either
+    'ffmpeg' (on linux) or 'ffmpeg.exe' (on windows)
+    
+IMAGEMAGICK_BINARY
+    For linux users, 'convert' should be fine.
+    For Windows users, you must specify the path to the ImageMagick
+    'convert' binary. For instance:
+    "C:\Program Files\ImageMagick-6.8.8-Q16\convert" 
+
+You can run this file to check that FFMPEG has been detected.
 """
 
 FFMPEG_BINARY = None
+IMAGEMAGICK_BINARY = 'convert'
 
 
 
-# --------------------------------------------------------------------
+# =====================================================================
+# CODE. Don't write anything below this line :O
 
 import subprocess as sp
 
-def tryffmpeg(FFMPEG_BINARY):    
+def try_cmd(cmd):    
         try:
-            proc = sp.Popen([FFMPEG_BINARY],
+            proc = sp.Popen(cmd,
                              stdout=sp.PIPE,
                              stderr=sp.PIPE)
             proc.communicate()
@@ -29,18 +44,17 @@ def tryffmpeg(FFMPEG_BINARY):
 
 if FFMPEG_BINARY is None:
     
-    if tryffmpeg('ffmpeg'):
+    if try_cmd(['ffmpeg']):
         FFMPEG_BINARY = 'ffmpeg'
-    elif tryffmpeg('ffmpeg.exe'):
+    elif try_cmd(['ffmpeg.exe']):
         FFMPEG_BINARY = 'ffmpeg.exe'
     else:
         raise IOError("FFMPEG binary not found. Try installing MoviePy"\
                        " manually and specify the path to the binary in"\
                        " the file conf.py")
 
-
 if __name__ == "__main__":
-    if tryffmpeg(FFMPEG_BINARY):
+    if try_cmd([FFMPEG_BINARY]):
         print( "MoviePy : ffmpeg successfully found." )
     else:
         print( "MoviePy : can't find ffmpeg." )
