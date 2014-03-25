@@ -524,10 +524,10 @@ class VideoClip(Clip):
         if pos is None:
             pos = 'center'
         colorclip = ColorClip(size, color)
-        if col_opacity:
+        if col_opacity is not None:
             colorclip = colorclip.set_opacity(col_opacity)
             
-        if self.duration != None:
+        if self.duration is not None:
             colorclip = colorclip.set_duration(self.duration)
 
         result = CompositeVideoClip([colorclip, self.set_pos(pos)],
@@ -566,8 +566,9 @@ class VideoClip(Clip):
         assert ( (mask is None) or mask.ismask )
         self.mask = mask
     
-    @outplace
+    
     @add_mask_if_none
+    @outplace
     def set_opacity(self, op):
         """ Set the opacity/transparency level of the clip.
         
