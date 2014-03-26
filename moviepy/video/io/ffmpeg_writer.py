@@ -56,18 +56,23 @@ class FFMPEG_VideoWriter:
                   bitrate=None, withmask=False):
         
         self.filename = filename
-        cmd = [ FFMPEG_BINARY, '-y',
+        cmd = (
+            [ FFMPEG_BINARY, '-y',
             "-f", 'rawvideo',
             "-vcodec","rawvideo",
             '-s', "%dx%d"%(size[0],size[1]),
             '-pix_fmt', "rgba" if withmask else "rgb24",
             '-r', "%.02f"%fps,
             '-i', '-', '-an',
-            '-vcodec', codec] + (
-            ['-b',bitrate] if (bitrate!=None) else []) + [
-            '-r', "%d"%fps,
-            filename ]
-            
+            '-vcodec', codec]
+            + (['-b',bitrate] if (bitrate!=None) else [])
+
+            # http://trac.ffmpeg.org/ticket/658
+            + (['-pix_fmt', 'yuv420p'] if (codec == 'libx264') else [])
+
+            + [ '-r', "%d"%fps, filename ]
+            )
+
         self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
         self.proc.stderr.close()
         
