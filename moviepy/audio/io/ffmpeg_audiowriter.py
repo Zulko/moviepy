@@ -52,6 +52,7 @@ class FFMPEG_AudioWriter:
                  [ "-i", input_video, '-vcodec', 'copy'])
             + ['-acodec', codec]
             + ['-ar', "%d"%fps_input]
+            + ['-strict', '-2']  # needed to support codec 'aac'
             + (['-ab',bitrate] if (bitrate!=None) else [])
             + [ filename ])
         

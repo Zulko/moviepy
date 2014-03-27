@@ -192,6 +192,7 @@ class VideoClip(Clip):
                 D_ext = {'libmp3lame': 'mp3',
                        'libvorbis':'ogg',
                        'libfdk_aac':'m4a',
+                       'aac':'m4a',
                        'pcm_s16le':'wav',
                        'pcm_s32le': 'wav'}
                 
