@@ -74,7 +74,7 @@ Now ``video`` plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`
     
 In a CompositionClip, all the clips start to play at a time that is specified by the ``clip.start`` attribute. You can set this starting time as follows: ::
     
-    clip2 = clip1.set_start(5) # start after 5 seconds 
+    clip1 = clip1.set_start(5) # start after 5 seconds 
 
 So for instance your composition will look like ::
 
