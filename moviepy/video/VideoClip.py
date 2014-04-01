@@ -8,6 +8,7 @@ main subclasses:
 import os
 import subprocess
 import multiprocessing
+import tempfile
 from copy import copy
 from tqdm import tqdm
 
@@ -18,7 +19,6 @@ from moviepy.decorators import  (apply_to_mask,
                                  requires_duration,
                                  outplace,
                                  add_mask_if_none)
-
 from moviepy.tools import subprocess_call, sys_write_flush
 
 import moviepy.audio.io as aio
@@ -912,15 +912,16 @@ class TextClip(ImageClip):
              bg_color='transparent', fontsize=None, font='Courier',
              stroke_color=None, stroke_width=1, method='label',
              kerning=None, align='center', interline=None,
-             tempfile='temp.png', temptxt='temp.txt',
+             tempfilename=None, temptxt=None,
              transparent=True, remove_temp=True,
              print_cmd=False):
 
         if not txt.startswith('@'):
-            temptxt = 'temp.txt'
-            with open(temptxt, 'w+') as f:
-                f.write(txt)
-            txt = '@temp.txt'
+            if temptxt is None:
+                temptxt_fd, temptxt = tempfile.mkstemp(suffix='.txt')
+                os.write(temptxt_fd, txt)
+                os.close(temptxt_fd)
+            txt = '@'+temptxt
         else:
             txt = "'%s'"%txt
 
@@ -947,25 +948,28 @@ class TextClip(ImageClip):
         if interline != None:
             cmd += ["-interline-spacing", "%d"%interline]
 
+        if tempfilename is None:
+            tempfile_fd, tempfilename = tempfile.mkstemp(suffix='.png')
+            os.close(tempfile_fd)
+
         cmd += ["%s:%s" %(method, txt),
-        "-type",  "truecolormatte", "PNG32:%s"%tempfile]
+        "-type",  "truecolormatte", "PNG32:%s"%tempfilename]
 
         if print_cmd:
             print( " ".join(cmd) )
 
         subprocess_call(cmd, verbose=False )
 
-        ImageClip.__init__(self, tempfile, transparent=transparent)
+        ImageClip.__init__(self, tempfilename, transparent=transparent)
         self.txt = txt
         self.color = color
         self.stroke_color = stroke_color
 
         if remove_temp:
-            os.remove(tempfile)
-            try:
+            if os.path.exists(tempfilename):
+                os.remove(tempfilename)
+            if os.path.exists(temptxt):
                 os.remove(temptxt)
-            except:
-                pass
 
 
     @staticmethod
