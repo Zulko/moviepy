@@ -140,8 +140,10 @@ class FFMPEG_AudioReader:
         """
         if (pos < self.pos) or (pos> (self.pos+1000000)):
             t = 1.0*pos/self.fps
-            self.initialize(t)  
+
+            self.initialize(t)
         elif pos > self.pos:
+            #print pos
             self.skip_chunk(pos-self.pos)
         # last case standing: pos = current pos
         self.pos = pos
@@ -165,7 +167,9 @@ class FFMPEG_AudioReader:
             # elements of t that are actually in time
             in_time = (tt>=0) & (tt < self.duration)
             
-            frames = (self.fps*tt+1).astype(int)[in_time]
+            # The np.round in the next line is super-important.
+            # Removing it results in artifacts in the noise.
+            frames = np.round((self.fps*tt+1)).astype(int)[in_time]
             fr_min, fr_max = frames.min(), frames.max()
             
             if not (0 <=
@@ -205,7 +209,7 @@ class FFMPEG_AudioReader:
         Fills the buffer with frames, centered on ``framenumber``
         if possible
         """
-        
+
         # start-frame for the buffer
         new_bufferstart = max(0,  framenumber - self.buffersize // 2)
         

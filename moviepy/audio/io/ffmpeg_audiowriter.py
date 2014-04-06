@@ -94,9 +94,10 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         nchunks = totalsize // buffersize + 1
         
     pospos = list(range(0, totalsize,  buffersize))+[totalsize]
+    
     for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-        sndarray = clip.to_soundarray(tt,nbytes)
+        sndarray = clip.to_soundarray(tt, nbytes= nbytes)
         writer.write_frames(sndarray)
     
     writer.close()

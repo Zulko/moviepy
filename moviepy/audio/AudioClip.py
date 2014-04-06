@@ -77,11 +77,13 @@ class AudioClip(Clip):
         """
         if tt is None:
             tt = np.arange(0,self.duration, 1.0/fps)
+
+        #print tt.max() - tt.min(), tt.min(), tt.max()
         
         snd_array = self.get_frame(tt)
         snd_array = np.maximum(-0.99,
                        np.minimum(0.99,snd_array))
-        inttype = {1:'int8',2:'int16',4:'int32'}[nbytes]
+        inttype = {1:'int8',2:'int16', 4:'int32'}[nbytes]
         return (2**(8*nbytes-1)*snd_array).astype(inttype)
     
     

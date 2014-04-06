@@ -118,7 +118,7 @@ class VideoClip(Clip):
 
     def to_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
-                 audio_nbytes = 2, audio_codec= 'libvorbis',
+                 audio_nbytes = 4, audio_codec= 'libvorbis',
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,

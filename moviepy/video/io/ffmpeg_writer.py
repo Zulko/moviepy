@@ -76,6 +76,7 @@ class FFMPEG_VideoWriter:
         self.filename = filename
         cmd = (
             [ FFMPEG_BINARY, '-y',
+            "-loglevel", "panic" if logfile==DEVNULL else "info",
             "-f", 'rawvideo',
             "-vcodec","rawvideo",
             '-s', "%dx%d"%(size[0],size[1]),
