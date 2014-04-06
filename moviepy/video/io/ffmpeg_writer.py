@@ -124,8 +124,6 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     else:
         logfile = DEVNULL
 
-    print logfile
-
 
     verbose_print("\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
