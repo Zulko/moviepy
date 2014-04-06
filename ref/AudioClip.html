@@ -71,7 +71,7 @@
 <h2><tt class="xref py py-class docutils literal"><span class="pre">AudioClip</span></tt><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="moviepy.audio.AudioClip.AudioClip">
-<em class="property">class </em><tt class="descclassname">moviepy.audio.AudioClip.</tt><tt class="descname">AudioClip</tt><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.audio.AudioClip.</tt><tt class="descname">AudioClip</tt><big>(</big><em>get_frame=None</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moviepy.Clip.Clip</span></tt></p>
 <p>Base class for audio clips.</p>
 <p>See <tt class="docutils literal"><span class="pre">SoundClip</span></tt> and <tt class="docutils literal"><span class="pre">CompositeSoundClip</span></tt> for usable classes.</p>
@@ -108,41 +108,15 @@ the variations of that float in the time.</p>
 </pre></div>
 </div>
 <dl class="method">
-<dt id="moviepy.audio.AudioClip.AudioClip.preview">
-<tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=22050</em>, <em>buffersize=50000</em>, <em>nbytes=2</em>, <em>audioFlag=None</em>, <em>videoFlag=None</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.preview" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plays the sound clip with pygame.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
-<blockquote>
-<div><p>Frame rate of the sound. 44100 gives top quality, but may cause
-problems if your computer is not fast enough and your clip is
-complicated. If the sound jumps during the preview, lower it
-(11025 is still fine, 5000 is tolerable).</p>
-</div></blockquote>
-<p><strong>buffersize</strong> :</p>
-<blockquote>
-<div><p>The sound is not generated all at once, but rather made by bunches
-of frames (chunks). <tt class="docutils literal"><span class="pre">buffersize</span></tt> is the size of such a chunk.
-Try varying it if you meet audio problems (but you shouldn&#8217;t
-have to).</p>
-</div></blockquote>
-<p><strong>nbytes:</strong> :</p>
-<blockquote>
-<div><p>Number of bytes to encode the sound: 1 for 8bit sound, 2 for
-16bit, 4 for 32bit sound. 2 bytes is fine.</p>
-</div></blockquote>
-<p><strong>audioFlag, videoFlag:</strong> :</p>
-<blockquote class="last">
-<div><p>Instances of class threading events that are used to synchronize
-video and audio during <tt class="docutils literal"><span class="pre">VideoClip.preview()</span></tt>.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
+<dt id="moviepy.audio.AudioClip.AudioClip.to_audiofile">
+<tt class="descname">to_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec='libvorbis'</em>, <em>bitrate=None</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>codecs  = {        &#8216;libmp3lame&#8217;: &#8216;mp3&#8217;,</dt>
+<dd>&#8216;libvorbis&#8217;:&#8217;ogg&#8217;,
+&#8216;libfdk_aac&#8217;:&#8217;m4a&#8217;,
+&#8216;pcm_s16le&#8217;:&#8217;wav&#8217;,
+&#8216;pcm_s32le&#8217;: &#8216;wav&#8217;}</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -239,13 +213,6 @@ If the temp_wav already exists it will not be rewritten.</p>
 <dd><p>Returns a copy of the AudioFileClip, i.e. a new entrance point
 to the audio file. Use copy when you have different clips
 watching the audio file at different times.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels">
-<tt class="descname">nchannels</tt><a class="reference internal" href="../_modules/moviepy/audio/io/AudioFileClip.html#AudioFileClip.nchannels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.nchannels" title="Permalink to this definition">¶</a></dt>
-<dd><p>R eturns the number of channels of the reader
-(1: mono, 2: stereo)</p>
 </dd></dl>
 
 </dd></dl>

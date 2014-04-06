@@ -168,9 +168,6 @@ var Documentation = {
     var terms = (params.highlight) ? params.highlight[0].split(/\s+/) : [];
     if (terms.length) {
       var body = $('div.body');
-      if (!body.length) {
-        body = $('body');
-      }
       window.setTimeout(function() {
         $.each(terms, function() {
           body.highlightText(this.toLowerCase(), 'highlighted');

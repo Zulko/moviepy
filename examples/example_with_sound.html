@@ -93,31 +93,40 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <span class="c"># LOAD THE MAIN SCENE</span>
 <span class="c"># this small video contains the two scenes that we will put together.</span>
 
-<span class="n">main_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../charadePhone.mp4&quot;</span><span class="p">)</span>
+<span class="n">main_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/charadePhone.mp4&quot;</span><span class="p">)</span>
 <span class="n">W</span><span class="p">,</span><span class="n">H</span> <span class="o">=</span> <span class="n">main_clip</span><span class="o">.</span><span class="n">size</span>
 
 
 
 <span class="c"># MAKE THE LEFT CLIP : cut, crop, add a mask </span>
-
-<span class="n">clip_left</span> <span class="o">=</span> <span class="n">main_clip</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span>\
-                <span class="n">crop</span><span class="p">(</span> <span class="n">x1</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">60</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
                             
-<span class="n">mask</span> <span class="o">=</span> <span class="n">color_split</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p1</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
-                   <span class="n">col1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">grad_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">color_split</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span>
+                   <span class="n">p1</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+                   <span class="n">col1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                   <span class="n">grad_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
                    
-<span class="n">clip_left</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">mask_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                   
+<span class="n">clip_left</span> <span class="o">=</span> <span class="p">(</span><span class="n">main_clip</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">duration</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">crop</span><span class="p">(</span> <span class="n">x1</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">60</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">mask_clip</span><span class="p">))</span>
 
 
 <span class="c"># MAKE THE RIGHT CLIP : cut, crop, add a mask </span>
+                   
+<span class="n">mask</span> <span class="o">=</span> <span class="n">color_split</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span>
+                   <span class="n">p1</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+                   <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                   <span class="n">grad_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-<span class="n">clip_right</span> <span class="o">=</span> <span class="n">main_clip</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="mi">21</span><span class="o">+</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">crop</span><span class="p">(</span><span class="n">x1</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">70</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
-                   
-<span class="n">mask</span> <span class="o">=</span> <span class="n">color_split</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p1</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">H</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
-                   <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">grad_width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-                   
-<span class="n">clip_right</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">mask_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">clip_right</span> <span class="o">=</span> <span class="p">(</span><span class="n">main_clip</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span>
+                       <span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span><span class="mi">21</span><span class="o">+</span><span class="n">duration</span><span class="p">)</span>
+                       <span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">x1</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">70</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">W</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+                       <span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">mask_clip</span><span class="p">))</span>
+
 
 
 

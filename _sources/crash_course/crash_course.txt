@@ -29,8 +29,8 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
     # Write the result to a file
     video.to_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
 
-How it works, in a nutshell
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How MoviePy works, in a nutshell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
 
@@ -41,17 +41,29 @@ MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/S
 You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
 
 
+The clip objects
+~~~~~~~~~~~~~~~~~~~
+
+In MoviePy you manipulate mostly two kind of objects: audio clips, and 
+video clips. These clips have different attributes (indicating their 
+duration, their size, their starting time...) which can change as the clips are cut and 
+mixed with other clips.
+
+A video clip can carry around a soundtrack (which is an 
+audioclip) and, for more complex effects, a mask (which is a special 
+video clip).
+
 Classes of video clips
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Video clips are the building blocks of longer videos. They can be created with one of the following:
 
-- ``VideoFileClip('myHolidays.mp4')`` for clips read from a movie file. See :class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
-- ``ImageClip('myPic.png')`` for clips displaying a picture, for an *a priori* infinite duration. See :class:`~moviepy.video.ImageClip.ImageClip`.
-- ``ColorClip((height,width),color=(R,G,B))`` for special ImageClips of a single color. See :class:`~moviepy.video.ImageClip.ColorClip`.
-- ``TextClip('Hello folks !',font='Impact-Regular')`` for special ImageClips representing a text. They are automatically generated using ImageMagick. See :class:`~moviepy.video.ImageClip.TextClip`.
+- ``VideoFileClip('myHolidays.mp4')`` for clips read from a movie file.
+- ``ImageClip('myPic.png')`` for clips displaying a picture, for an *a priori* infinite duration.
+- ``ColorClip((height,width),color=(R,G,B))`` for special ImageClips of a single color.
+- ``TextClip('Hello folks !',font='Impact-Regular')`` for special ImageClips representing a text. They are automatically generated using ImageMagick.
 
-To that list we should add the ``CompositeVideoClips`` that are obtained by mixing several clips together.
+To that list we should add the ``CompositeVideoClips`` which are obtained by putting several clips together.
 
 .. _CompositeVideoClips:
 
@@ -74,7 +86,7 @@ Now ``video`` plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`
     
 In a CompositionClip, all the clips start to play at a time that is specified by the ``clip.start`` attribute. You can set this starting time as follows: ::
     
-    clip2 = clip1.set_start(5) # start after 5 seconds 
+    clip1 = clip1.set_start(5) # start after 5 seconds 
 
 So for instance your composition will look like ::
 
@@ -116,13 +128,16 @@ Be careful when indicating the position that the ``y`` position has its zero at 
 Rendering a video clip
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-To preview one frame of the clip, use one of these: ::
+A clip can be previewed (i.e. generated and displayed at the same time) 
+or be rendered directly to a file. Note that previewing requires to 
+have the Python package PyGame installed.
+
+To preview just one frame of the clip, use one of these: ::
     
     myClip.show() # shows the first frame of the clip
     myClip.show(10.5) # shows the frame of the clip at t=10.5s
-    myClip.show(10.5,frontend="matplotlib") # show in a matplotlib window
 
-To preview the clip, you type ::
+To preview the clip, type ::
     
     myClip.preview() # preview with default fps=15
     myClip.preview(fps=25)
@@ -135,6 +150,13 @@ To write a clip as a video file, use ::
     myClip.to_videofile("myEditedMovie.avi") # default: codec 'libx264' fps 24
     myClip.to_videofile("myEditedMovie.avi",fps=15, codec='mpeg4')
     myClip.to_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
+    
+Alternatively you can also save a video clip as an animated GIF with ::
+
+    myClip.to_gif('test.gif')
+
+See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for more informations on making GIFs with MoviePy.
+
 
 
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
@@ -150,7 +172,7 @@ Audio clips
 
 The second important objects of MoviePy are the audio clips. If ``myHolidays.mp4`` is a video with sound, then ::
     
-    clip = VideoFileClip('myHolidays.mp4', audio=True)
+    clip = VideoFileClip('myHolidays.mp4')
 
 will create a clip with a ``clip.audio`` attribute which is an audio clip. This is the sound that you will hear if you render the clip with ``clip.preview`` or ``clip.to_videofile``. You can also create an audio clip from a sound file and then attach it to a video clip: ::
         
@@ -198,9 +220,9 @@ but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: 
                    fx( effect_2, args2).\
                    fx( effect_3, args3)
 
-Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import.all *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
+Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import.editor *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
-    from moviepy import.all *
+    from moviepy import.editor *
     clip = VideoFileClip("myvideo.avi").\
                fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
                fx( vfx.speedx, 2).\ # double speed
@@ -232,7 +254,11 @@ Finally, you may want to process the clip by taking into account the time and th
 
 This will scroll down the clip with a constant height of 360 pixels.
 
-Prefer using ``fl_time`` and ``fl_image`` if possible when implementing new effects. The reason is that for image clips MoviePy will recognize that these methods do not need to be applied to each frames, which will result in shorter computation times.
+When programming a new effect, whenever it is possible, prefer using ``fl_time`` and 
+``fl_image`` instead of ``fl`` if possible when implementing 
+new effects. The reason is that, when these effects are applied to 
+ImageClips, MoviePy will recognize that these methods do not need to be applied to each frame, which will 
+result in faster renderings.
 
 Tools
 ~~~~~~
@@ -253,7 +279,10 @@ MoviePy works fine on my 1.5 petaflops supercomputer but when a clip gets very c
 - [wishful thinking] Check on the internet or in the examples of this documentation that what you do hasn't been done before. Code shared on the internet has more chances to be optimized.
 
 
-To go further and learn about all the available options and functionalities of MoviePy, see the :ref:`examples` and the reference manual. You can also browse the code of different fx
+To go further and learn about all the available options and 
+functionalities of MoviePy, see the :ref:`examples` and the reference 
+manual. You can also browse the code of the different video effects in 
+``moviepy/video/fx`` to give you ideas on how to code your own effects.
 
 
     

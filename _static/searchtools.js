@@ -330,13 +330,13 @@ var Search = {
           objectterms.push(tmp[i].toLowerCase());
       }
 
-      if ($u.indexOf(stopwords, tmp[i].toLowerCase()) != -1 || tmp[i].match(/^\d+$/) ||
+      if ($u.indexOf(stopwords, tmp[i]) != -1 || tmp[i].match(/^\d+$/) ||
           tmp[i] === "") {
         // skip this "word"
         continue;
       }
       // stem the word
-      var word = stemmer.stemWord(tmp[i].toLowerCase());
+      var word = stemmer.stemWord(tmp[i]).toLowerCase();
       var toAppend;
       // select the correct list
       if (word[0] == '-') {

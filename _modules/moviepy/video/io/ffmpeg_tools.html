@@ -80,7 +80,7 @@
              <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
              <span class="n">filename</span><span class="p">]</span>
     
-    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 
 </div>
 <div class="viewcode-block" id="ffmpeg_extract_subclip"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_extract_subclip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">targetname</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -96,25 +96,26 @@
       <span class="s">&quot;-ss&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f</span><span class="s">&quot;</span><span class="o">%</span><span class="n">t1</span><span class="p">,</span>
       <span class="s">&quot;-t&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%0.2f</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">t2</span><span class="o">-</span><span class="n">t1</span><span class="p">),</span>
       <span class="s">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="s">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s">&quot;copy&quot;</span><span class="p">,</span> <span class="n">targetname</span><span class="p">]</span>
-      
-    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="ffmpeg_merge_video_audio"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_merge_video_audio</span><span class="p">(</span><span class="n">video</span><span class="p">,</span><span class="n">audio</span><span class="p">,</span><span class="n">output</span><span class="p">,</span>
-                <span class="n">vcodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span> <span class="n">acodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span> <span class="n">ffmpeg_output</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ffmpeg_merge_video_audio"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_merge_video_audio</span><span class="p">(</span><span class="n">video</span><span class="p">,</span><span class="n">audio</span><span class="p">,</span><span class="n">output</span><span class="p">,</span> <span class="n">vcodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span>
+                             <span class="n">acodec</span><span class="o">=</span><span class="s">&#39;copy&#39;</span><span class="p">,</span> <span class="n">ffmpeg_output</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                             <span class="n">verbose</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; merges video file ``video`` and audio file ``audio`` into one</span>
 <span class="sd">        movie file ``output``. &quot;&quot;&quot;</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="p">,</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span>
              <span class="s">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="n">vcodec</span><span class="p">,</span> <span class="s">&quot;-acodec&quot;</span><span class="p">,</span> <span class="n">acodec</span><span class="p">,</span> <span class="n">output</span><span class="p">]</span>
              
-    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">)</span>
     
 </div>
 <div class="viewcode-block" id="ffmpeg_extract_audio"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_extract_audio</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; extract the sound from a video file and save it in ``output`` &quot;&quot;&quot;</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-y&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="s">&quot;-ab&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">k&quot;</span><span class="o">%</span><span class="n">bitrate</span><span class="p">,</span>
          <span class="s">&quot;-ar&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="n">fps</span><span class="p">,</span> <span class="n">output</span><span class="p">]</span>
-    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
     
 </div>
 <div class="viewcode-block" id="ffmpeg_resize"><a class="viewcode-back" href="../../../../ref/ffmpeg.html#moviepy.video.io.ffmpeg_tools.ffmpeg_resize">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_resize</span><span class="p">(</span><span class="n">video</span><span class="p">,</span><span class="n">output</span><span class="p">,</span><span class="n">size</span><span class="p">):</span>
@@ -123,7 +124,7 @@
     <span class="n">cmd</span><span class="o">=</span> <span class="p">[</span><span class="s">&quot;ffmpeg&quot;</span><span class="p">,</span> <span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span> <span class="s">&quot;-vf&quot;</span><span class="p">,</span> <span class="s">&quot;scale=</span><span class="si">%d</span><span class="s">:</span><span class="si">%d</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
              <span class="n">output</span><span class="p">]</span>
              
-    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
 </pre></div></div>
 
           </div>

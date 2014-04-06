@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FAQ and troubleshooting &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="index.html" />
+    <link rel="next" title="Reference Manual" href="ref/ref.html" />
+    <link rel="prev" title="“The End” effect" href="examples/the_end.html" />
+   
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ref/ref.html" title="Reference Manual"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="examples/the_end.html" title="“The End” effect"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="faq-and-troubleshooting">
+<h1>FAQ and troubleshooting<a class="headerlink" href="#faq-and-troubleshooting" title="Permalink to this headline">¶</a></h1>
+<p>This section will fill up as MoviePy advances through the next steps of
+development (currently on the roadmap: MoviePy Studio, MoviePy WebApp, MoviePy OS, MoviePy
+Trust Inc., and the MoviePy Charity Fundation).</p>
+<div class="section" id="common-errors-that-are-not-bugs">
+<h2>Common errors that are not bugs<a class="headerlink" href="#common-errors-that-are-not-bugs" title="Permalink to this headline">¶</a></h2>
+<p>These are very common errors which are not considered as bugs to be
+solved (but you can still ask for this to change). If these answers
+don&#8217;t work for you, please open a bug report on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, or on the dedicated forum on <a class="reference external" href="http://www.reddit.com/r/moviepy/">Reddit</a>, or on the <a class="reference external" href="mailto:moviepy&#37;&#52;&#48;librelist&#46;com">librelist</a>.</p>
+<ul class="simple">
+<li><strong>MoviePy generated a video that cannot be read by my favorite player.</strong></li>
+</ul>
+<p>Known reason : one of the video&#8217;s dimensions were not even,
+for instance 720x405, and you used a MPEG4 codec like libx264 (default
+in MoviePy). In this case the video generated uses a format that is
+readable only on some readers like VLC.</p>
+<ul class="simple">
+<li><strong>I can&#8217;t seem to read any video with MoviePy</strong>. Known reason: you</li>
+</ul>
+<p>have a deprecated version of FFMPEG, install a recent version from the
+website, not from your OS&#8217;s repositories ! (see <em class="xref std std-ref">installation</em>).</p>
+<ul class="simple">
+<li><strong>I get an error when I use texts in my video</strong>: If you are on</li>
+</ul>
+<p>Windows, this is due to a name clash, see <em class="xref std std-ref">installation</em>. Also,
+make sure that you are using a recent version of ImageMagick.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+  
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.jpeg" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FAQ and troubleshooting</a><ul>
+<li><a class="reference internal" href="#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="examples/the_end.html" title="previous chapter">&#8220;The End&#8221; effect</a></li>
+      <li>Next: <a href="ref/ref.html" title="next chapter">Reference Manual</a></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/FAQ.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ref/ref.html" title="Reference Manual"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="examples/the_end.html" title="“The End” effect"
+             >previous</a> |</li>
+        <li><a href="index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" style="position:relative">
+      &copy; Copyright 2013, Zulko.
+    </div>
+    <div>
+
+    </div>
+
+  </body>
+</html>

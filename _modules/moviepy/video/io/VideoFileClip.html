@@ -87,10 +87,10 @@
 <span class="sd">      </span>
 <span class="sd">    has_mask:</span>
 <span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
-<span class="sd">       Video files rarely contain masks, but some video codecs enable</span>
-<span class="sd">       that. For istance if you have a MoviePy VideoClip with a mask you</span>
-<span class="sd">       can save it to a videofile with a mask. (see also </span>
-<span class="sd">       ``VideoClip.to_videofile`` for more details).</span>
+<span class="sd">      Video files rarely contain masks, but some video codecs enable</span>
+<span class="sd">      that. For istance if you have a MoviePy VideoClip with a mask you</span>
+<span class="sd">      can save it to a videofile with a mask. (see also </span>
+<span class="sd">      ``VideoClip.to_videofile`` for more details).</span>
 <span class="sd">    </span>
 <span class="sd">    audio:</span>
 <span class="sd">      Set to `False` if the clip doesn&#39;t have any audio or if you do not</span>
@@ -113,13 +113,6 @@
         
         <span class="n">VideoClip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ismask</span><span class="p">)</span>
         
-        <span class="c"># We store the construction parameters in case we need to make</span>
-        <span class="c"># a copy (a &#39;co-reader&#39;).</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;filename&#39;</span><span class="p">:</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;ismask&#39;</span><span class="p">:</span><span class="n">ismask</span><span class="p">,</span>
-                           <span class="s">&#39;has_mask&#39;</span><span class="p">:</span><span class="n">has_mask</span><span class="p">,</span> <span class="s">&#39;audio&#39;</span><span class="p">:</span><span class="n">audio</span><span class="p">,</span>
-                           <span class="s">&#39;audio_buffersize&#39;</span><span class="p">:</span><span class="n">audio_buffersize</span><span class="p">}</span>
-        
         <span class="c"># Make a reader</span>
         <span class="n">pix_fmt</span><span class="o">=</span> <span class="s">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s">&quot;rgb24&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="n">pix_fmt</span><span class="p">)</span>
@@ -137,23 +130,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
                                        <span class="n">buffersize</span><span class="o">=</span> <span class="n">audio_buffersize</span><span class="p">,</span>
                                        <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span>
-                                       <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span>
-    
-<div class="viewcode-block" id="VideoFileClip.coreader"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a copy of the AudioFileClip with an autonomous reader.</span>
-<span class="sd">        Maybe REMOVED in the coming versions. Wait and see. ::</span>
-<span class="sd">        </span>
-<span class="sd">            &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
-<span class="sd">            &gt;&gt;&gt; clip2 = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
-<span class="sd">        </span>
-<span class="sd">        is equivalent to ::</span>
-<span class="sd">        </span>
-<span class="sd">            &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;, ismask=True)</span>
-<span class="sd">            &gt;&gt;&gt; clip2 = clip.coreader()</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-            
-        <span class="k">return</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span></div></div>
+                                       <span class="n">nbytes</span> <span class="o">=</span> <span class="n">audio_nbytes</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

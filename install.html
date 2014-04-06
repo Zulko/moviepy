@@ -67,23 +67,32 @@
 <h1>Download and Installation<a class="headerlink" href="#download-and-installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="core-dependencies">
 <h2>Core dependencies<a class="headerlink" href="#core-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy requires the Python modules <a class="reference external" href="http://www.scipy.org/install.html">Numpy</a>, <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a>, and <a class="reference external" href="https://pypi.python.org/pypi/tqdm">tqdm</a>. All of these will all be automatically installed during MoviePy&#8217;s installation.</p>
-<p>You will also need a <strong>recent version</strong> of the software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> , preferably downloaded directly from the ffmpeg website.</p>
+<p>MoviePy requires the Python modules <a class="reference external" href="http://www.scipy.org/install.html">Numpy</a>, <a class="reference external" href="https://pypi.python.org/pypi/decorator">Decorator</a>, and <a class="reference external" href="https://pypi.python.org/pypi/tqdm">tqdm</a>. All
+of these will be automatically installed during MoviePy&#8217;s installation.</p>
+<p>You will also need a <strong>recent version</strong> of the software <a class="reference external" href="http://www.ffmpeg.org/download.html">ffmpeg</a> ,
+preferably downloaded directly from the ffmpeg website.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>First method : if you have <tt class="docutils literal"><span class="pre">pip</span></tt> installed, just type this in a terminal (sudo is optional on some systems)</p>
-<div class="highlight-python"><div class="highlight"><pre>(sudo) pip install moviepy
-</pre></div>
+<div class="highlight-python"><pre>(sudo) pip install moviepy</pre>
 </div>
 <p>Second method : by hand. Download the sources, either on <a class="reference external" href="https://pypi.python.org/pypi/moviepy">PyPI</a> or (if you want the development version) on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, unzip everything in one folder, open a terminal and type</p>
-<div class="highlight-python"><div class="highlight"><pre>(sudo) python setup.py install
-</pre></div>
+<div class="highlight-python"><pre>(sudo) python setup.py install</pre>
 </div>
 <div class="section" id="linking-to-ffmpeg">
 <h3>Linking to ffmpeg<a class="headerlink" href="#linking-to-ffmpeg" title="Permalink to this headline">¶</a></h3>
 <p>If you put have a ffmpeg binary in you executable folder (on Linux it will be <tt class="docutils literal"><span class="pre">/usr/bin</span></tt>) it will be detected automatically by MoviePy. Else make sure that MoviePy can locate ffmpeg on your computer by running the script <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt> that is in the sources. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">your</span><span class="o">/</span><span class="n">ffmpeg</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linking-to-imagemagick-windows-only">
+<h3>Linking to ImageMagick (Windows only)<a class="headerlink" href="#linking-to-imagemagick-windows-only" title="Permalink to this headline">¶</a></h3>
+<p>For the moment MoviePy cannot detect ImageMagick on Windows. You need
+to go into the <tt class="docutils literal"><span class="pre">moviepy/conf.py</span></tt> file and provide the path, it
+should look something like this</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">IMAGEMAGICK_BINARY</span> <span class="o">=</span> <span class="s">&quot;C:\Program Files\ImageMagick_VERSION\convert&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -110,14 +119,12 @@ The installation seems easy for Windows. On linux, here is what I found on the I
 <li><p class="first">Unzip the source code of <a class="reference external" href="http://sourceforge.net/projects/opencvlibrary/files/">OpenCV 2.4.6</a> in some folder. open a terminal in this folder.</p>
 </li>
 <li><p class="first">Make a new directory and go into this directory:</p>
-<div class="highlight-python"><div class="highlight"><pre>mkdir release
-cd release
-</pre></div>
+<div class="highlight-python"><pre>mkdir release
+cd release</pre>
 </div>
 </li>
 <li><p class="first">Run <tt class="docutils literal"><span class="pre">cmake</span></tt>. Here is the line I used:</p>
-<div class="highlight-python"><div class="highlight"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..
-</pre></div>
+<div class="highlight-python"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..</pre>
 </div>
 </li>
 <li><p class="first">Run <tt class="docutils literal"><span class="pre">make</span></tt>. This may take a few minutes (15 minutes on my computer).</p>
@@ -126,8 +133,7 @@ cd release
 </div>
 </li>
 <li><p class="first">Finally, install.</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo make install
-</pre></div>
+<div class="highlight-python"><pre>sudo make install</pre>
 </div>
 </li>
 </ul>
@@ -158,6 +164,7 @@ cd release
 <li><a class="reference internal" href="#core-dependencies">Core dependencies</a></li>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#linking-to-ffmpeg">Linking to ffmpeg</a></li>
+<li><a class="reference internal" href="#linking-to-imagemagick-windows-only">Linking to ImageMagick (Windows only)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#not-so-optional-dependencies">(Not so) Optional dependencies</a><ul>

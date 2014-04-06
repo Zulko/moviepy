@@ -97,9 +97,12 @@ this case their duration will be <tt class="docutils literal"><span class="pre">
 <dl class="method">
 <dt id="Clip.Clip.copy">
 <tt class="descname">copy</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.copy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shallow copy of the clip. This method is intensively used
-to produce new clips every time there is an outplace
-transformation of the clip (clip.resize, clip.subclip, etc.)</p>
+<dd><p>Shallow copy of the clip.</p>
+<p>Returns a shwallow copy of the clip whose mask and audio will
+be shallow copies of the clip&#8217;s mask and audio if they exist.</p>
+<p>This method is intensively used to produce new clips every time
+there is an outplace transformation of the clip (clip.resize,
+clip.subclip, etc.)</p>
 </dd></dl>
 
 <dl class="method">
@@ -116,8 +119,9 @@ if they exist.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fun</em>, <em>apply_to=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a new Clip whose frames are a transformation
+<tt class="descname">fl</tt><big>(</big><em>fun</em>, <em>apply_to=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
+<dd><p>General processing of a clip.</p>
+<p>Returns a new Clip whose frames are a transformation
 (through function <tt class="docutils literal"><span class="pre">fun</span></tt>) of the frames of the current clip.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -159,7 +163,7 @@ content scrolls from the top to the bottom of the frames of
 
 <dl class="method">
 <dt id="Clip.Clip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>t_func</em>, <em>apply_to=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=False</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_time</tt><big>(</big><em>t_func</em>, <em>apply_to=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=False</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a Clip instance playing the content of the current clip
 but with a modified timeline, time <tt class="docutils literal"><span class="pre">t</span></tt> being replaced by another
 time <cite>t_func(t)</cite>.</p>
@@ -221,7 +225,11 @@ parameters, when the effects are chained:</p>
 <dl class="method">
 <dt id="Clip.Clip.is_playing">
 <tt class="descname">is_playing</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.is_playing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.is_playing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return true if t is between the start and the end of the clip.</p>
+<dd><p>If t is a number, returns true if t is between the start and the
+end of the clip.
+If t is a numpy array, returns False if none of the t is in the
+clip, else returns a vector [b_1, b_2, b_3...] where b_i is true
+iff tti is in the clip.</p>
 </dd></dl>
 
 <dl class="method">

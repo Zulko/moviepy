@@ -67,6 +67,14 @@
 
 
 <span class="nd">@decorator.decorator</span>
+<div class="viewcode-block" id="outplace"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.outplace">[docs]</a><span class="k">def</span> <span class="nf">outplace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Enables to make operations outplace &quot;&quot;&quot;</span>
+    <span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">newclip</span>
+    
+</div>
+<span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="apply_to_mask"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_mask">[docs]</a><span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This decorator will apply the same function f to the mask of</span>
 <span class="sd">        the clip created with f &quot;&quot;&quot;</span>
@@ -90,8 +98,7 @@
     </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="add_mask_if_none"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.add_mask_if_none">[docs]</a><span class="k">def</span> <span class="nf">add_mask_if_none</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; This decorator will apply the function f to the audio of</span>
-<span class="sd">        the clip created with f &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Add a mask to the clip if there is none. &quot;&quot;&quot;</span>
         
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">add_mask</span><span class="p">()</span>
@@ -100,7 +107,7 @@
 </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="requires_duration"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.requires_duration">[docs]</a><span class="k">def</span> <span class="nf">requires_duration</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; will raise an error if the clip has no duration.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Raise an error if the clip has no duration.&quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>
@@ -109,10 +116,11 @@
 </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="audio_video_fx"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.audio_video_fx">[docs]</a><span class="k">def</span> <span class="nf">audio_video_fx</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Use an audio function on a video/audio clip</span>
+<span class="sd">    </span>
 <span class="sd">    This decorator tells that the function f (audioclip -&gt; audioclip)</span>
 <span class="sd">    can be also used on a video clip, at which case it returns a</span>
-<span class="sd">    videoclip with modified audio.</span>
+<span class="sd">    videoclip with unmodified video and modified audio.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s">&quot;audio&quot;</span><span class="p">):</span>
@@ -126,9 +134,8 @@
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="time_can_be_tuple"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.time_can_be_tuple">[docs]</a><span class="k">def</span> <span class="nf">time_can_be_tuple</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This decorator tells that the function f (audioclip -&gt; audioclip)</span>
-<span class="sd">    can be also used on a video clip, at which case it returns a</span>
-<span class="sd">    videoclip with modified audio.</span>
+<span class="sd">    All tuples in the arguments of f will be considered as time and</span>
+<span class="sd">    converted to seconds.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="n">fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span> <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="n">cvsecs</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span>

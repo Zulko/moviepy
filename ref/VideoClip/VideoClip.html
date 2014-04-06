@@ -197,37 +197,6 @@ background.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.VideoClip.VideoClip.preview">
-<tt class="descname">preview</tt><big>(</big><em>clip</em>, <em>fps=15</em>, <em>audio=True</em>, <em>audio_fps=22050</em>, <em>audio_buffersize=3000</em>, <em>audio_nbytes=2</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.preview" title="Permalink to this definition">¶</a></dt>
-<dd><p>Displays the clip in a window, at the given frames per second
-(of movie) rate. It will avoid that the clip be played faster
-than normal, but it cannot avoid the clip to be played slower
-than normal if the computations are complex. In this case, try
-reducing the <tt class="docutils literal"><span class="pre">fps</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
-<blockquote>
-<div><p>Number of frames per seconds in the displayed video.</p>
-</div></blockquote>
-<p><strong>audio</strong> :</p>
-<blockquote>
-<div><p><tt class="docutils literal"><span class="pre">True</span></tt> (default) if you want the clip&#8217;s audio be played during
-the preview.</p>
-</div></blockquote>
-<p><strong>audiofps</strong> :</p>
-<blockquote class="last">
-<div><p>The frames per second to use when generating the audio sound.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.save_frame">
 <tt class="descname">save_frame</tt><big>(</big><em>filename</em>, <em>t=0</em>, <em>savemask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.save_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a clip&#8217;s frame to an image file.</p>
@@ -293,29 +262,6 @@ of several types.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.VideoClip.VideoClip.show">
-<tt class="descname">show</tt><big>(</big><em>clip</em>, <em>t=0</em>, <em>with_mask=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.show" title="Permalink to this definition">¶</a></dt>
-<dd><p>Splashes the frame of clip corresponding to time <tt class="docutils literal"><span class="pre">t</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t</strong> :</p>
-<blockquote>
-<div><p>Time in seconds of the frame to display.</p>
-</div></blockquote>
-<p><strong>with_mask</strong> :</p>
-<blockquote class="last">
-<div><p><tt class="docutils literal"><span class="pre">False</span></tt> if the clip has a mask but you want to see the clip
-without the mask.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.subfx">
 <tt class="descname">subfx</tt><big>(</big><em>fx</em>, <em>ta=0</em>, <em>tb=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.subfx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.subfx" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply a transformation to a part of the clip.</p>
@@ -340,46 +286,6 @@ seconds).</p>
 <dt id="moviepy.video.VideoClip.VideoClip.to_RGB">
 <tt class="descname">to_RGB</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_RGB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_RGB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a non-mask video clip made from the mask video clip.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="moviepy.video.VideoClip.VideoClip.to_directory">
-<tt class="descname">to_directory</tt><big>(</big><em>foldername</em>, <em>fps</em>, <em>transparent=True</em>, <em>overwrite=True</em>, <em>startFrame=0</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_directory" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the frames of the clip into a folder.</p>
-<p>Writes the frames of the clip into a folder as png format,
-and returns the :class:DirectoryClip associated with this
-folder</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>foldername</strong> :</p>
-<blockquote>
-<div><p>Name of the folder (what did you expect ?)</p>
-</div></blockquote>
-<p><strong>fps</strong> :</p>
-<blockquote>
-<div><p>Number of frames per second of movie.</p>
-</div></blockquote>
-<p><strong>transparent</strong> :</p>
-<blockquote>
-<div><p>If <cite>True</cite>, the png images generated will possess an alpha
-layer representing the mask of the clip.</p>
-</div></blockquote>
-<p><strong>overwrite</strong> :</p>
-<blockquote>
-<div><p>If <cite>True</cite>, will overwrite the content of <cite>folder</cite>
-if already existing.</p>
-</div></blockquote>
-<p><strong>startFrame:</strong> :</p>
-<blockquote class="last">
-<div><p>Useless for the moment, but may come in handy once
-parallelization is fully implemented.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="method">
@@ -442,7 +348,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.to_videofile">
-<tt class="descname">to_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>audio_nbytes=2</em>, <em>audio_codec='libvorbis'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=40000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>para=False</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_videofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_videofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>audio_nbytes=2</em>, <em>audio_codec='libvorbis'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>para=False</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_videofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_videofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the clip to a videofile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -526,14 +432,11 @@ by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</p>
 </div></blockquote>
 <p><strong>has_mask:</strong> :</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Set this to &#8216;True&#8217; if there is a mask included in the videofile.</dt>
-<dd><p class="first last">Video files rarely contain masks, but some video codecs enable
+<div><p>Set this to &#8216;True&#8217; if there is a mask included in the videofile.
+Video files rarely contain masks, but some video codecs enable
 that. For istance if you have a MoviePy VideoClip with a mask you
 can save it to a videofile with a mask. (see also 
 <tt class="docutils literal"><span class="pre">VideoClip.to_videofile</span></tt> for more details).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>audio:</strong> :</p>
 <blockquote class="last">
@@ -559,22 +462,6 @@ wish to read the audio.</p>
 </tr>
 </tbody>
 </table>
-<dl class="method">
-<dt id="moviepy.video.io.VideoFileClip.VideoFileClip.coreader">
-<tt class="descname">coreader</tt><big>(</big><em>audio=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/io/VideoFileClip.html#VideoFileClip.coreader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.io.VideoFileClip.VideoFileClip.coreader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the AudioFileClip with an autonomous reader.
-Maybe REMOVED in the coming versions. Wait and see.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideofileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip2</span> <span class="o">=</span> <span class="n">VideofileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>is equivalent to</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideofileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip2</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span>
-</pre></div>
-</div>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -628,8 +515,8 @@ of the picture (if it exists) to be used as a mask.</p>
 </table>
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>apply_to=</em>, <span class="optional">[</span><span class="optional">]</span><em>keep_duration=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
-<dd><p>General filter</p>
+<tt class="descname">fl</tt><big>(</big><em>fl</em>, <em>apply_to=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl" title="Permalink to this definition">¶</a></dt>
+<dd><p>General transformation filter.</p>
 <p>Equivalent to VideoClip.fl . The result is no more an
 ImageClip, it has the class VideoClip (since it may be animated)</p>
 </dd></dl>
@@ -645,7 +532,7 @@ and not for each &#8216;frame&#8217;.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>timefun, apply_to=['mask', 'audio']</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">fl_time</tt><big>(</big><em>time_func, apply_to=['mask', 'audio']</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Time-transformation filter.</p>
 <p>Applies a transformation to the clip&#8217;s timeline
 (see Clip.fl_time).</p>
@@ -692,7 +579,7 @@ is True, <tt class="docutils literal"><span class="pre">color</span></tt> must b
 <h3><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt><a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.TextClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Courier'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfile='temp.png'</em>, <em>temptxt='temp.txt'</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Courier'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfilename=None</em>, <em>temptxt=None</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>Class for autogenerated text clips.</p>
 <p>Creates an ImageClip originating from a script-generated text image.

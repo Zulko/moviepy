@@ -68,8 +68,7 @@
 <dl class="function">
 <dt id="moviepy.decorators.add_mask_if_none">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">add_mask_if_none</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#add_mask_if_none"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.add_mask_if_none" title="Permalink to this definition">¶</a></dt>
-<dd><p>This decorator will apply the function f to the audio of
-the clip created with f</p>
+<dd><p>Add a mask to the clip if there is none.</p>
 </dd></dl>
 
 <dl class="function">
@@ -89,23 +88,29 @@ the clip created with f</p>
 <dl class="function">
 <dt id="moviepy.decorators.audio_video_fx">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">audio_video_fx</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#audio_video_fx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.audio_video_fx" title="Permalink to this definition">¶</a></dt>
-<dd><p>This decorator tells that the function f (audioclip -&gt; audioclip)
+<dd><p>Use an audio function on a video/audio clip</p>
+<p>This decorator tells that the function f (audioclip -&gt; audioclip)
 can be also used on a video clip, at which case it returns a
-videoclip with modified audio.</p>
+videoclip with unmodified video and modified audio.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.decorators.outplace">
+<tt class="descclassname">moviepy.decorators.</tt><tt class="descname">outplace</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#outplace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.outplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables to make operations outplace</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="moviepy.decorators.requires_duration">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">requires_duration</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#requires_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.requires_duration" title="Permalink to this definition">¶</a></dt>
-<dd><p>will raise an error if the clip has no duration.</p>
+<dd><p>Raise an error if the clip has no duration.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="moviepy.decorators.time_can_be_tuple">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">time_can_be_tuple</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#time_can_be_tuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.time_can_be_tuple" title="Permalink to this definition">¶</a></dt>
-<dd><p>This decorator tells that the function f (audioclip -&gt; audioclip)
-can be also used on a video clip, at which case it returns a
-videoclip with modified audio.</p>
+<dd><p>All tuples in the arguments of f will be considered as time and
+converted to seconds.</p>
 </dd></dl>
 
 </div>
