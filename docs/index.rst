@@ -27,7 +27,9 @@ Let us put together a few demonstration clips (you will find the code for most o
         </center>
 
 MoviePy is an open source software originally written by Zulko_ and released under the MIT licence.
-It is hosted on Github_, where you can push improvements or ask for help.
+It is hosted on Github_, where you can push improvements, report bugs and ask for help.
+
+**Very New:** there is now a MoviePy forum on Reddit_ and a mailing list on librelist_ .
 
 .. raw:: html
 
@@ -57,11 +59,13 @@ User's Guide
    install
    crash_course/crash_course
    examples/examples
+   FAQ
    ref/ref
 
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _Github: https://github.com/Zulko/moviepy
 .. _Zulko: https://github.com/Zulko/
 .. _Stackoverflow: http://stackoverflow.com/
-
+.. _Github: https://github.com/Zulko/moviepy
+.. _Reddit: http://www.reddit.com/r/moviepy/
+.. _librelist: mailto:moviepy@librelist.com

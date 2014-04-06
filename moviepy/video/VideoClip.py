@@ -122,6 +122,7 @@ class VideoClip(Clip):
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
+                 write_logfile=False,
                  para = False, verbose = True):
         """Write the clip to a videofile.
 
@@ -164,6 +165,8 @@ class VideoClip(Clip):
 
         """
 
+        name, ext = os.path.splitext(os.path.basename(filename))
+
         if audio_codec == 'raw16':
             audio_codec = 'pcm_s16le'
         elif audio_codec == 'raw32':
@@ -187,7 +190,7 @@ class VideoClip(Clip):
             # The audio will be the clip's audio
             if temp_audiofile is None:
 
-                # make a name for the temporary file
+                # make a name for the temporary audio file
 
                 D_ext = {'libmp3lame': 'mp3',
                        'libvorbis':'ogg',
@@ -197,16 +200,16 @@ class VideoClip(Clip):
                        'pcm_s32le': 'wav'}
 
                 if audio_codec in D_ext.values():
-                    ext = audio_codec
+                    audio_ext = audio_codec
                 else:
                     if audio_codec in D_ext.keys():
-                        ext = D_ext[audio_codec]
+                        audio_ext = D_ext[audio_codec]
                     else:
                         raise ValueError('audio_codec for file'
                                           '%d unkown !'%filename)
 
                 temp_audiofile = (Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND." + ext)
+                            "to_videofile_SOUND_%s."%name + audio_ext)
 
             make_audio = ( (not os.path.exists(temp_audiofile))
                             or rewrite_audio)
@@ -219,8 +222,8 @@ class VideoClip(Clip):
 
         if merge_audio:
 
-            name, ext = os.path.splitext(os.path.basename(filename))
-            videofile = Clip._TEMP_FILES_PREFIX + "to_videofile" + ext
+            # make a name for the temporary video file
+            videofile = Clip._TEMP_FILES_PREFIX + "to_videofile_"+ filename
 
         else:
 
@@ -233,28 +236,39 @@ class VideoClip(Clip):
                       +40*"-"+"\n")
 
         if para and make_audio and  enough_cpu:
+
             # Parallelize
             verbose_print("Writing audio/video in parrallel.\n")
             audioproc = multiprocessing.Process(
                     target=self.audio.to_audiofile,
                     args=(temp_audiofile,audio_fps,audio_nbytes,
                           audio_bufsize,audio_codec, audio_bitrate,verbose))
+
             audioproc.start()
-            ffmpeg_write_video(self,  videofile, fps, codec,
-                         bitrate=bitrate, verbose=verbose)
+            
+            ffmpeg_write_video(self, 
+                               videofile, fps, codec,
+                               bitrate=bitrate,
+                               write_logfile=write_logfile,
+                               verbose=verbose)
             audioproc.join()
             if audioproc.exitcode:
                 print ("WARNING: something went wrong with the audio"+
                        " writing, Exit code %d"%audioproc.exitcode)
         else:
+
             # Don't parallelize
             if make_audio:
                 self.audio.to_audiofile(temp_audiofile,audio_fps,
                                         audio_nbytes, audio_bufsize,
                                         audio_codec, audio_bitrate,
                                         verbose)
-            ffmpeg_write_video(self, videofile, fps, codec,
-                                       bitrate=bitrate, verbose=verbose)
+
+            ffmpeg_write_video(self,
+                               videofile, fps, codec,
+                               bitrate=bitrate,
+                               write_logfile=write_logfile,
+                               verbose=verbose)
 
         # Merge with audio if any and trash temporary files.
         if merge_audio:

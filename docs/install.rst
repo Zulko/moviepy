@@ -4,9 +4,11 @@ Download and Installation
 Core dependencies
 -------------------
 
-MoviePy requires the Python modules Numpy_, Decorator_, and tqdm_. All of these will all be automatically installed during MoviePy's installation.
+MoviePy requires the Python modules Numpy_, Decorator_, and tqdm_. All 
+of these will be automatically installed during MoviePy's installation.
 
-You will also need a **recent version** of the software ffmpeg_ , preferably downloaded directly from the ffmpeg website.
+You will also need a **recent version** of the software ffmpeg_ , 
+preferably downloaded directly from the ffmpeg website.
 
 Installation
 --------------
@@ -25,6 +27,15 @@ Linking to ffmpeg
 If you put have a ffmpeg binary in you executable folder (on Linux it will be ``/usr/bin``) it will be detected automatically by MoviePy. Else make sure that MoviePy can locate ffmpeg on your computer by running the script ``moviepy/conf.py`` that is in the sources. It it fails, then you must enter the path to the FFMPEG executable in the first line of this file ::
     
     FFMPEG_BINARY = path/to/your/ffmpeg
+    
+Linking to ImageMagick (Windows only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For the moment MoviePy cannot detect ImageMagick on Windows. You need 
+to go into the ``moviepy/conf.py`` file and provide the path, it 
+should look something like this ::
+    
+    IMAGEMAGICK_BINARY = "C:\Program Files\ImageMagick_VERSION\convert"
 
 
 (Not so) Optional dependencies

@@ -7,10 +7,20 @@ import sys
 import numpy as np
 import subprocess as sp
 
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
+
+
 from tqdm import tqdm
 
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.tools import sys_write_flush
+
+
 
 
 class FFMPEG_VideoWriter:
@@ -39,7 +49,12 @@ class FFMPEG_VideoWriter:
       'png' manages the same lossless quality as 'rawvideo' but yields
       smaller files. Type ``ffmpeg -codecs`` in a terminal to get a list
       of accepted codecs.
-      
+
+      Note for default 'libx264': by default the pixel format yuv420p
+      is used. If the video dimensions are not both even (e.g. 720x405)
+      another pixel format is used, and this can cause problem in some
+      video readers.
+
     bitrate
       Only relevant for codecs which accept a bitrate. "5000k" offers
       nice results in general.
@@ -53,8 +68,11 @@ class FFMPEG_VideoWriter:
     
         
     def __init__(self, filename, size, fps, codec="libx264",
-                  bitrate=None, withmask=False):
-        
+                  bitrate=None, withmask=False, logfile=None):
+
+        if logfile is None:
+          logfile = DEVNULL
+
         self.filename = filename
         cmd = (
             [ FFMPEG_BINARY, '-y',
@@ -68,13 +86,20 @@ class FFMPEG_VideoWriter:
             + (['-b',bitrate] if (bitrate!=None) else [])
 
             # http://trac.ffmpeg.org/ticket/658
-            + (['-pix_fmt', 'yuv420p'] if (codec == 'libx264') else [])
+            + (['-pix_fmt', 'yuv420p']
+                  if ((codec == 'libx264') and
+                     (size[0]%2 == 0) and
+                     (size[1]%2 == 0))
+                     
+               else [])
 
             + [ '-r', "%d"%fps, filename ]
             )
 
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
-        self.proc.stderr.close()
+        self.proc = sp.Popen(cmd, stdin=sp.PIPE,
+                                  stderr=logfile,
+                                  stdout=DEVNULL)
+
         
     def write_frame(self,img_array):
         """ Writes 1 frame in the file ! """
@@ -83,20 +108,28 @@ class FFMPEG_VideoWriter:
         
     def close(self):
         self.proc.stdin.close()
-        self.proc.stderr.close()
+        #self.proc.stderr.close()
         self.proc.wait()
         
         del self.proc
         
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
-                  withmask=False, verbose=True):
+                  withmask=False, write_logfile=False, verbose=True):
     
     def verbose_print(s):
         if verbose: sys_write_flush(s)
     
+    if write_logfile:
+        logfile = open(filename + ".log", 'w+')
+    else:
+        logfile = DEVNULL
+
+    print logfile
+
+
     verbose_print("\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
-             bitrate=bitrate)
+             bitrate=bitrate, logfile=logfile)
              
     nframes = int(clip.duration*fps)
     
@@ -109,22 +142,31 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
         writer.write_frame(frame.astype("uint8"))
     
     writer.close()
+
+    if write_logfile:
+      logfile.close()
     
     verbose_print("Done writing video in %s !"%filename)
         
         
-def ffmpeg_write_image(filename, image):
+def ffmpeg_write_image(filename, image, logfile=False):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
+
+
     cmd = [ FFMPEG_BINARY, '-y',
            '-s', "%dx%d"%(image.shape[:2][::-1]),
            "-f", 'rawvideo',
            '-pix_fmt', "rgba" if (image.shape[2] == 4) else "rgb24",
            '-i','-', filename]
-           
-    proc = sp.Popen( cmd, stdin=sp.PIPE, stderr=sp.PIPE)
-    #proc.stdin.write()
-    #proc.stdin.close()
+    
+    if logfile: 
+        log_file = open(filename + ".log", 'w+')
+    else:
+        log_file = DEVNULL
+
+
+    proc = sp.Popen( cmd, stdin=sp.PIPE, stderr=log_file)
     proc.communicate(image.tostring()) # proc.wait()
     
     if proc.returncode:
@@ -132,5 +174,7 @@ def ffmpeg_write_image(filename, image):
                           "WARNING: this command returned an error:",
                           proc.stderr.read().decode('utf8')])
         raise IOError(err)
+
+
     
     del proc
