@@ -1,6 +1,6 @@
 """
-This file is meant to make it easy to load the main features of MoviePy
-by simply typing:
+This file is meant to make it easy to load the main features of
+MoviePy by simply typing:
 
 >>> from moviepy.editor import *
 
@@ -20,6 +20,7 @@ clip.preview().
 # Clips
 
 from .video.io.VideoFileClip import VideoFileClip
+from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip
 from .video.compositing.concatenate import concatenate
@@ -62,7 +63,8 @@ for method in ["vfx.crop",
 
 
 for method in ["afx.audio_fadein",
-               "afx.audio_fadeout"]:
+               "afx.audio_fadeout",
+               "afx.volumex"]:
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 
 
@@ -75,10 +77,10 @@ try:
     from moviepy.video.io.preview import show, preview
 except ImportError:
     def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.preview requires Pygame installed  """
+        """NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
     def show(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.show requires Pygame installed  """
+        """NOT AVAILABLE : clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
 
 
@@ -89,7 +91,7 @@ try:
     from moviepy.audio.io.preview import preview
 except ImportError:
     def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.preview requires Pygame installed  """
+        """ NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
 AudioClip.preview = preview

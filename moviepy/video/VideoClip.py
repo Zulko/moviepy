@@ -340,6 +340,67 @@ class VideoClip(Clip):
         return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 
 
+    def to_images_sequence(self, nameformat, fps=None, verbose=True):
+        """ Writes the videoclip to a sequence of image files.
+
+
+        Parameters
+        -----------
+
+        nameformat
+          A filename specifying the numerotation format and extension
+          of the pictures. For instance "frame%03d.png" for filenames
+          indexed with 3 digits and PNG format. Also possible:
+          "some_folder/frame%04d.jpeg", etc.
+
+        fps
+          Number of frames per second to consider when writing the clip.
+          If not specified, the clip's ``fps`` attribute will be used if
+          it has one.
+
+        verbose
+          Verbose output ?
+
+
+        Returns
+        --------
+
+        names_list
+          A list of all the files generated.
+
+        Notes
+        ------
+
+        The resulting image sequence can be read using e.g. the class
+        ``DirectoryClip``.
+
+        """
+
+        if verbose:
+          print( "MoviePy: Writing frames %s."%(nameformat))
+
+        if fps is None:
+            fps = self.fps
+
+        tt = np.arange(0, self.duration, 1.0/fps)
+
+        filenames = []
+        total = int(self.duration/fps)+1
+        for i, t in tqdm(enumerate(tt), total=total):
+            name = nameformat%(i+1)
+            filenames.append(name)
+            self.save_frame(name, t, savemask=True)
+
+        if verbose:
+          print( "MoviePy: Done writing frames %s."%(nameformat))
+
+        return filenames
+
+
+
+
+
+
 
     def to_gif(self, filename, fps=None, program= 'ImageMagick',
             opt="OptimizeTransparency", fuzz=1, verbose=True,
