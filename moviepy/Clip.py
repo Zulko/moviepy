@@ -326,7 +326,8 @@ class Clip:
         subclips of ``mask`` and ``audio`` the original clip, if
         they exist.
         """
-        
+
+
         newclip = self.fl_time(lambda t: t + ta, apply_to=[])
         if (tb is None) and (self.duration != None):
             tb = self.duration
@@ -335,7 +336,7 @@ class Clip:
                 print ("Error: subclip with negative times can only be"+
                         "be taken from clips with a ``duration``")
             else:
-                tb = self.duration - tb
+                tb = self.duration + tb
         if (tb is not None):
             newclip.duration = tb - ta
             newclip.end = newclip.start + newclip.duration
