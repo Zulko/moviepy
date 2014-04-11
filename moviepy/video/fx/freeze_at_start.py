@@ -2,7 +2,6 @@ from moviepy.decorators import requires_duration
 from moviepy.video.VideoClip import ImageClip
 from moviepy.video.compositing.concatenate import concatenate
 
-
 @requires_duration
 def freeze_at_start(clip, freeze_duration=None, total_duration=None):
     """ Momentarily freeze the clip on its first frame.
@@ -15,9 +14,12 @@ def freeze_at_start(clip, freeze_duration=None, total_duration=None):
     """
     
     freezed_clip = ImageClip(clip.get_frame(0))
+    if clip.mask:
+        freezed_clip.mask = ImageClip(clip.mask.get_frame(0))
+    
     if total_duration:
         freeze_duration = total_duration - clip.duration
     if freeze_duration:
         freezed_clip = freezed_clip.set_duration(freeze_duration)
     
-    return concatenate([freezed_clip,clip])
+    return concatenate([freezed_clip, clip])

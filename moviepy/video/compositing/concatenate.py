@@ -8,7 +8,7 @@ from moviepy.video.compositing.on_color import on_color
 
 def concatenate(clipslist, method = 'chain', transition=None,
            bg_color=(0, 0, 0), transparent=False, ismask=False, crossover = 0):
-    """
+    """ Concatenates several video clips
     
     Returns a video clip made by clip by concatenating several video clips.
     (Concatenated means that they will be played one after another).
@@ -23,19 +23,25 @@ def concatenate(clipslist, method = 'chain', transition=None,
     Returns a VideoClip instance if all clips have the same size and
     there is no transition, else a composite clip.
     
-    :param clipslist: a list of video clips which must all have
-                     their ``duration`` attributes set.
-    :param transition: a clip that will be played between each two
-                       clips of the list.  
-    :param bg_color: color of the background ()
-    :param transparent: if True, the resulting clip's mask will be the
-              concatenation of the masks of the clips in the list. If
-              the clips do not have the same resolution, the border around
-              the smaller clips will be transparent.
+    Parameters
+    -----------
+
+    clipslist
+      A list of video clips which must all have their ``duration``
+      attributes set.
     
-    :ivar start_times (list): ``start_times[i]`` gives the time at which
-        the i-th clip starts playing.
-       
+    transition
+      A clip that will be played between each two clips of the list.  
+    
+    bg_color
+      Color of the background, if any.
+
+    transparent
+      If True, the resulting clip's mask will be the concatenation of
+      the masks of the clips in the list. If the clips do not have the
+      same resolution, the border around the smaller clips will be
+      transparent.
+    
                        
     """
     
@@ -52,11 +58,15 @@ def concatenate(clipslist, method = 'chain', transition=None,
     if method == 'chain':
         result = VideoClip(ismask = ismask)
         result.size = (w,h)
+
         def gf(t):
             i = max([i for i, e in enumerate(tt) if e <= t])
             return clipslist[i].get_frame(t - tt[i])
+        
         result.get_frame = gf
-        if (len(sizes)>1) and (bg_color !=None):
+        if (len(set(map(tuple,sizes)))>1) and (bg_color is not None):
+            # If not all clips have the same size, flatten the result
+            # on some color
             result = result.fx( on_color, (w,h), bg_color, 'center')
         
     elif method == 'compose':
@@ -66,6 +76,8 @@ def concatenate(clipslist, method = 'chain', transition=None,
                    size = (w, h), bg_color=bg_color, ismask=ismask,
                    transparent=transparent)
     
+    result.tt = tt
+    result.clipslist = clipslist
     result.start_times = tt[:-1]
     result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
     

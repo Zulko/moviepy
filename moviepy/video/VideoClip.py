@@ -101,12 +101,17 @@ class VideoClip(Clip):
 
 
 
+    # ===============================================================
+    # EXPORT OPERATIONS
+
+
+
     def save_frame(self, filename, t=0, savemask=False):
         """ Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
-        'filename'. If ``savemask`` is ``True`` the mask is saved in the
-        alpha layer of the picture.
+        'filename'. If ``savemask`` is ``True`` the mask is saved in
+        the alpha layer of the picture.
 
         """
         im = self.get_frame(t)
@@ -114,6 +119,7 @@ class VideoClip(Clip):
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
         ffmpeg_write_image(filename, im)
+
 
 
     def to_videofile(self, filename, fps=24, codec='libx264',
@@ -144,7 +150,8 @@ class VideoClip(Clip):
           of perfect quality, but possibly very huge size. 'png' is
           is lossless and produces smaller files than 'rawvideo'.
 
-          ``'mpeg4'`` produces nice quality, very well compressed videos.
+          ``'mpeg4'`` produces nice quality, very well compressed
+          videos.
 
           ``'libx264'`` (default) is a little better than 'mpeg4',
           a little heavier.
@@ -153,8 +160,8 @@ class VideoClip(Clip):
           Either ``True``, ``False``, or a file name.
           If ``True`` and the clip has an audio clip attached, this
           audio clip will be incorporated as a soundtrack in the movie.
-          If ``audio`` is the name of an audio file, this audio file will
-          be incorporated as a soundtrack in the movie.
+          If ``audio`` is the name of an audio file, this audio file
+          will be incorporated as a soundtrack in the movie.
 
         audiofps
           frame rate to use when writing the sound.
@@ -223,7 +230,9 @@ class VideoClip(Clip):
         if merge_audio:
 
             # make a name for the temporary video file
-            videofile = Clip._TEMP_FILES_PREFIX + "to_videofile_"+ filename
+            videofile = (Clip._TEMP_FILES_PREFIX +
+                         "to_videofile_"+
+                         filename)
 
         else:
 
@@ -242,7 +251,9 @@ class VideoClip(Clip):
             audioproc = multiprocessing.Process(
                     target=self.audio.to_audiofile,
                     args=(temp_audiofile,audio_fps,audio_nbytes,
-                          audio_bufsize,audio_codec, audio_bitrate,verbose))
+                          audio_bufsize,audio_codec,
+                          audio_bitrate,
+                          verbose))
 
             audioproc.start()
             
@@ -285,61 +296,6 @@ class VideoClip(Clip):
                           " for the Oscars !\n")
 
 
-    def blit_on(self, picture, t):
-        """
-        Returns the result of the blit of the clip's frame at time `t`
-        on the given `picture`, the position of the clip being given
-        by the clip's ``pos`` attribute. Meant for compositing.
-        """
-
-        hf, wf = sizef = picture.shape[:2]
-
-        if self.ismask and picture.max() != 0:
-                return np.maximum(picture, self.blit_on(np.zeros(sizef), t))
-
-        ct = t - self.start  # clip time
-
-        # GET IMAGE AND MASK IF ANY
-
-        img = self.get_frame(ct)
-        mask = (None if (self.mask is None) else self.mask.get_frame(ct))
-        hi, wi = img.shape[:2]
-
-        # SET POSITION
-
-        pos = self.pos(ct)
-
-
-        # preprocess short writings of the position
-        if isinstance(pos,str):
-            pos = { 'center': ['center','center'],
-                    'left': ['left','center'],
-                    'right': ['right','center'],
-                    'top':['center','top'],
-                    'bottom':['center','bottom']}[pos]
-        else:
-            pos = list(pos)
-
-        # is the position relative (given in % of the clip's size) ?
-        if self.relative_pos:
-            for i, dim in enumerate(wf, hf):
-                if not isinstance(pos[i], str):
-                    pos[i] = dim * pos[i]
-
-        if isinstance(pos[0], str):
-            D = {'left': 0, 'center': (wf - wi) / 2, 'right': wf - wi}
-            pos[0] = D[pos[0]]
-
-        if isinstance(pos[1], str):
-
-            D = {'top': 0, 'center': (hf - hi) / 2, 'bottom': hf - hi}
-            pos[1] = D[pos[1]]
-
-        pos = map(int, pos)
-
-        return blit(img, picture, pos, mask=mask, ismask=self.ismask)
-
-
     def to_images_sequence(self, nameformat, fps=None, verbose=True):
         """ Writes the videoclip to a sequence of image files.
 
@@ -354,9 +310,9 @@ class VideoClip(Clip):
           "some_folder/frame%04d.jpeg", etc.
 
         fps
-          Number of frames per second to consider when writing the clip.
-          If not specified, the clip's ``fps`` attribute will be used if
-          it has one.
+          Number of frames per second to consider when writing the
+          clip. If not specified, the clip's ``fps`` attribute will
+          be used if it has one.
 
         verbose
           Verbose output ?
@@ -398,16 +354,13 @@ class VideoClip(Clip):
 
 
 
-
-
-
-
     def to_gif(self, filename, fps=None, program= 'ImageMagick',
             opt="OptimizeTransparency", fuzz=1, verbose=True,
             loop=0, dispose=False):
-        """ Write the VideoClip to a GIF file
-        Converts a VideoClip into an animated GIF using ImageMagick or
-        ffmpeg.
+        """ Write the VideoClip to a GIF file.
+
+        Converts a VideoClip into an animated GIF using ImageMagick
+        or ffmpeg.
 
 
         Parameters
@@ -430,8 +383,9 @@ class VideoClip(Clip):
           'optimizeplus' or 'OptimizeTransparency'.
 
         fuzz
-          (ImageMagick only) Compresses the GIF by considering that the
-          colors that are less than fuzz% different are in fact the same.
+          (ImageMagick only) Compresses the GIF by considering that
+          the colors that are less than fuzz% different are in fact
+          the same.
 
 
         Notes
@@ -508,9 +462,9 @@ class VideoClip(Clip):
     def subfx(self, fx, ta=0, tb=None, **kwargs):
         """ Apply a transformation to a part of the clip.
 
-        Returns a new clip in which the function ``fun`` (clip->clip) has
-        been applied to the subclip between times `ta` and `tb` (in
-        seconds).
+        Returns a new clip in which the function ``fun`` (clip->clip)
+        has been applied to the subclip between times `ta` and `tb`
+        (in seconds).
 
         Examples
         ---------
@@ -546,7 +500,62 @@ class VideoClip(Clip):
     #--------------------------------------------------------------
     # C O M P O S I T I N G
 
+    
+    def blit_on(self, picture, t):
+        """
+        Returns the result of the blit of the clip's frame at time `t`
+        on the given `picture`, the position of the clip being given
+        by the clip's ``pos`` attribute. Meant for compositing.
+        """
 
+        hf, wf = sizef = picture.shape[:2]
+
+        if self.ismask and picture.max() != 0:
+                return np.maximum(picture,
+                                  self.blit_on(np.zeros(sizef), t))
+
+        ct = t - self.start  # clip time
+
+        # GET IMAGE AND MASK IF ANY
+
+        img = self.get_frame(ct)
+        mask = (None if (self.mask is None) else
+                self.mask.get_frame(ct))
+        hi, wi = img.shape[:2]
+
+        # SET POSITION
+
+        pos = self.pos(ct)
+
+
+        # preprocess short writings of the position
+        if isinstance(pos,str):
+            pos = { 'center': ['center','center'],
+                    'left': ['left','center'],
+                    'right': ['right','center'],
+                    'top':['center','top'],
+                    'bottom':['center','bottom']}[pos]
+        else:
+            pos = list(pos)
+
+        # is the position relative (given in % of the clip's size) ?
+        if self.relative_pos:
+            for i, dim in enumerate(wf, hf):
+                if not isinstance(pos[i], str):
+                    pos[i] = dim * pos[i]
+
+        if isinstance(pos[0], str):
+            D = {'left': 0, 'center': (wf - wi) / 2, 'right': wf - wi}
+            pos[0] = D[pos[0]]
+
+        if isinstance(pos[1], str):
+
+            D = {'top': 0, 'center': (hf - hi) / 2, 'bottom': hf - hi}
+            pos[1] = D[pos[1]]
+
+        pos = map(int, pos)
+
+        return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 
     def add_mask(self, constant_size=True):
         """ Add a mask VideoClip to the VideoClip.
@@ -643,6 +652,7 @@ class VideoClip(Clip):
         self.mask = mask
 
 
+
     @add_mask_if_none
     @outplace
     def set_opacity(self, op):
@@ -690,14 +700,15 @@ class VideoClip(Clip):
             self.pos = lambda t: pos
 
 
+
     #--------------------------------------------------------------
-    # CONVERSIONS
+    # CONVERSIONS TO OTHER TYPES
 
 
 
     def to_ImageClip(self,t=0):
         """
-        Return an ImageClip made out of the clip's frame at time ``t``
+        Returns an ImageClip made out of the clip's frame at time ``t``
         """
         return ImageClip(self.get_frame(t))
 
@@ -705,7 +716,7 @@ class VideoClip(Clip):
 
     def to_mask(self, canal=0):
         """
-        Return a mask a video clip made from the clip.
+        Returns a mask a video clip made from the clip.
         """
         if self.ismask:
             return self
@@ -719,7 +730,7 @@ class VideoClip(Clip):
 
     def to_RGB(self):
         """
-        Return a non-mask video clip made from the mask video clip.
+        Returns a non-mask video clip made from the mask video clip.
         """
         if self.ismask:
             f = lambda pic: np.dstack(3 * [255 * pic]).astype('uint8')
@@ -729,6 +740,38 @@ class VideoClip(Clip):
         else:
             return self
 
+
+    @requires_duration
+    def iter_frames(self, fps=None):
+        """ Iterates over all the frames of the clip.
+        
+        Returns each frame of the clip as a HxWxN np.array,
+        where N=1 for mask clips and N=3 for RGB clips.
+        
+        This function is not really meant for video editing.
+        It provides an easy way to do frame-by-frame treatment of
+        a video, for fields like science, computer vision...
+        
+        The ``fps`` (frames per second) parameter is optional if the
+        clip already has a ``fps`` attribute.
+        
+        Examples
+        ---------
+        
+        >>> # prints the maximum of red that is contained
+        >>> # on the first line of each frame of the clip.
+        >>> from moviepy.editor import VideoFileClip
+        >>> myclip = VideoFileClip('myvideo.mp4')
+        >>> for frame in myclip.iter_frames():
+        >>>     print ( frame[0,:,0].max() )
+        
+        """
+        
+        if fps is None:
+            fps = self.fps
+            
+        for t in np.arange(0, self.duration, 1.0/fps):
+            yield self.get_frame(t)
 
     #----------------------------------------------------------------
     # Audio

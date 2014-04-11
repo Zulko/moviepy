@@ -144,7 +144,8 @@ class FFMPEG_VideoReader:
         elif t > self.duration:
             t = self.duration
 
-        pos = int(self.fps*t)+1
+        pos = int(np.round(self.fps*t))+1
+        
         if pos == self.pos:
             return self.lastread
         else:
