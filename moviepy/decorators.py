@@ -6,6 +6,7 @@ import decorator
 from moviepy.tools import cvsecs
 
 
+
 @decorator.decorator
 def outplace(f, clip, *a, **k):
     """ Enables to make operations outplace """
@@ -13,6 +14,7 @@ def outplace(f, clip, *a, **k):
     f(newclip, *a, **k)
     return newclip
     
+
 
 @decorator.decorator
 def apply_to_mask(f, clip, *a, **k):
@@ -23,6 +25,7 @@ def apply_to_mask(f, clip, *a, **k):
     if hasattr(newclip, 'mask') and (newclip.mask != None):
         newclip.mask = f(newclip.mask, *a, **k)
     return newclip
+
 
 
 @decorator.decorator
@@ -36,6 +39,7 @@ def apply_to_audio(f, clip, *a, **k):
     return newclip
     
     
+
 @decorator.decorator
 def add_mask_if_none(f, clip, *a, **k):
     """ Add a mask to the clip if there is none. """
@@ -43,6 +47,7 @@ def add_mask_if_none(f, clip, *a, **k):
     if clip.mask is None:
         clip = clip.add_mask()
     return f(clip, *a, **k)
+
 
 
 @decorator.decorator
@@ -53,6 +58,8 @@ def requires_duration(f, clip, *a, **k):
         raise ValueError("Attribute 'duration' not set")
     else:
         return f(clip, *a, **k)
+
+
 
 @decorator.decorator
 def audio_video_fx(f, clip, *a, **k):
@@ -70,6 +77,8 @@ def audio_video_fx(f, clip, *a, **k):
         return newclip
     else:
         return f(clip, *a, **k)
+
+
 
 @decorator.decorator
 def time_can_be_tuple(f, clip, *a, **k):

@@ -49,6 +49,7 @@ except ImportError:
 # they can be walled with myclip.resize(width=500) instead of 
 # myclip.fx( vfx.resize, width= 500)
 for method in ["vfx.crop",
+               "vfx.loop",
                "vfx.resize",
                "vfx.margin",
                "vfx.fadein",
@@ -64,6 +65,7 @@ for method in ["vfx.crop",
 
 for method in ["afx.audio_fadein",
                "afx.audio_fadeout",
+               "vfx.loop",
                "afx.volumex"]:
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 

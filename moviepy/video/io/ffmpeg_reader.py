@@ -96,8 +96,11 @@ class FFMPEG_VideoReader:
         line = [l for l in lines if 'Duration: ' in l][0]
         match = re.search(" [0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
         hms = map(float, line[match.start()+1:match.end()].split(':'))
-        self.duration = cvsecs(*hms)
-        self.nframes = int(self.duration*self.fps)
+        duration = cvsecs(*hms)
+        self.nframes = int(duration*self.fps)
+        self.duration = self.nframes / self.fps
+
+
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
@@ -145,7 +148,12 @@ class FFMPEG_VideoReader:
             t = self.duration
 
         pos = int(np.round(self.fps*t))+1
+        if pos > self.nframes+1:
+            raise ValueError("Video file %s has only %d frames but frame"
+                              " #%d asked"%(self.filename, self.nframes, pos))
         
+
+
         if pos == self.pos:
             return self.lastread
         else:

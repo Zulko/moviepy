@@ -215,8 +215,8 @@ class VideoClip(Clip):
                         raise ValueError('audio_codec for file'
                                           '%d unkown !'%filename)
 
-                temp_audiofile = (Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND_%s."%name + audio_ext)
+                temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
+                            "to_videofile_SOUND%s"%audio_ext)
 
             make_audio = ( (not os.path.exists(temp_audiofile))
                             or rewrite_audio)
@@ -230,9 +230,8 @@ class VideoClip(Clip):
         if merge_audio:
 
             # make a name for the temporary video file
-            videofile = (Clip._TEMP_FILES_PREFIX +
-                         "to_videofile_"+
-                         filename)
+            videofile = (name + Clip._TEMP_FILES_PREFIX +
+                         "to_videofile%s"%ext)
 
         else:
 

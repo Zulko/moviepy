@@ -276,11 +276,11 @@ class Clip:
     def is_playing(self, t):
         """
         
-        If t is a number, returns true if t is between the start and the
-        end of the clip.
-        If t is a numpy array, returns False if none of the t is in the
-        clip, else returns a vector [b_1, b_2, b_3...] where b_i is true
-        iff tti is in the clip. 
+        If t is a number, returns true if t is between the start and
+        the end of the clip.
+        If t is a numpy array, returns False if none of the t is in
+        theclip, else returns a vector [b_1, b_2, b_3...] where b_i
+        is true iff tti is in the clip. 
         """
         
         if isinstance(t, np.ndarray):
@@ -307,19 +307,19 @@ class Clip:
     @time_can_be_tuple
     @apply_to_mask
     @apply_to_audio
-    def subclip(self, ta=0, tb=None):
+    def subclip(self, t_start=0, t_end=None):
         """
         Returns a clip playing the content of the current clip
-        between times ``ta`` and ``tb`` (in seconds).
-        If ``tb`` is not provided, it is assumed to be the duration of
-        the clip (potentially infinite).
-        If ``tb`` is a negative value, it is reset to
-        ``clip.duration - tb. ``. For instance: ::
+        between times ``t_start`` and ``t_end`` (in seconds).
+        If ``t_end`` is not provided, it is assumed to be the duration
+        of the clip (potentially infinite).
+        If ``t_end`` is a negative value, it is reset to
+        ``clip.duration + t_end. ``. For instance: ::
         
             >>> # cut the last two seconds of the clip:
             >>> newclip = clip.subclip(0,-2)
         
-        If ``tb`` is provided or if the clip has a duration attribute,
+        If ``t_end`` is provided or if the clip has a duration attribute,
         the duration of the returned clip is set automatically.
         
         The ``mask`` and ``audio`` of the resulting subclip will be
@@ -327,18 +327,22 @@ class Clip:
         they exist.
         """
 
+        if (self.duration is not None) and (t_start>self.duration):
+            raise ValueError("t_start (%.02f) "%t_start +
+                             "should be smaller than the clip's "+
+                             "duration (%.02f)."%self.duration)
 
-        newclip = self.fl_time(lambda t: t + ta, apply_to=[])
-        if (tb is None) and (self.duration != None):
-            tb = self.duration
-        elif tb<0:
+        newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
+        if (t_end is None) and (self.duration is not None):
+            t_end = self.duration
+        elif t_end<0:
             if self.duration is None:
                 print ("Error: subclip with negative times can only be"+
-                        "be taken from clips with a ``duration``")
+                        "extracted from clips with a ``duration``")
             else:
-                tb = self.duration + tb
-        if (tb is not None):
-            newclip.duration = tb - ta
+                t_end = self.duration + t_end
+        if (t_end is not None):
+            newclip.duration = t_end - t_start
             newclip.end = newclip.start + newclip.duration
             
         return newclip

@@ -164,7 +164,9 @@ class FFMPEG_AudioReader:
             # 99.99 %  of the cases
             
             
-            # elements of t that are actually in time
+            # elements of t that are actually in the range of the
+            # audio file.
+            
             in_time = (tt>=0) & (tt < self.duration)
             
             # The np.round in the next line is super-important.
