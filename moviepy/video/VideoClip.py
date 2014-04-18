@@ -166,7 +166,7 @@ class VideoClip(Clip):
         audiofps
           frame rate to use when writing the sound.
 
-        temp_wav
+        temp_audiofile
           the name of the temporary audiofile to be generated and
           incorporated in the the movie, if any.
 
@@ -216,7 +216,7 @@ class VideoClip(Clip):
                                           '%d unkown !'%filename)
 
                 temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND%s"%audio_ext)
+                            "to_videofile_SOUND.%s"%audio_ext)
 
             make_audio = ( (not os.path.exists(temp_audiofile))
                             or rewrite_audio)
