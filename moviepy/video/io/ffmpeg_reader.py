@@ -14,7 +14,14 @@ class FFMPEG_VideoReader:
                  pix_fmt="rgb24"):
 
         self.filename = filename
-        self.load_infos(print_infos)
+        infos = ffmpeg_parse_infos(filename, print_infos)
+        self.fps = infos['video_fps']
+        self.size = infos['video_size']
+        self.duration = infos['video_duration']
+        self.nframes = infos['video_nframes']
+
+        self.infos = infos
+
         self.pix_fmt = pix_fmt
         if pix_fmt == 'rgba':
             self.depth = 4
@@ -32,6 +39,7 @@ class FFMPEG_VideoReader:
 
         self.pos = 1
         self.lastread = self.read_frame()
+
 
     def initialize(self, starttime=0):
         """Opens the file, creates the pipe. """
@@ -57,48 +65,8 @@ class FFMPEG_VideoReader:
         self.proc = sp.Popen(cmd, bufsize= self.bufsize,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
-                                   
-    
-    def load_infos(self, print_infos=False):
-        """Get file infos using ffmpeg.
-        
-        Grabs the FFMPEG info on the file and use them to set the
-        attributes ``self.size`` and ``self.fps`` """
-            
-        # open the file in a pipe, provoke an error, read output
-        proc = sp.Popen([FFMPEG_BINARY, "-i", self.filename, "-"],
-                bufsize=10**6,
-                stdout=sp.PIPE,
-                stderr=sp.PIPE)
-        proc.stdout.readline()
-        proc.terminate()
-        infos = proc.stderr.read().decode('utf8')
-        if print_infos:
-            # print the whole info text returned by FFMPEG
-            print( infos )
 
-        lines = infos.splitlines()
-        if "No such file or directory" in lines[-1]:
-            raise IOError("%s not found ! Wrong path ?" % self.filename)
 
-        # get the output line that speaks about video
-        line = [l for l in lines if ' Video: ' in l][0]
-
-        # get the size, of the form 460x320 (w x h)
-        match = re.search(" [0-9]*x[0-9]*(,| )", line)
-        self.size = list(map(int, line[match.start():match.end()-1].split('x')))
-
-        # get the frame rate
-        match = re.search("( [0-9]*.| )[0-9]* (tbr|fps)", line)
-        self.fps = float(line[match.start():match.end()].split(' ')[1])
-
-        # get duration (in seconds)
-        line = [l for l in lines if 'Duration: ' in l][0]
-        match = re.search(" [0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
-        hms = map(float, line[match.start()+1:match.end()].split(':'))
-        duration = cvsecs(*hms)
-        self.nframes = int(duration*self.fps)
-        self.duration = self.nframes / self.fps
 
 
 
@@ -146,14 +114,16 @@ class FFMPEG_VideoReader:
             t = 0
         elif t > self.duration:
             t = self.duration
+        
 
+        # these definitely need to be rechecked sometime. Seems to work.
         pos = int(np.round(self.fps*t))+1
         if pos > self.nframes+1:
             raise ValueError("Video file %s has only %d frames but frame"
                               " #%d asked"%(self.filename, self.nframes, pos))
         
 
-
+        
         if pos == self.pos:
             return self.lastread
         else:
@@ -203,3 +173,84 @@ def ffmpeg_read_image(filename, with_mask=True):
     im = reader.lastread
     del reader
     return im
+
+def ffmpeg_parse_infos(filename, print_infos=False):
+    """Get file infos using ffmpeg.
+
+    Returns a dictionnary with the fields:
+    "video_found", "video_fps", "duration", "video_nframes",
+    "video_duration"
+    "audio_found", "audio_fps"
+
+    "video_duration" is slightly smaller than "duration" to avoid
+    fetching the uncomplete frames at the end, which raises an error.
+
+    """
+    
+
+    # open the file in a pipe, provoke an error, read output
+    proc = sp.Popen([FFMPEG_BINARY, "-i", filename, "-"],
+            bufsize=10**6,
+            stdout=sp.PIPE,
+            stderr=sp.PIPE)
+
+    proc.stdout.readline()
+    proc.terminate()
+    infos = proc.stderr.read().decode('utf8')
+    if print_infos:
+        # print the whole info text returned by FFMPEG
+        print( infos )
+
+
+    lines = infos.splitlines()
+    if "No such file or directory" in lines[-1]:
+        raise IOError("%s not found ! Wrong path ?"%filename)
+    
+    result = dict()
+    
+
+    # get duration (in seconds)
+    line = [l for l in lines if 'Duration: ' in l][0]
+    match = re.search(" [0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
+    hms = map(float, line[match.start()+1:match.end()].split(':'))
+    result['duration'] = cvsecs(*hms)
+
+    # get the output line that speaks about video
+    lines_video = [l for l in lines if ' Video: ' in l]
+    
+    result['video_found'] = lines_video != []
+    
+    if result['video_found']:
+        
+        line = lines_video[0]
+
+        # get the size, of the form 460x320 (w x h)
+        match = re.search(" [0-9]*x[0-9]*(,| )", line)
+        s = list(map(int, line[match.start():match.end()-1].split('x')))
+        result['video_size'] = s
+
+
+        # get the frame rate
+        try:
+            match = re.search("( [0-9]*.| )[0-9]* tbr", line)
+            result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+        except:
+            match = re.search("( [0-9]*.| )[0-9]* fps", line)
+            result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+
+        result['video_nframes'] = int(result['duration']*result['video_fps'])
+        result['video_duration'] = result['video_nframes'] / result['video_fps']
+    
+    lines_audio = [l for l in lines if ' Audio: ' in l]
+    
+    result['audio_found'] = lines_audio != []
+    
+    if result['audio_found']:
+        line = lines_audio[0]
+        try:
+            match = re.search(" [0-9]* Hz", line)
+            result['audio_fps'] = int(line[match.start()+1:match.end()])
+        except:
+            result['audio_fps'] = 'unknown'
+
+    return result

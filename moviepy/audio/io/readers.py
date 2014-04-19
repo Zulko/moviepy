@@ -3,6 +3,8 @@ import re
 
 import numpy as np
 from moviepy.tools import cvsecs
+
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.conf import FFMPEG_BINARY
 
     
@@ -45,7 +47,13 @@ class FFMPEG_AudioReader:
         self.f = 's%dle'%(8*nbytes)
         self.acodec = 'pcm_s%dle'%(8*nbytes)
         self.nchannels = nchannels
-        self.load_infos()
+        infos = ffmpeg_parse_infos(filename)
+        self.duration = infos['duration']
+        if 'video_duration' in infos:
+            self.duration = infos['video_duration']
+        else:
+            self.duration = infos['duration']
+        self.infos = infos
         self.proc = None
         
         self.buffersize=buffersize
@@ -53,35 +61,6 @@ class FFMPEG_AudioReader:
         self.buffer_startframe = 1
         self.initialize()
         self.buffer_around(1)
-        
-    
-    def load_infos(self, print_infos=False):
-        """ reads the FFMPEG info on the file and sets self.size
-            and self.fps """
-        # open the file in a pipe, provoke an error, read output
-        proc = sp.Popen([FFMPEG_BINARY,"-i",self.filename, "-"],
-                stdin=sp.PIPE,
-                stdout=sp.PIPE,
-                stderr=sp.PIPE)
-        proc.stdout.readline()
-        proc.terminate()
-        infos = proc.stderr.read().decode('utf8')
-
-        if print_infos:
-            # print the whole info text returned by FFMPEG
-            print( infos )
-            
-        lines = infos.splitlines()
-        
-        if "No such file or directory" in lines[-1]:
-            raise IOError("%s not found ! Wrong path ?"%self.filename)
-            
-        # get duration (in seconds)
-        line = [l for l in lines if 'Duration: ' in l][0]
-        match = re.search(" [0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]",line)
-        hms = map(float,line[match.start()+1:match.end()].split(':'))
-        self.duration = cvsecs(*hms)
-        self.nframes = int(self.duration*self.fps)
     
     
     

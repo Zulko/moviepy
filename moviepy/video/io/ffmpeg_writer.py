@@ -74,6 +74,7 @@ class FFMPEG_VideoWriter:
           logfile = DEVNULL
 
         self.filename = filename
+
         cmd = (
             [ FFMPEG_BINARY, '-y',
             "-loglevel", "panic" if logfile==DEVNULL else "info",
@@ -109,6 +110,7 @@ class FFMPEG_VideoWriter:
         
     def close(self):
         self.proc.stdin.close()
+        #self.proc.stdout.close()
         #self.proc.stderr.close()
         self.proc.wait()
         

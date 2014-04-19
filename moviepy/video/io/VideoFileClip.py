@@ -66,7 +66,7 @@ class VideoFileClip(VideoClip):
         self.get_frame = lambda t: self.reader.get_frame(t)
         
         # Make a reader for the audio, if any.
-        if audio:
+        if audio and self.reader.infos['audio_found']:
             self.audio = AudioFileClip(filename,
                                        buffersize= audio_buffersize,
                                        fps = audio_fps,

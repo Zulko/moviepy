@@ -65,7 +65,7 @@ class AudioFileClip(AudioClip):
         self.duration = self.reader.duration
         self.end = self.duration
         
-        self.nframes = self.reader.nframes
+        
         self.get_frame =  lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
     

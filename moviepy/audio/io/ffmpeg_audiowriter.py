@@ -4,6 +4,12 @@ import sys
 import numpy as np
 import subprocess as sp
 
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
 from tqdm import tqdm
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
@@ -38,11 +44,17 @@ class FFMPEG_AudioWriter:
     
     
         
-    def __init__(self, filename, fps_input, nbytes=2, nchannels = 2,
-                  codec='libfdk_aac', bitrate=None, input_video=None):
+    def __init__(self, filename, fps_input, nbytes=2,
+                 nchannels = 2, codec='libfdk_aac', bitrate=None,
+                 input_video=None,logfile=None):
         
         self.filename = filename
+
+        if logfile is None:
+          logfile = DEVNULL
+
         cmd = ([ FFMPEG_BINARY, '-y',
+            "-loglevel", "panic" if logfile==DEVNULL else "info",
             "-f", 's%dle'%(8*nbytes),
             "-acodec",'pcm_s%dle'%(8*nbytes),
             '-ar', "%d"%fps_input,
@@ -56,7 +68,11 @@ class FFMPEG_AudioWriter:
             + (['-ab',bitrate] if (bitrate!=None) else [])
             + [ filename ])
         
-        self.proc = sp.Popen(cmd,stdin=sp.PIPE, stderr=sp.PIPE)
+
+        self.proc = sp.Popen(cmd, stdin=sp.PIPE,
+                                  stderr=logfile,
+                                  stdout=DEVNULL)
+
         
     def write_frames(self,frames_array):
         self.proc.stdin.write(frames_array.tostring())
@@ -64,7 +80,8 @@ class FFMPEG_AudioWriter:
         
     def close(self):
         self.proc.stdin.close()
-        self.proc.stderr.close()
+        #self.proc.stderr.close()
+        #self.proc.stdout.close()
         self.proc.wait()
         del self.proc
         
@@ -72,7 +89,8 @@ class FFMPEG_AudioWriter:
         
 @requires_duration       
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
-                      codec='libvorbis', bitrate=None, verbose=True):
+                      codec='libvorbis', bitrate=None,
+                      write_logfile = False, verbose=True):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
@@ -80,11 +98,17 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     
     def verbose_print(s):
         if verbose: sys_write_flush(s)
+
+    if write_logfile:
+        logfile = open(filename + ".log", 'w+')
+    else:
+        logfile = DEVNULL
         
     verbose_print("Writing audio in %s\n"%filename)
      
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
-                                codec=codec, bitrate=bitrate)
+                                codec=codec, bitrate=bitrate,
+                                logfile=logfile)
                                 
     totalsize = int(fps*clip.duration)
     
@@ -99,7 +123,11 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt, nbytes= nbytes)
         writer.write_frames(sndarray)
-    
+
+
     writer.close()
     
+    if write_logfile:
+        logfile.close()
+
     verbose_print("Done writing Audio in %s !\n"%filename)
