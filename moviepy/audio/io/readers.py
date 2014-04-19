@@ -79,7 +79,8 @@ class FFMPEG_AudioReader:
              
         
         cmd = ([FFMPEG_BINARY] + i_arg + 
-               ['-f', self.f,
+               [ '-loglevel', 'error',
+                 '-f', self.f,
                 '-acodec', self.acodec,
                 '-ar', "%d"%self.fps,
                 '-ac', '%d'%self.nchannels, '-'])
