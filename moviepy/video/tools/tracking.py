@@ -13,11 +13,11 @@ from scipy.interpolate import interp1d
 from moviepy.video.io.preview import imdisplay
 
 try:
-	import cv2
+    import cv2
 except:
-	# Note: this will be later fixed with scipy/skimage replacements
-	# but for the moment OpenCV is mandatory, so...
-	print "WARNING: OpenCV not found: automated tracking not possible"
+    # Note: this will be later fixed with scipy/skimage replacements
+    # but for the moment OpenCV is mandatory, so...
+    print "WARNING: OpenCV not found: automated tracking not possible"
 
 
 
@@ -168,8 +168,8 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
         xy0 = findAround(clip.get_frame(tt[0]),pattern)
     
     if tt is None:
-		tt = np.arange(0, clip.duration, 1.0/fps)
-		
+        tt = np.arange(0, clip.duration, 1.0/fps)
+        
     xys = [xy0]
     for t in tt[1:]:
         xys.append( findAround(clip.get_frame(t),pattern,

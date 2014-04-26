@@ -24,7 +24,7 @@ def headblur(clip,fx,fy,r_zone,r_blur=None):
     if r_blur==None: r_blur = 2*r_zone/3
     
     def fl(gf,t):
-		
+        
         im = gf(t)
         h,w,d = im.shape
         x,y = int(fx(t)),int(fy(t))

@@ -11,25 +11,25 @@ from moviepy.video.fx.fadeout import fadeout
 
 @add_mask_if_none
 def crossfadein(clip, duration):
-	"""
-	Makes the clip appear progressively, over ``duration`` seconds.
-	Only works when the clip is included in a CompositeVideoClip.
-	"""
-	newclip = clip.copy()
-	newclip.mask = clip.mask.fx(fadein, duration)
-	return newclip
+    """
+    Makes the clip appear progressively, over ``duration`` seconds.
+    Only works when the clip is included in a CompositeVideoClip.
+    """
+    newclip = clip.copy()
+    newclip.mask = clip.mask.fx(fadein, duration)
+    return newclip
 
 
 @requires_duration
 @add_mask_if_none
 def crossfadeout(clip, duration):
-	"""
-	Makes the clip disappear progressively, over ``duration`` seconds.
-	Only works when the clip is included in a CompositeVideoClip.
-	"""
-	newclip = clip.copy()
-	newclip.mask = clip.mask.fx(fadeout, duration)
-	return newclip
+    """
+    Makes the clip disappear progressively, over ``duration`` seconds.
+    Only works when the clip is included in a CompositeVideoClip.
+    """
+    newclip = clip.copy()
+    newclip.mask = clip.mask.fx(fadeout, duration)
+    return newclip
 
 
 
