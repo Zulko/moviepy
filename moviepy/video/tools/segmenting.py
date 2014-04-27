@@ -44,7 +44,7 @@ def findObjects(clip,rem_thr=500, preview=False):
     
     if preview:
         import matplotlib.pyplot as plt
-        print "found %d objects"%(num_features)
+        print( "found %d objects"%(num_features) )
         fig,ax = plt.subplots(2)
         ax[0].axis('off')
         ax[0].imshow(labelled)

@@ -17,7 +17,7 @@ try:
 except:
     # Note: this will be later fixed with scipy/skimage replacements
     # but for the moment OpenCV is mandatory, so...
-    print "WARNING: OpenCV not found: automated tracking not possible"
+    print("WARNING: OpenCV not found: automated tracking not possible")
 
 
 
