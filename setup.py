@@ -15,4 +15,4 @@ setup(name='moviepy',
     license='see LICENSE.txt',
     keywords="movie editing film mixing script-based",
     packages= find_packages(exclude='docs'),
-    install_requires=['numpy', 'decorator', 'tqdm'])
+    install_requires= ['numpy', 'decorator', 'tqdm'])

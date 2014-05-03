@@ -91,12 +91,12 @@ class FFMPEG_VideoReader:
                              dtype='uint8').reshape((h, w, len(s)//(w*h)))
             #self.proc.stdout.flush()
             
-        except IOError:
+        except IOError as err:
             
             self.proc.terminate()
             serr = self.proc.stderr.read()
-            print( "error: string: %s, stderr: %s" % (s, serr))
-            raise IOError
+            print( "stderr: %s" %serr)
+            raise err
 
         self.lastread = result
 
