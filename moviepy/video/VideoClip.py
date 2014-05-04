@@ -1036,7 +1036,10 @@ class TextClip(ImageClip):
         if not txt.startswith('@'):
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix='.txt')
-                os.write(temptxt_fd, txt)
+                try: # only in Python3 will this work
+                    os.write(temptxt_fd, bytes(txt,'UTF8'))
+                except TypeError: # oops, fall back to Python2
+                    os.write(temptxt_fd, txt)
                 os.close(temptxt_fd)
             txt = '@'+temptxt
         else:
