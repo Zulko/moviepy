@@ -56,7 +56,8 @@ class FFMPEG_AudioReader:
         self.infos = infos
         self.proc = None
         
-        self.buffersize=buffersize
+        self.nframes = int(self.fps * self.duration)
+        self.buffersize= min( self.nframes, buffersize )
         self.buffer= None
         self.buffer_startframe = 1
         self.initialize()
