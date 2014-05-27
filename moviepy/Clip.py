@@ -287,7 +287,7 @@ class Clip:
             # is the whole list of t outside the clip ?
             tmin, tmax = t.min(), t.max()
             
-            if (self.end != None) and (tmin > self.end) :
+            if (self.end != None) and (tmin >= self.end) :
                 return False
             
             if tmax < self.start:
@@ -302,7 +302,7 @@ class Clip:
         else:
             
             return( (t >= self.start) and
-                    ((self.end is None) or (t <= self.end) ) )
+                    ((self.end is None) or (t < self.end) ) )
     
     @time_can_be_tuple
     @apply_to_mask
