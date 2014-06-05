@@ -18,6 +18,7 @@ class FFMPEG_VideoReader:
         self.fps = infos['video_fps']
         self.size = infos['video_size']
         self.duration = infos['video_duration']
+        self.ffmpeg_duration = infos['duration']
         self.nframes = infos['video_nframes']
 
         self.infos = infos
@@ -82,23 +83,24 @@ class FFMPEG_VideoReader:
     def read_frame(self):
         w, h = self.size
         nbytes= self.depth*w*h
-        try:
-            # Normally, the reader should not read after the last frame.
-            # if it does, raise an error.
-            s = self.proc.stdout.read(nbytes)
-            assert len(s) == nbytes
-            result = np.fromstring(s,
-                             dtype='uint8').reshape((h, w, len(s)//(w*h)))
-            #self.proc.stdout.flush()
-            
-        except IOError as err:
-            
-            self.proc.terminate()
-            serr = self.proc.stderr.read()
-            print( "stderr: %s" %serr)
-            raise err
 
-        self.lastread = result
+        s = self.proc.stdout.read(nbytes)
+        if len(s) != nbytes:
+
+            print( "Warning: in file %s, "%(self.filename)+
+                   "%d bytes wanted but %d bytes read,"%(nbytes, len(s))+
+                   "at frame %d/%d, at time %.02f/%.02f sec. "%(
+                    self.pos,self.nframes,
+                    1.0*self.pos/self.fps,
+                    self.duration)+
+                   "Using the last valid frame instead.")
+            result = self.lastread
+
+        else:
+
+            result = np.fromstring(s, dtype='uint8').\
+                         reshape((h, w, len(s)//(w*h)))
+            self.lastread = result
 
         return result
 
@@ -107,23 +109,20 @@ class FFMPEG_VideoReader:
         
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
-        This function tries to avoid fectching arbitrary frames whenever
-        possible, by moving between adjacent frames.
+        This function tries to avoid fectching arbitrary frames
+        whenever possible, by moving between adjacent frames.
             """
-        if t < 0:
-            t = 0
-        elif t > self.duration:
-            t = self.duration
-        
 
         # these definitely need to be rechecked sometime. Seems to work.
-        pos = int(np.round(self.fps*t))+1
-        if pos > self.nframes+1:
-            raise ValueError("Video file %s has only %d frames but frame"
-                              " #%d asked"%(self.filename, self.nframes, pos))
+        #pos = min( self.nframes, int(np.round(self.fps*t))+1 )
+        #if pos > self.nframes:
+        #    raise ValueError(("Video file %s has only %d frames but"
+        #                     " frame #%d asked")%(
+        #                        self.filename, self.nframes, pos))
         
 
-        
+        pos = int(np.round(self.fps*t))+1
+
         if pos == self.pos:
             return self.lastread
         else:
@@ -189,14 +188,20 @@ def ffmpeg_parse_infos(filename, print_infos=False):
     
 
     # open the file in a pipe, provoke an error, read output
-    proc = sp.Popen([FFMPEG_BINARY, "-i", filename, "-"],
-            bufsize=10**6,
+    is_GIF = filename.endswith('.gif')
+    cmd = [FFMPEG_BINARY, "-i", filename]
+    if is_GIF:
+        cmd += ["-f", "null", "/dev/null"]
+    proc = sp.Popen(cmd,
+            bufsize=10**5,
             stdout=sp.PIPE,
             stderr=sp.PIPE)
 
     proc.stdout.readline()
     proc.terminate()
     infos = proc.stderr.read().decode('utf8')
+    del proc
+
     if print_infos:
         # print the whole info text returned by FFMPEG
         print( infos )
@@ -210,15 +215,20 @@ def ffmpeg_parse_infos(filename, print_infos=False):
     
 
     # get duration (in seconds)
-    line = [l for l in lines if 'Duration: ' in l][0]
-    match = re.search(" [0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
-    hms = map(float, line[match.start()+1:match.end()].split(':'))
-    result['duration'] = cvsecs(*hms)
+    try:
+        keyword = ('frame=' if is_GIF else 'Duration: ')
+        line = [l for l in lines if keyword in l][0]
+        match = re.search("[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
+        hms = map(float, line[match.start()+1:match.end()].split(':'))
+        result['duration'] = cvsecs(*hms)
+    except:
+        raise IOError("Error reading duration in file %s,"%(filename)+
+                      "Text parsed: %s"%infos)
 
     # get the output line that speaks about video
     lines_video = [l for l in lines if ' Video: ' in l]
     
-    result['video_found'] = lines_video != []
+    result['video_found'] = ( lines_video != [] )
     
     if result['video_found']:
         
@@ -238,9 +248,14 @@ def ffmpeg_parse_infos(filename, print_infos=False):
             match = re.search("( [0-9]*.| )[0-9]* fps", line)
             result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
 
-        result['video_nframes'] = int(result['duration']*result['video_fps'])
-        result['video_duration'] = result['video_nframes'] / result['video_fps']
-    
+        result['video_nframes'] = int(result['duration']*result['video_fps'])+1
+
+        result['video_duration'] = result['duration']
+        # We could have also recomputed the duration from the number
+        # of frames, as follows:
+        # >>> result['video_duration'] = result['video_nframes'] / result['video_fps']
+
+
     lines_audio = [l for l in lines if ' Audio: ' in l]
     
     result['audio_found'] = lines_audio != []

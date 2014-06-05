@@ -473,18 +473,18 @@ class VideoClip(Clip):
         >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-        left = None if (ta == 0) else self.subclip(0, tb=ta)
-        center = self.subclip(ta, tb).fx(**kwargs)
-        right = None if (tb is None) else self.subclip(ta=tb)
+
+
+        left = None if (ta == 0) else self.subclip(0, ta)
+        center = self.subclip(ta, tb).fx(fx,**kwargs)
+        right = None if (tb is None) else self.subclip(t_start=tb)
 
         clips = [c for c in [left, center, right] if c != None]
-        cc = VideoClip.concat(clips)
 
-        if self.start != None:
-            cc = cc.set_start(self.start)
+        # beurk, have to find other solution
+        from moviepy.video.compositing.concatenate import concatenate
 
-        return cc
-
+        return concatenate(clips).set_start(self.start)
 
     # IMAGE FILTERS
 
@@ -595,7 +595,7 @@ class VideoClip(Clip):
           Background color of the final clip ([R,G,B]).
 
         pos
-          Position of the clip in the final clip.
+          Position of the clip in the final clip. 'center' is the default
 
         col_opacity
           Parameter in 0..1 indicating the opacity of the colored
@@ -608,6 +608,7 @@ class VideoClip(Clip):
         if pos is None:
             pos = 'center'
         colorclip = ColorClip(size, color)
+
         if col_opacity is not None:
             colorclip = colorclip.set_opacity(col_opacity)
 
@@ -616,6 +617,9 @@ class VideoClip(Clip):
 
         result = CompositeVideoClip([colorclip, self.set_pos(pos)],
                                   transparent=(col_opacity != None))
+
+        if isinstance(self, ImageClip):
+          result = result.to_ImageClip()
 
         return result
 

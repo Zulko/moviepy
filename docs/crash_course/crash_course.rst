@@ -58,11 +58,10 @@ Classes of video clips
 
 Video clips are the building blocks of longer videos. They can be created with one of the following:
 
-- ``VideoFileClip('myHolidays.mp4')`` for clips read from a movie file.
-- ``ImageClip('myPic.png')`` for clips displaying a picture, for an *a priori* infinite duration.
-- ``ColorClip((height,width),color=(R,G,B))`` for special ImageClips of a single color.
-- ``TextClip('Hello folks !',font='Impact-Regular')`` for special ImageClips representing a text. They are automatically generated using ImageMagick.
-
+- ``VideoFileClip('myHolidays.mp4')`` will generate a clip from a movie file. The input file can have any format or extension : mp4, flv, mov, ... even gif ! 
+- ``ImageClip('myPicture.png')`` will make a clip displaying a picture, for an *a priori* infinite duration.
+- ``ColorClip((height,width),color=(R,G,B))`` makes a special ImageClip of a single color.
+- ``TextClip('Hello folks !',font='Impact-Regular')`` generates a special ImageClip representing a text. The generation of the text image is made by the software ImageMagick (see the Installation section).
 To that list we should add the ``CompositeVideoClips`` which are obtained by putting several clips together.
 
 .. _CompositeVideoClips:
@@ -108,18 +107,21 @@ Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide w
 
 Note that there are many ways to specify the position: ::
     
-    clip2.set_pos((45,150)) # x=45, y=150
+    clip2.set_pos((45,150)) # x=45, y=150 , in pixels
     
     # clip2 is horizontally centered, and at the top of the picture
     clip2.set_pos(("center","top"))
+
+    # clip2 is vertically centered, at the left of the picture
+    clip2.set_pos(("left","center"))
     
-    # clip2 is at 40% of the width, 70% of the height:
+    # clip2 is at 40% of the width, 70% of the height of the screen:
     clip2.set_pos((0.4,0.7), relative=True)
     
     # clip2's position is horizontally centered, and moving down !
     clip2.set_pos(lambda t: ('center', 50+t) )
 
-Be careful when indicating the position that the ``y`` position has its zero at the top of the picture:
+When indicating the position keep in mind that the ``y`` coordinate has its zero at the top of the picture:
 
 .. figure:: videoWH.jpeg
 
@@ -222,7 +224,7 @@ but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: 
 
 Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import.editor *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
-    from moviepy import.editor *
+    from moviepy.editor import *
     clip = VideoFileClip("myvideo.avi").\
                fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
                fx( vfx.speedx, 2).\ # double speed
@@ -244,15 +246,27 @@ You can change the timeline of the clip with ``clip.fl_time`` like this: ::
      
 Now the clip ``modifiedClip1`` plays the same as ``myClip``, only three times faster, while ``modifiedClip2`` will play ``myClip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).
 
-You can also modify the display of a clip with ``clip.fl_image``. The following takes a clip and inverts the green and blue channels: ::
+You can also modify the display of a clip with ``clip.fl_image``. The following takes a clip and inverts the green and blue channels of the frames: ::
     
-    modifiedClip = myClip.fl_image(lambda image: image[:,:,[0,2,1]])
+    def invert_green_blue(image):
+        return image[:,:,[0,2,1]]
     
-Finally, you may want to process the clip by taking into account the time and the picture at the same time. This is possible with ``clip.fl``. The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function ``g(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
+    modifiedClip = myClip.fl_image( invert_green_blue )
     
-    modifiedClip = myClip.fl(lambda gf,t: gf(t)[int(t):int(t)+360,:]
+Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method ``clip.fl(filter)``. The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function ``g(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
+    
+    def scroll(get_frame, t):
+        """
+        This function returns a 'region' of the current frame.
+        The position of this region depends on the time.
+        """
+        frame = get_frame(t)
+        frame_region = frame[int(t):int(t)+360,:]
+        return frame_region
+    
+    modifiedClip = myClip.fl( scroll )
 
-This will scroll down the clip with a constant height of 360 pixels.
+This will scroll down the clip, with a constant height of 360 pixels.
 
 When programming a new effect, whenever it is possible, prefer using ``fl_time`` and 
 ``fl_image`` instead of ``fl`` if possible when implementing 

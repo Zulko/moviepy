@@ -251,6 +251,9 @@ class Clip:
         set to ``t``.
         Also sets the duration of the mask and audio, if any, of the
         returned clip.
+        If change_end is False, the start attribute of the clip will
+        be modified in function of the duration and the preset end
+        of the clip.
         """
         self.duration = t
         if change_end:

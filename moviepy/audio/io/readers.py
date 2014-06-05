@@ -110,7 +110,9 @@ class FFMPEG_AudioReader:
         self.proc.stdout.flush()
         self.pos = self.pos+chunksize
         return result
-                    
+         
+
+
     def seek(self,pos):
         """
         Reads a frame at time t. Note for coders: getting an arbitrary
@@ -121,7 +123,6 @@ class FFMPEG_AudioReader:
         """
         if (pos < self.pos) or (pos> (self.pos+1000000)):
             t = 1.0*pos/self.fps
-
             self.initialize(t)
         elif pos > self.pos:
             #print pos
@@ -129,6 +130,8 @@ class FFMPEG_AudioReader:
         # last case standing: pos = current pos
         self.pos = pos
     
+
+
     def close_proc(self):
         if self.proc is not None:
             self.proc.terminate()
