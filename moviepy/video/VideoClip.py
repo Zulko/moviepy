@@ -23,7 +23,7 @@ from moviepy.tools import subprocess_call, sys_write_flush
 
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
-from .io.ffmpeg_reader import ffmpeg_read_image
+from .io.ffmpeg_reader import ffmpeg_parse_infos, ffmpeg_read_image
 from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 
 from .tools.drawing import blit
@@ -172,6 +172,17 @@ class VideoClip(Clip):
 
         """
 
+        infos = ffmpeg_parse_infos(self.reader.filename, False)
+        try:
+          assert(self.reader.fps == infos['video_fps'])
+          assert(self.reader.size == infos['video_size'])
+          assert(self.reader.duration == infos['video_duration'])
+          assert(self.reader.ffmpeg_duration == infos['duration'])
+          assert(self.reader.nframes == infos['video_nframes'])
+        except AssertionError as error:
+          print("VideoFile has changed on disk, aborting")
+          raise error
+
         name, ext = os.path.splitext(os.path.basename(filename))
 
         if audio_codec == 'raw16':
@@ -255,8 +266,8 @@ class VideoClip(Clip):
                           verbose))
 
             audioproc.start()
-            
-            ffmpeg_write_video(self, 
+
+            ffmpeg_write_video(self,
                                videofile, fps, codec,
                                bitrate=bitrate,
                                write_logfile=write_logfile,
@@ -499,7 +510,7 @@ class VideoClip(Clip):
     #--------------------------------------------------------------
     # C O M P O S I T I N G
 
-    
+
     def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
@@ -747,32 +758,32 @@ class VideoClip(Clip):
     @requires_duration
     def iter_frames(self, fps=None):
         """ Iterates over all the frames of the clip.
-        
+
         Returns each frame of the clip as a HxWxN np.array,
         where N=1 for mask clips and N=3 for RGB clips.
-        
+
         This function is not really meant for video editing.
         It provides an easy way to do frame-by-frame treatment of
         a video, for fields like science, computer vision...
-        
+
         The ``fps`` (frames per second) parameter is optional if the
         clip already has a ``fps`` attribute.
-        
+
         Examples
         ---------
-        
+
         >>> # prints the maximum of red that is contained
         >>> # on the first line of each frame of the clip.
         >>> from moviepy.editor import VideoFileClip
         >>> myclip = VideoFileClip('myvideo.mp4')
         >>> for frame in myclip.iter_frames():
         >>>     print ( frame[0,:,0].max() )
-        
+
         """
-        
+
         if fps is None:
             fps = self.fps
-            
+
         for t in np.arange(0, self.duration, 1.0/fps):
             yield self.get_frame(t)
 
