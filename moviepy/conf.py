@@ -17,12 +17,15 @@ IMAGEMAGICK_BINARY
     'convert' binary. For instance:
     "C:\Program Files\ImageMagick-6.8.8-Q16\convert" 
 
+GIF_PROGRAM
+    'ffmpeg' or 'ImageMagick'
+    
 You can run this file to check that FFMPEG has been detected.
 """
 
 FFMPEG_BINARY = None
 IMAGEMAGICK_BINARY = 'convert'
-
+GIF_PROGRAM = 'ImageMagick'
 
 
 # =====================================================================
