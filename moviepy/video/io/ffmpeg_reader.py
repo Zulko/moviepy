@@ -120,8 +120,7 @@ class FFMPEG_VideoReader:
         #                     " frame #%d asked")%(
         #                        self.filename, self.nframes, pos))
         
-
-        pos = int(np.round(self.fps*t))+1
+        pos = int(self.fps*t)+1
 
         if pos == self.pos:
             return self.lastread

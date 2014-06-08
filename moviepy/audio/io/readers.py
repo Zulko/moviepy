@@ -57,7 +57,7 @@ class FFMPEG_AudioReader:
         self.proc = None
         
         self.nframes = int(self.fps * self.duration)
-        self.buffersize= min( self.nframes, buffersize )
+        self.buffersize= min( self.nframes+1, buffersize )
         self.buffer= None
         self.buffer_startframe = 1
         self.initialize()
@@ -88,7 +88,8 @@ class FFMPEG_AudioReader:
         self.proc = sp.Popen( cmd, bufsize=self.buffersize,
                                    stdout=sp.PIPE,
                                    stderr=sp.PIPE)
-        self.pos = int(self.fps*starttime+1)
+        
+        self.pos = np.round(self.fps*starttime)
      
      
      
@@ -155,7 +156,7 @@ class FFMPEG_AudioReader:
             
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
-            frames = np.round((self.fps*tt+1)).astype(int)[in_time]
+            frames = np.round((self.fps*tt)).astype(int)[in_time]
             fr_min, fr_max = frames.min(), frames.max()
             
             if not (0 <=
@@ -169,12 +170,14 @@ class FFMPEG_AudioReader:
                 
             try:
                 result = np.zeros((len(tt),self.nchannels))
-                result[in_time] = self.buffer[frames - self.buffer_startframe]
+                indices = frames - self.buffer_startframe
+                result[in_time] = self.buffer[indices]
                 return result
             except IndexError as error:
-                print ("Error: wrong indices in video buffer. Maybe"+
-                       " buffer too small.")
-                raise error
+                raise IOError("Error in file %s, "%(self.filename)+
+                       "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
+                       "indices wanted: %d-%d, "%(indices.min(), indices.max())+
+                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))
                 
         else:
             
