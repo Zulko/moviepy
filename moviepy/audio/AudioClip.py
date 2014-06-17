@@ -100,8 +100,8 @@ class AudioClip(Clip):
                        'pcm_s32le': 'wav'}
         """
                          
-        return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
-                      codec, bitrate, verbose)
+        return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
+                      codec=codec, bitrate=bitrate, verbose=verbose)
 
 
 class AudioArrayClip(AudioClip):
