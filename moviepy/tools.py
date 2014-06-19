@@ -5,6 +5,7 @@ Misc. useful functions that can be used at many places in the program.
 import subprocess as sp
 import sys
 
+
 def sys_write_flush(s):
     """ writes and flushes witout delay a text in the console """
     sys.stdout.write(s)

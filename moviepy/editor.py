@@ -22,7 +22,7 @@ clip.preview().
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
-from .video.compositing.CompositeVideoClip import CompositeVideoClip
+from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from .video.compositing.concatenate import concatenate
 
 from .audio.AudioClip import AudioClip, CompositeAudioClip

@@ -1,8 +1,11 @@
-from moviepy.decorators import requires_duration
+
 import threading
 import time
 import pygame as pg
 import numpy as np
+
+from moviepy.decorators import requires_duration
+from moviepy.tools import cvsecs
 
 
 pg.init()
@@ -32,6 +35,9 @@ def show(clip, t=0, with_mask=True):
       without the mask.
     
     """
+
+    if isinstance(t, tuple):
+        t = cvsecs(*t)
 
     if clip.ismask:
         clip = clip.to_RGB()

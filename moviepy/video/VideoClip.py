@@ -616,12 +616,16 @@ class VideoClip(Clip):
             colorclip = colorclip.set_duration(self.duration)
 
         result = CompositeVideoClip([colorclip, self.set_pos(pos)],
-                                  transparent=(col_opacity != None))
+                                  transparent=(col_opacity is not None))
 
         if isinstance(self, ImageClip):
-          result = result.to_ImageClip()
+            new_result = result.to_ImageClip()
+            if result.mask is not None:
+                new_result.mask = result.mask.to_ImageClip() 
+            return new_result
 
-        return result
+        else:
+            return result
 
 
     @outplace

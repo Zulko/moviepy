@@ -99,7 +99,7 @@ def resize(clip, newsize=None, height=None, width=None):
                 fun = lambda gf,t: resizer(gf(t).astype('uint8'),
                                           newsize2(t))
                 
-            return clip.fl(fun, keep_duration=True, apply_to='mask')
+            return clip.fl(fun, keep_duration=True)
             
         else:
             

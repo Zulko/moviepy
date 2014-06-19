@@ -111,7 +111,7 @@ class FFMPEG_VideoReader:
         ffmpeg can be painfully slow if some decoding has to be done.
         This function tries to avoid fectching arbitrary frames
         whenever possible, by moving between adjacent frames.
-            """
+        """
 
         # these definitely need to be rechecked sometime. Seems to work.
         #pos = min( self.nframes, int(np.round(self.fps*t))+1 )
