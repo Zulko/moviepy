@@ -179,8 +179,6 @@ class CompositeAudioClip(AudioClip):
             self.end = max(ends)
 
         def get_frame(t):
-            # buggy
-            
             
             played_parts = [c.is_playing(t) for c in self.clips]
             
