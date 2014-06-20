@@ -271,8 +271,8 @@ class VideoClip(Clip):
             if make_audio:
                 self.audio.to_audiofile(temp_audiofile,audio_fps,
                                         audio_nbytes, audio_bufsize,
-                                        audio_codec, audio_bitrate,
-                                        verbose)
+                                        audio_codec, bitrate=audio_bitrate, write_logfile=write_logfile,
+                                        verbose=verbose)
 
             ffmpeg_write_video(self,
                                videofile, fps, codec,

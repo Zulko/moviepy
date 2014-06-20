@@ -91,7 +91,7 @@ class AudioClip(Clip):
     @requires_duration
     def to_audiofile(self,filename, fps=44100, nbytes=2,
                      buffersize=2000, codec='libvorbis',
-                     bitrate=None, verbose=True):
+                     bitrate=None, write_logfile=False, verbose=True):
         """ 
         codecs  = {        'libmp3lame': 'mp3',
                        'libvorbis':'ogg',
@@ -100,8 +100,8 @@ class AudioClip(Clip):
                        'pcm_s32le': 'wav'}
         """
                          
-        return ffmpeg_audiowrite(self,filename, fps, nbytes, buffersize,
-                      codec, bitrate, verbose)
+        return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
+                      codec=codec, bitrate=bitrate, write_logfile=write_logfile, verbose=verbose)
 
 
 class AudioArrayClip(AudioClip):
