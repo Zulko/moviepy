@@ -66,7 +66,7 @@ def hasFFMPEGSupport(ffmpeg_switch, query):
     >>> result = hasFFMPEGSupport('encoders', 'libx264')
     >>> result = hasFFMPEGSupport('encoders', 'libvorbis')
     """
-    process = subprocess.Popen(str('ffmpeg -' + ffmpeg_switch), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = sp.Popen(str('ffmpeg -' + ffmpeg_switch), shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
     supported = dict((line.split()[1], line.split()[0]) for line in (process.communicate()[0]).split('\n') if len(line.split())>=3)
     query_result = supported.get(query)
     if query_result is not None:
