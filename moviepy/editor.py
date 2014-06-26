@@ -65,7 +65,7 @@ for method in ["vfx.crop",
 
 for method in ["afx.audio_fadein",
                "afx.audio_fadeout",
-               "vfx.loop",
+               "afx.audio_loop",
                "afx.volumex"]:
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 
