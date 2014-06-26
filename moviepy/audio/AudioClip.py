@@ -223,3 +223,9 @@ class CompositeAudioClip(AudioClip):
             return zero + sum(sounds)
 
         self.get_frame = get_frame
+
+def audio_concatenate(clips):
+    durations = [c.duration for c in clips]
+    tt = np.cumsum([0]+durations) # start times, and end time.
+    newclips= [c.set_start(t) for c,t in zip(clips, tt)]
+    return CompositeAudioClip(newclips).set_duration(tt[-1])
