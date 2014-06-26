@@ -92,16 +92,44 @@ class AudioClip(Clip):
     def to_audiofile(self,filename, fps=44100, nbytes=2,
                      buffersize=2000, codec='libvorbis',
                      bitrate=None, write_logfile=False, verbose=True):
-        """ 
-        codecs  = {        'libmp3lame': 'mp3',
-                       'libvorbis':'ogg',
-                       'libfdk_aac':'m4a',
-                       'pcm_s16le':'wav',
-                       'pcm_s32le': 'wav'}
+        """ Writes an audio file from the AudioClip.
+
+
+        Parameters
+        -----------
+
+        filename
+          Name of the output file
+
+        fps
+          Frames per second
+
+        nbyte
+          Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
+
+        codec
+          Which audio codec should be used. Examples are 'libmp3lame'
+          for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
+          'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
+
+        bitrate
+          Audio bitrate, given as a string like '50k', '500k', '3000k'.
+          Will determine the size and quality of the output file.
+          Note that it mainly an indicative goal, the bitrate won't
+          necessarily be the this in the output file.
+
+        write_logfile
+          If true, produces a detailed logfile named filename + '.log'
+          when writing the file
+
+        verbose
+          If True, displays informations
+
         """
                          
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
-                      codec=codec, bitrate=bitrate, write_logfile=write_logfile, verbose=verbose)
+                      codec=codec, bitrate=bitrate, write_logfile=write_logfile,
+                      verbose=verbose)
 
 
 class AudioArrayClip(AudioClip):

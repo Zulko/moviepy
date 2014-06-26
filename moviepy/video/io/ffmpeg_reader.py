@@ -33,7 +33,6 @@ class FFMPEG_VideoReader:
             w, h = self.size
             bufsize = self.depth * w * h + 100
 
-        self.proc= None
         self.bufsize= bufsize
         self.initialize()
 
@@ -94,6 +93,16 @@ class FFMPEG_VideoReader:
                     1.0*self.pos/self.fps,
                     self.duration)+
                    "Using the last valid frame instead.")
+            
+            if not hasattr(self, 'lastread'):
+                raise IOError(("MoviePy error: failed to read the first frame of "
+                               "video file %s. That might mean that the file is "
+                               "corrupted. That may also mean that you are using "
+                               "a deprecated version of FFMPEG. On Ubuntu/Debian "
+                               "for instance the version in the repos is deprecated. "
+                               "Please update to a recent version from the website.")%(
+                                self.filename))
+
             result = self.lastread
 
         else:
@@ -134,7 +143,7 @@ class FFMPEG_VideoReader:
             return result
     
     def close(self):
-        if self.proc is not None:
+        if hasattr(self,'proc'):
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
@@ -142,7 +151,8 @@ class FFMPEG_VideoReader:
     
     def __del__(self):
         self.close()
-        del self.lastread
+        if hasattr(self,'lastread'):
+            del self.lastread
     
 
 
@@ -208,7 +218,9 @@ def ffmpeg_parse_infos(filename, print_infos=False):
 
     lines = infos.splitlines()
     if "No such file or directory" in lines[-1]:
-        raise IOError("%s not found ! Wrong path ?"%filename)
+        raise IOError(("MoviePy error: the file %s could not be found !\n"
+                      "Please check that you entered the correct "
+                      "path.")%filename)
     
     result = dict()
     
@@ -221,8 +233,9 @@ def ffmpeg_parse_infos(filename, print_infos=False):
         hms = map(float, line[match.start()+1:match.end()].split(':'))
         result['duration'] = cvsecs(*hms)
     except:
-        raise IOError("Error reading duration in file %s,"%(filename)+
-                      "Text parsed: %s"%infos)
+        raise IOError(("MoviePy error: failed to read the duration of file %s.\n"
+                       "Here are the file infos returned by ffmpeg:\n\n%s")%(
+                          filename, infos))
 
     # get the output line that speaks about video
     lines_video = [l for l in lines if ' Video: ' in l]
@@ -239,7 +252,7 @@ def ffmpeg_parse_infos(filename, print_infos=False):
         result['video_size'] = s
 
 
-        # get the frame rate
+        # get the frame rate. Sometimes it's 'tbr', sometimes 'fps'...
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
             result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])

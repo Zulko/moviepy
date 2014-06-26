@@ -124,7 +124,7 @@ class VideoClip(Clip):
 
     def to_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
-                 audio_nbytes = 4, audio_codec= 'libvorbis',
+                 audio_nbytes = 4, audio_codec= 'libmp3lame',
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
@@ -144,17 +144,30 @@ class VideoClip(Clip):
 
         codec
           Codec to use for image encoding. Can be any codec supported
-          by ffmpeg.
+          by ffmpeg, but the extension of the output filename must be
+          set accordingly.
 
-          ``'rawvideo'``, ``'png'`` will produce a raw video,
-          of perfect quality, but possibly very huge size. 'png' is
-          is lossless and produces smaller files than 'rawvideo'.
+          ``'libx264'`` (default codec, use file extension ``.mp4``)
+          makes well-compressed videos (quality tunable using 'bitrate').
 
-          ``'mpeg4'`` produces nice quality, very well compressed
-          videos.
 
-          ``'libx264'`` (default) is a little better than 'mpeg4',
-          a little heavier.
+          ``'mpeg4'`` (use file extension ``.mp4``) can be an alternative
+          to ``'libx264'``, and produces higher quality videos by default.
+
+
+          ``'rawvideo'`` (use file extension ``.avi``) will produce 
+          a video of perfect quality, of possibly very huge size.
+
+          ``png`` (use file extension ``.avi``) will produce a video
+          of perfect quality, of smaller size than with ``rawvideo``
+
+          ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
+          format, which is completely free/ open source. However not
+          everyone has the codecs installed by default on their machine.
+
+          ``'libvpx'`` (use file extension ``.webm``) is tiny a video
+          format well indicated for web videos (with HTML5). Open source.
+
 
         audio
           Either ``True``, ``False``, or a file name.
@@ -169,6 +182,22 @@ class VideoClip(Clip):
         temp_audiofile
           the name of the temporary audiofile to be generated and
           incorporated in the the movie, if any.
+
+        audio_codec
+          Which audio codec should be used. Examples are 'libmp3lame'
+          for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
+          'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
+
+        audio_bitrate
+          Audio bitrate, given as a string like '50k', '500k', '3000k'.
+          Will determine the size/quality of audio in the output file.
+          Note that it mainly an indicative goal, the bitrate won't
+          necessarily be the this in the final file.
+
+        write_logfile
+          If true, will write log files for the audio and the video.
+          These will be files ending with '.log' with the name of the
+          output file in them.
 
         """
 
@@ -213,7 +242,7 @@ class VideoClip(Clip):
                         audio_ext = D_ext[audio_codec]
                     else:
                         raise ValueError('audio_codec for file'
-                                          '%d unkown !'%filename)
+                                          '%s unkown !'%filename)
 
                 temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
                             "to_videofile_SOUND.%s"%audio_ext)
@@ -445,8 +474,22 @@ class VideoClip(Clip):
                    '-r',str(fps),
                    filename]
 
+        try:
 
-        subprocess_call( cmd, verbose = verbose )
+            subprocess_call( cmd, verbose = verbose )
+        
+        except IOError as err:
+
+            error = ("MoviePy Error: creation of %s failed because "
+              "of the following error:\n\n%s.\n\n."%(filename, str(err)))
+            
+            if program == "ImageMagick":
+                error = error + ("This can be due to the fact that "
+                    "ImageMagick is not installed on your computer, or "
+                    "(for Windows users) that you didn't specify the "
+                    "path to the ImageMagick binary in file conf.py." )
+            
+            raise IOError(error)
 
         for f in tempfiles:
             os.remove(f)

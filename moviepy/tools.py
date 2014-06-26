@@ -32,7 +32,7 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
             sys_write_flush( "\nMoviePy: WARNING !\n"
                     "   The following command returned an error:\n")
             sys_write_flush( err.decode('utf8'))
-        raise IOError
+        raise IOError(err.decode('utf8'))
     else:
         verboseprint( "\n... command successful.\n")
     
