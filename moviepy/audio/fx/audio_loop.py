@@ -1,4 +1,4 @@
-from ..AudioClip import audio_concatenate
+from ..AudioClip import concatenate_audio
 
 def audio_loop(audioclip, nloops=None, duration=None):
     """ Loops over an audio clip.
@@ -20,9 +20,9 @@ def audio_loop(audioclip, nloops=None, duration=None):
     if duration is not None:
 
         nloops = int( duration/ audioclip.duration)+1
-        return audio_concatenate(nloops*[audioclip]).set_duration(duration)
+        return concatenate_audio(nloops*[audioclip]).set_duration(duration)
     
     else:
 
-        return audio_concatenate(nloops*[audioclip])
+        return concatenate_audio(nloops*[audioclip])
     

@@ -25,7 +25,7 @@ from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from .video.compositing.concatenate import concatenate
 
-from .audio.AudioClip import AudioClip, CompositeAudioClip
+from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audio
 from .audio.io.AudioFileClip import AudioFileClip
 
 # FX
