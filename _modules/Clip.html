@@ -311,6 +311,9 @@
 <span class="sd">        set to ``t``.</span>
 <span class="sd">        Also sets the duration of the mask and audio, if any, of the</span>
 <span class="sd">        returned clip.</span>
+<span class="sd">        If change_end is False, the start attribute of the clip will</span>
+<span class="sd">        be modified in function of the duration and the preset end</span>
+<span class="sd">        of the clip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="n">change_end</span><span class="p">:</span>
@@ -336,18 +339,18 @@
 <div class="viewcode-block" id="Clip.is_playing"><a class="viewcode-back" href="../ref/Clip.html#Clip.Clip.is_playing">[docs]</a>    <span class="k">def</span> <span class="nf">is_playing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        </span>
-<span class="sd">        If t is a number, returns true if t is between the start and the</span>
-<span class="sd">        end of the clip.</span>
-<span class="sd">        If t is a numpy array, returns False if none of the t is in the</span>
-<span class="sd">        clip, else returns a vector [b_1, b_2, b_3...] where b_i is true</span>
-<span class="sd">        iff tti is in the clip. </span>
+<span class="sd">        If t is a number, returns true if t is between the start and</span>
+<span class="sd">        the end of the clip.</span>
+<span class="sd">        If t is a numpy array, returns False if none of the t is in</span>
+<span class="sd">        theclip, else returns a vector [b_1, b_2, b_3...] where b_i</span>
+<span class="sd">        is true iff tti is in the clip. </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="c"># is the whole list of t outside the clip ?</span>
             <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
             
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tmin</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">tmin</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="p">:</span>
                 <span class="k">return</span> <span class="bp">False</span>
             
             <span class="k">if</span> <span class="n">tmax</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">:</span>
@@ -362,42 +365,47 @@
         <span class="k">else</span><span class="p">:</span>
             
             <span class="k">return</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+                    <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
     </div>
     <span class="nd">@time_can_be_tuple</span>
     <span class="nd">@apply_to_mask</span>
     <span class="nd">@apply_to_audio</span>
-<div class="viewcode-block" id="Clip.subclip"><a class="viewcode-back" href="../ref/Clip.html#Clip.Clip.subclip">[docs]</a>    <span class="k">def</span> <span class="nf">subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tb</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Clip.subclip"><a class="viewcode-back" href="../ref/Clip.html#Clip.Clip.subclip">[docs]</a>    <span class="k">def</span> <span class="nf">subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a clip playing the content of the current clip</span>
-<span class="sd">        between times ``ta`` and ``tb`` (in seconds).</span>
-<span class="sd">        If ``tb`` is not provided, it is assumed to be the duration of</span>
-<span class="sd">        the clip (potentially infinite).</span>
-<span class="sd">        If ``tb`` is a negative value, it is reset to</span>
-<span class="sd">        ``clip.duration - tb. ``. For instance: ::</span>
+<span class="sd">        between times ``t_start`` and ``t_end`` (in seconds).</span>
+<span class="sd">        If ``t_end`` is not provided, it is assumed to be the duration</span>
+<span class="sd">        of the clip (potentially infinite).</span>
+<span class="sd">        If ``t_end`` is a negative value, it is reset to</span>
+<span class="sd">        ``clip.duration + t_end. ``. For instance: ::</span>
 <span class="sd">        </span>
 <span class="sd">            &gt;&gt;&gt; # cut the last two seconds of the clip:</span>
 <span class="sd">            &gt;&gt;&gt; newclip = clip.subclip(0,-2)</span>
 <span class="sd">        </span>
-<span class="sd">        If ``tb`` is provided or if the clip has a duration attribute,</span>
+<span class="sd">        If ``t_end`` is provided or if the clip has a duration attribute,</span>
 <span class="sd">        the duration of the returned clip is set automatically.</span>
 <span class="sd">        </span>
 <span class="sd">        The ``mask`` and ``audio`` of the resulting subclip will be</span>
 <span class="sd">        subclips of ``mask`` and ``audio`` the original clip, if</span>
 <span class="sd">        they exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">ta</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[])</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="n">tb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
-        <span class="k">elif</span> <span class="n">tb</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_start</span><span class="o">&gt;</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;t_start (</span><span class="si">%.02f</span><span class="s">) &quot;</span><span class="o">%</span><span class="n">t_start</span> <span class="o">+</span>
+                             <span class="s">&quot;should be smaller than the clip&#39;s &quot;</span><span class="o">+</span>
+                             <span class="s">&quot;duration (</span><span class="si">%.02f</span><span class="s">).&quot;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[])</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t_end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="n">t_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+        <span class="k">elif</span> <span class="n">t_end</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="k">print</span> <span class="p">(</span><span class="s">&quot;Error: subclip with negative times can only be&quot;</span><span class="o">+</span>
-                        <span class="s">&quot;be taken from clips with a ``duration``&quot;</span><span class="p">)</span>
+                        <span class="s">&quot;extracted from clips with a ``duration``&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">tb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="n">tb</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tb</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">tb</span> <span class="o">-</span> <span class="n">ta</span>
+                <span class="n">t_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">t_end</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">t_end</span> <span class="o">-</span> <span class="n">t_start</span>
             <span class="n">newclip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">newclip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span>
             
         <span class="k">return</span> <span class="n">newclip</span>

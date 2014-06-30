@@ -70,7 +70,7 @@
 <h1>moviepy.video.fx.loop<a class="headerlink" href="#moviepy-video-fx-loop" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="moviepy.video.fx.loop">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">loop</tt><big>(</big><em>self</em>, <em>n=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.loop" title="Permalink to this definition">¶</a></dt>
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">loop</tt><big>(</big><em>self</em>, <em>n=None</em>, <em>duration=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.loop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip that plays the current clip in an infinite loop.
 Ideal for clips coming from gifs.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -78,9 +78,13 @@ Ideal for clips coming from gifs.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>n</strong> :</p>
-<blockquote class="last">
+<blockquote>
 <div><p>Number of times the clip should be played. If <cite>None</cite> the
 the clip will loop indefinitely (i.e. with no set duration).</p>
+</div></blockquote>
+<p><strong>duration</strong> :</p>
+<blockquote class="last">
+<div><p>Total duration of the clip. Can be specified instead of n.</p>
 </div></blockquote>
 </td>
 </tr>

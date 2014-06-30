@@ -73,11 +73,11 @@
 <span class="kn">from</span> <span class="nn">moviepy.video.io.preview</span> <span class="kn">import</span> <span class="n">imdisplay</span>
 
 <span class="k">try</span><span class="p">:</span>
-	<span class="kn">import</span> <span class="nn">cv2</span>
+    <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="k">except</span><span class="p">:</span>
-	<span class="c"># Note: this will be later fixed with scipy/skimage replacements</span>
-	<span class="c"># but for the moment OpenCV is mandatory, so...</span>
-	<span class="k">print</span> <span class="s">&quot;WARNING: OpenCV not found: automated tracking not possible&quot;</span>
+    <span class="c"># Note: this will be later fixed with scipy/skimage replacements</span>
+    <span class="c"># but for the moment OpenCV is mandatory, so...</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;WARNING: OpenCV not found: automated tracking not possible&quot;</span><span class="p">)</span>
 
 
 
@@ -228,8 +228,8 @@
         <span class="n">xy0</span> <span class="o">=</span> <span class="n">findAround</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">pattern</span><span class="p">)</span>
     
     <span class="k">if</span> <span class="n">tt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-		<span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
-		
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
+        
     <span class="n">xys</span> <span class="o">=</span> <span class="p">[</span><span class="n">xy0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
         <span class="n">xys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">findAround</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="n">pattern</span><span class="p">,</span>

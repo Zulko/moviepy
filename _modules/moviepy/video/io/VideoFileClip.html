@@ -72,7 +72,7 @@
 <span class="sd">    A video clip originating from a movie file. For instance: ::</span>
 <span class="sd">    </span>
 <span class="sd">        &gt;&gt;&gt; clip = VideofileClip(&quot;myHolidays.mp4&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; clip2 = VideofileClip(&quot;myMaskVideo.avi&quot;,ismask = True)</span>
+<span class="sd">        &gt;&gt;&gt; clip2 = VideofileClip(&quot;myMaskVideo.avi&quot;)</span>
 <span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -81,9 +81,6 @@
 <span class="sd">    filename:</span>
 <span class="sd">      The name of the video file. It can have any extension supported</span>
 <span class="sd">      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
-<span class="sd">    </span>
-<span class="sd">    ismask:</span>
-<span class="sd">      Set this to `True` if the clip is going to be used as a mask.</span>
 <span class="sd">      </span>
 <span class="sd">    has_mask:</span>
 <span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
@@ -107,11 +104,11 @@
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                  <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">audio_buffersize</span> <span class="o">=</span> <span class="mi">200000</span><span class="p">,</span>
                  <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         
-        <span class="n">VideoClip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ismask</span><span class="p">)</span>
+        <span class="n">VideoClip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         
         <span class="c"># Make a reader</span>
         <span class="n">pix_fmt</span><span class="o">=</span> <span class="s">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s">&quot;rgb24&quot;</span>
@@ -123,10 +120,21 @@
         
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
+
+          <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,:</span><span class="mi">3</span><span class="p">]</span>
+          <span class="n">mask_gf</span> <span class="o">=</span>  <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoClip</span><span class="p">(</span><span class="n">ismask</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">get_frame</span> <span class="o">=</span> <span class="n">mask_gf</span><span class="p">)</span>
+                       <span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+          <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         
         <span class="c"># Make a reader for the audio, if any.</span>
-        <span class="k">if</span> <span class="n">audio</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s">&#39;audio_found&#39;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
                                        <span class="n">buffersize</span><span class="o">=</span> <span class="n">audio_buffersize</span><span class="p">,</span>
                                        <span class="n">fps</span> <span class="o">=</span> <span class="n">audio_fps</span><span class="p">,</span>

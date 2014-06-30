@@ -66,6 +66,7 @@
 <span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
 
 
+
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="outplace"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.outplace">[docs]</a><span class="k">def</span> <span class="nf">outplace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Enables to make operations outplace &quot;&quot;&quot;</span>
@@ -73,6 +74,7 @@
     <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span>
     
+
 </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="apply_to_mask"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_mask">[docs]</a><span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
@@ -83,6 +85,7 @@
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s">&#39;mask&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">):</span>
         <span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span>
+
 
 </div>
 <span class="nd">@decorator.decorator</span>
@@ -95,7 +98,8 @@
         <span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span>
     
-    </div>
+    
+</div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="add_mask_if_none"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.add_mask_if_none">[docs]</a><span class="k">def</span> <span class="nf">add_mask_if_none</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add a mask to the clip if there is none. &quot;&quot;&quot;</span>
@@ -103,6 +107,7 @@
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">add_mask</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+
 
 </div>
 <span class="nd">@decorator.decorator</span>
@@ -113,6 +118,8 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+
+
 </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="audio_video_fx"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.audio_video_fx">[docs]</a><span class="k">def</span> <span class="nf">audio_video_fx</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
@@ -130,6 +137,8 @@
         <span class="k">return</span> <span class="n">newclip</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
+
+
 </div>
 <span class="nd">@decorator.decorator</span>
 <div class="viewcode-block" id="time_can_be_tuple"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.time_can_be_tuple">[docs]</a><span class="k">def</span> <span class="nf">time_can_be_tuple</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>

@@ -137,11 +137,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">tt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
+
+        <span class="c">#print tt.max() - tt.min(), tt.min(), tt.max()</span>
         
         <span class="n">snd_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
         <span class="n">snd_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="mf">0.99</span><span class="p">,</span>
                        <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">0.99</span><span class="p">,</span><span class="n">snd_array</span><span class="p">))</span>
-        <span class="n">inttype</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s">&#39;int8&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s">&#39;int16&#39;</span><span class="p">,</span><span class="mi">4</span><span class="p">:</span><span class="s">&#39;int32&#39;</span><span class="p">}[</span><span class="n">nbytes</span><span class="p">]</span>
+        <span class="n">inttype</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s">&#39;int8&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s">&#39;int16&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s">&#39;int32&#39;</span><span class="p">}[</span><span class="n">nbytes</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">nbytes</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">snd_array</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inttype</span><span class="p">)</span>
     
     
@@ -149,17 +151,45 @@
     <span class="nd">@requires_duration</span>
 <div class="viewcode-block" id="AudioClip.to_audiofile"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_audiofile">[docs]</a>    <span class="k">def</span> <span class="nf">to_audiofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                      <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;libvorbis&#39;</span><span class="p">,</span>
-                     <span class="n">bitrate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">        codecs  = {        &#39;libmp3lame&#39;: &#39;mp3&#39;,</span>
-<span class="sd">                       &#39;libvorbis&#39;:&#39;ogg&#39;,</span>
-<span class="sd">                       &#39;libfdk_aac&#39;:&#39;m4a&#39;,</span>
-<span class="sd">                       &#39;pcm_s16le&#39;:&#39;wav&#39;,</span>
-<span class="sd">                       &#39;pcm_s32le&#39;: &#39;wav&#39;}</span>
+                     <span class="n">bitrate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Writes an audio file from the AudioClip.</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+
+<span class="sd">        filename</span>
+<span class="sd">          Name of the output file</span>
+
+<span class="sd">        fps</span>
+<span class="sd">          Frames per second</span>
+
+<span class="sd">        nbyte</span>
+<span class="sd">          Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)</span>
+
+<span class="sd">        codec</span>
+<span class="sd">          Which audio codec should be used. Examples are &#39;libmp3lame&#39;</span>
+<span class="sd">          for &#39;.mp3&#39;, &#39;libvorbis&#39; for &#39;ogg&#39;, &#39;libfdk_aac&#39;:&#39;m4a&#39;,</span>
+<span class="sd">          &#39;pcm_s16le&#39; for 16-bit wav and &#39;pcm_s32le&#39; for 32-bit wav.</span>
+
+<span class="sd">        bitrate</span>
+<span class="sd">          Audio bitrate, given as a string like &#39;50k&#39;, &#39;500k&#39;, &#39;3000k&#39;.</span>
+<span class="sd">          Will determine the size and quality of the output file.</span>
+<span class="sd">          Note that it mainly an indicative goal, the bitrate won&#39;t</span>
+<span class="sd">          necessarily be the this in the output file.</span>
+
+<span class="sd">        write_logfile</span>
+<span class="sd">          If true, produces a detailed logfile named filename + &#39;.log&#39;</span>
+<span class="sd">          when writing the file</span>
+
+<span class="sd">        verbose</span>
+<span class="sd">          If True, displays informations</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
                          
-        <span class="k">return</span> <span class="n">ffmpeg_audiowrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">buffersize</span><span class="p">,</span>
-                      <span class="n">codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ffmpeg_audiowrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">buffersize</span><span class="p">,</span>
+                      <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="n">bitrate</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
 </div></div>
 <span class="k">class</span> <span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
@@ -237,8 +267,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-            <span class="c"># buggy</span>
-            
             
             <span class="n">played_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
             
@@ -254,7 +282,13 @@
                 
             <span class="k">return</span> <span class="n">zero</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sounds</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">get_frame</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">get_frame</span>
+</div>
+<span class="k">def</span> <span class="nf">concatenate_audio</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
+    <span class="n">durations</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">duration</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">]</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">durations</span><span class="p">)</span> <span class="c"># start times, and end time.</span>
+    <span class="n">newclips</span><span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">tt</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">CompositeAudioClip</span><span class="p">(</span><span class="n">newclips</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
           </div>

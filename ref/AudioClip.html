@@ -109,14 +109,50 @@ the variations of that float in the time.</p>
 </div>
 <dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.to_audiofile">
-<tt class="descname">to_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec='libvorbis'</em>, <em>bitrate=None</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>codecs  = {        &#8216;libmp3lame&#8217;: &#8216;mp3&#8217;,</dt>
-<dd>&#8216;libvorbis&#8217;:&#8217;ogg&#8217;,
-&#8216;libfdk_aac&#8217;:&#8217;m4a&#8217;,
-&#8216;pcm_s16le&#8217;:&#8217;wav&#8217;,
-&#8216;pcm_s32le&#8217;: &#8216;wav&#8217;}</dd>
-</dl>
+<tt class="descname">to_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec='libvorbis'</em>, <em>bitrate=None</em>, <em>write_logfile=False</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an audio file from the AudioClip.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> :</p>
+<blockquote>
+<div><p>Name of the output file</p>
+</div></blockquote>
+<p><strong>fps</strong> :</p>
+<blockquote>
+<div><p>Frames per second</p>
+</div></blockquote>
+<p><strong>nbyte</strong> :</p>
+<blockquote>
+<div><p>Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)</p>
+</div></blockquote>
+<p><strong>codec</strong> :</p>
+<blockquote>
+<div><p>Which audio codec should be used. Examples are &#8216;libmp3lame&#8217;
+for &#8216;.mp3&#8217;, &#8216;libvorbis&#8217; for &#8216;ogg&#8217;, &#8216;libfdk_aac&#8217;:&#8217;m4a&#8217;,
+&#8216;pcm_s16le&#8217; for 16-bit wav and &#8216;pcm_s32le&#8217; for 32-bit wav.</p>
+</div></blockquote>
+<p><strong>bitrate</strong> :</p>
+<blockquote>
+<div><p>Audio bitrate, given as a string like &#8216;50k&#8217;, &#8216;500k&#8217;, &#8216;3000k&#8217;.
+Will determine the size and quality of the output file.
+Note that it mainly an indicative goal, the bitrate won&#8217;t
+necessarily be the this in the output file.</p>
+</div></blockquote>
+<p><strong>write_logfile</strong> :</p>
+<blockquote>
+<div><p>If true, produces a detailed logfile named filename + &#8216;.log&#8217;
+when writing the file</p>
+</div></blockquote>
+<p><strong>verbose</strong> :</p>
+<blockquote class="last">
+<div><p>If True, displays informations</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">

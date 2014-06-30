@@ -112,10 +112,10 @@ video clip).</p>
 <h2>Classes of video clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h2>
 <p>Video clips are the building blocks of longer videos. They can be created with one of the following:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> for clips read from a movie file.</li>
-<li><tt class="docutils literal"><span class="pre">ImageClip('myPic.png')</span></tt> for clips displaying a picture, for an <em>a priori</em> infinite duration.</li>
-<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> for special ImageClips of a single color.</li>
-<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> for special ImageClips representing a text. They are automatically generated using ImageMagick.</li>
+<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> will generate a clip from a movie file. The input file can have any format or extension : mp4, flv, mov, ... even gif !</li>
+<li><tt class="docutils literal"><span class="pre">ImageClip('myPicture.png')</span></tt> will make a clip displaying a picture, for an <em>a priori</em> infinite duration.</li>
+<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> makes a special ImageClip of a single color.</li>
+<li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> generates a special ImageClip representing a text. The generation of the text image is made by the software ImageMagick (see the Installation section).</li>
 </ul>
 <p>To that list we should add the <tt class="docutils literal"><span class="pre">CompositeVideoClips</span></tt> which are obtained by putting several clips together.</p>
 </div>
@@ -157,19 +157,22 @@ video clip).</p>
 </pre></div>
 </div>
 <p>Note that there are many ways to specify the position:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c"># x=45, y=150</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c"># x=45, y=150 , in pixels</span>
 
 <span class="c"># clip2 is horizontally centered, and at the top of the picture</span>
 <span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&quot;center&quot;</span><span class="p">,</span><span class="s">&quot;top&quot;</span><span class="p">))</span>
 
-<span class="c"># clip2 is at 40% of the width, 70% of the height:</span>
+<span class="c"># clip2 is vertically centered, at the left of the picture</span>
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&quot;left&quot;</span><span class="p">,</span><span class="s">&quot;center&quot;</span><span class="p">))</span>
+
+<span class="c"># clip2 is at 40% of the width, 70% of the height of the screen:</span>
 <span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="c"># clip2&#39;s position is horizontally centered, and moving down !</span>
 <span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="o">+</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
 </pre></div>
 </div>
-<p>Be careful when indicating the position that the <tt class="docutils literal"><span class="pre">y</span></tt> position has its zero at the top of the picture:</p>
+<p>When indicating the position keep in mind that the <tt class="docutils literal"><span class="pre">y</span></tt> coordinate has its zero at the top of the picture:</p>
 <div class="figure">
 <img alt="../_images/videoWH.jpeg" src="../_images/videoWH.jpeg" />
 </div>
@@ -256,7 +259,7 @@ effect_3(clip, args3) -&gt; new clip</pre>
 </pre></div>
 </div>
 <p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import.editor</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
-<div class="highlight-python"><pre>from moviepy import.editor *
+<div class="highlight-python"><pre>from moviepy.editor import *
 clip = VideoFileClip("myvideo.avi").\
            fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
            fx( vfx.speedx, 2).\ # double speed
@@ -273,14 +276,27 @@ clip = VideoFileClip("myvideo.avi").\
 </pre></div>
 </div>
 <p>Now the clip <tt class="docutils literal"><span class="pre">modifiedClip1</span></tt> plays the same as <tt class="docutils literal"><span class="pre">myClip</span></tt>, only three times faster, while <tt class="docutils literal"><span class="pre">modifiedClip2</span></tt> will play <tt class="docutils literal"><span class="pre">myClip</span></tt> by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).</p>
-<p>You can also modify the display of a clip with <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>. The following takes a clip and inverts the green and blue channels:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="k">lambda</span> <span class="n">image</span><span class="p">:</span> <span class="n">image</span><span class="p">[:,:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]])</span>
+<p>You can also modify the display of a clip with <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>. The following takes a clip and inverts the green and blue channels of the frames:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">image</span><span class="p">[:,:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span> <span class="n">invert_green_blue</span> <span class="p">)</span>
 </pre></div>
 </div>
-<p>Finally, you may want to process the clip by taking into account the time and the picture at the same time. This is possible with <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function <tt class="docutils literal"><span class="pre">g(t)</span></tt> which given a time returns the clip&#8217;s frame at that time), and the second argument is the time.</p>
-<div class="highlight-python"><pre>modifiedClip = myClip.fl(lambda gf,t: gf(t)[int(t):int(t)+360,:]</pre>
+<p>Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method <tt class="docutils literal"><span class="pre">clip.fl(filter)</span></tt>. The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function <tt class="docutils literal"><span class="pre">g(t)</span></tt> which given a time returns the clip&#8217;s frame at that time), and the second argument is the time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns a &#39;region&#39; of the current frame.</span>
+<span class="sd">    The position of this region depends on the time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">frame_region</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">360</span><span class="p">,:]</span>
+    <span class="k">return</span> <span class="n">frame_region</span>
+
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span> <span class="n">scroll</span> <span class="p">)</span>
+</pre></div>
 </div>
-<p>This will scroll down the clip with a constant height of 360 pixels.</p>
+<p>This will scroll down the clip, with a constant height of 360 pixels.</p>
 <p>When programming a new effect, whenever it is possible, prefer using <tt class="docutils literal"><span class="pre">fl_time</span></tt> and
 <tt class="docutils literal"><span class="pre">fl_image</span></tt> instead of <tt class="docutils literal"><span class="pre">fl</span></tt> if possible when implementing
 new effects. The reason is that, when these effects are applied to

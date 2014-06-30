@@ -161,12 +161,17 @@
 
 
 
+    <span class="c"># ===============================================================</span>
+    <span class="c"># EXPORT OPERATIONS</span>
+
+
+
 <div class="viewcode-block" id="VideoClip.save_frame"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.save_frame">[docs]</a>    <span class="k">def</span> <span class="nf">save_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">savemask</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Save a clip&#39;s frame to an image file.</span>
 
 <span class="sd">        Saves the frame of clip corresponding to time ``t`` in</span>
-<span class="sd">        &#39;filename&#39;. If ``savemask`` is ``True`` the mask is saved in the</span>
-<span class="sd">        alpha layer of the picture.</span>
+<span class="sd">        &#39;filename&#39;. If ``savemask`` is ``True`` the mask is saved in</span>
+<span class="sd">        the alpha layer of the picture.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">im</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
@@ -175,10 +180,11 @@
             <span class="n">im</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">im</span><span class="p">,</span> <span class="n">mask</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
         <span class="n">ffmpeg_write_image</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">im</span><span class="p">)</span>
 
+
 </div>
 <div class="viewcode-block" id="VideoClip.to_videofile"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_videofile">[docs]</a>    <span class="k">def</span> <span class="nf">to_videofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;libx264&#39;</span><span class="p">,</span>
                  <span class="n">bitrate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>
-                 <span class="n">audio_nbytes</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">audio_codec</span><span class="o">=</span> <span class="s">&#39;libvorbis&#39;</span><span class="p">,</span>
+                 <span class="n">audio_nbytes</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">audio_codec</span><span class="o">=</span> <span class="s">&#39;libmp3lame&#39;</span><span class="p">,</span>
                  <span class="n">audio_bitrate</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">audio_bufsize</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span>
                  <span class="n">temp_audiofile</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
                  <span class="n">rewrite_audio</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">remove_temp</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
@@ -198,30 +204,60 @@
 
 <span class="sd">        codec</span>
 <span class="sd">          Codec to use for image encoding. Can be any codec supported</span>
-<span class="sd">          by ffmpeg.</span>
+<span class="sd">          by ffmpeg, but the extension of the output filename must be</span>
+<span class="sd">          set accordingly.</span>
 
-<span class="sd">          ``&#39;rawvideo&#39;``, ``&#39;png&#39;`` will produce a raw video,</span>
-<span class="sd">          of perfect quality, but possibly very huge size. &#39;png&#39; is</span>
-<span class="sd">          is lossless and produces smaller files than &#39;rawvideo&#39;.</span>
+<span class="sd">          ``&#39;libx264&#39;`` (default codec, use file extension ``.mp4``)</span>
+<span class="sd">          makes well-compressed videos (quality tunable using &#39;bitrate&#39;).</span>
 
-<span class="sd">          ``&#39;mpeg4&#39;`` produces nice quality, very well compressed videos.</span>
 
-<span class="sd">          ``&#39;libx264&#39;`` (default) is a little better than &#39;mpeg4&#39;,</span>
-<span class="sd">          a little heavier.</span>
+<span class="sd">          ``&#39;mpeg4&#39;`` (use file extension ``.mp4``) can be an alternative</span>
+<span class="sd">          to ``&#39;libx264&#39;``, and produces higher quality videos by default.</span>
+
+
+<span class="sd">          ``&#39;rawvideo&#39;`` (use file extension ``.avi``) will produce </span>
+<span class="sd">          a video of perfect quality, of possibly very huge size.</span>
+
+<span class="sd">          ``png`` (use file extension ``.avi``) will produce a video</span>
+<span class="sd">          of perfect quality, of smaller size than with ``rawvideo``</span>
+
+<span class="sd">          ``&#39;libvorbis&#39;`` (use file extension ``.ogv``) is a nice video</span>
+<span class="sd">          format, which is completely free/ open source. However not</span>
+<span class="sd">          everyone has the codecs installed by default on their machine.</span>
+
+<span class="sd">          ``&#39;libvpx&#39;`` (use file extension ``.webm``) is tiny a video</span>
+<span class="sd">          format well indicated for web videos (with HTML5). Open source.</span>
+
 
 <span class="sd">        audio</span>
 <span class="sd">          Either ``True``, ``False``, or a file name.</span>
 <span class="sd">          If ``True`` and the clip has an audio clip attached, this</span>
 <span class="sd">          audio clip will be incorporated as a soundtrack in the movie.</span>
-<span class="sd">          If ``audio`` is the name of an audio file, this audio file will</span>
-<span class="sd">          be incorporated as a soundtrack in the movie.</span>
+<span class="sd">          If ``audio`` is the name of an audio file, this audio file</span>
+<span class="sd">          will be incorporated as a soundtrack in the movie.</span>
 
 <span class="sd">        audiofps</span>
 <span class="sd">          frame rate to use when writing the sound.</span>
 
-<span class="sd">        temp_wav</span>
+<span class="sd">        temp_audiofile</span>
 <span class="sd">          the name of the temporary audiofile to be generated and</span>
 <span class="sd">          incorporated in the the movie, if any.</span>
+
+<span class="sd">        audio_codec</span>
+<span class="sd">          Which audio codec should be used. Examples are &#39;libmp3lame&#39;</span>
+<span class="sd">          for &#39;.mp3&#39;, &#39;libvorbis&#39; for &#39;ogg&#39;, &#39;libfdk_aac&#39;:&#39;m4a&#39;,</span>
+<span class="sd">          &#39;pcm_s16le&#39; for 16-bit wav and &#39;pcm_s32le&#39; for 32-bit wav.</span>
+
+<span class="sd">        audio_bitrate</span>
+<span class="sd">          Audio bitrate, given as a string like &#39;50k&#39;, &#39;500k&#39;, &#39;3000k&#39;.</span>
+<span class="sd">          Will determine the size/quality of audio in the output file.</span>
+<span class="sd">          Note that it mainly an indicative goal, the bitrate won&#39;t</span>
+<span class="sd">          necessarily be the this in the final file.</span>
+
+<span class="sd">        write_logfile</span>
+<span class="sd">          If true, will write log files for the audio and the video.</span>
+<span class="sd">          These will be files ending with &#39;.log&#39; with the name of the</span>
+<span class="sd">          output file in them.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -266,10 +302,10 @@
                         <span class="n">audio_ext</span> <span class="o">=</span> <span class="n">D_ext</span><span class="p">[</span><span class="n">audio_codec</span><span class="p">]</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;audio_codec for file&#39;</span>
-                                          <span class="s">&#39;</span><span class="si">%d</span><span class="s"> unkown !&#39;</span><span class="o">%</span><span class="n">filename</span><span class="p">)</span>
+                                          <span class="s">&#39;</span><span class="si">%s</span><span class="s"> unkown !&#39;</span><span class="o">%</span><span class="n">filename</span><span class="p">)</span>
 
-                <span class="n">temp_audiofile</span> <span class="o">=</span> <span class="p">(</span><span class="n">Clip</span><span class="o">.</span><span class="n">_TEMP_FILES_PREFIX</span> <span class="o">+</span>
-                            <span class="s">&quot;to_videofile_SOUND_</span><span class="si">%s</span><span class="s">.&quot;</span><span class="o">%</span><span class="n">name</span> <span class="o">+</span> <span class="n">audio_ext</span><span class="p">)</span>
+                <span class="n">temp_audiofile</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="o">+</span><span class="n">Clip</span><span class="o">.</span><span class="n">_TEMP_FILES_PREFIX</span> <span class="o">+</span>
+                            <span class="s">&quot;to_videofile_SOUND.</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">audio_ext</span><span class="p">)</span>
 
             <span class="n">make_audio</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">temp_audiofile</span><span class="p">))</span>
                             <span class="ow">or</span> <span class="n">rewrite_audio</span><span class="p">)</span>
@@ -283,7 +319,8 @@
         <span class="k">if</span> <span class="n">merge_audio</span><span class="p">:</span>
 
             <span class="c"># make a name for the temporary video file</span>
-            <span class="n">videofile</span> <span class="o">=</span> <span class="n">Clip</span><span class="o">.</span><span class="n">_TEMP_FILES_PREFIX</span> <span class="o">+</span> <span class="s">&quot;to_videofile_&quot;</span><span class="o">+</span> <span class="n">filename</span>
+            <span class="n">videofile</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="n">Clip</span><span class="o">.</span><span class="n">_TEMP_FILES_PREFIX</span> <span class="o">+</span>
+                         <span class="s">&quot;to_videofile</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">ext</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
@@ -302,7 +339,9 @@
             <span class="n">audioproc</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Process</span><span class="p">(</span>
                     <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">to_audiofile</span><span class="p">,</span>
                     <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">temp_audiofile</span><span class="p">,</span><span class="n">audio_fps</span><span class="p">,</span><span class="n">audio_nbytes</span><span class="p">,</span>
-                          <span class="n">audio_bufsize</span><span class="p">,</span><span class="n">audio_codec</span><span class="p">,</span> <span class="n">audio_bitrate</span><span class="p">,</span><span class="n">verbose</span><span class="p">))</span>
+                          <span class="n">audio_bufsize</span><span class="p">,</span><span class="n">audio_codec</span><span class="p">,</span>
+                          <span class="n">audio_bitrate</span><span class="p">,</span>
+                          <span class="n">verbose</span><span class="p">))</span>
 
             <span class="n">audioproc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
             
@@ -321,8 +360,8 @@
             <span class="k">if</span> <span class="n">make_audio</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">to_audiofile</span><span class="p">(</span><span class="n">temp_audiofile</span><span class="p">,</span><span class="n">audio_fps</span><span class="p">,</span>
                                         <span class="n">audio_nbytes</span><span class="p">,</span> <span class="n">audio_bufsize</span><span class="p">,</span>
-                                        <span class="n">audio_codec</span><span class="p">,</span> <span class="n">audio_bitrate</span><span class="p">,</span>
-                                        <span class="n">verbose</span><span class="p">)</span>
+                                        <span class="n">audio_codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="n">audio_bitrate</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
+                                        <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
             <span class="n">ffmpeg_write_video</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                <span class="n">videofile</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">codec</span><span class="p">,</span>
@@ -345,68 +384,71 @@
                           <span class="s">&quot; for the Oscars !</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span> <span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the result of the blit of the clip&#39;s frame at time `t`</span>
-<span class="sd">        on the given `picture`, the position of the clip being given</span>
-<span class="sd">        by the clip&#39;s ``pos`` attribute. Meant for compositing.</span>
+<div class="viewcode-block" id="VideoClip.to_images_sequence"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_images_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">to_images_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nameformat</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Writes the videoclip to a sequence of image files.</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        -----------</span>
+
+<span class="sd">        nameformat</span>
+<span class="sd">          A filename specifying the numerotation format and extension</span>
+<span class="sd">          of the pictures. For instance &quot;frame%03d.png&quot; for filenames</span>
+<span class="sd">          indexed with 3 digits and PNG format. Also possible:</span>
+<span class="sd">          &quot;some_folder/frame%04d.jpeg&quot;, etc.</span>
+
+<span class="sd">        fps</span>
+<span class="sd">          Number of frames per second to consider when writing the</span>
+<span class="sd">          clip. If not specified, the clip&#39;s ``fps`` attribute will</span>
+<span class="sd">          be used if it has one.</span>
+
+<span class="sd">        verbose</span>
+<span class="sd">          Verbose output ?</span>
+
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        names_list</span>
+<span class="sd">          A list of all the files generated.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        ------</span>
+
+<span class="sd">        The resulting image sequence can be read using e.g. the class</span>
+<span class="sd">        ``DirectoryClip``.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">hf</span><span class="p">,</span> <span class="n">wf</span> <span class="o">=</span> <span class="n">sizef</span> <span class="o">=</span> <span class="n">picture</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+          <span class="k">print</span><span class="p">(</span> <span class="s">&quot;MoviePy: Writing frames </span><span class="si">%s</span><span class="s">.&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">nameformat</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span> <span class="ow">and</span> <span class="n">picture</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">picture</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">blit_on</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizef</span><span class="p">),</span> <span class="n">t</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
 
-        <span class="n">ct</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>  <span class="c"># clip time</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
 
-        <span class="c"># GET IMAGE AND MASK IF ANY</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tt</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">nameformat</span><span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">savemask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">))</span>
-        <span class="n">hi</span><span class="p">,</span> <span class="n">wi</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+          <span class="k">print</span><span class="p">(</span> <span class="s">&quot;MoviePy: Done writing frames </span><span class="si">%s</span><span class="s">.&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">nameformat</span><span class="p">))</span>
 
-        <span class="c"># SET POSITION</span>
-
-        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
-
-
-        <span class="c"># preprocess short writings of the position</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
-                    <span class="s">&#39;left&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
-                    <span class="s">&#39;right&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
-                    <span class="s">&#39;top&#39;</span><span class="p">:[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;top&#39;</span><span class="p">],</span>
-                    <span class="s">&#39;bottom&#39;</span><span class="p">:[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;bottom&#39;</span><span class="p">]}[</span><span class="n">pos</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
-
-        <span class="c"># is the position relative (given in % of the clip&#39;s size) ?</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">hf</span><span class="p">):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;left&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;right&#39;</span><span class="p">:</span> <span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">}</span>
-            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-
-            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;top&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;bottom&#39;</span><span class="p">:</span> <span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">}</span>
-            <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-
-        <span class="n">pos</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">blit</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ismask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">filenames</span>
 
 
 </div>
 <div class="viewcode-block" id="VideoClip.to_gif"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_gif">[docs]</a>    <span class="k">def</span> <span class="nf">to_gif</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">program</span><span class="o">=</span> <span class="s">&#39;ImageMagick&#39;</span><span class="p">,</span>
             <span class="n">opt</span><span class="o">=</span><span class="s">&quot;OptimizeTransparency&quot;</span><span class="p">,</span> <span class="n">fuzz</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
             <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dispose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Write the VideoClip to a GIF file</span>
-<span class="sd">        Converts a VideoClip into an animated GIF using ImageMagick or</span>
-<span class="sd">        ffmpeg.</span>
+        <span class="sd">&quot;&quot;&quot; Write the VideoClip to a GIF file.</span>
+
+<span class="sd">        Converts a VideoClip into an animated GIF using ImageMagick</span>
+<span class="sd">        or ffmpeg.</span>
 
 
 <span class="sd">        Parameters</span>
@@ -429,8 +471,9 @@
 <span class="sd">          &#39;optimizeplus&#39; or &#39;OptimizeTransparency&#39;.</span>
 
 <span class="sd">        fuzz</span>
-<span class="sd">          (ImageMagick only) Compresses the GIF by considering that the</span>
-<span class="sd">          colors that are less than fuzz% different are in fact the same.</span>
+<span class="sd">          (ImageMagick only) Compresses the GIF by considering that</span>
+<span class="sd">          the colors that are less than fuzz% different are in fact</span>
+<span class="sd">          the same.</span>
 
 
 <span class="sd">        Notes</span>
@@ -491,8 +534,22 @@
                    <span class="s">&#39;-r&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">fps</span><span class="p">),</span>
                    <span class="n">filename</span><span class="p">]</span>
 
+        <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">subprocess_call</span><span class="p">(</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span> <span class="p">)</span>
+            <span class="n">subprocess_call</span><span class="p">(</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span> <span class="p">)</span>
+        
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;MoviePy Error: creation of </span><span class="si">%s</span><span class="s"> failed because &quot;</span>
+              <span class="s">&quot;of the following error:</span><span class="se">\n\n</span><span class="si">%s</span><span class="s">.</span><span class="se">\n\n</span><span class="s">.&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">err</span><span class="p">)))</span>
+            
+            <span class="k">if</span> <span class="n">program</span> <span class="o">==</span> <span class="s">&quot;ImageMagick&quot;</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">=</span> <span class="n">error</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;This can be due to the fact that &quot;</span>
+                    <span class="s">&quot;ImageMagick is not installed on your computer, or &quot;</span>
+                    <span class="s">&quot;(for Windows users) that you didn&#39;t specify the &quot;</span>
+                    <span class="s">&quot;path to the ImageMagick binary in file conf.py.&quot;</span> <span class="p">)</span>
+            
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">tempfiles</span><span class="p">:</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -507,9 +564,9 @@
 <div class="viewcode-block" id="VideoClip.subfx"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.subfx">[docs]</a>    <span class="k">def</span> <span class="nf">subfx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fx</span><span class="p">,</span> <span class="n">ta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tb</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Apply a transformation to a part of the clip.</span>
 
-<span class="sd">        Returns a new clip in which the function ``fun`` (clip-&gt;clip) has</span>
-<span class="sd">        been applied to the subclip between times `ta` and `tb` (in</span>
-<span class="sd">        seconds).</span>
+<span class="sd">        Returns a new clip in which the function ``fun`` (clip-&gt;clip)</span>
+<span class="sd">        has been applied to the subclip between times `ta` and `tb`</span>
+<span class="sd">        (in seconds).</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        ---------</span>
@@ -519,18 +576,18 @@
 <span class="sd">        &gt;&gt;&gt; newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">left</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">ta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tb</span><span class="o">=</span><span class="n">ta</span><span class="p">)</span>
-        <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">right</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">tb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">ta</span><span class="o">=</span><span class="n">tb</span><span class="p">)</span>
+
+
+        <span class="n">left</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">ta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ta</span><span class="p">)</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="n">tb</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">tb</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">t_start</span><span class="o">=</span><span class="n">tb</span><span class="p">)</span>
 
         <span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">]</span>
-        <span class="n">cc</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">clips</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">cc</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+        <span class="c"># beurk, have to find other solution</span>
+        <span class="kn">from</span> <span class="nn">moviepy.video.compositing.concatenate</span> <span class="kn">import</span> <span class="n">concatenate</span>
 
-        <span class="k">return</span> <span class="n">cc</span>
-
+        <span class="k">return</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">clips</span><span class="p">)</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
 
     <span class="c"># IMAGE FILTERS</span>
 
@@ -545,7 +602,62 @@
     <span class="c">#--------------------------------------------------------------</span>
     <span class="c"># C O M P O S I T I N G</span>
 
+    </div>
+<div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span> <span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the result of the blit of the clip&#39;s frame at time `t`</span>
+<span class="sd">        on the given `picture`, the position of the clip being given</span>
+<span class="sd">        by the clip&#39;s ``pos`` attribute. Meant for compositing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="n">hf</span><span class="p">,</span> <span class="n">wf</span> <span class="o">=</span> <span class="n">sizef</span> <span class="o">=</span> <span class="n">picture</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span> <span class="ow">and</span> <span class="n">picture</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">picture</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">blit_on</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizef</span><span class="p">),</span> <span class="n">t</span><span class="p">))</span>
+
+        <span class="n">ct</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>  <span class="c"># clip time</span>
+
+        <span class="c"># GET IMAGE AND MASK IF ANY</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">None</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">else</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">))</span>
+        <span class="n">hi</span><span class="p">,</span> <span class="n">wi</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="c"># SET POSITION</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+
+
+        <span class="c"># preprocess short writings of the position</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
+                    <span class="s">&#39;left&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;left&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
+                    <span class="s">&#39;right&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;right&#39;</span><span class="p">,</span><span class="s">&#39;center&#39;</span><span class="p">],</span>
+                    <span class="s">&#39;top&#39;</span><span class="p">:[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;top&#39;</span><span class="p">],</span>
+                    <span class="s">&#39;bottom&#39;</span><span class="p">:[</span><span class="s">&#39;center&#39;</span><span class="p">,</span><span class="s">&#39;bottom&#39;</span><span class="p">]}[</span><span class="n">pos</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+        <span class="c"># is the position relative (given in % of the clip&#39;s size) ?</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wf</span><span class="p">,</span> <span class="n">hf</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;left&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;right&#39;</span><span class="p">:</span> <span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">}</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
+
+            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;top&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;center&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&#39;bottom&#39;</span><span class="p">:</span> <span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">}</span>
+            <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">blit</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ismask</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="VideoClip.add_mask"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.add_mask">[docs]</a>    <span class="k">def</span> <span class="nf">add_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">constant_size</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a mask VideoClip to the VideoClip.</span>
@@ -586,7 +698,7 @@
 <span class="sd">          Background color of the final clip ([R,G,B]).</span>
 
 <span class="sd">        pos</span>
-<span class="sd">          Position of the clip in the final clip.</span>
+<span class="sd">          Position of the clip in the final clip. &#39;center&#39; is the default</span>
 
 <span class="sd">        col_opacity</span>
 <span class="sd">          Parameter in 0..1 indicating the opacity of the colored</span>
@@ -599,6 +711,7 @@
         <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="s">&#39;center&#39;</span>
         <span class="n">colorclip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">col_opacity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">colorclip</span> <span class="o">=</span> <span class="n">colorclip</span><span class="o">.</span><span class="n">set_opacity</span><span class="p">(</span><span class="n">col_opacity</span><span class="p">)</span>
 
@@ -606,9 +719,16 @@
             <span class="n">colorclip</span> <span class="o">=</span> <span class="n">colorclip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">colorclip</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">pos</span><span class="p">)],</span>
-                                  <span class="n">transparent</span><span class="o">=</span><span class="p">(</span><span class="n">col_opacity</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">))</span>
+                                  <span class="n">transparent</span><span class="o">=</span><span class="p">(</span><span class="n">col_opacity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ImageClip</span><span class="p">):</span>
+            <span class="n">new_result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">new_result</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">()</span> 
+            <span class="k">return</span> <span class="n">new_result</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
 
 </div>
     <span class="nd">@outplace</span>
@@ -640,6 +760,7 @@
 <span class="sd">        ``mask``, which must be a greyscale (values in 0-1) VideoClip&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="p">(</span> <span class="p">(</span><span class="n">mask</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">mask</span><span class="o">.</span><span class="n">ismask</span> <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span>
+
 
 </div>
     <span class="nd">@add_mask_if_none</span>
@@ -689,14 +810,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">pos</span>
 
 
+
     <span class="c">#--------------------------------------------------------------</span>
-    <span class="c"># CONVERSIONS</span>
+    <span class="c"># CONVERSIONS TO OTHER TYPES</span>
 
 
 </div>
 <div class="viewcode-block" id="VideoClip.to_ImageClip"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_ImageClip">[docs]</a>    <span class="k">def</span> <span class="nf">to_ImageClip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an ImageClip made out of the clip&#39;s frame at time ``t``</span>
+<span class="sd">        Returns an ImageClip made out of the clip&#39;s frame at time ``t``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">ImageClip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 
@@ -704,7 +826,7 @@
 </div>
 <div class="viewcode-block" id="VideoClip.to_mask"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_mask">[docs]</a>    <span class="k">def</span> <span class="nf">to_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a mask a video clip made from the clip.</span>
+<span class="sd">        Returns a mask a video clip made from the clip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -718,7 +840,7 @@
 </div>
 <div class="viewcode-block" id="VideoClip.to_RGB"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.to_RGB">[docs]</a>    <span class="k">def</span> <span class="nf">to_RGB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a non-mask video clip made from the mask video clip.</span>
+<span class="sd">        Returns a non-mask video clip made from the mask video clip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">pic</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="p">[</span><span class="mi">255</span> <span class="o">*</span> <span class="n">pic</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>
@@ -728,6 +850,38 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
+</div>
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="VideoClip.iter_frames"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.iter_frames">[docs]</a>    <span class="k">def</span> <span class="nf">iter_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Iterates over all the frames of the clip.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns each frame of the clip as a HxWxN np.array,</span>
+<span class="sd">        where N=1 for mask clips and N=3 for RGB clips.</span>
+<span class="sd">        </span>
+<span class="sd">        This function is not really meant for video editing.</span>
+<span class="sd">        It provides an easy way to do frame-by-frame treatment of</span>
+<span class="sd">        a video, for fields like science, computer vision...</span>
+<span class="sd">        </span>
+<span class="sd">        The ``fps`` (frames per second) parameter is optional if the</span>
+<span class="sd">        clip already has a ``fps`` attribute.</span>
+<span class="sd">        </span>
+<span class="sd">        Examples</span>
+<span class="sd">        ---------</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; # prints the maximum of red that is contained</span>
+<span class="sd">        &gt;&gt;&gt; # on the first line of each frame of the clip.</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy.editor import VideoFileClip</span>
+<span class="sd">        &gt;&gt;&gt; myclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; for frame in myclip.iter_frames():</span>
+<span class="sd">        &gt;&gt;&gt;     print ( frame[0,:,0].max() )</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+            
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
     <span class="c">#----------------------------------------------------------------</span>
     <span class="c"># Audio</span>
@@ -993,7 +1147,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">txt</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">temptxt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
                 <span class="n">temptxt_fd</span><span class="p">,</span> <span class="n">temptxt</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="s">&#39;.txt&#39;</span><span class="p">)</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">temptxt_fd</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span> <span class="c"># only in Python3 will this work</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">temptxt_fd</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span><span class="s">&#39;UTF8&#39;</span><span class="p">))</span>
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span> <span class="c"># oops, fall back to Python2</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">temptxt_fd</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">temptxt_fd</span><span class="p">)</span>
             <span class="n">txt</span> <span class="o">=</span> <span class="s">&#39;@&#39;</span><span class="o">+</span><span class="n">temptxt</span>
         <span class="k">else</span><span class="p">:</span>
