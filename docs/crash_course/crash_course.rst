@@ -1,14 +1,16 @@
 A MoviePy crash-course
 -----------------------
 
-In this section we will give you the basics to start editing your videos.
+
+This section presents the basics of video editing with MoviePy.
+
 
 Example code
 ~~~~~~~~~~~~~~
 
-In a typical script, you load or generate some clips, modify them, combine them, and write the result to a video file.
-So let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the ten first seconds, and write the result in a file: ::
+In a typical MoviePy script, you load some clips from video files, then modify them, put them together, and write the result to a video file. As an example, let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file: ::
     
+    # Import everything needed to edit video clips
     from moviepy.editor import *
     
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
@@ -29,39 +31,35 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
     # Write the result to a file
     video.to_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
 
-How MoviePy works, in a nutshell
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MoviePy uses mainly ``ffmpeg`` for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.
+What powers MoviePy
+~~~~~~~~~~~~~~~~~~~~~
+
+MoviePy uses the software ``ffmpeg`` to read frames from video and audio files. The code to edit and put these frames together relies mainly on the Python library Numpy. The edited frames are assembled in a video file using once again ``ffmpeg``. The software ImageMagick can also be used to generate texts or export an animation in GIF format.
 
 .. image:: explanations.jpeg
     :width: 570px
     :align: center
 
-You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.
-
-
 The clip objects
 ~~~~~~~~~~~~~~~~~~~
 
-In MoviePy you manipulate mostly two kind of objects: audio clips, and 
-video clips. These clips have different attributes (indicating their 
-duration, their size, their starting time...) which can change as the clips are cut and 
-mixed with other clips.
+The most common objects in MoviePy are called clips. A clip (let's call it ``myclip``) can be either an audio clip or a video clip. It has different attributes, like ``myclip.duration`` (indicating its duration in seconds), ``clip.start`` (indicating the time in seconds where the clip should start playing when mixed with other videos), ``myclip.w`` (the width in pixel of the clip), etc.
 
-A video clip can carry around a soundtrack (which is an 
-audioclip) and, for more complex effects, a mask (which is a special 
-video clip).
+A video clip ``myclip`` can have two special attributes which are themselves clips: ``myclip.audio`` is an audio clip representing the audio track of the vidceo clip. ``myclip.mask`` is a special kind of video clip which defines the transparency of ``myclip``.
+
+A clip also has methods which enable to create a derivative of this clip. For instance ``myclip.subclip(2,7)`` creates a new clip which is like ``myclip`` cut between seconds 2 and 7. 
 
 Classes of video clips
 ~~~~~~~~~~~~~~~~~~~~~~
 
 Video clips are the building blocks of longer videos. They can be created with one of the following:
 
-- ``VideoFileClip('myHolidays.mp4')`` will generate a clip from a movie file. The input file can have any format or extension : mp4, flv, mov, ... even gif ! 
-- ``ImageClip('myPicture.png')`` will make a clip displaying a picture, for an *a priori* infinite duration.
-- ``ColorClip((height,width),color=(R,G,B))`` makes a special ImageClip of a single color.
+- ``VideoFileClip('myHolidays.mp4')`` will generate a clip from a video file. This video file can have any format or extension : mp4, flv, mov, ... even gif ! 
+- ``ImageClip('myPicture.png')`` will generate a clip displaying a picture, for an *a priori* infinite duration.
+- ``ColorClip((height,width),color=(R,G,B))`` generates a special ImageClip of a single color.
 - ``TextClip('Hello folks !',font='Impact-Regular')`` generates a special ImageClip representing a text. The generation of the text image is made by the software ImageMagick (see the Installation section).
+
 To that list we should add the ``CompositeVideoClips`` which are obtained by putting several clips together.
 
 .. _CompositeVideoClips:

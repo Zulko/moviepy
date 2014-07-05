@@ -12,7 +12,7 @@ class VideoFileClip(VideoClip):
     A video clip originating from a movie file. For instance: ::
     
         >>> clip = VideofileClip("myHolidays.mp4")
-        >>> clip2 = VideofileClip("myMaskVideo.avi",ismask = True)
+        >>> clip2 = VideofileClip("myMaskVideo.avi")
     
     
     Parameters
@@ -21,9 +21,6 @@ class VideoFileClip(VideoClip):
     filename:
       The name of the video file. It can have any extension supported
       by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.
-    
-    ismask:
-      Set this to `True` if the clip is going to be used as a mask.
       
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
@@ -47,11 +44,11 @@ class VideoFileClip(VideoClip):
         
     """
 
-    def __init__(self, filename, ismask=False, has_mask=False,
+    def __init__(self, filename, has_mask=False,
                  audio=True, audio_buffersize = 200000,
                  audio_fps=44100, audio_nbytes=2, verbose=False):
         
-        VideoClip.__init__(self, ismask)
+        VideoClip.__init__(self)
         
         # Make a reader
         pix_fmt= "rgba" if has_mask else "rgb24"

@@ -120,7 +120,8 @@ class FFMPEG_AudioWriter:
         
     def close(self):
         self.proc.stdin.close()
-        self.proc.stderr.close()
+        if self.proc.stderr is not None:
+            self.proc.stderr.close()
         self.proc.wait()
         del self.proc
         

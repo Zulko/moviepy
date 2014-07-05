@@ -790,39 +790,6 @@ class VideoClip(Clip):
         else:
             return self
 
-
-    @requires_duration
-    def iter_frames(self, fps=None):
-        """ Iterates over all the frames of the clip.
-        
-        Returns each frame of the clip as a HxWxN np.array,
-        where N=1 for mask clips and N=3 for RGB clips.
-        
-        This function is not really meant for video editing.
-        It provides an easy way to do frame-by-frame treatment of
-        a video, for fields like science, computer vision...
-        
-        The ``fps`` (frames per second) parameter is optional if the
-        clip already has a ``fps`` attribute.
-        
-        Examples
-        ---------
-        
-        >>> # prints the maximum of red that is contained
-        >>> # on the first line of each frame of the clip.
-        >>> from moviepy.editor import VideoFileClip
-        >>> myclip = VideoFileClip('myvideo.mp4')
-        >>> for frame in myclip.iter_frames():
-        >>>     print ( frame[0,:,0].max() )
-        
-        """
-        
-        if fps is None:
-            fps = self.fps
-            
-        for t in np.arange(0, self.duration, 1.0/fps):
-            yield self.get_frame(t)
-
     #----------------------------------------------------------------
     # Audio
 

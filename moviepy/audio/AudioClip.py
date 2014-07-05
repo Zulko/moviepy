@@ -14,7 +14,7 @@ if sys.version_info < (3,):
 
 
 class AudioClip(Clip):
-    """Base class for audio clips.
+    """ Base class for audio clips.
     
     See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.
     

@@ -144,6 +144,8 @@ class FFMPEG_VideoWriter:
         
     def close(self):
         self.proc.stdin.close()
+        if self.proc.stderr is not None:
+            self.proc.stderr.close()
         self.proc.wait()
         
         del self.proc
