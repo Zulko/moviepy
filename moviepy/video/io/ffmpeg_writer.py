@@ -138,7 +138,7 @@ class FFMPEG_VideoWriter:
 
                 error = error+("\n\nThe video export "
                   "failed, possibly because the bitrate you specified "
-                  "was two high or too low for the video codec.")
+                  "was too high or too low for the video codec.")
             
             raise IOError(error)
         
