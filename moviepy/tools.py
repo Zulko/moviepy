@@ -53,3 +53,23 @@ def cvsecs(*args):
         return 60*args[0]+args[1]
     elif len(args) ==3:
         return 3600*args[0]+60*args[1]+args[2]
+
+        
+def hasFFMPEGSupport(ffmpeg_switch, query):
+    """
+    ffmpeg_switch = 'codecs', 'formats' (file extensions), 'encoders' or 'decoders' depending
+    on what you want to check.
+    
+    Returns True if supported, False if not.
+    
+    Example usage:
+    >>> result = hasFFMPEGSupport('encoders', 'libx264')
+    >>> result = hasFFMPEGSupport('encoders', 'libvorbis')
+    """
+    process = sp.Popen(str('ffmpeg -' + ffmpeg_switch), shell=True, stdout=sp.PIPE, stderr=sp.PIPE)
+    supported = dict((line.split()[1], line.split()[0]) for line in (process.communicate()[0]).split('\n') if len(line.split())>=3)
+    query_result = supported.get(query)
+    if query_result is not None:
+        return True
+    else:
+        return False
