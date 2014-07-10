@@ -280,7 +280,7 @@ class VideoClip(Clip):
                     target=self.audio.to_audiofile,
                     args=(temp_audiofile,audio_fps,audio_nbytes,
                           audio_bufsize,audio_codec,
-                          audio_bitrate,
+                          audio_bitrate, write_logfile,
                           verbose))
 
             audioproc.start()
@@ -292,7 +292,7 @@ class VideoClip(Clip):
                                verbose=verbose)
             audioproc.join()
             if audioproc.exitcode:
-                print ("WARNING: something went wrong with the audio"+
+                raise IOError("Something went wrong with the audio"+
                        " writing, Exit code %d"%audioproc.exitcode)
         else:
 
@@ -320,7 +320,8 @@ class VideoClip(Clip):
                 os.remove(videofile)
                 if not isinstance(audio,str):
                     os.remove(temp_audiofile)
-            verbose_print("\nYour video is ready ! Fingers crossed"
+
+        verbose_print("\nYour video is ready ! Fingers crossed"
                           " for the Oscars !\n")
 
 
