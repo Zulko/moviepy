@@ -53,6 +53,8 @@ class FFMPEG_AudioWriter:
 
         if logfile is None:
           logfile = sp.PIPE
+        
+        
 
         cmd = ([ FFMPEG_BINARY, '-y',
             "-loglevel", "error" if logfile==sp.PIPE else "info",
@@ -74,13 +76,25 @@ class FFMPEG_AudioWriter:
                                   stderr=logfile,
                                   stdout=DEVNULL)
 
+        # Even if we use a logfile we still need to read ffmpeg output 
+        # so we can raise relevant exceptions.
+
+        if logfile != sp.PIPE:
+            self.stderr = open(logfile.name, "r")
+        else:
+            self.stderr = self.proc.stderr
+
         
     def write_frames(self,frames_array):
-        try:
-            self.proc.stdin.write(frames_array.tostring())
-        except IOError as err:
-            ffmpeg_error = self.proc.stderr.read()
-            error = (str(err)+ ("\n\nMoviePy error: FFMPEG encountered "
+        self.proc.stdin.write(frames_array.tostring())
+        
+    def close(self):
+        self.proc.stdin.close()
+        self.proc.wait()
+        
+        if self.proc.returncode != 0:
+            ffmpeg_error = self.stderr.read()
+            error = (("\n\nMoviePy error: FFMPEG encountered "
                      "the following error while writing file %s:"%self.filename
                      + "\n\n"+ffmpeg_error))
 
@@ -114,16 +128,13 @@ class FFMPEG_AudioWriter:
                 error = error+("\n\nIn case it helps, make sure you are "
                   "using a recent version of FFMPEG (the versions in the "
                   "Ubuntu/Debian repos are deprecated).")
+
+            self.stderr.close()
+
+            del self.proc
             raise IOError(error)
 
-        
-        
-    def close(self):
-        self.proc.stdin.close()
-        if self.proc.stderr is not None:
-            self.proc.stderr.close()
-        self.proc.wait()
-        del self.proc
+
         
         
         
