@@ -7,7 +7,8 @@ from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.compositing.on_color import on_color 
 
 def concatenate(clipslist, method = 'chain', transition=None,
-           bg_color=(0, 0, 0), transparent=False, ismask=False, crossover = 0):
+                bg_color=(0, 0, 0), transparent=False, ismask=False,
+                padding = 0):
     """ Concatenates several video clips
     
     Returns a video clip made by clip by concatenating several video clips.
@@ -41,16 +42,24 @@ def concatenate(clipslist, method = 'chain', transition=None,
       the masks of the clips in the list. If the clips do not have the
       same resolution, the border around the smaller clips will be
       transparent.
-    
-                       
+
+    padding
+      Duration during two consecutive clips. If negative, a clip will
+      play at the same time as the clip it follows. A non-null padding
+      automatically sets the method to `compose`.
+           
     """
     
+    if padding != 0:
+        method = 'compose'
+
     if transition != None:
         l = [[v, transition] for v in clipslist[:-1]]
         clipslist = reduce(lambda x, y: x + y, l) + [clipslist[-1]]
         transition = None
     
     tt = np.cumsum([0] + [c.duration for c in clipslist])
+
     sizes = [v.size for v in clipslist]
     w = max([r[0] for r in sizes])
     h = max([r[1] for r in sizes])
@@ -70,7 +79,8 @@ def concatenate(clipslist, method = 'chain', transition=None,
             result = result.fx( on_color, (w,h), bg_color, 'center')
         
     elif method == 'compose':
-        tt = np.maximum(0, tt - crossover*np.arange(len(tt)))
+
+        tt = np.maximum(0, tt + padding*np.arange(len(tt)))
         result = concatenate( [c.set_start(t).set_pos('center')
                                     for (c, t) in zip(clipslist, tt)],
                    size = (w, h), bg_color=bg_color, ismask=ismask,

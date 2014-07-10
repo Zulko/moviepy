@@ -26,7 +26,7 @@ IMAGEMAGICK_BINARY = 'convert'
 
 
 # =====================================================================
-# CODE. Don't write anything below this line :O
+# CODE. Don't write anything below this line !
 
 import subprocess as sp
 
