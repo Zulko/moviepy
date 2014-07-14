@@ -382,7 +382,7 @@ class VideoClip(Clip):
 
 
 
-    def to_gif(self, filename, fps=None, program= 'ImageMagick',
+    def to_gif(self, filename, fps=None, program= GIF_PROGRAM,
             opt="OptimizeTransparency", fuzz=1, verbose=True,
             loop=0, dispose=False):
         """ Write the VideoClip to a GIF file.
