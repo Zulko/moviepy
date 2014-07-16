@@ -2,10 +2,10 @@ from moviepy.editor import *
 from moviepy.video.tools.credits import credits1
 
 # Load the mountains clip, cut it, slow it down, make it look darker
-clip = VideoFileClip('../../videos/badl-0001.mov', audio=False).\
-           subclip(37,46).\
-           speedx( 0.4).\
-           fx( vfx.colorx, 0.7)
+clip = (VideoFileClip('../../videos/badl-0001.mov', audio=False)
+           .subclip(37,46)
+           .speedx( 0.4)
+           .fx( vfx.colorx, 0.7))
 
 # Save the first frame to later make a mask with GIMP (only once)
 #~ clip.save_frame('../../credits/mountainMask2.png')
@@ -24,4 +24,4 @@ final = CompositeVideoClip([clip,
                             scrolling_credits,
                             clip.set_mask(mountainmask)])
                             
-final.subclip(8,10).to_videofile("../../credits_mountains.avi")
+final.subclip(8,10).write_videofile("../../credits_mountains.avi")

@@ -10,6 +10,7 @@ import subprocess
 import multiprocessing
 import tempfile
 from copy import copy
+
 from tqdm import tqdm
 
 
@@ -19,7 +20,8 @@ from moviepy.decorators import  (apply_to_mask,
                                  requires_duration,
                                  outplace,
                                  add_mask_if_none)
-from moviepy.tools import subprocess_call, sys_write_flush
+from moviepy.tools import (subprocess_call, verbose_print,
+                           deprecated_version_of) 
 
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
@@ -122,7 +124,7 @@ class VideoClip(Clip):
 
 
 
-    def to_videofile(self, filename, fps=24, codec='libx264',
+    def write_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
                  audio_nbytes = 4, audio_codec= 'libmp3lame',
                  audio_bitrate = None, audio_bufsize = 2000,
@@ -146,6 +148,8 @@ class VideoClip(Clip):
           Codec to use for image encoding. Can be any codec supported
           by ffmpeg, but the extension of the output filename must be
           set accordingly.
+
+          Some examples of codecs are:
 
           ``'libx264'`` (default codec, use file extension ``.mp4``)
           makes well-compressed videos (quality tunable using 'bitrate').
@@ -177,7 +181,7 @@ class VideoClip(Clip):
           will be incorporated as a soundtrack in the movie.
 
         audiofps
-          frame rate to use when writing the sound.
+          frame rate to use when generating the sound.
 
         temp_audiofile
           the name of the temporary audiofile to be generated and
@@ -207,9 +211,6 @@ class VideoClip(Clip):
             audio_codec = 'pcm_s16le'
         elif audio_codec == 'raw32':
             audio_codec = 'pcm_s32le'
-
-        def verbose_print(s):
-            if verbose: sys_write_flush(s)
 
         if isinstance(audio, str):
             # audio is some audiofile it is maybe not a wav file. It is
@@ -245,7 +246,7 @@ class VideoClip(Clip):
                                           '%s unkown !'%filename)
 
                 temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND.%s"%audio_ext)
+                            "write_videofile_SOUND.%s"%audio_ext)
 
             make_audio = ( (not os.path.exists(temp_audiofile))
                             or rewrite_audio)
@@ -260,7 +261,7 @@ class VideoClip(Clip):
 
             # make a name for the temporary video file
             videofile = (name + Clip._TEMP_FILES_PREFIX +
-                         "to_videofile%s"%ext)
+                         "write_videofile%s"%ext)
 
         else:
 
@@ -269,15 +270,15 @@ class VideoClip(Clip):
         # enough cpu for multiprocessing ?
         enough_cpu = (multiprocessing.cpu_count() > 2)
 
-        verbose_print("\nMoviePy: building video file %s\n"%filename
-                      +40*"-"+"\n")
+        verbose_print(verbose, "\nMoviePy: building video file %s\n"%filename
+                                +40*"-"+"\n")
 
         if para and make_audio and  enough_cpu:
 
             # Parallelize
-            verbose_print("Writing audio/video in parrallel.\n")
+            verbose_print(verbose, "Writing audio/video in parrallel.\n")
             audioproc = multiprocessing.Process(
-                    target=self.audio.to_audiofile,
+                    target=self.audio.write_audiofile,
                     args=(temp_audiofile,audio_fps,audio_nbytes,
                           audio_bufsize,audio_codec,
                           audio_bitrate,
@@ -298,9 +299,10 @@ class VideoClip(Clip):
 
             # Don't parallelize
             if make_audio:
-                self.audio.to_audiofile(temp_audiofile,audio_fps,
+                self.audio.write_audiofile(temp_audiofile,audio_fps,
                                         audio_nbytes, audio_bufsize,
-                                        audio_codec, bitrate=audio_bitrate, write_logfile=write_logfile,
+                                        audio_codec, bitrate=audio_bitrate,
+                                        write_logfile=write_logfile,
                                         verbose=verbose)
 
             ffmpeg_write_video(self,
@@ -312,7 +314,7 @@ class VideoClip(Clip):
         # Merge with audio if any and trash temporary files.
         if merge_audio:
 
-            verbose_print("\n\nNow merging video and audio:\n")
+            verbose_print(verbose, "\n\nNow merging video and audio:\n")
             ffmpeg_merge_video_audio(videofile,temp_audiofile,
                                   filename, ffmpeg_output=True)
 
@@ -320,11 +322,10 @@ class VideoClip(Clip):
                 os.remove(videofile)
                 if not isinstance(audio,str):
                     os.remove(temp_audiofile)
-            verbose_print("\nYour video is ready ! Fingers crossed"
-                          " for the Oscars !\n")
+            verbose_print(verbose, "\nYour video is ready !\n")
 
 
-    def to_images_sequence(self, nameformat, fps=None, verbose=True):
+    def write_images_sequence(self, nameformat, fps=None, verbose=True):
         """ Writes the videoclip to a sequence of image files.
 
 
@@ -360,8 +361,7 @@ class VideoClip(Clip):
 
         """
 
-        if verbose:
-          print( "MoviePy: Writing frames %s."%(nameformat))
+        verbose_print(verbose, "MoviePy: Writing frames %s."%(nameformat))
 
         if fps is None:
             fps = self.fps
@@ -375,14 +375,13 @@ class VideoClip(Clip):
             filenames.append(name)
             self.save_frame(name, t, savemask=True)
 
-        if verbose:
-          print( "MoviePy: Done writing frames %s."%(nameformat))
+        verbose_print(verbose, "MoviePy: Done writing frames %s."%(nameformat))
 
         return filenames
 
 
 
-    def to_gif(self, filename, fps=None, program= 'ImageMagick',
+    def write_gif(self, filename, fps=None, program= 'ImageMagick',
             opt="OptimizeTransparency", fuzz=1, verbose=True,
             loop=0, dispose=False):
         """ Write the VideoClip to a GIF file.
@@ -424,12 +423,9 @@ class VideoClip(Clip):
         slower than the clip you will use ::
 
             >>> # slow down clip 50% and make it a gif
-            >>> myClip.speedx(0.5).to_gif('myClip.gif')
+            >>> myClip.speedx(0.5).write_gif('myClip.gif')
 
         """
-
-        def verbose_print(s):
-            if verbose: sys_write_flush(s)
 
         if fps is None:
             fps = self.fps
@@ -438,10 +434,10 @@ class VideoClip(Clip):
         tt = np.arange(0,self.duration, 1.0/fps)
         tempfiles = []
 
-        verbose_print("\nMoviePy: building GIF file %s\n"%filename
-                      +40*"-"+"\n")
+        verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
+                                +40*"-"+"\n")
 
-        verbose_print("Generating GIF frames.\n")
+        verbose_print(verbose, "Generating GIF frames.\n")
 
         total = int(self.duration/fps)+1
         for i, t in tqdm(enumerate(tt), total=total):
@@ -450,7 +446,7 @@ class VideoClip(Clip):
             tempfiles.append(name)
             self.save_frame(name, t, savemask=True)
 
-        verbose_print("Done generating GIF frames.\n")
+        verbose_print(verbose, "Done generating GIF frames.\n")
 
         delay = int(100.0/fps)
 
@@ -951,6 +947,19 @@ class ImageClip(VideoClip):
                     setattr(self, attr, new_a)
 
 
+###
+#
+# The old functions to_videofile, to_gif, to_images sequences have been
+# replaced by the more explicite write_videofile, write_gif, etc.
+
+VideoClip.to_videofile = deprecated_version_of(VideoClip.write_videofile, 
+                                               'to_videofile')
+VideoClip.to_gif = deprecated_version_of(VideoClip.write_videofile, 'to_gif')
+VideoClip.to_images_sequence = deprecated_version_of(VideoClip.write_videofile, 
+                                               'to_images_sequence')
+
+###
+
 
 class ColorClip(ImageClip):
     """ An ImageClip showing just one color.
@@ -1112,10 +1121,9 @@ class TextClip(ImageClip):
 
     @staticmethod
     def list(arg):
-        """
-        Returns the list of all valid entries for the argument given
-        (can be ``font``, ``color``, etc...) argument of ``TextClip``
-        """
+        """ Returns the list of all valid entries for the argument of
+        ``TextClip`` given (can be ``font``, ``color``, etc...) """
+
         process = subprocess.Popen([IMAGEMAGICK_BINARY, '-list', arg],
                                    stdout=subprocess.PIPE)
         result = process.communicate()[0]

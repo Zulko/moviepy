@@ -20,4 +20,4 @@ the_end = TextClip("The End", font="Amiri-bold", color="white",
 final = CompositeVideoClip([the_end.set_pos('center'),clip],
                            size =clip.size)
                            
-final.to_videofile("../../theEnd.avi")
+final.write_videofile("../../theEnd.avi")

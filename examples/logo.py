@@ -25,4 +25,4 @@ shade.mask = VideoClip(ismask=True, get_frame = mask_frame)
 cc = CompositeVideoClip([im.set_pos(2*["center"]),shade],
                          size = moviesize)
 
-cc.subclip(0,duration).to_videofile("moviepy_logo.avi",fps=24)
+cc.subclip(0,duration).write_videofile("moviepy_logo.avi",fps=24)

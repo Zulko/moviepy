@@ -31,7 +31,7 @@ In a typical MoviePy script, you load some clips from video files, then modify t
     video = CompositeVideoClip([clip, txt_clip])
     
     # Write the result to a file
-    video.to_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
+    video.write_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
 
 
 What powers MoviePy
@@ -149,9 +149,9 @@ Note that the ``fps`` can be any number, independently of the ``fps`` of your di
 
 To write a clip as a video file, use ::
     
-    myClip.to_videofile("myEditedMovie.avi") # default: codec 'libx264' fps 24
-    myClip.to_videofile("myEditedMovie.avi",fps=15, codec='mpeg4')
-    myClip.to_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
+    myClip.write_videofile("myEditedMovie.avi") # default: codec 'libx264' fps 24
+    myClip.write_videofile("myEditedMovie.avi",fps=15, codec='mpeg4')
+    myClip.write_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
     
 Alternatively you can also save a video clip as an animated GIF with ::
 
@@ -176,7 +176,7 @@ The second important objects of MoviePy are the audio clips. If ``myHolidays.mp4
     
     clip = VideoFileClip('myHolidays.mp4')
 
-will create a clip with a ``clip.audio`` attribute which is an audio clip. This is the sound that you will hear if you render the clip with ``clip.preview`` or ``clip.to_videofile``. You can also create an audio clip from a sound file and then attach it to a video clip: ::
+will create a clip with a ``clip.audio`` attribute which is an audio clip. This is the sound that you will hear if you render the clip with ``clip.preview`` or ``clip.write_videofile``. You can also create an audio clip from a sound file and then attach it to a video clip: ::
         
     audio = AudioFileClip('mySong.wav')
     video = VideoFileClip('myHolidays.mp4').set_audio(audio)

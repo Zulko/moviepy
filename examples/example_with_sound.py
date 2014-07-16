@@ -57,4 +57,4 @@ cc = CompositeVideoClip([clip_right.set_pos('right').volumex(0.4),
                          clip_left.set_pos('left').volumex(0.4)],
                          size = (W,H))
 #cc.preview()
-cc.to_videofile("../../biphone3.avi",fps=24, codec='mpeg4')
+cc.write_videofile("../../biphone3.avi",fps=24, codec='mpeg4')

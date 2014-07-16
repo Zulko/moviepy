@@ -60,6 +60,6 @@ clips = [ CompositeVideoClip( moveLetters(letters,funcpos),
 
 # WE CONCATENATE EVERYTHING AND WRITE TO A FILE
 
-concatenate(clips).to_videofile('../../coolTextEffects.avi',
+concatenate(clips).write_videofile('../../coolTextEffects.avi',
                                 fps=25, codec='mpeg4')
 

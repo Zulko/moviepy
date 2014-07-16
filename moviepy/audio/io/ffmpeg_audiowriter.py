@@ -1,6 +1,4 @@
-from __future__ import division
 
-import sys
 import numpy as np
 import subprocess as sp
 
@@ -14,7 +12,9 @@ from tqdm import tqdm
 from moviepy.conf import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 
-from moviepy.tools import sys_write_flush
+from moviepy.tools import verbose_print
+
+
 
 class FFMPEG_AudioWriter:
     """
@@ -135,16 +135,13 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
     """
-    
-    def verbose_print(s):
-        if verbose: sys_write_flush(s)
 
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
         
-    verbose_print("Writing audio in %s\n"%filename)
+    verbose_print(verbose, "Writing audio in %s\n"%filename)
      
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
@@ -170,4 +167,4 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     if write_logfile:
         logfile.close()
 
-    verbose_print("Done writing Audio in %s !\n"%filename)
+    verbose_print(verbose, "Done writing Audio in %s !\n"%filename)

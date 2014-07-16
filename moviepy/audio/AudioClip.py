@@ -1,16 +1,10 @@
-import sys
-from copy import copy
 
 import numpy as np
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
+from moviepy.tools import deprecated_version_of
 
 from moviepy.Clip import Clip
-
-
-# optimize range in function of Python's version
-if sys.version_info < (3,):
-    range = xrange
 
 
 class AudioClip(Clip):
@@ -89,7 +83,7 @@ class AudioClip(Clip):
     
     
     @requires_duration
-    def to_audiofile(self,filename, fps=44100, nbytes=2,
+    def write_audiofile(self,filename, fps=44100, nbytes=2,
                      buffersize=2000, codec='libvorbis',
                      bitrate=None, write_logfile=False, verbose=True):
         """ Writes an audio file from the AudioClip.
@@ -131,6 +125,12 @@ class AudioClip(Clip):
                       codec=codec, bitrate=bitrate, write_logfile=write_logfile,
                       verbose=verbose)
 
+###
+#
+# The to_audiofile method is replaced by the more explicit write_audiofile.
+AudioClip.to_audiofile = deprecated_version_of(AudioClip.write_audiofile,
+                                               'to_audiofile')
+###
 
 class AudioArrayClip(AudioClip):
     """
