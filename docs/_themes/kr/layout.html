@@ -8,13 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 {% endblock %}
 
-{% block sidebar %}
 
-{% endblock %}
-
-{% block sidebar2 %}
-  {{ sidebar() }}
-{% endblock %}
+{% if pagename != 'index' %}
+    {% block sidebar %}
+    {% endblock %}
+    {% block sidebar2 %}
+     {{ sidebar() }}
+    {% endblock %}
+{% endif %}
 
 {% block header %}
   {{ super() }}

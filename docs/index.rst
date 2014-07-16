@@ -1,30 +1,20 @@
 MoviePy
 =======
 
-MoviePy is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and video processing. It can read and write all the most common video formats.
+MoviePy is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
 
-It can be used to edit your personal videos, or to automatize the creation of videos, for instance on a webserver. See the :ref:`gallery` for examples of projects using MoviePy.
+User's Guide
+--------------
 
-Let us put together a few demonstration clips (you will find the code for most of these in the :ref:`examples`): ::
-    
-    import os
-    from moviepy.editor import VideoFileClip, concatenate
-    files = sorted( os.listdir("clips/") )
-    clips = [ VideoFileClip('clips/%s'%f) for f in files]
-    video = concatenate(clips, transition = VideoFileClip("logo.avi"))
-    video.to_videofile("demos.mp4",fps=25) # many options available !
-    
-.. raw:: html
-
-        <center>
-        <object><param name="movie"
-        value="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0">
-        </param><param name="allowFullScreen" value="true"></param><param
-        name="allowscriptaccess" value="always"></param><embed
-        src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
-        type="application/x-shockwave-flash" allowscriptaccess="always"
-        allowfullscreen="true" width="490" height="390"></embed></object>
-        </center>
+.. toctree::
+   :maxdepth: 1
+   
+   install
+   crash_course/crash_course
+   gallery
+   examples/examples
+   FAQ
+   ref/ref
 
 MoviePy is an open source software originally written by Zulko_ and released under the MIT licence.
 It is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_ .
@@ -46,20 +36,6 @@ It is hosted on Github_, where you can push improvements, report bugs and ask fo
     <img style="position: absolute; top: 0; right: 0; border: 0;"
     src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
     alt="Fork me on GitHub"></a>
-
-
-User's Guide
---------------
-
-.. toctree::
-   :maxdepth: 1
-   
-   install
-   crash_course/crash_course
-   examples/examples
-   FAQ
-   ref/ref
-
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Zulko: https://github.com/Zulko/

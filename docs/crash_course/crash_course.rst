@@ -1,3 +1,5 @@
+.. _crashcourse:
+
 A MoviePy crash-course
 -----------------------
 
