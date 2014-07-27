@@ -360,8 +360,10 @@ class VideoClip(Clip):
 
         """
 
-        if verbose:
-          print( "MoviePy: Writing frames %s."%(nameformat))
+        def verbose_print(s):
+            if verbose: sys_write_flush(s)
+
+        verbose_print("MoviePy: Writing frames %s."%(nameformat))
 
         if fps is None:
             fps = self.fps
@@ -375,8 +377,7 @@ class VideoClip(Clip):
             filenames.append(name)
             self.save_frame(name, t, savemask=True)
 
-        if verbose:
-          print( "MoviePy: Done writing frames %s."%(nameformat))
+        verbose_print("MoviePy: Done writing frames %s."%(nameformat))
 
         return filenames
 
@@ -436,20 +437,12 @@ class VideoClip(Clip):
 
         fileName, fileExtension = os.path.splitext(filename)
         tt = np.arange(0,self.duration, 1.0/fps)
-        tempfiles = []
-
+        
         verbose_print("\nMoviePy: building GIF file %s\n"%filename
                       +40*"-"+"\n")
-
         verbose_print("Generating GIF frames.\n")
-
-        total = int(self.duration/fps)+1
-        for i, t in tqdm(enumerate(tt), total=total):
-
-            name = "%s_GIFTEMP%04d.png"%(fileName, i+1)
-            tempfiles.append(name)
-            self.save_frame(name, t, savemask=True)
-
+        tempfiles = self.to_images_sequence( fileName+"_GIFTEMP%04d.png",
+                                             fps=fps, verbose=verbose)
         verbose_print("Done generating GIF frames.\n")
 
         delay = int(100.0/fps)
@@ -464,7 +457,7 @@ class VideoClip(Clip):
                   "-coalesce",
                   "-fuzz", "%02d"%fuzz + "%",
                   "-layers", "%s"%opt,
-                  "%s"%filename]
+                  filename]
 
         elif program == "ffmpeg":
 

@@ -36,8 +36,7 @@ def slide_in(clip, duration, side):
     """ Makes the clip arrive from one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,
-    and if the clip has the same size as the clip it follows / the
-    clip it is composed with.
+    and if the clip has the same size as the whole composition.
 
     Parameters
     ===========
@@ -77,8 +76,7 @@ def slide_out(clip, duration, side):
     """ Makes the clip go away by one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,
-    and if the clip has the same size as the clip it follows / the
-    clip it is composed with.
+    and if the clip has the same size as the whole composition.
 
     Parameters
     ===========
