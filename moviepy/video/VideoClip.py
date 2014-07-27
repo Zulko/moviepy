@@ -6,7 +6,8 @@ main subclasses:
 """
 
 import os
-import subprocess
+import subprocess as sp
+
 import multiprocessing
 import tempfile
 from copy import copy
@@ -20,6 +21,7 @@ from moviepy.decorators import  (apply_to_mask,
                                  requires_duration,
                                  outplace,
                                  add_mask_if_none)
+
 from moviepy.tools import (subprocess_call, verbose_print,
                            deprecated_version_of) 
 
@@ -31,6 +33,14 @@ from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 from .tools.drawing import blit
 from ..Clip import Clip
 from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
+
+
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
 
 
 class VideoClip(Clip):
@@ -86,7 +96,7 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
-        if get_frame:
+        if get_frame is not None:
             self.get_frame = get_frame
             self.size =get_frame(0).shape[:2][::-1]
         self.ismask = ismask
@@ -379,12 +389,120 @@ class VideoClip(Clip):
 
         return filenames
 
-
-
     def write_gif(self, filename, fps=None, program= 'ImageMagick',
-            opt="OptimizeTransparency", fuzz=1, verbose=True,
-            loop=0, dispose=False):
+               opt="OptimizeTransparency", fuzz=1, verbose=True,
+               loop=0, dispose=False):
         """ Write the VideoClip to a GIF file.
+
+        Converts a VideoClip into an animated GIF using ImageMagick
+        or ffmpeg.
+
+
+        Parameters
+        -----------
+
+        filename
+          Name of the resulting gif file.
+
+        fps
+          Number of frames per second (see note below). If it
+            isn't provided, then the function will look for the clip's
+            ``fps`` attribute (VideoFileClip, for instance, have one).
+
+        program
+          Software to use for the conversion, either 'ImageMagick' or
+          'ffmpeg'.
+
+        opt
+          (ImageMagick only) optimalization to apply, either
+          'optimizeplus' or 'OptimizeTransparency'.
+
+        fuzz
+          (ImageMagick only) Compresses the GIF by considering that
+          the colors that are less than fuzz% different are in fact
+          the same.
+
+
+        Notes
+        -----
+
+        The gif will be playing the clip in real time (you can
+        only change the frame rate). If you want the gif to be played
+        slower than the clip you will use ::
+
+            >>> # slow down clip 50% and make it a gif
+            >>> myClip.speedx(0.5).to_gif('myClip.gif')
+
+        """
+
+        if fps is None:
+            fps = self.fps
+
+        fileName, fileExtension = os.path.splitext(filename)
+        tt = np.arange(0,self.duration, 1.0/fps)
+        tempfiles = []
+
+        verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
+                      +40*"-"+"\n")
+
+        verbose_print(verbose, "Generating GIF frames.\n")
+
+        total = int(self.duration*fps)+1
+        for i, t in tqdm(enumerate(tt), total=total):
+
+            name = "%s_GIFTEMP%04d.bmp"%(fileName, i+1)
+            tempfiles.append(name)
+            self.save_frame(name, t, savemask=True)
+
+        verbose_print(verbose, "Done generating GIF frames.\n")
+
+        delay = int(100.0/fps)
+
+        if program == "ImageMagick":
+
+            cmd = [IMAGEMAGICK_BINARY,
+                  '-delay' , '%d'%delay,
+                  "-dispose" ,"%d"%(2 if dispose else 1),
+                  "-loop" , "%d"%loop,
+                  "%s_GIFTEMP*.png"%fileName,
+                  "-coalesce",
+                  "-fuzz", "%02d"%fuzz + "%",
+                  "-layers", "%s"%opt,
+                  "%s"%filename]
+
+        elif program == "ffmpeg":
+
+            cmd = [FFMPEG_BINARY, '-y',
+                   '-f', 'image2', '-r',str(fps),
+                   '-i', fileName+'_GIFTEMP%04d.bmp',
+                   '-r',str(fps),
+                   filename]
+
+        try:
+            subprocess_call( cmd, verbose = verbose )
+        
+        except IOError as err:
+
+            error = ("MoviePy Error: creation of %s failed because "
+              "of the following error:\n\n%s.\n\n."%(filename, str(err)))
+            
+            if program == "ImageMagick":
+                error = error + ("This can be due to the fact that "
+                    "ImageMagick is not installed on your computer, or "
+                    "(for Windows users) that you didn't specify the "
+                    "path to the ImageMagick binary in file conf.py." )
+            
+            raise IOError(error)
+
+        for f in tempfiles:
+            os.remove(f)
+
+
+
+    def write_gif2(self, filename, fps=None, program= 'ImageMagick',
+                   opt="OptimizeTransparency", fuzz=1, verbose=True,
+                   loop=0, dispose=False):
+        """ Write the VideoClip to a GIF file, without temporary files.
 
         Converts a VideoClip into an animated GIF using ImageMagick
         or ffmpeg.
@@ -426,54 +544,60 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).write_gif('myClip.gif')
 
         """
-
+        
+        #
+        # We use processes chained with pipes.
+        #
+        # if program == 'ffmpeg'
+        # frames --ffmpeg--> gif
+        #
+        # if program == 'ImageMagick' and optimize == (None, False)
+        # frames --ffmpeg--> bmp frames --ImageMagick--> gif
+        #
+        # 
+        # if program == 'ImageMagick' and optimize != (None, False)
+        # frames -ffmpeg-> bmp frames -ImagMag-> gif -ImagMag-> better gif
+        #
+    
         if fps is None:
-            fps = self.fps
-
-        fileName, fileExtension = os.path.splitext(filename)
-        tt = np.arange(0,self.duration, 1.0/fps)
-        tempfiles = []
-
+            fps=self.fps
+        
+        cmd1 = [FFMPEG_BINARY, '-y', '-loglevel', 'error',
+                '-f', 'rawvideo',
+                '-vcodec','rawvideo', '-r', "%.02f"%fps,
+                '-s', "%dx%d"%(self.w, self.h), '-pix_fmt', 'rgb24',
+                '-i', '-']
+        cmd1a = cmd1+['-r', "%.02f"%fps, filename]
+        cmd1b = cmd1+['-f', 'image2pipe','-vcodec', 'bmp', '-']
+        
+        cmd2 = [IMAGEMAGICK_BINARY, '-', '-delay', "%d"%int(100.0/fps),
+                '-loop', '%d'%loop]
+        cmd2a = cmd2+[filename]
+        cmd2b = cmd2+['gif:-'] 
+        
+        proc1 = (sp.Popen(cmd1a, stdin=sp.PIPE, stdout=DEVNULL) if (program =='ffmpeg')
+                 else sp.Popen(cmd1b, stdin=sp.PIPE, stdout=sp.PIPE))
+        
+        if program == 'ImageMagick':
+            proc2 = (sp.Popen(cmd2a, stdin=proc1.stdout) if (opt in [False, None])
+                     else sp.Popen(cmd2b, stdin=proc1.stdout, stdout=sp.PIPE))
+            if opt:
+                cmd3 = [IMAGEMAGICK_BINARY, '-', '-layers', opt,
+                        '-fuzz', '%d'%fuzz+'%',filename]
+                proc3 = sp.Popen(cmd3, stdin=proc2.stdout)
+        
+        # We send all the frames to the first process
         verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
                                 +40*"-"+"\n")
-
-        verbose_print(verbose, "Generating GIF frames.\n")
-
-        total = int(self.duration/fps)+1
-        for i, t in tqdm(enumerate(tt), total=total):
-
-            name = "%s_GIFTEMP%04d.png"%(fileName, i+1)
-            tempfiles.append(name)
-            self.save_frame(name, t, savemask=True)
-
-        verbose_print(verbose, "Done generating GIF frames.\n")
-
-        delay = int(100.0/fps)
-
-        if program == "ImageMagick":
-
-            cmd = [IMAGEMAGICK_BINARY,
-                  '-delay' , '%d'%delay,
-                  "-dispose" ,"%d"%(2 if dispose else 1),
-                  "-loop" , "%d"%loop,
-                  "%s_GIFTEMP*.png"%fileName,
-                  "-coalesce",
-                  "-fuzz", "%02d"%fuzz + "%",
-                  "-layers", "%s"%opt,
-                  "%s"%filename]
-
-        elif program == "ffmpeg":
-
-            cmd = [FFMPEG_BINARY, '-y',
-                   '-f', 'image2',
-                   '-i', fileName+'_GIFTEMP%04d.png',
-                   '-r',str(fps),
-                   filename]
-
+        verbose_print(verbose, "Generating GIF frames...\n")
+        nframes = int(self.duration*fps)+1
+        
         try:
 
-            subprocess_call( cmd, verbose = verbose )
-        
+            for frame in tqdm(self.iter_frames(fps=fps), total=nframes):
+                proc1.stdin.write(frame.tostring())
+            verbose_print(verbose, "Done.\n")
+
         except IOError as err:
 
             error = ("MoviePy Error: creation of %s failed because "
@@ -486,9 +610,14 @@ class VideoClip(Clip):
                     "path to the ImageMagick binary in file conf.py." )
             
             raise IOError(error)
-
-        for f in tempfiles:
-            os.remove(f)
+        verbose_print(verbose, "Writing GIF... ")
+        proc1.stdin.close()
+        proc1.wait()
+        if program == 'ImageMagick':
+            proc2.wait()
+            if opt:
+                proc3.wait()
+        verbose_print(verbose, 'Done. Your GIF is ready !')
 
 
 
@@ -1124,8 +1253,8 @@ class TextClip(ImageClip):
         """ Returns the list of all valid entries for the argument of
         ``TextClip`` given (can be ``font``, ``color``, etc...) """
 
-        process = subprocess.Popen([IMAGEMAGICK_BINARY, '-list', arg],
-                                   stdout=subprocess.PIPE)
+        process = sp.Popen([IMAGEMAGICK_BINARY, '-list', arg],
+                                   stdout=sp.PIPE)
         result = process.communicate()[0]
         lines = result.splitlines()
 

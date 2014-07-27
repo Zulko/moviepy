@@ -67,18 +67,15 @@ If you liked it there is also this blog post which attempts to cut a video preci
 MoviePy online
 ----------------
 
-    Rinconcam
-    ~~~~~~~~~~~
+Rinconcam
+~~~~~~~~~~~
 
-    Rincomcam (link) is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video and puts it online. Everything is entirely automatized with Python. MoviePy is used to add transitions, titles and music to the videos.
-
-
-
-
-
+Rincomcam (link) is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video and puts it online. Everything is entirely automatized with Python. MoviePy is used to add transitions, titles and music to the videos.
 
 MoviePy in sciences and technology
 ------------------------------------
+
+
 
 Piano rolls transcription to sheet music
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

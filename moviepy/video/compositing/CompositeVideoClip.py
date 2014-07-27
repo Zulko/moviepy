@@ -10,22 +10,27 @@ class CompositeVideoClip(VideoClip):
     
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
+    
+    Parameters
 
-    :param size: The size (height x width) of the final clip.
+    size
+      The size (height x width) of the final clip.
 
-    :param clips: A list of videoclips. Each clip of the list will
-       be displayed below the clips appearing after it in the list.
-       For each clip:
+    clips
+      A list of videoclips. Each clip of the list will
+      be displayed below the clips appearing after it in the list.
+      For each clip:
        
-       - The attribute ``pos`` determines where the clip is placed.
+      - The attribute ``pos`` determines where the clip is placed.
           See ``VideoClip.set_pos``
-       - The mask of the clip determines which parts are visible.
+      - The mask of the clip determines which parts are visible.
         
-       Finally, if all the clips in the list have their ``duration``
-       attribute set, then the duration of the composite video clip
-       is computed automatically
+      Finally, if all the clips in the list have their ``duration``
+      attribute set, then the duration of the composite video clip
+      is computed automatically
 
-    :param transparent: if False, the clips are overlaid on a surface
+    transparent
+      If False, the clips are overlaid on a surface
       of the color `bg_color`. If True, the clips are overlaid on
       a transparent surface, so that all pixels that are transparent
       for all clips will be transparent in the composite clip. More
