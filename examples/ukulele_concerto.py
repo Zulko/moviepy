@@ -39,4 +39,4 @@ txt_mov = txt_col.set_pos( lambda t: (max(w/30,int(w-0.5*w*t)),
 
 # FINAL ASSEMBLY
 final = CompositeVideoClip([ukulele,txt_mov,piano])
-final.subclip(0,5).to_videofile("../../ukulele.avi",fps=24,codec='libx264')
+final.subclip(0,5).write_videofile("../../ukulele.avi",fps=24,codec='libx264')

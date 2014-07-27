@@ -100,7 +100,7 @@ final = CompositeVideoClip([
 
 # WRITE TO A FILE
 
-final.set_duration(8).to_videofile("starworms.avi", fps=5)
+final.set_duration(8).write_videofile("starworms.avi", fps=5)
 
 # This script is heavy (30s of computations to render 8s of video)
 
@@ -175,5 +175,5 @@ annotated_clips = [ annotate(clip,text) for clip,text in [
 
 # Concatenate and write to a file
 
-concatenate(annotated_clips).to_videofile('tutorial.avi', fps=5)
+concatenate(annotated_clips).write_videofile('tutorial.avi', fps=5)
 

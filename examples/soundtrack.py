@@ -14,5 +14,5 @@ movie = VideoFileClip("../../videos/dam.mov").\
 
 #~ movie.audio = movie.audio.set_duration(movie.duration)
 
-movie.to_videofile("../../test_soundtrack.avi", codec="mpeg4")
+movie.write_videofile("../../test_soundtrack.avi", codec="mpeg4")
 

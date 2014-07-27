@@ -3,7 +3,6 @@ On the long term this will implement several methods to make videos
 out of VideoClips
 """
 
-import sys
 import numpy as np
 import subprocess as sp
 
@@ -18,7 +17,7 @@ except ImportError:
 from tqdm import tqdm
 
 from moviepy.conf import FFMPEG_BINARY
-from moviepy.tools import sys_write_flush
+from moviepy.tools import verbose_print
 
 
 
@@ -121,8 +120,8 @@ class FFMPEG_VideoWriter:
                   "failed because FFMPEG didn't find the specified "
                   "codec for video encoding (%s). Please install "
                   "this codec or change the codec when calling "
-                  "to_videofile. For instance:\n"
-                  "  >>> to_videofile('myvid.webm', codec='libvpx')")%(self.codec)
+                  "write_videofile. For instance:\n"
+                  "  >>> clip.write_videofile('myvid.webm', codec='libvpx')")%(self.codec)
             
             elif "incorrect codec parameters ?" in ffmpeg_error:
 
@@ -130,7 +129,7 @@ class FFMPEG_VideoWriter:
                   "failed, possibly because the codec specified for "
                   "the video (%s) is not compatible with the given "
                   "extension (%s). Please specify a valid 'codec' "
-                  "argument in to_videofile. This would be 'libx264' "
+                  "argument in write_videofile. This would be 'libx264' "
                   "or 'mpeg4' for mp4, 'libtheora' for ogv, 'libvpx' "
                   "for webm.")%(self.codec, self.ext)
 
@@ -153,16 +152,13 @@ class FFMPEG_VideoWriter:
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                   withmask=False, write_logfile=False, verbose=True):
     
-    def verbose_print(s):
-        if verbose: sys_write_flush(s)
-    
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
 
 
-    verbose_print("\nWriting video into %s\n"%filename)
+    verbose_print(verbose, "\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
              bitrate=bitrate, logfile=logfile)
              
@@ -181,7 +177,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     if write_logfile:
       logfile.close()
     
-    verbose_print("Done writing video in %s !"%filename)
+    verbose_print(verbose, "Done writing video in %s !"%filename)
         
         
 def ffmpeg_write_image(filename, image, logfile=False):
