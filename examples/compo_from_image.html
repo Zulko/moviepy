@@ -103,13 +103,13 @@ allowfullscreen="true" width="550" height="450"></embed></object>
       <span class="s">&quot;../../videos/grsm_0005.mov&quot;</span><span class="p">]]</span>
 
 <span class="c"># fit each clip into its region</span>
-<span class="n">comp_clips</span> <span class="o">=</span>  <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span>\
-                 <span class="n">set_mask</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span>\
-                 <span class="n">set_pos</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">screenpos</span><span class="p">)</span>
+<span class="n">comp_clips</span> <span class="o">=</span>  <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">screenpos</span><span class="p">)</span>
                <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span><span class="n">regions</span><span class="p">)]</span>
 
 <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">comp_clips</span><span class="p">,</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-<span class="n">cc</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;../../bigcompo.avi&quot;</span><span class="p">)</span>
+<span class="n">cc</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;../../composition.mp4&quot;</span><span class="p">)</span>
 
 <span class="c"># Note that this particular composition takes quite a long time of</span>
 <span class="c"># rendering (about 20s on my computer for just 4s of video).</span>
@@ -122,7 +122,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -156,7 +156,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -182,7 +182,7 @@ allowfullscreen="true" width="550" height="450"></embed></object>
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 

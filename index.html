@@ -63,28 +63,21 @@
             
   <div class="section" id="moviepy">
 <h1>MoviePy<a class="headerlink" href="#moviepy" title="Permalink to this headline">¶</a></h1>
-<p>MoviePy is a Python module for script-based movie editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for advanced compositing and special effects.</p>
-<p>It can read and write to many formats, <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">including animated GIFs</a>.</p>
-<p>Let us put together a few demonstration clips (you will find the code for most of these in the <a class="reference internal" href="examples/examples.html#examples"><em>Example Scripts</em></a>):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s">&quot;clips/&quot;</span><span class="p">)</span> <span class="p">)</span>
-<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;clips/</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
-<span class="n">video</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">transition</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;logo.avi&quot;</span><span class="p">))</span>
-<span class="n">video</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;demos.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&quot;mpeg4&quot;</span><span class="p">)</span>
-</pre></div>
+<p>MoviePy is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.</p>
+<div class="section" id="user-s-guide">
+<h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crash_course/crash_course.html">A MoviePy crash-course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ref/ref.html">Reference Manual</a></li>
+</ul>
 </div>
-<center>
-<object><param name="movie"
-value="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0">
-</param><param name="allowFullScreen" value="true"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/zGhoZ4UBxEQ&hl=en_US&fs=1&rel=0"
-type="application/x-shockwave-flash" allowscriptaccess="always"
-allowfullscreen="true" width="490" height="390"></embed></object>
-</center><p>MoviePy is an open source software originally written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under the MIT licence.
-It is hosted on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, where you can push improvements, report bugs and ask for help.</p>
-<p><strong>Very New:</strong> there is now a MoviePy forum on <a class="reference external" href="http://www.reddit.com/r/moviepy/">Reddit</a> and a mailing list on <a class="reference external" href="mailto:moviepy&#37;&#52;&#48;librelist&#46;com">librelist</a> .</p>
+<p>MoviePy is an open source software originally written by <a class="reference external" href="https://github.com/Zulko/">Zulko</a> and released under the MIT licence.
+It is hosted on <a class="reference external" href="https://github.com/Zulko/moviepy">Github</a>, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on <a class="reference external" href="http://www.reddit.com/r/moviepy/">Reddit</a> and a mailing list on <a class="reference external" href="mailto:moviepy&#37;&#52;&#48;librelist&#46;com">librelist</a> .</p>
 <a href="https://twitter.com/share" class="twitter-share-button"
 data-text="MoviePy, script-based video editing" data-size="large" data-hashtags="MoviePy">Tweet
 </a>
@@ -99,25 +92,14 @@ allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30p
 <a href="https://github.com/Zulko/moviepy">
 <img style="position: absolute; top: 0; right: 0; border: 0;"
 src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-alt="Fork me on GitHub"></a><div class="section" id="user-s-guide">
-<h2>User&#8217;s Guide<a class="headerlink" href="#user-s-guide" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="crash_course/crash_course.html">A MoviePy crash-course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ref/ref.html">Reference Manual</a></li>
-</ul>
-</div>
-</div>
+alt="Fork me on GitHub"></a></div>
 </div>
 
 
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="#">
@@ -158,7 +140,7 @@ alt="Fork me on GitHub"></a><div class="section" id="user-s-guide">
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -180,7 +162,7 @@ alt="Fork me on GitHub"></a><div class="section" id="user-s-guide">
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 

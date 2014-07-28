@@ -233,6 +233,28 @@ is true iff tti is in the clip.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="Clip.Clip.iter_frames">
+<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterates over all the frames of the clip.</p>
+<p>Returns each frame of the clip as a HxWxN np.array,
+where N=1 for mask clips and N=3 for RGB clips.</p>
+<p>This function is not really meant for video editing.
+It provides an easy way to do frame-by-frame treatment of
+a video, for fields like science, computer vision...</p>
+<p>The <tt class="docutils literal"><span class="pre">fps</span></tt> (frames per second) parameter is optional if the
+clip already has a <tt class="docutils literal"><span class="pre">fps</span></tt> attribute.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># prints the maximum of red that is contained</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># on the first line of each frame of the clip.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="go">             for frame in myclip.iter_frames()])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="Clip.Clip.set_duration">
 <tt class="descname">set_duration</tt><big>(</big><em>t</em>, <em>change_end=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the clip, with the  <tt class="docutils literal"><span class="pre">duration</span></tt> attribute
@@ -303,7 +325,7 @@ they exist.</p>
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -345,7 +367,7 @@ they exist.</p>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -371,7 +393,7 @@ they exist.</p>
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 

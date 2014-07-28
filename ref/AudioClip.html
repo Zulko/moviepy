@@ -109,7 +109,39 @@ the variations of that float in the time.</p>
 </div>
 <dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.to_audiofile">
-<tt class="descname">to_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec='libvorbis'</em>, <em>bitrate=None</em>, <em>write_logfile=False</em>, <em>verbose=True</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_audiofile</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_audiofile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_audiofile" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function <tt class="docutils literal"><span class="pre">to_audiofile</span></tt> is deprecated and is kept temporarily for backwards compatibility.
+Please use the new name, <tt class="docutils literal"><span class="pre">write_audiofile</span></tt>, instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moviepy.audio.AudioClip.AudioClip.to_soundarray">
+<tt class="descname">to_soundarray</tt><big>(</big><em>tt=None</em>, <em>fps=None</em>, <em>nbytes=2</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_soundarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_soundarray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the sound into an array that can be played by pygame
+or written in a wav file. See <tt class="docutils literal"><span class="pre">AudioClip.preview</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
+<blockquote>
+<div><p>Frame rate of the sound for the conversion.
+44100 for top quality.</p>
+</div></blockquote>
+<p><strong>nbytes</strong> :</p>
+<blockquote class="last">
+<div><p>Number of bytes to encode the sound: 1 for 8bit sound,
+2 for 16bit, 4 for 32bit sound.</p>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="moviepy.audio.AudioClip.AudioClip.write_audiofile">
+<tt class="descname">write_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec='libvorbis'</em>, <em>bitrate=None</em>, <em>write_logfile=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.write_audiofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an audio file from the AudioClip.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -148,31 +180,6 @@ when writing the file</p>
 <p><strong>verbose</strong> :</p>
 <blockquote class="last">
 <div><p>If True, displays informations</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="moviepy.audio.AudioClip.AudioClip.to_soundarray">
-<tt class="descname">to_soundarray</tt><big>(</big><em>tt=None</em>, <em>fps=None</em>, <em>nbytes=2</em><big>)</big><a class="reference internal" href="../_modules/moviepy/audio/AudioClip.html#AudioClip.to_soundarray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.to_soundarray" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transforms the sound into an array that can be played by pygame
-or written in a wav file. See <tt class="docutils literal"><span class="pre">AudioClip.preview</span></tt>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fps</strong> :</p>
-<blockquote>
-<div><p>Frame rate of the sound for the conversion.
-44100 for top quality.</p>
-</div></blockquote>
-<p><strong>nbytes</strong> :</p>
-<blockquote class="last">
-<div><p>Number of bytes to encode the sound: 1 for 8bit sound,
-2 for 16bit, 4 for 32bit sound.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -285,7 +292,7 @@ duration of the composite clip is computed automatically.</p>
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -329,7 +336,7 @@ duration of the composite clip is computed automatically.</p>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -355,7 +362,7 @@ duration of the composite clip is computed automatically.</p>
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 

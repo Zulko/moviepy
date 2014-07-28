@@ -24,7 +24,7 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
-    <link rel="next" title="Example Scripts" href="../examples/examples.html" />
+    <link rel="next" title="Gallery" href="../gallery.html" />
     <link rel="prev" title="Download and Installation" href="../install.html" />
    
   <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
@@ -49,7 +49,7 @@
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../examples/examples.html" title="Example Scripts"
+          <a href="../gallery.html" title="Gallery"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../install.html" title="Download and Installation"
@@ -64,13 +64,13 @@
           <div class="body">
             
   <div class="section" id="a-moviepy-crash-course">
-<h1>A MoviePy crash-course<a class="headerlink" href="#a-moviepy-crash-course" title="Permalink to this headline">¶</a></h1>
-<p>In this section we will give you the basics to start editing your videos.</p>
+<span id="crashcourse"></span><h1>A MoviePy crash-course<a class="headerlink" href="#a-moviepy-crash-course" title="Permalink to this headline">¶</a></h1>
+<p>This section presents the basics of video editing with MoviePy.</p>
 <div class="section" id="example-code">
 <h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
-<p>In a typical script, you load or generate some clips, modify them, combine them, and write the result to a video file.
-So let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the ten first seconds, and write the result in a file:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<p>In a typical MoviePy script, you load some clips from video files, then modify them, put them together, and write the result to a video file. As an example, let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Import everything needed to edit video clips</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
@@ -88,33 +88,28 @@ So let us load a movie of my last holidays, lower the volume, add a title in the
 <span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="p">,</span> <span class="n">txt_clip</span><span class="p">])</span>
 
 <span class="c"># Write the result to a file</span>
-<span class="n">video</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+<span class="n">video</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="how-moviepy-works-in-a-nutshell">
-<h2>How MoviePy works, in a nutshell<a class="headerlink" href="#how-moviepy-works-in-a-nutshell" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy uses mainly <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> for reading/writing multimedia files, and Numpy/Scipy for image and sound manipulations.</p>
+<div class="section" id="what-powers-moviepy">
+<h2>What powers MoviePy<a class="headerlink" href="#what-powers-moviepy" title="Permalink to this headline">¶</a></h2>
+<p>MoviePy uses the software <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> to read frames from video and audio files. The code to edit and put these frames together relies mainly on the Python library Numpy. The edited frames are assembled in a video file using once again <tt class="docutils literal"><span class="pre">ffmpeg</span></tt>. The software ImageMagick can also be used to generate texts or export an animation in GIF format.</p>
 <a class="reference internal image-reference" href="../_images/explanations.jpeg"><img alt="../_images/explanations.jpeg" class="align-center" src="../_images/explanations.jpeg" style="width: 570px;" /></a>
-<p>You can do pretty much any effect you want with MoviePy, but it is just a framework, and in many cases you will need to code a little (or find someone who will !) to come to your goal.</p>
 </div>
 <div class="section" id="the-clip-objects">
 <h2>The clip objects<a class="headerlink" href="#the-clip-objects" title="Permalink to this headline">¶</a></h2>
-<p>In MoviePy you manipulate mostly two kind of objects: audio clips, and
-video clips. These clips have different attributes (indicating their
-duration, their size, their starting time...) which can change as the clips are cut and
-mixed with other clips.</p>
-<p>A video clip can carry around a soundtrack (which is an
-audioclip) and, for more complex effects, a mask (which is a special
-video clip).</p>
+<p>The most common objects in MoviePy are called clips. A clip (let&#8217;s call it <tt class="docutils literal"><span class="pre">myclip</span></tt>) can be either an audio clip or a video clip. It has different attributes, like <tt class="docutils literal"><span class="pre">myclip.duration</span></tt> (indicating its duration in seconds), <tt class="docutils literal"><span class="pre">clip.start</span></tt> (indicating the time in seconds where the clip should start playing when mixed with other videos), <tt class="docutils literal"><span class="pre">myclip.w</span></tt> (the width in pixel of the clip), etc.</p>
+<p>A video clip <tt class="docutils literal"><span class="pre">myclip</span></tt> can have two special attributes which are themselves clips: <tt class="docutils literal"><span class="pre">myclip.audio</span></tt> is an audio clip representing the audio track of the vidceo clip. <tt class="docutils literal"><span class="pre">myclip.mask</span></tt> is a special kind of video clip which defines the transparency of <tt class="docutils literal"><span class="pre">myclip</span></tt>.</p>
+<p>A clip also has methods which enable to create a derivative of this clip. For instance <tt class="docutils literal"><span class="pre">myclip.subclip(2,7)</span></tt> creates a new clip which is like <tt class="docutils literal"><span class="pre">myclip</span></tt> cut between seconds 2 and 7.</p>
 </div>
 <div class="section" id="classes-of-video-clips">
 <h2>Classes of video clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h2>
 <p>Video clips are the building blocks of longer videos. They can be created with one of the following:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> will generate a clip from a movie file. The input file can have any format or extension : mp4, flv, mov, ... even gif !</li>
-<li><tt class="docutils literal"><span class="pre">ImageClip('myPicture.png')</span></tt> will make a clip displaying a picture, for an <em>a priori</em> infinite duration.</li>
-<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> makes a special ImageClip of a single color.</li>
+<li><tt class="docutils literal"><span class="pre">VideoFileClip('myHolidays.mp4')</span></tt> will generate a clip from a video file. This video file can have any format or extension : mp4, flv, mov, ... even gif !</li>
+<li><tt class="docutils literal"><span class="pre">ImageClip('myPicture.png')</span></tt> will generate a clip displaying a picture, for an <em>a priori</em> infinite duration.</li>
+<li><tt class="docutils literal"><span class="pre">ColorClip((height,width),color=(R,G,B))</span></tt> generates a special ImageClip of a single color.</li>
 <li><tt class="docutils literal"><span class="pre">TextClip('Hello</span> <span class="pre">folks</span> <span class="pre">!',font='Impact-Regular')</span></tt> generates a special ImageClip representing a text. The generation of the text image is made by the software ImageMagick (see the Installation section).</li>
 </ul>
 <p>To that list we should add the <tt class="docutils literal"><span class="pre">CompositeVideoClips</span></tt> which are obtained by putting several clips together.</p>
@@ -195,9 +190,9 @@ have the Python package PyGame installed.</p>
 </div>
 <p>Note that the <tt class="docutils literal"><span class="pre">fps</span></tt> can be any number, independently of the <tt class="docutils literal"><span class="pre">fps</span></tt> of your different sources.</p>
 <p>To write a clip as a video file, use</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">)</span> <span class="c"># default: codec &#39;libx264&#39; fps 24</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render the audio.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">)</span> <span class="c"># default: codec &#39;libx264&#39; fps 24</span>
+<span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+<span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render the audio.</span>
 </pre></div>
 </div>
 <p>Alternatively you can also save a video clip as an animated GIF with</p>
@@ -218,7 +213,7 @@ have the Python package PyGame installed.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>will create a clip with a <tt class="docutils literal"><span class="pre">clip.audio</span></tt> attribute which is an audio clip. This is the sound that you will hear if you render the clip with <tt class="docutils literal"><span class="pre">clip.preview</span></tt> or <tt class="docutils literal"><span class="pre">clip.to_videofile</span></tt>. You can also create an audio clip from a sound file and then attach it to a video clip:</p>
+<p>will create a clip with a <tt class="docutils literal"><span class="pre">clip.audio</span></tt> attribute which is an audio clip. This is the sound that you will hear if you render the clip with <tt class="docutils literal"><span class="pre">clip.preview</span></tt> or <tt class="docutils literal"><span class="pre">clip.write_videofile</span></tt>. You can also create an audio clip from a sound file and then attach it to a video clip:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&#39;mySong.wav&#39;</span><span class="p">)</span>
 <span class="n">video</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
 </pre></div>
@@ -331,7 +326,7 @@ manual. You can also browse the code of the different video effects in
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -341,7 +336,7 @@ manual. You can also browse the code of the different video effects in
   <ul>
 <li><a class="reference internal" href="#">A MoviePy crash-course</a><ul>
 <li><a class="reference internal" href="#example-code">Example code</a></li>
-<li><a class="reference internal" href="#how-moviepy-works-in-a-nutshell">How MoviePy works, in a nutshell</a></li>
+<li><a class="reference internal" href="#what-powers-moviepy">What powers MoviePy</a></li>
 <li><a class="reference internal" href="#the-clip-objects">The clip objects</a></li>
 <li><a class="reference internal" href="#classes-of-video-clips">Classes of video clips</a></li>
 <li><a class="reference internal" href="#composite-video-clips">Composite video clips</a></li>
@@ -361,7 +356,7 @@ manual. You can also browse the code of the different video effects in
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="../install.html" title="previous chapter">Download and Installation</a></li>
-      <li>Next: <a href="../examples/examples.html" title="next chapter">Example Scripts</a></li>
+      <li>Next: <a href="../gallery.html" title="next chapter">Gallery</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>
@@ -384,7 +379,7 @@ manual. You can also browse the code of the different video effects in
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -400,7 +395,7 @@ manual. You can also browse the code of the different video effects in
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="../examples/examples.html" title="Example Scripts"
+          <a href="../gallery.html" title="Gallery"
              >next</a> |</li>
         <li class="right" >
           <a href="../install.html" title="Download and Installation"
@@ -409,7 +404,7 @@ manual. You can also browse the code of the different video effects in
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 

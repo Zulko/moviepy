@@ -93,48 +93,48 @@ The part with the effect is obtained as follows:</p>
 disappear with a fading effect.</li>
 </ul>
 <p>Here you are for the code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot; requires scikit-image installed (for vfx.painting) &quot;&quot;&quot;</span>
+<div class="highlight-python"><pre>""" requires scikit-image installed (for vfx.painting) """
  
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+from moviepy.editor import *
 
-<span class="c"># WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE</span>
+# WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE
 
-<span class="n">charade</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;../../videos/charade.mp4&quot;</span><span class="p">)</span>
-<span class="n">tfreeze</span> <span class="o">=</span> <span class="n">cvsecs</span><span class="p">(</span><span class="mi">19</span><span class="p">,</span><span class="mi">21</span><span class="p">)</span> <span class="c"># Time of the freeze, 19&#39;21</span>
+charade = VideoFileClip("../../videos/charade.mp4")
+tfreeze = cvsecs(19,21) # Time of the freeze, 19'21
 
-<span class="c"># when using several subclips of a same clip, it can be faster</span>
-<span class="c"># to create &#39;coreaders&#39; of the clip (=other entrance points).</span>
-<span class="n">clip_before</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tfreeze</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="n">tfreeze</span><span class="p">)</span>
-<span class="n">clip_after</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">coreader</span><span class="p">()</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="n">tfreeze</span> <span class="p">,</span><span class="n">tfreeze</span> <span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+# when using several subclips of a same clip, it can be faster
+# to create 'coreaders' of the clip (=other entrance points).
+clip_before = charade.coreader().subclip(tfreeze -2,tfreeze)
+clip_after = charade.coreader().subclip(tfreeze ,tfreeze +2)
 
 
-<span class="c"># THE FRAME TO FREEZE</span>
+# THE FRAME TO FREEZE
 
-<span class="n">im_freeze</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">(</span><span class="n">tfreeze</span><span class="p">)</span>
-<span class="n">painting</span> <span class="o">=</span> <span class="n">charade</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">painting</span><span class="p">,</span> <span class="n">saturation</span> <span class="o">=</span> <span class="mf">1.6</span><span class="p">,</span><span class="n">black</span> <span class="o">=</span> <span class="mf">0.006</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">to_ImageClip</span><span class="p">(</span><span class="n">tfreeze</span><span class="p">)</span>
+im_freeze = charade.to_ImageClip(tfreeze)
+painting = (charade.fx( vfx.painting, saturation = 1.6,black = 0.006)
+                   .to_ImageClip(tfreeze)
                  
-<span class="n">txt</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&#39;Audrey&#39;</span><span class="p">,</span><span class="n">font</span><span class="o">=</span><span class="s">&#39;Amiri-regular&#39;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+txt = TextClip('Audrey',font='Amiri-regular',fontsize=35)
 
-<span class="n">painting_txt</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">painting</span><span class="p">,</span><span class="n">txt</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span><span class="mi">180</span><span class="p">))])</span><span class="o">.</span>\
-                   <span class="n">add_mask</span><span class="p">()</span><span class="o">.</span>\
-                   <span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">crossfadein</span><span class="p">(</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span>\
-                   <span class="n">crossfadeout</span><span class="p">(</span> <span class="mf">0.5</span><span class="p">)</span>
+painting_txt = (CompositeVideoClip([painting,txt.set_pos((10,180))])
+                   .add_mask()
+                   .set_duration(3)
+                   .crossfadein( 0.5)
+                   .crossfadeout( 0.5))
 
-<span class="c"># FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE</span>
+# FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE
 
-<span class="n">painting_fading</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">im_freeze</span><span class="p">,</span><span class="n">painting_txt</span><span class="p">])</span>
+painting_fading = CompositeVideoClip([im_freeze,painting_txt])
 
-<span class="c"># FINAL CLIP AND RENDERING</span>
+# FINAL CLIP AND RENDERING
 
-<span class="n">final_clip</span> <span class="o">=</span>  <span class="n">concatenate</span><span class="p">([</span> <span class="n">clip_before</span><span class="p">,</span>
-                            <span class="n">painting_fading</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
-                            <span class="n">clip_after</span><span class="p">])</span>
+final_clip =  concatenate([ clip_before,
+                            painting_fading.set_duration(3),
+                            clip_after])
 
-<span class="n">final_clip</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&#39;../../audrey.avi&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="n">charade</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
-                        <span class="n">codec</span> <span class="o">=</span> <span class="s">&quot;mpeg4&quot;</span><span class="p">,</span> <span class="n">audio_bitrate</span><span class="o">=</span><span class="s">&quot;3000k&quot;</span><span class="p">)</span>
-</pre></div>
+final_clip.write_videofile('../../audrey.avi',fps=charade.fps,
+                        codec = "mpeg4", audio_bitrate="3000k")
+</pre>
 </div>
 </div>
 
@@ -142,7 +142,7 @@ disappear with a fading effect.</li>
           </div>
         </div>
       </div>
-  
+     
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
             <p class="logo"><a href="../index.html">
@@ -176,7 +176,7 @@ disappear with a fading effect.</li>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
-
+    
       <div class="clearer"></div>
     </div>
     <div class="related">
@@ -202,7 +202,7 @@ disappear with a fading effect.</li>
       </ul>
     </div>
     <div class="footer" style="position:relative">
-      &copy; Copyright 2013, Zulko.
+      &copy; Copyright 2014, Zulko.
     </div>
     <div>
 
