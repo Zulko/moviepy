@@ -1,0 +1,155 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>So you want to install OpenCV 2.4.6 ? &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="index.html" />
+   
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="so-you-want-to-install-opencv-2-4-6">
+<span id="opencv"></span><h1>So you want to install OpenCV 2.4.6 ?<a class="headerlink" href="#so-you-want-to-install-opencv-2-4-6" title="Permalink to this headline">¶</a></h1>
+<p>OpenCV is very optional, its installation is not always simple and I found it to be unstable, be warned !
+The installation seems easy for Windows. On linux, here is what I found on the Internet:</p>
+<ul>
+<li><p class="first">Remove any other version of OpenCV if you installed it through a package manager.</p>
+</li>
+<li><p class="first">Unzip the source code of <a href="#id1"><span class="problematic" id="id2">`OpenCV 2.4.6`_</span></a> in some folder. open a terminal in this folder.</p>
+</li>
+<li><p class="first">Make a new directory and go into this directory:</p>
+<div class="highlight-python"><pre>mkdir release
+cd release</pre>
+</div>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">cmake</span></tt>. Here is the line I used:</p>
+<div class="highlight-python"><pre>cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=OFF -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON ..</pre>
+</div>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">make</span></tt>. This may take a few minutes (15 minutes on my computer).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">make</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Finally, install.</p>
+<div class="highlight-python"><pre>sudo make install</pre>
+</div>
+</li>
+</ul>
+<p>And voilà !</p>
+<p>You can check if it worked by opeing a Python console and typing</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="k">print</span> <span class="n">cv2</span><span class="o">.</span><span class="n">__version__</span>
+</pre></div>
+</div>
+<p>Advice: do not throw your <tt class="docutils literal"><span class="pre">release</span></tt> folder away. If later you have strange bugs with OpenCV involving <tt class="docutils literal"><span class="pre">.so</span></tt> files, just redo the <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></tt> step.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+     
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/opencv_instructions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">MoviePy 0.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" style="position:relative">
+      &copy; Copyright 2014, Zulko.
+    </div>
+    <div>
+
+    </div>
+
+  </body>
+</html>
