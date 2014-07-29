@@ -20,7 +20,8 @@ import numpy as np
 from moviepy.decorators import  (apply_to_mask,
                                  requires_duration,
                                  outplace,
-                                 add_mask_if_none)
+                                 add_mask_if_none,
+                                 time_can_be_tuple)
 
 from moviepy.tools import (subprocess_call, verbose_print,
                            deprecated_version_of) 
@@ -117,7 +118,7 @@ class VideoClip(Clip):
     # EXPORT OPERATIONS
 
 
-
+    @time_can_be_tuple
     def save_frame(self, filename, t=0, savemask=False):
         """ Save a clip's frame to an image file.
 
@@ -571,8 +572,10 @@ class VideoClip(Clip):
         cmd1a = cmd1+['-r', "%.02f"%fps, filename]
         cmd1b = cmd1+['-f', 'image2pipe','-vcodec', 'bmp', '-']
         
-        cmd2 = [IMAGEMAGICK_BINARY, '-', '-delay', "%d"%int(100.0/fps),
-                '-loop', '%d'%loop]
+        cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%d"%int(100.0/fps),
+                "-dispose" ,"%d"%(2 if dispose else 1),
+                '-loop', '%d'%loop,
+                '-', '-coalesce']
         cmd2a = cmd2+[filename]
         cmd2b = cmd2+['gif:-'] 
         
@@ -626,7 +629,7 @@ class VideoClip(Clip):
     # F I L T E R I N G
 
 
-
+    
     def subfx(self, fx, ta=0, tb=None, **kwargs):
         """ Apply a transformation to a part of the clip.
 
@@ -881,7 +884,7 @@ class VideoClip(Clip):
     # CONVERSIONS TO OTHER TYPES
 
 
-
+    @time_can_be_tuple
     def to_ImageClip(self,t=0):
         """
         Returns an ImageClip made out of the clip's frame at time ``t``
@@ -1059,7 +1062,7 @@ class ImageClip(VideoClip):
 
 
     @outplace
-    def fl_time(self, time_func, apply_to =['mask', 'audio']):
+    def fl_time(self, time_func, apply_to =['mask', 'audio'], keep_duration=False):
         """ Time-transformation filter.
 
         Applies a transformation to the clip's timeline

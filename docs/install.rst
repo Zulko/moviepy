@@ -18,7 +18,7 @@ MoviePy depends on the Python modules Numpy_, Decorator_, and tqdm_, which will 
 Linking to ffmpeg
 ~~~~~~~~~~~~~~~~~~
 
-MoviePy requires a **recent version** of the software ffmpeg_ preferably downloaded directly from the ffmpeg website**.
+MoviePy requires a **recent version** of the software ffmpeg_ preferably downloaded **directly from the ffmpeg website**.
 
 **Installed ffmpeg:** when you have installed ffmpeg, or (for linux users) when you have a ffmpeg binary in the ``/usr/bin`` folder, it will be detected automatically by MoviePy.
 

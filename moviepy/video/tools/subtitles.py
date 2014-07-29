@@ -3,6 +3,7 @@
 import re
 import numpy as np
 from moviepy.video.VideoClip import VideoClip, TextClip
+from moviepy.tools import cvsecs
 
 class SubtitlesClip(VideoClip):
     """ A Clip that serves as "subtitle track" in videos.
@@ -31,19 +32,20 @@ class SubtitlesClip(VideoClip):
 
 
     """
-    def __init__(self, subtitles, gen_textclip=None):
+    def __init__(self, subtitles, make_textclip=None):
         
         VideoClip.__init__(self)
 
         if isinstance( subtitles, str):
             subtitles = file_to_subtitles(subtitles)
+        subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
-        if gen_textclip is None:
-            gen_textclip = lambda txt: TextClip(txt, font='Georgia-Bold',
+        if make_textclip is None:
+            make_textclip = lambda txt: TextClip(txt, font='Georgia-Bold',
                                         fontsize=24, color='white',
                                         stroke_color='black', stroke_width=0.5)
-        self.gen_textclip = gen_textclip
+        self.make_textclip = make_textclip
         self.start=0
         self.duration = max([tb for ((ta,tb), txt) in self.subtitles])
         self.end=self.duration
@@ -58,7 +60,7 @@ class SubtitlesClip(VideoClip):
                     return False
             sub = sub[0]
             if sub not in self.textclips.keys():
-                self.textclips[sub] = gen_textclip(sub[1])
+                self.textclips[sub] = self.make_textclip(sub[1])
             return sub
 
         def get_frame(t):
@@ -73,15 +75,42 @@ class SubtitlesClip(VideoClip):
         
         self.get_frame = get_frame
         self.mask = VideoClip(ismask=True, get_frame=mask_get_frame)
+    
+    def __iter__(self):
+        return self.subtitles.__iter__()
+
+    def __getitem__(self, k):
+        return self.subtitles[k]
+
+    def __str__(self):
+
+        def to_srt(sub_element):
+            (ta, tb), txt = sub_element
+            fta, ftb = map(time_to_string, (ta, tb))
+            return "%s - %s\n%s"%(fta, ftb, txt)
+        
+        return "\n\n".join(map(to_srt, self.subtitles))
+    
+    def match_expr(self, expr):
+
+        return SubtitlesClip([e for e in self.subtitles
+                              if re.find(expr, e) != []])
+    
+    def write_srt(self, filename):
+        with open(filename, 'w+') as f:
+            f.write(str(self))
 
 
-
-def convert_time(timestring):
+def string_to_time(timestring):
     """ Converts a string into seconds """
     nums = map(float, re.findall(r'\d+', timestring))
     return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
 
 
+def time_to_string(timestring):
+    """ Converts a string into seconds """
+    nums = map(float, re.findall(r'\d+', timestring))
+    return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
 
 def file_to_subtitles(filename):
     """ Converts a srt file into subtitles.
@@ -101,7 +130,7 @@ def file_to_subtitles(filename):
     for line in lines:
         times = re.findall("[0-9]*:[0-9]*:[0-9]*,[0-9]*", line)
         if times != []:
-            current_times = map(convert_time, times)
+            current_times = map(time_to_string, times)
         elif line == '\n':
             times_texts.append((current_times, current_text.strip('\n')))
             current_times, current_text = None, ""
