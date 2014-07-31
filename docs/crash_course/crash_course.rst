@@ -46,11 +46,11 @@ MoviePy uses the software ``ffmpeg`` to read frames from video and audio files. 
 The clip objects
 ~~~~~~~~~~~~~~~~~~~
 
-The most common objects in MoviePy are called clips. A clip (let's call it ``myclip``) can be either an audio clip or a video clip. It has different attributes, like ``myclip.duration`` (indicating its duration in seconds), ``clip.start`` (indicating the time in seconds where the clip should start playing when mixed with other videos), ``myclip.w`` (the width in pixel of the clip), etc.
+The most common objects in MoviePy are called clips. A clip (let's call it ``my_clip``) can be either an audio clip or a video clip. It has different attributes, like ``my_clip.duration`` (indicating its duration in seconds), ``clip.start`` (indicating the time in seconds where the clip should start playing when mixed with other videos), ``my_clip.w`` (the width in pixel of the clip), etc.
 
-A video clip ``myclip`` can have two special attributes which are themselves clips: ``myclip.audio`` is an audio clip representing the audio track of the vidceo clip. ``myclip.mask`` is a special kind of video clip which defines the transparency of ``myclip``.
+A video clip ``my_clip`` can have two special attributes which are themselves clips: ``my_clip.audio`` is an audio clip representing the audio track of the vidceo clip. ``my_clip.mask`` is a special kind of video clip which defines the transparency of ``my_clip``.
 
-A clip also has methods which enable to create a derivative of this clip. For instance ``myclip.subclip(2,7)`` creates a new clip which is like ``myclip`` cut between seconds 2 and 7. 
+A clip also has methods which enable to create a derivative of this clip. For instance ``my_clip.subclip(2,7)`` creates a new clip which is like ``my_clip`` cut between seconds 2 and 7. 
 
 Classes of video clips
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -73,7 +73,7 @@ Composite video clips are video clips which will display the contents of several
     
     video = concatenate([clip1,clip2,clip3])
 
-Now ``video`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=myClip``.
+Now ``video`` is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option ``transition=my_clip``.
 
 Next, you have the `~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`: ::
     
@@ -93,13 +93,13 @@ So for instance your composition will look like ::
                                 clip2.set_start(5), # start at t=5s
                                 clip3.set_start(9)]) # start at t=9s
 
-Because the three clips overlap, we can make them appear with a fading-in effect. Here we go for fadein effects that last 1.5 seconds: ::
+In the example above, maybe ``clip2`` will start before ``clip1`` is over. In this case you can make ``clip2`` appear with a *fade-in* effect of one second: ::
     
     video = CompositeVideoClip([clip1, # starts at t=0
-                                clip2.set_start(50).fadein(1.5),
-                                clip3.set_start(90).fadein(1.5)])
+                                clip2.set_start(5).fadein(1),
+                                clip3.set_start(9)])
 
-Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition: ::
+Finally, if ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel: ::
     
     video = CompositeVideoClip([clip1,
                                clip2.set_pos((45,150)),
@@ -109,6 +109,8 @@ Note that there are many ways to specify the position: ::
     
     clip2.set_pos((45,150)) # x=45, y=150 , in pixels
     
+    clip2.set_pos("center") # automatically centered
+
     # clip2 is horizontally centered, and at the top of the picture
     clip2.set_pos(("center","top"))
 
@@ -127,45 +129,63 @@ When indicating the position keep in mind that the ``y`` coordinate has its zero
 
 .. _renderingAClip:
 
-Rendering a video clip
-~~~~~~~~~~~~~~~~~~~~~~~
-
-A clip can be previewed (i.e. generated and displayed at the same time) 
-or be rendered directly to a file. Note that previewing requires to 
-have the Python package PyGame installed.
-
-To preview just one frame of the clip, use one of these: ::
-    
-    myClip.show() # shows the first frame of the clip
-    myClip.show(10.5) # shows the frame of the clip at t=10.5s
-
-To preview the clip, type ::
-    
-    myClip.preview() # preview with default fps=15
-    myClip.preview(fps=25)
-    myClip.preview(fps=15, audio=False) # Play the clip with no sound.
-
-Note that the ``fps`` can be any number, independently of the ``fps`` of your different sources.
+Wrting a video clip to a file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To write a clip as a video file, use ::
     
-    myClip.write_videofile("myEditedMovie.avi") # default: codec 'libx264' fps 24
-    myClip.write_videofile("myEditedMovie.avi",fps=15, codec='mpeg4')
-    myClip.write_videofile("myEditedMovie.avi",audio=False) # don't render the audio.
+    my_clip.write_videofile("movie.mp4") # default: 'libx264', 24 fps
+    my_clip.write_videofile("movie.mp4",fps=15, codec='mpeg4')
+    my_clip.write_videofile("movie.mp4",audio=False) # don't render audio.
     
-Alternatively you can also save a video clip as an animated GIF with ::
-
-    myClip.to_gif('test.gif')
-
-See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for more informations on making GIFs with MoviePy.
-
+You can also use other codecs to write ``.webm`` or ``.ogv`` files.
 
 
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
 
-    myClip = Image("flower.jpeg") # has infinite duration
-    Image("flower.jpeg").preview() # Will fail ! NO DURATION !
-    myClip.set_duration(5).preview() # will show flowers for 5 seconds
+    # Make a video showing a flower for 5 seconds
+    my_clip = Image("flower.jpeg") # has infinite duration
+    my_clip.write_videofile("flower.mp4") # Will fail ! NO DURATION !
+    my_clip.set_duration(5).write_videofile("flower.mp4") # works !
+
+
+Writing an animated GIF
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To write your video as an animated GIF, use ::
+
+    my_clip.write_gif('test.gif', fps=12)
+
+If your computer has enough RAM (say, at least 2GB), you can use its faster version
+
+    my_clip.write_gif('test.gif', fps=12)
+
+
+See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for more informations on making GIFs with MoviePy.
+
+Previewing a video clip
+~~~~~~~~~~~~~~~~~~~~~~~
+
+A clip previewed, i.e. generated and displayed at the same time, which is faster than re-generating the file and opening it every time you change your script. Previewing requires to have the Python package PyGame installed, and will only work if PyGame is initialized, which will be the case
+if you started with ``from moviepy import *``.
+
+To preview just one frame of the clip, use one of these: ::
+    
+    my_clip.show() # shows the first frame of the clip
+    my_clip.show(10.5) # shows the frame of the clip at t=10.5s
+    my_clip.show(interactive = True)
+
+The last line allows you to click anywhere on the clip and get the position and color of the pixel on which you clicked (press Escape to terminate).
+
+To preview the clip, you must specify the frames-per-second ::
+    
+    my_clip.preview() # preview with default fps=15
+    my_clip.preview(fps=25)
+    my_clip.preview(fps=15, audio=False) # don't play sound.
+
+The ``fps`` can be any number, independently of the ``fps`` of your different sources.
+
+While the clip is getting prewieved, just can just click anywhere on the clip to get the time, position and color of the pixel you clicked.
 
 .. _CCaudioClips:
 
@@ -186,11 +206,12 @@ Like video clips, audio clips can be cut (with ``clip.subclip``) modified (with 
 - When you cut a video clip with ``videoclip.subclip(20,25)`` then the sound will also be cut, i.e. the resulting clip will have an audio clip ``videoclip.audio.subclip(20,25)``.
 - When you put several clips together in a CompositeVideoClip, then the sound of the CompositeVideoClip will be the composition of the sounds of the different video clips.
 
-For an example, you can refer to :ref:`soundexample`. Like video clips, sound clips have a ``get_frame`` attribute, and creating new audio clips by modifying or putting together other audio clips does not take place in the memory. The actual sounds of the audio clips are only computed when we ask to play them or to write them to a file. You can do that as follows: ::
+For an example, you can refer to :ref:`soundexample`. Like video clips, sound clips have a ``get_frame`` attribute, and creating new audio clips by modifying or putting together other audio clips does not eat the memory. The actual sounds of the audio clips are only computed when we ask to play them or to write them to a file. You can do that as follows: ::
     
     audioclip.preview() # default fps: 22050
     audioclip.preview(fps=44100)
-    audioclip.to_soundfile('myclip.wav',fps=44100) #default fps: 22050
+    audioclip.to_audiofile('my_clip.mp3',fps=44100) #default fps: 22050
+
 
 Operations on a clip
 ~~~~~~~~~~~~~~~~~~~~~
@@ -218,19 +239,19 @@ where ``args`` represent arguments and/or keyword arguments. To apply these func
 
 but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: ::
     
-    newclip = clip.fx( effect_1, args1).\
-                   fx( effect_2, args2).\
-                   fx( effect_3, args3)
+    newclip = (clip.fx( effect_1, args1)
+                   .fx( effect_2, args2)
+                   .fx( effect_3, args3))
 
 Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy import.editor *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
     from moviepy.editor import *
-    clip = VideoFileClip("myvideo.avi").\
-               fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
-               fx( vfx.speedx, 2).\ # double speed
-               fx( vfx.colorx, 0.5) # darken (decreases the RGB values)
+    clip = (VideoFileClip("myvideo.avi")
+            .fx( vfx.resize, width=460) # resize (keep aspect ratio)
+            .fx( vfx.speedx, 2) # double speed
+            .fx( vfx.colorx, 0.5)) # darken the picture
 
-For convenience, frequently used methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
+For convenience, when you use ``moviepy.editor``, frequently used methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
 
 
 clip.fl
@@ -241,17 +262,17 @@ You can modify a clip as you want using custom *filters* with ``clip.fl_time``, 
 
 You can change the timeline of the clip with ``clip.fl_time`` like this: ::
     
-    modifiedClip1 = myClip.fl_time(lambda t: 3*t)
-    modifiedClip2 = myClip.fl_time(lambda t: 1+sin(t))
+    modifiedClip1 = my_clip.fl_time(lambda t: 3*t)
+    modifiedClip2 = my_clip.fl_time(lambda t: 1+sin(t))
      
-Now the clip ``modifiedClip1`` plays the same as ``myClip``, only three times faster, while ``modifiedClip2`` will play ``myClip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).
+Now the clip ``modifiedClip1`` plays the same as ``my_clip``, only three times faster, while ``modifiedClip2`` will play ``my_clip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).
 
 You can also modify the display of a clip with ``clip.fl_image``. The following takes a clip and inverts the green and blue channels of the frames: ::
     
     def invert_green_blue(image):
         return image[:,:,[0,2,1]]
     
-    modifiedClip = myClip.fl_image( invert_green_blue )
+    modifiedClip = my_clip.fl_image( invert_green_blue )
     
 Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method ``clip.fl(filter)``. The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function ``g(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
     
@@ -264,7 +285,7 @@ Finally, you may want to process the clip by taking into account both the time a
         frame_region = frame[int(t):int(t)+360,:]
         return frame_region
     
-    modifiedClip = myClip.fl( scroll )
+    modifiedClip = my_clip.fl( scroll )
 
 This will scroll down the clip, with a constant height of 360 pixels.
 
@@ -274,31 +295,14 @@ new effects. The reason is that, when these effects are applied to
 ImageClips, MoviePy will recognize that these methods do not need to be applied to each frame, which will 
 result in faster renderings.
 
-Tools
-~~~~~~
+To go further
+~~~~~~~~~~~~~~
 
-Advanced features of MoviePy that cannot be expressed as an ``fx`` are placed in :module:`moviepy.video.tools` (currently this module contains methods for tracking objects, segmenting, drawing, making credits) and `moviepy.audio.tools` (currently empty, will contain denoisers and utilities for synchronization).
+The best way to start with moviepy is to use it with the IPython Notebook, as it has autocompletion which will help you find all you need and discover all the available methods.
 
-Tips
-~~~~~
+Advanced features of MoviePy that cannot be expressed as an ``fx`` are placed in :module:`moviepy.video.tools` (currently this module contains methods for tracking objects, segmenting, drawing, making credits, dealing with subtitles) and `moviepy.audio.tools` (currently empty, will contain denoisers and utilities for synchronization).
 
-MoviePy works fine on my 1.5 petaflops supercomputer but when a clip gets very complex the rendering is slow and there is not much we can do.
-
-- Use an interactive shell, like IPython or, better, the IPython notebook. If you don't know these, you don't know what you are missing !
-- If a part of your video takes a lot of time to render, save it once and for all as a video, then use this video. Choose codec 'rawvideo' or 'png' for lossless saving.
-- Prefer the ``clip.show()`` option, and use it a lot. Only use ``clip.preview()`` when really necessary.
-- If the previewing is shaky, it means that your computer is not good enough to render the clip in real time. Don't hesitate to play with the options of ``preview``: for instance, lower the fps of the sound (11000 Hz is still fine) and the video.
-- Prototype: design your clips separately. If your composition involves a clip that is not finished yet, replace it temporarily with a basic color clip.
-- There are often several ways to produce a same effect with MoviePy, but some ways are faster. For instance don't apply effects to a whole screen video if you are only using one region of the screen afterwards: first crop the selected region, then apply your effects.
-- [wishful thinking] Check on the internet or in the examples of this documentation that what you do hasn't been done before. Code shared on the internet has more chances to be optimized.
-
-
-To go further and learn about all the available options and 
-functionalities of MoviePy, see the :ref:`examples` and the reference 
-manual. You can also browse the code of the different video effects in 
+To go further and learn about all the available options and
+functionalities of MoviePy, see the :ref:`examples` and the :ref:`reference_manual`.
+You can also browse the code of the different video effects in 
 ``moviepy/video/fx`` to give you ideas on how to code your own effects.
-
-
-    
-
-
