@@ -99,9 +99,9 @@
 </div>
 <div class="section" id="the-clip-objects">
 <h2>The clip objects<a class="headerlink" href="#the-clip-objects" title="Permalink to this headline">¶</a></h2>
-<p>The most common objects in MoviePy are called clips. A clip (let&#8217;s call it <tt class="docutils literal"><span class="pre">myclip</span></tt>) can be either an audio clip or a video clip. It has different attributes, like <tt class="docutils literal"><span class="pre">myclip.duration</span></tt> (indicating its duration in seconds), <tt class="docutils literal"><span class="pre">clip.start</span></tt> (indicating the time in seconds where the clip should start playing when mixed with other videos), <tt class="docutils literal"><span class="pre">myclip.w</span></tt> (the width in pixel of the clip), etc.</p>
-<p>A video clip <tt class="docutils literal"><span class="pre">myclip</span></tt> can have two special attributes which are themselves clips: <tt class="docutils literal"><span class="pre">myclip.audio</span></tt> is an audio clip representing the audio track of the vidceo clip. <tt class="docutils literal"><span class="pre">myclip.mask</span></tt> is a special kind of video clip which defines the transparency of <tt class="docutils literal"><span class="pre">myclip</span></tt>.</p>
-<p>A clip also has methods which enable to create a derivative of this clip. For instance <tt class="docutils literal"><span class="pre">myclip.subclip(2,7)</span></tt> creates a new clip which is like <tt class="docutils literal"><span class="pre">myclip</span></tt> cut between seconds 2 and 7.</p>
+<p>The most common objects in MoviePy are called clips. A clip (let&#8217;s call it <tt class="docutils literal"><span class="pre">my_clip</span></tt>) can be either an audio clip or a video clip. It has different attributes, like <tt class="docutils literal"><span class="pre">my_clip.duration</span></tt> (indicating its duration in seconds), <tt class="docutils literal"><span class="pre">clip.start</span></tt> (indicating the time in seconds where the clip should start playing when mixed with other videos), <tt class="docutils literal"><span class="pre">my_clip.w</span></tt> (the width in pixel of the clip), etc.</p>
+<p>A video clip <tt class="docutils literal"><span class="pre">my_clip</span></tt> can have two special attributes which are themselves clips: <tt class="docutils literal"><span class="pre">my_clip.audio</span></tt> is an audio clip representing the audio track of the vidceo clip. <tt class="docutils literal"><span class="pre">my_clip.mask</span></tt> is a special kind of video clip which defines the transparency of <tt class="docutils literal"><span class="pre">my_clip</span></tt>.</p>
+<p>A clip also has methods which enable to create a derivative of this clip. For instance <tt class="docutils literal"><span class="pre">my_clip.subclip(2,7)</span></tt> creates a new clip which is like <tt class="docutils literal"><span class="pre">my_clip</span></tt> cut between seconds 2 and 7.</p>
 </div>
 <div class="section" id="classes-of-video-clips">
 <h2>Classes of video clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h2>
@@ -120,7 +120,7 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Now <tt class="docutils literal"><span class="pre">video</span></tt> is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option <tt class="docutils literal"><span class="pre">transition=myClip</span></tt>.</p>
+<p>Now <tt class="docutils literal"><span class="pre">video</span></tt> is a clip that plays the clips 1, 2, and 3 one after the other. You can also play a transition clip between the clips with the option <tt class="docutils literal"><span class="pre">transition=my_clip</span></tt>.</p>
 <p>Next, you have the <cite>~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip</cite>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
 </pre></div>
@@ -139,13 +139,13 @@
                             <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span> <span class="c"># start at t=9s</span>
 </pre></div>
 </div>
-<p>Because the three clips overlap, we can make them appear with a fading-in effect. Here we go for fadein effects that last 1.5 seconds:</p>
+<p>In the example above, maybe <tt class="docutils literal"><span class="pre">clip2</span></tt> will start before <tt class="docutils literal"><span class="pre">clip1</span></tt> is over. In this case you can make <tt class="docutils literal"><span class="pre">clip2</span></tt> appear with a <em>fade-in</em> effect of one second:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span> <span class="c"># starts at t=0</span>
-                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">fadein</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span>
-                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span><span class="o">.</span><span class="n">fadein</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)])</span>
+                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fadein</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span>
 </pre></div>
 </div>
-<p>Finally, if <tt class="docutils literal"><span class="pre">clip2</span></tt> and <tt class="docutils literal"><span class="pre">clip3</span></tt> are smaller than <tt class="docutils literal"><span class="pre">clip1</span></tt>, you can decide where they will appear in the composition:</p>
+<p>Finally, if <tt class="docutils literal"><span class="pre">clip2</span></tt> and <tt class="docutils literal"><span class="pre">clip3</span></tt> are smaller than <tt class="docutils literal"><span class="pre">clip1</span></tt>, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span>
                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">)),</span>
                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">90</span><span class="p">,</span><span class="mi">100</span><span class="p">))])</span>
@@ -153,6 +153,8 @@
 </div>
 <p>Note that there are many ways to specify the position:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c"># x=45, y=150 , in pixels</span>
+
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&quot;center&quot;</span><span class="p">)</span> <span class="c"># automatically centered</span>
 
 <span class="c"># clip2 is horizontally centered, and at the top of the picture</span>
 <span class="n">clip2</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="s">&quot;center&quot;</span><span class="p">,</span><span class="s">&quot;top&quot;</span><span class="p">))</span>
@@ -172,40 +174,53 @@
 <img alt="../_images/videoWH.jpeg" src="../_images/videoWH.jpeg" />
 </div>
 </div>
-<div class="section" id="rendering-a-video-clip">
-<span id="renderingaclip"></span><h2>Rendering a video clip<a class="headerlink" href="#rendering-a-video-clip" title="Permalink to this headline">¶</a></h2>
-<p>A clip can be previewed (i.e. generated and displayed at the same time)
-or be rendered directly to a file. Note that previewing requires to
-have the Python package PyGame installed.</p>
-<p>To preview just one frame of the clip, use one of these:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c"># shows the first frame of the clip</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mf">10.5</span><span class="p">)</span> <span class="c"># shows the frame of the clip at t=10.5s</span>
-</pre></div>
-</div>
-<p>To preview the clip, type</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span> <span class="c"># preview with default fps=15</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># Play the clip with no sound.</span>
-</pre></div>
-</div>
-<p>Note that the <tt class="docutils literal"><span class="pre">fps</span></tt> can be any number, independently of the <tt class="docutils literal"><span class="pre">fps</span></tt> of your different sources.</p>
+<div class="section" id="wrting-a-video-clip-to-a-file">
+<span id="renderingaclip"></span><h2>Wrting a video clip to a file<a class="headerlink" href="#wrting-a-video-clip-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p>To write a clip as a video file, use</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">)</span> <span class="c"># default: codec &#39;libx264&#39; fps 24</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myEditedMovie.avi&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render the audio.</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">)</span> <span class="c"># default: &#39;libx264&#39;, 24 fps</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render audio.</span>
 </pre></div>
 </div>
-<p>Alternatively you can also save a video clip as an animated GIF with</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span><span class="o">.</span><span class="n">to_gif</span><span class="p">(</span><span class="s">&#39;test.gif&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>See <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">this blog post</a> for more informations on making GIFs with MoviePy.</p>
+<p>You can also use other codecs to write <tt class="docutils literal"><span class="pre">.webm</span></tt> or <tt class="docutils literal"><span class="pre">.ogv</span></tt> files.</p>
 <p>Sometimes it is impossible for MoviePy to guess the <tt class="docutils literal"><span class="pre">duration</span></tt> attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have <em>a priori</em> an infinite duration). Then, the <tt class="docutils literal"><span class="pre">duration</span></tt> must be set manually with <tt class="docutils literal"><span class="pre">clip.set_duration</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">myClip</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">&quot;flower.jpeg&quot;</span><span class="p">)</span> <span class="c"># has infinite duration</span>
-<span class="n">Image</span><span class="p">(</span><span class="s">&quot;flower.jpeg&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span> <span class="c"># Will fail ! NO DURATION !</span>
-<span class="n">myClip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span> <span class="c"># will show flowers for 5 seconds</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Make a video showing a flower for 5 seconds</span>
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">&quot;flower.jpeg&quot;</span><span class="p">)</span> <span class="c"># has infinite duration</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;flower.mp4&quot;</span><span class="p">)</span> <span class="c"># Will fail ! NO DURATION !</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;flower.mp4&quot;</span><span class="p">)</span> <span class="c"># works !</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="writing-an-animated-gif">
+<h2>Writing an animated GIF<a class="headerlink" href="#writing-an-animated-gif" title="Permalink to this headline">¶</a></h2>
+<p>To write your video as an animated GIF, use</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s">&#39;test.gif&#39;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If your computer has enough RAM (say, at least 2GB), you can use its faster version</p>
+<blockquote>
+<div>my_clip.write_gif(&#8216;test.gif&#8217;, fps=12)</div></blockquote>
+<p>See <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">this blog post</a> for more informations on making GIFs with MoviePy.</p>
+</div>
+<div class="section" id="previewing-a-video-clip">
+<h2>Previewing a video clip<a class="headerlink" href="#previewing-a-video-clip" title="Permalink to this headline">¶</a></h2>
+<p>A clip previewed, i.e. generated and displayed at the same time, which is faster than re-generating the file and opening it every time you change your script. Previewing requires to have the Python package PyGame installed, and will only work if PyGame is initialized, which will be the case
+if you started with <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>.</p>
+<p>To preview just one frame of the clip, use one of these:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c"># shows the first frame of the clip</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mf">10.5</span><span class="p">)</span> <span class="c"># shows the frame of the clip at t=10.5s</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">interactive</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The last line allows you to click anywhere on the clip and get the position and color of the pixel on which you clicked (press Escape to terminate).</p>
+<p>To preview the clip, you must specify the frames-per-second</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span> <span class="c"># preview with default fps=15</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t play sound.</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">fps</span></tt> can be any number, independently of the <tt class="docutils literal"><span class="pre">fps</span></tt> of your different sources.</p>
+<p>While the clip is getting prewieved, just can just click anywhere on the clip to get the time, position and color of the pixel you clicked.</p>
 </div>
 <div class="section" id="audio-clips">
 <span id="ccaudioclips"></span><h2>Audio clips<a class="headerlink" href="#audio-clips" title="Permalink to this headline">¶</a></h2>
@@ -223,10 +238,10 @@ have the Python package PyGame installed.</p>
 <li>When you cut a video clip with <tt class="docutils literal"><span class="pre">videoclip.subclip(20,25)</span></tt> then the sound will also be cut, i.e. the resulting clip will have an audio clip <tt class="docutils literal"><span class="pre">videoclip.audio.subclip(20,25)</span></tt>.</li>
 <li>When you put several clips together in a CompositeVideoClip, then the sound of the CompositeVideoClip will be the composition of the sounds of the different video clips.</li>
 </ul>
-<p>For an example, you can refer to <em class="xref std std-ref">soundexample</em>. Like video clips, sound clips have a <tt class="docutils literal"><span class="pre">get_frame</span></tt> attribute, and creating new audio clips by modifying or putting together other audio clips does not take place in the memory. The actual sounds of the audio clips are only computed when we ask to play them or to write them to a file. You can do that as follows:</p>
+<p>For an example, you can refer to <em class="xref std std-ref">soundexample</em>. Like video clips, sound clips have a <tt class="docutils literal"><span class="pre">get_frame</span></tt> attribute, and creating new audio clips by modifying or putting together other audio clips does not eat the memory. The actual sounds of the audio clips are only computed when we ask to play them or to write them to a file. You can do that as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">audioclip</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span> <span class="c"># default fps: 22050</span>
 <span class="n">audioclip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span>
-<span class="n">audioclip</span><span class="o">.</span><span class="n">to_soundfile</span><span class="p">(</span><span class="s">&#39;myclip.wav&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="c">#default fps: 22050</span>
+<span class="n">audioclip</span><span class="o">.</span><span class="n">to_audiofile</span><span class="p">(</span><span class="s">&#39;my_clip.mp3&#39;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="c">#default fps: 22050</span>
 </pre></div>
 </div>
 </div>
@@ -235,7 +250,7 @@ have the Python package PyGame installed.</p>
 <p>There are several categories of clip modifications in MoviePy.</p>
 <p>The very common methods for composition (cutting a clip, setting its position, etc.) are implemented as <tt class="docutils literal"><span class="pre">clip.mymethod</span></tt>. For instance <tt class="docutils literal"><span class="pre">clip.subclip(15,20)</span></tt> returns the part of <tt class="docutils literal"><span class="pre">clip</span></tt> that is playing between 15 seconds and 20 seconds.</p>
 <p>For all the other modifications, we use <tt class="docutils literal"><span class="pre">clip.fx</span></tt> and <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. <tt class="docutils literal"><span class="pre">clip.fx</span></tt> is meant to make it easy to use already-written transformation functions, while  <tt class="docutils literal"><span class="pre">clip.fl</span></tt> makes it easy to write new transformation functions.</p>
-<p>Note that none of these methods occur <em>inplace</em>: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see <a class="reference internal" href="#renderingaclip"><em>Rendering a video clip</em></a>). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.</p>
+<p>Note that none of these methods occur <em>inplace</em>: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see <a class="reference internal" href="#renderingaclip"><em>Wrting a video clip to a file</em></a>). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.</p>
 <div class="section" id="clip-fx">
 <h3>clip.fx<a class="headerlink" href="#clip-fx" title="Permalink to this headline">¶</a></h3>
 <p>Suppose that you have some functions implementing effects on clips:</p>
@@ -248,34 +263,35 @@ effect_3(clip, args3) -&gt; new clip</pre>
 </pre></div>
 </div>
 <p>but this is not easy to read. To have a clearer syntax you can use <tt class="docutils literal"><span class="pre">clip.fx</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_1</span><span class="p">,</span> <span class="n">args1</span><span class="p">)</span><span class="o">.</span>\
-               <span class="n">fx</span><span class="p">(</span> <span class="n">effect_2</span><span class="p">,</span> <span class="n">args2</span><span class="p">)</span><span class="o">.</span>\
-               <span class="n">fx</span><span class="p">(</span> <span class="n">effect_3</span><span class="p">,</span> <span class="n">args3</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">newclip</span> <span class="o">=</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_1</span><span class="p">,</span> <span class="n">args1</span><span class="p">)</span>
+               <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_2</span><span class="p">,</span> <span class="n">args2</span><span class="p">)</span>
+               <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_3</span><span class="p">,</span> <span class="n">args3</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import.editor</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
-<div class="highlight-python"><pre>from moviepy.editor import *
-clip = VideoFileClip("myvideo.avi").\
-           fx( vfx.resize, width=460).\ # resize (keep aspect ratio)
-           fx( vfx.speedx, 2).\ # double speed
-           fx( vfx.colorx, 0.5) # darken (decreases the RGB values)</pre>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo.avi&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">)</span> <span class="c"># resize (keep aspect ratio)</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">speedx</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># double speed</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">colorx</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span> <span class="c"># darken the picture</span>
+</pre></div>
 </div>
-<p>For convenience, frequently used methods such as <tt class="docutils literal"><span class="pre">resize</span></tt> can be called in a simpler way: <tt class="docutils literal"><span class="pre">clip.resize(...)</span></tt> instead of <tt class="docutils literal"><span class="pre">clip.fx(</span> <span class="pre">vfx.resize,</span> <span class="pre">...)</span></tt></p>
+<p>For convenience, when you use <tt class="docutils literal"><span class="pre">moviepy.editor</span></tt>, frequently used methods such as <tt class="docutils literal"><span class="pre">resize</span></tt> can be called in a simpler way: <tt class="docutils literal"><span class="pre">clip.resize(...)</span></tt> instead of <tt class="docutils literal"><span class="pre">clip.fx(</span> <span class="pre">vfx.resize,</span> <span class="pre">...)</span></tt></p>
 </div>
 <div class="section" id="clip-fl">
 <h3>clip.fl<a class="headerlink" href="#clip-fl" title="Permalink to this headline">¶</a></h3>
 <p>You can modify a clip as you want using custom <em>filters</em> with <tt class="docutils literal"><span class="pre">clip.fl_time</span></tt>, <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>, and more generally with <tt class="docutils literal"><span class="pre">clip.fl</span></tt>.</p>
 <p>You can change the timeline of the clip with <tt class="docutils literal"><span class="pre">clip.fl_time</span></tt> like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">modifiedClip1</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
-<span class="n">modifiedClip2</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="o">+</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">modifiedClip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+<span class="n">modifiedClip2</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="o">+</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>Now the clip <tt class="docutils literal"><span class="pre">modifiedClip1</span></tt> plays the same as <tt class="docutils literal"><span class="pre">myClip</span></tt>, only three times faster, while <tt class="docutils literal"><span class="pre">modifiedClip2</span></tt> will play <tt class="docutils literal"><span class="pre">myClip</span></tt> by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).</p>
+<p>Now the clip <tt class="docutils literal"><span class="pre">modifiedClip1</span></tt> plays the same as <tt class="docutils literal"><span class="pre">my_clip</span></tt>, only three times faster, while <tt class="docutils literal"><span class="pre">modifiedClip2</span></tt> will play <tt class="docutils literal"><span class="pre">my_clip</span></tt> by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).</p>
 <p>You can also modify the display of a clip with <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>. The following takes a clip and inverts the green and blue channels of the frames:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">image</span><span class="p">[:,:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
 
-<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span> <span class="n">invert_green_blue</span> <span class="p">)</span>
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span> <span class="n">invert_green_blue</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method <tt class="docutils literal"><span class="pre">clip.fl(filter)</span></tt>. The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function <tt class="docutils literal"><span class="pre">g(t)</span></tt> which given a time returns the clip&#8217;s frame at that time), and the second argument is the time.</p>
@@ -288,7 +304,7 @@ clip = VideoFileClip("myvideo.avi").\
     <span class="n">frame_region</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">360</span><span class="p">,:]</span>
     <span class="k">return</span> <span class="n">frame_region</span>
 
-<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">myClip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span> <span class="n">scroll</span> <span class="p">)</span>
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span> <span class="n">scroll</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>This will scroll down the clip, with a constant height of 360 pixels.</p>
@@ -299,25 +315,13 @@ ImageClips, MoviePy will recognize that these methods do not need to be applied 
 result in faster renderings.</p>
 </div>
 </div>
-<div class="section" id="tools">
-<h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
-<p>Advanced features of MoviePy that cannot be expressed as an <tt class="docutils literal"><span class="pre">fx</span></tt> are placed in <a href="#id1"><span class="problematic" id="id2">:module:`moviepy.video.tools`</span></a> (currently this module contains methods for tracking objects, segmenting, drawing, making credits) and <cite>moviepy.audio.tools</cite> (currently empty, will contain denoisers and utilities for synchronization).</p>
-</div>
-<div class="section" id="tips">
-<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy works fine on my 1.5 petaflops supercomputer but when a clip gets very complex the rendering is slow and there is not much we can do.</p>
-<ul class="simple">
-<li>Use an interactive shell, like IPython or, better, the IPython notebook. If you don&#8217;t know these, you don&#8217;t know what you are missing !</li>
-<li>If a part of your video takes a lot of time to render, save it once and for all as a video, then use this video. Choose codec &#8216;rawvideo&#8217; or &#8216;png&#8217; for lossless saving.</li>
-<li>Prefer the <tt class="docutils literal"><span class="pre">clip.show()</span></tt> option, and use it a lot. Only use <tt class="docutils literal"><span class="pre">clip.preview()</span></tt> when really necessary.</li>
-<li>If the previewing is shaky, it means that your computer is not good enough to render the clip in real time. Don&#8217;t hesitate to play with the options of <tt class="docutils literal"><span class="pre">preview</span></tt>: for instance, lower the fps of the sound (11000 Hz is still fine) and the video.</li>
-<li>Prototype: design your clips separately. If your composition involves a clip that is not finished yet, replace it temporarily with a basic color clip.</li>
-<li>There are often several ways to produce a same effect with MoviePy, but some ways are faster. For instance don&#8217;t apply effects to a whole screen video if you are only using one region of the screen afterwards: first crop the selected region, then apply your effects.</li>
-<li>[wishful thinking] Check on the internet or in the examples of this documentation that what you do hasn&#8217;t been done before. Code shared on the internet has more chances to be optimized.</li>
-</ul>
+<div class="section" id="to-go-further">
+<h2>To go further<a class="headerlink" href="#to-go-further" title="Permalink to this headline">¶</a></h2>
+<p>The best way to start with moviepy is to use it with the IPython Notebook, as it has autocompletion which will help you find all you need and discover all the available methods.</p>
+<p>Advanced features of MoviePy that cannot be expressed as an <tt class="docutils literal"><span class="pre">fx</span></tt> are placed in <a href="#id1"><span class="problematic" id="id2">:module:`moviepy.video.tools`</span></a> (currently this module contains methods for tracking objects, segmenting, drawing, making credits, dealing with subtitles) and <cite>moviepy.audio.tools</cite> (currently empty, will contain denoisers and utilities for synchronization).</p>
 <p>To go further and learn about all the available options and
-functionalities of MoviePy, see the <a class="reference internal" href="../examples/examples.html#examples"><em>Example Scripts</em></a> and the reference
-manual. You can also browse the code of the different video effects in
+functionalities of MoviePy, see the <a class="reference internal" href="../examples/examples.html#examples"><em>Example Scripts</em></a> and the <a class="reference internal" href="../ref/ref.html#reference-manual"><em>Reference Manual</em></a>.
+You can also browse the code of the different video effects in
 <tt class="docutils literal"><span class="pre">moviepy/video/fx</span></tt> to give you ideas on how to code your own effects.</p>
 </div>
 </div>
@@ -340,15 +344,16 @@ manual. You can also browse the code of the different video effects in
 <li><a class="reference internal" href="#the-clip-objects">The clip objects</a></li>
 <li><a class="reference internal" href="#classes-of-video-clips">Classes of video clips</a></li>
 <li><a class="reference internal" href="#composite-video-clips">Composite video clips</a></li>
-<li><a class="reference internal" href="#rendering-a-video-clip">Rendering a video clip</a></li>
+<li><a class="reference internal" href="#wrting-a-video-clip-to-a-file">Wrting a video clip to a file</a></li>
+<li><a class="reference internal" href="#writing-an-animated-gif">Writing an animated GIF</a></li>
+<li><a class="reference internal" href="#previewing-a-video-clip">Previewing a video clip</a></li>
 <li><a class="reference internal" href="#audio-clips">Audio clips</a></li>
 <li><a class="reference internal" href="#operations-on-a-clip">Operations on a clip</a><ul>
 <li><a class="reference internal" href="#clip-fx">clip.fx</a></li>
 <li><a class="reference internal" href="#clip-fl">clip.fl</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#tools">Tools</a></li>
-<li><a class="reference internal" href="#tips">Tips</a></li>
+<li><a class="reference internal" href="#to-go-further">To go further</a></li>
 </ul>
 </li>
 </ul>

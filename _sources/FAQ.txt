@@ -22,10 +22,7 @@ readable only on some readers like VLC.
 have a deprecated version of FFMPEG, install a recent version from the 
 website, not from your OS's repositories ! (see :ref:`installation`).
 
-- **I get an error when I use texts in my video**: If you are on 
-Windows, this is due to a name clash, see :ref:`installation`. Also, 
-make sure that you are using a recent version of ImageMagick.
-
+- **Previewing videos make them slower than they are**. It means that your computer is not good enough to render the clip in real time. Don't hesitate to play with the options of ``preview``: for instance, lower the fps of the sound (11000 Hz is still fine) and the video. Also, downsizing your video with ``resize`` can help.
 
 .. _Github: https://github.com/Zulko/moviepy
 .. _Reddit: http://www.reddit.com/r/moviepy/

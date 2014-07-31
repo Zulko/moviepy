@@ -1,3 +1,6 @@
+.. _reference_manual:
+
+
 Reference Manual
 ================
 
