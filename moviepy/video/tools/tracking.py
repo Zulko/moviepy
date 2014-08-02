@@ -10,41 +10,27 @@ of the tracking time interval).
 
 from scipy.interpolate import interp1d
 
-from moviepy.video.io.preview import imdisplay
+from ..io.preview import imdisplay
+from .interpolators import Trajectory
+from moviepy.decorators import time_can_be_tuple
+
 
 try:
     import cv2
+    autotracking_possible = True
 except:
     # Note: this will be later fixed with scipy/skimage replacements
     # but for the moment OpenCV is mandatory, so...
-    print("WARNING: OpenCV not found: automated tracking not possible")
-
+    autotracking_possible = False
 
 
 # WE START WITH A TOOL FUNCTION
 
-def to_fxfy(txy_list, **kwargs):
-    """ Transforms a list [ (ti, (xi,yi)) ] into 2 functions (fx,fy)
-        where fx : t -> x(t)  and  fy : t -> y(t).
-        If the time t is out of the bounds of the tracking time interval
-        fx and fy return the position of the object at the start or at
-        the end of the tracking time interval.
-        Keywords can be passed to decide the kind of interpolation,
-        see the doc of ``scipy.interpolate.interp1d``."""
-        
-    tt, xx, yy = zip(*txy_list)
-    interp_x = interp1d(tt, xx, **kwargs)
-    interp_y = interp1d(tt, yy, **kwargs)
-    fx = lambda t: xx[0] if (t <= tt[0]) else ( xx[-1] if t >= tt[-1]
-                                          else ( interp_x(t) ) )
-    fy = lambda t: yy[0] if (t <= tt[0]) else ( yy[-1] if t >= tt[-1]
-                                          else ( interp_y(t) ) )
-    return fx,fy
-
-
 # MANUAL TRACKING
 
-def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1):
+@time_can_be_tuple
+def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1,
+                    savefile = None):
     """
     Allows manual tracking of an object(s) in the video clip between
     times `t1` and `t2`. This displays the clip frame by frame
@@ -107,6 +93,8 @@ def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1):
                 if event.type == pg.KEYDOWN:
                     if (event.key == pg.K_BACKSLASH):
                         return "return"
+                    elif (event.key == pg.K_ESCAPE):
+                        raise KeyboardInterrupt()
                         
 
                 elif event.type == pg.MOUSEBUTTONDOWN:
@@ -114,7 +102,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1):
                     clicks.append((x, y))
                     objects_to_click -= 1
                     
-        return clicks if (len(clicks)>1) else clicks[0]
+        return clicks
         
     while t < t2:
         
@@ -126,11 +114,16 @@ def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1):
             txy_list.append((t,clicks))
             t += step
 
-    return txy_list, to_fxfy(txy_list)
-
-
-
-
+    tt, xylist = zip(*txy_list) 
+    result = []
+    for i in range(nobjects):
+        xys = [e[i] for e in xylist]
+        xx, yy = zip(*xys)
+        result.append(Trajectory(tt, xx, yy))
+    
+    if savefile is not None:
+        Trajectory.save_list(result, savefile)
+    return result
 
 
 # AUTOMATED TRACKING OF A PATTERN
@@ -164,6 +157,12 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
     to -1 the pattern will be searched in the whole screen at each frame).
     You can also provide the original position of the pattern with xy0.
     """
+
+    if not autotracking_possible:
+        raise IOError("Sorry, autotrack requires OpenCV for the moment. "
+                      "Install OpenCV (aka cv2) to use it.")
+
+
     if not xy0:
         xy0 = findAround(clip.get_frame(tt[0]),pattern)
     
@@ -176,5 +175,5 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
                                xy=xys[-1],r=radius))
     
     xx,yy = zip(*xys)
-    txy_list = zip(tt,xx,yy)
-    return txy_list, to_fxfy(txy_list)
+
+    return Trajectory(tt, xx, yy)

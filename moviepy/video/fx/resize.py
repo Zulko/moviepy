@@ -42,9 +42,8 @@ except ImportError:
     
 from moviepy.decorators import apply_to_mask
    
-    
-@apply_to_mask
-def resize(clip, newsize=None, height=None, width=None):
+
+def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     """ 
     Returns a video clip that is a resized version of the clip.
     
@@ -99,7 +98,8 @@ def resize(clip, newsize=None, height=None, width=None):
                 fun = lambda gf,t: resizer(gf(t).astype('uint8'),
                                           newsize2(t))
                 
-            return clip.fl(fun, keep_duration=True)
+            return clip.fl(fun, keep_duration=True,
+                           apply_to= (["mask"] if apply_to_mask else []))
             
         else:
             
@@ -108,9 +108,20 @@ def resize(clip, newsize=None, height=None, width=None):
 
     elif height != None:
         
-        newsize = [w * height / h, height]
+        if hasattr(height, "__call__"):
+            fun = lambda t : 1.0*int(height(t))/h
+            return resize(clip, fun)
+
+
+        else:
+
+            newsize = [w * height / h, height]
         
     elif width != None:
+
+        if hasattr(width, "__call__"):
+            fun = lambda t : 1.0*width(t)/w
+            return resize(clip, fun)
         
         newsize = [width, h * width / w]
         
@@ -119,13 +130,13 @@ def resize(clip, newsize=None, height=None, width=None):
     if clip.ismask:
         
         fl = lambda pic: 1.0*resizer((255 * pic).astype('uint8'),
-            newsize)/255
+                                     newsize)/255
             
     else:
         
         fl = lambda pic: resizer(pic.astype('uint8'), newsize)
 
-    return clip.fl_image(fl, apply_to='mask')
+    return clip.fl_image(fl, apply_to= (["mask"] if apply_to_mask else []))
 
 
 if not resize_possible:

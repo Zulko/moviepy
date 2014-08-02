@@ -5,6 +5,7 @@ import numpy as np
 from moviepy.video.VideoClip import VideoClip, TextClip
 from moviepy.tools import cvsecs
 
+
 class SubtitlesClip(VideoClip):
     """ A Clip that serves as "subtitle track" in videos.
     
@@ -32,19 +33,25 @@ class SubtitlesClip(VideoClip):
 
 
     """
+
+
     def __init__(self, subtitles, make_textclip=None):
         
         VideoClip.__init__(self)
 
         if isinstance( subtitles, str):
             subtitles = file_to_subtitles(subtitles)
+
         subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
+
         if make_textclip is None:
+
             make_textclip = lambda txt: TextClip(txt, font='Georgia-Bold',
                                         fontsize=24, color='white',
                                         stroke_color='black', stroke_width=0.5)
+
         self.make_textclip = make_textclip
         self.start=0
         self.duration = max([tb for ((ta,tb), txt) in self.subtitles])
@@ -76,11 +83,17 @@ class SubtitlesClip(VideoClip):
         self.get_frame = get_frame
         self.mask = VideoClip(ismask=True, get_frame=mask_get_frame)
     
+
+
     def __iter__(self):
         return self.subtitles.__iter__()
+    
+
 
     def __getitem__(self, k):
         return self.subtitles[k]
+
+    
 
     def __str__(self):
 
@@ -91,14 +104,18 @@ class SubtitlesClip(VideoClip):
         
         return "\n\n".join(map(to_srt, self.subtitles))
     
+
+
     def match_expr(self, expr):
 
         return SubtitlesClip([e for e in self.subtitles
                               if re.find(expr, e) != []])
     
+
     def write_srt(self, filename):
         with open(filename, 'w+') as f:
             f.write(str(self))
+
 
 
 def string_to_time(timestring):
@@ -107,10 +124,13 @@ def string_to_time(timestring):
     return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
 
 
+
 def time_to_string(timestring):
-    """ Converts a string into seconds """
+    """ Converts seconds into a string """
     nums = map(float, re.findall(r'\d+', timestring))
     return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
+
+
 
 def file_to_subtitles(filename):
     """ Converts a srt file into subtitles.
@@ -136,5 +156,4 @@ def file_to_subtitles(filename):
             current_times, current_text = None, ""
         elif current_times is not None:
             current_text = current_text + line
-    
     return times_texts

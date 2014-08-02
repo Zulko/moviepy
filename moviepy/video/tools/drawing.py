@@ -212,9 +212,9 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     
     >>> size = [200,200]
     >>> # an image with all pixels with x<50 =0, the others =1
-    >>> colorSplit(size, x=50, col1=0, col2=1)
+    >>> color_split(size, x=50, col1=0, col2=1)
     >>> # an image with all pixels with y<50 red, the others green
-    >>> colorSplit(size, x=50, col1=[255,0,0], col2=[0,255,0])
+    >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
     >>> # An image splitted along an arbitrary line (see below) 
     >>> colorSplit(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
         
@@ -223,6 +223,14 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     if grad_width or ( (x is None) and (y is None)):
         if p2 != None:
             vector = (np.array(p2) - np.array(p1))
+        elif x is not None:
+            vector = np.array([0,1.0])
+            p1 = np.array([x, 0])
+            print vector, p1
+        elif y is not None:
+            vector = np.array([1.0, 0.0])
+            p1 = np.array([0,y])
+
         x,y = vector
         vector = np.array([y,-x]).astype('float')
         norm = np.linalg.norm(vector)

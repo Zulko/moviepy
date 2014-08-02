@@ -17,23 +17,22 @@ from tqdm import tqdm
 
 import numpy as np
 
-from moviepy.decorators import  (apply_to_mask,
-                                 requires_duration,
-                                 outplace,
-                                 add_mask_if_none,
-                                 time_can_be_tuple)
-
-from moviepy.tools import (subprocess_call, verbose_print,
-                           deprecated_version_of) 
-
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
 from .io.ffmpeg_reader import ffmpeg_read_image
 from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 
 from .tools.drawing import blit
+
 from ..Clip import Clip
 from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
+from ..tools import (subprocess_call, verbose_print,
+                           deprecated_version_of) 
+from ..decorators import  (apply_to_mask,
+                           requires_duration,
+                           outplace,
+                           add_mask_if_none,
+                           time_can_be_tuple)
 
 
 try:
@@ -476,7 +475,7 @@ class VideoClip(Clip):
 
             cmd = [FFMPEG_BINARY, '-y',
                    '-f', 'image2', '-r',str(fps),
-                   '-i', fileName+'_GIFTEMP%04d.bmp',
+                   '-i', fileName+'_GIFTEMP%04d.png',
                    '-r',str(fps),
                    filename]
 
@@ -1030,7 +1029,7 @@ class ImageClip(VideoClip):
         """
 
         # When we use fl on an image clip it may become animated.
-        #Therefore the result is not an ImageClip, just a VideoClip.
+        # Therefore the result is not an ImageClip, just a VideoClip.
         newclip = VideoClip.fl(self,fl, apply_to=apply_to,
                                keep_duration=keep_duration)
         newclip.__class__ = VideoClip

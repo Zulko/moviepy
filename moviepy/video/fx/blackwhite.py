@@ -2,10 +2,18 @@ import numpy as np
 
 def blackwhite(clip, RGB = [1,1,1], preserve_luminosity=True):
     """ Desaturates the picture, makes it black and white.
-        If RBG is 'CRT_phosphor' a special set of values is used.
-        preserve_luminosity does nothing right now.
-        method = sum (TODO: others) """
+    Parameter RGB allows to set weights for the different color
+    channels.
+    If RBG is 'CRT_phosphor' a special set of values is used.
+    preserve_luminosity maintains the sum of RGB to 1."""
+
     if RGB == 'CRT_phosphor':
         RGB = [0.2125, 0.7154, 0.0721]
-        
-    return clip.fl_image(lambda im: np.dstack(3*[im.sum(axis=2)/3]) )
+
+    R,G,B = 1.0*np.array(RGB)/ (sum(RGB) if preserve_luminosity else 1)
+    
+    def fl(im):
+        im = (R*im[:,:,0] + G*im[:,:,1] + B*im[:,:,2])/3
+    	return np.dstack(3*[im]).astype('uint8')
+
+    return clip.fl_image(fl)

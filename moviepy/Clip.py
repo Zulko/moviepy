@@ -12,7 +12,7 @@ from moviepy.decorators import ( apply_to_mask,
                                  time_can_be_tuple,
                                  requires_duration,
                                  outplace)
-
+from tqdm import tqdm
 
 class Clip:
 
@@ -368,7 +368,7 @@ class Clip:
         if they exist.
         """
         
-        fl = lambda t: t + (0 if (t < ta) else tb - ta)
+        fl = lambda t: t + (t >= ta)*(tb - ta)
         newclip = self.fl_time(fl)
         if self.duration != None:
             return newclip.set_duration(self.duration - (tb - ta))
@@ -376,7 +376,7 @@ class Clip:
             return newclip
 
     @requires_duration
-    def iter_frames(self, fps=None):
+    def iter_frames(self, fps=None, progress_bar=False):
         """ Iterates over all the frames of the clip.
         
         Returns each frame of the clip as a HxWxN np.array,
@@ -402,6 +402,15 @@ class Clip:
         
         if fps is None:
             fps = self.fps
-            
-        for t in np.arange(0, self.duration, 1.0/fps):
-            yield self.get_frame(t)
+        
+        def generator():
+            for t in np.arange(0, self.duration, 1.0/fps):
+                yield self.get_frame(t)
+        
+        if progress_bar:
+            nframes = int(self.duration*fps)+1
+            return tqdm(generator(), total=nframes)
+
+        return generator()
+
+

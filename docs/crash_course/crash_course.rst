@@ -129,7 +129,7 @@ When indicating the position keep in mind that the ``y`` coordinate has its zero
 
 .. _renderingAClip:
 
-Wrting a video clip to a file
+Writing a video clip to a file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To write a clip as a video file, use ::
@@ -156,9 +156,9 @@ To write your video as an animated GIF, use ::
 
     my_clip.write_gif('test.gif', fps=12)
 
-If your computer has enough RAM (say, at least 2GB), you can use its faster version
+If your computer has enough RAM (say, at least 2GB), you can use its faster version ``write_gif2``:
 
-    my_clip.write_gif('test.gif', fps=12)
+    my_clip.write_gif2('test.gif', fps=12)
 
 
 See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for more informations on making GIFs with MoviePy.
