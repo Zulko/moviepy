@@ -6,9 +6,8 @@ from moviepy.audio.AudioClip import CompositeAudioClip
 
 from moviepy.video.compositing.on_color import on_color 
 
-def concatenate(clipslist, method = 'chain', transition=None,
-                bg_color=(0, 0, 0), transparent=False, ismask=False,
-                padding = 0):
+def concatenate(clipslist, transition=None, bg_color=(0, 0, 0),
+                transparent=False, ismask=False, padding = 0):
     """ Concatenates several video clips
     
     Returns a video clip made by clip by concatenating several video clips.
@@ -30,7 +29,7 @@ def concatenate(clipslist, method = 'chain', transition=None,
     clipslist
       A list of video clips which must all have their ``duration``
       attributes set.
-    
+
     transition
       A clip that will be played between each two clips of the list.  
     
@@ -49,9 +48,6 @@ def concatenate(clipslist, method = 'chain', transition=None,
       automatically sets the method to `compose`.
            
     """
-    
-    if padding != 0:
-        method = 'compose'
 
     if transition != None:
         l = [[v, transition] for v in clipslist[:-1]]
@@ -63,45 +59,17 @@ def concatenate(clipslist, method = 'chain', transition=None,
     sizes = [v.size for v in clipslist]
     w = max([r[0] for r in sizes])
     h = max([r[1] for r in sizes])
-    
-    if method == 'chain':
-        result = VideoClip(ismask = ismask)
-        result.size = (w,h)
 
-        def gf(t):
-            i = max([i for i, e in enumerate(tt) if e <= t])
-            return clipslist[i].get_frame(t - tt[i])
-        
-        result.get_frame = gf
-        if (len(set(map(tuple,sizes)))>1) and (bg_color is not None):
-            # If not all clips have the same size, flatten the result
-            # on some color
-            result = result.fx( on_color, (w,h), bg_color, 'center')
-        
-    elif method == 'compose':
+    tt = np.maximum(0, tt + padding*np.arange(len(tt)))
+    result = CompositeVideoClip( [c.set_start(t).set_pos('center')
+                                for (c, t) in zip(clipslist, tt)],
+               size = (w, h), bg_color=bg_color, ismask=ismask,
+               transparent=transparent )
 
-        tt = np.maximum(0, tt + padding*np.arange(len(tt)))
-        result = concatenate( [c.set_start(t).set_pos('center')
-                                    for (c, t) in zip(clipslist, tt)],
-                   size = (w, h), bg_color=bg_color, ismask=ismask,
-                   transparent=transparent)
-    
     result.tt = tt
     result.clipslist = clipslist
     result.start_times = tt[:-1]
     result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
-    
-    # Compute the mask if any
-    
-    if transparent and (not ismask):
-        # add a mask to the clips which have none
-        clips_withmask = [(c if (c.mask!=None) else c.add_mask())
-                          for c in clipslist] 
-        result.mask = concatenate([c.mask for c in clips_withmask],
-                    bg_color=0, ismask=True, transparent=False)
-                    
-                    
-    # Compute the audio, if any.
     
     audio_t = [(c.audio,t) for c,t in zip(clipslist,tt) if c.audio!=None]
     if len(audio_t)>0:

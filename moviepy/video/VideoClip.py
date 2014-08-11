@@ -133,7 +133,7 @@ class VideoClip(Clip):
         ffmpeg_write_image(filename, im)
 
 
-
+    @requires_duration
     def write_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
                  preset="medium",
@@ -298,19 +298,21 @@ class VideoClip(Clip):
                            write_logfile=write_logfile,
                            verbose=verbose)
 
-    # Merge with audio if any and trash temporary files.
+        # Merge with audio if any and trash temporary files.
+
         if merge_audio:
             verbose_print(verbose, "\n\nNow merging video and audio:\n")
             ffmpeg_merge_video_audio(videofile,temp_audiofile,
                                   filename, ffmpeg_output=True)
 
-        if remove_temp:
-            os.remove(videofile)
-            if make_audio:
-                os.remove(temp_audiofile)
+            if remove_temp:
+                os.remove(videofile)
+                if make_audio:
+                    os.remove(temp_audiofile)
+
         verbose_print(verbose, "\nYour video is ready !\n")
 
-
+    @requires_duration
     def write_images_sequence(self, nameformat, fps=None, verbose=True):
         """ Writes the videoclip to a sequence of image files.
 
@@ -364,7 +366,8 @@ class VideoClip(Clip):
         verbose_print(verbose, "MoviePy: Done writing frames %s."%(nameformat))
 
         return filenames
-
+    
+    @requires_duration
     def write_gif(self, filename, fps=None, program= 'ImageMagick',
                opt="OptimizeTransparency", fuzz=1, verbose=True,
                loop=0, dispose=False):
@@ -475,7 +478,7 @@ class VideoClip(Clip):
             os.remove(f)
 
 
-
+    @requires_duration
     def write_gif2(self, filename, fps=None, program= 'ImageMagick',
                    opt="OptimizeTransparency", fuzz=1, verbose=True,
                    loop=0, dispose=False):

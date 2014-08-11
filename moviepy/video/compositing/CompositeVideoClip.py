@@ -74,7 +74,8 @@ class CompositeVideoClip(VideoClip):
         if transparent:
             maskclips = [c.mask.set_pos(c.pos) for c in self.clips
                          if c.mask is not None]
-            self.mask = CompositeVideoClip(maskclips,self.size,
+            if maskclips != []:
+                self.mask = CompositeVideoClip(maskclips,self.size,
                                         transparent=False, ismask=True)
 
         def gf(t):
