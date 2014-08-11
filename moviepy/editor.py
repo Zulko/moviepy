@@ -30,8 +30,8 @@ from .audio.io.AudioFileClip import AudioFileClip
 
 # FX
 
-import moviepy.video.fx as vfx
-import moviepy.audio.fx as afx
+import moviepy.video.fx.all as vfx
+import moviepy.audio.fx.all as afx
 import moviepy.video.compositing.transitions as transfx
 
 # Tools
@@ -48,30 +48,37 @@ except ImportError:
 # The next loop transforms many effects into VideoClip methods so that
 # they can be walled with myclip.resize(width=500) instead of 
 # myclip.fx( vfx.resize, width= 500)
-for method in ["vfx.crop",
-               "vfx.loop",
-               "vfx.resize",
-               "vfx.margin",
-               "vfx.fadein",
-               "vfx.fadeout",
-               "vfx.speedx",
-               "afx.volumex",
-               "afx.audio_fadein",
-               "afx.audio_fadeout",
-               "transfx.crossfadein",
-               "transfx.crossfadeout"]:
+for method in [
+          "afx.audio_fadein",
+          "afx.audio_fadeout",
+          "afx.volumex",
+          "transfx.crossfadein",
+          "transfx.crossfadeout",
+          "vfx.crop",
+          "vfx.fadein",
+          "vfx.fadeout",
+          "vfx.loop",
+          "vfx.margin",
+          "vfx.mask_and",
+          "vfx.mask_inv",
+          "vfx.mask_or",
+          "vfx.resize",
+          "vfx.speedx"
+          ]:
     exec("VideoClip.%s = %s"%( method.split('.')[1], method))
 
 
 for method in ["afx.audio_fadein",
                "afx.audio_fadeout",
                "afx.audio_loop",
-               "afx.volumex"]:
+               "afx.volumex"
+              ]:
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 
 
 #-----------------------------------------------------------------
-# Previews: try to import pygame
+# Previews: try to import pygame, else make methods which raise
+# exceptions saying to install PyGame
 
 
 # Add methods preview and show (only if pygame installed)

@@ -6,6 +6,7 @@ try:
     resizer = lambda pic, newsize : cv2.resize(pic.astype('uint8'),
                 tuple(map(int, newsize)),
                 interpolation=cv2.INTER_AREA)
+    resizer.origin = "cv2"
                 
 except ImportError:
     
@@ -26,6 +27,7 @@ except ImportError:
             resized_pil = pilim.resize(newsize[::-1], Image.ANTIALIAS)
             arr = np.fromstring(resized_pil.tostring(), dtype='uint8')
             return arr.reshape(newshape)
+        resizer.origin = "PIL"
             
     except ImportError:
         # TRY USING SCIPY AS RESIZER
@@ -33,6 +35,7 @@ except ImportError:
             from scipy.misc import imresize
             resizer = lambda pic, newsize : imresize(pic,
                                             map(int, newsize[::-1]))
+            resizer.origin = "Scipy"
                                                
         except ImportError:
             resize_possible = False
@@ -73,6 +76,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     >>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
     
     """
+
     w, h = clip.size
     
     if newsize != None:
@@ -90,9 +94,8 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
             
             if clip.ismask:
                 
-                fun = lambda gf,t: (1.0*resizer((255 * gf(t))
-                                            .astype('uint8'),
-                                   newsize2(t))/255)
+                fun = lambda gf,t: (1.0*resizer((255 * gf(t)).astype('uint8'),
+                                                 newsize2(t))/255)
             else:
                 
                 fun = lambda gf,t: resizer(gf(t).astype('uint8'),
@@ -126,17 +129,20 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
         newsize = [width, h * width / w]
         
         
-        
+    # From here, the resizing is constant (not a function of time), size=newsize
+
     if clip.ismask:
-        
-        fl = lambda pic: 1.0*resizer((255 * pic).astype('uint8'),
-                                     newsize)/255
+        fl = lambda pic: 1.0*resizer((255 * pic).astype('uint8'), newsize)/255.0
             
     else:
-        
         fl = lambda pic: resizer(pic.astype('uint8'), newsize)
 
-    return clip.fl_image(fl, apply_to= (["mask"] if apply_to_mask else []))
+    newclip = clip.fl_image(fl)
+
+    if apply_to_mask and clip.mask is not None:
+        newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+
+    return newclip
 
 
 if not resize_possible:

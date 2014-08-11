@@ -1,3 +1,8 @@
+"""
+This module implements all the functions to read a video or a picture
+using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
+"""
+
 from __future__ import division
 
 import subprocess as sp
@@ -123,11 +128,6 @@ class FFMPEG_VideoReader:
         """
 
         # these definitely need to be rechecked sometime. Seems to work.
-        #pos = min( self.nframes, int(np.round(self.fps*t))+1 )
-        #if pos > self.nframes:
-        #    raise ValueError(("Video file %s has only %d frames but"
-        #                     " frame #%d asked")%(
-        #                        self.filename, self.nframes, pos))
         
         pos = int(self.fps*t)+1
 
@@ -252,13 +252,35 @@ def ffmpeg_parse_infos(filename, print_infos=False):
         result['video_size'] = s
 
 
-        # get the frame rate. Sometimes it's 'tbr', sometimes 'fps'...
+        # get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
+        # tbc, and sometimes tbc/2... Trust tbc first, then tbr, then fps.
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
-            result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+            tbr = float(line[match.start():match.end()].split(' ')[1])
+
+            try:
+                match = re.search("( [0-9]*.| )[0-9]* tbc", line)
+                tbc = float(line[match.start():match.end()].split(' ')[1])
+                if abs(tbr - tbc/2) < abs(tbr-tbc):
+                    result['video_fps'] = 1.0*tbc /2
+                else:
+                    result['video_fps'] = tbc
+            except:
+                result['video_fps'] = tbr
+
+
         except:
             match = re.search("( [0-9]*.| )[0-9]* fps", line)
             result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+
+
+        # It is known that a fps of 24 is often written as 24000/1001
+        # but then ffmpeg nicely rounds it to 23.98, which we hate.
+        coef = 1000.0/1001.0
+        fps = result['video_fps']
+        for x in [23,24,25]:
+            if (fps!=x) and abs(fps - x*coef) < .01:
+                result['video_fps'] = x*coef
 
         result['video_nframes'] = int(result['duration']*result['video_fps'])+1
 

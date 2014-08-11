@@ -376,7 +376,7 @@ class Clip:
             return newclip
 
     @requires_duration
-    def iter_frames(self, fps=None, progress_bar=False):
+    def iter_frames(self, fps=None, with_times = False, progress_bar=False):
         """ Iterates over all the frames of the clip.
         
         Returns each frame of the clip as a HxWxN np.array,
@@ -402,10 +402,13 @@ class Clip:
         
         if fps is None:
             fps = self.fps
-        
+
         def generator():
             for t in np.arange(0, self.duration, 1.0/fps):
-                yield self.get_frame(t)
+                if with_times:
+                    yield t, self.get_frame(t)
+                else:
+                    yield self.get_frame(t)
         
         if progress_bar:
             nframes = int(self.duration*fps)+1

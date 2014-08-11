@@ -136,6 +136,7 @@ class VideoClip(Clip):
 
     def write_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
+                 preset="medium",
                  audio_nbytes = 4, audio_codec= 'libmp3lame',
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
@@ -278,61 +279,36 @@ class VideoClip(Clip):
             videofile = filename
 
         # enough cpu for multiprocessing ?
-        enough_cpu = (multiprocessing.cpu_count() > 2)
+        enough_cpu = (multiprocessing.cpu_count() > 1)
 
         verbose_print(verbose, "\nMoviePy: building video file %s\n"%filename
                                 +40*"-"+"\n")
 
-        if para and make_audio and  enough_cpu:
+        
+        if make_audio:
+            self.audio.write_audiofile(temp_audiofile,audio_fps,
+                                    audio_nbytes, audio_bufsize,
+                                    audio_codec, bitrate=audio_bitrate,
+                                    write_logfile=write_logfile,
+                                    verbose=verbose)
 
-            # Parallelize
-            verbose_print(verbose, "Writing audio/video in parrallel.\n")
-            audioproc = multiprocessing.Process(
-                    target=self.audio.write_audiofile,
-                    args=(temp_audiofile,audio_fps,audio_nbytes,
-                          audio_bufsize,audio_codec,
-                          audio_bitrate,
-                          verbose))
+        ffmpeg_write_video(self, videofile, fps, codec,
+                           bitrate=bitrate,
+                           preset=preset,
+                           write_logfile=write_logfile,
+                           verbose=verbose)
 
-            audioproc.start()
-            
-            ffmpeg_write_video(self, 
-                               videofile, fps, codec,
-                               bitrate=bitrate,
-                               write_logfile=write_logfile,
-                               verbose=verbose)
-            audioproc.join()
-            if audioproc.exitcode:
-                print ("WARNING: something went wrong with the audio"+
-                       " writing, Exit code %d"%audioproc.exitcode)
-        else:
-
-            # Don't parallelize
-            if make_audio:
-                self.audio.write_audiofile(temp_audiofile,audio_fps,
-                                        audio_nbytes, audio_bufsize,
-                                        audio_codec, bitrate=audio_bitrate,
-                                        write_logfile=write_logfile,
-                                        verbose=verbose)
-
-            ffmpeg_write_video(self,
-                               videofile, fps, codec,
-                               bitrate=bitrate,
-                               write_logfile=write_logfile,
-                               verbose=verbose)
-
-        # Merge with audio if any and trash temporary files.
+    # Merge with audio if any and trash temporary files.
         if merge_audio:
-
             verbose_print(verbose, "\n\nNow merging video and audio:\n")
             ffmpeg_merge_video_audio(videofile,temp_audiofile,
                                   filename, ffmpeg_output=True)
 
-            if remove_temp:
-                os.remove(videofile)
-                if not isinstance(audio,str):
-                    os.remove(temp_audiofile)
-            verbose_print(verbose, "\nYour video is ready !\n")
+        if remove_temp:
+            os.remove(videofile)
+            if make_audio:
+                os.remove(temp_audiofile)
+        verbose_print(verbose, "\nYour video is ready !\n")
 
 
     def write_images_sequence(self, nameformat, fps=None, verbose=True):
@@ -571,7 +547,7 @@ class VideoClip(Clip):
         cmd1a = cmd1+['-r', "%.02f"%fps, filename]
         cmd1b = cmd1+['-f', 'image2pipe','-vcodec', 'bmp', '-']
         
-        cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%d"%int(100.0/fps),
+        cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%.02f"%(100.0/fps),
                 "-dispose" ,"%d"%(2 if dispose else 1),
                 '-loop', '%d'%loop,
                 '-', '-coalesce']
@@ -593,11 +569,10 @@ class VideoClip(Clip):
         verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
                                 +40*"-"+"\n")
         verbose_print(verbose, "Generating GIF frames...\n")
-        nframes = int(self.duration*fps)+1
         
         try:
 
-            for frame in tqdm(self.iter_frames(fps=fps), total=nframes):
+            for frame in self.iter_frames(fps=fps, progress_bar=True):
                 proc1.stdin.write(frame.tostring())
             verbose_print(verbose, "Done.\n")
 
@@ -741,7 +716,7 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask( mask.set_duration(self.duration))
         else:
-            get_frame = lambda t: np.ones(self.get_frame(t).shape)
+            get_frame = lambda t: np.ones(self.get_frame(t).shape, dtype=float)
             mask = VideoClip(ismask=True, get_frame = get_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -884,12 +859,14 @@ class VideoClip(Clip):
 
 
     @time_can_be_tuple
-    def to_ImageClip(self,t=0):
+    def to_ImageClip(self,t=0, with_mask=True):
         """
         Returns an ImageClip made out of the clip's frame at time ``t``
         """
-        return ImageClip(self.get_frame(t))
-
+        newclip = ImageClip(self.get_frame(t), ismask=self.ismask)
+        if with_mask and self.mask is not None:
+          newclip.mask = self.mask.to_ImageClip(t)
+        return newclip
 
 
     def to_mask(self, canal=0):
@@ -1056,7 +1033,7 @@ class ImageClip(VideoClip):
                 a = getattr(self, attr)
                 if a != None:
                     new_a =  a.fl_image(image_func)
-                    setattr(newclip, attr, new_a)
+                    setattr(self, attr, new_a)
 
 
 

@@ -53,6 +53,11 @@ class FFMPEG_VideoWriter:
       is used. If the video dimensions are not both even (e.g. 720x405)
       another pixel format is used, and this can cause problem in some
       video readers.
+    
+    preset
+      Sets the time that FFMPEG will take to compress the video. The slower,
+      the better the compression rate. Possibilities are: ultrafast,superfast,
+      veryfast, faster, fast, medium (default), slow, slower, veryslow, placebo.
 
     bitrate
       Only relevant for codecs which accept a bitrate. "5000k" offers
@@ -67,7 +72,8 @@ class FFMPEG_VideoWriter:
     
         
     def __init__(self, filename, size, fps, codec="libx264",
-                  bitrate=None, withmask=False, logfile=None):
+                 preset="medium", bitrate=None, withmask=False,
+                 logfile=None):
 
         if logfile is None:
           logfile = sp.PIPE
@@ -85,7 +91,8 @@ class FFMPEG_VideoWriter:
             '-pix_fmt', "rgba" if withmask else "rgb24",
             '-r', "%.02f"%fps,
             '-i', '-', '-an',
-            '-vcodec', codec]
+            '-vcodec', codec,
+            '-preset', preset]
             + (['-b',bitrate] if (bitrate!=None) else [])
 
             # http://trac.ffmpeg.org/ticket/658
@@ -105,7 +112,7 @@ class FFMPEG_VideoWriter:
 
         
     def write_frame(self,img_array):
-        """ Writes 1 frame in the file ! """
+        """ Writes one frame in the file."""
         try:
             self.proc.stdin.write(img_array.tostring())
         except IOError as err:
@@ -150,7 +157,8 @@ class FFMPEG_VideoWriter:
         del self.proc
         
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
-                  withmask=False, write_logfile=False, verbose=True):
+                       preset = "medium", withmask=False, write_logfile=False,
+                       verbose=True):
     
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
@@ -160,14 +168,15 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
     verbose_print(verbose, "\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
-             bitrate=bitrate, logfile=logfile)
+                                preset=preset, bitrate=bitrate,
+                                logfile=logfile)
              
     nframes = int(clip.duration*fps)
     
-    for i in tqdm(range(nframes)):
-        frame = clip.get_frame(1.0*i/fps)
+    for t,frame in clip.iter_frames(progress_bar=True, with_times=True,
+                                    fps=fps):
         if withmask:
-            mask = (255*clip.mask.get_frame(1.0*i/fps))
+            mask = 255*clip.mask.get_frame(t)
             frame = np.dstack([frame,mask])
             
         writer.write_frame(frame.astype("uint8"))
