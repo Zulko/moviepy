@@ -109,7 +109,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     Examples
     ---------
     
-    >>> grad = colorGradient(blabla).astype('unit8')
+    >>> grad = colorGradient(blabla).astype('uint8')
     
     """
     

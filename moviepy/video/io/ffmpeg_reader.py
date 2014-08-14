@@ -157,10 +157,13 @@ class FFMPEG_VideoReader:
 
 
 def ffmpeg_read_image(filename, with_mask=True):
-    """ Read one image from a file.
+    """ Read an image file (PNG, BMP, JPEG...).
     
-    Wraps FFMPEG_Videoreader to read just one image. Returns an
-    ImageClip.
+    Wraps FFMPEG_Videoreader to read just one image.
+    Returns an ImageClip.
+
+    This function is not meant to be used directly in MoviePy,
+    use ImageClip instead to make clips out of image files.
     
     Parameters
     -----------
@@ -187,8 +190,7 @@ def ffmpeg_parse_infos(filename, print_infos=False):
 
     Returns a dictionnary with the fields:
     "video_found", "video_fps", "duration", "video_nframes",
-    "video_duration"
-    "audio_found", "audio_fps"
+    "video_duration", "audio_found", "audio_fps"
 
     "video_duration" is slightly smaller than "duration" to avoid
     fetching the uncomplete frames at the end, which raises an error.
@@ -229,9 +231,8 @@ def ffmpeg_parse_infos(filename, print_infos=False):
     try:
         keyword = ('frame=' if is_GIF else 'Duration: ')
         line = [l for l in lines if keyword in l][0]
-        match = re.search("[0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9]", line)
-        hms = map(float, line[match.start()+1:match.end()].split(':'))
-        result['duration'] = cvsecs(*hms)
+        match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
+        result['duration'] = cvsecs(match)
     except:
         raise IOError(("MoviePy error: failed to read the duration of file %s.\n"
                        "Here are the file infos returned by ffmpeg:\n\n%s")%(

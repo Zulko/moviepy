@@ -30,10 +30,8 @@ class SubtitlesClip(VideoClip):
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.to_videofile("final.mp4", fps=myvideo.fps)
-
-
+    
     """
-
 
     def __init__(self, subtitles, make_textclip=None):
         
@@ -116,22 +114,6 @@ class SubtitlesClip(VideoClip):
         with open(filename, 'w+') as f:
             f.write(str(self))
 
-
-
-def string_to_time(timestring):
-    """ Converts a string into seconds """
-    nums = map(float, re.findall(r'\d+', timestring))
-    return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
-
-
-
-def time_to_string(timestring):
-    """ Converts seconds into a string """
-    nums = map(float, re.findall(r'\d+', timestring))
-    return 3600*nums[0] + 60*nums[1] + nums[2] + nums[3]/1000
-
-
-
 def file_to_subtitles(filename):
     """ Converts a srt file into subtitles.
 
@@ -148,9 +130,9 @@ def file_to_subtitles(filename):
     current_times , current_text = None, ""
     
     for line in lines:
-        times = re.findall("[0-9]*:[0-9]*:[0-9]*,[0-9]*", line)
+        times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
         if times != []:
-            current_times = map(time_to_string, times)
+            current_times = map(cvsecs, times)
         elif line == '\n':
             times_texts.append((current_times, current_text.strip('\n')))
             current_times, current_text = None, ""

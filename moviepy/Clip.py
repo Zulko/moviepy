@@ -9,9 +9,9 @@ import numpy as np
 
 from moviepy.decorators import ( apply_to_mask,
                                  apply_to_audio,
-                                 time_can_be_tuple,
                                  requires_duration,
-                                 outplace)
+                                 outplace,
+                                 convert_to_seconds)
 from tqdm import tqdm
 
 class Clip:
@@ -196,12 +196,14 @@ class Clip:
     
     @apply_to_mask
     @apply_to_audio
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     @outplace
     def set_start(self, t, change_end=True):
         """
         Returns a copy of the clip, with the ``start`` attribute set
-        to ``t`` (in seconds).
+        to ``t``, which can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
+
         
         If ``change_end=True`` and the clip has a ``duration`` attribute,
         the ``end`` atrribute of the clip will be updated to
@@ -225,12 +227,14 @@ class Clip:
     
     @apply_to_mask
     @apply_to_audio
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     @outplace
     def set_end(self, t):
         """
         Returns a copy of the clip, with the ``end`` attribute set to
-        ``t``. Also sets the duration of the mask and audio, if any,
+        ``t``, which can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
+        Also sets the duration of the mask and audio, if any,
         of the returned clip.
         """
         self.end = t
@@ -244,12 +248,13 @@ class Clip:
     
     @apply_to_mask
     @apply_to_audio
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     @outplace
     def set_duration(self, t, change_end=True):
         """
         Returns a copy of the clip, with the  ``duration`` attribute
-        set to ``t``.
+        set to ``t``, which can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
         Also sets the duration of the mask and audio, if any, of the
         returned clip.
         If change_end is False, the start attribute of the clip will
@@ -276,12 +281,13 @@ class Clip:
     
     
     
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     def is_playing(self, t):
         """
         
-        If t is a number, returns true if t is between the start and
-        the end of the clip.
+        If t is a time, returns true if t is between the start and
+        the end of the clip. t can be expressed in seconds (15.35),
+        in (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
         If t is a numpy array, returns False if none of the t is in
         theclip, else returns a vector [b_1, b_2, b_3...] where b_i
         is true iff tti is in the clip. 
@@ -308,13 +314,15 @@ class Clip:
             return( (t >= self.start) and
                     ((self.end is None) or (t < self.end) ) )
     
-    @time_can_be_tuple
+    @convert_to_seconds(['t_start', 't_end'])
     @apply_to_mask
     @apply_to_audio
     def subclip(self, t_start=0, t_end=None):
         """
         Returns a clip playing the content of the current clip
-        between times ``t_start`` and ``t_end`` (in seconds).
+        between times ``t_start`` and ``t_end``, which can be expressed
+        in seconds (15.35), in (min, sec), in (hour, min, sec), or as a
+        string: '01:03:05.35'.
         If ``t_end`` is not provided, it is assumed to be the duration
         of the clip (potentially infinite).
         If ``t_end`` is a negative value, it is reset to
@@ -355,11 +363,13 @@ class Clip:
     
     @apply_to_mask
     @apply_to_audio
-    @time_can_be_tuple
+    @convert_to_seconds(['ta', 'tb'])
     def cutout(self, ta, tb):
         """
         Returns a clip playing the content of the current clip but
-        skips the extract between ``ta`` and ``tb`` (in seconds).
+        skips the extract between ``ta`` and ``tb``, which can be
+        expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
+        or as a string: '01:03:05.35'.
         If the original clip has a ``duration`` attribute set,
         the duration of the returned clip  is automatically computed as
         `` duration - (tb - ta)``.
@@ -415,5 +425,3 @@ class Clip:
             return tqdm(generator(), total=nframes)
 
         return generator()
-
-

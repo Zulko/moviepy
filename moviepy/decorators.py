@@ -37,17 +37,6 @@ def apply_to_audio(f, clip, *a, **k):
     if hasattr(newclip, 'audio') and (newclip.audio != None):
         newclip.audio = f(newclip.audio, *a, **k)
     return newclip
-    
-    
-
-@decorator.decorator
-def add_mask_if_none(f, clip, *a, **k):
-    """ Add a mask to the clip if there is none. """
-        
-    if clip.mask is None:
-        clip = clip.add_mask()
-    return f(clip, *a, **k)
-
 
 
 @decorator.decorator
@@ -78,16 +67,27 @@ def audio_video_fx(f, clip, *a, **k):
     else:
         return f(clip, *a, **k)
 
+def preprocess_args(fun,varnames):
+    
+    def warper(f, *a, **kw):
+        names = f.func_code.co_varnames
+        new_a = [cvsecs(arg) if (name in varnames) else arg
+                 for (arg, name) in zip(a, names)]
+        new_kw = {k: fun(v) if k in varnames else v
+                 for (k,v) in kw.items()}
+        return f(*new_a, **new_kw)
+    return decorator.decorator(warper)
+
+
+def convert_to_seconds(varnames):
+    "Converts the specified variables to seconds"
+    return preprocess_args(cvsecs, varnames)
+
 
 
 @decorator.decorator
-def time_can_be_tuple(f, clip, *a, **k):
-    """
-    All tuples in the arguments of f will be considered as time and
-    converted to seconds.
-    """
-    
-    fun = lambda e: e if (not isinstance(e,tuple)) else cvsecs(*e)
-    a = map(fun,a)
-    k = dict( [(m, fun(n)) for m,n in k.items()])
+def add_mask_if_none(f, clip, *a, **k):
+    """ Add a mask to the clip if there is none. """        
+    if clip.mask is None:
+        clip = clip.add_mask()
     return f(clip, *a, **k)

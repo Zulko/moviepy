@@ -27,12 +27,12 @@ from .tools.drawing import blit
 from ..Clip import Clip
 from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from ..tools import (subprocess_call, verbose_print,
-                           deprecated_version_of) 
+                      deprecated_version_of) 
 from ..decorators import  (apply_to_mask,
                            requires_duration,
                            outplace,
                            add_mask_if_none,
-                           time_can_be_tuple)
+                           convert_to_seconds)
 
 
 try:
@@ -117,12 +117,15 @@ class VideoClip(Clip):
     # EXPORT OPERATIONS
 
 
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     def save_frame(self, filename, t=0, savemask=False):
         """ Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
-        'filename'. If ``savemask`` is ``True`` the mask is saved in
+        'filename'. ``t`` can be expressed in seconds (15.35), in
+        (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
+        
+        If ``savemask`` is ``True`` the mask is saved in
         the alpha layer of the picture.
 
         """
@@ -861,10 +864,12 @@ class VideoClip(Clip):
     # CONVERSIONS TO OTHER TYPES
 
 
-    @time_can_be_tuple
+    @convert_to_seconds(['t'])
     def to_ImageClip(self,t=0, with_mask=True):
         """
-        Returns an ImageClip made out of the clip's frame at time ``t``
+        Returns an ImageClip made out of the clip's frame at time ``t``,
+        which can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
         """
         newclip = ImageClip(self.get_frame(t), ismask=self.ismask)
         if with_mask and self.mask is not None:
@@ -1111,9 +1116,12 @@ class TextClip(ImageClip):
     -----------
 
     txt
-      either a string, or a filename. If txt is in a file and
-      whose name is ``mytext.txt`` for instance, then txt must be
-      equal to ``@mytext.txt`` .
+      A string of the text to write. Can be replaced by argument
+      ``filename``.
+
+    filename
+      The name of a file in which there is the text to write.
+      Can be provided instead of argument ``txt``
 
     size
       Size of the picture in pixels. Can be auto-set if
@@ -1164,15 +1172,16 @@ class TextClip(ImageClip):
 
 
 
-    def __init__(self, txt, size=None, color='black',
+    def __init__(self, txt=None, filename=None, size=None, color='black',
              bg_color='transparent', fontsize=None, font='Courier',
              stroke_color=None, stroke_width=1, method='label',
              kerning=None, align='center', interline=None,
              tempfilename=None, temptxt=None,
              transparent=True, remove_temp=True,
              print_cmd=False):
+        
 
-        if not txt.startswith('@'):
+        if txt is not None:
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix='.txt')
                 try: # only in Python3 will this work
@@ -1182,7 +1191,8 @@ class TextClip(ImageClip):
                 os.close(temptxt_fd)
             txt = '@'+temptxt
         else:
-            txt = "'%s'"%txt
+            # use a file instead of a text.
+            txt = "@%"+filename
 
         if size != None:
             size = ('' if size[0] is None else str(size[0]),

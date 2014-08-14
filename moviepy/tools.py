@@ -5,7 +5,7 @@ Misc. useful functions that can be used at many places in the program.
 import subprocess as sp
 import sys
 import warnings
-
+import re
 
 def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """
@@ -38,21 +38,38 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     del proc
 
 
-def cvsecs(*args):
+def cvsecs(time):
+    """ Will convert any time into seconds.
+    Here are the accepted formats:
+    
+    >>> cvsecs(15.4) -> 15.4 # seconds
+    >>> cvsecs( (1,21.5) ) -> 81.5 # (min,sec)
+    >>> cvsecs( (1,1,2) ) -> 3662 # (hr, min, sec)
+    >>> cvsecs('01:01:33.5') -> 3693.5  #(hr,min,sec)
+    >>> cvsecs('01:01:33.045') -> 3693.045
+    >>> cvsecs('01:01:33,5') #coma works too
     """
-    Converts a time to second. Either cvsecs(min,secs) or
-    cvsecs(hours,mins,secs).
-    >>> cvsecs(5.5) # -> 5.5 seconds
-    >>> cvsecs(10, 4.5) # -> 604.5 seconds
-    >>> cvsecs(1, 0, 5) # -> 3605 seconds
-    """
-    if len(args) == 1:
-        return args[0]
-    elif len(args) == 2:
-        return 60*args[0]+args[1]
-    elif len(args) ==3:
-        return 3600*args[0]+60*args[1]+args[2]
-
+    
+    if isinstance(time, basestring):
+        if (',' not in time) and ('.' not in time):
+            time = time + '.0'
+        expr = r"(\d+):(\d+):(\d+)[,|.](\d+)"
+        finds = re.findall(expr, time)[0]
+        nums = map(float, finds)
+        return ( 3600*int(finds[0])
+                + 60*int(finds[1])
+                + int(finds[2])
+                + nums[3]/(10**len(finds[3])))
+    
+    elif isinstance(time, tuple):
+        if len(time)== 3:
+            hr, mn, sec = time
+        elif len(time)== 2:
+            hr, mn, sec = 0, time[0], time[1]    
+        return 3600*hr + 60*mn + sec
+    
+    else:
+        return time
 
 def deprecated_version_of(f, oldname, newname=None):
     """ Indicates that a function is deprecated and has a new name.

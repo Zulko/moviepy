@@ -94,7 +94,8 @@ stars_darkened = stars.fl_image(lambda pic: (0.6*pic).astype('int16'))
 # COMPOSE THE MOVIE
 
 final = CompositeVideoClip([
-         stars, warped_txt.set_pos(('center','bottom'))],
+         stars_darkened,
+         warped_txt.set_pos(('center','bottom'))],
          size = moviesize)
 
 

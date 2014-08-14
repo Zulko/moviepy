@@ -12,7 +12,7 @@ from scipy.interpolate import interp1d
 
 from ..io.preview import imdisplay
 from .interpolators import Trajectory
-from moviepy.decorators import time_can_be_tuple
+from moviepy.decorators import convert_to_seconds
 
 
 try:
@@ -28,8 +28,8 @@ except:
 
 # MANUAL TRACKING
 
-@time_can_be_tuple
-def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1,
+@convert_to_seconds(["t1","t2"])
+def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects = 1,
                     savefile = None):
     """
     Allows manual tracking of an object(s) in the video clip between
@@ -41,37 +41,46 @@ def manual_tracking(clip, t1=None, t2=None, fps=5, nobjects = 1,
     object per frame, else returns a list whose elements are of the 
     form (ti, [(xi1,yi1), (xi2,yi2), ...] )
     
-    :param t1,t2: times during which to track (defaults are start and
-        end of the clip)
-    :param fps: Number of frames per second to freeze on.
-    :param nobjects: Number of objects to click on each frame
-    
+    Parameters
+    -------------
 
+    t1,t2:
+      times during which to track (defaults are start and
+      end of the clip). t1 and t2 can be expressed in seconds
+      like 15.35, in (min, sec), in (hour, min, sec), or as a
+      string: '01:03:05.35'.
+    fps:
+      Number of frames per second to freeze on. If None, the clip's
+      fps attribute is used instead.
+    nobjects:
+      Number of objects to click on each frame.
+    savefile:
+      If provided, the result is saved to a file, which makes
+      it easier to edit and re-use later.
+
+    Examples
+    ---------
     
-    >>> print myClip.manTrack(10, 13,fps=7)
-    >>>
-    >>> # To print 5 points coordinates at t=5 : 
-    >>> for i in range(5):
-    >>>     print myClip.manTrack(5)
-    
-    Tip: To avoid redoing the tracking each time you run your script,
-    better save the result the first time and then load it at each run. 
-    
-    >>> # First time:
-    >>> import pickle
-    >>> txy = myClip.manTrack(20, 10,fps=10)
-    >>> with open("chaplin_txy.dat",'w+') as f:
-    >>>     pickle.dump(txy,f)
-    >>>
-    >>> # Next times:
-    >>> import pickle
-    >>> with open("chaplin_txy.dat",'r') as f:
-    >>>     txy = pickle.load(txy,f)
+    >>> from moviepy.editor import VideoFileClip
+    >>> from moviepy.tools.tracking import manual_tracking
+    >>> clip = VideoFileClip("myvideo.mp4")
+    >>> # manually indicate 3 trajectories, save them to a file
+    >>> trajectories = manual_tracking(clip, t1=5, t2=7, fps=5,
+                                       nobjects=3, savefile="track.txt")
+    >>> # ...
+    >>> # LATER, IN ANOTHER SCRIPT, RECOVER THESE TRAJECTORIES
+    >>> from moviepy.tools.tracking import Trajectory
+    >>> traj1, traj2, traj3 = Trajectory.load_list('track.txt')
+    >>> # If ever you only have one object being tracked, recover it with
+    >>> traj, =  Trajectory.load_list('track.txt')
     
     """
     
     import pygame as pg
     
+    if fps is None:
+        fps = clip.fps
+
     screen = pg.display.set_mode(clip.size)
     step = 1.0 / fps
     if (t1 is None) and (t2 is None):

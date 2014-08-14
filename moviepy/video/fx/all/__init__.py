@@ -9,13 +9,15 @@ clip = vfx.mirror_x(some_clip)
 import os
 
 
-directory = os.path.dirname(
+_directory = os.path.dirname(
 	            os.path.dirname(
 	            	os.path.realpath(__file__)))
 
-files = os.listdir(directory)
-fx_list = [f for f in files if ( f.endswith('.py') and not f.startswith('_'))]
-__all__ = [c[:-3] for c in fx_list]
+_files = os.listdir(_directory)
+_fx_list = [_f for _f in _files if ( _f.endswith('.py') and
+	                            not _f.startswith('_'))]
 
-for name in __all__:
-    exec("from ..%s import %s"%(name,name))
+__all__ = [_c[:-3] for _c in _fx_list]
+
+for _name in __all__:
+    exec("from ..%s import %s"%(_name,_name))
