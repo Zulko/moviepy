@@ -32,7 +32,7 @@ in the :ref:`examples`.
 The Cup Song Covers Mix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This video is a mix of 60 covers of the Cup Song which demonstrates non-linear video editing capabilities of MoviePy. The code that generated the script (not commented) can be found here.
+This video is a mix of 60 covers of the Cup Song which demonstrates the non-linear video editing capabilities of MoviePy. The code that generated the script (not commented) can be found `here <http://nbviewer.ipython.org/github/Zulko/--video-editing---Cup-Song-Covers-Mix/blob/master/CupSongsCovers.ipynb>`_.
 
 .. raw:: html
 
@@ -63,6 +63,16 @@ If you want to make gifs from video files, this  `tutorial
     <a href="http://imgur.com/Fo2BxBK"><img src="http://i.imgur.com/Fo2BxBK.gif" title="Hosted by imgur.com"/></a>
     </center>
 
+A few other GIFs made with MoviePy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+With MoviePy and just a few lines of Python you can track objects, add subtitles, find correlations between pictures to make perfectly-looping gifs, use masks, etc.
+
+.. raw:: html
+    
+    <center>
+    <iframe class="imgur-album" width="70%" height="380" frameborder="0" src="http://imgur.com/a/lgAwo/embed"></iframe>
+    </center>
 
 Programs and Scripts using MoviePy
 -----------------------------------
