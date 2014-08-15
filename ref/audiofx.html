@@ -68,54 +68,8 @@
   <div class="section" id="audio-fx">
 <h1>audio.fx<a class="headerlink" href="#audio-fx" title="Permalink to this headline">¶</a></h1>
 <p>This module regroups functions meant to be used with <tt class="docutils literal"><span class="pre">audio.fx</span></tt> or <tt class="docutils literal"><span class="pre">videoclip.fx</span></tt>. When you type <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>, the module <tt class="docutils literal"><span class="pre">audio.fx</span></tt> is loaded as <tt class="docutils literal"><span class="pre">afx</span></tt> and you can use <tt class="docutils literal"><span class="pre">afx.volumex</span></tt> etc.</p>
-<span class="target" id="module-moviepy.audio.fx"></span><p>Contains transformation functions (clip-&gt;clip)
+<span class="target" id="module-moviepy.audio.fx"></span><p>This module contains transformation functions (clip-&gt;clip)
 One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
-<dl class="function">
-<dt id="moviepy.audio.fx.audio_fadein">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadein</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadein" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an audio (or video) clip that is first mute, then the
-sound arrives progressively over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.audio.fx.audio_fadeout">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_fadeout</tt><big>(</big><em>clip</em>, <em>duration</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_fadeout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a sound clip where the sound fades out progressively
-over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds at the end of the clip.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.audio.fx.audio_left_right">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_left_right</tt><big>(</big><em>audioclip</em>, <em>left=1</em>, <em>right=1</em>, <em>merge=False</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_left_right" title="Permalink to this definition">¶</a></dt>
-<dd><p>For a stereo audioclip, this function enables to change the volume
-of the left and right channel separately (with the factors <cite>left</cite>
-and <cite>right</cite>)
-Makes a stereo audio clip in which the volume of left and right
-is controlable</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.audio.fx.audio_loop">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">audio_loop</tt><big>(</big><em>audioclip</em>, <em>nloops=None</em>, <em>duration=None</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.audio_loop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loops over an audio clip.</p>
-<p>Returns an audio clip that plays the given clip either
-<cite>nloops</cite> times, or during <cite>duration</cite> seconds.</p>
-<p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">videoclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&#39;music.ogg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">audio</span> <span class="o">=</span> <span class="n">afx</span><span class="o">.</span><span class="n">audio_loop</span><span class="p">(</span> <span class="n">music</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">videoclip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">videoclip</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
-<dt id="moviepy.audio.fx.volumex">
-<tt class="descclassname">moviepy.audio.fx.</tt><tt class="descname">volumex</tt><big>(</big><em>clip</em>, <em>factor</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.volumex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a (video or audio) clip with increased sound volume</p>
-</dd></dl>
-
 </div>
 
 

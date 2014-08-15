@@ -109,7 +109,9 @@ clip.subclip, etc.)</p>
 <dt id="Clip.Clip.cutout">
 <tt class="descname">cutout</tt><big>(</big><em>ta</em>, <em>tb</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.cutout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.cutout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the content of the current clip but
-skips the extract between <tt class="docutils literal"><span class="pre">ta</span></tt> and <tt class="docutils literal"><span class="pre">tb</span></tt> (in seconds).
+skips the extract between <tt class="docutils literal"><span class="pre">ta</span></tt> and <tt class="docutils literal"><span class="pre">tb</span></tt>, which can be
+expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
+or as a string: &#8216;01:03:05.35&#8217;.
 If the original clip has a <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set,
 the duration of the returned clip  is automatically computed as
 `` duration - (tb - ta)``.</p>
@@ -225,8 +227,9 @@ parameters, when the effects are chained:</p>
 <dl class="method">
 <dt id="Clip.Clip.is_playing">
 <tt class="descname">is_playing</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.is_playing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.is_playing" title="Permalink to this definition">¶</a></dt>
-<dd><p>If t is a number, returns true if t is between the start and
-the end of the clip.
+<dd><p>If t is a time, returns true if t is between the start and
+the end of the clip. t can be expressed in seconds (15.35),
+in (min, sec), in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
 If t is a numpy array, returns False if none of the t is in
 theclip, else returns a vector [b_1, b_2, b_3...] where b_i
 is true iff tti is in the clip.</p>
@@ -234,7 +237,7 @@ is true iff tti is in the clip.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.iter_frames">
-<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em>, <em>with_times=False</em>, <em>progress_bar=False</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates over all the frames of the clip.</p>
 <p>Returns each frame of the clip as a HxWxN np.array,
 where N=1 for mask clips and N=3 for RGB clips.</p>
@@ -258,7 +261,8 @@ clip already has a <tt class="docutils literal"><span class="pre">fps</span></tt
 <dt id="Clip.Clip.set_duration">
 <tt class="descname">set_duration</tt><big>(</big><em>t</em>, <em>change_end=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the clip, with the  <tt class="docutils literal"><span class="pre">duration</span></tt> attribute
-set to <tt class="docutils literal"><span class="pre">t</span></tt>.
+set to <tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
 Also sets the duration of the mask and audio, if any, of the
 returned clip.
 If change_end is False, the start attribute of the clip will
@@ -270,7 +274,9 @@ of the clip.</p>
 <dt id="Clip.Clip.set_end">
 <tt class="descname">set_end</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the clip, with the <tt class="docutils literal"><span class="pre">end</span></tt> attribute set to
-<tt class="docutils literal"><span class="pre">t</span></tt>. Also sets the duration of the mask and audio, if any,
+<tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
+Also sets the duration of the mask and audio, if any,
 of the returned clip.</p>
 </dd></dl>
 
@@ -285,7 +291,8 @@ arbitrary/complicated videoclips.</p>
 <dt id="Clip.Clip.set_start">
 <tt class="descname">set_start</tt><big>(</big><em>t</em>, <em>change_end=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the clip, with the <tt class="docutils literal"><span class="pre">start</span></tt> attribute set
-to <tt class="docutils literal"><span class="pre">t</span></tt> (in seconds).</p>
+to <tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.</p>
 <p>If <tt class="docutils literal"><span class="pre">change_end=True</span></tt> and the clip has a <tt class="docutils literal"><span class="pre">duration</span></tt> attribute,
 the <tt class="docutils literal"><span class="pre">end</span></tt> atrribute of the clip will be updated to
 <tt class="docutils literal"><span class="pre">start+duration</span></tt>.</p>
@@ -300,7 +307,9 @@ clips of the current clip, if they exist.</p>
 <dt id="Clip.Clip.subclip">
 <tt class="descname">subclip</tt><big>(</big><em>t_start=0</em>, <em>t_end=None</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.subclip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.subclip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the content of the current clip
-between times <tt class="docutils literal"><span class="pre">t_start</span></tt> and <tt class="docutils literal"><span class="pre">t_end</span></tt> (in seconds).
+between times <tt class="docutils literal"><span class="pre">t_start</span></tt> and <tt class="docutils literal"><span class="pre">t_end</span></tt>, which can be expressed
+in seconds (15.35), in (min, sec), in (hour, min, sec), or as a
+string: &#8216;01:03:05.35&#8217;.
 If <tt class="docutils literal"><span class="pre">t_end</span></tt> is not provided, it is assumed to be the duration
 of the clip (potentially infinite).
 If <tt class="docutils literal"><span class="pre">t_end</span></tt> is a negative value, it is reset to

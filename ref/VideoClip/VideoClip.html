@@ -201,7 +201,9 @@ background.</p>
 <tt class="descname">save_frame</tt><big>(</big><em>filename</em>, <em>t=0</em>, <em>savemask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.save_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a clip&#8217;s frame to an image file.</p>
 <p>Saves the frame of clip corresponding to time <tt class="docutils literal"><span class="pre">t</span></tt> in
-&#8216;filename&#8217;. If <tt class="docutils literal"><span class="pre">savemask</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> the mask is saved in
+&#8216;filename&#8217;. <tt class="docutils literal"><span class="pre">t</span></tt> can be expressed in seconds (15.35), in
+(min, sec), in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.</p>
+<p>If <tt class="docutils literal"><span class="pre">savemask</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> the mask is saved in
 the alpha layer of the picture.</p>
 </dd></dl>
 
@@ -278,8 +280,10 @@ has been applied to the subclip between times <cite>ta</cite> and <cite>tb</cite
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.to_ImageClip">
-<tt class="descname">to_ImageClip</tt><big>(</big><em>t=0</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_ImageClip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an ImageClip made out of the clip&#8217;s frame at time <tt class="docutils literal"><span class="pre">t</span></tt></p>
+<tt class="descname">to_ImageClip</tt><big>(</big><em>t=0</em>, <em>with_mask=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.to_ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.to_ImageClip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an ImageClip made out of the clip&#8217;s frame at time <tt class="docutils literal"><span class="pre">t</span></tt>,
+which can be expressed in seconds (15.35), in (min, sec),
+in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.</p>
 </dd></dl>
 
 <dl class="method">
@@ -470,7 +474,7 @@ be used if it has one.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_videofile">
-<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>audio_nbytes=4</em>, <em>audio_codec='libmp3lame'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>para=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>preset='medium'</em>, <em>audio_nbytes=4</em>, <em>audio_codec='libmp3lame'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>para=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the clip to a videofile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -718,7 +722,7 @@ is True, <tt class="docutils literal"><span class="pre">color</span></tt> must b
 <h3><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt><a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.TextClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Courier'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfilename=None</em>, <em>temptxt=None</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">TextClip</tt><big>(</big><em>txt=None</em>, <em>filename=None</em>, <em>size=None</em>, <em>color='black'</em>, <em>bg_color='transparent'</em>, <em>fontsize=None</em>, <em>font='Courier'</em>, <em>stroke_color=None</em>, <em>stroke_width=1</em>, <em>method='label'</em>, <em>kerning=None</em>, <em>align='center'</em>, <em>interline=None</em>, <em>tempfilename=None</em>, <em>temptxt=None</em>, <em>transparent=True</em>, <em>remove_temp=True</em>, <em>print_cmd=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#TextClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>Class for autogenerated text clips.</p>
 <p>Creates an ImageClip originating from a script-generated text image.
@@ -729,9 +733,13 @@ Requires ImageMagick.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>txt</strong> :</p>
 <blockquote>
-<div><p>either a string, or a filename. If txt is in a file and
-whose name is <tt class="docutils literal"><span class="pre">mytext.txt</span></tt> for instance, then txt must be
-equal to <tt class="docutils literal"><span class="pre">&#64;mytext.txt</span></tt> .</p>
+<div><p>A string of the text to write. Can be replaced by argument
+<tt class="docutils literal"><span class="pre">filename</span></tt>.</p>
+</div></blockquote>
+<p><strong>filename</strong> :</p>
+<blockquote>
+<div><p>The name of a file in which there is the text to write.
+Can be provided instead of argument <tt class="docutils literal"><span class="pre">txt</span></tt></p>
 </div></blockquote>
 <p><strong>size</strong> :</p>
 <blockquote>

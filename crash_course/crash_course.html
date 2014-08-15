@@ -174,8 +174,8 @@
 <img alt="../_images/videoWH.jpeg" src="../_images/videoWH.jpeg" />
 </div>
 </div>
-<div class="section" id="wrting-a-video-clip-to-a-file">
-<span id="renderingaclip"></span><h2>Wrting a video clip to a file<a class="headerlink" href="#wrting-a-video-clip-to-a-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="writing-a-video-clip-to-a-file">
+<span id="renderingaclip"></span><h2>Writing a video clip to a file<a class="headerlink" href="#writing-a-video-clip-to-a-file" title="Permalink to this headline">¶</a></h2>
 <p>To write a clip as a video file, use</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">)</span> <span class="c"># default: &#39;libx264&#39;, 24 fps</span>
 <span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
@@ -197,9 +197,9 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s">&#39;test.gif&#39;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If your computer has enough RAM (say, at least 2GB), you can use its faster version</p>
+<p>If your computer has enough RAM (say, at least 2GB), you can use its faster version <tt class="docutils literal"><span class="pre">write_gif2</span></tt>:</p>
 <blockquote>
-<div>my_clip.write_gif(&#8216;test.gif&#8217;, fps=12)</div></blockquote>
+<div>my_clip.write_gif2(&#8216;test.gif&#8217;, fps=12)</div></blockquote>
 <p>See <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">this blog post</a> for more informations on making GIFs with MoviePy.</p>
 </div>
 <div class="section" id="previewing-a-video-clip">
@@ -250,7 +250,7 @@ if you started with <tt class="docutils literal"><span class="pre">from</span> <
 <p>There are several categories of clip modifications in MoviePy.</p>
 <p>The very common methods for composition (cutting a clip, setting its position, etc.) are implemented as <tt class="docutils literal"><span class="pre">clip.mymethod</span></tt>. For instance <tt class="docutils literal"><span class="pre">clip.subclip(15,20)</span></tt> returns the part of <tt class="docutils literal"><span class="pre">clip</span></tt> that is playing between 15 seconds and 20 seconds.</p>
 <p>For all the other modifications, we use <tt class="docutils literal"><span class="pre">clip.fx</span></tt> and <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. <tt class="docutils literal"><span class="pre">clip.fx</span></tt> is meant to make it easy to use already-written transformation functions, while  <tt class="docutils literal"><span class="pre">clip.fl</span></tt> makes it easy to write new transformation functions.</p>
-<p>Note that none of these methods occur <em>inplace</em>: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see <a class="reference internal" href="#renderingaclip"><em>Wrting a video clip to a file</em></a>). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.</p>
+<p>Note that none of these methods occur <em>inplace</em>: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see <a class="reference internal" href="#renderingaclip"><em>Writing a video clip to a file</em></a>). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.</p>
 <div class="section" id="clip-fx">
 <h3>clip.fx<a class="headerlink" href="#clip-fx" title="Permalink to this headline">¶</a></h3>
 <p>Suppose that you have some functions implementing effects on clips:</p>
@@ -344,7 +344,7 @@ You can also browse the code of the different video effects in
 <li><a class="reference internal" href="#the-clip-objects">The clip objects</a></li>
 <li><a class="reference internal" href="#classes-of-video-clips">Classes of video clips</a></li>
 <li><a class="reference internal" href="#composite-video-clips">Composite video clips</a></li>
-<li><a class="reference internal" href="#wrting-a-video-clip-to-a-file">Wrting a video clip to a file</a></li>
+<li><a class="reference internal" href="#writing-a-video-clip-to-a-file">Writing a video clip to a file</a></li>
 <li><a class="reference internal" href="#writing-an-animated-gif">Writing an animated GIF</a></li>
 <li><a class="reference internal" href="#previewing-a-video-clip">Previewing a video clip</a></li>
 <li><a class="reference internal" href="#audio-clips">Audio clips</a></li>

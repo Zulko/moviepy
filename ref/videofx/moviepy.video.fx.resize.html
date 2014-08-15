@@ -70,46 +70,8 @@
 <h1>moviepy.video.fx.resize<a class="headerlink" href="#moviepy-video-fx-resize" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="moviepy.video.fx.resize">
-<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">resize</tt><big>(</big><em>clip</em>, <em>newsize=None</em>, <em>height=None</em>, <em>width=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.resize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a video clip that is a resized version of the clip.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>newsize:</strong> :</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>Can be either </dt>
-<dd><ul class="first last simple">
-<li><tt class="docutils literal"><span class="pre">(height,width)</span></tt> in pixels or a float representing</li>
-<li>A scaling factor, like 0.5</li>
-<li>A function of time returning one of these.</li>
-</ul>
-</dd>
-</dl>
-</div></blockquote>
-<p><strong>width:</strong> :</p>
-<blockquote>
-<div><p>width of the new clip in pixel. The height is then computed so
-that the width/height ratio is conserved.</p>
-</div></blockquote>
-<p><strong>height:</strong> :</p>
-<blockquote class="last">
-<div><p>height of the new clip in pixel. The width is then computed so
-that the width/height ratio is conserved.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span> <span class="p">(</span><span class="mi">460</span><span class="p">,</span><span class="mi">720</span><span class="p">)</span> <span class="p">)</span> <span class="c"># New resolution: (460,720)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span> <span class="c"># width and heigth multiplied by 0.6</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span> <span class="c"># height computed automatically.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span> <span class="p">:</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.02</span><span class="o">*</span><span class="n">t</span><span class="p">)</span> <span class="c"># slow swelling of the clip</span>
-</pre></div>
-</div>
-</dd></dl>
+<tt class="descclassname">moviepy.video.fx.</tt><tt class="descname">resize</tt><big>(</big><big>)</big><a class="headerlink" href="#moviepy.video.fx.resize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 
