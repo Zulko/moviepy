@@ -226,29 +226,25 @@ class VideoClip(Clip):
         elif audio_codec == 'raw32':
             audio_codec = 'pcm_s32le'
 
-        if isinstance(audio, str):
-            # audio is some audiofile it is maybe not a wav file. It is
-            # NOT temporary file, it will NOT be removed at the end.
-            temp_audiofile = audio
-            make_audio = False
-            merge_audio = True
+        audiofile = audio if isinstance(audio, basestring) else None
+        make_audio = ((audiofile is None) and (audio==True) and
+                     (self.audio is not None))
 
-        elif self.audio is None:
-            # audio not provided as a file and no clip.audio
-            make_audio = merge_audio =  False
-
-        elif audio:
+        if make_audio:
             # The audio will be the clip's audio
-            if temp_audiofile is None:
+            if temp_audiofile is not None:
+              audiofile = temp_audiofile
+
+            else:
 
                 # make a name for the temporary audio file
 
                 D_ext = {'libmp3lame': 'mp3',
-                       'libvorbis':'ogg',
-                       'libfdk_aac':'m4a',
-                       'aac':'m4a',
-                       'pcm_s16le':'wav',
-                       'pcm_s32le': 'wav'}
+                         'libvorbis':'ogg',
+                         'libfdk_aac':'m4a',
+                         'aac':'m4a',
+                         'pcm_s16le':'wav',
+                         'pcm_s32le': 'wav'}
 
                 if audio_codec in D_ext.values():
                     audio_ext = audio_codec
@@ -256,64 +252,41 @@ class VideoClip(Clip):
                     if audio_codec in D_ext.keys():
                         audio_ext = D_ext[audio_codec]
                     else:
-                        raise ValueError('audio_codec for file'
-                                          '%s unkown !'%filename)
+                        raise ValueError('The extension for the audio_codec you '
+                              'chose is unknown by MoviePy. You should report this. '
+                              "In the meantime, you can specify a temp_audiofile with the "
+                              "right extension in write_videofile.")
 
-                temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
+                audiofile = (name+Clip._TEMP_FILES_PREFIX +
                             "write_videofile_SOUND.%s"%audio_ext)
 
-            make_audio = ( (not os.path.exists(temp_audiofile))
-                            or rewrite_audio)
-            merge_audio = True
-
-        else:
-
-            make_audio = False
-            merge_audio = False
-
-        if merge_audio:
-
-            # make a name for the temporary video file
-            videofile = (name + Clip._TEMP_FILES_PREFIX +
-                         "write_videofile%s"%ext)
-
-        else:
-
-            videofile = filename
-
-        # enough cpu for multiprocessing ?
-        enough_cpu = (multiprocessing.cpu_count() > 1)
+        # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
+        #enough_cpu = (multiprocessing.cpu_count() > 1)
 
         verbose_print(verbose, "\nMoviePy: building video file %s\n"%filename
                                 +40*"-"+"\n")
 
         
         if make_audio:
-            self.audio.write_audiofile(temp_audiofile,audio_fps,
+            self.audio.write_audiofile(audiofile,audio_fps,
                                     audio_nbytes, audio_bufsize,
                                     audio_codec, bitrate=audio_bitrate,
                                     write_logfile=write_logfile,
                                     verbose=verbose)
-
-        ffmpeg_write_video(self, videofile, fps, codec,
+        
+        ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
                            preset=preset,
                            write_logfile=write_logfile,
+                           audiofile = audiofile,
                            verbose=verbose)
 
-        # Merge with audio if any and trash temporary files.
-
-        if merge_audio:
-            verbose_print(verbose, "\n\nNow merging video and audio:\n")
-            ffmpeg_merge_video_audio(videofile,temp_audiofile,
-                                  filename, ffmpeg_output=True)
-
-            if remove_temp:
-                os.remove(videofile)
-                if make_audio:
-                    os.remove(temp_audiofile)
+        if remove_temp and make_audio:
+            os.remove(audiofile)
 
         verbose_print(verbose, "\nYour video is ready !\n")
+
+
 
     @requires_duration
     def write_images_sequence(self, nameformat, fps=None, verbose=True):
@@ -370,6 +343,8 @@ class VideoClip(Clip):
 
         return filenames
     
+
+
     @requires_duration
     def write_gif(self, filename, fps=None, program= 'ImageMagick',
                opt="OptimizeTransparency", fuzz=1, verbose=True,
@@ -479,6 +454,7 @@ class VideoClip(Clip):
 
         for f in tempfiles:
             os.remove(f)
+
 
 
     @requires_duration
@@ -678,7 +654,6 @@ class VideoClip(Clip):
 
         pos = self.pos(ct)
 
-
         # preprocess short writings of the position
         if isinstance(pos,str):
             pos = { 'center': ['center','center'],
@@ -707,6 +682,8 @@ class VideoClip(Clip):
         pos = map(int, pos)
 
         return blit(img, picture, pos, mask=mask, ismask=self.ismask)
+
+
 
     def add_mask(self, constant_size=True):
         """ Add a mask VideoClip to the VideoClip.
@@ -780,6 +757,7 @@ class VideoClip(Clip):
             return result
 
 
+
     @outplace
     def set_get_frame(self, gf):
         """ Change the clip's ``get_frame``.
@@ -791,6 +769,7 @@ class VideoClip(Clip):
         self.size = gf(0).shape[:2][::-1]
 
 
+
     @outplace
     def set_audio(self, audioclip):
         """ Attach an AudioClip to the VideoClip.
@@ -799,6 +778,7 @@ class VideoClip(Clip):
         attribute set to ``audio``, hich must be an AudioClip instance.
         """
         self.audio = audioclip
+
 
 
     @outplace
@@ -864,6 +844,7 @@ class VideoClip(Clip):
     # CONVERSIONS TO OTHER TYPES
 
 
+
     @convert_to_seconds(['t'])
     def to_ImageClip(self,t=0, with_mask=True):
         """
@@ -875,6 +856,7 @@ class VideoClip(Clip):
         if with_mask and self.mask is not None:
           newclip.mask = self.mask.to_ImageClip(t)
         return newclip
+
 
 
     def to_mask(self, canal=0):
@@ -915,6 +897,7 @@ class VideoClip(Clip):
 
         """
         self.audio = None
+
 
 
     @outplace
@@ -1239,6 +1222,7 @@ class TextClip(ImageClip):
                 os.remove(tempfilename)
             if os.path.exists(temptxt):
                 os.remove(temptxt)
+
 
 
     @staticmethod

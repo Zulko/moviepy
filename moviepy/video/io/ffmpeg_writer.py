@@ -35,7 +35,7 @@ class FFMPEG_VideoWriter:
       Any filename like 'video.mp4' etc. but if you want to avoid
       complications it is recommended to use the generic extension
       '.avi' for all your videos.
-    
+
     size
       Size (width,height) of the output video in pixels.
       
@@ -54,6 +54,9 @@ class FFMPEG_VideoWriter:
       another pixel format is used, and this can cause problem in some
       video readers.
     
+    audiofile
+      Optional: The name of an audio file that will be incorporated to the video.
+     
     preset
       Sets the time that FFMPEG will take to compress the video. The slower,
       the better the compression rate. Possibilities are: ultrafast,superfast,
@@ -71,7 +74,7 @@ class FFMPEG_VideoWriter:
     
     
         
-    def __init__(self, filename, size, fps, codec="libx264",
+    def __init__(self, filename, size, fps, codec="libx264", audiofile=None,
                  preset="medium", bitrate=None, withmask=False,
                  logfile=None):
 
@@ -81,20 +84,20 @@ class FFMPEG_VideoWriter:
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
-
+        
         cmd = (
-            [ FFMPEG_BINARY, '-y',
-            "-loglevel", "error" if logfile==sp.PIPE else "info",
+            [ FFMPEG_BINARY, '-y']
+            +["-loglevel", "error" if logfile==sp.PIPE else "info",
             "-f", 'rawvideo',
             "-vcodec","rawvideo",
             '-s', "%dx%d"%(size[0],size[1]),
             '-pix_fmt', "rgba" if withmask else "rgb24",
             '-r', "%.02f"%fps,
-            '-i', '-', '-an',
-            '-vcodec', codec,
-            '-preset', preset]
+            '-i', '-', '-an']
+            + (["-i", audiofile, "-acodec", "copy"] if (audiofile is not None) else [])
+            +['-vcodec', codec,
+            '-preset', preset] 
             + (['-b',bitrate] if (bitrate!=None) else [])
-
             # http://trac.ffmpeg.org/ticket/658
             + (['-pix_fmt', 'yuv420p']
                   if ((codec == 'libx264') and
@@ -102,8 +105,8 @@ class FFMPEG_VideoWriter:
                      (size[1]%2 == 0))
                      
                else [])
-
             + [ '-r', "%d"%fps, filename ]
+            #+ (["-acodec", "copy"] if (audiofile is not None) else [])
             )
 
         self.proc = sp.Popen(cmd, stdin=sp.PIPE,
@@ -158,7 +161,7 @@ class FFMPEG_VideoWriter:
         
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset = "medium", withmask=False, write_logfile=False,
-                       verbose=True):
+                       audiofile=None, verbose=True):
     
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
@@ -168,8 +171,8 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
     verbose_print(verbose, "\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
-                                preset=preset, bitrate=bitrate,
-                                logfile=logfile)
+                                preset=preset, bitrate=bitrate, logfile=logfile,
+                                audiofile = audiofile)
              
     nframes = int(clip.duration*fps)
     

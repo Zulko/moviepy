@@ -1,9 +1,14 @@
+""" Operations with ImageMagick. Still in the making."""
+
 import os
 import subprocess
 from moviepy.tools import subprocess_call
 
 def gif_to_directory(gif_file,dirName=None):
     """
+
+    POSSIBLY VERY DEPRECATED AND BUGGY
+
     Stores all the frames of the given .gif file
     into the directory ``dirName``. If ``dirName``
     is not provided, the directory has the same name
