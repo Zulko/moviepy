@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html" />
     <link rel="up" title="Reference Manual" href="ref.html" />
-    <link rel="next" title="video.tools" href="videotools.html" />
-    <link rel="prev" title="moviepy.video.fx.time_symetrize" href="videofx/moviepy.video.fx.time_symetrize.html" />
+    <link rel="next" title="moviepy.audio.fx.all.audio_fadein" href="audiofx/moviepy.audio.fx.all.audio_fadein.html" />
+    <link rel="prev" title="moviepy.video.fx.all.time_symetrize" href="videofx/moviepy.video.fx.all.time_symetrize.html" />
    
   <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
   
@@ -50,10 +50,10 @@
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="videotools.html" title="video.tools"
+          <a href="audiofx/moviepy.audio.fx.all.audio_fadein.html" title="moviepy.audio.fx.all.audio_fadein"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="videofx/moviepy.video.fx.time_symetrize.html" title="moviepy.video.fx.time_symetrize"
+          <a href="videofx/moviepy.video.fx.all.time_symetrize.html" title="moviepy.video.fx.all.time_symetrize"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
@@ -67,9 +67,48 @@
             
   <div class="section" id="audio-fx">
 <h1>audio.fx<a class="headerlink" href="#audio-fx" title="Permalink to this headline">¶</a></h1>
-<p>This module regroups functions meant to be used with <tt class="docutils literal"><span class="pre">audio.fx</span></tt> or <tt class="docutils literal"><span class="pre">videoclip.fx</span></tt>. When you type <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">*</span></tt>, the module <tt class="docutils literal"><span class="pre">audio.fx</span></tt> is loaded as <tt class="docutils literal"><span class="pre">afx</span></tt> and you can use <tt class="docutils literal"><span class="pre">afx.volumex</span></tt> etc.</p>
-<span class="target" id="module-moviepy.audio.fx"></span><p>This module contains transformation functions (clip-&gt;clip)
-One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
+<p>The module <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt> regroups functions meant to be used with <tt class="docutils literal"><span class="pre">audio.fx()</span></tt>.
+Note that some of these functions such as <tt class="docutils literal"><span class="pre">volumex</span></tt> (which multiplies the volume) can
+be applied directly to a video clip, at which case they will affect the audio clip attached to this
+video clip. Read the docs of the different functions to know when this is the case.</p>
+<p>Because this module will be larger in the future, it allows two kinds of import.
+You can either import a single function like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.audio.fx.volumex</span> <span class="kn">import</span> <span class="n">volumex</span>
+<span class="n">newaudio</span> <span class="o">=</span> <span class="n">audioclip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or import everything:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">moviepy.audio.fx.all</span> <span class="kn">as</span> <span class="nn">afx</span>
+<span class="n">newaudio</span> <span class="o">=</span> <span class="p">(</span><span class="n">audioclip</span><span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+                     <span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">audio_fadein</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+                     <span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">audio_fadeout</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>When you type</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>the module <tt class="docutils literal"><span class="pre">audio.fx</span></tt> is loaded as <tt class="docutils literal"><span class="pre">afx</span></tt> and you can use <tt class="docutils literal"><span class="pre">afx.volumex</span></tt>, etc.</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="audiofx/moviepy.audio.fx.all.audio_fadein.html#moviepy.audio.fx.all.audio_fadein" title="moviepy.audio.fx.all.audio_fadein"><tt class="xref py py-obj docutils literal"><span class="pre">audio_fadein</span></tt></a></td>
+<td>Return an audio (or video) clip that is first mute, then the</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="audiofx/moviepy.audio.fx.all.audio_fadeout.html#moviepy.audio.fx.all.audio_fadeout" title="moviepy.audio.fx.all.audio_fadeout"><tt class="xref py py-obj docutils literal"><span class="pre">audio_fadeout</span></tt></a></td>
+<td>Return a sound clip where the sound fades out progressively</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="audiofx/moviepy.audio.fx.all.audio_loop.html#moviepy.audio.fx.all.audio_loop" title="moviepy.audio.fx.all.audio_loop"><tt class="xref py py-obj docutils literal"><span class="pre">audio_loop</span></tt></a></td>
+<td>Loops over an audio clip.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="audiofx/moviepy.audio.fx.all.volumex.html#moviepy.audio.fx.all.volumex" title="moviepy.audio.fx.all.volumex"><tt class="xref py py-obj docutils literal"><span class="pre">volumex</span></tt></a></td>
+<td>Returns a (video or audio) clip with increased sound volume</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
@@ -85,8 +124,8 @@ One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="ref.html">Reference Manual</a><ul>
-      <li>Previous: <a href="videofx/moviepy.video.fx.time_symetrize.html" title="previous chapter">moviepy.video.fx.time_symetrize</a></li>
-      <li>Next: <a href="videotools.html" title="next chapter">video.tools</a></li>
+      <li>Previous: <a href="videofx/moviepy.video.fx.all.time_symetrize.html" title="previous chapter">moviepy.video.fx.all.time_symetrize</a></li>
+      <li>Next: <a href="audiofx/moviepy.audio.fx.all.audio_fadein.html" title="next chapter">moviepy.audio.fx.all.audio_fadein</a></li>
   </ul></li>
   </ul></li>
 </ul>
@@ -126,10 +165,10 @@ One file for one fx. The file&#8217;s name is the fx&#8217;s name</p>
           <a href="../np-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="videotools.html" title="video.tools"
+          <a href="audiofx/moviepy.audio.fx.all.audio_fadein.html" title="moviepy.audio.fx.all.audio_fadein"
              >next</a> |</li>
         <li class="right" >
-          <a href="videofx/moviepy.video.fx.time_symetrize.html" title="moviepy.video.fx.time_symetrize"
+          <a href="videofx/moviepy.video.fx.all.time_symetrize.html" title="moviepy.video.fx.all.time_symetrize"
              >previous</a> |</li>
         <li><a href="../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
           <li><a href="ref.html" >Reference Manual</a> &raquo;</li> 

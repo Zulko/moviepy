@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.video.fx.all.crop &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html" />
+    <link rel="up" title="moviepy.video.fx (vfx)" href="../videofx.html" />
+    <link rel="next" title="moviepy.video.fx.all.fadein" href="moviepy.video.fx.all.fadein.html" />
+    <link rel="prev" title="moviepy.video.fx.all.colorx" href="moviepy.video.fx.all.colorx.html" />
+   
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moviepy.video.fx.all.fadein.html" title="moviepy.video.fx.all.fadein"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="moviepy.video.fx.all.colorx.html" title="moviepy.video.fx.all.colorx"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
+          <li><a href="../videofx.html" accesskey="U">moviepy.video.fx (vfx)</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moviepy-video-fx-all-crop">
+<h1>moviepy.video.fx.all.crop<a class="headerlink" href="#moviepy-video-fx-all-crop" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="moviepy.video.fx.all.crop">
+<tt class="descclassname">moviepy.video.fx.all.</tt><tt class="descname">crop</tt><big>(</big><em>clip</em>, <em>x1=None</em>, <em>y1=None</em>, <em>x2=None</em>, <em>y2=None</em>, <em>width=None</em>, <em>height=None</em>, <em>x_center=None</em>, <em>y_center=None</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.all.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new clip in which just a rectangular subregion of the
+original clip is conserved. x1,y1 indicates the top left corner and
+x2,y2 is the lower right corner of the croped region.
+All coordinates are in pixels. Float numbers are accepted.</p>
+<p>To crop an arbitrary rectangle:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">460</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="mi">275</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Only remove the part above y=30:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Crop a rectangle that starts 10 pixels left and is 200px wide</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Crop a rectangle centered in x,y=(300,400), width=50, height=150 :</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span>  <span class="n">x_center</span><span class="o">=</span><span class="mi">300</span> <span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<span class="go">                    width=50, height=150)</span>
+</pre></div>
+</div>
+<p>Any combination of the above should work, like for this rectangle
+centered in x=300, with explicit y-boundaries:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">crop</span><span class="p">(</span><span class="n">x_center</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+     
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../ref.html">Reference Manual</a><ul>
+  <li><a href="../videofx.html">moviepy.video.fx (vfx)</a><ul>
+      <li>Previous: <a href="moviepy.video.fx.all.colorx.html" title="previous chapter">moviepy.video.fx.all.colorx</a></li>
+      <li>Next: <a href="moviepy.video.fx.all.fadein.html" title="next chapter">moviepy.video.fx.all.fadein</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/ref/videofx/moviepy.video.fx.all.crop.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moviepy.video.fx.all.fadein.html" title="moviepy.video.fx.all.fadein"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="moviepy.video.fx.all.colorx.html" title="moviepy.video.fx.all.colorx"
+             >previous</a> |</li>
+        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
+          <li><a href="../videofx.html" >moviepy.video.fx (vfx)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" style="position:relative">
+      &copy; Copyright 2014, Zulko.
+    </div>
+    <div>
+
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>moviepy.audio.fx.all.audio_loop &mdash; MoviePy 0.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html" />
+    <link rel="up" title="audio.fx" href="../audiofx.html" />
+    <link rel="next" title="moviepy.audio.fx.all.volumex" href="moviepy.audio.fx.all.volumex.html" />
+    <link rel="prev" title="moviepy.audio.fx.all.audio_fadeout" href="moviepy.audio.fx.all.audio_fadeout.html" />
+   
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head>
+  <body>
+  
+  
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moviepy.audio.fx.all.volumex.html" title="moviepy.audio.fx.all.volumex"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="moviepy.audio.fx.all.audio_fadeout.html" title="moviepy.audio.fx.all.audio_fadeout"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
+          <li><a href="../audiofx.html" accesskey="U">audio.fx</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="moviepy-audio-fx-all-audio-loop">
+<h1>moviepy.audio.fx.all.audio_loop<a class="headerlink" href="#moviepy-audio-fx-all-audio-loop" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="moviepy.audio.fx.all.audio_loop">
+<tt class="descclassname">moviepy.audio.fx.all.</tt><tt class="descname">audio_loop</tt><big>(</big><em>audioclip</em>, <em>nloops=None</em>, <em>duration=None</em><big>)</big><a class="headerlink" href="#moviepy.audio.fx.all.audio_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loops over an audio clip.</p>
+<p>Returns an audio clip that plays the given clip either
+<cite>nloops</cite> times, or during <cite>duration</cite> seconds.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videoclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&#39;music.ogg&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">audio</span> <span class="o">=</span> <span class="n">afx</span><span class="o">.</span><span class="n">audio_loop</span><span class="p">(</span> <span class="n">music</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">videoclip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videoclip</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+     
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_small.jpeg" alt="Logo"/>
+            </a></p><h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../ref.html">Reference Manual</a><ul>
+  <li><a href="../audiofx.html">audio.fx</a><ul>
+      <li>Previous: <a href="moviepy.audio.fx.all.audio_fadeout.html" title="previous chapter">moviepy.audio.fx.all.audio_fadeout</a></li>
+      <li>Next: <a href="moviepy.audio.fx.all.volumex.html" title="next chapter">moviepy.audio.fx.all.volumex</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/ref/audiofx/moviepy.audio.fx.all.audio_loop.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+    
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../np-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="moviepy.audio.fx.all.volumex.html" title="moviepy.audio.fx.all.volumex"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="moviepy.audio.fx.all.audio_fadeout.html" title="moviepy.audio.fx.all.audio_fadeout"
+             >previous</a> |</li>
+        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
+          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
+          <li><a href="../audiofx.html" >audio.fx</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" style="position:relative">
+      &copy; Copyright 2014, Zulko.
+    </div>
+    <div>
+
+    </div>
+
+  </body>
+</html>
