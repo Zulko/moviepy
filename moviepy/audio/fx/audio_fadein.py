@@ -5,6 +5,7 @@ import numpy as np
 def audio_fadein(clip, duration):
     """ Return an audio (or video) clip that is first mute, then the
         sound arrives progressively over ``duration`` seconds. """
+        
     def fading(gf,t):
         gft = gf(t)
         
