@@ -70,7 +70,12 @@ def audio_video_fx(f, clip, *a, **k):
 def preprocess_args(fun,varnames):
     
     def warper(f, *a, **kw):
-        names = f.func_code.co_varnames
+        if hasattr(f, "func_code"):
+            func_code = f.func_code # Python 2
+        else:
+            func_code = f.__code__ # Python 3
+            
+        names = func_code.co_varnames
         new_a = [cvsecs(arg) if (name in varnames) else arg
                  for (arg, name) in zip(a, names)]
         new_kw = {k: fun(v) if k in varnames else v

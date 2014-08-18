@@ -105,7 +105,7 @@ class FFMPEG_VideoWriter:
                      (size[1]%2 == 0))
                      
                else [])
-            + [ '-r', "%d"%fps, filename ]
+            + [ '-r', "%.02f"%fps, filename ]
             #+ (["-acodec", "copy"] if (audiofile is not None) else [])
             )
 

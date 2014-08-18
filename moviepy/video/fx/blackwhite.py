@@ -14,6 +14,6 @@ def blackwhite(clip, RGB = [1,1,1], preserve_luminosity=True):
     
     def fl(im):
         im = (R*im[:,:,0] + G*im[:,:,1] + B*im[:,:,2])/3
-    	return np.dstack(3*[im]).astype('uint8')
+        return np.dstack(3*[im]).astype('uint8')
 
     return clip.fl_image(fl)
