@@ -37,6 +37,13 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     
     del proc
 
+def is_string(obj):
+    """ Returns true if s is string or string-like object,
+    compatible with Python 2 and Python 3."""
+    try:
+        return isinstance(obj, basestring)
+    except NameError:
+        return isinstance(obj, str)
 
 def cvsecs(time):
     """ Will convert any time into seconds.
@@ -49,13 +56,13 @@ def cvsecs(time):
     >>> cvsecs('01:01:33.045') -> 3693.045
     >>> cvsecs('01:01:33,5') #coma works too
     """
-    
-    if isinstance(time, basestring):
+
+    if is_string(time):
         if (',' not in time) and ('.' not in time):
             time = time + '.0'
         expr = r"(\d+):(\d+):(\d+)[,|.](\d+)"
         finds = re.findall(expr, time)[0]
-        nums = map(float, finds)
+        nums = list( map(float, finds) )
         return ( 3600*int(finds[0])
                 + 60*int(finds[1])
                 + int(finds[2])

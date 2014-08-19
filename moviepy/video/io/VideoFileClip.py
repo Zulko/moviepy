@@ -79,3 +79,7 @@ class VideoFileClip(VideoClip):
                                        buffersize= audio_buffersize,
                                        fps = audio_fps,
                                        nbytes = audio_nbytes)
+
+    def __del__(self):
+      """ Close/delete the internal reader. """
+      del self.reader

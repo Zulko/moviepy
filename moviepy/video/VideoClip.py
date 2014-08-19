@@ -26,8 +26,12 @@ from .tools.drawing import blit
 
 from ..Clip import Clip
 from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
-from ..tools import (subprocess_call, verbose_print,
-                      deprecated_version_of) 
+
+from ..tools import (subprocess_call,
+                     verbose_print,
+                     is_string,
+                     deprecated_version_of) 
+
 from ..decorators import  (apply_to_mask,
                            requires_duration,
                            outplace,
@@ -137,7 +141,8 @@ class VideoClip(Clip):
 
 
     @requires_duration
-    def write_videofile(self, filename, fps=24, codec='libx264',
+    def write_videofile(self, filename=None,
+                 fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
                  preset="medium",
                  audio_nbytes = 4, audio_codec= 'libmp3lame',
@@ -152,8 +157,10 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file. The extension must correspond to the
-          codec used (see below), ar simply be '.avi'.
+          Name of the video file to write in. Can be None if a 'filebuffer'
+          parameter is provided (see below)
+          The extension must correspond to the "codec" used (see below),
+          or simply be '.avi' (which will work with any codec).
 
         fps
           Number of frames per second in the resulting video file.
@@ -217,6 +224,13 @@ class VideoClip(Clip):
           These will be files ending with '.log' with the name of the
           output file in them.
 
+        Examples
+        ========
+
+        >>> from moviepy.editor import VideoFileClip
+        >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
+        >>> clip.write_videofile("my_new_video.mp4")
+
         """
 
         name, ext = os.path.splitext(os.path.basename(filename))
@@ -226,7 +240,7 @@ class VideoClip(Clip):
         elif audio_codec == 'raw32':
             audio_codec = 'pcm_s32le'
 
-        audiofile = audio if isinstance(audio, basestring) else None
+        audiofile = audio if is_string(audio) else None
         make_audio = ((audiofile is None) and (audio==True) and
                      (self.audio is not None))
 
