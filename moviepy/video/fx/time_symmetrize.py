@@ -5,7 +5,7 @@ from .time_mirror import time_mirror
 
 @requires_duration
 @apply_to_mask
-def time_symetrize(clip):
+def time_symmetrize(clip):
     """
     Returns a clip that plays the current clip once forwards and
     then once backwards. This is very practival to make video that

@@ -141,8 +141,7 @@ class VideoClip(Clip):
 
 
     @requires_duration
-    def write_videofile(self, filename=None,
-                 fps=24, codec='libx264',
+    def write_videofile(self, filename, fps=24, codec='libx264',
                  bitrate=None, audio=True, audio_fps=44100,
                  preset="medium",
                  audio_nbytes = 4, audio_codec= 'libmp3lame',
@@ -157,8 +156,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file to write in. Can be None if a 'filebuffer'
-          parameter is provided (see below)
+          Name of the video file to write in.
           The extension must correspond to the "codec" used (see below),
           or simply be '.avi' (which will work with any codec).
 
