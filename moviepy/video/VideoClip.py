@@ -759,14 +759,14 @@ class VideoClip(Clip):
         result = CompositeVideoClip([colorclip, self.set_pos(pos)],
                                   transparent=(col_opacity is not None))
 
-        if isinstance(self, ImageClip):
+        if (isinstance(self, ImageClip) and (not hasattr(pos, "__call__"))
+            and ((self.mask is None) or isinstance(self.mask, ImageClip))):
             new_result = result.to_ImageClip()
             if result.mask is not None:
-                new_result.mask = result.mask.to_ImageClip() 
-            return new_result
+                new_result.mask = result.mask.to_ImageClip()
+            return new_result.set_duration(result.duration)
 
-        else:
-            return result
+        return result
 
 
 

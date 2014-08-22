@@ -8,7 +8,10 @@ import numpy as np
 class Interpolator:
     """ Poorman's linear interpolator, doesn't require Scipy. """
     
-    def __init__(self, tt, ss, left=None, right=None):
+    def __init__(self, tt=None, ss=None, ttss = None, left=None, right=None):
+
+        if ttss is not None:
+            tt, ss = zip(*ttss)
         
         self.tt = 1.0*np.array(tt)
         self.ss = 1.0*np.array(ss)
@@ -25,8 +28,6 @@ class Interpolator:
         t1, t2 = self.tt[ind], self.tt[ind+1]
         s1, s2 = self.ss[ind], self.ss[ind+1]
         return s1 + (s2-s1)*(t-t1)/(t2-t1)
-
-
 
 class Trajectory:
 
