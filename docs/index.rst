@@ -11,6 +11,7 @@ User's Guide
    
    install
    crash_course/crash_course
+   advanced/advanced_uses
    gallery
    examples/examples
    FAQ

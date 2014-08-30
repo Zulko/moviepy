@@ -38,6 +38,7 @@ import moviepy.video.compositing.transitions as transfx
 
 import moviepy.video.tools as videotools
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
+from .video.io.ipython_display import ipython_display
 from .tools import cvsecs
 
 try:
@@ -104,6 +105,3 @@ except ImportError:
         raise ImportError("clip.preview requires Pygame installed")
 
 AudioClip.preview = preview
-
-        
-

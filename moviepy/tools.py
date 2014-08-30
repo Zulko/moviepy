@@ -11,7 +11,7 @@ def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """
     sys.stdout.write(s)
     sys.stdout.flush()
-
+    
 
 def verbose_print(verbose, s):
     """ Only prints s (with sys_write_flush) if verbose is True."""
@@ -116,3 +116,30 @@ def deprecated_version_of(f, oldname, newname=None):
     fdepr.__doc__ = warning
     
     return fdepr
+
+
+# non-exhaustive dictionnary to store default informations.
+# any addition is most welcome.
+# Note that 'gif' is complicated to place. From a VideoFileClip point of view,
+# it is a video, but from a HTML5 point of view, it is an image.
+
+extensions_dict = { "mp4": {'type':'video', 'codec':['libx264','libmpeg4']},
+                    'ogv': {'type':'video', 'codec':['libtheora']},
+                    'webm': {'type':'video', 'codec':['libvpx']},
+                    'avi': {'type':'video' }, 
+                    'mov': {'type':'video'},
+
+                    'ogg': {'type':'audio', 'codec':['libvorbis']},
+                    'mp3': {'type':'audio', 'codec':['libmp3lame']},
+                    'wav': {'type':'audio', 'codec':['pcm_s16le', 'pcm_s32le']},
+                    'm4a': {'type':'audio', 'codec':['libfdk_aac']}
+                  }
+
+for ext in ["jpg", "jpeg", "png" "bmp", "tiff"]:
+    extensions_dict[ext] = {'type':'image'}
+
+def find_extension(codec):
+    for ext,infos in extensions_dict.items():
+        if ('codec' in infos) and codec in infos['codec']:
+            return ext
+    raise ValueError

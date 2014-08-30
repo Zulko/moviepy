@@ -97,7 +97,7 @@ class CompositeVideoClip(VideoClip):
 
 
 def clips_array(array, rows_widths=None, cols_widths=None,
-                transparent = False, bg_color = (0,0,0)):
+                transparent = False, bg_color = None):
     
     array = np.array(array)
     sizes_array = np.array([[c.size for c in line] for line in array])
@@ -118,7 +118,7 @@ def clips_array(array, rows_widths=None, cols_widths=None,
                 clip = (CompositeVideoClip([clip.set_pos('center')],
                                           size = (cw,rw),
                                           transparent = transparent,
-                                          bg_color = (bg_color)).
+                                          bg_color = bg_color).
                                      set_duration(clip.duration))
                 
             array[i,j] = clip.set_pos((x,y))           

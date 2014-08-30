@@ -1,8 +1,9 @@
-
+import os
 import numpy as np
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
-from moviepy.tools import deprecated_version_of
+from moviepy.tools import (deprecated_version_of,
+                           extensions_dict)
 
 from moviepy.Clip import Clip
 
@@ -84,7 +85,7 @@ class AudioClip(Clip):
     
     @requires_duration
     def write_audiofile(self,filename, fps=44100, nbytes=2,
-                     buffersize=2000, codec='libvorbis',
+                     buffersize=2000, codec=None,
                      bitrate=None, write_logfile=False, verbose=True):
         """ Writes an audio file from the AudioClip.
 
@@ -102,8 +103,8 @@ class AudioClip(Clip):
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
 
         codec
-          Which audio codec should be used. Examples are 'libmp3lame'
-          for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
+          Which audio codec should be used. If None provided, the codec is
+          determined based on the extension of the filename. Choose
           'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
 
         bitrate
@@ -120,7 +121,16 @@ class AudioClip(Clip):
           If True, displays informations
 
         """
-                         
+
+        if codec is None:
+            name, ext = os.path.splitext(os.path.basename(filename))
+            try:
+                codec = extensions_dict[ext[1:]]['codec'][0]
+            except KeyError:
+                raise ValueError("MoviePy couldn't find the codec associated "
+                       "with the filename. Provide the 'codec' parameter in "
+                       "write_fideofile.")
+
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
                       codec=codec, bitrate=bitrate, write_logfile=write_logfile,
                       verbose=verbose)

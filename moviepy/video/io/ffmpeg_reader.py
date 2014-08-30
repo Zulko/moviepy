@@ -254,21 +254,14 @@ def ffmpeg_parse_infos(filename, print_infos=False):
 
 
         # get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
-        # tbc, and sometimes tbc/2... Trust tbc first, then tbr, then fps.
+        # tbc, and sometimes tbc/2...
+        # Current policy: Trust tbr first, then fps. If result is near from x*1000/1001
+        # where x is 23,24,25,50, replace by x*1000/1001 (very common case for the fps).
+        
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
             tbr = float(line[match.start():match.end()].split(' ')[1])
-
-            try:
-                match = re.search("( [0-9]*.| )[0-9]* tbc", line)
-                tbc = float(line[match.start():match.end()].split(' ')[1])
-                if abs(tbr - tbc/2) < abs(tbr-tbc):
-                    result['video_fps'] = 1.0*tbc /2
-                else:
-                    result['video_fps'] = tbc
-            except:
-                result['video_fps'] = tbr
-
+            result['video_fps'] = tbr
 
         except:
             match = re.search("( [0-9]*.| )[0-9]* fps", line)
@@ -279,7 +272,7 @@ def ffmpeg_parse_infos(filename, print_infos=False):
         # but then ffmpeg nicely rounds it to 23.98, which we hate.
         coef = 1000.0/1001.0
         fps = result['video_fps']
-        for x in [23,24,25]:
+        for x in [23,24,25,30,50]:
             if (fps!=x) and abs(fps - x*coef) < .01:
                 result['video_fps'] = x*coef
 

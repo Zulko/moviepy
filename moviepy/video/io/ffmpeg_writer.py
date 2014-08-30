@@ -140,8 +140,12 @@ class FFMPEG_VideoWriter:
                   "the video (%s) is not compatible with the given "
                   "extension (%s). Please specify a valid 'codec' "
                   "argument in write_videofile. This would be 'libx264' "
-                  "or 'mpeg4' for mp4, 'libtheora' for ogv, 'libvpx' "
-                  "for webm.")%(self.codec, self.ext)
+                  "or 'mpeg4' for mp4, 'libtheora' for ogv, 'libvpx for webm. "
+                  "Another possible reason is that the audio codec was not "
+                  "compatible with the video codec. For instance the video "
+                  "extensions 'ogv' and 'webm' only allow 'libvorbis' (default) as a"
+                  "video codec."
+                  )%(self.codec, self.ext)
 
             elif  "encoder setup failed":
 

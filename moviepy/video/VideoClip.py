@@ -30,7 +30,8 @@ from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from ..tools import (subprocess_call,
                      verbose_print,
                      is_string,
-                     deprecated_version_of) 
+                     deprecated_version_of,
+                     extensions_dict, find_extension) 
 
 from ..decorators import  (apply_to_mask,
                            requires_duration,
@@ -141,15 +142,14 @@ class VideoClip(Clip):
 
 
     @requires_duration
-    def write_videofile(self, filename, fps=24, codec='libx264',
+    def write_videofile(self, filename, fps=24, codec=None,
                  bitrate=None, audio=True, audio_fps=44100,
                  preset="medium",
-                 audio_nbytes = 4, audio_codec= 'libmp3lame',
+                 audio_nbytes = 4, audio_codec= None,
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
-                 write_logfile=False,
-                 para = False, verbose = True):
+                 write_logfile=False, verbose = True):
         """Write the clip to a videofile.
 
         Parameters
@@ -165,28 +165,33 @@ class VideoClip(Clip):
 
         codec
           Codec to use for image encoding. Can be any codec supported
-          by ffmpeg, but the extension of the output filename must be
-          set accordingly.
+          by ffmpeg. If the filename is has extension '.mp4', '.ogv', '.webm',
+          the codec will be set accordingly, but you can still set it if you
+          don't like the default. For other extensions, the output filename
+          must be set accordingly.
 
           Some examples of codecs are:
 
-          ``'libx264'`` (default codec, use file extension ``.mp4``)
+          ``'libx264'`` (default codec for file extension ``.mp4``)
           makes well-compressed videos (quality tunable using 'bitrate').
 
 
-          ``'mpeg4'`` (use file extension ``.mp4``) can be an alternative
+          ``'mpeg4'`` (other codec for extension ``.mp4``) can be an alternative
           to ``'libx264'``, and produces higher quality videos by default.
 
 
           ``'rawvideo'`` (use file extension ``.avi``) will produce 
           a video of perfect quality, of possibly very huge size.
 
+
           ``png`` (use file extension ``.avi``) will produce a video
           of perfect quality, of smaller size than with ``rawvideo``
+
 
           ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
           format, which is completely free/ open source. However not
           everyone has the codecs installed by default on their machine.
+
 
           ``'libvpx'`` (use file extension ``.webm``) is tiny a video
           format well indicated for web videos (with HTML5). Open source.
@@ -210,6 +215,8 @@ class VideoClip(Clip):
           Which audio codec should be used. Examples are 'libmp3lame'
           for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
           'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
+          Default is 'libmp3lame', unless the video extension is 'ogv'
+          or 'webm', at which case the default is 'libvorbis'. 
 
         audio_bitrate
           Audio bitrate, given as a string like '50k', '500k', '3000k'.
@@ -217,10 +224,19 @@ class VideoClip(Clip):
           Note that it mainly an indicative goal, the bitrate won't
           necessarily be the this in the final file.
 
+        preset
+          Sets the time that FFMPEG will spend optimizing the compression.
+          Choices are: ultrafast, superfast, fast, medium, slow, superslow.
+          Note that this does not impact the quality of the video, only the
+          size of the video file. So choose ultrafast when you are in a
+          hurry and file size does not matter.
+
         write_logfile
           If true, will write log files for the audio and the video.
           These will be files ending with '.log' with the name of the
           output file in them.
+
+
 
         Examples
         ========
@@ -232,6 +248,21 @@ class VideoClip(Clip):
         """
 
         name, ext = os.path.splitext(os.path.basename(filename))
+        ext = ext[1:].lower()
+
+        if codec is None:
+          try:
+              codec = extensions_dict[ext]['codec'][0]
+          except KeyError:
+            raise ValueError("MoviePy couldn't find the codec associated "
+                   "with the filename. Provide the 'codec' parameter in "
+                   "write_fideofile.")
+        
+        if audio_codec is None:
+            if (ext in ['ogv', 'webm']):
+                audio_codec = 'libvorbis'
+            else:
+                audio_codec=='libmp3lame'
 
         if audio_codec == 'raw16':
             audio_codec = 'pcm_s16le'
@@ -251,23 +282,16 @@ class VideoClip(Clip):
 
                 # make a name for the temporary audio file
 
-                D_ext = {'libmp3lame': 'mp3',
-                         'libvorbis':'ogg',
-                         'libfdk_aac':'m4a',
-                         'aac':'m4a',
-                         'pcm_s16le':'wav',
-                         'pcm_s32le': 'wav'}
-
-                if audio_codec in D_ext.values():
+                if audio_codec in extensions_dict:
                     audio_ext = audio_codec
                 else:
-                    if audio_codec in D_ext.keys():
-                        audio_ext = D_ext[audio_codec]
-                    else:
-                        raise ValueError('The extension for the audio_codec you '
-                              'chose is unknown by MoviePy. You should report this. '
-                              "In the meantime, you can specify a temp_audiofile with the "
-                              "right extension in write_videofile.")
+                    try:
+                        audio_ext = find_extension(audio_codec)
+                    except ValueError:
+
+                        raise ValueError("The audio_codec you chose is unknown by MoviePy. "
+                              "You should report this. In the meantime, you can specify a "
+                              "temp_audiofile with the right extension in write_videofile.")
 
                 audiofile = (name+Clip._TEMP_FILES_PREFIX +
                             "write_videofile_SOUND.%s"%audio_ext)
@@ -532,29 +556,37 @@ class VideoClip(Clip):
     
         if fps is None:
             fps=self.fps
-        
+        delay= 100.0/fps
+
         cmd1 = [FFMPEG_BINARY, '-y', '-loglevel', 'error',
                 '-f', 'rawvideo',
                 '-vcodec','rawvideo', '-r', "%.02f"%fps,
                 '-s', "%dx%d"%(self.w, self.h), '-pix_fmt', 'rgb24',
                 '-i', '-']
-        cmd1a = cmd1+['-r', "%.02f"%fps, filename]
-        cmd1b = cmd1+['-f', 'image2pipe','-vcodec', 'bmp', '-']
         
-        cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%.02f"%(100.0/fps),
-                "-dispose" ,"%d"%(2 if dispose else 1),
-                '-loop', '%d'%loop,
-                '-', '-coalesce']
-        cmd2a = cmd2+[filename]
-        cmd2b = cmd2+['gif:-'] 
-        
-        proc1 = (sp.Popen(cmd1a, stdin=sp.PIPE, stdout=DEVNULL) if (program =='ffmpeg')
-                 else sp.Popen(cmd1b, stdin=sp.PIPE, stdout=sp.PIPE))
-        
+        if program == "ffmpeg":
+            proc1 = sp.Popen(cmd1+['-r', "%.02f"%fps, filename],
+                             stdin=sp.PIPE, stdout=DEVNULL)
+        else:
+            proc1 = sp.Popen(cmd1+['-f', 'image2pipe',
+                                   '-vcodec', 'bmp', '-'],
+                             stdin=sp.PIPE, stdout=sp.PIPE)
+
         if program == 'ImageMagick':
-            proc2 = (sp.Popen(cmd2a, stdin=proc1.stdout) if (opt in [False, None])
-                     else sp.Popen(cmd2b, stdin=proc1.stdout, stdout=sp.PIPE))
+            
+            cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%.02f"%(delay),
+                    "-dispose" ,"%d"%(2 if dispose else 1),
+                    '-loop', '%d'%loop, '-', '-coalesce']
+            
+            if (opt in [False, None]):
+                proc2 = sp.Popen(cmd2+[filename], stdin=proc1.stdout)
+                
+            else:
+                proc2 = sp.Popen(cmd2+['gif:-'] , stdin=proc1.stdout,
+                                 stdout=sp.PIPE)
+                
             if opt:
+                
                 cmd3 = [IMAGEMAGICK_BINARY, '-', '-layers', opt,
                         '-fuzz', '%d'%fuzz+'%',filename]
                 proc3 = sp.Popen(cmd3, stdin=proc2.stdout)
