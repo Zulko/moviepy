@@ -135,7 +135,7 @@ extensions_dict = { "mp4": {'type':'video', 'codec':['libx264','libmpeg4']},
                     'm4a': {'type':'audio', 'codec':['libfdk_aac']}
                   }
 
-for ext in ["jpg", "jpeg", "png" "bmp", "tiff"]:
+for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
 def find_extension(codec):

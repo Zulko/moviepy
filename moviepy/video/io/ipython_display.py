@@ -12,7 +12,6 @@ A function to embed images/videos/audio in the IPython Notebook
 import os
 from base64 import b64encode
 from moviepy.tools import extensions_dict
-from itertools import count
 
 try:
     from IPython.display import HTML
@@ -33,11 +32,16 @@ templates = {"audio":("<center><audio controls>"
                        +sorry+"</video></center>")}
 
 
-def ipython_display(filename, filetype=None, maxduration=60, **kwargs):
+def ipython_display(filename=None, clip=None, filetype=None, maxduration=60, **kwargs):
     """ Displays a video, picture, or sound in IPython.
     
-    filename:
-      Either the name of a file, or the link to a web document.
+    filename
+      Name of a file: optional if a clip is provided instead
+
+    clip
+      The clip to preview. It will actually be written to a file and embedded
+      as if 'filename' had been provided.
+
 
     filetype:
       One of 'video','image','audio'. If None is given, it is determined
@@ -68,6 +72,25 @@ def ipython_display(filename, filetype=None, maxduration=60, **kwargs):
     >>> mpy.ipython_display("first_frame.jpeg")
 
     """  
+    
+
+    if clip is not None:
+        TEMP_PREFIX = "__temp__"
+        # QUICK AND VERY DIRTY: next step is use isinstance with classes.
+        # But cross-dependencies in modules... aie aie aie
+        if "ImageClip" in str(clip.__class__):
+            filename = TEMP_PREFIX+".png"
+            clip.save_frame(filename)
+        elif "Video" in str(clip.__class__):
+            filename = TEMP_PREFIX+".mp4"
+            clip.write_videofile(filename, verbose=False, preset="ultrafast")
+        elif "AudioClip" in str(clip.__class__):
+            filename = TEMP_PREFIX+".mp3"
+            clip.write_audiofile(filename, verbose=False)
+        else:
+          raise ValueError("Unknown class for the clip. Cannot embed and preview.")
+
+        return ipython_display(filename=filename, maxduration=maxduration, **kwargs)
 
     options = " ".join(["%s='%s'"%(str(k), str(v)) for k,v in kwargs.items()])
     name, ext = os.path.splitext(filename)

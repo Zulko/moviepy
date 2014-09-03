@@ -262,7 +262,7 @@ class VideoClip(Clip):
             if (ext in ['ogv', 'webm']):
                 audio_codec = 'libvorbis'
             else:
-                audio_codec=='libmp3lame'
+                audio_codec = 'libmp3lame'
 
         if audio_codec == 'raw16':
             audio_codec = 'pcm_s16le'
@@ -276,7 +276,7 @@ class VideoClip(Clip):
         if make_audio:
             # The audio will be the clip's audio
             if temp_audiofile is not None:
-              audiofile = temp_audiofile
+                audiofile = temp_audiofile
 
             else:
 
