@@ -13,7 +13,7 @@ class AudioClip(Clip):
     
     See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.
     
-    An AudioClip is a Clip with a ``get_frame``  attribute of
+    An AudioClip is a Clip with a ``make_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
@@ -23,7 +23,7 @@ class AudioClip(Clip):
     Parameters
     -----------
     
-    get_frame
+    make_frame
       A function `t-> frame at time t`. The frame does not mean much
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
@@ -36,21 +36,24 @@ class AudioClip(Clip):
     
     >>> # Plays the note A (a sine wave of frequency 404HZ)
     >>> import numpy as np
-    >>> gf = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
-    >>> clip = AudioClip().set_get_frame(gf)
-    >>> clip.set_duration(5).preview()
+    >>> make_frame = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
+    >>> clip = AudioClip(make_frame, duration=5)
+    >>> clip.preview()
                      
     """
     
-    def __init__(self, get_frame = None):
+    def __init__(self, make_frame = None, duration=None):
         Clip.__init__(self)
-        if get_frame:
-            self.get_frame = get_frame
+        if make_frame is not None:
+            self.make_frame = make_frame
             frame0 = self.get_frame(0)
             if hasattr(frame0, '__iter__'):
                 self.nchannels = len(list(frame0))
             else:
                 self.nchannels = 1
+        if duration is not None:
+            self.duration = duration
+            self.end = duration
 
     @requires_duration
     def to_soundarray(self,tt=None,fps=None, nbytes=2):
@@ -168,7 +171,7 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
         
         
-        def get_frame(t):
+        def make_frame(t):
             """ complicated, but must be able to handle the case where t
             is a list of the form sin(t) """
             
@@ -185,7 +188,7 @@ class AudioArrayClip(AudioClip):
                 else:
                     return self.array[i]
 
-        self.get_frame = get_frame
+        self.make_frame = make_frame
         self.nchannels = len(list(self.get_frame(0)))
         
         
@@ -216,7 +219,7 @@ class CompositeAudioClip(AudioClip):
             self.duration = max(ends)
             self.end = max(ends)
 
-        def get_frame(t):
+        def make_frame(t):
             
             played_parts = [c.is_playing(t) for c in self.clips]
             
@@ -232,7 +235,8 @@ class CompositeAudioClip(AudioClip):
                 
             return zero + sum(sounds)
 
-        self.get_frame = get_frame
+        self.make_frame = make_frame
+
 
 def concatenate_audio(clips):
     durations = [c.duration for c in clips]

@@ -78,7 +78,7 @@ class CompositeVideoClip(VideoClip):
                 self.mask = CompositeVideoClip(maskclips,self.size,
                                         transparent=False, ismask=True)
 
-        def gf(t):
+        def make_frame(t):
             """ The clips playing at time `t` are blitted over one
                 another. """
 
@@ -87,7 +87,7 @@ class CompositeVideoClip(VideoClip):
                     f = c.blit_on(f, t)
             return f
 
-        self.get_frame = gf
+        self.make_frame = make_frame
 
     def playing_clips(self, t=0):
         """ Returns a list of the clips in the composite clips that are

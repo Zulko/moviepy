@@ -75,11 +75,11 @@ def concatenate(clipslist, method="chain", transition=None, bg_color=(0, 0, 0),
     tt = np.maximum(0, tt + padding*np.arange(len(tt)))
     
     if method == "chain":
-        def gf(t):
+        def make_frame(t):
             i = max([i for i, e in enumerate(tt) if e <= t])
             return clipslist[i].get_frame(t - tt[i])
-            result.get_frame = gf
-        result = VideoClip(ismask = ismask, get_frame = gf)
+        
+        result = VideoClip(ismask = ismask, make_frame = make_frame)
         if transparent:
           clips_w_masks = [(c.add_mask() if c.mask is None else c) for c in clips]
           masks = [c.mask for c in clips_w_masks]

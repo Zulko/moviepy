@@ -49,8 +49,7 @@ class Clip:
         self.start = 0
         self.end = None
         self.duration = None
-        
-        
+
     def copy(self):
         """ Shallow copy of the clip. 
         
@@ -70,7 +69,12 @@ class Clip:
             
         return newclip
 
-
+    def get_frame(self, t):
+        """
+        Gets a numpy array representing the RGB picture of the clip at time t.
+        """
+        # Coming soon: smart error handling for debugging at this point 
+        return self.make_frame(t)
 
     def fl(self, fun, apply_to=[] , keep_duration=True):
         """ General processing of a clip.
@@ -110,8 +114,8 @@ class Clip:
         
         """
 
-        gf = copy(self.get_frame)
-        newclip = self.set_get_frame(lambda t: fun(gf, t))
+        #mf = copy(self.make_frame)
+        newclip = self.set_make_frame(lambda t: fun(self.get_frame, t))
         
         if not keep_duration:
             newclip.duration = None
@@ -272,12 +276,12 @@ class Clip:
 
 
     @outplace
-    def set_get_frame(self, gf):
+    def set_make_frame(self, gf):
         """
-        Sets a ``get_frame`` attribute for the clip. Useful for setting
+        Sets a ``make_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
         """
-        self.get_frame = gf
+        self.make_frame = gf
     
     
     

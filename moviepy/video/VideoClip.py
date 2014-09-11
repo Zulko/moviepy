@@ -74,7 +74,7 @@ class VideoClip(Clip):
     ismask
       Boolean set to `True` if the clip is a mask.
 
-    get_frame
+    make_frame
       A function ``t-> frame at time t`` where ``frame`` is a
       w*h*3 RGB array.
 
@@ -95,16 +95,19 @@ class VideoClip(Clip):
 
     """
 
-    def __init__(self, ismask=False, get_frame=None):
+    def __init__(self, make_frame=None, ismask=False, duration=None):
         Clip.__init__(self)
         self.mask = None
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
-        if get_frame is not None:
-            self.get_frame = get_frame
-            self.size =get_frame(0).shape[:2][::-1]
+        if make_frame is not None:
+            self.make_frame = make_frame
+            self.size =self.get_frame(0).shape[:2][::-1]
         self.ismask = ismask
+        if duration is not None:
+            self.duration = duration
+            self.end = duration
 
     @property
     def w(self):
@@ -743,8 +746,8 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask( mask.set_duration(self.duration))
         else:
-            get_frame = lambda t: np.ones(self.get_frame(t).shape, dtype=float)
-            mask = VideoClip(ismask=True, get_frame = get_frame)
+            make_frame = lambda t: np.ones(self.get_frame(t).shape, dtype=float)
+            mask = VideoClip(ismask=True, make_frame = make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
 
@@ -803,14 +806,14 @@ class VideoClip(Clip):
 
 
     @outplace
-    def set_get_frame(self, gf):
+    def set_make_frame(self, mf):
         """ Change the clip's ``get_frame``.
 
-        Returns a copy of the VideoClip instance, with the get_frame
-        attribute set to `gf`.
+        Returns a copy of the VideoClip instance, with the make_frame
+        attribute set to `mf`.
         """
-        self.get_frame = gf
-        self.size = gf(0).shape[:2][::-1]
+        self.make_frame = mf
+        self.size = self.get_frame(0).shape[:2][::-1]
 
 
 
@@ -1026,7 +1029,7 @@ class ImageClip(VideoClip):
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.get_frame = lambda t: img
+        self.make_frame = lambda t: img
         self.size = img.shape[:2][::-1]
         self.img = img
 
@@ -1060,7 +1063,7 @@ class ImageClip(VideoClip):
 
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
-        self.get_frame = lambda t: arr
+        self.make_frame = lambda t: arr
         self.img = arr
 
         for attr in apply_to:
