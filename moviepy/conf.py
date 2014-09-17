@@ -31,15 +31,22 @@ IMAGEMAGICK_BINARY
 You can run this file to check that FFMPEG has been detected.
 """
 
-FFMPEG_BINARY = None
-IMAGEMAGICK_BINARY = 'convert'
-
-
-
 # =====================================================================
 # CODE. Don't write anything below this line !
 
+import os
 import subprocess as sp
+import xml.etree.ElementTree as ET
+from xml.dom import minidom 
+from xml.etree.ElementTree import Element, SubElement
+
+def getConfFilePath():
+    currntPath = os.path.split(__file__)
+    confFilePath = os.path.join(os.path.split(__file__)[0], 'moviepy.conf')
+    if os.path.isfile(confFilePath):
+        return confFilePath
+    else:
+        raise Exception("Configuration File doesn't Exists.")
 
 def try_cmd(cmd):    
         try:
@@ -50,9 +57,13 @@ def try_cmd(cmd):
         else:
             return True
 
+tree = ET.parse(getConfFilePath())
+elem = tree.getroot()
+
+FFMPEG_BINARY = elem[0].attrib['value']
+IMAGEMAGICK_BINARY = elem[1].attrib['value']
 
 if FFMPEG_BINARY is None:
-    
     if try_cmd(['ffmpeg']):
         FFMPEG_BINARY = 'ffmpeg'
     elif try_cmd(['ffmpeg.exe']):
