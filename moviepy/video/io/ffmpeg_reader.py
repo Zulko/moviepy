@@ -16,10 +16,10 @@ from moviepy.tools import cvsecs
 class FFMPEG_VideoReader:
 
     def __init__(self, filename, print_infos=False, bufsize = None,
-                 pix_fmt="rgb24"):
+                 pix_fmt="rgb24", check_duration=True):
 
         self.filename = filename
-        infos = ffmpeg_parse_infos(filename, print_infos)
+        infos = ffmpeg_parse_infos(filename, print_infos, check_duration)
         self.fps = infos['video_fps']
         self.size = infos['video_size']
         self.duration = infos['video_duration']
@@ -80,7 +80,7 @@ class FFMPEG_VideoReader:
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth*w*h)
-            self.proc.stdout.flush()
+            #self.proc.stdout.flush()
         self.pos += n
 
 
@@ -180,12 +180,12 @@ def ffmpeg_read_image(filename, with_mask=True):
         pix_fmt = 'rgba'
     else:
         pix_fmt = "rgb24"
-    reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
+    reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
     im = reader.lastread
     del reader
     return im
 
-def ffmpeg_parse_infos(filename, print_infos=False):
+def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
     """Get file infos using ffmpeg.
 
     Returns a dictionnary with the fields:
@@ -228,15 +228,18 @@ def ffmpeg_parse_infos(filename, print_infos=False):
     
 
     # get duration (in seconds)
-    try:
-        keyword = ('frame=' if is_GIF else 'Duration: ')
-        line = [l for l in lines if keyword in l][0]
-        match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
-        result['duration'] = cvsecs(match)
-    except:
-        raise IOError(("MoviePy error: failed to read the duration of file %s.\n"
-                       "Here are the file infos returned by ffmpeg:\n\n%s")%(
-                          filename, infos))
+    result['duration'] = None
+
+    if check_duration:
+        try:
+            keyword = ('frame=' if is_GIF else 'Duration: ')
+            line = [l for l in lines if keyword in l][0]
+            match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
+            result['duration'] = cvsecs(match)
+        except:
+            raise IOError(("MoviePy error: failed to read the duration of file %s.\n"
+                           "Here are the file infos returned by ffmpeg:\n\n%s")%(
+                              filename, infos))
 
     # get the output line that speaks about video
     lines_video = [l for l in lines if ' Video: ' in l]
@@ -275,10 +278,13 @@ def ffmpeg_parse_infos(filename, print_infos=False):
         for x in [23,24,25,30,50]:
             if (fps!=x) and abs(fps - x*coef) < .01:
                 result['video_fps'] = x*coef
-
-        result['video_nframes'] = int(result['duration']*result['video_fps'])+1
-
-        result['video_duration'] = result['duration']
+        
+        if check_duration:
+            result['video_nframes'] = int(result['duration']*result['video_fps'])+1
+            result['video_duration'] = result['duration']
+        else:
+            result['video_nframes'] = 1
+            result['video_duration'] = None
         # We could have also recomputed the duration from the number
         # of frames, as follows:
         # >>> result['video_duration'] = result['video_nframes'] / result['video_fps']

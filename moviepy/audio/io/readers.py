@@ -108,7 +108,7 @@ class FFMPEG_AudioReader:
         result = (1.0*result / 2**(8*self.nbytes-1)).\
                                  reshape((len(result)/self.nchannels,
                                           self.nchannels))
-        self.proc.stdout.flush()
+        #self.proc.stdout.flush()
         self.pos = self.pos+chunksize
         return result
          
