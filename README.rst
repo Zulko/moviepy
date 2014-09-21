@@ -3,7 +3,7 @@ MoviePy
 
 MoviePy (full documentation here_) is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
 
-A typical MoviePy script looks like that: ::
+A typical MoviePy script looks like this: ::
 
     from moviepy.editor import *
     
@@ -20,11 +20,10 @@ A typical MoviePy script looks like that: ::
     # write the result to a file in any format
     final_clip.to_videofile("myHolidays_edited.avi",fps=25, codec='mpeg4')
 
- See the gallery_ (in construction) for more.
+See the gallery_ (in construction) for more.
 
 MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback. 
 You can also discuss Moviepy on Reddit_ or on the mailing list moviepy@librelist.com .
-
 
 
 Installation
