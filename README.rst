@@ -1,9 +1,7 @@
 MoviePy
 ========
 
-MoviePy (full documentation here_) is a Python module for script-based movie editing.
-
-It can read and write to many formats, `including  animated GIFs <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_, and enables basic operations (cuts, concatenations, title insertions) to be done in a few lines. It can also be used for advanced compositing.
+MoviePy (full documentation here_) is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
 
 A typical MoviePy script looks like that: ::
 
@@ -22,14 +20,17 @@ A typical MoviePy script looks like that: ::
     # write the result to a file in any format
     final_clip.to_videofile("myHolidays_edited.avi",fps=25, codec='mpeg4')
 
+ See the gallery_ (in construction) for more.
 
+MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback. 
+You can also discuss Moviepy on Reddit_ or on the mailing list moviepy@librelist.com .
 
-MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence.
-The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback.
 
 
 Installation
 --------------
+
+MoviePy works on Windows, Linux and Mac OS, with Python 2 and 3. If you have trouble installing it on your computer, please provide feedback ! 
 
 **Method with pip:** if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
     
@@ -74,8 +75,8 @@ For advanced image processing you will need one or several of these packages. Fo
 - `OpenCV 2.4.6`_ (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation.
 
 
-
-
+.. _gallery: http://zulko.github.io/moviepy/gallery.html
+.. _Reddit: http://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Pillow: http://pillow.readthedocs.org/en/latest/
 .. _Zulko : https://github.com/Zulko
