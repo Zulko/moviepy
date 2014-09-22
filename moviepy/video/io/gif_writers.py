@@ -6,6 +6,12 @@ from moviepy.decorators import requires_duration
 from moviepy.tools import verbose_print, subprocess_call
 import numpy as np
 
+try:
+    from subprocess import DEVNULL # py3k
+except ImportError:
+    import os
+    DEVNULL = open(os.devnull, 'wb')
+
 
 @requires_duration
 def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',

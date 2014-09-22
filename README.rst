@@ -35,6 +35,10 @@ MoviePy works on Windows, Linux and Mac OS, with Python 2 and 3. If you have tro
     
     (sudo) pip install moviepy
 
+This method may fail if ``ez_setup`` is not installed on your computer. In this case install ``ez_setup`` first, with ::
+    
+    (sudo) pip install ez_setup
+
 **Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
     
     (sudo) python setup.py install
