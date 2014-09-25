@@ -41,10 +41,10 @@ from ..decorators import  (apply_to_mask,
                            convert_to_seconds)
 
 
+import os
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
 
 

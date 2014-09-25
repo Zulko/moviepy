@@ -7,11 +7,12 @@ from moviepy.tools import cvsecs
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.conf import FFMPEG_BINARY
 
+import os
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
+
 
 class FFMPEG_AudioReader:
     """

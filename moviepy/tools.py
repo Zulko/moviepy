@@ -7,11 +7,12 @@ import sys
 import warnings
 import re
 
+import os
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
+
 
 def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """

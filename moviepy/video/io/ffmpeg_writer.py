@@ -6,10 +6,10 @@ out of VideoClips
 import numpy as np
 import subprocess as sp
 
+import os
 try:
     from subprocess import DEVNULL # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
 
 

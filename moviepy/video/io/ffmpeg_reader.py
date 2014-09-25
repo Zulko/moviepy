@@ -12,10 +12,10 @@ import numpy as np
 from moviepy.conf import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
+import os
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
 
 

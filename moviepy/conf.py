@@ -34,7 +34,11 @@ You can run this file to check that FFMPEG has been detected.
 FFMPEG_BINARY = None
 IMAGEMAGICK_BINARY = 'convert'
 
-
+import os
+try:
+    from subprocess import DEVNULL  # py3k
+except ImportError:
+    DEVNULL = open(os.devnull, 'wb')
 
 # =====================================================================
 # CODE. Don't write anything below this line !
@@ -43,7 +47,14 @@ import subprocess as sp
 
 def try_cmd(cmd):
         try:
-            proc = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
+            popen_params = {"stdout": sp.PIPE,
+                            "stderr": sp.PIPE,
+                            "stdin": DEVNULL}
+
+            if os.name == "nt":
+                popen_params["creationflags"] = 0x08000000
+
+            proc = sp.Popen(cmd, **popen_params)
             proc.communicate()
         except:
             return False

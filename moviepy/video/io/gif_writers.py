@@ -7,9 +7,8 @@ from moviepy.tools import verbose_print, subprocess_call
 import numpy as np
 
 try:
-    from subprocess import DEVNULL # py3k
+    from subprocess import DEVNULL  # py3k
 except ImportError:
-    import os
     DEVNULL = open(os.devnull, 'wb')
 
 
