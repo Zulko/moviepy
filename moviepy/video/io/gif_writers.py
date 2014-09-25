@@ -79,13 +79,13 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
         error = ("MoviePy Error: creation of %s failed because "
           "of the following error:\n\n%s.\n\n."%(filename, str(err)))
-        
+
         if program == "ImageMagick":
             error = error + ("This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
                 "path to the ImageMagick binary in file conf.py." )
-        
+
         raise IOError(error)
 
     for f in tempfiles:
@@ -149,7 +149,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
     # if program == 'ImageMagick' and optimize == (None, False)
     # frames --ffmpeg--> bmp frames --ImageMagick--> gif
     #
-    # 
+    #
     # if program == 'ImageMagick' and optimize != (None, False)
     # frames -ffmpeg-> bmp frames -ImagMag-> gif -ImagMag-> better gif
     #
@@ -164,34 +164,53 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
             '-s', "%dx%d"%(clip.w, clip.h), '-pix_fmt', 'rgb24',
             '-i', '-']
 
+    popen_params = {"stdout": DEVNULL,
+                    "stderr": DEVNULL,
+                    "stdin": DEVNULL}
+
+    if os.name == "nt":
+        popen_params["creationflags"] = 0x08000000
+
     if program == "ffmpeg":
-        proc1 = sp.Popen(cmd1+['-r', "%.02f"%fps, filename],
-                         stdin=sp.PIPE, stdout=DEVNULL)
+        popen_params["stdin"] = sp.PIPE
+        popen_params["stdout"] = DEVNULL
+
+        proc1 = sp.Popen(cmd1+['-r', "%.02f"%fps, filename], **popen_params)
     else:
+
+        popen_params["stdin"] = sp.PIPE
+        popen_params["stdout"] = sp.PIPE
+
         proc1 = sp.Popen(cmd1+['-f', 'image2pipe',
                                '-vcodec', 'bmp', '-'],
-                         stdin=sp.PIPE, stdout=sp.PIPE)
+                         **popen_params)
 
     if program == 'ImageMagick':
-        
+
         cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%.02f"%(delay),
                 "-dispose" ,"%d"%(2 if dispose else 1),
                 '-loop', '%d'%loop, '-', '-coalesce']
-        
+
         if (opt in [False, None]):
-            proc2 = sp.Popen(cmd2+[filename], stdin=proc1.stdout)
-            
+            popen_params["stdin"] = proc1.stdout
+            popen_params["stdout"] = DEVNULL
+            proc2 = sp.Popen(cmd2+[filename], **popen_params)
+
         else:
-            proc2 = sp.Popen(cmd2+['gif:-'] , stdin=proc1.stdout,
-                             stdout=sp.PIPE)
-            
+            popen_params["stdin"] = proc1.stdout
+            popen_params["stdout"] = sp.PIPE
+            proc2 = sp.Popen(cmd2+['gif:-'], **popen_params)
+
         if opt:
-            
+
             cmd3 = [IMAGEMAGICK_BINARY, '-', '-layers', opt,
                     '-fuzz', '%d'%fuzz+'%'
                    ]+(["-colors", "%d"%colors] if colors is not None else [])+[
                    filename]
-            proc3 = sp.Popen(cmd3, stdin=proc2.stdout)
+
+            popen_params["stdin"] = proc2.stdout
+            popen_params["stdout"] = DEVNULL
+            proc3 = sp.Popen(cmd3, **popen_params)
 
     # We send all the frames to the first process
     verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
@@ -208,13 +227,13 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
         error = ("MoviePy Error: creation of %s failed because "
           "of the following error:\n\n%s.\n\n."%(filename, str(err)))
-        
+
         if program == "ImageMagick":
             error = error + ("This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
                 "path to the ImageMagick binary in file conf.py." )
-        
+
         raise IOError(error)
     verbose_print(verbose, "Writing GIF... ")
     proc1.stdin.close()

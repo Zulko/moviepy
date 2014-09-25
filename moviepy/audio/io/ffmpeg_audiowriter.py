@@ -19,35 +19,35 @@ from moviepy.tools import verbose_print
 class FFMPEG_AudioWriter:
     """
     A class to write an AudioClip into an audio file.
-    
+
     Parameters
     ------------
-    
+
     filename
       Name of any video or audio file, like ``video.mp4`` or ``sound.wav`` etc.
-    
+
     size
       Size (width,height) in pixels of the output video.
-    
+
     fps_input
       Frames per second of the input audio (given by the AUdioClip being
       written down).
-    
+
     codec
       Name of the ffmpeg codec to use for the output.
-    
+
     bitrate:
       A string indicating the bitrate of the final video. Only
       relevant for codecs which accept a bitrate.
-      
+
     """
-    
-    
-        
+
+
+
     def __init__(self, filename, fps_input, nbytes=2,
                  nchannels = 2, codec='libfdk_aac', bitrate=None,
                  input_video=None,logfile=None):
-        
+
         self.filename = filename
         self.codec= codec
 
@@ -68,13 +68,17 @@ class FFMPEG_AudioWriter:
             + ['-strict', '-2']  # needed to support codec 'aac'
             + (['-ab',bitrate] if (bitrate!=None) else [])
             + [ filename ])
-        
 
-        self.proc = sp.Popen(cmd, stdin=sp.PIPE,
-                                  stderr=logfile,
-                                  stdout=DEVNULL)
+        popen_params = {"stdout": DEVNULL,
+                        "stderr": logfile,
+                        "stdin": sp.PIPE}
 
-        
+        if os.name == "nt":
+            popen_params["creationflags"] = 0x08000000
+
+        self.proc = sp.Popen(cmd, **popen_params)
+
+
     def write_frames(self,frames_array):
         try:
             self.proc.stdin.write(frames_array.tostring())
@@ -95,7 +99,7 @@ class FFMPEG_AudioWriter:
                     )%(self.codec))
 
             elif "incorrect codec parameters ?" in ffmpeg_error:
-                
+
                 error = error+("\n\nThe audio export "
                   "failed, possibly because the codec specified for "
                   "the video (%s) is not compatible with the given "
@@ -108,7 +112,7 @@ class FFMPEG_AudioWriter:
                 error = error+("\n\nThe audio export "
                   "failed, possily because the bitrate you specified "
                   "was two high or too low for the video codec.")
-            
+
             else:
 
                 error = error+("\n\nIn case it helps, make sure you are "
@@ -116,18 +120,18 @@ class FFMPEG_AudioWriter:
                   "Ubuntu/Debian repos are deprecated).")
             raise IOError(error)
 
-        
-        
+
+
     def close(self):
         self.proc.stdin.close()
         if self.proc.stderr is not None:
             self.proc.stderr.close()
         self.proc.wait()
         del self.proc
-        
-        
-        
-@requires_duration       
+
+
+
+@requires_duration
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None,
                       write_logfile = False, verbose=True):
@@ -140,22 +144,22 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
-        
+
     verbose_print(verbose, "Writing audio in %s\n"%filename)
-     
+
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile)
-                                
+
     totalsize = int(fps*clip.duration)
-    
+
     if (totalsize % buffersize == 0):
         nchunks = totalsize // buffersize
     else:
         nchunks = totalsize // buffersize + 1
-        
+
     pospos = list(range(0, totalsize,  buffersize))+[totalsize]
-    
+
     for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt, nbytes= nbytes)
@@ -163,7 +167,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
 
 
     writer.close()
-    
+
     if write_logfile:
         logfile.close()
 
