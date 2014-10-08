@@ -76,7 +76,7 @@ class FFMPEG_VideoWriter:
 
     def __init__(self, filename, size, fps, codec="libx264", audiofile=None,
                  preset="medium", bitrate=None, withmask=False,
-                 logfile=None):
+                 logfile=None, threads=None):
 
         if logfile is None:
           logfile = sp.PIPE
@@ -97,7 +97,8 @@ class FFMPEG_VideoWriter:
             + (["-i", audiofile, "-acodec", "copy"] if (audiofile is not None) else [])
             +['-vcodec', codec,
             '-preset', preset]
-            + (['-b',bitrate] if (bitrate!=None) else [])
+            + (['-b:v', bitrate] if (bitrate!=None) else [])
+            + (["-threads", str(threads)] if threads is not None else [])
             # http://trac.ffmpeg.org/ticket/658
             + (['-pix_fmt', 'yuv420p']
                   if ((codec == 'libx264') and
@@ -169,8 +170,8 @@ class FFMPEG_VideoWriter:
         del self.proc
 
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
-                       preset = "medium", withmask=False, write_logfile=False,
-                       audiofile=None, verbose=True):
+                       preset="medium", withmask=False, write_logfile=False,
+                       audiofile=None, verbose=True, threads=None):
 
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
@@ -181,7 +182,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     verbose_print(verbose, "\nWriting video into %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
-                                audiofile = audiofile)
+                                audiofile=audiofile, threads=threads)
 
     nframes = int(clip.duration*fps)
 
