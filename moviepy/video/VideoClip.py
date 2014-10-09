@@ -32,7 +32,7 @@ from ..tools import (subprocess_call,
                      verbose_print,
                      is_string,
                      deprecated_version_of,
-                     extensions_dict, find_extension) 
+                     extensions_dict, find_extension)
 
 from ..decorators import  (apply_to_mask,
                            requires_duration,
@@ -40,6 +40,12 @@ from ..decorators import  (apply_to_mask,
                            add_mask_if_none,
                            convert_to_seconds)
 
+
+import os
+try:
+    from subprocess import DEVNULL  # py3k
+except ImportError:
+    DEVNULL = open(os.devnull, 'wb')
 
 
 class VideoClip(Clip):
@@ -126,7 +132,7 @@ class VideoClip(Clip):
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
         (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
-        
+
         If ``savemask`` is ``True`` the mask is saved in
         the alpha layer of the picture.
 
@@ -146,7 +152,7 @@ class VideoClip(Clip):
                  audio_bitrate = None, audio_bufsize = 2000,
                  temp_audiofile=None,
                  rewrite_audio = True, remove_temp = True,
-                 write_logfile=False, verbose = True):
+                 write_logfile=False, verbose = True, threads=None):
         """Write the clip to a videofile.
 
         Parameters
@@ -177,7 +183,7 @@ class VideoClip(Clip):
           to ``'libx264'``, and produces higher quality videos by default.
 
 
-          ``'rawvideo'`` (use file extension ``.avi``) will produce 
+          ``'rawvideo'`` (use file extension ``.avi``) will produce
           a video of perfect quality, of possibly very huge size.
 
 
@@ -213,7 +219,7 @@ class VideoClip(Clip):
           for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
           'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
           Default is 'libmp3lame', unless the video extension is 'ogv'
-          or 'webm', at which case the default is 'libvorbis'. 
+          or 'webm', at which case the default is 'libvorbis'.
 
         audio_bitrate
           Audio bitrate, given as a string like '50k', '500k', '3000k'.
@@ -254,7 +260,7 @@ class VideoClip(Clip):
             raise ValueError("MoviePy couldn't find the codec associated "
                    "with the filename. Provide the 'codec' parameter in "
                    "write_fideofile.")
-        
+
         if audio_codec is None:
             if (ext in ['ogv', 'webm']):
                 audio_codec = 'libvorbis'
@@ -299,20 +305,20 @@ class VideoClip(Clip):
         verbose_print(verbose, "\nMoviePy: building video file %s\n"%filename
                                 +40*"-"+"\n")
 
-        
+
         if make_audio:
             self.audio.write_audiofile(audiofile,audio_fps,
                                     audio_nbytes, audio_bufsize,
                                     audio_codec, bitrate=audio_bitrate,
                                     write_logfile=write_logfile,
                                     verbose=verbose)
-        
+
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
                            preset=preset,
                            write_logfile=write_logfile,
                            audiofile = audiofile,
-                           verbose=verbose)
+                           verbose=verbose, threads=threads)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
@@ -375,7 +381,7 @@ class VideoClip(Clip):
         verbose_print(verbose, "MoviePy: Done writing frames %s."%(nameformat))
 
         return filenames
-    
+
 
 
     @requires_duration
@@ -424,7 +430,7 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).to_gif('myClip.gif')
 
         """
-        
+
         if tempfiles:
             write_gif_with_tempfiles(self, filename, fps=fps,
                program= program, opt=opt, fuzz=fuzz, verbose=verbose,
@@ -438,7 +444,7 @@ class VideoClip(Clip):
     # F I L T E R I N G
 
 
-    
+
     def subfx(self, fx, ta=0, tb=None, **kwargs):
         """ Apply a transformation to a part of the clip.
 
@@ -480,7 +486,7 @@ class VideoClip(Clip):
     #--------------------------------------------------------------
     # C O M P O S I T I N G
 
-    
+
     def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
@@ -905,10 +911,10 @@ class ImageClip(VideoClip):
 # The old functions to_videofile, to_gif, to_images sequences have been
 # replaced by the more explicite write_videofile, write_gif, etc.
 
-VideoClip.to_videofile = deprecated_version_of(VideoClip.write_videofile, 
+VideoClip.to_videofile = deprecated_version_of(VideoClip.write_videofile,
                                                'to_videofile')
 VideoClip.to_gif = deprecated_version_of(VideoClip.write_gif, 'to_gif')
-VideoClip.to_images_sequence = deprecated_version_of(VideoClip.write_images_sequence, 
+VideoClip.to_images_sequence = deprecated_version_of(VideoClip.write_images_sequence,
                                                'to_images_sequence')
 
 ###
@@ -1015,7 +1021,7 @@ class TextClip(ImageClip):
              tempfilename=None, temptxt=None,
              transparent=True, remove_temp=True,
              print_cmd=False):
-        
+
 
         if txt is not None:
             if temptxt is None:
@@ -1083,8 +1089,14 @@ class TextClip(ImageClip):
         """ Returns the list of all valid entries for the argument of
         ``TextClip`` given (can be ``font``, ``color``, etc...) """
 
-        process = sp.Popen([IMAGEMAGICK_BINARY, '-list', arg],
-                                   stdout=sp.PIPE)
+        popen_params = {"stdout": sp.PIPE,
+                        "stderr": DEVNULL,
+                        "stdin": DEVNULL}
+
+        if os.name == "nt":
+            popen_params["creationflags"] = 0x08000000
+
+        process = sp.Popen([IMAGEMAGICK_BINARY, '-list', arg], **popen_params)
         result = process.communicate()[0]
         lines = result.splitlines()
 
