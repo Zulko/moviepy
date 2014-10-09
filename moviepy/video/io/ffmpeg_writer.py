@@ -74,7 +74,7 @@ class FFMPEG_VideoWriter:
 
     def __init__(self, filename, size, fps, codec="libx264", audiofile=None,
                  preset="medium", bitrate=None, withmask=False,
-                 logfile=None):
+                 logfile=None, ffmpeg_params=None):
 
         if logfile is None:
             logfile = sp.PIPE
@@ -83,30 +83,42 @@ class FFMPEG_VideoWriter:
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
 
-        cmd = (
-            [FFMPEG_BINARY, '-y']
-            + ["-loglevel", "error" if logfile == sp.PIPE else "info",
-               "-f", 'rawvideo',
-               "-vcodec", "rawvideo",
-               '-s', "%dx%d" % (size[0], size[1]),
-               '-pix_fmt', "rgba" if withmask else "rgb24",
-               '-r', "%.02f" % fps,
-               '-i', '-', '-an']
-            + (["-i", audiofile, "-acodec", "copy"]
-               if (audiofile is not None) else [])
-            + ['-vcodec', codec,
-               '-preset', preset]
-            + (['-b', bitrate] if (bitrate != None) else [])
-            # http://trac.ffmpeg.org/ticket/658
-            + (['-pix_fmt', 'yuv420p']
-               if ((codec == 'libx264') and
-                   (size[0] % 2 == 0) and
-                   (size[1] % 2 == 0))
-
-               else [])
-            + ['-r', "%.02f" % fps, filename]
-            # + (["-acodec", "copy"] if (audiofile is not None) else [])
-        )
+        # order is important
+        cmd = [
+            FFMPEG_BINARY,
+            '-y',
+            '-loglevel', 'error' if logfile == sp.PIPE else 'info',
+            '-f', 'rawvideo',
+            '-vcodec', 'rawvideo',
+            '-s', '%dx%d' % (size[0], size[1]),
+            '-pix_fmt', 'rgba' if withmask else 'rgb24',
+            '-r', '%.02f' % fps,
+            '-i', '-', '-an',
+        ]
+        if audiofile is not None:
+            cmd.extend([
+                '-i', audiofile,
+                '-acodec', 'copy'
+            ])
+        cmd.extend([
+            '-vcodec', codec,
+            '-preset', preset,
+        ])
+        if ffmpeg_params is not None:
+            cmd.extend(ffmpeg_params)
+        if bitrate is not None:
+            cmd.extend([
+                '-b', bitrate
+            ])
+        if ((codec == 'libx264') and
+                (size[0] % 2 == 0) and
+                (size[1] % 2 == 0)):
+            cmd.extend([
+                '-pix_fmt', 'yuv420p'
+            ])
+        cmd.extend([
+            filename
+        ])
 
         self.proc = sp.Popen(cmd, stdin=sp.PIPE,
                              stderr=logfile,
@@ -166,7 +178,7 @@ class FFMPEG_VideoWriter:
 
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
-                       audiofile=None, verbose=True):
+                       audiofile=None, verbose=True, ffmpeg_params=None):
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
@@ -175,7 +187,8 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     verbose_print(verbose, "\nWriting video into %s\n" % filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec=codec,
                                 preset=preset, bitrate=bitrate,
-                                logfile=logfile, audiofile=audiofile)
+                                logfile=logfile, audiofile=audiofile,
+                                ffmpeg_params=ffmpeg_params)
 
     for t, frame in clip.iter_frames(progress_bar=True, with_times=True,
                                      fps=fps):

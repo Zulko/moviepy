@@ -116,7 +116,7 @@ class VideoClip(Clip):
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
         (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
-        
+
         If ``savemask`` is ``True`` the mask is saved in
         the alpha layer of the picture.
 
@@ -136,7 +136,8 @@ class VideoClip(Clip):
                         audio_bitrate=None, audio_bufsize=2000,
                         temp_audiofile=None,
                         rewrite_audio=True, remove_temp=True,
-                        write_logfile=False, verbose=True):
+                        write_logfile=False, verbose=True,
+                        ffmpeg_params=None):
         """Write the clip to a videofile.
 
         Parameters
@@ -167,7 +168,7 @@ class VideoClip(Clip):
           to ``'libx264'``, and produces higher quality videos by default.
 
 
-          ``'rawvideo'`` (use file extension ``.avi``) will produce 
+          ``'rawvideo'`` (use file extension ``.avi``) will produce
           a video of perfect quality, of possibly very huge size.
 
 
@@ -203,7 +204,7 @@ class VideoClip(Clip):
           for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
           'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
           Default is 'libmp3lame', unless the video extension is 'ogv'
-          or 'webm', at which case the default is 'libvorbis'. 
+          or 'webm', at which case the default is 'libvorbis'.
 
         audio_bitrate
           Audio bitrate, given as a string like '50k', '500k', '3000k'.
@@ -242,8 +243,8 @@ class VideoClip(Clip):
                 codec = extensions_dict[ext]['codec'][0]
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
-                                 "with the filename. Provide the 'codec' "
-                                 "parameter in write_fideofile.")
+                                 "with the filename. Provide the 'codec' parameter in "
+                                 "write_fideofile.")
 
         if audio_codec is None:
             if (ext in ['ogv', 'webm']):
@@ -276,12 +277,10 @@ class VideoClip(Clip):
                         audio_ext = find_extension(audio_codec)
                     except ValueError:
 
-                        raise ValueError("The audio_codec you chose is "
-                                         "unknown by MoviePy. You should "
-                                         "report this. In the meantime, "
-                                         "you can specify a temp_audiofile "
-                                         "with the right extension in "
-                                         "write_videofile.")
+                        raise ValueError(
+                            "The audio_codec you chose is unknown by MoviePy. "
+                            "You should report this. In the meantime, you can specify a "
+                            "temp_audiofile with the right extension in write_videofile.")
 
                 audiofile = (name + Clip._TEMP_FILES_PREFIX +
                              "write_videofile_SOUND.%s" % audio_ext)
@@ -304,7 +303,8 @@ class VideoClip(Clip):
                            preset=preset,
                            write_logfile=write_logfile,
                            audiofile=audiofile,
-                           verbose=verbose)
+                           verbose=verbose,
+                           ffmpeg_params=ffmpeg_params)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
@@ -541,8 +541,7 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape,
-                                           dtype=float)
+            make_frame = lambda t: np.ones(self.get_frame(t).shape, dtype=float)
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
