@@ -5,7 +5,7 @@ import sys
 import subprocess as sp
 
 from moviepy.tools import subprocess_call
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.config import get_setting
     
 
 def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
@@ -14,7 +14,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
     Almost deprecated.
     """
     s = "%" + "%02d" % digits + "d.png"
-    cmd = [FFMPEG_BINARY, "-y", "-f","image2",
+    cmd = [get_setting("FFMPEG_BINARY"), "-y", "-f","image2",
              "-r", "%d"%fps,
              "-i", os.path.join(folder,folder) + '/' + s,
              "-b", "%dk"%bitrate,
@@ -32,7 +32,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         T1, T2 = [int(1000*t) for t in [t1, t2]]
         targetname = name+ "%sSUB%d_%d.%s"(name, T1, T2, ext)
     
-    cmd = [FFMPEG_BINARY,"-y",
+    cmd = [get_setting("FFMPEG_BINARY"),"-y",
       "-i", filename,
       "-ss", "%0.2f"%t1,
       "-t", "%0.2f"%(t2-t1),
@@ -46,7 +46,7 @@ def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
                              verbose = True):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
-    cmd = [FFMPEG_BINARY, "-y", "-i", audio,"-i", video,
+    cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", audio,"-i", video,
              "-vcodec", vcodec, "-acodec", acodec, output]
              
     subprocess_call(cmd, verbose = verbose)
@@ -54,7 +54,7 @@ def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
 
 def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
-    cmd = [FFMPEG_BINARY, "-y", "-i", inputfile, "-ab", "%dk"%bitrate,
+    cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", inputfile, "-ab", "%dk"%bitrate,
          "-ar", "%d"%fps, output]
     subprocess_call(cmd)
     
@@ -62,7 +62,7 @@ def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):
 def ffmpeg_resize(video,output,size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
-    cmd= [FFMPEG_BINARY, "-i", video, "-vf", "scale=%d:%d"%(res[0], res[1]),
+    cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(res[0], res[1]),
              output]
              
     subprocess_call(cmd)

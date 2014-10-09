@@ -9,7 +9,7 @@ except ImportError:
     DEVNULL = open(os.devnull, 'wb')
 
 from tqdm import tqdm
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
 
 from moviepy.tools import verbose_print
@@ -54,7 +54,7 @@ class FFMPEG_AudioWriter:
         if logfile is None:
           logfile = sp.PIPE
 
-        cmd = ([ FFMPEG_BINARY, '-y',
+        cmd = ([ get_setting("FFMPEG_BINARY"), '-y',
             "-loglevel", "error" if logfile==sp.PIPE else "info",
             "-f", 's%dle'%(8*nbytes),
             "-acodec",'pcm_s%dle'%(8*nbytes),

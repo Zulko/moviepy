@@ -22,14 +22,14 @@ MoviePy requires a **recent version** of the software ffmpeg_ preferably downloa
 
 **Installed ffmpeg:** when you have installed ffmpeg, or (for linux users) when you have a ffmpeg binary in the ``/usr/bin`` folder, it will be detected automatically by MoviePy.
 
-**Non-installed ffmpeg:** you can also simply place the ffmpeg binary somewhere on your computer and specify its path in the file `moviepy/conf.py` before installing MoviePy by hand.
+**Non-installed ffmpeg:** you can also simply place the ffmpeg binary somewhere on your computer and specify its path in the file `moviepy/config_defaults.py` before installing MoviePy by hand.
 
 Linking to ImageMagick
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 ImageMagick_ is not strictly required, but some important features of MoviePy, like the creation of texts or animated GIFs, depend on it.
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/conf.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
+Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
     
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 

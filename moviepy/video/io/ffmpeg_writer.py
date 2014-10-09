@@ -16,7 +16,7 @@ except ImportError:
 
 from tqdm import tqdm
 
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.config import get_setting
 from moviepy.tools import verbose_print
 
 
@@ -86,7 +86,7 @@ class FFMPEG_VideoWriter:
         self.ext = self.filename.split(".")[-1]
 
         cmd = (
-            [ FFMPEG_BINARY, '-y']
+            [ get_setting("FFMPEG_BINARY"), '-y']
             +["-loglevel", "error" if logfile==sp.PIPE else "info",
             "-f", 'rawvideo',
             "-vcodec","rawvideo",
@@ -97,7 +97,7 @@ class FFMPEG_VideoWriter:
             + (["-i", audiofile, "-acodec", "copy"] if (audiofile is not None) else [])
             +['-vcodec', codec,
             '-preset', preset]
-            + (['-b:v', bitrate] if (bitrate!=None) else [])
+            + (['-b:v', bitrate] if (bitrate is not None) else [])
             + (["-threads", str(threads)] if threads is not None else [])
             # http://trac.ffmpeg.org/ticket/658
             + (['-pix_fmt', 'yuv420p']
@@ -107,13 +107,14 @@ class FFMPEG_VideoWriter:
 
                else [])
             + [ '-r', "%.02f"%fps, filename ]
-            #+ (["-acodec", "copy"] if (audiofile is not None) else [])
             )
 
         popen_params = {"stdout": DEVNULL,
                         "stderr": logfile,
                         "stdin": sp.PIPE}
-
+        
+        # This was added so that no extra unwanted window opens on windows
+        # when the child process is created
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
@@ -207,7 +208,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
         ffmpeg. """
 
 
-    cmd = [ FFMPEG_BINARY, '-y',
+    cmd = [ get_setting("FFMPEG_BINARY"), '-y',
            '-s', "%dx%d"%(image.shape[:2][::-1]),
            "-f", 'rawvideo',
            '-pix_fmt', "rgba" if (image.shape[2] == 4) else "rgb24",

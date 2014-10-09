@@ -26,7 +26,7 @@ from .io.gif_writers import write_gif, write_gif_with_tempfiles
 from .tools.drawing import blit
 
 from ..Clip import Clip
-from ..conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
+from ..config import get_setting
 
 from ..tools import (subprocess_call,
                      verbose_print,
@@ -1040,7 +1040,7 @@ class TextClip(ImageClip):
             size = ('' if size[0] is None else str(size[0]),
                     '' if size[1] is None else str(size[1]))
 
-        cmd = ( [IMAGEMAGICK_BINARY,
+        cmd = ( [get_setting("IMAGEMAGICK_BINARY"),
                "-background", bg_color,
                "-fill", color,
                "-font", font])
@@ -1068,8 +1068,18 @@ class TextClip(ImageClip):
 
         if print_cmd:
             print( " ".join(cmd) )
-
-        subprocess_call(cmd, verbose=False )
+        
+        try:
+            subprocess_call(cmd, verbose=False )
+        except (IOError,OSError) as err:
+            error = ("MoviePy Error: creation of %s failed because "
+              "of the following error:\n\n%s.\n\n."%(filename, str(err))
+               + ("This error can be due to the fact that "
+                    "ImageMagick is not installed on your computer, or "
+                    "(for Windows users) that you didn't specify the "
+                    "path to the ImageMagick binary in file conf.py, or."
+                    "that the path you specified is incorrect" ))
+            raise IOError(error)
 
         ImageClip.__init__(self, tempfilename, transparent=transparent)
         self.txt = txt
@@ -1096,7 +1106,8 @@ class TextClip(ImageClip):
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
-        process = sp.Popen([IMAGEMAGICK_BINARY, '-list', arg], **popen_params)
+        process = sp.Popen([get_setting("IMAGEMAGICK_BINARY"),
+                            '-list', arg], **popen_params)
         result = process.communicate()[0]
         lines = result.splitlines()
 

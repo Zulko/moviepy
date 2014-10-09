@@ -144,6 +144,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     return template%{'data':data, 'options':options, 'ext':ext}
 
 
+
 def ipython_display(clip, filetype=None, maxduration=60, rd_kwargs=None,
                     **html_kwargs):
     """

@@ -5,7 +5,7 @@ import numpy as np
 from moviepy.tools import cvsecs
 
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
-from moviepy.conf import FFMPEG_BINARY
+from moviepy.config import get_setting
 
 import os
 try:
@@ -85,7 +85,7 @@ class FFMPEG_AudioReader:
             i_arg = [ '-i', self.filename,  '-vn']
 
 
-        cmd = ([FFMPEG_BINARY] + i_arg +
+        cmd = ([get_setting("FFMPEG_BINARY")] + i_arg +
                [ '-loglevel', 'error',
                  '-f', self.f,
                 '-acodec', self.acodec,

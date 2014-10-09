@@ -9,7 +9,7 @@ import subprocess as sp
 import re
 
 import numpy as np
-from moviepy.conf import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
+from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
 import os
@@ -66,7 +66,7 @@ class FFMPEG_VideoReader:
             i_arg = [ '-i', self.filename]
 
 
-        cmd = ([FFMPEG_BINARY]+ i_arg +
+        cmd = ([get_setting("FFMPEG_BINARY")]+ i_arg +
                 ['-loglevel', 'error',
                 '-f', 'image2pipe',
                 "-pix_fmt", self.pix_fmt,
@@ -211,7 +211,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
     # open the file in a pipe, provoke an error, read output
     is_GIF = filename.endswith('.gif')
-    cmd = [FFMPEG_BINARY, "-i", filename]
+    cmd = [get_setting("FFMPEG_BINARY"), "-i", filename]
     if is_GIF:
         cmd += ["-f", "null", "/dev/null"]
 

@@ -1,7 +1,7 @@
 import os
 import subprocess as sp
 from tqdm import tqdm
-from moviepy.conf import FFMPEG_BINARY, IMAGEMAGICK_BINARY
+from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
 from moviepy.tools import verbose_print, subprocess_call
 import numpy as np
@@ -52,7 +52,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
     if program == "ImageMagick":
 
-        cmd = [IMAGEMAGICK_BINARY,
+        cmd = [get_setting("IMAGEMAGICK_BINARY"),
               '-delay' , '%d'%delay,
               "-dispose" ,"%d"%(2 if dispose else 1),
               "-loop" , "%d"%loop,
@@ -65,7 +65,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
     elif program == "ffmpeg":
 
-        cmd = [FFMPEG_BINARY, '-y',
+        cmd = [get_setting("FFMPEG_BINARY"), '-y',
                '-f', 'image2', '-r',str(fps),
                '-i', fileName+'_GIFTEMP%04d.png',
                '-r',str(fps),
@@ -74,13 +74,13 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
     try:
         subprocess_call( cmd, verbose = verbose )
 
-    except IOError as err:
+    except (IOError,OSError) as err:
 
         error = ("MoviePy Error: creation of %s failed because "
           "of the following error:\n\n%s.\n\n."%(filename, str(err)))
 
         if program == "ImageMagick":
-            error = error + ("This can be due to the fact that "
+            error = error + ("This error can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
                 "path to the ImageMagick binary in file conf.py." )
@@ -157,7 +157,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
         fps=clip.fps
     delay= 100.0/fps
 
-    cmd1 = [FFMPEG_BINARY, '-y', '-loglevel', 'error',
+    cmd1 = [get_setting("FFMPEG_BINARY"), '-y', '-loglevel', 'error',
             '-f', 'rawvideo',
             '-vcodec','rawvideo', '-r', "%.02f"%fps,
             '-s', "%dx%d"%(clip.w, clip.h), '-pix_fmt', 'rgb24',
@@ -186,7 +186,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
     if program == 'ImageMagick':
 
-        cmd2 = [IMAGEMAGICK_BINARY, '-delay', "%.02f"%(delay),
+        cmd2 = [get_setting("IMAGEMAGICK_BINARY"), '-delay', "%.02f"%(delay),
                 "-dispose" ,"%d"%(2 if dispose else 1),
                 '-loop', '%d'%loop, '-', '-coalesce']
 
@@ -202,7 +202,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
         if opt:
 
-            cmd3 = [IMAGEMAGICK_BINARY, '-', '-layers', opt,
+            cmd3 = [get_setting("IMAGEMAGICK_BINARY"), '-', '-layers', opt,
                     '-fuzz', '%d'%fuzz+'%'
                    ]+(["-colors", "%d"%colors] if colors is not None else [])+[
                    filename]
