@@ -224,7 +224,7 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         if p2 != None:
             vector = (np.array(p2) - np.array(p1))
         elif x is not None:
-            vector = np.array([0,1.0])
+            vector = np.array([0,-1.0])
             p1 = np.array([x, 0])
         elif y is not None:
             vector = np.array([1.0, 0.0])

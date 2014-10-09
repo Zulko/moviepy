@@ -32,7 +32,7 @@ templates = {"audio":("<center><audio controls>"
                        +sorry+"</video></center>")}
 
 
-def html_embed(clip, filetype=None, maxduration=60, rendering_kwargs=None,
+def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
                     **html_kwargs):
     """ Returns HTML5 code embedding the clip
     
@@ -42,12 +42,17 @@ def html_embed(clip, filetype=None, maxduration=60, rendering_kwargs=None,
       written to a file and embedded as if a filename was provided.
 
 
-    filetype:
+    filetype
       One of 'video','image','audio'. If None is given, it is determined
       based on the extension of ``filename``, but this can bug.
     
-    **kwargs:
-      Allow you to give some options, like width=260, etc.
+    rd_kwargs
+      keyword arguments for the rendering, like {'fps':15, 'bitrate':'50k'}
+    
+
+    **html_kwargs
+      Allow you to give some options, like width=260, autoplay=True,
+      loop=1 etc.
 
     Examples
     =========
@@ -68,8 +73,8 @@ def html_embed(clip, filetype=None, maxduration=60, rendering_kwargs=None,
 
     """  
     
-    if rendering_kwargs is None:
-      rendering_kwargs = {}
+    if rd_kwargs is None:
+      rd_kwargs = {}
     # QUICK AND VERY DIRTY: next step is use "isinstance" with classes.
     # But cross-dependencies in modules may make it difficult...
     if "Clip" in str(clip.__class__):
@@ -77,22 +82,22 @@ def html_embed(clip, filetype=None, maxduration=60, rendering_kwargs=None,
         if "ImageClip" in str(clip.__class__):
             filename = TEMP_PREFIX+".png"
             kwargs = {'filename':filename}
-            kwargs.update(rendering_kwargs)
+            kwargs.update(rd_kwargs)
             clip.save_frame(**kwargs)
         elif "Video" in str(clip.__class__):
             filename = TEMP_PREFIX+".mp4"
             kwargs = {'filename':filename, 'verbose':False, 'preset':'ultrafast'}
-            kwargs.update(rendering_kwargs)
+            kwargs.update(rd_kwargs)
             clip.write_videofile(**kwargs)
         elif "AudioClip" in str(clip.__class__):
             filename = TEMP_PREFIX+".mp3"
             kwargs = {'filename': filename, 'verbose':False}
-            kwargs.update(rendering_kwargs)
+            kwargs.update(rd_kwargs)
             clip.write_audiofile(filename, **kwargs)
         else:
           raise ValueError("Unknown class for the clip. Cannot embed and preview.")
 
-        return html_embed(filename, maxduration=maxduration, rendering_kwargs=rendering_kwargs,
+        return html_embed(filename, maxduration=maxduration, rd_kwargs=rd_kwargs,
                                 **html_kwargs)
     
     filename = clip
@@ -139,7 +144,7 @@ def html_embed(clip, filetype=None, maxduration=60, rendering_kwargs=None,
     return template%{'data':data, 'options':options, 'ext':ext}
 
 
-def ipython_display(clip, filetype=None, maxduration=60, rendering_kwargs=None,
+def ipython_display(clip, filetype=None, maxduration=60, rd_kwargs=None,
                     **html_kwargs):
     """
     clip
@@ -178,4 +183,4 @@ def ipython_display(clip, filetype=None, maxduration=60, rendering_kwargs=None,
     if not ipython_available:
         raise ImportError("Only works inside an IPython Notebook")
     return HTML(html_embed(clip, filetype=filetype, maxduration=maxduration,
-                rendering_kwargs=rendering_kwargs, **html_kwargs))
+                rd_kwargs=rd_kwargs, **html_kwargs))
