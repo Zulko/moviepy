@@ -46,7 +46,7 @@ class FFMPEG_AudioWriter:
 
     def __init__(self, filename, fps_input, nbytes=2,
                  nchannels = 2, codec='libfdk_aac', bitrate=None,
-                 input_video=None,logfile=None):
+                 input_video=None, logfile=None):
 
         self.filename = filename
         self.codec= codec
