@@ -10,7 +10,7 @@ Note that at any time in a script you can change the value of these
 variables as follows:
 
 >>> import moviepy.config as cf
->>> cf.change_setting({"FFMPEG_BINARY": "some/new/path/to/ffmpeg"})
+>>> cf.change_settings({"FFMPEG_BINARY": "some/new/path/to/ffmpeg"})
 >>> print( cf.get_setting("FFMPEG_BINARY") )  # prints the current setting
 
 Instructions
