@@ -1,24 +1,29 @@
-MoviePy
-=======
+
+.. image:: logo.png
+    :width: 50%
+    :align: center
+
+..  MoviePy
+..  =======
+
+
 
 MoviePy is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
 
-User's Guide
---------------
+User Guide
+------------
 
 .. toctree::
    :maxdepth: 1
    
    install
-   crash_course/crash_course
-   advanced/advanced_uses
+   getting_started/getting_started
    gallery
    examples/examples
    FAQ
    ref/ref
 
-MoviePy is an open source software originally written by Zulko_ and released under the MIT licence.
-It is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_ .
+MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 2 or Python 3. The code is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_ .
 
 .. raw:: html
 
@@ -33,10 +38,10 @@ It is hosted on Github_, where you can push improvements, report bugs and ask fo
     <iframe src="http://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
     allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
     
-    <a href="https://github.com/Zulko/moviepy">
-    <img style="position: absolute; top: 0; right: 0; border: 0;"
-    src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
-    alt="Fork me on GitHub"></a>
+..    <a href="https://github.com/Zulko/moviepy">
+..    <img style="position: absolute; top: 0; right: 0; border: 0;"
+..    src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"
+..    alt="Fork me on GitHub"></a>
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Zulko: https://github.com/Zulko/

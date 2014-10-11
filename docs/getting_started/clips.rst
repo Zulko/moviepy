@@ -1,50 +1,7 @@
-.. _crashcourse:
+Clips in MoviePy
+==================
 
-A MoviePy crash-course
------------------------
-
-
-This section presents the basics of video editing with MoviePy.
-
-
-Example code
-~~~~~~~~~~~~~~
-
-In a typical MoviePy script, you load some clips from video files, then modify them, put them together, and write the result to a video file. As an example, let us load a movie of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file: ::
-    
-    # Import everything needed to edit video clips
-    from moviepy.editor import *
-    
-    # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
-    clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
-
-    # Reduce the audio volume (volume x 0.8)
-    clip = clip.volumex(0.8) 
-    
-    # Generate a text clip. You can customize the font, color, etc.
-    txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
-    
-    # Say that you want it to appear 10s at the center of the screen
-    txt_clip = txt_clip.set_pos('center').set_duration(10)
-    
-    # Overlay the text clip on the first video clip
-    video = CompositeVideoClip([clip, txt_clip])
-    
-    # Write the result to a file
-    video.write_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
-
-
-What powers MoviePy
-~~~~~~~~~~~~~~~~~~~~~
-
-MoviePy uses the software ``ffmpeg`` to read frames from video and audio files. The code to edit and put these frames together relies mainly on the Python library Numpy. The edited frames are assembled in a video file using once again ``ffmpeg``. The software ImageMagick can also be used to generate texts or export an animation in GIF format.
-
-.. image:: explanations.jpeg
-    :width: 570px
-    :align: center
-
-The clip objects
-~~~~~~~~~~~~~~~~~~~
+In this section we see how to create clips, (for instance from video or audio files), how to mix them together, and how to write them to a file. 
 
 The most common objects in MoviePy are called clips. A clip (let's call it ``my_clip``) can be either an audio clip or a video clip. It has different attributes, like ``my_clip.duration`` (indicating its duration in seconds), ``clip.start`` (indicating the time in seconds where the clip should start playing when mixed with other videos), ``my_clip.w`` (the width in pixel of the clip), etc.
 
@@ -188,16 +145,3 @@ For an example, you can refer to :ref:`soundexample`. Like video clips, sound cl
     audioclip.preview() # default fps: 22050
     audioclip.preview(fps=44100)
     audioclip.to_audiofile('my_clip.mp3',fps=44100) #default fps: 22050
-
-
-To go further
-~~~~~~~~~~~~~~
-
-The best way to start with moviepy is to use it with the IPython Notebook, as it has autocompletion which will help you find all you need and discover all the available methods.
-
-Advanced features of MoviePy that cannot be expressed as an ``fx`` are placed in :module:`moviepy.video.tools` (currently this module contains methods for tracking objects, segmenting, drawing, making credits, dealing with subtitles) and `moviepy.audio.tools` (currently empty, will contain denoisers and utilities for synchronization).
-
-To go further and learn about all the available options and
-functionalities of MoviePy, see the :ref:`examples` and the :ref:`reference_manual`.
-You can also browse the code of the different video effects in 
-``moviepy/video/fx`` to give you ideas on how to code your own effects.
