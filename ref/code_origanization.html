@@ -63,8 +63,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Clips in MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Video Compositing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/advanced_tools.html">Advanced tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
@@ -155,7 +155,7 @@
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">io</span></tt> contains everything required to read files, write files, preview the clip or use a graphical interface of any sort. It contains the objects that speak to FFMEG and ImageMagick, the classes AudioFileClip and VideoFileClip, the functions used to preview a clip with pygame or to embed a video in HTML5 (for instance in the IPython Notebook).</li>
 <li><tt class="docutils literal"><span class="pre">fx</span></tt> contains a collection of effects and filters (like turning a video black and white, correcting luminosity, zooming or creating a scrolling effect). To add an effect to MoviePy, you simply add a new file <tt class="docutils literal"><span class="pre">my_effect.py</span></tt> to this folder, and in the file you define the function <tt class="docutils literal"><span class="pre">my_effect(clip,</span> <span class="pre">*other_parameters)</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">compositing</span></tt> contains functions and classes to compose videoclips (CompositeVideoClip, concatenate, clips_array)</li>
+<li><tt class="docutils literal"><span class="pre">compositing</span></tt> contains functions and classes to compose videoclips (CompositeVideoClip, concatenate_videoclips, clips_array)</li>
 <li><tt class="docutils literal"><span class="pre">tools</span></tt> contains advanced tools that are not effects but can help edit clips or generate new clips (tracking, subtitles, etc.)</li>
 </ul>
 </div>

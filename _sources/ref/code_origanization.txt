@@ -19,5 +19,5 @@ The submodules ``moviepy.audio`` and ``moviepy.video`` are organized approximate
 
 - ``io`` contains everything required to read files, write files, preview the clip or use a graphical interface of any sort. It contains the objects that speak to FFMEG and ImageMagick, the classes AudioFileClip and VideoFileClip, the functions used to preview a clip with pygame or to embed a video in HTML5 (for instance in the IPython Notebook).
 - ``fx`` contains a collection of effects and filters (like turning a video black and white, correcting luminosity, zooming or creating a scrolling effect). To add an effect to MoviePy, you simply add a new file ``my_effect.py`` to this folder, and in the file you define the function ``my_effect(clip, *other_parameters)``.
-- ``compositing`` contains functions and classes to compose videoclips (CompositeVideoClip, concatenate, clips_array) 
+- ``compositing`` contains functions and classes to compose videoclips (CompositeVideoClip, concatenate_videoclips, clips_array) 
 - ``tools`` contains advanced tools that are not effects but can help edit clips or generate new clips (tracking, subtitles, etc.)

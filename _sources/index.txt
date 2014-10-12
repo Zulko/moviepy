@@ -37,7 +37,7 @@ MoviePy is an open source software originally written by Zulko_ and released und
 .. raw:: html
 
     <a href="https://twitter.com/share" class="twitter-share-button"
-    data-text="MoviePy, script-based video editing" data-size="large" data-hashtags="MoviePy">Tweet
+    data-text="MoviePy - Video editing with Python" data-size="large" data-hashtags="MoviePy">Tweet
     </a>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
     if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';

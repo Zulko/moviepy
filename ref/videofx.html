@@ -145,10 +145,12 @@
           <div role="main">
             
   <div class="section" id="moviepy-video-fx-vfx">
-<span id="ref-videofx"></span><h1>moviepy.video.fx (vfx)<a class="headerlink" href="#moviepy-video-fx-vfx" title="Permalink to this headline">¶</a></h1>
+<span id="refvideofx"></span><h1>moviepy.video.fx (vfx)<a class="headerlink" href="#moviepy-video-fx-vfx" title="Permalink to this headline">¶</a></h1>
 <p>The module <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> regroups functions meant to be used with <tt class="docutils literal"><span class="pre">videoclip.fx()</span></tt>.</p>
 <p>Because this module is starting to be large and will be larger in the future, it allows two kinds of import.
-You can either import a single function like this:</p>
+You can either im
+For all the other modifications, we use <tt class="docutils literal"><span class="pre">clip.fx</span></tt> and <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. <tt class="docutils literal"><span class="pre">clip.fx</span></tt> is meant to make it easy to use already-written transformation functions, while  <tt class="docutils literal"><span class="pre">clip.fl</span></tt> makes it easy to write new transformation functions.
+port a single function like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.video.fx.scroll</span> <span class="kn">import</span> <span class="n">crop</span>
 <span class="n">newclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">crop</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
