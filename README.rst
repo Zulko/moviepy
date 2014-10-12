@@ -1,7 +1,7 @@
 MoviePy
 ========
 
-MoviePy (full documentation here_) is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
+MoviePy (full documentation here_) is a Python module for video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
 
 A typical MoviePy script looks like this: ::
 

@@ -1,13 +1,14 @@
 import numpy as np
 
+from moviepy.tools import deprecated_version_of
 from moviepy.video.VideoClip import VideoClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
 from moviepy.video.compositing.on_color import on_color 
 
-def concatenate(clipslist, method="chain", transition=None, bg_color=(0, 0, 0),
-                transparent=False, ismask=False, padding = 0):
+def concatenate_videoclips(clipslist, method="chain", transition=None, bg_color=(0, 0, 0),
+                           transparent=False, ismask=False, padding = 0):
     """ Concatenates several video clips
     
     Returns a video clip made by clip by concatenating several video clips.
@@ -102,3 +103,6 @@ def concatenate(clipslist, method="chain", transition=None, bg_color=(0, 0, 0),
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])
     return result
+
+
+concatenate = deprecated_version_of(concatenate_videoclips, "concatenate_videoclips")

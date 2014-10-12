@@ -1,3 +1,5 @@
+.. _advancedtools:
+
 Advanced tools
 ===============
 

@@ -2,6 +2,10 @@
 
 These pages give you everything you need to start editing with MoviePy. Then the best way to learn is to have a look at the provided :ref:`examples` or the different ressources presented in the :ref:`gallery`.
 
+
+.. figure:: demo_preview.jpeg
+
+
 Getting started with MoviePy
 ------------------------------
 
@@ -11,6 +15,7 @@ Getting started with MoviePy
    
    quick_presentation
    clips
+   compositing
    effects
    advanced_tools
    efficient_moviepy

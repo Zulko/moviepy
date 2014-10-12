@@ -33,7 +33,8 @@ from ..decorators import (apply_to_mask,
                           requires_duration,
                           outplace,
                           add_mask_if_none,
-                          convert_to_seconds)
+                          convert_to_seconds,
+                          convert_masks_to_RGB)
 
 import os
 try:
@@ -118,6 +119,7 @@ class VideoClip(Clip):
 
 
     @convert_to_seconds(['t'])
+    @convert_masks_to_RGB
     def save_frame(self, filename, t=0, savemask=False):
         """ Save a clip's frame to an image file.
 
@@ -129,6 +131,7 @@ class VideoClip(Clip):
         the alpha layer of the picture.
 
         """
+
         im = self.get_frame(t)
         if savemask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
@@ -137,6 +140,7 @@ class VideoClip(Clip):
 
 
     @requires_duration
+    @convert_masks_to_RGB
     def write_videofile(self, filename, fps=24, codec=None,
                         bitrate=None, audio=True, audio_fps=44100,
                         preset="medium",
@@ -330,6 +334,7 @@ class VideoClip(Clip):
 
 
     @requires_duration
+    @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True):
         """ Writes the videoclip to a sequence of image files.
 
@@ -433,7 +438,7 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).to_gif('myClip.gif')
 
         """
-
+        
         if tempfiles:
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt, fuzz=fuzz,

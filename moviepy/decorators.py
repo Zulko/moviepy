@@ -14,7 +14,11 @@ def outplace(f, clip, *a, **k):
     f(newclip, *a, **k)
     return newclip
     
-
+@decorator.decorator
+def convert_masks_to_RGB(f, clip, *a, **k):
+    if clip.ismask:
+        clip = clip.to_RGB()
+    return f(clip, *a, **k)
 
 @decorator.decorator
 def apply_to_mask(f, clip, *a, **k):

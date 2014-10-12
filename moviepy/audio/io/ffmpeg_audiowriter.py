@@ -151,6 +151,14 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile)
 
+    
+    
+    for chunk in clip.iter_chunks(chunksize=buffersize,
+                                  progress_bar=True, quantize=True,
+                                  nbytes= nbytes, fps=fps):
+        writer.write_frames(chunk)
+
+    """
     totalsize = int(fps*clip.duration)
 
     if (totalsize % buffersize == 0):
@@ -159,12 +167,11 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
         nchunks = totalsize // buffersize + 1
 
     pospos = list(range(0, totalsize,  buffersize))+[totalsize]
-
     for i in tqdm(range(nchunks)):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
         sndarray = clip.to_soundarray(tt, nbytes= nbytes)
         writer.write_frames(sndarray)
-
+    """
 
     writer.close()
 

@@ -23,9 +23,9 @@ from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from .video.compositing.concatenate import concatenate
+from .video.compositing.concatenate import concatenate_videoclips, concatenate # concatenate=deprecated
 
-from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audio
+from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
 from .audio.io.AudioFileClip import AudioFileClip
 
 # FX

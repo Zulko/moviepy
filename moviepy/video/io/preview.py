@@ -4,7 +4,7 @@ import time
 import pygame as pg
 import numpy as np
 
-from moviepy.decorators import requires_duration
+from moviepy.decorators import (requires_duration, convert_masks_to_RGB)
 from moviepy.tools import cvsecs
 
 
@@ -20,6 +20,7 @@ def imdisplay(imarray, screen=None):
     pg.display.flip()
 
 
+@convert_masks_to_RGB
 def show(clip, t=0, with_mask=True, interactive=False):
     """
     Splashes the frame of clip corresponding to time ``t``.
@@ -39,8 +40,6 @@ def show(clip, t=0, with_mask=True, interactive=False):
     if isinstance(t, tuple):
         t = cvsecs(*t)
 
-    if clip.ismask:
-        clip = clip.to_RGB()
     if with_mask and (clip.mask != None):
         import moviepy.video.compositing.CompositeVideoClip as cvc
         clip = cvc.CompositeVideoClip([clip.set_pos((0,0))])
@@ -64,6 +63,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
             time.sleep(.03)
 
 @requires_duration
+@convert_masks_to_RGB
 def preview(clip, fps=15, audio=True, audio_fps=22050,
              audio_buffersize=3000, audio_nbytes=2):
     """ 
@@ -89,9 +89,6 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     """
     
     import pygame as pg
-    
-    if clip.ismask:
-        clip = clip.to_RGB()
     
     # compute and splash the first image
     screen = pg.display.set_mode(clip.size)

@@ -1,3 +1,5 @@
+.. _codeorganization:
+
 Organization of MoviePy's code
 ===============================
 
@@ -19,6 +21,3 @@ The submodules ``moviepy.audio`` and ``moviepy.video`` are organized approximate
 - ``fx`` contains a collection of effects and filters (like turning a video black and white, correcting luminosity, zooming or creating a scrolling effect). To add an effect to MoviePy, you simply add a new file ``my_effect.py`` to this folder, and in the file you define the function ``my_effect(clip, *other_parameters)``.
 - ``compositing`` contains functions and classes to compose videoclips (CompositeVideoClip, concatenate, clips_array) 
 - ``tools`` contains advanced tools that are not effects but can help edit clips or generate new clips (tracking, subtitles, etc.)
-
-
-The Clip object and some basic methods

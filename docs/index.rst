@@ -8,7 +8,13 @@
 
 
 
-MoviePy is a Python module for script-based video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
+MoviePy is a Python module for video editing, which can be used for basic operations (like cuts, concatenations, title insertions), video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write the most common video formats, including GIF.
+
+Here it is in action (run in an IPython Notebook):
+
+.. image:: demo_preview.jpeg
+    :width: 500px
+    :align: center
 
 User Guide
 ------------
@@ -22,6 +28,9 @@ User Guide
    examples/examples
    FAQ
    ref/ref
+    
+Contribute !
+--------------
 
 MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 2 or Python 3. The code is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_ .
 
@@ -37,7 +46,6 @@ MoviePy is an open source software originally written by Zulko_ and released und
     
     <iframe src="http://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
     allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
-    
 ..    <a href="https://github.com/Zulko/moviepy">
 ..    <img style="position: absolute; top: 0; right: 0; border: 0;"
 ..    src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"

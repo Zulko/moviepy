@@ -6,7 +6,7 @@ from moviepy.tools import (deprecated_version_of,
                            extensions_dict)
 
 from moviepy.Clip import Clip
-
+from tqdm import tqdm
 
 class AudioClip(Clip):
     """ Base class for audio clips.
@@ -54,9 +54,39 @@ class AudioClip(Clip):
         if duration is not None:
             self.duration = duration
             self.end = duration
+    
+    @requires_duration
+    def iter_chunks(self, chunksize=None, chunk_duration=None, fps=None,
+                    quantize=False, nbytes=2, progress_bar=False):
+        """ Iterator that returns the whole sound array of the clip by chunks
+        """
+        if fps is None:
+            fps=self.fps
+        if chunk_duration is not None:
+            chunksize = int(chunk_duration*fps)
+        
+        totalsize = int(fps*self.duration)
+
+        if (totalsize % chunksize == 0):
+            nchunks = totalsize // chunksize
+        else:
+            nchunks = totalsize // chunksize + 1
+
+        pospos = list(range(0, totalsize,  chunksize))+[totalsize]
+
+        def generator():
+            for i in range(nchunks):
+                tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
+                yield self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
+                                         buffersize=chunksize)
+
+        if progress_bar:
+            return tqdm(generator(), total=nchunks)
+        else:
+            return generator()
 
     @requires_duration
-    def to_soundarray(self,tt=None,fps=None, nbytes=2):
+    def to_soundarray(self,tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
         """
         Transforms the sound into an array that can be played by pygame
         or written in a wav file. See ``AudioClip.preview``.
@@ -73,18 +103,47 @@ class AudioClip(Clip):
           2 for 16bit, 4 for 32bit sound.
           
         """
-        if tt is None:
-            tt = np.arange(0,self.duration, 1.0/fps)
-
+        if fps is None:
+            fps = self.fps
+       
+        stacker = np.vstack if self.nchannels==2 else np.hstack 
+        max_duration = 1.0 * buffersize / fps
+        if (tt is None):
+            if self.duration>max_duration:
+                return stacker(self.iter_chunks(fps=fps, quantize=quantize, nbytes=2,
+                                                 chunksize=buffersize))
+            else:
+                tt = np.arange(0,clip.duration, 1.0/fps)
+        """
+        elif len(tt)> 1.5*buffersize:
+            nchunks = int(len(tt)/buffersize+1)
+            tt_chunks = np.array_split(tt, nchunks)
+            return stacker([self.to_soundarray(tt=ttc, buffersize=buffersize, fps=fps,
+                                        quantize=quantize, nbytes=nbytes)
+                              for ttc in tt_chunks])
+        """
         #print tt.max() - tt.min(), tt.min(), tt.max()
         
         snd_array = self.get_frame(tt)
-        snd_array = np.maximum(-0.99,
-                       np.minimum(0.99,snd_array))
-        inttype = {1:'int8',2:'int16', 4:'int32'}[nbytes]
-        return (2**(8*nbytes-1)*snd_array).astype(inttype)
-    
-    
+
+        if quantize:
+            snd_array = np.maximum(-0.99, np.minimum(0.99,snd_array))
+            inttype = {1:'int8',2:'int16', 4:'int32'}[nbytes]
+            snd_array= (2**(8*nbytes-1)*snd_array).astype(inttype)
+        
+        return snd_array
+
+    def max_volume(self, stereo=False, chunksize=50000, progress_bar=False):
+        
+        stereo = stereo and (self.nchannels == 2)
+
+        maxi = np.array([0,0]) if stereo else 0
+        for chunk in self.iter_chunks(chunksize=chunksize, progress_bar=progress_bar):
+            maxi =  np.maximum(maxi,abs(chunk).max(axis=0)) if stereo else max(maxi,abs(chunk).max())
+        return maxi
+
+
+
     
     @requires_duration
     def write_audiofile(self,filename, fps=44100, nbytes=2,
@@ -238,7 +297,7 @@ class CompositeAudioClip(AudioClip):
         self.make_frame = make_frame
 
 
-def concatenate_audio(clips):
+def concatenate_audioclips(clips):
     durations = [c.duration for c in clips]
     tt = np.cumsum([0]+durations) # start times, and end time.
     newclips= [c.set_start(t) for c,t in zip(clips, tt)]

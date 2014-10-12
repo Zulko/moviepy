@@ -66,7 +66,7 @@ This `tutorial
          style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
-It is possible to combine MoviePy the same with many graphic librairies (like matplotlib, mayavi, pyopengl, etc.).
+It is also possible to combine MoviePy with other graphic librairies like matplotlib, etc.
 
 
 .. Rinconcam
