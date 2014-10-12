@@ -84,7 +84,7 @@ def concatenate_videoclips(clipslist, method="chain", transition=None, bg_color=
         if transparent:
           clips_w_masks = [(c.add_mask() if c.mask is None else c) for c in clips]
           masks = [c.mask for c in clips_w_masks]
-          result.mask = concatenate(masks, method="chain", ismask=True)
+          result.mask = concatenate_videoclips(masks, method="chain", ismask=True)
 
 
     elif method == "compose":

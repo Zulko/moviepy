@@ -33,7 +33,7 @@ painting_fading = CompositeVideoClip([im_freeze,painting_txt])
 
 # FINAL CLIP AND RENDERING
 
-final_clip =  concatenate([ clip_before,
+final_clip =  concatenate_videoclips([ clip_before,
                             painting_fading.set_duration(3),
                             clip_after])
 

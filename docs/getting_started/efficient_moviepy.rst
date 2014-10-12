@@ -5,8 +5,9 @@ How to be efficient with MoviePy
 
 This section gathers tips and tricks to make the most of what is already known worldwide as *the MoviePy experience*. 
 
-Let us first say that the best way to start with MoviePy is to use it with the IPython Notebook: it makes it easier to preview clips (as we will see in this section), has autocompletion, and can display the documentation for the different methods of the library.
+The best way to start with MoviePy is to use it with the IPython Notebook: it makes it easier to preview clips (as we will see in this section), has autocompletion, and can display the documentation for the different methods of the library.
 
+.. _should_i_use_moviepy_editor:
 
 Should I use ``moviepy.editor`` ?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,6 +27,7 @@ provides all you need to play around and edit your videos but it will  take time
     from moviepy.video.io.VideoFileClip import VideoFileClip
     from moviepy.video.fx.resize import resize
 
+.. _previewing:
 
 The many ways of previewing a clip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,10 +43,12 @@ Most of the time, just having one frame of the video can tell you if you are doi
     my_clip.save_frame("frame.jpeg") # saves the first frame
     my_clip.save_frame("frame.png", t=2) # saves the frame a t=2s
 
-clip.show
-""""""""""
+.. _clip_preview:
 
-The methods ``clip.show`` and ``clip.preview`` require to have PyGame installed. PyGame must also be initialized (it will always be the case if you use the ``moviepy.editor`` module)
+clip.show and clip.preview
+""""""""""""""""""""""""""""
+
+The methods ``clip.show`` and ``clip.preview`` enable you to vizualise the clip in a Pygame window. They are the fastest way to preview, as the clips are generated and displayed at the same time, and they can be useful to get the coordinates or colors of pixels. These methods require to have PyGame installed, and to use the ``moviepy.editor`` module.
 
 The method ``clip.show`` enables preview one frame of a clip without having to write it to a file: the following lines display the frame in a PyGame window ::
     
@@ -52,31 +56,52 @@ The method ``clip.show`` enables preview one frame of a clip without having to w
     my_clip.show(10.5) # shows the frame of the clip at t=10.5s
     my_clip.show(10.5, interactive = True)
 
-The last line above displays the frame in an interactive way: if you click somewhere in the frame, it will print the position and color of the pixel. Press Escape to exit when you are done.
-    
+The last line (with ``interactive=True``) displays the frame in an interactive way: if you click somewhere in the frame, it will print the position and color of the pixel. Press Escape to exit when you are done.
 
-clip.preview
-"""""""""""""
-
-A clip previewed is generated and displayed (in a PyGame window) at the same time. ::
+A clip can be previewed as follows ::
     
     my_clip.preview() # preview with default fps=15
     my_clip.preview(fps=25)
-    my_clip.preview(fps=15, audio=False) # don't play sound.
+    my_clip.preview(fps=15, audio=False) # don't generate/play the audio.
+    my_audio_clip.preview(fps=22000)
 
-If you click somewhere in the frames when the clip is being previewed, it will print the position and color of the pixel clicked. Press Escape abort the previewing.
+If you click somewhere in the frames of a video clip being previewed, it will print the position and color of the pixel clicked. Press Escape abort the previewing.
 
 Note that if the clip is complex and your computer not fast enough, the preview will appear slowed down compared to the real speed of the clip. In this case you can try to lower the frame rate (for instance to 10) or reduce the size of the clip with ``clip.resize``, it helps.
+
+.. _ipython_display:
 
 ipython_display
 """"""""""""""""
 
-When using the IPython notebook
+Displaying the clips in a IPython Notebook can be very practical, especially if you can't use ``clip.show()`` and ``clip.preview()``. Here is what it will look like:
 
 .. image:: ../demo_preview.jpeg
     :width: 500px
     :align: center
 
-Note that ``ipython_display`` only works when it is the last command of the cell. You can provide any valid HTML5 options. For instance, when previewing a clip that you will turn into a gif, you need the preview to start automatically and to loop (i.e. replay indefinitely), so you will write ::
+With ``ipython_display`` you can embed videos, images and sounds, either from a file or directly from a clip: ::
+    
+    ipython_display(my_video_clip) # embeds a video
+    ipython_display(my_imageclip) # embeds an image
+    ipython_display(my_audio_clip) # embeds a sound
+    
+    ipython_display("my_picture.jpeg") # embeds an image
+    ipython_display("my_video.mp4") # embeds a video
+    ipython_display("my_sound.mp3") # embeds a sound
+
+If you only need to display a snapshot of a video clip at some time `t` you can write ::
+
+    ipython_display(video_clip.to_ImageClip(t=15)) # snapshot at t=15s
+
+You can also provide any valid HTML5 option as keyword argument. For instance, if the clip is too big, you will write ::
+    
+    ipython_display(my_clip, width=400) # HTML5 will resize to 400 pixels
+
+When you are creating a gif and want to check that it loops well, you can ask the video to start automatically and to loop (i.e. replay indefinitely) : ::
     
     ipython_display(my_clip, autoplay=1, loop=1)
+
+Importantly, ``ipython_display`` actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work. The drawback is that the file size of the notebook can become very large.
+
+Finally, note that ``ipython_display`` only works when it is the last command of a cell of the notebook.

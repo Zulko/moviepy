@@ -9,6 +9,7 @@ Here are a few projects using MoviePy. The gallery will fill up as more people s
 Videos edited with Moviepy
 ---------------------------
 
+
 The Cup Song Covers Mix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -17,7 +18,7 @@ This mix of 60 covers of the Cup Song demonstrates the non-linear video editing 
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; 
-         display:block; margin-left: auto; margin-right: auto;">
+         margin-left: 5%;">
         <iframe src="http://youtube.com/v/rIehsqqYFEM&hl?rel=0" frameborder="0" allowfullscreen
         style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;">
         </iframe>
@@ -31,7 +32,7 @@ in the :ref:`examples`.
 
 .. raw:: html
 
-       <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden;">
+       <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
        <iframe src="http://youtube.com/v/zGhoZ4UBxEQ&hl?rel=0" frameborder="0" allowfullscreen
        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
        </iframe>
@@ -90,7 +91,7 @@ This `blog post <http://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls
 
 
 
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden;">
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
         <iframe src="http://youtube.com/v/V2XCJNZjm4w&hl?rel=0" frameborder="0" allowfullscreen
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
@@ -108,7 +109,7 @@ Videogrep is a python script written by Sam Lavigne, that goes through the subti
 
 .. raw:: html
 
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden;">
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
         <iframe src="http://youtube.com/v/D7pymdCU5NQ&hl?rel=0" frameborder="0" allowfullscreen
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>

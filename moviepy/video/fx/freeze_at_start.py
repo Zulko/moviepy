@@ -1,6 +1,6 @@
 from moviepy.decorators import requires_duration
 from moviepy.video.VideoClip import ImageClip
-from moviepy.video.compositing.concatenate import concatenate
+from moviepy.video.compositing.concatenate import concatenate_videoclips
 
 @requires_duration
 def freeze_at_start(clip, freeze_duration=None, total_duration=None):
@@ -22,4 +22,4 @@ def freeze_at_start(clip, freeze_duration=None, total_duration=None):
     if freeze_duration:
         freezed_clip = freezed_clip.set_duration(freeze_duration)
     
-    return concatenate([freezed_clip, clip])
+    return concatenate_videoclips([freezed_clip, clip])

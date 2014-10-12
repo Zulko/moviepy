@@ -53,35 +53,40 @@ VideoClip
    :width: 128 px
    :align: center
 
+Note: three next sections are in construction
+
 VideoFileClip
 """""""""""""""
-
+See :py:class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
 
 ImageClip
 """"""""""
-
+See :py:class:`~moviepy.video.VideoClip.ImageClip`.
 
 TextClip
 """""""""""""""
+See :py:class:`~moviepy.video.VideoClip.TextClip`.
+
 
 Mask clips
 ~~~~~~~~~~~~~~
 
-when it is composed with other clips (see :ref:CompositeVideoClips)
+A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see :ref:`CompositeVideoClips`).
 
-The fundamental difference is that standard masks output frames with 3 coomposants (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel).
+The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
 
 When you create or load a clip that you will use as a mask you need to declare it: ::
-
 
     mclip = VideoClip(makeframe, duration=4, ismask=True)
     mclip = ImageClip("my_mask.jpeg", ismask=True)
     mclip = VideoClip("myvideo.mp4", ismask=True)
     
-    
 In the case of video and image files, if these are not already black and white they will be converted automatically.
 
 Any video clip can be turned into a mask with ``clip.to_mask()``, and a mask can be turned to a standard RGB video clip with ``my_mask_clip.to_RGB()``.
+
+
+Masks are treated differently by many methods (because their frames are different) but you can do with a mask pretty much everything you can do with a standard clip: you can cut it, edit it, preview it, write it to a video file, make snapshots, etc.
 
 .. _renderingAClip:
 
@@ -94,11 +99,11 @@ Video files (.mp4, .webm, .ogv...)
 To write a clip as a video file, use ::
     
     my_clip.write_videofile("movie.mp4") # default codec: 'libx264', 24 fps
-    my_clip.write_videofile("movie.mp4",fps=15, codec='mpeg4')
+    my_clip.write_videofile("movie.mp4",fps=15)
     my_clip.write_videofile("movie.webm") # webm format
     my_clip.write_videofile("movie.webm",audio=False) # don't render audio.
     
-You can also use other codecs to write ``.webm`` or ``.ogv`` files.
+MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
 
 
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
@@ -116,11 +121,15 @@ To write your video as an animated GIF, use ::
 
     my_clip.write_gif('test.gif', fps=12)
 
+Note that this requires ImageMagick installed. Otherwise you can also create the GIF with ffmpeg by adding the option ``program='ffmpeg'``, it will be much faster but won't look as nice and won't be optimized.
+
+There are many options to optimize the quality and size of a gif. Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_gif`.
+
+Note that for editing gifs the best way is to preview them in the notebook as explained here: :ref:`ipython_display`
 
 See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
 
 .. _CCaudioClips:
-
 
 
 Audio clips
@@ -136,13 +145,15 @@ The resulting clip has an attribute ``clip.audio`` (its soundtrack) which is an 
 
 In this section we will see that audio clips can be created, imported, exported like video clips.
 
+Note: next sections are in construction
 
 AudioFileClip
 """"""""""""""
 
+See :py:class:`~moviepy.audio.io.AudioFileClip.AudioFileClip`.
 
-AudioArrayClip
-"""""""""""""""
 
 AudioClip
 """"""""""
+
+See :py:class:`~moviepy.audio.AudioClip.AudioClip`

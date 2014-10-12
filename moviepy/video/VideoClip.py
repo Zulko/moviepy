@@ -477,9 +477,9 @@ class VideoClip(Clip):
         clips = [c for c in [left, center, right] if c != None]
 
         # beurk, have to find other solution
-        from moviepy.video.compositing.concatenate import concatenate
+        from moviepy.video.compositing.concatenate import concatenate_videoclips
 
-        return concatenate(clips).set_start(self.start)
+        return concatenate_videoclips(clips).set_start(self.start)
 
     # IMAGE FILTERS
 

@@ -7,13 +7,12 @@ except ImportError:
 
 from config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
-
 def try_cmd(cmd):
         try:
             popen_params = {"stdout": sp.PIPE,
                             "stderr": sp.PIPE,
                             "stdin": DEVNULL}
-
+            
             # This was added so that no extra unwanted window opens on windows
             # when the child process is created
             if os.name == "nt":
@@ -27,7 +26,7 @@ def try_cmd(cmd):
             return True, None
 
 
-if FFMPEG_BINARY == 'auto-detect':
+if FFMPEG_BINARY=='auto-detect':
 
     if try_cmd(['ffmpeg'])[0]:
         FFMPEG_BINARY = 'ffmpeg'
@@ -36,11 +35,11 @@ if FFMPEG_BINARY == 'auto-detect':
     else:
         FFMPEG_BINARY = 'unset'
 else:
-    success, err = try_cmd(FFMPEG_BINARY)
+    success, err = try_cmd(cmd)
     if not success:
         raise err
 
-if IMAGEMAGICK_BINARY == 'auto-detect':
+if IMAGEMAGICK_BINARY=='auto-detect':
 
     if try_cmd(['convert'])[0]:
         IMAGEMAGICK_BINARY = 'convert'
@@ -50,7 +49,7 @@ if IMAGEMAGICK_BINARY == 'auto-detect':
 
 
 def get_setting(varname):
-    """ Returns the value of a configuration variable. """
+    """ Returns the value of a configuration variable. """ 
     gl = globals()
     if varname not in gl.keys():
         raise ValueError("Unknown setting %s"%varname)

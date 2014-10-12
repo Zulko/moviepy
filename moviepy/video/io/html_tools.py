@@ -162,7 +162,7 @@ def ipython_display(clip, filetype=None, maxduration=60, rd_kwargs=None,
     
     Remarks: If your browser doesn't support HTML5, this should warn you.
     If nothing is displayed, maybe your file or filename is wrong.
-    The media will be physically embedded in the notebook.
+    Important: The media will be physically embedded in the notebook.
 
     Examples
     =========

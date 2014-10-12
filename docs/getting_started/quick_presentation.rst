@@ -25,7 +25,7 @@ MoviePy has been developed with the following goals in mind:
 - **Flexible**. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.
 - **Portable**. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.
 
-Now for the limitations: for now MoviePy cannot stream videos (read from a webcam, or render a video live on a distant machine), it cannot do 3D effects (by lack of a nice 3D library for Python) and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). Also, if you only need to do frame-by-frame video analysis (with face detection or other fancy stuff) you may want to use the libraries OpenCV and SimpleCV instead.
+Now for the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), it cannot do 3D effects (by lack of a nice 3D library for Python) and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). Also, if you only need to do frame-by-frame video analysis (with face detection or other fancy stuff) you may want to use the libraries OpenCV and SimpleCV instead.
 
 
 Example code

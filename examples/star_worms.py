@@ -176,5 +176,4 @@ annotated_clips = [ annotate(clip,text) for clip,text in [
 
 # Concatenate and write to a file
 
-concatenate(annotated_clips).write_videofile('tutorial.avi', fps=5)
-
+concatenate_videoclips(annotated_clips).write_videofile('tutorial.avi', fps=5)

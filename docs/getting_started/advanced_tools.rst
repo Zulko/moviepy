@@ -3,8 +3,7 @@
 Advanced tools
 ===============
 
-This section briefly presents a few functions of the submodule ``moviepy.video.tools`` that can help you edit videos. See the reference manual for more details on how to use each functionality.
-
+This section will briefly present the submodule ``moviepy.video.tools`` that can help you edit videos. It's not ready yet, see :ref:`ref_videotools` (the same in more complete and more technical) instead.
 
 Tracking
 ~~~~~~~~~

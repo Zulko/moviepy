@@ -1,4 +1,4 @@
-.. ref_videofx:
+.. _ref_videofx:
 
 ***********************
 moviepy.video.fx (vfx)
@@ -54,7 +54,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     scroll
     speedx
     time_mirror
-    time_symetrize
+    time_symmetrize
 
 
    

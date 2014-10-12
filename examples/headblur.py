@@ -42,7 +42,7 @@ txt = TextClip("Hey you ! \n You're blurry!", color='grey70',
                
 # Concatenate the Chaplin clip with the text clip, add audio
 
-final = concatenate([clip_blurred,txt.set_duration(3)]).\
+final = concatenate_videoclips([clip_blurred,txt.set_duration(3)]).\
           set_audio(clip.audio)
 
 # We write the result to a file. Here we raise the bitrate so that
