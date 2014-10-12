@@ -106,6 +106,10 @@ class FFMPEG_VideoWriter:
             cmd.extend([
                 '-b', bitrate
             ])
+
+        if threads is not None:
+            cmd.extend(["-threads", str(threads)])
+
         if ((codec == 'libx264') and
                 (size[0] % 2 == 0) and
                 (size[1] % 2 == 0)):
@@ -119,7 +123,7 @@ class FFMPEG_VideoWriter:
         popen_params = {"stdout": DEVNULL,
                         "stderr": logfile,
                         "stdin": sp.PIPE}
-        
+
         # This was added so that no extra unwanted window opens on windows
         # when the child process is created
         if os.name == "nt":
