@@ -1,0 +1,219 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Organization of MoviePy’s code &mdash; MoviePy 0.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Clips in MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Video Compositing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Clip.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="VideoClip/VideoClip.html">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>Organization of MoviePy&#8217;s code</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/ref/code_origanization.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="organization-of-moviepy-s-code">
+<span id="codeorganization"></span><h1>Organization of MoviePy&#8217;s code<a class="headerlink" href="#organization-of-moviepy-s-code" title="Permalink to this headline">¶</a></h1>
+<p>This reviews the folders and files in moviepy&#8217;s code. It&#8217;s very easy:</p>
+<p>At the root of the project you have everything required for the packaging and installation of moviepy (README, setup.py, LICENCE) etc. Then you the <tt class="docutils literal"><span class="pre">docs/</span></tt> folder with the source code of the documentation (see <em class="xref std std-ref">updating_docs</em>), a folder for some <a class="reference internal" href="../examples/examples.html#examples"><em>Example Scripts</em></a>, and the main folder <tt class="docutils literal"><span class="pre">moviepy/</span></tt> for the source code of the library itself.</p>
+<p>The folder <tt class="docutils literal"><span class="pre">moviepy/</span></tt> the classes and modules relative to the video and the audio are clearly separated into two subfolders <tt class="docutils literal"><span class="pre">video/</span></tt> and <tt class="docutils literal"><span class="pre">audio/</span></tt>. In <tt class="docutils literal"><span class="pre">moviepy/</span></tt> you will find all the classes, functions and decorations which are useful to both submodules <tt class="docutils literal"><span class="pre">audio</span></tt> and <tt class="docutils literal"><span class="pre">video</span></tt>:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Clip.py</span></tt> defines the base object for <tt class="docutils literal"><span class="pre">AudioClip</span></tt> and <tt class="docutils literal"><span class="pre">VideoClip</span></tt> and the simple methods that can be used by both, like <tt class="docutils literal"><span class="pre">clip.subclip</span></tt>, <tt class="docutils literal"><span class="pre">clip.set_duration</span></tt>, etc.</li>
+<li>Files <tt class="docutils literal"><span class="pre">config.py</span></tt> and <tt class="docutils literal"><span class="pre">config_defaults.py</span></tt> store the default paths to the external programs FFMPEG and ImageMagick.</li>
+<li><tt class="docutils literal"><span class="pre">decorators.py</span></tt> provides very useful decorators that automatize some tasks, like the fact that some effects, when applied to a clip, should also be applied to it&#8217;s mask, or to its audio track.</li>
+<li><tt class="docutils literal"><span class="pre">tools.py</span></tt> provides misc. functions that are useful everywhere in the library, like a standardized call to subprocess, a time converter, a standardized way to print messages in the console, etc.</li>
+<li><tt class="docutils literal"><span class="pre">editor.py</span></tt> is a helper module to easily load and initiate many functionalities of moviepy (see <a class="reference internal" href="../getting_started/efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a> for more details)</li>
+</ul>
+<p>The submodules <tt class="docutils literal"><span class="pre">moviepy.audio</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.video</span></tt> are organized approximately the same way: at their root they implement base classes (respectively <tt class="docutils literal"><span class="pre">AudioClip</span></tt> and <tt class="docutils literal"><span class="pre">VideoClip</span></tt>) and they have the following submodules:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">io</span></tt> contains everything required to read files, write files, preview the clip or use a graphical interface of any sort. It contains the objects that speak to FFMEG and ImageMagick, the classes AudioFileClip and VideoFileClip, the functions used to preview a clip with pygame or to embed a video in HTML5 (for instance in the IPython Notebook).</li>
+<li><tt class="docutils literal"><span class="pre">fx</span></tt> contains a collection of effects and filters (like turning a video black and white, correcting luminosity, zooming or creating a scrolling effect). To add an effect to MoviePy, you simply add a new file <tt class="docutils literal"><span class="pre">my_effect.py</span></tt> to this folder, and in the file you define the function <tt class="docutils literal"><span class="pre">my_effect(clip,</span> <span class="pre">*other_parameters)</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">compositing</span></tt> contains functions and classes to compose videoclips (CompositeVideoClip, concatenate, clips_array)</li>
+<li><tt class="docutils literal"><span class="pre">tools</span></tt> contains advanced tools that are not effects but can help edit clips or generate new clips (tracking, subtitles, etc.)</li>
+</ul>
+</div>
+
+
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

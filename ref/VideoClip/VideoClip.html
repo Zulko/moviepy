@@ -1,69 +1,148 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>Classes of Video Clips &mdash; MoviePy 0.2 documentation</title>
-    
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html" />
-    <link rel="up" title="Reference Manual" href="../ref.html" />
-    <link rel="next" title="AudioClip" href="../AudioClip.html" />
-    <link rel="prev" title="Clip" href="../Clip.html" />
-   
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <title>Classes of Video Clips &mdash; MoviePy 0.2 documentation</title>
+  
 
-  </head>
-  <body>
   
   
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../AudioClip.html" title="AudioClip"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="../Clip.html" title="Clip"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
-          <li><a href="../ref.html" accesskey="U">Reference Manual</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html"/>
+        <link rel="up" title="Reference Manual" href="../ref.html"/>
+        <link rel="next" title="AudioClip" href="../AudioClip.html"/>
+        <link rel="prev" title="Clip" href="../Clip.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ref.html">Reference Manual</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../Clip.html">Clip</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../ref.html">Reference Manual</a> &raquo;</li>
+      
+    <li>Classes of Video Clips</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../../_sources/ref/VideoClip/VideoClip.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="classes-of-video-clips">
 <h1>Classes of Video Clips<a class="headerlink" href="#classes-of-video-clips" title="Permalink to this headline">¶</a></h1>
@@ -71,7 +150,7 @@
 <h2><tt class="xref py py-class docutils literal"><span class="pre">VideoClip</span></tt><a class="headerlink" href="#videoclip" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.VideoClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">VideoClip</tt><big>(</big><em>ismask=False</em>, <em>get_frame=None</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">VideoClip</tt><big>(</big><em>make_frame=None</em>, <em>ismask=False</em>, <em>duration=None</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">moviepy.Clip.Clip</span></tt></p>
 <p>Base class for video clips.</p>
 <p>See <tt class="docutils literal"><span class="pre">VideofileClip</span></tt>, <tt class="docutils literal"><span class="pre">ImageClip</span></tt> etc. for more user-friendly
@@ -104,7 +183,7 @@ classes.</p>
 <tr class="row-odd"><td>ismask</td>
 <td>Boolean set to <cite>True</cite> if the clip is a mask.</td>
 </tr>
-<tr class="row-even"><td>get_frame</td>
+<tr class="row-even"><td>make_frame</td>
 <td>A function <tt class="docutils literal"><span class="pre">t-&gt;</span> <span class="pre">frame</span> <span class="pre">at</span> <span class="pre">time</span> <span class="pre">t</span></tt> where <tt class="docutils literal"><span class="pre">frame</span></tt> is a
 w*h*3 RGB array.</td>
 </tr>
@@ -216,11 +295,11 @@ attribute set to <tt class="docutils literal"><span class="pre">audio</span></tt
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.VideoClip.VideoClip.set_get_frame">
-<tt class="descname">set_get_frame</tt><big>(</big><em>gf</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.set_get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.set_get_frame" title="Permalink to this definition">¶</a></dt>
+<dt id="moviepy.video.VideoClip.VideoClip.set_make_frame">
+<tt class="descname">set_make_frame</tt><big>(</big><em>mf</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.set_make_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the clip&#8217;s <tt class="docutils literal"><span class="pre">get_frame</span></tt>.</p>
-<p>Returns a copy of the VideoClip instance, with the get_frame
-attribute set to <cite>gf</cite>.</p>
+<p>Returns a copy of the VideoClip instance, with the make_frame
+attribute set to <cite>mf</cite>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -328,7 +407,7 @@ Please use the new name, <tt class="docutils literal"><span class="pre">write_vi
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_gif">
-<tt class="descname">write_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_gif" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em>, <em>colors=None</em>, <em>tempfiles=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_gif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the VideoClip to a GIF file.</p>
 <p>Converts a VideoClip into an animated GIF using ImageMagick
 or ffmpeg.</p>
@@ -380,59 +459,6 @@ slower than the clip you will use</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="moviepy.video.VideoClip.VideoClip.write_gif2">
-<tt class="descname">write_gif2</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_gif2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the VideoClip to a GIF file, without temporary files.</p>
-<p>Converts a VideoClip into an animated GIF using ImageMagick
-or ffmpeg.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> :</p>
-<blockquote>
-<div><p>Name of the resulting gif file.</p>
-</div></blockquote>
-<p><strong>fps</strong> :</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
-<tt class="docutils literal"><span class="pre">fps</span></tt> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
-</div></blockquote>
-<p><strong>program</strong> :</p>
-<blockquote>
-<div><p>Software to use for the conversion, either &#8216;ImageMagick&#8217; or
-&#8216;ffmpeg&#8217;.</p>
-</div></blockquote>
-<p><strong>opt</strong> :</p>
-<blockquote>
-<div><p>(ImageMagick only) optimalization to apply, either
-&#8216;optimizeplus&#8217; or &#8216;OptimizeTransparency&#8217;.</p>
-</div></blockquote>
-<p><strong>fuzz</strong> :</p>
-<blockquote class="last">
-<div><p>(ImageMagick only) Compresses the GIF by considering that
-the colors that are less than fuzz% different are in fact
-the same.</p>
-</div></blockquote>
-</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Notes</p>
-<p>The gif will be playing the clip in real time (you can
-only change the frame rate). If you want the gif to be played
-slower than the clip you will use</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># slow down clip 50% and make it a gif</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">speedx</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s">&#39;myClip.gif&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_images_sequence">
 <tt class="descname">write_images_sequence</tt><big>(</big><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
@@ -474,7 +500,7 @@ be used if it has one.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_videofile">
-<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec='libx264'</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>preset='medium'</em>, <em>audio_nbytes=4</em>, <em>audio_codec='libmp3lame'</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>para=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec=None</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>preset='medium'</em>, <em>audio_nbytes=4</em>, <em>audio_codec=None</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>verbose=True</em>, <em>threads=None</em>, <em>ffmpeg_params=None</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the clip to a videofile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -482,8 +508,9 @@ be used if it has one.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>filename</strong> :</p>
 <blockquote>
-<div><p>Name of the video file. The extension must correspond to the
-codec used (see below), ar simply be &#8216;.avi&#8217;.</p>
+<div><p>Name of the video file to write in.
+The extension must correspond to the &#8220;codec&#8221; used (see below),
+or simply be &#8216;.avi&#8217; (which will work with any codec).</p>
 </div></blockquote>
 <p><strong>fps</strong> :</p>
 <blockquote>
@@ -492,14 +519,16 @@ codec used (see below), ar simply be &#8216;.avi&#8217;.</p>
 <p><strong>codec</strong> :</p>
 <blockquote>
 <div><p>Codec to use for image encoding. Can be any codec supported
-by ffmpeg, but the extension of the output filename must be
-set accordingly.</p>
+by ffmpeg. If the filename is has extension &#8216;.mp4&#8217;, &#8216;.ogv&#8217;, &#8216;.webm&#8217;,
+the codec will be set accordingly, but you can still set it if you
+don&#8217;t like the default. For other extensions, the output filename
+must be set accordingly.</p>
 <p>Some examples of codecs are:</p>
-<p><tt class="docutils literal"><span class="pre">'libx264'</span></tt> (default codec, use file extension <tt class="docutils literal"><span class="pre">.mp4</span></tt>)
+<p><tt class="docutils literal"><span class="pre">'libx264'</span></tt> (default codec for file extension <tt class="docutils literal"><span class="pre">.mp4</span></tt>)
 makes well-compressed videos (quality tunable using &#8216;bitrate&#8217;).</p>
-<p><tt class="docutils literal"><span class="pre">'mpeg4'</span></tt> (use file extension <tt class="docutils literal"><span class="pre">.mp4</span></tt>) can be an alternative
+<p><tt class="docutils literal"><span class="pre">'mpeg4'</span></tt> (other codec for extension <tt class="docutils literal"><span class="pre">.mp4</span></tt>) can be an alternative
 to <tt class="docutils literal"><span class="pre">'libx264'</span></tt>, and produces higher quality videos by default.</p>
-<p><tt class="docutils literal"><span class="pre">'rawvideo'</span></tt> (use file extension <tt class="docutils literal"><span class="pre">.avi</span></tt>) will produce 
+<p><tt class="docutils literal"><span class="pre">'rawvideo'</span></tt> (use file extension <tt class="docutils literal"><span class="pre">.avi</span></tt>) will produce
 a video of perfect quality, of possibly very huge size.</p>
 <p><tt class="docutils literal"><span class="pre">png</span></tt> (use file extension <tt class="docutils literal"><span class="pre">.avi</span></tt>) will produce a video
 of perfect quality, of smaller size than with <tt class="docutils literal"><span class="pre">rawvideo</span></tt></p>
@@ -530,7 +559,9 @@ incorporated in the the movie, if any.</p>
 <blockquote>
 <div><p>Which audio codec should be used. Examples are &#8216;libmp3lame&#8217;
 for &#8216;.mp3&#8217;, &#8216;libvorbis&#8217; for &#8216;ogg&#8217;, &#8216;libfdk_aac&#8217;:&#8217;m4a&#8217;,
-&#8216;pcm_s16le&#8217; for 16-bit wav and &#8216;pcm_s32le&#8217; for 32-bit wav.</p>
+&#8216;pcm_s16le&#8217; for 16-bit wav and &#8216;pcm_s32le&#8217; for 32-bit wav.
+Default is &#8216;libmp3lame&#8217;, unless the video extension is &#8216;ogv&#8217;
+or &#8216;webm&#8217;, at which case the default is &#8216;libvorbis&#8217;.</p>
 </div></blockquote>
 <p><strong>audio_bitrate</strong> :</p>
 <blockquote>
@@ -538,6 +569,24 @@ for &#8216;.mp3&#8217;, &#8216;libvorbis&#8217; for &#8216;ogg&#8217;, &#8216;li
 Will determine the size/quality of audio in the output file.
 Note that it mainly an indicative goal, the bitrate won&#8217;t
 necessarily be the this in the final file.</p>
+</div></blockquote>
+<p><strong>preset</strong> :</p>
+<blockquote>
+<div><p>Sets the time that FFMPEG will spend optimizing the compression.
+Choices are: ultrafast, superfast, fast, medium, slow, superslow.
+Note that this does not impact the quality of the video, only the
+size of the video file. So choose ultrafast when you are in a
+hurry and file size does not matter.</p>
+</div></blockquote>
+<p><strong>threads</strong> :</p>
+<blockquote>
+<div><p>Number of threads to use for ffmpeg. Can speed up the writing of
+the video on multicore computers</p>
+</div></blockquote>
+<p><strong>ffmpeg_params</strong> :</p>
+<blockquote>
+<div><p>Any additional ffmpeg parameters you would like to pass, as a list
+of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8217;, &#8216;value2&#8217;]</p>
 </div></blockquote>
 <p><strong>write_logfile</strong> :</p>
 <blockquote class="last">
@@ -549,6 +598,12 @@ output file in them.</p>
 </tr>
 </tbody>
 </table>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;my_new_video.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -865,88 +920,67 @@ actually playing at the given time <cite>t</cite>.</p>
 
 
           </div>
-        </div>
-      </div>
-     
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../../index.html">
-              <img class="logo" src="../../_static/logo_small.jpeg" alt="Logo"/>
-            </a></p>
-  <h3><a href="../../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Classes of Video Clips</a><ul>
-<li><a class="reference internal" href="#videoclip"><tt class="docutils literal"><span class="pre">VideoClip</span></tt></a><ul>
-<li><a class="reference internal" href="#videofileclip"><tt class="docutils literal"><span class="pre">VideoFileClip</span></tt></a></li>
-<li><a class="reference internal" href="#imageclip"><tt class="docutils literal"><span class="pre">ImageClip</span></tt></a></li>
-<li><a class="reference internal" href="#colorclip"><tt class="docutils literal"><span class="pre">ColorClip</span></tt></a></li>
-<li><a class="reference internal" href="#textclip"><tt class="docutils literal"><span class="pre">TextClip</span></tt></a></li>
-<li><a class="reference internal" href="#compositevideoclip"><tt class="docutils literal"><span class="pre">CompositeVideoClip</span></tt></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../ref.html">Reference Manual</a><ul>
-      <li>Previous: <a href="../Clip.html" title="previous chapter">Clip</a></li>
-      <li>Next: <a href="../AudioClip.html" title="next chapter">AudioClip</a></li>
-  </ul></li>
-  </ul></li>
-</ul>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/ref/VideoClip/VideoClip.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../AudioClip.html" class="btn btn-neutral float-right" title="AudioClip"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../Clip.html" class="btn btn-neutral" title="Clip"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-    
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../AudioClip.html" title="AudioClip"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="../Clip.html" title="Clip"
-             >previous</a> |</li>
-        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
-          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" style="position:relative">
-      &copy; Copyright 2014, Zulko.
-    </div>
-    <div>
 
-    </div>
+    </section>
 
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

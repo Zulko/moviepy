@@ -1,4 +1,4 @@
-.. ref_videotools:
+.. _ref_videotools:
 
 ************
 video.tools

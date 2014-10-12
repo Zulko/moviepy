@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick presentation &mdash; MoviePy 0.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
+        <link rel="up" title="Getting started with MoviePy" href="getting_started.html"/>
+        <link rel="next" title="Creating and exporting clips" href="clips.html"/>
+        <link rel="prev" title="Getting started with MoviePy" href="getting_started.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/Clip.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/VideoClip/VideoClip.html">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
+      
+    <li>Quick presentation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/getting_started/quick_presentation.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="quick-presentation">
+<span id="id1"></span><h1>Quick presentation<a class="headerlink" href="#quick-presentation" title="Permalink to this headline">¶</a></h1>
+<p>This section explains when MoviePy can be used and how it works.</p>
+<div class="section" id="do-i-need-moviepy">
+<h2>Do I need MoviePy ?<a class="headerlink" href="#do-i-need-moviepy" title="Permalink to this headline">¶</a></h2>
+<p>There are already many good free video editing softwares out there with nice graphical interfaces (my favorites being OpenShot and KDEnlive). So why write videos using scripts ? Here are a few reasons:</p>
+<ul class="simple">
+<li>You have many videos to process or to compose in a complicated way.</li>
+<li>You want to automatize the creation of videos or GIFs on a web server (Django, Flask, etc.)</li>
+<li>You want to automatize tedious tasks, like title insertions tracking objects, cuting scenes, making end credits, subtitles, etc...</li>
+<li>You want to code your own video effects to do something no existing video editor can.</li>
+<li>You want to create animations from images generated by another python library (Matplotlib, Mayavi, Gizeh...)</li>
+</ul>
+</div>
+<div class="section" id="advantages-and-limitations">
+<h2>Advantages and limitations<a class="headerlink" href="#advantages-and-limitations" title="Permalink to this headline">¶</a></h2>
+<p>MoviePy has been developed with the following goals in mind:</p>
+<ul class="simple">
+<li><strong>Simple an intuitive</strong>. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.</li>
+<li><strong>Flexible</strong>. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.</li>
+<li><strong>Portable</strong>. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.</li>
+</ul>
+<p>Now for the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), it cannot do 3D effects (by lack of a nice 3D library for Python) and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you&#8217;ll need another software for that). Also, if you only need to do frame-by-frame video analysis (with face detection or other fancy stuff) you may want to use the libraries OpenCV and SimpleCV instead.</p>
+</div>
+<div class="section" id="example-code">
+<h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
+<p>In a typical MoviePy script, you load video or audio files, modify them, put them together, and write the final result to a new video file. As an example, let us load a video of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Import everything needed to edit video clips</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myHolidays.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="c"># Reduce the audio volume (volume x 0.8)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+
+<span class="c"># Generate a text clip. You can customize the font, color, etc.</span>
+<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;My Holidays 2013&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;white&#39;</span><span class="p">)</span>
+
+<span class="c"># Say that you want it to appear 10s at the center of the screen</span>
+<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">txt_clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s">&#39;center&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c"># Overlay the text clip on the first video clip</span>
+<span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="p">,</span> <span class="n">txt_clip</span><span class="p">])</span>
+
+<span class="c"># Write the result to a file</span>
+<span class="n">video</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;myHolidays_edited.avi&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-moviepy-works">
+<h2>How MoviePy works<a class="headerlink" href="#how-moviepy-works" title="Permalink to this headline">¶</a></h2>
+<p>MoviePy uses the software <tt class="docutils literal"><span class="pre">ffmpeg</span></tt> to read and to export video and audio files. It also (optionally) uses ImageMagick to generate texts and write GIF files. The processing of the different media is ensured by Python&#8217;s fast numerical library Numpy. Advanced effects and enhancements use some of Python&#8217;s numerous image processing libraries (PIL, Scikit-image, scipy, etc.).</p>
+<a class="reference internal image-reference" href="../_images/explanations.jpeg"><img alt="../_images/explanations.jpeg" class="align-center" src="../_images/explanations.jpeg" style="width: 570px;" /></a>
+</div>
+<div class="section" id="basic-concepts">
+<h2>Basic concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h2>
+<p>The central objects of MoviePy are <em>clips</em>, which can be <tt class="docutils literal"><span class="pre">AudioClips</span></tt> or <tt class="docutils literal"><span class="pre">VideoClips</span></tt>. They can be modified (cut, slowed down, darkened...) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). <tt class="docutils literal"><span class="pre">VideoClips</span></tt> for instance can be created from a video file, an image, a text, or a custom animation. They can have an audio track (which is an <tt class="docutils literal"><span class="pre">AudioClip</span></tt>) and a mask (a special <tt class="docutils literal"><span class="pre">VideoClip</span></tt> indicating which parts of the clip to hide when the clip is mixed with other clips). See <a class="reference internal" href="clips.html#clips"><em>Creating and exporting clips</em></a> and <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> for more details.</p>
+<p>A clip can be modified using one of moviepy&#8217;s numerous effects (like in <tt class="docutils literal"><span class="pre">clip.resize(width=&quot;360&quot;)</span></tt>, <tt class="docutils literal"><span class="pre">clip.subclip(t1,t2)</span></tt>, or <tt class="docutils literal"><span class="pre">clip.fx(vfx.black_white)</span></tt>) or using a user-implemented effect. MoviePy implements many functions (like <tt class="docutils literal"><span class="pre">clip.fl</span></tt>, <tt class="docutils literal"><span class="pre">clip.fx</span></tt>, etc.) which make it very easy to code your own effect in a few lines. See <a class="reference internal" href="effects.html#effects"><em>Clips transformations and effects</em></a> for more.</p>
+<p>You will also find a few advanced goodies in <tt class="docutils literal"><span class="pre">moviepy.video.tools</span></tt> to track objects in a video, draw simple shapes and color gradients (very useful for masks), generate subtitles and end credits, etc. See <a class="reference internal" href="advanced_tools.html#advancedtools"><em>Advanced tools</em></a> for a description of these.</p>
+<p>Finally, although MoviePy has no graphical user interface, there are many ways to preview a clip which allow you to fine-tune your scripts and be sure that everything is perfect when you render you video in high quality. See <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="clips.html" class="btn btn-neutral float-right" title="Creating and exporting clips"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting started with MoviePy"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

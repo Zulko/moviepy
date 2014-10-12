@@ -1,157 +1,202 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>moviepy.video.fx.all.time_symetrize &mdash; MoviePy 0.2 documentation</title>
-    
-    <link rel="stylesheet" href="../../_static/flasky.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
-        VERSION:     '0.2',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html" />
-    <link rel="up" title="moviepy.video.fx (vfx)" href="../videofx.html" />
-    <link rel="next" title="audio.fx" href="../audiofx.html" />
-    <link rel="prev" title="moviepy.video.fx.all.time_mirror" href="moviepy.video.fx.all.time_mirror.html" />
-   
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:400|Antic+Slab" rel="stylesheet" type="text/css">
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+  <title>moviepy.video.fx.all.time_symetrize &mdash; MoviePy 0.2 documentation</title>
+  
 
-  </head>
-  <body>
   
   
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../audiofx.html" title="audio.fx"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="moviepy.video.fx.all.time_mirror.html" title="moviepy.video.fx.all.time_mirror"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
-          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
-          <li><a href="../videofx.html" accesskey="U">moviepy.video.fx (vfx)</a> &raquo;</li> 
-      </ul>
-    </div>  
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../../index.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../Clip.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../VideoClip/VideoClip.html">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+    <li>moviepy.video.fx.all.time_symetrize</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../../_sources/ref/videofx/moviepy.video.fx.all.time_symetrize.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
             
   <div class="section" id="moviepy-video-fx-all-time-symetrize">
 <h1>moviepy.video.fx.all.time_symetrize<a class="headerlink" href="#moviepy-video-fx-all-time-symetrize" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="moviepy.video.fx.all.time_symetrize">
-<tt class="descclassname">moviepy.video.fx.all.</tt><tt class="descname">time_symetrize</tt><big>(</big><em>clip</em><big>)</big><a class="headerlink" href="#moviepy.video.fx.all.time_symetrize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a clip that plays the current clip once forwards and
-then once backwards. This is very practival to make video that
-loop well, e.g. to create animated GIFs.
-This effect is automatically applied to the clip&#8217;s mask and audio
-if they exist.</p>
-</dd></dl>
-
 </div>
 
 
           </div>
-        </div>
-      </div>
-     
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../../index.html">
-              <img class="logo" src="../../_static/logo_small.jpeg" alt="Logo"/>
-            </a></p><h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../ref.html">Reference Manual</a><ul>
-  <li><a href="../videofx.html">moviepy.video.fx (vfx)</a><ul>
-      <li>Previous: <a href="moviepy.video.fx.all.time_mirror.html" title="previous chapter">moviepy.video.fx.all.time_mirror</a></li>
-      <li>Next: <a href="../audiofx.html" title="next chapter">audio.fx</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../../_sources/ref/videofx/moviepy.video.fx.all.time_symetrize.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
     </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
         </div>
       </div>
-    
-      <div class="clearer"></div>
-    </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../../np-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li class="right" >
-          <a href="../audiofx.html" title="audio.fx"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="moviepy.video.fx.all.time_mirror.html" title="moviepy.video.fx.all.time_mirror"
-             >previous</a> |</li>
-        <li><a href="../../index.html">MoviePy 0.2 documentation</a> &raquo;</li>
-          <li><a href="../ref.html" >Reference Manual</a> &raquo;</li>
-          <li><a href="../videofx.html" >moviepy.video.fx (vfx)</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer" style="position:relative">
-      &copy; Copyright 2014, Zulko.
-    </div>
-    <div>
 
-    </div>
+    </section>
 
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
 </html>

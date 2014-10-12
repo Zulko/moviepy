@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Clips transformations and effects &mdash; MoviePy 0.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
+        <link rel="up" title="Getting started with MoviePy" href="getting_started.html"/>
+        <link rel="next" title="Advanced tools" href="advanced_tools.html"/>
+        <link rel="prev" title="Mixing clips together" href="compositing.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/Clip.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/VideoClip/VideoClip.html">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
+      
+    <li>Clips transformations and effects</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/getting_started/effects.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="clips-transformations-and-effects">
+<span id="effects"></span><h1>Clips transformations and effects<a class="headerlink" href="#clips-transformations-and-effects" title="Permalink to this headline">¶</a></h1>
+<p>There are several categories of clip modifications in MoviePy:</p>
+<ul class="simple">
+<li>The very common methods to change the attributes of a clip: <tt class="docutils literal"><span class="pre">clip.set_duration</span></tt>, <tt class="docutils literal"><span class="pre">clip.set_audio</span></tt>, <tt class="docutils literal"><span class="pre">clip.set_mask</span></tt>, <tt class="docutils literal"><span class="pre">clip.set_start</span></tt> etc.</li>
+<li>The already-implemented effects. Core effects like <tt class="docutils literal"><span class="pre">clip.subclip(t1,</span> <span class="pre">t2)</span></tt> (keep only the cut between t1 and t2), which are very important, are implemented as class methods. More advanced and less common effects like <tt class="docutils literal"><span class="pre">loop</span></tt> (makes the clip play in a loop) or <tt class="docutils literal"><span class="pre">time_mirror</span></tt> (makes the clip play backwards) are placed in the special modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>.</li>
+<li>The effects that you can create yourself. using</li>
+</ul>
+<p>Importantly, all these effects have in common that they are <strong>not inplace</strong>: none of these effects modifies the original clip, they all create a new clip that is a version of the former with the changes applied. For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;some_file.mp4&quot;</span><span class="p">)</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c"># does nothing, changes nothing !</span>
+<span class="n">my_new_clip</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c"># good !</span>
+</pre></div>
+</div>
+<p>The very common methods for composition (cutting a clip, setting its position, etc.) are implemented as <tt class="docutils literal"><span class="pre">clip.mymethod</span></tt>. For instance <tt class="docutils literal"><span class="pre">clip.subclip(15,20)</span></tt> returns the part of <tt class="docutils literal"><span class="pre">clip</span></tt> that is playing between 15 seconds and 20 seconds.</p>
+<p>For all the other modifications, we use <tt class="docutils literal"><span class="pre">clip.fx</span></tt> and <tt class="docutils literal"><span class="pre">clip.fl</span></tt>. <tt class="docutils literal"><span class="pre">clip.fx</span></tt> is meant to make it easy to use already-written transformation functions, while  <tt class="docutils literal"><span class="pre">clip.fl</span></tt> makes it easy to write new transformation functions.</p>
+<p>Note that none of these methods occur <em>inplace</em>: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just <em>special views</em> of the original clip, they do not carry all the video data with them. Actually, the <em>real</em> modifications are only performed when you are rendering the clip (see <a class="reference internal" href="clips.html#renderingaclip"><em>Exporting video clips</em></a>). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.</p>
+<div class="section" id="time-representations-in-moviepy">
+<h2>Time representations in MoviePy<a class="headerlink" href="#time-representations-in-moviepy" title="Permalink to this headline">¶</a></h2>
+<p>Many methods that we will see accept times as arguments. For instance <tt class="docutils literal"><span class="pre">clip.subclip(t_start,t_end)</span></tt> which cuts the clip between two times. The times can be represented either in seconds (<tt class="docutils literal"><span class="pre">t_start=230.54</span></tt>), as a couple (minutes, seconds) (<tt class="docutils literal"><span class="pre">t_start=(3,50.54)</span></tt>), as a triplet (hour, min, sec) (<tt class="docutils literal"><span class="pre">t_start=(0,3,50.54)</span></tt>) or as a string (<tt class="docutils literal"><span class="pre">t_start='00:03:50.54')</span></tt>).</p>
+<p>Most of the time when the times are not provided they are guessed, for instance in <tt class="docutils literal"><span class="pre">clip.subclip(t_start=50)</span></tt> it is implied that <tt class="docutils literal"><span class="pre">t_end</span></tt> corresponds to the end of the clip, in <tt class="docutils literal"><span class="pre">clip.subclip(t_end=20)</span></tt> it is implied that t_start=0. If the time is negative it is considered as the time before the end of the clip: <tt class="docutils literal"><span class="pre">clip.subclip(-20,</span> <span class="pre">-10)</span></tt> cuts the clip between 20s before the end and 10s before the end.</p>
+</div>
+<div class="section" id="methods-to-change-the-clip-attributes">
+<h2>Methods to change the clip attributes<a class="headerlink" href="#methods-to-change-the-clip-attributes" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="already-implemented-effects">
+<h2>Already-implemented effects<a class="headerlink" href="#already-implemented-effects" title="Permalink to this headline">¶</a></h2>
+<p>See <em class="xref std std-ref">ref_videofx</em> for a complete list and documentation of these</p>
+</div>
+<div class="section" id="methods-to-create-custom-effects">
+<h2>Methods to create custom effects<a class="headerlink" href="#methods-to-create-custom-effects" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="clip-fx">
+<h3>clip.fx<a class="headerlink" href="#clip-fx" title="Permalink to this headline">¶</a></h3>
+<p>Suppose that you have some functions implementing effects on clips:</p>
+<div class="highlight-python"><pre>effect_1(clip, args1) -&gt; new clip
+effect_2(clip, args2) -&gt; new clip
+effect_3(clip, args3) -&gt; new clip</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">args</span></tt> represent arguments and/or keyword arguments. To apply these functions, in that order, to one clip, you would write something like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">newclip</span> <span class="o">=</span>  <span class="n">effect_3</span><span class="p">(</span> <span class="n">effect_2</span><span class="p">(</span> <span class="n">effect_1</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">args3</span><span class="p">),</span> <span class="n">args2</span><span class="p">),</span> <span class="n">args1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>but this is not easy to read. To have a clearer syntax you can use <tt class="docutils literal"><span class="pre">clip.fx</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">newclip</span> <span class="o">=</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_1</span><span class="p">,</span> <span class="n">args1</span><span class="p">)</span>
+               <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_2</span><span class="p">,</span> <span class="n">args2</span><span class="p">)</span>
+               <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">effect_3</span><span class="p">,</span> <span class="n">args3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Much better ! There are already many effects implemented in the modules <tt class="docutils literal"><span class="pre">moviepy.video.fx</span></tt> and <tt class="docutils literal"><span class="pre">moviepy.audio.fx</span></tt>. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don&#8217;t have to worry about modifying these. For practicality, when you use <tt class="docutils literal"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import.editor</span> <span class="pre">*</span></tt>, these two modules are loaded as <tt class="docutils literal"><span class="pre">vfx</span></tt> and <tt class="docutils literal"><span class="pre">afx</span></tt>, so you may write something like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo.avi&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">)</span> <span class="c"># resize (keep aspect ratio)</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">speedx</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># double speed</span>
+        <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">colorx</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span> <span class="c"># darken the picture</span>
+</pre></div>
+</div>
+<p>For convenience, when you use <tt class="docutils literal"><span class="pre">moviepy.editor</span></tt>, frequently used methods such as <tt class="docutils literal"><span class="pre">resize</span></tt> can be called in a simpler way: <tt class="docutils literal"><span class="pre">clip.resize(...)</span></tt> instead of <tt class="docutils literal"><span class="pre">clip.fx(</span> <span class="pre">vfx.resize,</span> <span class="pre">...)</span></tt></p>
+</div>
+<div class="section" id="clip-fl">
+<h3>clip.fl<a class="headerlink" href="#clip-fl" title="Permalink to this headline">¶</a></h3>
+<p>You can modify a clip as you want using custom <em>filters</em> with <tt class="docutils literal"><span class="pre">clip.fl_time</span></tt>, <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>, and more generally with <tt class="docutils literal"><span class="pre">clip.fl</span></tt>.</p>
+<p>You can change the timeline of the clip with <tt class="docutils literal"><span class="pre">clip.fl_time</span></tt> like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">modifiedClip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+<span class="n">modifiedClip2</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span><span class="o">+</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now the clip <tt class="docutils literal"><span class="pre">modifiedClip1</span></tt> plays the same as <tt class="docutils literal"><span class="pre">my_clip</span></tt>, only three times faster, while <tt class="docutils literal"><span class="pre">modifiedClip2</span></tt> will play <tt class="docutils literal"><span class="pre">my_clip</span></tt> by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).</p>
+<p>You can also modify the display of a clip with <tt class="docutils literal"><span class="pre">clip.fl_image</span></tt>. The following takes a clip and inverts the green and blue channels of the frames:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">image</span><span class="p">[:,:,[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span> <span class="n">invert_green_blue</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method <tt class="docutils literal"><span class="pre">clip.fl(filter)</span></tt>. The filter must be a function which takes two arguments and returns a picture. the fist argument is a <tt class="docutils literal"><span class="pre">get_frame</span></tt> method (i.e. a function <tt class="docutils literal"><span class="pre">g(t)</span></tt> which given a time returns the clip&#8217;s frame at that time), and the second argument is the time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns a &#39;region&#39; of the current frame.</span>
+<span class="sd">    The position of this region depends on the time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">frame_region</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">360</span><span class="p">,:]</span>
+    <span class="k">return</span> <span class="n">frame_region</span>
+
+<span class="n">modifiedClip</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span> <span class="n">scroll</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This will scroll down the clip, with a constant height of 360 pixels.</p>
+<p>When programming a new effect, whenever it is possible, prefer using <tt class="docutils literal"><span class="pre">fl_time</span></tt> and <tt class="docutils literal"><span class="pre">fl_image</span></tt> instead of <tt class="docutils literal"><span class="pre">fl</span></tt> if possible when implementing new effects. The reason is that, when these effects are applied to
+ImageClips, MoviePy will recognize that these methods do not need to be applied to each frame, which will
+result in faster renderings.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="advanced_tools.html" class="btn btn-neutral float-right" title="Advanced tools"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="compositing.html" class="btn btn-neutral" title="Mixing clips together"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

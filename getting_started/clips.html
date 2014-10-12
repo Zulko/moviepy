@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Creating and exporting clips &mdash; MoviePy 0.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
+        <link rel="up" title="Getting started with MoviePy" href="getting_started.html"/>
+        <link rel="next" title="Mixing clips together" href="compositing.html"/>
+        <link rel="prev" title="Quick presentation" href="quick_presentation.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="../index.html" class="fa fa-home"> MoviePy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ref/Clip.html">Clip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/VideoClip/VideoClip.html">Classes of Video Clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/AudioClip.html">AudioClip</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videofx.html">moviepy.video.fx (vfx)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiofx.html">audio.fx</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/videotools.html">video.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/audiotools.html">audio.tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/ffmpeg.html">FFMPEG tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ref/decorators.html">Decorators</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">MoviePy</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
+      
+    <li>Creating and exporting clips</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="../_sources/getting_started/clips.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="creating-and-exporting-clips">
+<span id="clips"></span><h1>Creating and exporting clips<a class="headerlink" href="#creating-and-exporting-clips" title="Permalink to this headline">¶</a></h1>
+<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <a class="reference internal" href="effects.html#effects"><em>Clips transformations and effects</em></a>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
+<p>The following code summarizes the base clips that you can create with moviepy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># VIDEO CLIPS</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c"># for custom animations (see below)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;my_video_file.mp4&quot;</span><span class="p">)</span> <span class="c"># or .avi, .webm, .gif ...</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;my_picture.png&quot;</span><span class="p">)</span> <span class="c"># or .jpeg, .tiff, ...</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;Hello !&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s">&quot;Amiri-Bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">460</span><span class="p">,</span><span class="mi">380</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">])</span>
+
+<span class="c"># AUDIO CLIPS</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&quot;my_audiofile.mp3&quot;</span><span class="p">)</span> <span class="c"># or .ogg, .wav... or a video !</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">AudioArrayClip</span><span class="p">(</span><span class="n">numpy_array</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">)</span> <span class="c"># from a numerical array</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">AudioClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c"># uses a function make_frame(t)</span>
+</pre></div>
+</div>
+<p>The best to understand these clips is to read the full documentation for each in the <a class="reference internal" href="../ref/ref.html#reference-manual"><em>Reference Manual</em></a>. The next sections
+In this section we see how to create clips, (for instance from video or audio files), how to mix them together, and how to write them to a file.</p>
+<div class="section" id="categories-of-video-clips">
+<h2>Categories of video clips<a class="headerlink" href="#categories-of-video-clips" title="Permalink to this headline">¶</a></h2>
+<p>Video clips are the building blocks of longer videos. Technically, they are clips with a <tt class="docutils literal"><span class="pre">clip.get_frame(t)</span></tt> method which outputs a HxWx3 numpy array representing the frame of the clip at time <em>t</em>. There are two main categories: animated clips (made with <tt class="docutils literal"><span class="pre">VideoFileClip</span></tt> and <tt class="docutils literal"><span class="pre">VideoClip</span></tt>) and unanimated clips which show the same picture for an a-priori infinite duration (<tt class="docutils literal"><span class="pre">ImageClip</span></tt>, <tt class="docutils literal"><span class="pre">TextClip</span></tt>,``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (<tt class="docutils literal"><span class="pre">clip.audio</span></tt>) which is its <em>soundtrack</em>, and a mask clip.</p>
+<div class="section" id="videoclip">
+<h3>VideoClip<a class="headerlink" href="#videoclip" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">VideoClip</span></tt> is the base class for all the other video clips in MoviePy. If all you want is to edit video files, you will never need it. This class is practical when you want to make animations from frames that are generated by another library. All you need is to define a function <tt class="docutils literal"><span class="pre">make_frame(t)</span></tt> which returns a HxWx3 numpy array (of 8-bits integers) representing the frame at time t. Here is an example with the graphics library Gizeh:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">gizeh</span>
+<span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="kn">as</span> <span class="nn">mpy</span>
+
+<span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="n">surface</span> <span class="o">=</span> <span class="n">gizeh</span><span class="o">.</span><span class="n">Surface</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span><span class="mi">128</span><span class="p">)</span> <span class="c"># width, height</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="n">W</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="n">t</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span><span class="o">/</span><span class="mi">6</span> <span class="c"># the radius varies over time</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">gizeh</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span> <span class="n">fill</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">circle</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">surface</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">surface</span><span class="o">.</span><span class="n">get_npimage</span><span class="p">()</span> <span class="c"># returns a 8-bit RGB array</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mpy</span><span class="o">.</span><span class="n">VideoClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="c"># 2 seconds</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s">&quot;circle.gif&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/circle.gif"><img alt="../_images/circle.gif" class="align-center" src="../_images/circle.gif" style="width: 128px;" /></a>
+<p>Note: three next sections are in construction</p>
+</div>
+<div class="section" id="videofileclip">
+<h3>VideoFileClip<a class="headerlink" href="#videofileclip" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt></a>.</p>
+</div>
+<div class="section" id="imageclip">
+<h3>ImageClip<a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt></a>.</p>
+</div>
+<div class="section" id="textclip">
+<h3>TextClip<a class="headerlink" href="#textclip" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><tt class="xref py py-class docutils literal"><span class="pre">TextClip</span></tt></a>.</p>
+</div>
+</div>
+<div class="section" id="mask-clips">
+<h2>Mask clips<a class="headerlink" href="#mask-clips" title="Permalink to this headline">¶</a></h2>
+<p>A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a>).</p>
+<p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
+<p>When you create or load a clip that you will use as a mask you need to declare it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mclip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">makeframe</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">mclip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;my_mask.jpeg&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">mclip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="s">&quot;myvideo.mp4&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the case of video and image files, if these are not already black and white they will be converted automatically.</p>
+<p>Any video clip can be turned into a mask with <tt class="docutils literal"><span class="pre">clip.to_mask()</span></tt>, and a mask can be turned to a standard RGB video clip with <tt class="docutils literal"><span class="pre">my_mask_clip.to_RGB()</span></tt>.</p>
+<p>Masks are treated differently by many methods (because their frames are different) but you can do with a mask pretty much everything you can do with a standard clip: you can cut it, edit it, preview it, write it to a video file, make snapshots, etc.</p>
+</div>
+<div class="section" id="exporting-video-clips">
+<span id="renderingaclip"></span><h2>Exporting video clips<a class="headerlink" href="#exporting-video-clips" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="video-files-mp4-webm-ogv">
+<h3>Video files (.mp4, .webm, .ogv...)<a class="headerlink" href="#video-files-mp4-webm-ogv" title="Permalink to this headline">¶</a></h3>
+<p>To write a clip as a video file, use</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">)</span> <span class="c"># default codec: &#39;libx264&#39;, 24 fps</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.mp4&quot;</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.webm&quot;</span><span class="p">)</span> <span class="c"># webm format</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;movie.webm&quot;</span><span class="p">,</span><span class="n">audio</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># don&#39;t render audio.</span>
+</pre></div>
+</div>
+<p>MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with <tt class="docutils literal"><span class="pre">codec='mpeg4'</span></tt> for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><tt class="xref py py-meth docutils literal"><span class="pre">write_videofile()</span></tt></a> for more.</p>
+<p>Sometimes it is impossible for MoviePy to guess the <tt class="docutils literal"><span class="pre">duration</span></tt> attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have <em>a priori</em> an infinite duration). Then, the <tt class="docutils literal"><span class="pre">duration</span></tt> must be set manually with <tt class="docutils literal"><span class="pre">clip.set_duration</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Make a video showing a flower for 5 seconds</span>
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span><span class="s">&quot;flower.jpeg&quot;</span><span class="p">)</span> <span class="c"># has infinite duration</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;flower.mp4&quot;</span><span class="p">)</span> <span class="c"># Will fail ! NO DURATION !</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;flower.mp4&quot;</span><span class="p">)</span> <span class="c"># works !</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="animated-gifs">
+<h3>Animated GIFs<a class="headerlink" href="#animated-gifs" title="Permalink to this headline">¶</a></h3>
+<p>To write your video as an animated GIF, use</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s">&#39;test.gif&#39;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that this requires ImageMagick installed. Otherwise you can also create the GIF with ffmpeg by adding the option <tt class="docutils literal"><span class="pre">program='ffmpeg'</span></tt>, it will be much faster but won&#8217;t look as nice and won&#8217;t be optimized.</p>
+<p>There are many options to optimize the quality and size of a gif. Please refer to <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif" title="moviepy.video.VideoClip.VideoClip.write_gif"><tt class="xref py py-meth docutils literal"><span class="pre">write_gif()</span></tt></a>.</p>
+<p>Note that for editing gifs the best way is to preview them in the notebook as explained here: <a class="reference internal" href="efficient_moviepy.html#ipython-display"><em>ipython_display</em></a></p>
+<p>See <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python">this blog post</a> for informations on making GIFs from video files, and <a class="reference external" href="http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/">this other post</a> for GIF animations with vector graphics.</p>
+</div>
+</div>
+<div class="section" id="audio-clips">
+<span id="ccaudioclips"></span><h2>Audio clips<a class="headerlink" href="#audio-clips" title="Permalink to this headline">¶</a></h2>
+<p>When you make a video clip from a video containing a soundtrack, like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myHolidays.mp4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The resulting clip has an attribute <tt class="docutils literal"><span class="pre">clip.audio</span></tt> (its soundtrack) which is an audio clip. You can also set the soundtrack of a video clip with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">set_audio</span><span class="p">(</span><span class="n">some_audio_clip</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this section we will see that audio clips can be created, imported, exported like video clips.</p>
+<p>Note: next sections are in construction</p>
+<div class="section" id="audiofileclip">
+<h3>AudioFileClip<a class="headerlink" href="#audiofileclip" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip" title="moviepy.audio.io.AudioFileClip.AudioFileClip"><tt class="xref py py-class docutils literal"><span class="pre">AudioFileClip</span></tt></a>.</p>
+</div>
+<div class="section" id="audioclip">
+<h3>AudioClip<a class="headerlink" href="#audioclip" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><tt class="xref py py-class docutils literal"><span class="pre">AudioClip</span></tt></a></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="compositing.html" class="btn btn-neutral float-right" title="Mixing clips together"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quick_presentation.html" class="btn btn-neutral" title="Quick presentation"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Zulko.
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
