@@ -4,7 +4,7 @@ the cuts in MoviePy """
 import numpy as np
 
 
-def find_period(clip,fps=None,tmin=.3):
+def find_video_period(clip,fps=None,tmin=.3):
     if fps is None:
         fps=clip.fps
     frame = lambda t: clip.get_frame(t).flatten()

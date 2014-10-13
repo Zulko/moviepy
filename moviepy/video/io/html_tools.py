@@ -13,6 +13,9 @@ import os
 from base64 import b64encode
 from moviepy.tools import extensions_dict
 
+from ..VideoClip import VideoClip, ImageClip
+from moviepy.audio.AudioClip import AudioClip
+
 try:
     from IPython.display import HTML
     ipython_available = True
@@ -75,25 +78,24 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     
     if rd_kwargs is None:
       rd_kwargs = {}
-    # QUICK AND VERY DIRTY: next step is use "isinstance" with classes.
-    # But cross-dependencies in modules may make it difficult...
+
     if "Clip" in str(clip.__class__):
         TEMP_PREFIX = "__temp__"
-        if "ImageClip" in str(clip.__class__):
+        if isinstance(clip,ImageClip):
             filename = TEMP_PREFIX+".png"
-            kwargs = {'filename':filename}
+            kwargs = {'filename':filename, 'withmask':True}
             kwargs.update(rd_kwargs)
             clip.save_frame(**kwargs)
-        elif "Video" in str(clip.__class__):
+        elif isinstance(clip,VideoClip):
             filename = TEMP_PREFIX+".mp4"
             kwargs = {'filename':filename, 'verbose':False, 'preset':'ultrafast'}
             kwargs.update(rd_kwargs)
             clip.write_videofile(**kwargs)
-        elif "AudioClip" in str(clip.__class__):
+        elif isinstance(clip,AudioClip):
             filename = TEMP_PREFIX+".mp3"
             kwargs = {'filename': filename, 'verbose':False}
             kwargs.update(rd_kwargs)
-            clip.write_audiofile(filename, **kwargs)
+            clip.write_audiofile(**kwargs)
         else:
           raise ValueError("Unknown class for the clip. Cannot embed and preview.")
 

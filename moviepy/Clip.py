@@ -390,7 +390,8 @@ class Clip:
             return newclip
 
     @requires_duration
-    def iter_frames(self, fps=None, with_times = False, progress_bar=False):
+    def iter_frames(self, fps=None, with_times = False, progress_bar=False,
+                    dtype=None):
         """ Iterates over all the frames of the clip.
         
         Returns each frame of the clip as a HxWxN np.array,
@@ -402,6 +403,8 @@ class Clip:
         
         The ``fps`` (frames per second) parameter is optional if the
         clip already has a ``fps`` attribute.
+
+        Use dtype="uint8" when using the pictures to write video, images... 
         
         Examples
         ---------
@@ -419,10 +422,14 @@ class Clip:
 
         def generator():
             for t in np.arange(0, self.duration, 1.0/fps):
+                frame = self.get_frame(t)
+                if (dtype is not None) and (frame.dtype != dtype):
+                    frame = frame.astype(dtype)
+
                 if with_times:
-                    yield t, self.get_frame(t)
+                    yield t, frame
                 else:
-                    yield self.get_frame(t)
+                    yield frame
         
         if progress_bar:
             nframes = int(self.duration*fps)+1

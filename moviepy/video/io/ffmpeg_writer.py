@@ -15,7 +15,6 @@ except ImportError:
 from moviepy.config import get_setting
 from moviepy.tools import verbose_print
 
-
 class FFMPEG_VideoWriter:
     """ A class for FFMPEG-based video writing.
 
@@ -200,12 +199,14 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     nframes = int(clip.duration*fps)
 
     for t,frame in clip.iter_frames(progress_bar=True, with_times=True,
-                                    fps=fps):
+                                    fps=fps, dtype="uint8"):
         if withmask:
-            mask = 255*clip.mask.get_frame(t)
+            mask = (255*clip.mask.get_frame(t))
+            if mask.dtype != "uint8":
+                mask = mask.astype("uint8")
             frame = np.dstack([frame,mask])
-
-        writer.write_frame(frame.astype("uint8"))
+        
+        writer.write_frame(frame)
 
     writer.close()
 
@@ -218,6 +219,9 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 def ffmpeg_write_image(filename, image, logfile=False):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
+    
+    if image.dtype != 'uint8':
+          image = image.astype("uint8")
 
     cmd = [ get_setting("FFMPEG_BINARY"), '-y',
            '-s', "%dx%d"%(image.shape[:2][::-1]),
@@ -238,12 +242,12 @@ def ffmpeg_write_image(filename, image, logfile=False):
         popen_params["creationflags"] = 0x08000000
 
     proc = sp.Popen(cmd, **popen_params)
-    proc.communicate(image.tostring())
+    out, err = proc.communicate(image.tostring())
 
     if proc.returncode:
         err = "\n".join(["MoviePy running : %s" % cmd,
                          "WARNING: this command returned an error:",
-                         proc.stderr.read().decode('utf8')])
+                         err.decode('utf8')])
         raise IOError(err)
 
     del proc

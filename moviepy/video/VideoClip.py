@@ -120,22 +120,26 @@ class VideoClip(Clip):
 
     @convert_to_seconds(['t'])
     @convert_masks_to_RGB
-    def save_frame(self, filename, t=0, savemask=False):
+    def save_frame(self, filename, t=0, withmask=True):
         """ Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
         (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
 
-        If ``savemask`` is ``True`` the mask is saved in
-        the alpha layer of the picture.
+        If ``withmask`` is ``True`` the mask is saved in
+        the alpha layer of the picture (only works with PNGs).
 
         """
 
         im = self.get_frame(t)
-        if savemask and self.mask is not None:
+        if im.dtype != "uint8":
+            im = im.astype("uint8")
+
+        if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
+
         ffmpeg_write_image(filename, im)
 
 
@@ -335,7 +339,8 @@ class VideoClip(Clip):
 
     @requires_duration
     @convert_masks_to_RGB
-    def write_images_sequence(self, nameformat, fps=None, verbose=True):
+    def write_images_sequence(self, nameformat, fps=None, verbose=True,
+                              withmask=True):
         """ Writes the videoclip to a sequence of image files.
 
 
@@ -352,6 +357,9 @@ class VideoClip(Clip):
           Number of frames per second to consider when writing the
           clip. If not specified, the clip's ``fps`` attribute will
           be used if it has one.
+
+        withmask
+          will save the clip's mask (if any) as an alpha canal (PNGs only)
 
         verbose
           Verbose output ?
@@ -383,7 +391,7 @@ class VideoClip(Clip):
         for i, t in tqdm(enumerate(tt), total=total):
             name = nameformat % (i + 1)
             filenames.append(name)
-            self.save_frame(name, t, savemask=True)
+            self.save_frame(name, t, withmask=withmask)
 
         verbose_print(verbose,
                       "MoviePy: Done writing frames %s." % (nameformat))
@@ -667,7 +675,7 @@ class VideoClip(Clip):
 
     @apply_to_mask
     @outplace
-    def set_pos(self, pos, relative=False):
+    def set_position(self, pos, relative=False):
         """ Set the clip's position in compositions.
 
         Sets the position that the clip will have when included
@@ -902,6 +910,8 @@ class ImageClip(VideoClip):
 # The old functions to_videofile, to_gif, to_images sequences have been
 # replaced by the more explicite write_videofile, write_gif, etc.
 
+VideoClip.set_pos = deprecated_version_of(VideoClip.set_position,
+                                                'set_pos')
 VideoClip.to_videofile = deprecated_version_of(VideoClip.write_videofile,
                                                'to_videofile')
 VideoClip.to_gif = deprecated_version_of(VideoClip.write_gif, 'to_gif')

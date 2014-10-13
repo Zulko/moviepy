@@ -121,7 +121,7 @@ def clips_array(array, rows_widths=None, cols_widths=None,
                                           bg_color = bg_color).
                                      set_duration(clip.duration))
                 
-            array[i,j] = clip.set_pos((x,y))           
+            array[i,j] = clip.set_pos((x,y))
                  
     return CompositeVideoClip(array.flatten(), size = (xx[-1],yy[-1]),
                               transparent=transparent,

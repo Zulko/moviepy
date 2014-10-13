@@ -6,7 +6,7 @@ Clips transformations and effects
 There are several categories of clip modifications in MoviePy:
 
 - The very common methods to change the attributes of a clip: ``clip.set_duration``, ``clip.set_audio``, ``clip.set_mask``, ``clip.set_start`` etc.
-- The already-implemented effects. Core effects like ``clip.subclip(t1, t2)`` (keep only the cut between t1 and t2), which are very important, are implemented as class methods. More advanced and less common effects like ``loop`` (makes the clip play in a loop) or ``time_mirror`` (makes the clip play backwards) are placed in the special modules ``moviepy.video.fx`` and ``moviepy.audio.fx``.
+- The already-implemented effects. Core effects like ``clip.subclip(t1, t2)`` (keep only the cut between t1 and t2), which are very important, are implemented as class methods. More advanced and less common effects like ``loop`` (makes the clip play in a loop) or ``time_mirror`` (makes the clip play backwards) are placed in the special modules ``moviepy.video.fx`` and ``moviepy.audio.fx`` and are applied with the ``clip.fx`` method, for instance ``clip.fx(time_mirror)`` (makes the clip play backwards), ``clip.fx(black_white)`` (turns the clip black and white), etc.
 - The effects that you can create yourself. using 
 
 Importantly, all these effects have in common that they are **not inplace**: none of these effects modifies the original clip, they all create a new clip that is a version of the former with the changes applied. For instance: ::
@@ -15,13 +15,7 @@ Importantly, all these effects have in common that they are **not inplace**: non
     my_clip.set_start(t=5) # does nothing, changes nothing !
     my_new_clip = my_clip.set_duration(t=5) # good !
 
-
-The very common methods for composition (cutting a clip, setting its position, etc.) are implemented as ``clip.mymethod``. For instance ``clip.subclip(15,20)`` returns the part of ``clip`` that is playing between 15 seconds and 20 seconds.
-
-For all the other modifications, we use ``clip.fx`` and ``clip.fl``. ``clip.fx`` is meant to make it easy to use already-written transformation functions, while  ``clip.fl`` makes it easy to write new transformation functions.
-
-Note that none of these methods occur *inplace*: they all create a copy of the clip and let the original clip untouched. Moreover, modified clips are just *special views* of the original clip, they do not carry all the video data with them. Actually, the *real* modifications are only performed when you are rendering the clip (see :ref:`renderingAClip`). This means that all the clip objects that you will create through modifications of other clips take virtually no place in the memory and are created quasi-instantly.
-
+Also, when you apply an effect like ``clip.resize(width=640)``, only the first frame of the clip is computed, all the other frames will be computed only when they are required (so when you write the clip to a file of when you preview it). Said otherwise, creating a new clip is neither time nor memory hungry, it's at the final rendering that all the computations happen.  
 
 Time representations in MoviePy
 ---------------------------------
@@ -37,7 +31,7 @@ Methods to change the clip attributes
 Already-implemented effects
 ------------------------------
 
-See :ref:`ref_videofx` for a complete list and documentation of these
+See :ref:`refvideofx` for a complete list and documentation of these
 
 
 Methods to create custom effects
