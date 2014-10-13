@@ -1,6 +1,6 @@
 .. _getting_started:
 
-These pages give you everything you need to start editing with MoviePy. Then the best way to learn is to have a look at the provided :ref:`examples` or the different ressources presented in the :ref:`gallery`.
+These pages explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`gallery` and the :ref:`examples`.
 
 
 Getting started with MoviePy

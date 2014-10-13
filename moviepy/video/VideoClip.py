@@ -1110,3 +1110,9 @@ class TextClip(ImageClip):
             return [l[8:] for l in lines if l.startswith("  Font:")]
         elif arg == 'color':
             return [l.split(" ")[1] for l in lines[2:]]
+
+    @staticmethod
+    def search(string, arg):
+      string = string.lower()
+      names_list = TextClip.list(arg)
+      return [name for name in names_list if string in name.lower()]

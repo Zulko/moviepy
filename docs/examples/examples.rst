@@ -3,8 +3,7 @@
 Example Scripts
 ===============
 
-Here are a few example scripts to get you started, including, as promised,
-the scripts used for the clips of the demonstration video.
+Here are a few example scripts to get you started. There are quite old now and will be soon replaced.
 
 
 .. toctree::
@@ -17,7 +16,6 @@ the scripts used for the clips of the demonstration video.
    masked_credits
    painting_effect
    compo_from_image
-   headblur
    the_end
    
    

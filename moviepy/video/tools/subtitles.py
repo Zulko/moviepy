@@ -68,18 +68,18 @@ class SubtitlesClip(VideoClip):
                 self.textclips[sub] = self.make_textclip(sub[1])
             return sub
 
-        def get_frame(t):
+        def make_frame(t):
             sub = add_textclip_if_none(t)
             return (self.textclips[sub].get_frame(t) if sub
                     else np.array([[[0,0,0]]]))
 
-        def mask_get_frame(t):
+        def make_mask_frame(t):
             sub = add_textclip_if_none(t)
             return (self.textclips[sub].mask.get_frame(t) if sub
                     else np.array([[0]]))
         
-        self.get_frame = get_frame
-        self.mask = VideoClip(ismask=True, get_frame=mask_get_frame)
+        self.make_frame = make_frame
+        self.mask = VideoClip(make_mask_frame, ismask=True)
     
 
 
@@ -113,6 +113,7 @@ class SubtitlesClip(VideoClip):
     def write_srt(self, filename):
         with open(filename, 'w+') as f:
             f.write(str(self))
+
 
 def file_to_subtitles(filename):
     """ Converts a srt file into subtitles.
