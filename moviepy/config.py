@@ -5,7 +5,7 @@ try:
 except ImportError:
     DEVNULL = open(os.devnull, 'wb')
 
-from config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
+from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
 def try_cmd(cmd):
         try:

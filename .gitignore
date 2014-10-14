@@ -20,6 +20,9 @@ lib
 lib64
 __pycache__
 
+# Sublime
+.sublime-project
+
 # Installer logs
 pip-log.txt
 
