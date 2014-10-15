@@ -32,13 +32,13 @@ def crop(clip, x1=None, y1=None, x2=None, y2=None,
     """
     
     
-    if width:
+    if width and (x1 is not None or x2 is not None):
         if x1 is not None:
             x2 = x1+width
         else:
             x1 = x2-width
     
-    if height:
+    if height and (y1 is not None or y2 is not None):
         if y1 is not None:
             y2 = y1+height
         else:
