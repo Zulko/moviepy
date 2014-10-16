@@ -10,9 +10,9 @@ from setuptools import setup, find_packages
 setup(name='moviepy',
     version=__version__,
     author='Zulko 2014',
-    description='Module for script-based video editing',
+    description='Video editing with Python',
     long_description=open('README.rst').read(),
     license='see LICENSE.txt',
-    keywords="movie editing film mixing script-based",
+    keywords="video editing audio compositing numpy ffmpeg ",
     packages= find_packages(exclude='docs'),
     install_requires= ['numpy', 'decorator', 'tqdm'])

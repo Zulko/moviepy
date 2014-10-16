@@ -51,8 +51,8 @@ In a typical MoviePy script, you load video or audio files, modify them, put the
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip([clip, txt_clip])
     
-    # Write the result to a file
-    video.write_videofile("myHolidays_edited.avi",fps=24, codec='mpeg4')
+    # Write the result to a file (many options available !)
+    video.write_videofile("myHolidays_edited.webm")
 
 
 How MoviePy works

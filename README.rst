@@ -1,7 +1,7 @@
 MoviePy
 ========
 
-MoviePy (full documentation here_) is a Python module for video editing. It enables basic operations (cuts, concatenations, title insertions) to be done in a few lines, and can be used for video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all the most common video formats, including GIF.
+MoviePy (full documentation here_) is a Python module for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
 A typical MoviePy script looks like this: ::
 
@@ -10,26 +10,28 @@ A typical MoviePy script looks like this: ::
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
     
-    # Generate a text clip (many options available ! )
-    txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
-    txt_clip = txt_clip.set_pos('center').set_duration(10)
+    # Generate a 10-second centered text clip (many options available ! )
+    txt_clip = ( TextClip("My Holidays 2013",fontsize=70,color='white')
+                 .set_position('center')
+                 .set_duration(10) )
     
     # Overlay the text clip above the first clip
     final_clip = CompositeVideoClip([clip, txt_clip])
     
     # write the result to a file in any format
-    final_clip.to_videofile("myHolidays_edited.avi",fps=25, codec='mpeg4')
+    final_clip.to_videofile("myHolidays_edited.webm",fps=25)
 
-See the gallery_ (in construction) for more.
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2 and 3. 
+
+Contribute !
+-------------
 
 MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback. 
-You can also discuss Moviepy on Reddit_ or on the mailing list moviepy@librelist.com .
+You can also discuss about the project on Reddit_ or on the mailing list moviepy@librelist.com .
 
 
 Installation
 --------------
-
-MoviePy works on Windows, Linux and Mac OS, with Python 2 and 3. If you have trouble installing it on your computer, please provide feedback ! 
 
 **Method with pip:** if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
     
@@ -45,6 +47,7 @@ This method may fail if ``ez_setup`` is not installed on your computer. In this 
 
 MoviePy depends on the Python modules Numpy_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation.
 
+This should work  on Windows/Mac/Linux, with Python 2 and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback ! 
     
 Linking to ffmpeg
 ~~~~~~~~~~~~~~~~~~

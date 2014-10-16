@@ -58,14 +58,15 @@ for method in [
           "vfx.crop",
           "vfx.fadein",
           "vfx.fadeout",
+          "vfx.invert_colors",
           "vfx.loop",
           "vfx.margin",
           "vfx.mask_and",
-          "vfx.mask_inv",
           "vfx.mask_or",
           "vfx.resize",
           "vfx.speedx"
           ]:
+
     exec("VideoClip.%s = %s"%( method.split('.')[1], method))
 
 
@@ -74,6 +75,7 @@ for method in ["afx.audio_fadein",
                "afx.audio_loop",
                "afx.volumex"
               ]:
+              
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 
 
