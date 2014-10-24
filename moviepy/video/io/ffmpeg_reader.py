@@ -278,14 +278,18 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
         # Current policy: Trust tbr first, then fps. If result is near from x*1000/1001
         # where x is 23,24,25,50, replace by x*1000/1001 (very common case for the fps).
 
+        def extract_frame_rate(line, method):
+            match = re.search("( [0-9]*.| )[0-9]* %s" % method, line)
+            string = line[match.start():match.end()].split(' ')[1]
+            if string.endswith ('k'):
+                string = string [:-1]
+            return float(string)
+
         try:
-            match = re.search("( [0-9]*.| )[0-9]* tbr", line)
-            tbr = float(line[match.start():match.end()].split(' ')[1])
-            result['video_fps'] = tbr
+            result['video_fps'] = extract_frame_rate(line, 'tbr')
 
         except:
-            match = re.search("( [0-9]*.| )[0-9]* fps", line)
-            result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+            result['video_fps'] = extract_frame_rate(line, 'fps')
 
 
         # It is known that a fps of 24 is often written as 24000/1001
