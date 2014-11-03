@@ -265,12 +265,18 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
     if result['video_found']:
 
-        line = lines_video[0]
 
-        # get the size, of the form 460x320 (w x h)
-        match = re.search(" [0-9]*x[0-9]*(,| )", line)
-        s = list(map(int, line[match.start():match.end()-1].split('x')))
-        result['video_size'] = s
+        try:
+            line = lines_video[0]
+
+            # get the size, of the form 460x320 (w x h)
+            match = re.search(" [0-9]*x[0-9]*(,| )", line)
+            s = list(map(int, line[match.start():match.end()-1].split('x')))
+            result['video_size'] = s
+        except:
+            raise (("MoviePy error: failed to read video dimensions in file %s.\n"
+                           "Here are the file infos returned by ffmpeg:\n\n%s")%(
+                              filename, infos))
 
 
         # get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes

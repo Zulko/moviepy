@@ -12,7 +12,7 @@ from scipy.interpolate import interp1d
 
 from ..io.preview import imdisplay
 from .interpolators import Trajectory
-from moviepy.decorators import convert_to_seconds
+from moviepy.decorators import (convert_to_seconds, use_clip_fps_by_default)
 
 
 try:
@@ -29,6 +29,7 @@ except:
 # MANUAL TRACKING
 
 @convert_to_seconds(["t1","t2"])
+@use_clip_fps_by_default
 def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects = 1,
                     savefile = None):
     """
@@ -77,9 +78,6 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects = 1,
     """
     
     import pygame as pg
-    
-    if fps is None:
-        fps = clip.fps
 
     screen = pg.display.set_mode(clip.size)
     step = 1.0 / fps

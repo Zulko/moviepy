@@ -1,13 +1,15 @@
 """ This module contains everything that can help automatize
 the cuts in MoviePy """
 
+from moviepy.decorators import use_clip_fps_by_default
+
 import numpy as np
 
-
+@use_clip_fps_by_default
 def find_video_period(clip,fps=None,tmin=.3):
     """ Finds the period of a video based on frames correlation """
-    if fps is None:
-        fps=clip.fps
+    
+
     frame = lambda t: clip.get_frame(t).flatten()
     tt = np.arange(tmin,clip.duration,1.0/ fps)[1:]
     ref = frame(0)
@@ -15,7 +17,7 @@ def find_video_period(clip,fps=None,tmin=.3):
     return tt[np.argmax(corrs)]
 
 
-
+@use_clip_fps_by_default
 def detect_scenes(clip=None, luminosities=None, thr=10,
                   progress_bar=False, fps=None):
     
@@ -61,9 +63,6 @@ def detect_scenes(clip=None, luminosities=None, thr=10,
     
     
     """
-    
-    if fps is None:
-        fps = clip.fps
         
     if luminosities is None:
         luminosities = [f.sum() for f in clip.iter_frames(

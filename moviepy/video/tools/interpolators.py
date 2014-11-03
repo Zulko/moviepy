@@ -15,19 +15,13 @@ class Interpolator:
         
         self.tt = 1.0*np.array(tt)
         self.ss = 1.0*np.array(ss)
-        self.left = ss[0] if (left is None) else left
-        self.right = ss[-1] if (right is None) else right
+        self.left = left
+        self.right = right
         self.tmin, self.tmax = min(tt), max(tt)
 
     def __call__(self, t):
-        if (t <= self.tmin):
-            return self.left
-        if (t >= self.tmax):
-            return self.right
-        ind = np.argmax(np.diff(self.tt >= t)==1)
-        t1, t2 = self.tt[ind], self.tt[ind+1]
-        s1, s2 = self.ss[ind], self.ss[ind+1]
-        return s1 + (s2-s1)*(t-t1)/(t2-t1)
+
+        return np.interp(t, self.tt, self.ss, self.left, self.right)
 
 class Trajectory:
 

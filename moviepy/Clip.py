@@ -11,7 +11,8 @@ from moviepy.decorators import ( apply_to_mask,
                                  apply_to_audio,
                                  requires_duration,
                                  outplace,
-                                 convert_to_seconds)
+                                 convert_to_seconds,
+                                 use_clip_fps_by_default)
 from tqdm import tqdm
 
 class Clip:
@@ -68,17 +69,19 @@ class Clip:
             newclip.mask = copy(self.mask)
             
         return newclip
-
+    
+    @convert_to_seconds(['t'])
     def get_frame(self, t):
         """
-        Gets a numpy array representing the RGB picture of the clip at time t.
+        Gets a numpy array representing the RGB picture of the clip at time t
+        or (mono or stereo) value for a sound clip
         """
         # Coming soon: smart error handling for debugging at this point 
         return self.make_frame(t)
 
     def fl(self, fun, apply_to=[] , keep_duration=True):
         """ General processing of a clip.
-        
+
         Returns a new Clip whose frames are a transformation
         (through function ``fun``) of the frames of the current clip.
         
@@ -276,12 +279,18 @@ class Clip:
 
 
     @outplace
-    def set_make_frame(self, gf):
+    def set_make_frame(self, make_frame):
         """
         Sets a ``make_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
         """
-        self.make_frame = gf
+        self.make_frame = make_frame
+
+    @outplace
+    def set_fps(self, fps):
+        """ Returns a copy of the clip with a new default fps for functions like
+        write_videofile, iterframe, etc. """ 
+        self.fps = fps
     
     
     
@@ -318,6 +327,8 @@ class Clip:
             return( (t >= self.start) and
                     ((self.end is None) or (t < self.end) ) )
     
+
+
     @convert_to_seconds(['t_start', 't_end'])
     @apply_to_mask
     @apply_to_audio
@@ -362,8 +373,7 @@ class Clip:
             newclip.end = newclip.start + newclip.duration
             
         return newclip
-    
-    
+
     
     @apply_to_mask
     @apply_to_audio
@@ -390,6 +400,7 @@ class Clip:
             return newclip
 
     @requires_duration
+    @use_clip_fps_by_default
     def iter_frames(self, fps=None, with_times = False, progress_bar=False,
                     dtype=None):
         """ Iterates over all the frames of the clip.
@@ -416,9 +427,6 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
-        
-        if fps is None:
-            fps = self.fps
 
         def generator():
             for t in np.arange(0, self.duration, 1.0/fps):

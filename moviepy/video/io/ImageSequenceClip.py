@@ -1,6 +1,9 @@
+import os
+import numpy as np
+
 from ..VideoClip import VideoClip
 from .ffmpeg_reader import ffmpeg_read_image
-import os
+
 
 class ImageSequenceClip(VideoClip):
     """
@@ -15,13 +18,17 @@ class ImageSequenceClip(VideoClip):
       Can be one of these:
       - The name of a folder (containing only pictures). The pictures
         will be considered in alphanumerical order.
-      - A list of names of image files.
+      - A list of names of image files. In this case you can choose to
+        load the pictures in memory pictures 
       - A list of Numpy arrays representing images. In this last case,
         masks are not supported currently.
 
-
     fps
-      Number of picture frames to read per second.
+      Number of picture frames to read per second. Instead, you can provide
+      the duration of each image with durations (see below)
+
+    durations
+      List of the duration of each picture.
 
     with_mask
       Should the alpha layer of PNG images be considered as a mask ?
@@ -29,11 +36,18 @@ class ImageSequenceClip(VideoClip):
     ismask
       Will this sequence of pictures be used as an animated mask.
 
+    Notes
+    ------
+
+    If your sequence is made of image files, the only image kept in 
+
+
     
     """
 
 
-    def __init__(self, sequence, fps, with_mask=True, ismask=False):
+    def __init__(self, sequence, fps=None, durations=None, with_mask=True,
+                 ismask=False, load_images=False):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
 
@@ -44,32 +58,48 @@ class ImageSequenceClip(VideoClip):
         fromfiles = True
 
         if isinstance(sequence, list):
-            if not isinstance(sequence[0], str):
-                # sequence is a list of numpy arrays
+            if isinstance(sequence[0], str):
+                if load_images:
+                    sequence = [ffmpeg_read_image( f, with_mask=True)
+                                for f in sequence]
+                    fromfiles = False
+                else:
+                    fromfiles= True
+            else:
+                # sequence is already a list of numpy arrays
                 fromfiles = False
         else:
-            # sequence is a folder name
+            # sequence is a folder name, make it a list of files:
+            fromfiles = True
             sequence = sorted([os.path.join(sequence, f)
                         for f in os.listdir(sequence)])
 
         self.fps = fps
-        self.duration = 1.0* len(sequence) / self.fps
+        if fps is not none:
+            durations = [1.0/fps for image in sequence]
+        self.durations = durations
+        self.images_starts = [0]+list(np.cumsum(durations))
+        self.duration = sum(durations)
         self.end = self.duration
         self.sequence = sequence
+        
+        def find_image_index(t):
+            return max([i for i in range(len(self.sequence))
+                              if self.images_starts[i]<=t])
 
         if fromfiles:
 
-            self.lastpos = None
+            self.lastindex = None
             self.lastimage = None
 
             def get_frame(t):
             
-                pos = int(self.fps*t)
-                if pos != self.lastpos:
-                    self.lastimage = ffmpeg_read_image(
-                                           self.sequence[pos], 
-                                           with_mask=False)
-                    self.lastpos = pos
+                index = find_image_index(t)
+
+                if index != self.lastindex:
+                    self.lastimage = ffmpeg_read_image( self.sequence[index], 
+                                                        with_mask=False)
+                    self.lastindex = index
                 
                 return self.lastimage
 
@@ -79,12 +109,11 @@ class ImageSequenceClip(VideoClip):
 
                 def mask_get_frame(t):
             
-                    pos = int(self.fps*t)
-                    if pos != self.lastpos:
-                        self.mask.lastimage = ffmpeg_read_image(
-                                                self.sequence[pos], 
-                                                with_mask=True)[:,:,3]
-                    self.mask.lastpos = pos
+                    index = find_image_index(t)
+                    if index != self.lastindex:
+                        self.mask.lastimage = ffmpeg_read_image( self.sequence[index], 
+                                                                 with_mask=True)[:,:,3]
+                    self.mask.lastindex = index
 
                     return self.mask.lastimage
 
@@ -96,8 +125,8 @@ class ImageSequenceClip(VideoClip):
 
             def get_frame(t):
             
-                pos = int(self.fps*t)
-                return self.sequence[pos]
+                index = find_image_index(t)
+                return self.sequence[index]
         
             
         self.get_frame = get_frame

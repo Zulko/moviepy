@@ -80,7 +80,7 @@ def preprocess_args(fun,varnames):
             func_code = f.__code__ # Python 3
             
         names = func_code.co_varnames
-        new_a = [cvsecs(arg) if (name in varnames) else arg
+        new_a = [fun(arg) if (name in varnames) else arg
                  for (arg, name) in zip(a, names)]
         new_kw = {k: fun(v) if k in varnames else v
                  for (k,v) in kw.items()}
@@ -100,3 +100,35 @@ def add_mask_if_none(f, clip, *a, **k):
     if clip.mask is None:
         clip = clip.add_mask()
     return f(clip, *a, **k)
+
+
+
+@decorator.decorator
+def use_clip_fps_by_default(f, clip, *a, **k):
+    
+    def fun(fps):
+        if fps is not None:
+            return fps
+        else:
+            if hasattr(clip, 'fps') and clip.fps is not None:
+                return clip.fps
+            else:
+                raise AttributeError("No 'fps' (frames per second) attribute specified"
+                " for function %s and the clip has no 'fps' attribute. Either"
+                " provide e.g. fps=24 in the arguments of the function, or define"
+                " the clip's fps with `clip.fps=24`"%f.__name__)
+
+
+    if hasattr(f, "func_code"):
+        func_code = f.func_code # Python 2
+    else:
+        func_code = f.__code__ # Python 3
+        
+    names = func_code.co_varnames[1:]
+    
+    new_a = [fun(arg) if (name=='fps') else arg
+             for (arg, name) in zip(a, names)]
+    new_kw = {k: fun(v) if k=='fps' else v
+             for (k,v) in k.items()}
+
+    return f(clip, *new_a, **new_kw)

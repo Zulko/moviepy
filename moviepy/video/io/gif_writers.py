@@ -2,7 +2,7 @@ import os
 import subprocess as sp
 from tqdm import tqdm
 from moviepy.config import get_setting
-from moviepy.decorators import requires_duration
+from moviepy.decorators import (requires_duration,use_clip_fps_by_default)
 from moviepy.tools import verbose_print, subprocess_call
 import numpy as np
 
@@ -13,6 +13,7 @@ except ImportError:
 
 
 @requires_duration
+@use_clip_fps_by_default
 def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
        opt="OptimizeTransparency", fuzz=1, verbose=True,
        loop=0, dispose=False, colors=None, tempfiles=False):
@@ -25,9 +26,6 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
     them in the RAM. Useful on computers with little RAM.
 
     """
-
-    if fps is None:
-        fps = clip.fps
 
     fileName, fileExtension = os.path.splitext(filename)
     tt = np.arange(0,clip.duration, 1.0/fps)
@@ -93,6 +91,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
 
 @requires_duration
+@use_clip_fps_by_default
 def write_gif(clip, filename, fps=None, program= 'ImageMagick',
            opt="OptimizeTransparency", fuzz=1, verbose=True,
            loop=0, dispose=False, colors=None):
@@ -153,8 +152,6 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
     # frames -ffmpeg-> bmp frames -ImagMag-> gif -ImagMag-> better gif
     #
 
-    if fps is None:
-        fps=clip.fps
     delay= 100.0/fps
 
     cmd1 = [get_setting("FFMPEG_BINARY"), '-y', '-loglevel', 'error',

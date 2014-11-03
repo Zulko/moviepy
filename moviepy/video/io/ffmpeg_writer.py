@@ -127,7 +127,7 @@ class FFMPEG_VideoWriter:
         # when the child process is created
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-
+        
         self.proc = sp.Popen(cmd, **popen_params)
 
 

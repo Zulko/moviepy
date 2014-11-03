@@ -34,7 +34,8 @@ from ..decorators import (apply_to_mask,
                           outplace,
                           add_mask_if_none,
                           convert_to_seconds,
-                          convert_masks_to_RGB)
+                          convert_masks_to_RGB,
+                          use_clip_fps_by_default)
 
 import os
 try:
@@ -144,8 +145,9 @@ class VideoClip(Clip):
 
 
     @requires_duration
+    @use_clip_fps_by_default
     @convert_masks_to_RGB
-    def write_videofile(self, filename, fps=24, codec=None,
+    def write_videofile(self, filename, fps=None, codec=None,
                         bitrate=None, audio=True, audio_fps=44100,
                         preset="medium",
                         audio_nbytes=4, audio_codec=None,
@@ -166,7 +168,8 @@ class VideoClip(Clip):
           or simply be '.avi' (which will work with any codec).
 
         fps
-          Number of frames per second in the resulting video file.
+          Number of frames per second in the resulting video file. If None is
+          provided, and the clip has an fps attribute, this fps will be used.
 
         codec
           Codec to use for image encoding. Can be any codec supported
@@ -338,6 +341,7 @@ class VideoClip(Clip):
 
 
     @requires_duration
+    @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
                               withmask=True):
@@ -380,9 +384,6 @@ class VideoClip(Clip):
         """
 
         verbose_print(verbose, "MoviePy: Writing frames %s." % (nameformat))
-
-        if fps is None:
-            fps = self.fps
 
         tt = np.arange(0, self.duration, 1.0 / fps)
 
@@ -894,7 +895,7 @@ class ImageClip(VideoClip):
         (see Clip.fl_time).
 
         This method does nothing for ImageClips (but it may affect their
-        masks of their audios). The result is still an ImageClip.
+        masks or their audios). The result is still an ImageClip.
         """
 
         for attr in apply_to:

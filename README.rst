@@ -37,7 +37,7 @@ Installation
     
     (sudo) pip install moviepy
 
-This method may fail if ``ez_setup`` is not installed on your computer. In this case install ``ez_setup`` first, with ::
+This method will fail if ``ez_setup`` is not installed on your computer. In this case install ``ez_setup`` first, with ::
     
     (sudo) pip install ez_setup
 

@@ -9,9 +9,11 @@ from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
 def try_cmd(cmd):
         try:
-            popen_params = {"stdout": sp.PIPE,
-                            "stderr": sp.PIPE,
-                            "stdin": DEVNULL}
+            popen_params = { "stdout": sp.PIPE,
+                             "stderr": sp.PIPE,
+                              "stdin": DEVNULL
+                            }
+
             
             # This was added so that no extra unwanted window opens on windows
             # when the child process is created
@@ -35,9 +37,10 @@ if FFMPEG_BINARY=='auto-detect':
     else:
         FFMPEG_BINARY = 'unset'
 else:
-    success, err = try_cmd(cmd)
+    success, err = try_cmd([FFMPEG_BINARY])
     if not success:
-        raise err
+        raise IOError(err.message +
+                 "The path specified for the ffmpeg binary might be wrong")
 
 if IMAGEMAGICK_BINARY=='auto-detect':
 
