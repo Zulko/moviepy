@@ -49,7 +49,7 @@ def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
     sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True)
     chunk = pg.sndarray.make_sound(sndarray)
     
-    if (audioFlag !=None) and (videoFlag!= None):
+    if (audioFlag is not None) and (videoFlag is not None):
         audioFlag.set()
         videoFlag.wait()
         

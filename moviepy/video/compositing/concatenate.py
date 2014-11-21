@@ -59,7 +59,7 @@ def concatenate_videoclips(clipslist, method="chain", transition=None, bg_color=
            
     """
 
-    if transition != None:
+    if transition is not None:
         l = [[v, transition] for v in clipslist[:-1]]
         clipslist = reduce(lambda x, y: x + y, l) + [clipslist[-1]]
         transition = None
@@ -98,7 +98,7 @@ def concatenate_videoclips(clipslist, method="chain", transition=None, bg_color=
     result.start_times = tt[:-1]
     result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
     
-    audio_t = [(c.audio,t) for c,t in zip(clipslist,tt) if c.audio!=None]
+    audio_t = [(c.audio,t) for c,t in zip(clipslist,tt) if c.audio is not None]
     if len(audio_t)>0:
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])

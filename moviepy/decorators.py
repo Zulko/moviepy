@@ -26,7 +26,7 @@ def apply_to_mask(f, clip, *a, **k):
         the clip created with f """
         
     newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'mask') and (newclip.mask != None):
+    if hasattr(newclip, 'mask') and (newclip.mask is not None):
         newclip.mask = f(newclip.mask, *a, **k)
     return newclip
 
@@ -38,7 +38,7 @@ def apply_to_audio(f, clip, *a, **k):
         the clip created with f """
         
     newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'audio') and (newclip.audio != None):
+    if hasattr(newclip, 'audio') and (newclip.audio is not None):
         newclip.audio = f(newclip.audio, *a, **k)
     return newclip
 
@@ -65,7 +65,7 @@ def audio_video_fx(f, clip, *a, **k):
     
     if hasattr(clip, "audio"):
         newclip = clip.copy()
-        if clip.audio != None:
+        if clip.audio is not None:
             newclip.audio =  f(clip.audio, *a, **k)
         return newclip
     else:

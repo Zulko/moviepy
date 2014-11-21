@@ -34,7 +34,7 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
 
     new_im2 = +im2
 
-    if mask != None:
+    if mask is not None:
         mask = mask[y1:y2, x1:x2]
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
@@ -134,14 +134,14 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     p1 = np.array(p1[::-1]).astype(float)
     
     if vector is None:
-        if p2 != None:
+        if p2 is not None:
             p2 = np.array(p2[::-1])
             vector = p2-p1
     else:
         vector = np.array(vector[::-1])
         p2 = p1 + vector
     
-    if vector != None:    
+    if vector is not None:    
         norm = np.linalg.norm(vector)
     
     M = np.dstack(np.meshgrid(range(w),range(h))[::-1]).astype(float)
@@ -221,7 +221,7 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     """
     
     if grad_width or ( (x is None) and (y is None)):
-        if p2 != None:
+        if p2 is not None:
             vector = (np.array(p2) - np.array(p1))
         elif x is not None:
             vector = np.array([0,-1.0])

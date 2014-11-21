@@ -130,7 +130,7 @@ class Clip:
         for attr in apply_to:
             if hasattr(newclip, attr):
                 a = getattr(newclip, attr)
-                if a != None:
+                if a is not None:
                     new_a =  a.fl(fun, keep_duration=keep_duration)
                     setattr(newclip, attr, new_a)
                     
@@ -225,9 +225,9 @@ class Clip:
         """
         
         self.start = t
-        if (self.duration != None) and change_end:
+        if (self.duration is not None) and change_end:
             self.end = t + self.duration
-        elif (self.end !=None):
+        elif (self.end is not None):
             self.duration = self.end - self.start
     
     
@@ -246,7 +246,7 @@ class Clip:
         """
         self.end = t
         if self.start is None:
-            if self.duration != None:
+            if self.duration is not None:
                 self.start = max(0, t - newclip.duration)
         else:
             self.duration = self.end - self.start
@@ -310,7 +310,7 @@ class Clip:
             # is the whole list of t outside the clip ?
             tmin, tmax = t.min(), t.max()
             
-            if (self.end != None) and (tmin >= self.end) :
+            if (self.end is not None) and (tmin >= self.end) :
                 return False
             
             if tmax < self.start:
@@ -318,7 +318,7 @@ class Clip:
             
             # If we arrive here, a part of t falls in the clip
             result = 1 * (t >= self.start)
-            if (self.end != None):
+            if (self.end is not None):
                 result *= (t <= self.end)
             return result
         
@@ -394,7 +394,7 @@ class Clip:
         
         fl = lambda t: t + (t >= ta)*(tb - ta)
         newclip = self.fl_time(fl)
-        if self.duration != None:
+        if self.duration is not None:
             return newclip.set_duration(self.duration - (tb - ta))
         else:
             return newclip

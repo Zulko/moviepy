@@ -61,12 +61,12 @@ class FFMPEG_AudioWriter:
             '-ar', "%d"%fps_input,
             '-ac',"%d"%nchannels,
             '-i', '-']
-            + (['-vn'] if input_video==None else
+            + (['-vn'] if input_video is None else
                  [ "-i", input_video, '-vcodec', 'copy'])
             + ['-acodec', codec]
             + ['-ar', "%d"%fps_input]
             + ['-strict', '-2']  # needed to support codec 'aac'
-            + (['-ab',bitrate] if (bitrate!=None) else [])
+            + (['-ab',bitrate] if (bitrate is not None) else [])
             + [ filename ])
 
         popen_params = {"stdout": DEVNULL,
