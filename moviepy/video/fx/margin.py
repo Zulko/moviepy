@@ -25,7 +25,7 @@ def margin(clip, mar=None, left=0, right=0, top=0,
     if (opacity != 1.0) and (clip.mask is None) and not (clip.ismask):
         clip = clip.add_mask()
 
-    if mar != None:
+    if mar is not None:
         left = right = top = bottom = mar
     
     def make_bg(w,h):

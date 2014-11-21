@@ -66,7 +66,7 @@ class CompositeVideoClip(VideoClip):
             self.end = max(ends)
 
         # compute audio
-        audioclips = [v.audio for v in self.clips if v.audio != None]
+        audioclips = [v.audio for v in self.clips if v.audio is not None]
         if len(audioclips) > 0:
             self.audio = CompositeAudioClip(audioclips)
 
@@ -102,9 +102,9 @@ def clips_array(array, rows_widths=None, cols_widths=None,
     array = np.array(array)
     sizes_array = np.array([[c.size for c in line] for line in array])
     
-    if rows_widths == None:
+    if rows_widths is None:
         rows_widths = sizes_array[:,:,1].max(axis=1)
-    if cols_widths == None:
+    if cols_widths is None:
         cols_widths = sizes_array[:,:,0].max(axis=0)
     
     xx = np.cumsum([0]+list(cols_widths)) 
