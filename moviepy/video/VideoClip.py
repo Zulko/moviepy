@@ -1114,6 +1114,13 @@ class TextClip(ImageClip):
 
     @staticmethod
     def search(string, arg):
-      string = string.lower()
-      names_list = TextClip.list(arg)
-      return [name for name in names_list if string in name.lower()]
+        """ Returns the of all valid entries which contain ``string`` for the
+           argument ``arg`` of ``TextClip``, for instance
+
+           >>> # Find all the available fonts which contain "Courier"
+           >>> print ( TextClip.search('Courier', 'font') )
+ 
+        """
+        string = string.lower()
+        names_list = TextClip.list(arg)
+        return [name for name in names_list if string in name.lower()]

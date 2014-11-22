@@ -1,10 +1,11 @@
 .. _getting_started:
 
-These pages explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`gallery` and the :ref:`examples`.
-
 
 Getting started with MoviePy
 ------------------------------
+
+
+These pages explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`gallery` and the :ref:`examples`.
 
 
 .. toctree::
@@ -14,5 +15,4 @@ Getting started with MoviePy
    clips
    compositing
    effects
-   advanced_tools
    efficient_moviepy
