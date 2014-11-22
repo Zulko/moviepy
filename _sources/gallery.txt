@@ -39,12 +39,12 @@ in the :ref:`examples`.
        </div>
 
 
-Gifs edited with MoviePy
---------------------------
+Animations edited with MoviePy
+------------------------------
 
 
-GIFs from video files
-~~~~~~~~~~~~~~~~~~~~~~
+GIFs made from video files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This  `tutorial
 <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
@@ -55,11 +55,10 @@ This  `tutorial
          <a href="http://imgur.com/Fo2BxBK"><img src="http://i.imgur.com/Fo2BxBK.gif" title="Hosted by imgur.com"
             style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
-Animations
-~~~~~~~~~~~~~
+Vector Animations
+~~~~~~~~~~~~~~~~~~~
 
-This `tutorial
-<http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
+This `tutorial <http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
 
 .. raw:: html
 
@@ -70,11 +69,47 @@ This `tutorial
 It is also possible to combine MoviePy with other graphic librairies like matplotlib, etc.
 
 
-.. Rinconcam
+3D animations
+~~~~~~~~~~~~~~~~~~~
 
-.. aaa~~~~~~~~~~~
+This `tutorial <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray
 
-.. Rincomcam (link) is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video and puts it online. Everything is entirely automatized with Python. MoviePy is used to add transitions, titles and music to the videos.
+.. raw:: html
+
+         <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/XN7e2IP.gif"
+         style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
+
+
+With Vapory and MoviePy you can for instance embed a movie in a 3D scene:
+
+
+.. raw:: html
+
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
+        <iframe src="http://youtube.com/v/M9R21SquDSk?rel=0" frameborder="0" allowfullscreen
+        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        </iframe>
+        </div>
+
+
+Or render the result of this physics simulation made with PyODE (`script <https://gist.github.com/Zulko/f828b38421dfbee59daf>`_):
+
+.. raw:: html
+
+         <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/TdhxwGz.gif"
+         style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
+
+
+Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to make piano animations from MIDI files (which are some sort of electronic sheet music):
+
+
+.. raw:: html
+
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
+        <iframe src="http://youtube.com/v/tCqQhmuwgMg?rel=0" frameborder="0" allowfullscreen
+        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        </iframe>
+        </div>
 
 
 Scientific or technological projects
@@ -86,10 +121,7 @@ Piano rolls transcription to sheet music
 
 This `blog post <http://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls/>`_ explains how to transform a video of a piano roll performance into playable sheet music. MoviePy is used for the frame-by-frame analysis of the piano roll video. The last video is also edited with MoviePy:
 
-
 .. raw:: html
-
-
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
         <iframe src="http://youtube.com/v/V2XCJNZjm4w&hl?rel=0" frameborder="0" allowfullscreen
@@ -101,6 +133,19 @@ This `blog post <http://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls
 
 Misc. Programs and Scripts using MoviePy
 ------------------------------------------
+
+Rinconcam
+----------
+
+`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python. 
+MoviePy is used to add transitions, titles and music to the videos.
+
+
+.. raw:: html
+
+         <a href="http://imgur.com/2YdW9yf"><img src="https://pbs.twimg.com/media/B2_NlnwCMAAingW.jpg"
+         style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
+
 
 Videogrep
 ~~~~~~~~~~
@@ -115,10 +160,36 @@ Videogrep is a python script written by Sam Lavigne, that goes through the subti
         </iframe>
         </div>
 
-Here are Videogrep's introductory `blog post
-<http://lav.io/2014/06/videogrep-automatic-supercuts-with-python/>`_ and the Github project `page <https://github.com/antiboredom/videogrep/>`_.
+Here are `Videogrep's introductory blog post
+<http://lav.io/2014/06/videogrep-automatic-supercuts-with-python/>`_ and the Github `Videogrep page <https://github.com/antiboredom/videogrep/>`_.
 
-If you liked it, also have a look at these two Videogrep-inspired projects:
+If you liked it, also have a look at these Videogrep-inspired projects:
 
-- This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words.
-- This `other post <http://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens.
+This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
+    
+    words = ["Americans", "must", "develop", "open ", "source",
+              " software", "for the", " rest ", "of the world",
+              "instead of", " soldiers"]
+    numbers = [3,0,4,3,4,0,1,2,0,1,0] # take clip number 'n'
+
+    cuts = [find_word(word)[n] for (word,n) in zip(words, numbers)]
+    assemble_cuts(cuts, "fake_speech.mp4")
+
+.. raw:: html
+
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
+        <iframe src="http://youtube.com/v/iWRYGULFd_c?rel=0" frameborder="0" allowfullscreen
+        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        </iframe>
+        </div>
+
+
+This `other post <http://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:
+
+.. raw:: html
+
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
+        <iframe src="http://youtube.com/v/zJtWPFX2bA0?rel=0" frameborder="0" allowfullscreen
+        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        </iframe>
+        </div>

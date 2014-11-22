@@ -1,5 +1,7 @@
 .. _effects:
 
+Warning: page in construction.
+
 Clips transformations and effects
 ===================================
 

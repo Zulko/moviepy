@@ -66,11 +66,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/clips.html">Creating and exporting video clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/compositing.html">Mixing clips together</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../getting_started/advanced_tools.html">Advanced tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/audio.html">Audio in MoviePy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gallery.html">Gallery</a><ul>
@@ -78,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gallery.html#rinconcam">Rinconcam</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples.html">Example Scripts</a><ul>
@@ -88,7 +89,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../../examples/masked_credits.html">Partially Hidden credits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
 </ul>
 </li>
@@ -277,13 +277,13 @@ background.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.save_frame">
-<tt class="descname">save_frame</tt><big>(</big><em>filename</em>, <em>t=0</em>, <em>savemask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.save_frame" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">save_frame</tt><big>(</big><em>filename</em>, <em>t=0</em>, <em>withmask=True</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.save_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.save_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a clip&#8217;s frame to an image file.</p>
 <p>Saves the frame of clip corresponding to time <tt class="docutils literal"><span class="pre">t</span></tt> in
 &#8216;filename&#8217;. <tt class="docutils literal"><span class="pre">t</span></tt> can be expressed in seconds (15.35), in
 (min, sec), in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.</p>
-<p>If <tt class="docutils literal"><span class="pre">savemask</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> the mask is saved in
-the alpha layer of the picture.</p>
+<p>If <tt class="docutils literal"><span class="pre">withmask</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt> the mask is saved in
+the alpha layer of the picture (only works with PNGs).</p>
 </dd></dl>
 
 <dl class="method">
@@ -320,7 +320,14 @@ multiplied by <tt class="docutils literal"><span class="pre">op</span></tt> (any
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.set_pos">
-<tt class="descname">set_pos</tt><big>(</big><em>pos</em>, <em>relative=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.set_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.set_pos" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_pos</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.set_pos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.set_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function <tt class="docutils literal"><span class="pre">set_pos</span></tt> is deprecated and is kept temporarily for backwards compatibility.
+Please use the new name, <tt class="docutils literal"><span class="pre">set_position</span></tt>, instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="moviepy.video.VideoClip.VideoClip.set_position">
+<tt class="descname">set_position</tt><big>(</big><em>pos</em>, <em>relative=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.set_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the clip&#8217;s position in compositions.</p>
 <p>Sets the position that the clip will have when included
 in compositions. The argument <tt class="docutils literal"><span class="pre">pos</span></tt> can be either a couple
@@ -460,7 +467,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_images_sequence">
-<tt class="descname">write_images_sequence</tt><big>(</big><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_images_sequence</tt><big>(</big><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -478,6 +485,10 @@ indexed with 3 digits and PNG format. Also possible:
 <div><p>Number of frames per second to consider when writing the
 clip. If not specified, the clip&#8217;s <tt class="docutils literal"><span class="pre">fps</span></tt> attribute will
 be used if it has one.</p>
+</div></blockquote>
+<p><strong>withmask</strong> :</p>
+<blockquote>
+<div><p>will save the clip&#8217;s mask (if any) as an alpha canal (PNGs only)</p>
 </div></blockquote>
 <p><strong>verbose</strong> :</p>
 <blockquote>
@@ -500,7 +511,7 @@ be used if it has one.</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_videofile">
-<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=24</em>, <em>codec=None</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>preset='medium'</em>, <em>audio_nbytes=4</em>, <em>audio_codec=None</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>verbose=True</em>, <em>threads=None</em>, <em>ffmpeg_params=None</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_videofile</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>codec=None</em>, <em>bitrate=None</em>, <em>audio=True</em>, <em>audio_fps=44100</em>, <em>preset='medium'</em>, <em>audio_nbytes=4</em>, <em>audio_codec=None</em>, <em>audio_bitrate=None</em>, <em>audio_bufsize=2000</em>, <em>temp_audiofile=None</em>, <em>rewrite_audio=True</em>, <em>remove_temp=True</em>, <em>write_logfile=False</em>, <em>verbose=True</em>, <em>threads=None</em>, <em>ffmpeg_params=None</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_videofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the clip to a videofile.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -514,7 +525,8 @@ or simply be &#8216;.avi&#8217; (which will work with any codec).</p>
 </div></blockquote>
 <p><strong>fps</strong> :</p>
 <blockquote>
-<div><p>Number of frames per second in the resulting video file.</p>
+<div><p>Number of frames per second in the resulting video file. If None is
+provided, and the clip has an fps attribute, this fps will be used.</p>
 </div></blockquote>
 <p><strong>codec</strong> :</p>
 <blockquote>
@@ -735,7 +747,7 @@ and not for each &#8216;frame&#8217;.</p>
 <p>Applies a transformation to the clip&#8217;s timeline
 (see Clip.fl_time).</p>
 <p>This method does nothing for ImageClips (but it may affect their
-masks of their audios). The result is still an ImageClip.</p>
+masks or their audios). The result is still an ImageClip.</p>
 </dd></dl>
 
 </dd></dl>
@@ -860,6 +872,17 @@ transparency in the image.</p>
 <em class="property">static </em><tt class="descname">list</tt><big>(</big><em>arg</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#TextClip.list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of all valid entries for the argument of
 <tt class="docutils literal"><span class="pre">TextClip</span></tt> given (can be <tt class="docutils literal"><span class="pre">font</span></tt>, <tt class="docutils literal"><span class="pre">color</span></tt>, etc...)</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="moviepy.video.VideoClip.TextClip.search">
+<em class="property">static </em><tt class="descname">search</tt><big>(</big><em>string</em>, <em>arg</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the of all valid entries which contain <tt class="docutils literal"><span class="pre">string</span></tt> for the
+argument <tt class="docutils literal"><span class="pre">arg</span></tt> of <tt class="docutils literal"><span class="pre">TextClip</span></tt>, for instance</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># Find all the available fonts which contain &quot;Courier&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">(</span> <span class="n">TextClip</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">&#39;Courier&#39;</span><span class="p">,</span> <span class="s">&#39;font&#39;</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>

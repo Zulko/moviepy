@@ -30,7 +30,7 @@
   
     <link rel="top" title="MoviePy 0.2 documentation" href="index.html"/>
         <link rel="next" title="Example Scripts" href="examples/examples.html"/>
-        <link rel="prev" title="How to be efficient with MoviePy" href="getting_started/efficient_moviepy.html"/> 
+        <link rel="prev" title="Audio in MoviePy" href="getting_started/audio.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -65,18 +65,19 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/clips.html">Creating and exporting video clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/compositing.html">Mixing clips together</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started/advanced_tools.html">Advanced tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/audio.html">Audio in MoviePy</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Gallery</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#animations-edited-with-moviepy">Animations edited with MoviePy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scientific-or-technological-projects">Scientific or technological projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rinconcam">Rinconcam</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples.html">Example Scripts</a><ul>
@@ -87,7 +88,6 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/masked_credits.html">Partially Hidden credits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/the_end.html">&#8220;The End&#8221; effect</a></li>
 </ul>
 </li>
@@ -165,19 +165,36 @@ style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%
 </iframe>
 </div></div>
 </div>
-<div class="section" id="gifs-edited-with-moviepy">
-<h2>Gifs edited with MoviePy<a class="headerlink" href="#gifs-edited-with-moviepy" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="gifs-from-video-files">
-<h3>GIFs from video files<a class="headerlink" href="#gifs-from-video-files" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="animations-edited-with-moviepy">
+<h2>Animations edited with MoviePy<a class="headerlink" href="#animations-edited-with-moviepy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="gifs-made-from-video-files">
+<h3>GIFs made from video files<a class="headerlink" href="#gifs-made-from-video-files" title="Permalink to this headline">¶</a></h3>
 <p>This  <a class="reference external" href="http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/">tutorial</a> gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.</p>
 <a href="http://imgur.com/Fo2BxBK"><img src="http://i.imgur.com/Fo2BxBK.gif" title="Hosted by imgur.com"
    style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a></div>
-<div class="section" id="animations">
-<h3>Animations<a class="headerlink" href="#animations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="vector-animations">
+<h3>Vector Animations<a class="headerlink" href="#vector-animations" title="Permalink to this headline">¶</a></h3>
 <p>This <a class="reference external" href="http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/">tutorial</a> shows how to combine MoviePy with Gizeh to create animations:</p>
 <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/2YdW9yf.gif"
 style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a><p>It is also possible to combine MoviePy with other graphic librairies like matplotlib, etc.</p>
 </div>
+<div class="section" id="d-animations">
+<h3>3D animations<a class="headerlink" href="#d-animations" title="Permalink to this headline">¶</a></h3>
+<p>This <a class="reference external" href="http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/">tutorial</a> shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray</p>
+<a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/XN7e2IP.gif"
+style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a><p>With Vapory and MoviePy you can for instance embed a movie in a 3D scene:</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
+<iframe src="http://youtube.com/v/M9R21SquDSk?rel=0" frameborder="0" allowfullscreen
+style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+</iframe>
+</div><p>Or render the result of this physics simulation made with PyODE (<a class="reference external" href="https://gist.github.com/Zulko/f828b38421dfbee59daf">script</a>):</p>
+<a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/TdhxwGz.gif"
+style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a><p>Or use <a class="reference external" href="https://gist.github.com/Zulko/b910c8b22e8e1c01fae6">this script</a> to make piano animations from MIDI files (which are some sort of electronic sheet music):</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
+<iframe src="http://youtube.com/v/tCqQhmuwgMg?rel=0" frameborder="0" allowfullscreen
+style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+</iframe>
+</div></div>
 </div>
 <div class="section" id="scientific-or-technological-projects">
 <h2>Scientific or technological projects<a class="headerlink" href="#scientific-or-technological-projects" title="Permalink to this headline">¶</a></h2>
@@ -192,20 +209,41 @@ style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%
 </div>
 <div class="section" id="misc-programs-and-scripts-using-moviepy">
 <h2>Misc. Programs and Scripts using MoviePy<a class="headerlink" href="#misc-programs-and-scripts-using-moviepy" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="videogrep">
+</div>
+<div class="section" id="rinconcam">
+<h2>Rinconcam<a class="headerlink" href="#rinconcam" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.rinconcam.com/month/2014-03">Rincomcam</a> is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python.
+MoviePy is used to add transitions, titles and music to the videos.</p>
+<a href="http://imgur.com/2YdW9yf"><img src="https://pbs.twimg.com/media/B2_NlnwCMAAingW.jpg"
+style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a><div class="section" id="videogrep">
 <h3>Videogrep<a class="headerlink" href="#videogrep" title="Permalink to this headline">¶</a></h3>
 <p>Videogrep is a python script written by Sam Lavigne, that goes through the subtitle tracks of movies and makes supercuts based on what it finds. For instance, here is an automatic supercut of every time the White House press secretary tells us what he can tell us:</p>
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
 <iframe src="http://youtube.com/v/D7pymdCU5NQ&hl?rel=0" frameborder="0" allowfullscreen
 style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
 </iframe>
-</div><p>Here are Videogrep&#8217;s introductory <a class="reference external" href="http://lav.io/2014/06/videogrep-automatic-supercuts-with-python/">blog post</a> and the Github project <a class="reference external" href="https://github.com/antiboredom/videogrep/">page</a>.</p>
-<p>If you liked it, also have a look at these two Videogrep-inspired projects:</p>
-<ul class="simple">
-<li>This <a class="reference external" href="http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/">blog post</a> attempts to cut a video precisely at the beginning and end of sentences or words.</li>
-<li>This <a class="reference external" href="http://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/">other post</a> uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens.</li>
-</ul>
+</div><p>Here are <a class="reference external" href="http://lav.io/2014/06/videogrep-automatic-supercuts-with-python/">Videogrep&#8217;s introductory blog post</a> and the Github <a class="reference external" href="https://github.com/antiboredom/videogrep/">Videogrep page</a>.</p>
+<p>If you liked it, also have a look at these Videogrep-inspired projects:</p>
+<p>This <a class="reference external" href="http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/">blog post</a> attempts to cut a video precisely at the beginning and end of sentences or words:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Americans&quot;</span><span class="p">,</span> <span class="s">&quot;must&quot;</span><span class="p">,</span> <span class="s">&quot;develop&quot;</span><span class="p">,</span> <span class="s">&quot;open &quot;</span><span class="p">,</span> <span class="s">&quot;source&quot;</span><span class="p">,</span>
+          <span class="s">&quot; software&quot;</span><span class="p">,</span> <span class="s">&quot;for the&quot;</span><span class="p">,</span> <span class="s">&quot; rest &quot;</span><span class="p">,</span> <span class="s">&quot;of the world&quot;</span><span class="p">,</span>
+          <span class="s">&quot;instead of&quot;</span><span class="p">,</span> <span class="s">&quot; soldiers&quot;</span><span class="p">]</span>
+<span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c"># take clip number &#39;n&#39;</span>
+
+<span class="n">cuts</span> <span class="o">=</span> <span class="p">[</span><span class="n">find_word</span><span class="p">(</span><span class="n">word</span><span class="p">)[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)]</span>
+<span class="n">assemble_cuts</span><span class="p">(</span><span class="n">cuts</span><span class="p">,</span> <span class="s">&quot;fake_speech.mp4&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
+<iframe src="http://youtube.com/v/iWRYGULFd_c?rel=0" frameborder="0" allowfullscreen
+style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+</iframe>
+</div><p>This <a class="reference external" href="http://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/">other post</a> uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
+<iframe src="http://youtube.com/v/zJtWPFX2bA0?rel=0" frameborder="0" allowfullscreen
+style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+</iframe>
+</div></div>
 </div>
 </div>
 
@@ -218,7 +256,7 @@ style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%
         <a href="examples/examples.html" class="btn btn-neutral float-right" title="Example Scripts"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="getting_started/efficient_moviepy.html" class="btn btn-neutral" title="How to be efficient with MoviePy"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getting_started/audio.html" class="btn btn-neutral" title="Audio in MoviePy"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

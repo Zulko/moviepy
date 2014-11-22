@@ -64,24 +64,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../crash_course/crash_course.html">A MoviePy crash-course</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#example-code">Example code</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#what-powers-moviepy">What powers MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#the-clip-objects">The clip objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#classes-of-video-clips">Classes of video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#composite-video-clips">Composite video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#writing-a-video-clip-to-a-file">Writing a video clip to a file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#writing-an-animated-gif">Writing an animated GIF</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#audio-clips">Audio clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../crash_course/crash_course.html#to-go-further">To go further</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html#more-advanced-uses">More advanced uses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting clips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#programs-and-scripts-using-moviepy">Programs and Scripts using MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#moviepy-online">MoviePy online</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#moviepy-in-sciences-and-technology">MoviePy in sciences and technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
@@ -92,7 +97,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/headblur.html">Tracking and blurring someone&#8217;s face</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
 </ul>
 </li>
@@ -310,7 +314,8 @@ parameters, when the effects are chained:</p>
 <dl class="method">
 <dt id="Clip.Clip.get_frame">
 <tt class="descname">get_frame</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#Clip.Clip.get_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets a numpy array representing the RGB picture of the clip at time t.</p>
+<dd><p>Gets a numpy array representing the RGB picture of the clip at time t
+or (mono or stereo) value for a sound clip</p>
 </dd></dl>
 
 <dl class="method">
@@ -326,7 +331,7 @@ is true iff tti is in the clip.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.iter_frames">
-<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em>, <em>with_times=False</em>, <em>progress_bar=False</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em>, <em>with_times=False</em>, <em>progress_bar=False</em>, <em>dtype=None</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates over all the frames of the clip.</p>
 <p>Returns each frame of the clip as a HxWxN np.array,
 where N=1 for mask clips and N=3 for RGB clips.</p>
@@ -335,6 +340,7 @@ It provides an easy way to do frame-by-frame treatment of
 a video, for fields like science, computer vision...</p>
 <p>The <tt class="docutils literal"><span class="pre">fps</span></tt> (frames per second) parameter is optional if the
 clip already has a <tt class="docutils literal"><span class="pre">fps</span></tt> attribute.</p>
+<p>Use dtype=&#8221;uint8&#8221; when using the pictures to write video, images...</p>
 <p class="rubric">Examples</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># prints the maximum of red that is contained</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c"># on the first line of each frame of the clip.</span>
@@ -370,8 +376,15 @@ of the returned clip.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="Clip.Clip.set_fps">
+<tt class="descname">set_fps</tt><big>(</big><em>fps</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_fps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the clip with a new default fps for functions like
+write_videofile, iterframe, etc.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Clip.Clip.set_make_frame">
-<tt class="descname">set_make_frame</tt><big>(</big><em>gf</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_make_frame" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_make_frame</tt><big>(</big><em>make_frame</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_make_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets a <tt class="docutils literal"><span class="pre">make_frame</span></tt> attribute for the clip. Useful for setting
 arbitrary/complicated videoclips.</p>
 </dd></dl>
