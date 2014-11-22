@@ -14,7 +14,7 @@ pg.display.set_caption('MoviePy')
 def imdisplay(imarray, screen=None):
     """Splashes the given image array on the given pygame screen """
     a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
-    if screen == None:
+    if screen is None:
         screen = pg.display.set_mode(imarray.shape[:2][::-1])
     screen.blit(a, (0, 0))
     pg.display.flip()
@@ -40,7 +40,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
     if isinstance(t, tuple):
         t = cvsecs(*t)
 
-    if with_mask and (clip.mask != None):
+    if with_mask and (clip.mask is not None):
         import moviepy.video.compositing.CompositeVideoClip as cvc
         clip = cvc.CompositeVideoClip([clip.set_pos((0,0))])
     img = clip.get_frame(t)
@@ -93,7 +93,7 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     # compute and splash the first image
     screen = pg.display.set_mode(clip.size)
     
-    audio = audio and (clip.audio != None)
+    audio = audio and (clip.audio is not None)
     
     if audio:
         # the sound will be played in parrallel. We are not

@@ -483,7 +483,7 @@ class VideoClip(Clip):
         center = self.subclip(ta, tb).fx(fx, **kwargs)
         right = None if (tb is None) else self.subclip(t_start=tb)
 
-        clips = [c for c in [left, center, right] if c != None]
+        clips = [c for c in [left, center, right] if c is not None]
 
         # beurk, have to find other solution
         from moviepy.video.compositing.concatenate import concatenate_videoclips
@@ -881,7 +881,7 @@ class ImageClip(VideoClip):
         for attr in apply_to:
             if hasattr(self, attr):
                 a = getattr(self, attr)
-                if a != None:
+                if a is not None:
                     new_a = a.fl_image(image_func)
                     setattr(self, attr, new_a)
 
@@ -901,7 +901,7 @@ class ImageClip(VideoClip):
         for attr in apply_to:
             if hasattr(self, attr):
                 a = getattr(self, attr)
-                if a != None:
+                if a is not None:
                     new_a = a.fl_time(time_func)
                     setattr(self, attr, new_a)
 
@@ -1033,7 +1033,7 @@ class TextClip(ImageClip):
             # use a file instead of a text.
             txt = "@%" + filename
 
-        if size != None:
+        if size is not None:
             size = ('' if size[0] is None else str(size[0]),
                     '' if size[1] is None else str(size[1]))
 
@@ -1042,18 +1042,18 @@ class TextClip(ImageClip):
                "-fill", color,
                "-font", font])
 
-        if fontsize != None:
+        if fontsize is not None:
             cmd += ["-pointsize", "%d" % fontsize]
-        if kerning != None:
+        if kerning is not None:
             cmd += ["-kerning", "%0.1f" % kerning]
-        if stroke_color != None:
+        if stroke_color is not None:
             cmd += ["-stroke", stroke_color, "-strokewidth",
                     "%.01f" % stroke_width]
-        if size != None:
+        if size is not None:
             cmd += ["-size", "%sx%s" % (size[0], size[1])]
-        if align != None:
+        if align is not None:
             cmd += ["-gravity", align]
-        if interline != None:
+        if interline is not None:
             cmd += ["-interline-spacing", "%d" % interline]
 
         if tempfilename is None:

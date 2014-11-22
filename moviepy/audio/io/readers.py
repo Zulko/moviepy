@@ -216,7 +216,7 @@ class FFMPEG_AudioReader:
         new_bufferstart = max(0,  framenumber - self.buffersize // 2)
 
 
-        if (self.buffer!=None):
+        if (self.buffer is not None):
             current_f_end  = self.buffer_startframe + self.buffersize
             if (new_bufferstart <
                         current_f_end  <

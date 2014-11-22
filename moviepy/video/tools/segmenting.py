@@ -14,7 +14,7 @@ def findObjects(clip,rem_thr=500, preview=False):
     """
     
     image = clip.get_frame(0)
-    if clip.mask == None:
+    if clip.mask is None:
         clip = clip.add_mask()
         
     mask = clip.mask.get_frame(0)

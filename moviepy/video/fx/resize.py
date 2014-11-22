@@ -79,7 +79,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
 
     w, h = clip.size
     
-    if newsize != None:
+    if newsize is not None:
         
         def trans_newsize(ns):
             
@@ -109,7 +109,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
             newsize = trans_newsize(newsize)
         
 
-    elif height != None:
+    elif height is not None:
         
         if hasattr(height, "__call__"):
             fun = lambda t : 1.0*int(height(t))/h
@@ -120,7 +120,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
 
             newsize = [w * height / h, height]
         
-    elif width != None:
+    elif width is not None:
 
         if hasattr(width, "__call__"):
             fun = lambda t : 1.0*width(t)/w
