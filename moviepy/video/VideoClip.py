@@ -273,7 +273,7 @@ class VideoClip(Clip):
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
                                  "with the filename. Provide the 'codec' parameter in "
-                                 "write_fideofile.")
+                                 "write_videofile.")
 
         if audio_codec is None:
             if (ext in ['ogv', 'webm']):
