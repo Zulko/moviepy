@@ -191,7 +191,7 @@ class AudioClip(Clip):
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
                        "with the filename. Provide the 'codec' parameter in "
-                       "write_fideofile.")
+                       "write_videofile.")
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
                       codec=codec, bitrate=bitrate, write_logfile=write_logfile,
