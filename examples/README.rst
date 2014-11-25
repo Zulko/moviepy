@@ -1,1 +1,1 @@
-This folder contains curated example scripts for editing movies with MoviePy.
+This folder contains curated examples for MoviePy.

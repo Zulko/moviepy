@@ -79,6 +79,9 @@ for method in ["afx.audio_fadein",
     exec("AudioClip.%s = %s"%( method.split('.')[1], method))
 
 
+# adds easy ipython integration
+VideoClip.ipython_display = ipython_display
+AudioClip.ipython_display = ipython_display
 #-----------------------------------------------------------------
 # Previews: try to import pygame, else make methods which raise
 # exceptions saying to install PyGame

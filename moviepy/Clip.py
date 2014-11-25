@@ -50,6 +50,12 @@ class Clip:
         self.start = 0
         self.end = None
         self.duration = None
+        
+        self.memoize = False
+        self.memoized_t = None
+        self.memoize_frame  = None
+
+
 
     def copy(self):
         """ Shallow copy of the clip. 
@@ -77,7 +83,16 @@ class Clip:
         or (mono or stereo) value for a sound clip
         """
         # Coming soon: smart error handling for debugging at this point 
-        return self.make_frame(t)
+        if self.memoize:
+            if t == self.memoized_t:
+                return self.memoized_frame
+            else:
+                frame = self.make_frame(t)
+                self.memoized_t = t
+                self.memoized_frame = frame
+                return frame
+        else:
+            return self.make_frame(t)
 
     def fl(self, fun, apply_to=[] , keep_duration=True):
         """ General processing of a clip.
@@ -291,8 +306,17 @@ class Clip:
         """ Returns a copy of the clip with a new default fps for functions like
         write_videofile, iterframe, etc. """ 
         self.fps = fps
-    
-    
+
+
+    @outplace
+    def set_ismask(self, ismask):
+        """ Says wheter the clip is a mask or not (ismask is a boolean)""" 
+        self.ismask = ismask
+
+    @outplace
+    def set_memoize(self, memoize):
+        """ Sets wheter the clip should keep the last frame read in memory """ 
+        self.memoize = memoize    
     
     @convert_to_seconds(['t'])
     def is_playing(self, t):
