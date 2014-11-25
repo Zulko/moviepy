@@ -70,12 +70,11 @@
 <li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
 <li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audio.html">Audio in MoviePy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#gifs-edited-with-moviepy">Gifs edited with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gallery.html#animations-edited-with-moviepy">Animations edited with MoviePy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#rinconcam">Rinconcam</a></li>
@@ -83,6 +82,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dancing_knights.html">A reconstitution of 15th century dancing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
@@ -146,7 +146,7 @@
             
   <div class="section" id="creating-and-exporting-video-clips">
 <span id="clips"></span><h1>Creating and exporting video clips<a class="headerlink" href="#creating-and-exporting-video-clips" title="Permalink to this headline">¶</a></h1>
-<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <a class="reference internal" href="effects.html#effects"><em>Clips transformations and effects</em></a>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
+<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <em class="xref std std-ref">effects</em>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
 <p>The following code summarizes the base clips that you can create with moviepy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># VIDEO CLIPS</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c"># for custom animations (see below)</span>

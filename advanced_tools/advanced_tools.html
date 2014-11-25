@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Freezing a movie frame with a painting effect &mdash; MoviePy 0.2 documentation</title>
+  <title>Advanced tools &mdash; MoviePy 0.2 documentation</title>
   
 
   
@@ -28,10 +28,7 @@
   
 
   
-    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
-        <link rel="up" title="Example Scripts" href="examples.html"/>
-        <link rel="next" title="Placing clips according to a picture" href="compo_from_image.html"/>
-        <link rel="prev" title="Partially Hidden credits" href="masked_credits.html"/> 
+    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -58,7 +55,7 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
         
         
-            <ul class="current">
+            <ul>
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
@@ -80,16 +77,16 @@
 <li class="toctree-l2"><a class="reference internal" href="../gallery.html#rinconcam">Rinconcam</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Example Scripts</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="moving_letters.html">Text with moving letters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dancing_knights.html">A reconstitution of 15th century dancing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ukulele_concerto.html">A simple music video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_with_sound.html">An example with sound</a></li>
-<li class="toctree-l2"><a class="reference internal" href="star_worms.html">A Star-Wars like opening title</a></li>
-<li class="toctree-l2"><a class="reference internal" href="masked_credits.html">Partially Hidden credits</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Freezing a movie frame with a painting effect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="the_end.html">&#8220;The End&#8221; effect</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/dancing_knights.html">A reconstitution of 15th century dancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
@@ -131,12 +128,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-          <li><a href="examples.html">Example Scripts</a> &raquo;</li>
-      
-    <li>Freezing a movie frame with a painting effect</li>
+    <li>Advanced tools</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/examples/painting_effect.txt" rel="nofollow"> View page source</a>
+          <a href="../_sources/advanced_tools/advanced_tools.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -144,91 +139,26 @@
 </div>
           <div role="main">
             
-  <div class="section" id="freezing-a-movie-frame-with-a-painting-effect">
-<h1>Freezing a movie frame with a painting effect<a class="headerlink" href="#freezing-a-movie-frame-with-a-painting-effect" title="Permalink to this headline">¶</a></h1>
-<p>That&#8217;s an effect that we have seen a lot in westerns and such.</p>
-<center>
-<object><param name="movie"
-value="http://www.youtube.com/v/aC5CifkacSI&hl=en_US&fs=1&rel=0">
-</param><param name="allowFullScreen" value="true"></param><param
-name="allowscriptaccess" value="always"></param><embed
-src="http://www.youtube.com/v/aC5CifkacSI&hl=en_US&fs=1&rel=0"
-type="application/x-shockwave-flash" allowscriptaccess="always"
-allowfullscreen="true" width="550" height="450"></embed></object>
-</center><p>The recipe used to make a photo look like a painting:</p>
-<ul class="simple">
-<li>Find the edges of the image with the Sobel algorithm. You obtain
-what looks like a black and white hand-drawing of the photo.</li>
-<li>Multiply the image array to make the colors flashier, and add the contours
-obtained at the previous step.</li>
-</ul>
-<p>The final clip will be the concatenation of three part: the part before
-the effect, the part with the effect, and the part after the effect.
-The part with the effect is obtained as follows:</p>
-<ul class="simple">
-<li>Take the frame to freeze and make a &#8220;painted image&#8221; of it. Make it a clip.</li>
-<li>Add a text clip saying &#8220;Audrey&#8221; to the &#8220;painted image&#8221; clip.</li>
-<li>Overlay the painted clip over the original frame, but make it appear and
-disappear with a fading effect.</li>
-</ul>
-<p>Here you are for the code:</p>
-<div class="highlight-python"><pre>""" requires scikit-image installed (for vfx.painting) """
- 
-from moviepy.editor import *
-
-# WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE &amp; AFTER THE FREEZE
-
-charade = VideoFileClip("../../videos/charade.mp4")
-tfreeze = cvsecs(19,21) # Time of the freeze, 19'21
-
-# when using several subclips of a same clip, it can be faster
-# to create 'coreaders' of the clip (=other entrance points).
-clip_before = charade.coreader().subclip(tfreeze -2,tfreeze)
-clip_after = charade.coreader().subclip(tfreeze ,tfreeze +2)
-
-
-# THE FRAME TO FREEZE
-
-im_freeze = charade.to_ImageClip(tfreeze)
-painting = (charade.fx( vfx.painting, saturation = 1.6,black = 0.006)
-                   .to_ImageClip(tfreeze)
-                 
-txt = TextClip('Audrey',font='Amiri-regular',fontsize=35)
-
-painting_txt = (CompositeVideoClip([painting,txt.set_pos((10,180))])
-                   .add_mask()
-                   .set_duration(3)
-                   .crossfadein( 0.5)
-                   .crossfadeout( 0.5))
-
-# FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE
-
-painting_fading = CompositeVideoClip([im_freeze,painting_txt])
-
-# FINAL CLIP AND RENDERING
-
-final_clip =  concatenate_videoclips([ clip_before,
-                            painting_fading.set_duration(3),
-                            clip_after])
-
-final_clip.write_videofile('../../audrey.avi',fps=charade.fps,
-                        codec = "mpeg4", audio_bitrate="3000k")
-</pre>
+  <div class="section" id="advanced-tools">
+<span id="advancedtools"></span><h1>Advanced tools<a class="headerlink" href="#advanced-tools" title="Permalink to this headline">¶</a></h1>
+<p>This section will briefly present the submodule <tt class="docutils literal"><span class="pre">moviepy.video.tools</span></tt> that can help you edit videos. It&#8217;s not ready yet, see <a class="reference internal" href="../ref/videotools.html#ref-videotools"><em>video.tools</em></a> (the same in more complete and more technical) instead.</p>
+<div class="section" id="tracking">
+<h2>Tracking<a class="headerlink" href="#tracking" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="cuts">
+<h2>Cuts<a class="headerlink" href="#cuts" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="subtitles">
+<h2>Subtitles<a class="headerlink" href="#subtitles" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="credits">
+<h2>Credits<a class="headerlink" href="#credits" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="compo_from_image.html" class="btn btn-neutral float-right" title="Placing clips according to a picture"/>Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="masked_credits.html" class="btn btn-neutral" title="Partially Hidden credits"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

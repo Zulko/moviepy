@@ -3,13 +3,14 @@
 Example Scripts
 ===============
 
-Here are a few example scripts to get you started. There are quite old now and will be soon replaced.
+Here are a few example scripts to get you started. Most are quite old now and will be soon replaced.
 
 
 .. toctree::
    :maxdepth: 1
    
    moving_letters
+   dancing_knights
    ukulele_concerto
    example_with_sound
    star_worms
