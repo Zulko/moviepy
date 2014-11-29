@@ -123,8 +123,8 @@ class FFMPEG_VideoReader:
 
         else:
 
-            result = np.fromstring(s, dtype='uint8').\
-                         reshape((h, w, len(s)//(w*h)))
+            result = np.fromstring(s, dtype='uint8')
+            result.shape =(h, w, len(s)//(w*h)) # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
 
         return result

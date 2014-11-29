@@ -402,6 +402,7 @@ class VideoClip(Clip):
 
 
     @requires_duration
+    @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='ImageMagick',
                   opt="OptimizeTransparency", fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):

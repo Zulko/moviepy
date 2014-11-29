@@ -21,33 +21,28 @@ A typical MoviePy script looks like this: ::
     # write the result to a file in any format
     final_clip.to_videofile("myHolidays_edited.webm",fps=25)
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2 and 3. 
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3.
 
 Contribute !
 -------------
 
-MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback. 
+MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback.
+
 You can also discuss about the project on Reddit_ or on the mailing list moviepy@librelist.com .
 
 
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
+**Method with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
     
-    (sudo) pip install moviepy
-
-This method will fail if ``ez_setup`` is not installed on your computer. In this case install ``ez_setup`` first, with ::
-    
-    (sudo) pip install ez_setup
+    (sudo) pip install ez_setup moviepy
 
 **Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
     
     (sudo) python setup.py install
 
-MoviePy depends on the Python modules Numpy_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation.
-
-This should work  on Windows/Mac/Linux, with Python 2 and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback ! 
+MoviePy depends on the Python modules Numpy_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback ! 
     
 Linking to ffmpeg
 ~~~~~~~~~~~~~~~~~~

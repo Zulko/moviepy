@@ -10,6 +10,7 @@ The following code summarizes the base clips that you can create with moviepy: :
     # VIDEO CLIPS
     clip = VideoClip(make_frame, duration=4) # for custom animations (see below)
     clip = VideoFileClip("my_video_file.mp4") # or .avi, .webm, .gif ...
+    clip = ImageSequenceClip(['image_file1.jpeg', ...], fps=24)
     clip = ImageClip("my_picture.png") # or .jpeg, .tiff, ...
     clip = TextClip("Hello !", font="Amiri-Bold", fontsize=70, color="black")
     clip = ColorClip(size=(460,380), color=[R,G,B])
@@ -75,6 +76,18 @@ Note that these clips will have an ``fps`` (frame per second) attribute, which w
 
 For more, see :py:class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
 
+ImageSequenceClip
+""""""""""""""""""
+
+This is a clip made from a series of images, you call it with ::
+
+    clip = ImageSequenceClip(images_list, fps=25)
+
+where ``images_list`` can be either a list of image names (that will be *played*) in that order, a folder name (at which case all the image files in the folder will be played in alphanumerical order), or a list of frames (Numpy arrays), obtained for instance from other clips.
+
+When you provide a folder name or list of file names, you can choose ``load_images=True`` to specify that all images should be loaded into the RAM. This is only interesting if you have a small number of images that will be each used more than once (e.g. if the images form a looping animation).
+
+
 ImageClip
 """"""""""
 
@@ -87,6 +100,7 @@ An ImageClip is a video clip that always displays the same image. You can create
 For more, see :py:class:`~moviepy.video.VideoClip.ImageClip`.
 
 Two examples of ImageClip shown below are the TextClip and ColorClip
+
 
 
 TextClip

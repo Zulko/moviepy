@@ -379,20 +379,30 @@ class Clip:
         """
 
         if (self.duration is not None) and (t_start>self.duration):
+        
             raise ValueError("t_start (%.02f) "%t_start +
                              "should be smaller than the clip's "+
                              "duration (%.02f)."%self.duration)
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
+        
         if (t_end is None) and (self.duration is not None):
+        
             t_end = self.duration
+        
         elif t_end<0:
+        
             if self.duration is None:
+        
                 print ("Error: subclip with negative times can only be"+
                         "extracted from clips with a ``duration``")
+        
             else:
+        
                 t_end = self.duration + t_end
+        
         if (t_end is not None):
+        
             newclip.duration = t_end - t_start
             newclip.end = newclip.start + newclip.duration
             
@@ -418,9 +428,13 @@ class Clip:
         
         fl = lambda t: t + (t >= ta)*(tb - ta)
         newclip = self.fl_time(fl)
+        
         if self.duration is not None:
+        
             return newclip.set_duration(self.duration - (tb - ta))
+        
         else:
+        
             return newclip
 
     @requires_duration
@@ -453,17 +467,25 @@ class Clip:
         """
 
         def generator():
+        
             for t in np.arange(0, self.duration, 1.0/fps):
+        
                 frame = self.get_frame(t)
+        
                 if (dtype is not None) and (frame.dtype != dtype):
+        
                     frame = frame.astype(dtype)
 
                 if with_times:
+        
                     yield t, frame
+        
                 else:
+        
                     yield frame
         
         if progress_bar:
+        
             nframes = int(self.duration*fps)+1
             return tqdm(generator(), total=nframes)
 
