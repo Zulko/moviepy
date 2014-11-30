@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Mixing clips together &mdash; MoviePy 0.2 documentation</title>
+  <title>Mixing clips &mdash; MoviePy 0.2 documentation</title>
   
 
   
@@ -67,7 +67,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="">Mixing clips together</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -133,7 +133,7 @@
       
           <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
       
-    <li>Mixing clips together</li>
+    <li>Mixing clips</li>
       <li class="wy-breadcrumbs-aside">
         
           <a href="../_sources/getting_started/compositing.txt" rel="nofollow"> View page source</a>
@@ -144,8 +144,8 @@
 </div>
           <div role="main">
             
-  <div class="section" id="mixing-clips-together">
-<span id="compositevideoclips"></span><h1>Mixing clips together<a class="headerlink" href="#mixing-clips-together" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="mixing-clips">
+<span id="compositevideoclips"></span><h1>Mixing clips<a class="headerlink" href="#mixing-clips" title="Permalink to this headline">¶</a></h1>
 <p>Video composition, also known as non-linear editing, is the fact of playing several clips together in a new clip. This video is a good example of what compositing you can do with MoviePy:</p>
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left:15%;">
 <iframe src="http://youtube.com/v/rIehsqqYFEM&hl?rel=0" frameborder="0" allowfullscreen
@@ -155,12 +155,12 @@ style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
 <div class="section" id="stacking-and-concatenating-clips">
 <h2>Stacking and concatenating clips<a class="headerlink" href="#stacking-and-concatenating-clips" title="Permalink to this headline">¶</a></h2>
 <p>Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to them side by side in a single larger clip).</p>
-<p>Concatenation is done with the function <tt class="docutils literal"><span class="pre">concatenate</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">concatenate</span>
+<p>Concatenation is done with the function <tt class="docutils literal"><span class="pre">concatenate_videoclips</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">concatenate_videoclips</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo.mp4&quot;</span><span class="p">)</span>
 <span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
 <span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;myvideo3.mp4&quot;</span><span class="p">)</span>
-<span class="n">final_clip</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
 <span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;my_concatenation.mp4&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -183,7 +183,7 @@ style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
 </div>
 <div class="section" id="id1">
 <h2>CompositeVideoClips<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>The <cite>CompositeVideoClip</cite> class provides a very flexible way to compose clips, but is more complex than <tt class="docutils literal"><span class="pre">concatenate</span></tt> and <tt class="docutils literal"><span class="pre">clips_array</span></tt></p>
+<p>The <cite>CompositeVideoClip</cite> class provides a very flexible way to compose clips, but is more complex than <tt class="docutils literal"><span class="pre">concatenate_videoclips</span></tt> and <tt class="docutils literal"><span class="pre">clips_array</span></tt></p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -205,8 +205,8 @@ style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
 </div>
 <p>In the example above, maybe <tt class="docutils literal"><span class="pre">clip2</span></tt> will start before <tt class="docutils literal"><span class="pre">clip1</span></tt> is over. In this case you can make <tt class="docutils literal"><span class="pre">clip2</span></tt> appear with a <em>fade-in</em> effect of one second:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span> <span class="c"># starts at t=0</span>
-                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fadein</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span>
+                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">crossfadein</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">crossfadein</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
@@ -240,18 +240,15 @@ style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
 <div class="figure">
 <img alt="../_images/videoWH.jpeg" src="../_images/videoWH.jpeg" />
 </div>
-<div class="section" id="transitions">
-<h4>Transitions<a class="headerlink" href="#transitions" title="Permalink to this headline">¶</a></h4>
-<p>Everyone loves transitions between clips: fade-ins, fade-out, clips that slide in front of the previous one... everything is good to impress your grandparents.</p>
-</div>
 <div class="section" id="compositing-audio-clips">
 <h4>Compositing audio clips<a class="headerlink" href="#compositing-audio-clips" title="Permalink to this headline">¶</a></h4>
-<p>Audio clips can be mixed together with <tt class="docutils literal"><span class="pre">CompositeAudioClip</span></tt> and <tt class="docutils literal"><span class="pre">concatenate_audioclips</span></tt>:</p>
+<p>When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don&#8217;t need to worry about compositing these tracks yourself.</p>
+<p>If you want to make a custom audiotrack from several audio sources: audioc clips can be mixed together with <tt class="docutils literal"><span class="pre">CompositeAudioClip</span></tt> and <tt class="docutils literal"><span class="pre">concatenate_audioclips</span></tt>:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="c"># ... make some clips</span>
+<span class="c"># ... make some audio clips aclip1, aclip2, aclip3</span>
 <span class="n">concat</span> <span class="o">=</span> <span class="n">concatenate_audioclips</span><span class="p">([</span><span class="n">aclip1</span><span class="p">,</span> <span class="n">aclip2</span><span class="p">,</span> <span class="n">aclip3</span><span class="p">])</span>
 <span class="n">compo</span> <span class="o">=</span> <span class="n">CompositeAudioClip</span><span class="p">([</span><span class="n">aclip1</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
-                            <span class="n">aclip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+                            <span class="n">aclip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="c"># start at t=5s</span>
                             <span class="n">aclip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span>
 </pre></div>
 </div>

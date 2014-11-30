@@ -67,7 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -415,6 +415,14 @@ needed.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">final</span><span class="o">.</span><span class="n">to_videofile</span><span class="p">(</span><span class="s">&quot;final.mp4&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">myvideo</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="moviepy.video.tools.subtitles.SubtitlesClip.in_subclip">
+<tt class="descname">in_subclip</tt><big>(</big><em>t_start=None</em>, <em>t_end=None</em><big>)</big><a class="headerlink" href="#moviepy.video.tools.subtitles.SubtitlesClip.in_subclip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sequence of [(t1,t2), txt] covering all the given subclip
+from t_start to t_end. The first and last times will be cropped so as
+to be exactly t_start and t_end if possible.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="function">

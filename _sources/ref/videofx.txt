@@ -40,8 +40,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     crop
     fadein
     fadeout
-    freeze_at_end
-    freeze_at_start
+    freeze
     gamma_corr
     headblur
     loop

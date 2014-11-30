@@ -10,6 +10,7 @@ The following code summarizes the base clips that you can create with moviepy: :
     # VIDEO CLIPS
     clip = VideoClip(make_frame, duration=4) # for custom animations (see below)
     clip = VideoFileClip("my_video_file.mp4") # or .avi, .webm, .gif ...
+    clip = ImageSequenceClip(['image_file1.jpeg', ...], fps=24)
     clip = ImageClip("my_picture.png") # or .jpeg, .tiff, ...
     clip = TextClip("Hello !", font="Amiri-Bold", fontsize=70, color="black")
     clip = ColorClip(size=(460,380), color=[R,G,B])
@@ -75,6 +76,18 @@ Note that these clips will have an ``fps`` (frame per second) attribute, which w
 
 For more, see :py:class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
 
+ImageSequenceClip
+""""""""""""""""""
+
+This is a clip made from a series of images, you call it with ::
+
+    clip = ImageSequenceClip(images_list, fps=25)
+
+where ``images_list`` can be either a list of image names (that will be *played*) in that order, a folder name (at which case all the image files in the folder will be played in alphanumerical order), or a list of frames (Numpy arrays), obtained for instance from other clips.
+
+When you provide a folder name or list of file names, you can choose ``load_images=True`` to specify that all images should be loaded into the RAM. This is only interesting if you have a small number of images that will be each used more than once (e.g. if the images form a looping animation).
+
+
 ImageClip
 """"""""""
 
@@ -87,6 +100,7 @@ An ImageClip is a video clip that always displays the same image. You can create
 For more, see :py:class:`~moviepy.video.VideoClip.ImageClip`.
 
 Two examples of ImageClip shown below are the TextClip and ColorClip
+
 
 
 TextClip
@@ -202,12 +216,12 @@ This section shows how to use MoviePy to create and edit audio clips.
 Note that when you import, cut, mix or concatenate video clips in MoviePy, their audio tracks are automatically handled and you don't need to worry about it. This section is of interest if you just want to edit audio files, or you want custom audio clips for your videos.
 
 What audioclips are made of
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""
 
 AudioClips are very similar to video clips in moviepy: they have a length, can be cut and composed the same way, etc. A notable difference  is that their method ``myclip.get_frame(t)``, instead of returning a RGB picture array like for video clips, returns just a couple of values between -1 and 1 (e.g.``[-0.4, 0.2]``) representing the left-right stereo sound at time ``t`` (for mono sounds, only one value is returned)
 
 Creating a new audio clip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""
 
 Audio clips can be created from an audio file or from the soundtrack of a video file
 ::
@@ -222,6 +236,6 @@ Alternatively you can get the audio track of an already created video clip:
     videoclip = VideoFileClip("some_video.avi")
     audioclip = videoclip.audio
 
-You can also create an audio clip from a numpy array or a custom function (to be written)
+.. (next paragraphs still to be written)
 
-For more, see :py:class:`~moviepy.audio.AudioClip.AudioClip`
+.. You can also create an audio clip from a numpy array. For more, see :py:class:`~moviepy.audio.AudioClip.AudioArrayClip`

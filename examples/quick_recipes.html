@@ -64,7 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -141,18 +141,59 @@
             
   <div class="section" id="quick-recipes">
 <h1>Quick recipes<a class="headerlink" href="#quick-recipes" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="add-a-title-before-a-video">
-<h2>Add a title before a video<a class="headerlink" href="#add-a-title-before-a-video" title="Permalink to this headline">¶</a></h2>
-<p>Videos</p>
+<div class="section" id="effects-and-filters">
+<h2>Effects and filters<a class="headerlink" href="#effects-and-filters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="blurring-all-frames-of-a-video">
+<h3>Blurring all frames of a video<a class="headerlink" href="#blurring-all-frames-of-a-video" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">skimage.filter</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+
+<span class="k">def</span> <span class="nf">blur</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns a blurred (radius=2 pixels) version of the image &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;my_video.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip_blurred</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span> <span class="n">blur</span> <span class="p">)</span>
+<span class="n">clip_blurred</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s">&quot;blurred_video.mp4&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
-<div class="section" id="make-gifs-that-loop-well">
-<h2>Make gifs that loop well<a class="headerlink" href="#make-gifs-that-loop-well" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="cutting-videos">
+<h2>Cutting videos<a class="headerlink" href="#cutting-videos" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="scene-detection">
+<h2>Scene detection<a class="headerlink" href="#scene-detection" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="compositing-videos">
+<h2>Compositing videos<a class="headerlink" href="#compositing-videos" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="add-a-title-before-a-video">
+<h3>Add a title before a video<a class="headerlink" href="#add-a-title-before-a-video" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="art-of-gif-making">
+<h2>Art of Gif-making<a class="headerlink" href="#art-of-gif-making" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>clip.fx( vfx.time_symmetrize)</p>
 <blockquote>
 <div># find a subclip
 T = clip</div></blockquote>
 </div></blockquote>
+</div>
+<div class="section" id="useless-but-fun">
+<h2>Useless but fun<a class="headerlink" href="#useless-but-fun" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-the-average-frame-of-a-video">
+<h3>Getting the average frame of a video<a class="headerlink" href="#getting-the-average-frame-of-a-video" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">ImageClip</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;video.mp4&quot;</span><span class="p">)</span>
+<span class="n">fps</span><span class="o">=</span> <span class="mf">1.0</span> <span class="c"># take one frame per second</span>
+<span class="n">nframes</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="o">*</span><span class="n">fps</span> <span class="c"># total number of frames used</span>
+<span class="n">total_image</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">(</span><span class="n">fps</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span><span class="n">progress_bar</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">average_image</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">total_image</span><span class="o">/</span> <span class="n">nframes</span><span class="p">)</span>
+<span class="n">average_image</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s">&quot;average_test.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 

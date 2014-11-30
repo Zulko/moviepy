@@ -67,7 +67,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">How to be efficient with MoviePy</a></li>
 </ul>
@@ -197,7 +197,7 @@ provides all you need to play around and edit your videos but it will  take time
 </div>
 <div class="section" id="ipython-display">
 <span id="id2"></span><h3>ipython_display<a class="headerlink" href="#ipython-display" title="Permalink to this headline">¶</a></h3>
-<p>Displaying the clips in a IPython Notebook can be very practical, especially if you can&#8217;t use <tt class="docutils literal"><span class="pre">clip.show()</span></tt> and <tt class="docutils literal"><span class="pre">clip.preview()</span></tt>. Here is what it will look like:</p>
+<p>Displaying the clips in a IPython Notebook can be very practical, especially if don&#8217;t want to use <tt class="docutils literal"><span class="pre">clip.show()</span></tt> and <tt class="docutils literal"><span class="pre">clip.preview()</span></tt>. Here is what it will look like:</p>
 <a class="reference internal image-reference" href="../_images/demo_preview1.jpeg"><img alt="../_images/demo_preview1.jpeg" class="align-center" src="../_images/demo_preview1.jpeg" style="width: 500px;" /></a>
 <p>With <tt class="docutils literal"><span class="pre">ipython_display</span></tt> you can embed videos, images and sounds, either from a file or directly from a clip:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ipython_display</span><span class="p">(</span><span class="n">my_video_clip</span><span class="p">)</span> <span class="c"># embeds a video</span>
@@ -209,20 +209,24 @@ provides all you need to play around and edit your videos but it will  take time
 <span class="n">ipython_display</span><span class="p">(</span><span class="s">&quot;my_sound.mp3&quot;</span><span class="p">)</span> <span class="c"># embeds a sound</span>
 </pre></div>
 </div>
+<p>This will only work if <tt class="docutils literal"><span class="pre">ipython_display</span></tt> is on the last line a the notebook cell. You can also call <tt class="docutils literal"><span class="pre">ipython_display</span></tt> as a clip method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_video_clip</span><span class="o">.</span><span class="n">ipython_display</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If the rendering of your clip requires to provide a frame rate, you can specify <tt class="docutils literal"><span class="pre">fps=25</span></tt> in <tt class="docutils literal"><span class="pre">ipython_display</span></tt>.</p>
 <p>If you only need to display a snapshot of a video clip at some time <cite>t</cite> you can write</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">ipython_display</span><span class="p">(</span><span class="n">video_clip</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">15</span><span class="p">))</span> <span class="c"># snapshot at t=15s</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_video_clip</span><span class="o">.</span><span class="n">ipython_display</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span> <span class="c"># will display a snapshot at t=15s</span>
 </pre></div>
 </div>
 <p>You can also provide any valid HTML5 option as keyword argument. For instance, if the clip is too big, you will write</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ipython_display</span><span class="p">(</span><span class="n">my_clip</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span> <span class="c"># HTML5 will resize to 400 pixels</span>
 </pre></div>
 </div>
-<p>When you are creating a gif and want to check that it loops well, you can ask the video to start automatically and to loop (i.e. replay indefinitely) :</p>
+<p>For instance, when you are editing an animated GIF and want to check that it loops well, you can ask the video to start automatically and to loop (i.e. replay indefinitely) :</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ipython_display</span><span class="p">(</span><span class="n">my_clip</span><span class="p">,</span> <span class="n">autoplay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Importantly, <tt class="docutils literal"><span class="pre">ipython_display</span></tt> actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work. The drawback is that the file size of the notebook can become very large.</p>
-<p>Finally, note that <tt class="docutils literal"><span class="pre">ipython_display</span></tt> only works when it is the last command of a cell of the notebook.</p>
+<p>Importantly, <tt class="docutils literal"><span class="pre">ipython_display</span></tt> actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work. The drawback is that the file size of the notebook can become very large. Depending on your browser, re-computing and displaying at video many times can take some place in the cache and the RAM (it will only be a problem for intensive uses). Restarting your browser solves the problem.</p>
 </div>
 </div>
 </div>

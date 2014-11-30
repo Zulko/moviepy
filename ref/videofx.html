@@ -67,7 +67,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -186,60 +186,57 @@ port a single function like this:</p>
 <td>Returns a new clip in which just a rectangular subregion of the original clip is conserved.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.fadein.html#moviepy.video.fx.all.fadein" title="moviepy.video.fx.all.fadein"><tt class="xref py py-obj docutils literal"><span class="pre">fadein</span></tt></a></td>
-<td>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.</td>
+<td>Makes the clip progressively appear from some color (black by default), over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds at the beginning of the clip.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.fadeout.html#moviepy.video.fx.all.fadeout" title="moviepy.video.fx.all.fadeout"><tt class="xref py py-obj docutils literal"><span class="pre">fadeout</span></tt></a></td>
-<td>Makes the clip fade to black progressively, over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds.</td>
+<td>Makes the clip progressively fade to some color (black by default), over <tt class="docutils literal"><span class="pre">duration</span></tt> seconds at the end of the clip.</td>
 </tr>
-<tr class="row-odd"><td><tt class="xref py py-obj docutils literal"><span class="pre">freeze_at_end</span></tt></td>
-<td>Makes the clip freeze on its last frame.</td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.freeze.html#moviepy.video.fx.all.freeze" title="moviepy.video.fx.all.freeze"><tt class="xref py py-obj docutils literal"><span class="pre">freeze</span></tt></a></td>
+<td>Momentarily freeze the clip at time t.</td>
 </tr>
-<tr class="row-even"><td><tt class="xref py py-obj docutils literal"><span class="pre">freeze_at_start</span></tt></td>
-<td>Momentarily freeze the clip on its first frame.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.gamma_corr.html#moviepy.video.fx.all.gamma_corr" title="moviepy.video.fx.all.gamma_corr"><tt class="xref py py-obj docutils literal"><span class="pre">gamma_corr</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.gamma_corr.html#moviepy.video.fx.all.gamma_corr" title="moviepy.video.fx.all.gamma_corr"><tt class="xref py py-obj docutils literal"><span class="pre">gamma_corr</span></tt></a></td>
 <td>Gamma-correction of a video clip</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.headblur.html#moviepy.video.fx.all.headblur" title="moviepy.video.fx.all.headblur"><tt class="xref py py-obj docutils literal"><span class="pre">headblur</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.headblur.html#moviepy.video.fx.all.headblur" title="moviepy.video.fx.all.headblur"><tt class="xref py py-obj docutils literal"><span class="pre">headblur</span></tt></a></td>
 <td>Returns a filter that will blurr a moving part (a head ?) of the frames.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.loop.html#moviepy.video.fx.all.loop" title="moviepy.video.fx.all.loop"><tt class="xref py py-obj docutils literal"><span class="pre">loop</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.loop.html#moviepy.video.fx.all.loop" title="moviepy.video.fx.all.loop"><tt class="xref py py-obj docutils literal"><span class="pre">loop</span></tt></a></td>
 <td>Returns a clip that plays the current clip in an infinite loop.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.lum_contrast.html#moviepy.video.fx.all.lum_contrast" title="moviepy.video.fx.all.lum_contrast"><tt class="xref py py-obj docutils literal"><span class="pre">lum_contrast</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.lum_contrast.html#moviepy.video.fx.all.lum_contrast" title="moviepy.video.fx.all.lum_contrast"><tt class="xref py py-obj docutils literal"><span class="pre">lum_contrast</span></tt></a></td>
 <td>luminosity-contrast correction of a clip</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.make_loopable.html#moviepy.video.fx.all.make_loopable" title="moviepy.video.fx.all.make_loopable"><tt class="xref py py-obj docutils literal"><span class="pre">make_loopable</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.make_loopable.html#moviepy.video.fx.all.make_loopable" title="moviepy.video.fx.all.make_loopable"><tt class="xref py py-obj docutils literal"><span class="pre">make_loopable</span></tt></a></td>
 <td>Makes the clip fade in progressively at its own end, this way it can be looped indefinitely.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.margin.html#moviepy.video.fx.all.margin" title="moviepy.video.fx.all.margin"><tt class="xref py py-obj docutils literal"><span class="pre">margin</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.margin.html#moviepy.video.fx.all.margin" title="moviepy.video.fx.all.margin"><tt class="xref py py-obj docutils literal"><span class="pre">margin</span></tt></a></td>
 <td>Draws an external margin all around the frame.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.mirror_x.html#moviepy.video.fx.all.mirror_x" title="moviepy.video.fx.all.mirror_x"><tt class="xref py py-obj docutils literal"><span class="pre">mirror_x</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.mirror_x.html#moviepy.video.fx.all.mirror_x" title="moviepy.video.fx.all.mirror_x"><tt class="xref py py-obj docutils literal"><span class="pre">mirror_x</span></tt></a></td>
 <td>flips the clip horizontally (and its mask too, by default)</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.mirror_y.html#moviepy.video.fx.all.mirror_y" title="moviepy.video.fx.all.mirror_y"><tt class="xref py py-obj docutils literal"><span class="pre">mirror_y</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.mirror_y.html#moviepy.video.fx.all.mirror_y" title="moviepy.video.fx.all.mirror_y"><tt class="xref py py-obj docutils literal"><span class="pre">mirror_y</span></tt></a></td>
 <td>flips the clip vertically (and its mask too, by default)</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.painting.html#moviepy.video.fx.all.painting" title="moviepy.video.fx.all.painting"><tt class="xref py py-obj docutils literal"><span class="pre">painting</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.painting.html#moviepy.video.fx.all.painting" title="moviepy.video.fx.all.painting"><tt class="xref py py-obj docutils literal"><span class="pre">painting</span></tt></a></td>
 <td>Transforms any photo into some kind of painting.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.resize.html#moviepy.video.fx.all.resize" title="moviepy.video.fx.all.resize"><tt class="xref py py-obj docutils literal"><span class="pre">resize</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.resize.html#moviepy.video.fx.all.resize" title="moviepy.video.fx.all.resize"><tt class="xref py py-obj docutils literal"><span class="pre">resize</span></tt></a></td>
 <td>Returns a video clip that is a resized version of the clip.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.rotation.html#moviepy.video.fx.all.rotation" title="moviepy.video.fx.all.rotation"><tt class="xref py py-obj docutils literal"><span class="pre">rotation</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.rotation.html#moviepy.video.fx.all.rotation" title="moviepy.video.fx.all.rotation"><tt class="xref py py-obj docutils literal"><span class="pre">rotation</span></tt></a></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.scroll.html#moviepy.video.fx.all.scroll" title="moviepy.video.fx.all.scroll"><tt class="xref py py-obj docutils literal"><span class="pre">scroll</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.scroll.html#moviepy.video.fx.all.scroll" title="moviepy.video.fx.all.scroll"><tt class="xref py py-obj docutils literal"><span class="pre">scroll</span></tt></a></td>
 <td>Scrolls horizontally or vertically a clip, e.g.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.speedx.html#moviepy.video.fx.all.speedx" title="moviepy.video.fx.all.speedx"><tt class="xref py py-obj docutils literal"><span class="pre">speedx</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.speedx.html#moviepy.video.fx.all.speedx" title="moviepy.video.fx.all.speedx"><tt class="xref py py-obj docutils literal"><span class="pre">speedx</span></tt></a></td>
 <td>Returns a clip playing the current clip but at a speed multiplied by <tt class="docutils literal"><span class="pre">factor</span></tt>.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.time_mirror.html#moviepy.video.fx.all.time_mirror" title="moviepy.video.fx.all.time_mirror"><tt class="xref py py-obj docutils literal"><span class="pre">time_mirror</span></tt></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.time_mirror.html#moviepy.video.fx.all.time_mirror" title="moviepy.video.fx.all.time_mirror"><tt class="xref py py-obj docutils literal"><span class="pre">time_mirror</span></tt></a></td>
 <td>Returns a clip that plays the current clip backwards.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.time_symmetrize.html#moviepy.video.fx.all.time_symmetrize" title="moviepy.video.fx.all.time_symmetrize"><tt class="xref py py-obj docutils literal"><span class="pre">time_symmetrize</span></tt></a></td>
+<tr class="row-even"><td><a class="reference internal" href="videofx/moviepy.video.fx.all.time_symmetrize.html#moviepy.video.fx.all.time_symmetrize" title="moviepy.video.fx.all.time_symmetrize"><tt class="xref py py-obj docutils literal"><span class="pre">time_symmetrize</span></tt></a></td>
 <td>Returns a clip that plays the current clip once forwards and then once backwards.</td>
 </tr>
 </tbody>

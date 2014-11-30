@@ -30,7 +30,7 @@
   
     <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
         <link rel="up" title="Getting started with MoviePy" href="getting_started.html"/>
-        <link rel="next" title="Mixing clips together" href="compositing.html"/>
+        <link rel="next" title="Mixing clips" href="compositing.html"/>
         <link rel="prev" title="Quick presentation" href="quick_presentation.html"/> 
 
   
@@ -67,7 +67,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -146,11 +146,12 @@
             
   <div class="section" id="creating-and-exporting-video-clips">
 <span id="clips"></span><h1>Creating and exporting video clips<a class="headerlink" href="#creating-and-exporting-video-clips" title="Permalink to this headline">¶</a></h1>
-<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <em class="xref std std-ref">effects</em>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
+<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <em class="xref std std-ref">effects</em>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
 <p>The following code summarizes the base clips that you can create with moviepy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># VIDEO CLIPS</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c"># for custom animations (see below)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&quot;my_video_file.mp4&quot;</span><span class="p">)</span> <span class="c"># or .avi, .webm, .gif ...</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">ImageSequenceClip</span><span class="p">([</span><span class="s">&#39;image_file1.jpeg&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;my_picture.png&quot;</span><span class="p">)</span> <span class="c"># or .jpeg, .tiff, ...</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s">&quot;Hello !&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s">&quot;Amiri-Bold&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">460</span><span class="p">,</span><span class="mi">380</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span><span class="p">])</span>
@@ -203,6 +204,15 @@ In this section we see how to create clips, (for instance from video or audio fi
 </div>
 <p>For more, see <a class="reference internal" href="../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><tt class="xref py py-class docutils literal"><span class="pre">VideoFileClip</span></tt></a>.</p>
 </div>
+<div class="section" id="imagesequenceclip">
+<h3>ImageSequenceClip<a class="headerlink" href="#imagesequenceclip" title="Permalink to this headline">¶</a></h3>
+<p>This is a clip made from a series of images, you call it with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">clip</span> <span class="o">=</span> <span class="n">ImageSequenceClip</span><span class="p">(</span><span class="n">images_list</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">images_list</span></tt> can be either a list of image names (that will be <em>played</em>) in that order, a folder name (at which case all the image files in the folder will be played in alphanumerical order), or a list of frames (Numpy arrays), obtained for instance from other clips.</p>
+<p>When you provide a folder name or list of file names, you can choose <tt class="docutils literal"><span class="pre">load_images=True</span></tt> to specify that all images should be loaded into the RAM. This is only interesting if you have a small number of images that will be each used more than once (e.g. if the images form a looping animation).</p>
+</div>
 <div class="section" id="imageclip">
 <h3>ImageClip<a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h3>
 <p>An ImageClip is a video clip that always displays the same image. You can create one as follows:</p>
@@ -234,7 +244,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 </div>
 <div class="section" id="mask-clips">
 <h2>Mask clips<a class="headerlink" href="#mask-clips" title="Permalink to this headline">¶</a></h2>
-<p>A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a>). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.</p>
+<p>A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips</em></a>). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.</p>
 <p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
 <p>When you create or load a clip that will be used as a mask you need to declare it:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">maskclip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s">&quot;my_mask.jpeg&quot;</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -298,13 +308,12 @@ In this section we see how to create clips, (for instance from video or audio fi
 <span id="ccaudioclips"></span><h2>Audio clips<a class="headerlink" href="#audio-clips" title="Permalink to this headline">¶</a></h2>
 <p>This section shows how to use MoviePy to create and edit audio clips.</p>
 <p>Note that when you import, cut, mix or concatenate video clips in MoviePy, their audio tracks are automatically handled and you don&#8217;t need to worry about it. This section is of interest if you just want to edit audio files, or you want custom audio clips for your videos.</p>
-</div>
 <div class="section" id="what-audioclips-are-made-of">
-<h2>What audioclips are made of<a class="headerlink" href="#what-audioclips-are-made-of" title="Permalink to this headline">¶</a></h2>
+<h3>What audioclips are made of<a class="headerlink" href="#what-audioclips-are-made-of" title="Permalink to this headline">¶</a></h3>
 <p>AudioClips are very similar to video clips in moviepy: they have a length, can be cut and composed the same way, etc. A notable difference  is that their method <tt class="docutils literal"><span class="pre">myclip.get_frame(t)</span></tt>, instead of returning a RGB picture array like for video clips, returns just a couple of values between -1 and 1 (e.g.``[-0.4, 0.2]``) representing the left-right stereo sound at time <tt class="docutils literal"><span class="pre">t</span></tt> (for mono sounds, only one value is returned)</p>
 </div>
 <div class="section" id="creating-a-new-audio-clip">
-<h2>Creating a new audio clip<a class="headerlink" href="#creating-a-new-audio-clip" title="Permalink to this headline">¶</a></h2>
+<h3>Creating a new audio clip<a class="headerlink" href="#creating-a-new-audio-clip" title="Permalink to this headline">¶</a></h3>
 <p>Audio clips can be created from an audio file or from the soundtrack of a video file</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">audioclip</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s">&quot;some_audiofile.mp3&quot;</span><span class="p">)</span>
@@ -316,8 +325,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 <blockquote>
 <div>videoclip = VideoFileClip(&#8220;some_video.avi&#8221;)
 audioclip = videoclip.audio</div></blockquote>
-<p>You can also create an audio clip from a numpy array or a custom function (to be written)</p>
-<p>For more, see <a class="reference internal" href="../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><tt class="xref py py-class docutils literal"><span class="pre">AudioClip</span></tt></a></p>
+</div>
 </div>
 </div>
 
@@ -327,7 +335,7 @@ audioclip = videoclip.audio</div></blockquote>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="compositing.html" class="btn btn-neutral float-right" title="Mixing clips together"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compositing.html" class="btn btn-neutral float-right" title="Mixing clips"/>Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="quick_presentation.html" class="btn btn-neutral" title="Quick presentation"><span class="fa fa-arrow-circle-left"></span> Previous</a>

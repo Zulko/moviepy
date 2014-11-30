@@ -1,7 +1,7 @@
 .. _CompositeVideoClips:
 
-Mixing clips together
-=======================
+Mixing clips
+=============
 
 Video composition, also known as non-linear editing, is the fact of playing several clips together in a new clip. This video is a good example of what compositing you can do with MoviePy:
 
@@ -20,13 +20,13 @@ Stacking and concatenating clips
 
 Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to them side by side in a single larger clip).
 
-Concatenation is done with the function ``concatenate``: ::
+Concatenation is done with the function ``concatenate_videoclips``: ::
     
-    from moviepy.editor import VideoFileClip, concatenate
+    from moviepy.editor import VideoFileClip, concatenate_videoclips
     clip1 = VideoFileClip("myvideo.mp4")
     clip2 = VideoFileClip("myvideo2.mp4").subclip(50,60)
     clip3 = VideoFileClip("myvideo3.mp4")
-    final_clip = concatenate([clip1,clip2,clip3])
+    final_clip = concatenate_videoclips([clip1,clip2,clip3])
     final_clip.write_videofile("my_concatenation.mp4")
 
 
@@ -52,7 +52,7 @@ You obtain a clip which looks like this:
 CompositeVideoClips
 ~~~~~~~~~~~~~~~~~~~~~
 
-The `CompositeVideoClip` class provides a very flexible way to compose clips, but is more complex than ``concatenate`` and ``clips_array`` ::
+The `CompositeVideoClip` class provides a very flexible way to compose clips, but is more complex than ``concatenate_videoclips`` and ``clips_array`` ::
     
     video = CompositeVideoClip([clip1,clip2,clip3])
  
@@ -76,8 +76,8 @@ So for instance your composition will look like ::
 In the example above, maybe ``clip2`` will start before ``clip1`` is over. In this case you can make ``clip2`` appear with a *fade-in* effect of one second: ::
     
     video = CompositeVideoClip([clip1, # starts at t=0
-                                clip2.set_start(5).fadein(1),
-                                clip3.set_start(9)])
+                                clip2.set_start(5).crossfadein(1),
+                                clip3.set_start(9).crossfadein(1.5)])
 
 Positioning clips
 """"""""""""""""""
@@ -110,20 +110,25 @@ When indicating the position keep in mind that the ``y`` coordinate has its zero
 
 .. figure:: videoWH.jpeg
 
-Transitions
-------------
+.. Transitions
+.. ------------
 
-Everyone loves transitions between clips: fade-ins, fade-out, clips that slide in front of the previous one... everything is good to impress your grandparents.
+.. Everyone loves transitions between clips: fade-ins, fade-out, clips that slide in front of the previous one... everything is good to impress your grandparents. 
+
+.. In MoviePy, transitions are effects (see :ref:`effects`_) from the module moviepy.video.compositing.
 
 
 Compositing audio clips
 -------------------------
 
-Audio clips can be mixed together with ``CompositeAudioClip`` and ``concatenate_audioclips``: ::
+When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don't need to worry about compositing these tracks yourself.
+
+If you want to make a custom audiotrack from several audio sources: audioc clips can be mixed together with ``CompositeAudioClip`` and ``concatenate_audioclips``: ::
 
     from moviepy.editor import *
-    # ... make some clips
+    # ... make some audio clips aclip1, aclip2, aclip3
     concat = concatenate_audioclips([aclip1, aclip2, aclip3])
     compo = CompositeAudioClip([aclip1.volumex(1.2),
-                                aclip2.set_start(5),
+                                aclip2.set_start(5), # start at t=5s
                                 aclip3.set_start(9)])
+
