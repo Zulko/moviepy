@@ -216,12 +216,12 @@ This section shows how to use MoviePy to create and edit audio clips.
 Note that when you import, cut, mix or concatenate video clips in MoviePy, their audio tracks are automatically handled and you don't need to worry about it. This section is of interest if you just want to edit audio files, or you want custom audio clips for your videos.
 
 What audioclips are made of
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""
 
 AudioClips are very similar to video clips in moviepy: they have a length, can be cut and composed the same way, etc. A notable difference  is that their method ``myclip.get_frame(t)``, instead of returning a RGB picture array like for video clips, returns just a couple of values between -1 and 1 (e.g.``[-0.4, 0.2]``) representing the left-right stereo sound at time ``t`` (for mono sounds, only one value is returned)
 
 Creating a new audio clip
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""
 
 Audio clips can be created from an audio file or from the soundtrack of a video file
 ::
@@ -236,6 +236,6 @@ Alternatively you can get the audio track of an already created video clip:
     videoclip = VideoFileClip("some_video.avi")
     audioclip = videoclip.audio
 
-You can also create an audio clip from a numpy array or a custom function (to be written)
+.. (next paragraphs still to be written)
 
-For more, see :py:class:`~moviepy.audio.AudioClip.AudioClip`
+.. You can also create an audio clip from a numpy array. For more, see :py:class:`~moviepy.audio.AudioClip.AudioArrayClip`

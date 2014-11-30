@@ -74,7 +74,7 @@ Note that if the clip is complex and your computer not fast enough, the preview 
 ipython_display
 """"""""""""""""
 
-Displaying the clips in a IPython Notebook can be very practical, especially if you can't use ``clip.show()`` and ``clip.preview()``. Here is what it will look like:
+Displaying the clips in a IPython Notebook can be very practical, especially if don't want to use ``clip.show()`` and ``clip.preview()``. Here is what it will look like:
 
 .. image:: ../demo_preview.jpeg
     :width: 500px
@@ -90,18 +90,22 @@ With ``ipython_display`` you can embed videos, images and sounds, either from a 
     ipython_display("my_video.mp4") # embeds a video
     ipython_display("my_sound.mp3") # embeds a sound
 
+This will only work if ``ipython_display`` is on the last line a the notebook cell. You can also call ``ipython_display`` as a clip method: ::
+
+    my_video_clip.ipython_display()
+
+If the rendering of your clip requires to provide a frame rate, you can specify ``fps=25`` in ``ipython_display``.
+
 If you only need to display a snapshot of a video clip at some time `t` you can write ::
 
-    ipython_display(video_clip.to_ImageClip(t=15)) # snapshot at t=15s
+    my_video_clip.ipython_display(t=15) # will display a snapshot at t=15s
 
 You can also provide any valid HTML5 option as keyword argument. For instance, if the clip is too big, you will write ::
     
     ipython_display(my_clip, width=400) # HTML5 will resize to 400 pixels
 
-When you are creating a gif and want to check that it loops well, you can ask the video to start automatically and to loop (i.e. replay indefinitely) : ::
+For instance, when you are editing an animated GIF and want to check that it loops well, you can ask the video to start automatically and to loop (i.e. replay indefinitely) : ::
     
     ipython_display(my_clip, autoplay=1, loop=1)
 
-Importantly, ``ipython_display`` actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work. The drawback is that the file size of the notebook can become very large.
-
-Finally, note that ``ipython_display`` only works when it is the last command of a cell of the notebook.
+Importantly, ``ipython_display`` actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work. The drawback is that the file size of the notebook can become very large. Depending on your browser, re-computing and displaying at video many times can take some place in the cache and the RAM (it will only be a problem for intensive uses). Restarting your browser solves the problem.
