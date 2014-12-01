@@ -46,7 +46,7 @@ class FFMPEG_AudioWriter:
 
     def __init__(self, filename, fps_input, nbytes=2,
                  nchannels = 2, codec='libfdk_aac', bitrate=None,
-                 input_video=None, logfile=None):
+                 input_video=None, logfile=None, ffmpeg_params=None):
 
         self.filename = filename
         self.codec= codec
@@ -67,7 +67,9 @@ class FFMPEG_AudioWriter:
             + ['-ar', "%d"%fps_input]
             + ['-strict', '-2']  # needed to support codec 'aac'
             + (['-ab',bitrate] if (bitrate is not None) else [])
+            + (ffmpeg_params if ffmpeg_params else [])
             + [ filename ])
+        print cmd
 
         popen_params = {"stdout": DEVNULL,
                         "stderr": logfile,
@@ -134,7 +136,8 @@ class FFMPEG_AudioWriter:
 @requires_duration
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None,
-                      write_logfile = False, verbose=True):
+                      write_logfile = False, verbose=True,
+                      ffmpeg_params=None):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
@@ -149,7 +152,8 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
 
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
-                                logfile=logfile)
+                                logfile=logfile,
+                                ffmpeg_params=ffmpeg_params)
 
     
     
