@@ -148,7 +148,8 @@ class AudioClip(Clip):
     @requires_duration
     def write_audiofile(self,filename, fps=44100, nbytes=2,
                      buffersize=2000, codec=None,
-                     bitrate=None, write_logfile=False, verbose=True):
+                     bitrate=None, ffmpeg_params=None,
+                     write_logfile=False, verbose=True):
         """ Writes an audio file from the AudioClip.
 
 
@@ -175,12 +176,17 @@ class AudioClip(Clip):
           Note that it mainly an indicative goal, the bitrate won't
           necessarily be the this in the output file.
 
+        ffmpeg_params
+          Any additional parameters you would like to pass, as a list
+          of terms, like ['-option1', 'value1', '-option2', 'value2']
+
         write_logfile
           If true, produces a detailed logfile named filename + '.log'
           when writing the file
 
         verbose
           If True, displays informations
+
 
         """
 
@@ -195,7 +201,7 @@ class AudioClip(Clip):
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
                       codec=codec, bitrate=bitrate, write_logfile=write_logfile,
-                      verbose=verbose)
+                      verbose=verbose, ffmpeg_params=ffmpeg_params)
 
 ###
 #
