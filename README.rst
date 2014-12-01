@@ -36,7 +36,11 @@ Installation
 
 **Method with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
     
-    (sudo) pip install ez_setup moviepy
+    (sudo) pip install moviepy
+
+If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail, is this case type this before installing: ::
+
+    (sudo) pip install ez_setup
 
 **Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
     
