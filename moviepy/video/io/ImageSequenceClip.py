@@ -75,7 +75,7 @@ class ImageSequenceClip(VideoClip):
                         for f in os.listdir(sequence)])
 
         self.fps = fps
-        if fps is not none:
+        if fps is not None:
             durations = [1.0/fps for image in sequence]
         self.durations = durations
         self.images_starts = [0]+list(np.cumsum(durations))
