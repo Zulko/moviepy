@@ -7,6 +7,10 @@ from __future__ import division
 
 import subprocess as sp
 import re
+import warnings
+import logging
+logging.captureWarnings(True)
+
 
 import numpy as np
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
@@ -102,13 +106,14 @@ class FFMPEG_VideoReader:
         s = self.proc.stdout.read(nbytes)
         if len(s) != nbytes:
 
-            print( "Warning: in file %s, "%(self.filename)+
+            warnings.warn("Warning: in file %s, "%(self.filename)+
                    "%d bytes wanted but %d bytes read,"%(nbytes, len(s))+
                    "at frame %d/%d, at time %.02f/%.02f sec. "%(
                     self.pos,self.nframes,
                     1.0*self.pos/self.fps,
                     self.duration)+
-                   "Using the last valid frame instead.")
+                   "Using the last valid frame instead.",
+                   UserWarning)
 
             if not hasattr(self, 'lastread'):
                 raise IOError(("MoviePy error: failed to read the first frame of "

@@ -2,10 +2,14 @@ resize_possible = True
 
 try:
     # TRY USING OpenCV AS RESIZER
+    #raise ImportError #debugging
     import cv2
-    resizer = lambda pic, newsize : cv2.resize(pic.astype('uint8'),
-                tuple(map(int, newsize)),
-                interpolation=cv2.INTER_AREA)
+    import numpy as np
+    def resizer (pic, newsize):
+        lx, ly = int(newsize[0]), int(newsize[1])
+        return  cv2.resize(+pic.astype('uint8'), (lx, ly),
+                         interpolation=cv2.INTER_AREA)
+
     resizer.origin = "cv2"
                 
 except ImportError:

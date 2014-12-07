@@ -59,15 +59,17 @@ class AudioFileClip(AudioClip):
         AudioClip.__init__(self)
             
         self.filename = filename
-        self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
+        reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
                                          buffersize=buffersize)
+        
+        self.reader = reader
         self.fps = fps
-        self.duration = self.reader.duration
-        self.end = self.duration
+        self.duration = reader.duration
+        self.end = reader.duration
         
         
-        self.make_frame =  lambda t: self.reader.get_frame(t)
-        self.nchannels = self.reader.nchannels
+        self.make_frame =  lambda t: reader.get_frame(t)
+        self.nchannels = reader.nchannels
     
     
     def coreader(self):

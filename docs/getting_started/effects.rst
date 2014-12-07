@@ -30,9 +30,6 @@ Most of the time when the times are not provided they are guessed, for instance 
 Methods to change the clip attributes
 ---------------------------------------
 
-
-
-
 clip.fx
 ----------
 

@@ -32,10 +32,10 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
     tempfiles = []
 
-    verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
+    verbose_print(verbose, "\n[MoviePy] Building file %s\n"%filename
                   +40*"-"+"\n")
 
-    verbose_print(verbose, "Generating GIF frames.\n")
+    verbose_print(verbose, "[MoviePy] Generating GIF frames...\n")
 
     total = int(clip.duration*fps)+1
     for i, t in tqdm(enumerate(tt), total=total):
@@ -44,12 +44,10 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
         tempfiles.append(name)
         clip.save_frame(name, t, savemask=True)
 
-    verbose_print(verbose, "Done generating GIF frames.\n")
-
     delay = int(100.0/fps)
 
     if program == "ImageMagick":
-
+        verbose_print(verbose, "[MoviePy] Optimizing GIF with ImageMagick... ")
         cmd = [get_setting("IMAGEMAGICK_BINARY"),
               '-delay' , '%d'%delay,
               "-dispose" ,"%d"%(2 if dispose else 1),
@@ -71,6 +69,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
     try:
         subprocess_call( cmd, verbose = verbose )
+        verbose_print(verbose, "[MoviePy] GIF %s is ready."%filename)
 
     except (IOError,OSError) as err:
 
@@ -209,19 +208,17 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
             proc3 = sp.Popen(cmd3, **popen_params)
 
     # We send all the frames to the first process
-    verbose_print(verbose, "\nMoviePy: building GIF file %s\n"%filename
-                            +40*"-"+"\n")
-    verbose_print(verbose, "Generating GIF frames...\n")
+    verbose_print(verbose, "\n[MoviePy] >>>> Building file %s\n"%filename)
+    verbose_print(verbose, "[MoviePy] Generating GIF frames...\n")
 
     try:
 
         for frame in clip.iter_frames(fps=fps, progress_bar=True):
             proc1.stdin.write(frame.tostring())
-        verbose_print(verbose, "Done.\n")
 
     except IOError as err:
 
-        error = ("MoviePy Error: creation of %s failed because "
+        error = ("[MoviePy] Error: creation of %s failed because "
           "of the following error:\n\n%s.\n\n."%(filename, str(err)))
 
         if program == "ImageMagick":
@@ -231,11 +228,12 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
                 "path to the ImageMagick binary in file conf.py." )
 
         raise IOError(error)
-    verbose_print(verbose, "Writing GIF... ")
+    if program == 'ImageMagick':
+        verbose_print(verbose, "[MoviePy] Optimizing the GIF with ImageMagick...\n")
     proc1.stdin.close()
     proc1.wait()
     if program == 'ImageMagick':
         proc2.wait()
         if opt:
             proc3.wait()
-    verbose_print(verbose, 'Done. Your GIF is ready !')
+    verbose_print(verbose, "[MoviePy] >>>> File %s is ready !"%filename)

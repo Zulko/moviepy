@@ -19,24 +19,28 @@ from moviepy.audio.AudioClip import AudioClip
 try:
     from IPython.display import HTML
     ipython_available = True
+    class HTML2(HTML):
+        def __add__(self, other):
+            return HTML2(self.data+other.data)
+
 except ImportError:
     ipython_available = False
 
 from .ffmpeg_reader import ffmpeg_parse_infos
 
 sorry = "Sorry, seems like your browser doesn't support HTML5 audio/video"
-templates = {"audio":("<center><audio controls>"
+templates = {"audio":("<audio controls>"
                          "<source %(options)s  src='data:audio/%(ext)s;base64,%(data)s'>"
-                     +sorry+"</audio></center>"),
-             "image":"<center><img %(options)s "
-                     "src='data:image/%(ext)s;base64,%(data)s'></center>",
-             "video":("<center><video %(options)s"
+                     +sorry+"</audio>"),
+             "image":"<img %(options)s "
+                     "src='data:image/%(ext)s;base64,%(data)s'>",
+             "video":("<video %(options)s"
                        "src='data:video/%(ext)s;base64,%(data)s' controls>"
-                       +sorry+"</video></center>")}
+                       +sorry+"</video>")}
 
 
 def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
-                    **html_kwargs):
+               center=True, **html_kwargs):
     """ Returns HTML5 code embedding the clip
     
     clip
@@ -77,7 +81,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     """  
     
     if rd_kwargs is None:
-      rd_kwargs = {}
+        rd_kwargs = {}
 
     if "Clip" in str(clip.__class__):
         TEMP_PREFIX = "__temp__"
@@ -100,7 +104,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
           raise ValueError("Unknown class for the clip. Cannot embed and preview.")
 
         return html_embed(filename, maxduration=maxduration, rd_kwargs=rd_kwargs,
-                                **html_kwargs)
+                           center=center, **html_kwargs)
     
     filename = clip
     options = " ".join(["%s='%s'"%(str(k), str(v)) for k,v in html_kwargs.items()])
@@ -143,12 +147,15 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
 
     template = templates[filetype]
 
-    return template%{'data':data, 'options':options, 'ext':ext}
+    result = template%{'data':data, 'options':options, 'ext':ext}
+    if center:
+        result = r"<div align=middle>%s</div>"%result
 
+    return result
 
 
 def ipython_display(clip, filetype=None, maxduration=60, t=None, fps=None,
-                    rd_kwargs=None, **html_kwargs):
+                    rd_kwargs=None, center=True, **html_kwargs):
     """
     clip
       Either the name of a file, or a clip to preview. The clip will
@@ -195,14 +202,18 @@ def ipython_display(clip, filetype=None, maxduration=60, t=None, fps=None,
     >>> clip.save_frame("first_frame.jpeg")
     >>> mpy.ipython_display("first_frame.jpeg")
     """
-
+        
     if not ipython_available:
         raise ImportError("Only works inside an IPython Notebook")
 
+    if rd_kwargs is None:
+        rd_kwargs = {}
+        
     if fps is not None:
         rd_kwargs['fps'] = fps
 
     if t is not None:
         clip = clip.to_ImageClip(t)
-    return HTML(html_embed(clip, filetype=filetype, maxduration=maxduration,
-                rd_kwargs=rd_kwargs, **html_kwargs))
+
+    return HTML2(html_embed(clip, filetype=filetype, maxduration=maxduration,
+                center=center, rd_kwargs=rd_kwargs, **html_kwargs))

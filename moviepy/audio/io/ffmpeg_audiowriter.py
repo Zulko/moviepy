@@ -147,7 +147,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     else:
         logfile = None
 
-    verbose_print(verbose, "Writing audio in %s\n"%filename)
+    verbose_print(verbose, "[MoviePy] Writing audio in %s\n"%filename)
 
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
@@ -181,4 +181,4 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     if write_logfile:
         logfile.close()
 
-    verbose_print(verbose, "Done writing Audio in %s !\n"%filename)
+    verbose_print(verbose, "[MoviePy] Done.\n")

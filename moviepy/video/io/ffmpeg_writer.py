@@ -190,7 +190,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     else:
         logfile = None
 
-    verbose_print(verbose, "\nWriting video into %s\n"%filename)
+    verbose_print(verbose, "[MoviePy] Writing video %s\n"%filename)
     writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
                                 audiofile=audiofile, threads=threads,
@@ -213,7 +213,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     if write_logfile:
         logfile.close()
 
-    verbose_print(verbose, "Done writing video in %s !" % filename)
+    verbose_print(verbose, "[MoviePy] Done.\n")
 
 
 def ffmpeg_write_image(filename, image, logfile=False):
@@ -245,7 +245,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
     out, err = proc.communicate(image.tostring())
 
     if proc.returncode:
-        err = "\n".join(["MoviePy running : %s" % cmd,
+        err = "\n".join(["[MoviePy] Running : %s\n" % cmd,
                          "WARNING: this command returned an error:",
                          err.decode('utf8')])
         raise IOError(err)
