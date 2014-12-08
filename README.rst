@@ -3,7 +3,17 @@ MoviePy
 
 MoviePy (full documentation here_) is a Python module for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
-A typical MoviePy script looks like this: ::
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
+
+.. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
+   :width: 500px
+   :alt: [logo]
+   :align: center
+
+Example
+--------
+
+In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file: ::
 
     from moviepy.editor import *
     
@@ -21,7 +31,7 @@ A typical MoviePy script looks like this: ::
     # write the result to a file in any format
     final_clip.to_videofile("myHolidays_edited.webm",fps=25)
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3.
+
 
 Contribute !
 -------------
