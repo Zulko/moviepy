@@ -19,7 +19,7 @@ Here are a few reasons why you may want to edit videos in Python:
 And here are a few uses for which MoviePy is NOT the best solution:
 
 - You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use OpenCV or SimpleCV, these are libraries that specialize in these tasks.
-- You only want to convert a video, or convert a series of images to a movie. In this case it is better to directly call ``ffmpeg`` (or ``avconv`` or ``mencoder``...) it will be faster more memory-efficient than going through MoviePy.
+- You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call ``ffmpeg`` (or ``avconv`` or ``mencoder``...) it will be faster more memory-efficient than going through MoviePy.
 
 
 Advantages and limitations
