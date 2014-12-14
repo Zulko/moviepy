@@ -11,12 +11,21 @@ try:
 except ImportError:
     DEVNULL = open(os.devnull, 'wb')
 
+try:
+  import imageio
+  IMAGEIO_FOUND = True
+except ImportError:
+  IMAGEIO_FOUND = False
+
+
+
+
 
 @requires_duration
 @use_clip_fps_by_default
 def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
        opt="OptimizeTransparency", fuzz=1, verbose=True,
-       loop=0, dispose=False, colors=None, tempfiles=False):
+       loop=0, dispose=True, colors=None, tempfiles=False):
     """ Write the VideoClip to a GIF file.
 
 
@@ -42,7 +51,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 
         name = "%s_GIFTEMP%04d.png"%(fileName, i+1)
         tempfiles.append(name)
-        clip.save_frame(name, t, savemask=True)
+        clip.save_frame(name, t, withmask=True)
 
     delay = int(100.0/fps)
 
@@ -92,8 +101,8 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 @requires_duration
 @use_clip_fps_by_default
 def write_gif(clip, filename, fps=None, program= 'ImageMagick',
-           opt="OptimizeTransparency", fuzz=1, verbose=True,
-           loop=0, dispose=False, colors=None):
+           opt="OptimizeTransparency", fuzz=1, verbose=True, withmask=True,
+           loop=0, dispose=True, colors=None):
     """ Write the VideoClip to a GIF file, without temporary files.
 
     Converts a VideoClip into an animated GIF using ImageMagick
@@ -153,10 +162,14 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
     delay= 100.0/fps
 
+    if clip.mask is None:
+        withmask = False
+
     cmd1 = [get_setting("FFMPEG_BINARY"), '-y', '-loglevel', 'error',
             '-f', 'rawvideo',
             '-vcodec','rawvideo', '-r', "%.02f"%fps,
-            '-s', "%dx%d"%(clip.w, clip.h), '-pix_fmt', 'rgb24',
+            '-s', "%dx%d"%(clip.w, clip.h),
+            '-pix_fmt', ('rgba' if withmask else 'rgb24'),
             '-i', '-']
 
     popen_params = {"stdout": DEVNULL,
@@ -170,14 +183,14 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = DEVNULL
 
-        proc1 = sp.Popen(cmd1+['-r', "%.02f"%fps, filename], **popen_params)
+        proc1 = sp.Popen(cmd1+[ '-pix_fmt', ('rgba' if withmask else 'rgb24'),
+                                '-r', "%.02f"%fps, filename], **popen_params)
     else:
 
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = sp.PIPE
 
-        proc1 = sp.Popen(cmd1+['-f', 'image2pipe',
-                               '-vcodec', 'bmp', '-'],
+        proc1 = sp.Popen(cmd1+ ['-f', 'image2pipe', '-vcodec', 'bmp', '-'],
                          **popen_params)
 
     if program == 'ImageMagick':
@@ -213,7 +226,11 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
     try:
 
-        for frame in clip.iter_frames(fps=fps, progress_bar=True):
+        for t,frame in clip.iter_frames(fps=fps, progress_bar=True,
+                                        with_times=True,  dtype="uint8"):
+            if withmask:
+                mask = 255 * clip.mask.get_frame(t)
+                frame = np.dstack([frame, mask]).astype('uint8')
             proc1.stdin.write(frame.tostring())
 
     except IOError as err:
@@ -237,3 +254,38 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
         if opt:
             proc3.wait()
     verbose_print(verbose, "[MoviePy] >>>> File %s is ready !"%filename)
+
+
+def write_gif_with_image_io(clip, filename, fps=None, opt='wu', loop=0,
+                            colors=None, verbose=True):
+    """
+    Writes the gif with the Python library ImageIO (calls FreeImage).
+    
+    For the moment ImageIO is not installed with MoviePy. You need to install
+    imageio (pip install imageio) to use this.
+
+    Parameters
+    -----------
+    opt
+
+    """
+
+    if colors is None:
+        colors=256
+
+    if not IMAGEIO_FOUND:
+      raise ImportError("Writing a gif with imageio requires ImageIO installed,"
+                         " with e.g. 'pip install imageio'")
+
+    if fps is None:
+        fps = clip.fps
+
+    quantizer = 'wu' if opt!= 'nq' else 'nq' 
+    writer = imageio.save(filename, duration=1.0/fps,
+                          quantizer=quantizer, palettesize=colors)
+
+    verbose_print(verbose, "\n[MoviePy] Building file %s with imageio\n"%filename)
+    
+    for frame in clip.iter_frames(fps=fps, progress_bar=True, dtype='uint8'):
+
+        writer.append_data(frame)

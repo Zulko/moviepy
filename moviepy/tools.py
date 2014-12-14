@@ -29,7 +29,7 @@ def verbose_print(verbose, s):
 def subprocess_call(cmd, verbose=True, errorprint=True):
     """ Executes the given subprocess command."""
 
-    verbose_print(verbose, "\nMoviePy Running:\n>>> "+ " ".join(cmd))
+    verbose_print(verbose, "\n[MoviePy] Running:\n>>> "+ " ".join(cmd))
 
     popen_params = {"stdout": DEVNULL,
                     "stderr": sp.PIPE,
@@ -44,7 +44,7 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     proc.stderr.close()
 
     if proc.returncode:
-        verbose_print(errorprint, "\nMoviePy: This command returned an error !")
+        verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
         raise IOError(err.decode('utf8'))
     else:
         verbose_print(verbose, "\n... command successful.\n")

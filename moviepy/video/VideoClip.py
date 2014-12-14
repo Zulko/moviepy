@@ -18,7 +18,9 @@ import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
 from .io.ffmpeg_reader import ffmpeg_read_image
 from .io.ffmpeg_tools import ffmpeg_merge_video_audio
-from .io.gif_writers import write_gif, write_gif_with_tempfiles
+from .io.gif_writers import (write_gif,
+                             write_gif_with_tempfiles,
+                             write_gif_with_image_io)
 from .tools.drawing import blit
 from ..Clip import Clip
 from ..config import get_setting
@@ -447,8 +449,11 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).to_gif('myClip.gif')
 
         """
+        if program == 'imageio':
+            write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
+                                    verbose=verbose, colors=colors)
         
-        if tempfiles:
+        elif tempfiles:
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt, fuzz=fuzz,
                                      verbose=verbose,
@@ -613,13 +618,13 @@ class VideoClip(Clip):
         colorclip = ColorClip(size, color)
 
         if col_opacity is not None:
-            colorclip = colorclip.set_opacity(col_opacity)
-
-        if self.duration is not None:
-            colorclip = colorclip.set_duration(self.duration)
-
-        result = CompositeVideoClip([colorclip, self.set_pos(pos)],
-                                    transparent=(col_opacity is not None))
+            colorclip = (ColorClip(size, color, duration=elf.duration)
+                         .set_opacity(col_opacity))
+            result = CompositeVideoClip([colorclip, self.set_pos(pos)])
+        else:
+            result = CompositeVideoClip([self.set_pos(pos)],
+                                        size=size,
+                                        bg_color=color)
 
         if (isinstance(self, ImageClip) and (not hasattr(pos, "__call__"))
             and ((self.mask is None) or isinstance(self.mask, ImageClip))):
@@ -875,9 +880,9 @@ class ImageClip(VideoClip):
 
 
     def __init__(self, img, ismask=False, transparent=True,
-                 fromalpha=False):
+                 fromalpha=False, duration=None):
 
-        VideoClip.__init__(self, ismask=ismask)
+        VideoClip.__init__(self, ismask=ismask, duration=duration)
 
         if isinstance(img, str):
             img = ffmpeg_read_image(img, with_mask=transparent)
@@ -993,11 +998,11 @@ class ColorClip(ImageClip):
     """
 
 
-    def __init__(self, size, col=(0, 0, 0), ismask=False):
+    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
         w, h = size
         shape = (h, w) if np.isscalar(col) else (h, w, len(col))
         ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
-                           ismask=ismask)
+                           ismask=ismask, duration=duration)
 
 
 class TextClip(ImageClip):
