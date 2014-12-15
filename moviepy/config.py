@@ -27,8 +27,11 @@ def try_cmd(cmd):
         else:
             return True, None
 
+if FFMPEG_BINARY=='ffmpeg-imageio':
+    from imageio.plugins.ffmpeg import get_exe
+    FFMPEG_BINARY = get_exe()
 
-if FFMPEG_BINARY=='auto-detect':
+elif FFMPEG_BINARY=='auto-detect':
 
     if try_cmd(['ffmpeg'])[0]:
         FFMPEG_BINARY = 'ffmpeg'
@@ -41,6 +44,8 @@ else:
     if not success:
         raise IOError(err.message +
                  "The path specified for the ffmpeg binary might be wrong")
+
+
 
 if IMAGEMAGICK_BINARY=='auto-detect':
 

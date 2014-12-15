@@ -184,7 +184,9 @@ class FFMPEG_VideoWriter:
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
                        audiofile=None, verbose=True, threads=None, ffmpeg_params=None):
-
+    """ Write the clip to a videofile. See VideoClip.write_videofile for details
+    on the parameters.
+    """
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:

@@ -3,10 +3,11 @@
 Download and Installation
 ==========================
 
+
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal (sudo is optional on some systems) ::
+**Method with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
     
     (sudo) pip install moviepy
 
@@ -18,39 +19,28 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
     
     (sudo) python setup.py install
 
-MoviePy depends on the Python modules Numpy_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation.
+MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
-    
-Linking to ffmpeg
-~~~~~~~~~~~~~~~~~~
+MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``.
 
-MoviePy requires a **recent version** of the software ffmpeg_ preferably downloaded **directly from the ffmpeg website**.
 
-**Installed ffmpeg:** when you have installed ffmpeg, or (for linux users) when you have a ffmpeg binary in the ``/usr/bin`` folder, it will be detected automatically by MoviePy.
+Other optional but useful dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Non-installed ffmpeg:** you can also simply place the ffmpeg binary somewhere on your computer and specify its path in the file `moviepy/config_defaults.py` before installing MoviePy by hand.
-
-Linking to ImageMagick
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-ImageMagick_ is not strictly required, but some important features of MoviePy, like the creation of texts or animated GIFs, depend on it.
+ImageMagick_ is not strictly required, only if you want to write texts. It can also be used as a backend for GIFs but you can do GIFs with MoviePy without ImageMagick.
 
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
     
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 
-
-Other optional but useful dependencies
-----------------------------------------
-
 PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
-For advanced image processing you will need one or several of these packages. for instance ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
+For advanced image processing you will need one or several of these packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
 
 - The Python Imaging Library (PIL) or, better, its branch Pillow_ .
 - Scipy_ (for tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
 - `Scikit Image`_ may be needed for some advanced image manipulation.
-- `OpenCV 2.4.6`_ (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation. See :ref:`opencv`.
+- `OpenCV 2.4.6`_ or more recent (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation.
 
 If you are on linux, these softwares will surely be in your repos.    
 
@@ -63,7 +53,7 @@ If you are on linux, these softwares will surely be in your repos.
 
 .. _imageMagick: http://www.imagemagick.org/script/index.php
 .. _Pygame: http://www.pygame.org/download.shtml
-
+.. _imageio: http://imageio.github.io/
 
 .. _Pillow: http://pillow.readthedocs.org/en/latest/
 .. _Scipy: http://www.scipy.org/

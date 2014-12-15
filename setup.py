@@ -15,8 +15,6 @@ except ImportError:
 
 from setuptools import setup, find_packages
 
-from setuptools import setup, find_packages
-
 exec(open('moviepy/version.py').read()) # loads __version__
 
 setup(name='moviepy',
@@ -27,4 +25,4 @@ setup(name='moviepy',
     license='see LICENSE.txt',
     keywords="video editing audio compositing numpy ffmpeg ",
     packages= find_packages(exclude='docs'),
-    install_requires= ['numpy', 'decorator', 'tqdm'])
+    install_requires= ['numpy', 'decorator', 'imageio', 'tqdm'])

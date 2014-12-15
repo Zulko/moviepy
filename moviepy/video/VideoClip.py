@@ -404,8 +404,8 @@ class VideoClip(Clip):
 
     @requires_duration
     @convert_masks_to_RGB
-    def write_gif(self, filename, fps=None, program='ImageMagick',
-                  opt="OptimizeTransparency", fuzz=1, verbose=True,
+    def write_gif(self, filename, fps=None, program='imageio',
+                  opt='wu', fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):
         """ Write the VideoClip to a GIF file.
 
@@ -425,12 +425,13 @@ class VideoClip(Clip):
             ``fps`` attribute (VideoFileClip, for instance, have one).
 
         program
-          Software to use for the conversion, either 'ImageMagick' or
-          'ffmpeg'.
+          Software to use for the conversion, either 'imageio' (this will use
+          the library FreeImage through ImageIO), or 'ImageMagick', or 'ffmpeg'.
 
         opt
-          (ImageMagick only) optimalization to apply, either
-          'optimizeplus' or 'OptimizeTransparency'.
+          Optimalization to apply. If program='imageio', opt must be either 'wu'
+          (Wu) or 'nq' (Neuquant). If program='ImageMagick',
+          either 'optimizeplus' or 'OptimizeTransparency'.
 
         fuzz
           (ImageMagick only) Compresses the GIF by considering that
@@ -449,6 +450,10 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).to_gif('myClip.gif')
 
         """
+
+        # A little sketchy at the moment, maybe move all that in write_gif,
+        #  refactor a little... we will see.
+
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)

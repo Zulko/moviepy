@@ -9,13 +9,14 @@ from moviepy.tools import cvsecs
 
 @decorator.decorator
 def outplace(f, clip, *a, **k):
-    """ Enables to make operations outplace """
+    """ Applies f(clip.copy(), *a, **k) and returns clip.copy()"""
     newclip = clip.copy()
     f(newclip, *a, **k)
     return newclip
-    
+
 @decorator.decorator
 def convert_masks_to_RGB(f, clip, *a, **k):
+    """ If the clip is a mask, convert it to RGB before running the function """
     if clip.ismask:
         clip = clip.to_RGB()
     return f(clip, *a, **k)
@@ -72,8 +73,9 @@ def audio_video_fx(f, clip, *a, **k):
         return f(clip, *a, **k)
 
 def preprocess_args(fun,varnames):
+    """ Applies fun to variables in varnames before launching the function """
     
-    def warper(f, *a, **kw):
+    def wrapper(f, *a, **kw):
         if hasattr(f, "func_code"):
             func_code = f.func_code # Python 2
         else:
@@ -85,7 +87,7 @@ def preprocess_args(fun,varnames):
         new_kw = {k: fun(v) if k in varnames else v
                  for (k,v) in kw.items()}
         return f(*new_a, **new_kw)
-    return decorator.decorator(warper)
+    return decorator.decorator(wrapper)
 
 
 def convert_to_seconds(varnames):
@@ -105,6 +107,7 @@ def add_mask_if_none(f, clip, *a, **k):
 
 @decorator.decorator
 def use_clip_fps_by_default(f, clip, *a, **k):
+    """ Will use clip.fps if no fps=... is provided in **k """
     
     def fun(fps):
         if fps is not None:
