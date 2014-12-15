@@ -3,7 +3,7 @@
 How to be efficient with MoviePy
 ================================
 
-This section gathers tips and tricks to make the most of what is already known worldwide as *the MoviePy experience*. 
+This section gathers tips and tricks to help you make the most of what is already known worldwide as *the MoviePy experience*. 
 
 The best way to start with MoviePy is to use it with the IPython Notebook: it makes it easier to preview clips (as we will see in this section), has autocompletion, and can display the documentation for the different methods of the library.
 

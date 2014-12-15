@@ -60,13 +60,12 @@
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -177,6 +176,12 @@ videoclip with unmodified video and modified audio.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="moviepy.decorators.convert_masks_to_RGB">
+<tt class="descclassname">moviepy.decorators.</tt><tt class="descname">convert_masks_to_RGB</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#moviepy.decorators.convert_masks_to_RGB" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the clip is a mask, convert it to RGB before running the function</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="moviepy.decorators.convert_to_seconds">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">convert_to_seconds</tt><big>(</big><em>varnames</em><big>)</big><a class="headerlink" href="#moviepy.decorators.convert_to_seconds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the specified variables to seconds</p>
@@ -185,13 +190,25 @@ videoclip with unmodified video and modified audio.</p>
 <dl class="function">
 <dt id="moviepy.decorators.outplace">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">outplace</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#outplace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.outplace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Enables to make operations outplace</p>
+<dd><p>Applies f(clip.copy(), <a href="#id1"><span class="problematic" id="id2">*</span></a>a, <a href="#id3"><span class="problematic" id="id4">**</span></a>k) and returns clip.copy()</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.decorators.preprocess_args">
+<tt class="descclassname">moviepy.decorators.</tt><tt class="descname">preprocess_args</tt><big>(</big><em>fun</em>, <em>varnames</em><big>)</big><a class="headerlink" href="#moviepy.decorators.preprocess_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies fun to variables in varnames before launching the function</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="moviepy.decorators.requires_duration">
 <tt class="descclassname">moviepy.decorators.</tt><tt class="descname">requires_duration</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../_modules/moviepy/decorators.html#requires_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.decorators.requires_duration" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raise an error if the clip has no duration.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="moviepy.decorators.use_clip_fps_by_default">
+<tt class="descclassname">moviepy.decorators.</tt><tt class="descname">use_clip_fps_by_default</tt><big>(</big><em>f</em><big>)</big><a class="headerlink" href="#moviepy.decorators.use_clip_fps_by_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will use clip.fps if no fps=... is provided in <a href="#id5"><span class="problematic" id="id6">**</span></a>k</p>
 </dd></dl>
 
 </div>

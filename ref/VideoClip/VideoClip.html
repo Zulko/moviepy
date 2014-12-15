@@ -61,7 +61,6 @@
             <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../install.html">Download and Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../install.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
@@ -414,7 +413,7 @@ Please use the new name, <tt class="docutils literal"><span class="pre">write_vi
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_gif">
-<tt class="descname">write_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='ImageMagick'</em>, <em>opt='OptimizeTransparency'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em>, <em>colors=None</em>, <em>tempfiles=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_gif" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_gif</tt><big>(</big><em>filename</em>, <em>fps=None</em>, <em>program='imageio'</em>, <em>opt='wu'</em>, <em>fuzz=1</em>, <em>verbose=True</em>, <em>loop=0</em>, <em>dispose=False</em>, <em>colors=None</em>, <em>tempfiles=False</em><big>)</big><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_gif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the VideoClip to a GIF file.</p>
 <p>Converts a VideoClip into an animated GIF using ImageMagick
 or ffmpeg.</p>
@@ -437,13 +436,14 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>program</strong> :</p>
 <blockquote>
-<div><p>Software to use for the conversion, either &#8216;ImageMagick&#8217; or
-&#8216;ffmpeg&#8217;.</p>
+<div><p>Software to use for the conversion, either &#8216;imageio&#8217; (this will use
+the library FreeImage through ImageIO), or &#8216;ImageMagick&#8217;, or &#8216;ffmpeg&#8217;.</p>
 </div></blockquote>
 <p><strong>opt</strong> :</p>
 <blockquote>
-<div><p>(ImageMagick only) optimalization to apply, either
-&#8216;optimizeplus&#8217; or &#8216;OptimizeTransparency&#8217;.</p>
+<div><p>Optimalization to apply. If program=&#8217;imageio&#8217;, opt must be either &#8216;wu&#8217;
+(Wu) or &#8216;nq&#8217; (Neuquant). If program=&#8217;ImageMagick&#8217;,
+either &#8216;optimizeplus&#8217; or &#8216;OptimizeTransparency&#8217;.</p>
 </div></blockquote>
 <p><strong>fuzz</strong> :</p>
 <blockquote class="last">
@@ -679,7 +679,7 @@ wish to read the audio.</p>
 <h3><tt class="xref py py-class docutils literal"><span class="pre">ImageClip</span></tt><a class="headerlink" href="#imageclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.ImageClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ImageClip</tt><big>(</big><em>img</em>, <em>ismask=False</em>, <em>transparent=True</em>, <em>fromalpha=False</em>, <em>duration=None</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ImageClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.VideoClip</span></tt></a></p>
 <p>Class for non-moving VideoClips.</p>
 <p>A video clip originating from a picture. This clip will simply
@@ -757,7 +757,7 @@ masks or their audios). The result is still an ImageClip.</p>
 <h3><tt class="xref py py-class docutils literal"><span class="pre">ColorClip</span></tt><a class="headerlink" href="#colorclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.VideoClip.ColorClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ColorClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.VideoClip.</tt><tt class="descname">ColorClip</tt><big>(</big><em>size</em>, <em>col=(0</em>, <em>0</em>, <em>0)</em>, <em>ismask=False</em>, <em>duration=None</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#ColorClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.ImageClip</span></tt></a></p>
 <p>An ImageClip showing just one color.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -892,7 +892,7 @@ argument <tt class="docutils literal"><span class="pre">arg</span></tt> of <tt c
 <h3><tt class="xref py py-class docutils literal"><span class="pre">CompositeVideoClip</span></tt><a class="headerlink" href="#compositevideoclip" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip">
-<em class="property">class </em><tt class="descclassname">moviepy.video.compositing.CompositeVideoClip.</tt><tt class="descname">CompositeVideoClip</tt><big>(</big><em>clips</em>, <em>size=None</em>, <em>bg_color=None</em>, <em>transparent=False</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/compositing/CompositeVideoClip.html#CompositeVideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">moviepy.video.compositing.CompositeVideoClip.</tt><tt class="descname">CompositeVideoClip</tt><big>(</big><em>clips</em>, <em>size=None</em>, <em>bg_color=None</em>, <em>use_bgclip=False</em>, <em>ismask=False</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/compositing/CompositeVideoClip.html#CompositeVideoClip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><tt class="xref py py-class docutils literal"><span class="pre">moviepy.video.VideoClip.VideoClip</span></tt></a></p>
 <p>A VideoClip made of other videoclips displayed together. This is the
 base class for most compositions.</p>
@@ -918,16 +918,12 @@ For each clip:</p>
 attribute set, then the duration of the composite video clip
 is computed automatically</p>
 </dd>
-<dt>transparent</dt>
-<dd>If False, the clips are overlaid on a surface
-of the color <cite>bg_color</cite>. If True, the clips are overlaid on
-a transparent surface, so that all pixels that are transparent
-for all clips will be transparent in the composite clip. More
-precisely, the mask of the composite clip is then the composite
-of the masks of the different clips. Only use <cite>transparent=True</cite>
-when you intend to use your composite clip as part of another
-composite clip and you care about its transparency.</dd>
+<dt>bg_color</dt>
+<dd>Color for the unmasked and unfilled regions. Set to None for these
+regions to be transparent (will be slower).</dd>
 </dl>
+<p>If all clips with a fps attribute have the same fps, it becomes the fps of
+the result.</p>
 <dl class="method">
 <dt id="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">
 <tt class="descname">playing_clips</tt><big>(</big><em>t=0</em><big>)</big><a class="reference internal" href="../../_modules/moviepy/video/compositing/CompositeVideoClip.html#CompositeVideoClip.playing_clips"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips" title="Permalink to this definition">¶</a></dt>

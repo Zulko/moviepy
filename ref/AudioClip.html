@@ -226,7 +226,7 @@ or written in a wav file. See <tt class="docutils literal"><span class="pre">Aud
 
 <dl class="method">
 <dt id="moviepy.audio.AudioClip.AudioClip.write_audiofile">
-<tt class="descname">write_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec=None</em>, <em>bitrate=None</em>, <em>write_logfile=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.write_audiofile" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_audiofile</tt><big>(</big><em>filename</em>, <em>fps=44100</em>, <em>nbytes=2</em>, <em>buffersize=2000</em>, <em>codec=None</em>, <em>bitrate=None</em>, <em>ffmpeg_params=None</em>, <em>write_logfile=False</em>, <em>verbose=True</em><big>)</big><a class="headerlink" href="#moviepy.audio.AudioClip.AudioClip.write_audiofile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an audio file from the AudioClip.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -256,6 +256,11 @@ determined based on the extension of the filename. Choose
 Will determine the size and quality of the output file.
 Note that it mainly an indicative goal, the bitrate won&#8217;t
 necessarily be the this in the output file.</p>
+</div></blockquote>
+<p><strong>ffmpeg_params</strong> :</p>
+<blockquote>
+<div><p>Any additional parameters you would like to pass, as a list
+of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8217;, &#8216;value2&#8217;]</p>
 </div></blockquote>
 <p><strong>write_logfile</strong> :</p>
 <blockquote>

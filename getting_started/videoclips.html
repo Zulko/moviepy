@@ -64,7 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips together</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
 </ul>
@@ -141,7 +141,7 @@
             
   <div class="section" id="creating-and-exporting-video-clips">
 <span id="clips"></span><h1>Creating and exporting video clips<a class="headerlink" href="#creating-and-exporting-video-clips" title="Permalink to this headline">¶</a></h1>
-<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <em class="xref std std-ref">effects</em>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
+<p>Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see <em class="xref std std-ref">effects</em>. For how to put clips together see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips</em></a> and to see how to preview clips before writing a file, refer to <a class="reference internal" href="efficient_moviepy.html#efficient"><em>How to be efficient with MoviePy</em></a>.</p>
 <p>The following code summarizes the base clips that you can create with moviepy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># VIDEO CLIPS</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_frame</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="c"># for custom animations (see below)</span>
@@ -196,7 +196,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 </div>
 <div class="section" id="mask-clips">
 <h2>Mask clips<a class="headerlink" href="#mask-clips" title="Permalink to this headline">¶</a></h2>
-<p>A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips together</em></a>).</p>
+<p>A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see <a class="reference internal" href="compositing.html#compositevideoclips"><em>Mixing clips</em></a>).</p>
 <p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
 <p>When you create or load a clip that you will use as a mask you need to declare it:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">mclip</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">makeframe</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
