@@ -76,7 +76,7 @@ For advanced image processing you will need one or several of these packages. Fo
 - The Python Imaging Library (PIL) or, better, its branch Pillow_ .
 - Scipy_ (for tracking, segmenting, etc.), and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
 - `Scikit Image`_ may be needed for some advanced image manipulation.
-- `OpenCV 2.4.6`_ or more recent  (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation.
+- `OpenCV 2.4.6`_ or more recent (which provides the package ``cv2``) may be needed for some advanced image manipulation.
 
 
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
