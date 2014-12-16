@@ -623,7 +623,7 @@ class VideoClip(Clip):
         colorclip = ColorClip(size, color)
 
         if col_opacity is not None:
-            colorclip = (ColorClip(size, color, duration=elf.duration)
+            colorclip = (ColorClip(size, color, duration=self.duration)
                          .set_opacity(col_opacity))
             result = CompositeVideoClip([colorclip, self.set_pos(pos)])
         else:

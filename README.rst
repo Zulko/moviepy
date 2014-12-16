@@ -43,7 +43,13 @@ You can also discuss about the project on Reddit_ or on the mailing list moviepy
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
+MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It also depends on the software FFMPEG, which should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``. In case of trouble, provide feedback.
+
+**Installation by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
+    
+    (sudo) python setup.py install
+
+**Installation with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
     
     (sudo) pip install moviepy
 
@@ -51,13 +57,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
     (sudo) pip install ez_setup
 
-**Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
-    
-    (sudo) python setup.py install
 
-MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
-
-MoviePy depends on the software FFMPEG for video reading and writing, but you don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``.
 
 
 Other optional but useful dependencies
