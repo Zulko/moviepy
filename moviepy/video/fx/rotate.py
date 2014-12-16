@@ -1,6 +1,6 @@
 import numpy as np
 
-def rotation(clip, angle, apply_to_mask=True, unit='deg'):
+def rotate(clip, angle, apply_to_mask=True, unit='deg'):
     
     if unit == 'rad':
         angle = 360*angle/(2*3.14159)
@@ -14,7 +14,7 @@ def rotation(clip, angle, apply_to_mask=True, unit='deg'):
     if angle in angle_transfo:
         newclip =  clip.fl_image( angle_transfo[angle])
     else:
-        raise ValueError('Angle not supported, only 90, -90, 180')
+        raise ValueError('Angle not supported, only 90, -90, 180 at the moment')
     
     if apply_to_mask and (newclip.mask is not None):
         newclip.mask = newclip.mask.fx( rotation, angle,

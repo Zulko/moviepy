@@ -64,6 +64,7 @@ for method in [
           "vfx.mask_and",
           "vfx.mask_or",
           "vfx.resize",
+          "vfx.rotate",
           "vfx.speedx"
           ]:
 
