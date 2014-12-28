@@ -13,7 +13,7 @@ Videos edited with Moviepy
 The Cup Song Covers Mix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This mix of 60 covers of the Cup Song demonstrates the non-linear video editing capabilities of MoviePy. Here is `the (undocumented) MoviePy code <http://nbviewer.ipython.org/github/Zulko/--video-editing---Cup-Song-Covers-Mix/blob/master/CupSongsCovers.ipynb>`_ that generated the script.
+This mix of 60 covers of the Cup Song demonstrates the non-linear video editing capabilities of MoviePy. Here is `the (undocumented) MoviePy code <http://nbviewer.ipython.org/github/Zulko/--video-editing---Cup-Song-Covers-Mix/blob/master/CupSongsCovers.ipynb>`_ that generated the video.
 
 .. raw:: html
 
@@ -43,7 +43,7 @@ Animations edited with MoviePy
 ------------------------------
 
 
-GIFs made from video files
+GIFs made from videos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This  `tutorial
@@ -110,6 +110,11 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
+
+Data animations
+----------------
+
+This `tutorial <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
 
 
 Scientific or technological projects

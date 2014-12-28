@@ -93,7 +93,8 @@ class VideoClip(Clip):
 
     """
 
-    def __init__(self, make_frame=None, ismask=False, duration=None):
+    def __init__(self, make_frame=None, ismask=False, duration=None,
+                 has_constant_size=True):
         Clip.__init__(self)
         self.mask = None
         self.audio = None
@@ -103,6 +104,7 @@ class VideoClip(Clip):
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
         self.ismask = ismask
+        self.has_constant_size=has_constant_size
         if duration is not None:
             self.duration = duration
             self.end = duration
@@ -521,11 +523,10 @@ class VideoClip(Clip):
         by the clip's ``pos`` attribute. Meant for compositing.
         """
 
-        hf, wf = sizef = picture.shape[:2]
+        hf, wf = framesize = picture.shape[:2]
 
         if self.ismask and picture.max() != 0:
-            return np.maximum(picture,
-                              self.blit_on(np.zeros(sizef), t))
+            return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
 
         ct = t - self.start  # clip time
 
@@ -569,7 +570,7 @@ class VideoClip(Clip):
         return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 
 
-    def add_mask(self, constant_size=True):
+    def add_mask(self):
         """ Add a mask VideoClip to the VideoClip.
 
         Returns a copy of the clip with a completely opaque mask
@@ -579,11 +580,11 @@ class VideoClip(Clip):
         Set ``constant_size`` to  `False` for clips with moving
         image size.
         """
-        if constant_size:
+        if self.has_constant_size:
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape, dtype=float)
+            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 

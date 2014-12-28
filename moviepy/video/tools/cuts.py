@@ -38,10 +38,10 @@ class FrameMatches(list):
 
         list.__init__(self, sorted(lst, key=lambda e: e.distance))
 
-    def best(self, n=None, percent=None):
+    def best(self, n=1, percent=None):
         if percent is not None:
             n = len(self)*percent/100
-        return FrameMatches(self[:n])
+        return self[0] if n==1 else FrameMatches(self[:n])
     
     def filter(self, fun):
         return FrameMatches(filter(fun, self))
@@ -53,19 +53,49 @@ class FrameMatches(list):
     def load(filename):
         arr = np.loadtxt(filename)
         mfs = [FrameMatch(*e) for e in arr]
+        return FramesMatches(mfs)
 
         
 
 
 
 def find_matching_frames(clip, dist_thr, max_d, fps=None):
-    """ Returns a list [(t1, t2, distance), ...] for all pairs of frames with
-    (t2-t1 < max_d). Optimized routine. Quite fast.
+    """ Finds all the frames tht look alike in a clip, for instance to make a
+    looping gif.
 
-    clip : a MoviePy video clip, possibly transformed/resized
-    dist_thr: distance above which a match is rejected
-    max_d: maximal duration (in seconds) between two matching frames
-    fps: frames per second (default will be clip.fps)
+    This teturns a  FramesMatches object of the all pairs of frames with
+    (t2-t1 < max_d) and whose distance is under dist_thr.
+
+    This is well optimized routine and quite fast.
+
+    Examples
+    ---------
+    
+    We find all matching frames in a given video and turn the best match with
+    a duration of 1.5s or more into a GIF:
+
+    >>> from moviepy.editor import VideoFileClip
+    >>> from moviepy.video.tools.cuts import find_matching_frames
+    >>> clip = VideoFileClip("foo.mp4").resize(width=200)
+    >>> matches = find_matching_frames(clip, 10, 3) # will take time
+    >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
+    >>> clip.subclip(best.t1, best.t2).write_gif("foo.gif")
+
+    Parameters
+    -----------
+
+    clip
+      A MoviePy video clip, possibly transformed/resized
+    
+    dist_thr
+      Distance above which a match is rejected
+    
+    max_d
+      Maximal duration (in seconds) between two matching frames
+    
+    fps
+      Frames per second (default will be clip.fps)
+    
     """ 
     
     N_pixels = clip.w * clip.h * 3

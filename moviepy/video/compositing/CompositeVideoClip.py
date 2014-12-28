@@ -12,6 +12,7 @@ class CompositeVideoClip(VideoClip):
     base class for most compositions.
     
     Parameters
+    ----------
 
     size
       The size (height x width) of the final clip.
@@ -32,6 +33,12 @@ class CompositeVideoClip(VideoClip):
     bg_color
       Color for the unmasked and unfilled regions. Set to None for these
       regions to be transparent (will be slower).
+
+    use_bgclip
+      Set to True if the first clip in the list should be used as the
+      'background' on which all other clips are blitted. That first clip must
+      have the same size as the final clip. If it has no transparency, the final
+      clip will have no mask. 
     
     If all clips with a fps attribute have the same fps, it becomes the fps of
     the result.
@@ -43,14 +50,16 @@ class CompositeVideoClip(VideoClip):
 
         if size is None:
             size = clips[0].size
-        
-        if bg_color is None:
-            bg_color = 0.0 if ismask else (0, 0, 0)
 
+        
         if use_bgclip and (clips[0].mask is None):
             transparent = False
         else:
             transparent = (bg_color is None)
+        
+        if bg_color is None:
+            bg_color = 0.0 if ismask else (0, 0, 0)
+
         
         fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
         if len(fps_list)==1:
@@ -85,11 +94,12 @@ class CompositeVideoClip(VideoClip):
 
         # compute mask if necessary
         if transparent:
-            maskclips = [c.mask.set_pos(c.pos) for c in self.clips
-                         if c.mask is not None]
-            if maskclips != []:
-                self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
-                                               bg_color=0)
+            maskclips = [(c.mask if (c.mask is not None) else
+                          c.add_mask().mask).set_pos(c.pos)
+                          for c in self.clips]
+
+            self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
+                                               bg_color=0.0)
 
         def make_frame(t):
             """ The clips playing at time `t` are blitted over one

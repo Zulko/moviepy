@@ -27,7 +27,7 @@ class VideoFileClip(VideoClip):
       Video files rarely contain masks, but some video codecs enable
       that. For istance if you have a MoviePy VideoClip with a mask you
       can save it to a videofile with a mask. (see also 
-      ``VideoClip.to_videofile`` for more details).
+      ``VideoClip.write_videofile`` for more details).
     
     audio:
       Set to `False` if the clip doesn't have any audio or if you do not

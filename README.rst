@@ -16,19 +16,15 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 
     from moviepy.editor import *
     
-    # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
-    clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
+    video = VideoFileClip("myHolidays.mp4").subclip(50,60)
     
-    # Generate a 10-second centered text clip (many options available ! )
+    # Make the text. Many more options are available.
     txt_clip = ( TextClip("My Holidays 2013",fontsize=70,color='white')
                  .set_position('center')
                  .set_duration(10) )
     
-    # Overlay the text clip above the first clip
-    final_clip = CompositeVideoClip([clip, txt_clip])
-    
-    # write the result to a file in any format
-    final_clip.to_videofile("myHolidays_edited.webm",fps=25)
+    result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
+    result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
 
 
 
@@ -43,13 +39,13 @@ You can also discuss about the project on Reddit_ or on the mailing list moviepy
 Installation
 --------------
 
-MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It also depends on the software FFMPEG, which should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``. In case of trouble, provide feedback.
+MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``. In case of trouble, provide feedback.
 
 **Installation by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
     
     (sudo) python setup.py install
 
-**Installation with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
+**Installation with pip:** if you have ``pip`` installed, just type this in a terminal: ::
     
     (sudo) pip install moviepy
 
