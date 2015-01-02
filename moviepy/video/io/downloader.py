@@ -2,10 +2,11 @@
 Utilities to get a file from the internet
 """
 
+import six
 import os
-from urllib import urlretrieve
+# from urllib import urlretrieve
+from six.moves.urllib.request import urlretrieve
 from moviepy.tools import subprocess_call
-
 
 def download_webfile(url, filename, overwrite=False):
     """ Small utility to download the file at 'url' under name 'filename'.
