@@ -113,7 +113,7 @@ class AudioClip(Clip):
                 return stacker(self.iter_chunks(fps=fps, quantize=quantize, nbytes=2,
                                                  chunksize=buffersize))
             else:
-                tt = np.arange(0,clip.duration, 1.0/fps)
+                tt = np.arange(0, self.duration, 1.0/fps)
         """
         elif len(tt)> 1.5*buffersize:
             nchunks = int(len(tt)/buffersize+1)

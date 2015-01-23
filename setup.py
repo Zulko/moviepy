@@ -9,7 +9,7 @@ except ImportError:
         import ez_setup
         ez_setup.use_setuptools()
     except ImportError:
-        raise ImportError("Vapory could not be installed, probably because"
+        raise ImportError("MoviePy could not be installed, probably because"
             " neither setuptools nor ez_setup are installed on this computer."
             "\nInstall ez_setup ([sudo] pip install ez_setup) and try again.")
 
@@ -19,7 +19,7 @@ exec(open('moviepy/version.py').read()) # loads __version__
 
 setup(name='moviepy',
     version=__version__,
-    author='Zulko 2014',
+    author='Zulko 2015',
     description='Video editing with Python',
     long_description=open('README.rst').read(),
     license='see LICENSE.txt',
