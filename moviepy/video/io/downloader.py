@@ -3,7 +3,12 @@ Utilities to get a file from the internet
 """
 
 import os
-from urllib import urlretrieve
+
+try: # Py2 and Py3 compatibility
+    from urllib import urlretrieve
+except:
+    from urllib.request import urlretrieve
+
 from moviepy.tools import subprocess_call
 
 
