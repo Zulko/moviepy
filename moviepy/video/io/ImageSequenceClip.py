@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 from ..VideoClip import VideoClip
-from .ffmpeg_reader import ffmpeg_read_image
+from imageio import imread
 
 
 class ImageSequenceClip(VideoClip):
@@ -60,8 +60,7 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [ffmpeg_read_image( f, with_mask=True)
-                                for f in sequence]
+                    sequence = [imread(f) for f in sequence]
                     fromfiles = False
                 else:
                     fromfiles= True
@@ -97,8 +96,7 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.lastindex:
-                    self.lastimage = ffmpeg_read_image( self.sequence[index], 
-                                                        with_mask=False)
+                    self.lastimage = imread(self.sequence[index])[:,:,:3] 
                     self.lastindex = index
                 
                 return self.lastimage
@@ -111,8 +109,7 @@ class ImageSequenceClip(VideoClip):
             
                     index = find_image_index(t)
                     if index != self.lastindex:
-                        self.mask.lastimage = ffmpeg_read_image( self.sequence[index], 
-                                                                 with_mask=True)[:,:,3]
+                        self.mask.lastimage = imread(self.sequence[index])[:,:,3]
                     self.mask.lastindex = index
 
                     return self.mask.lastimage

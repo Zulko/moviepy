@@ -14,9 +14,10 @@ from copy import copy
 from tqdm import tqdm
 import numpy as np
 
+from imageio import imread
+
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
-from .io.ffmpeg_reader import ffmpeg_read_image
 from .io.ffmpeg_tools import ffmpeg_merge_video_audio
 from .io.gif_writers import (write_gif,
                              write_gif_with_tempfiles,
@@ -891,7 +892,7 @@ class ImageClip(VideoClip):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
         if isinstance(img, str):
-            img = ffmpeg_read_image(img, with_mask=transparent)
+            img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
