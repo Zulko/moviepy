@@ -4,6 +4,12 @@ try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
     DEVNULL = open(os.devnull, 'wb')
+    
+if os.name == 'nt':
+    try:    
+        import winreg as wr # py3k
+    except:
+        import _winreg as wr # py2k
 
 from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
@@ -48,11 +54,22 @@ else:
 
 
 if IMAGEMAGICK_BINARY=='auto-detect':
-
-    if try_cmd(['convert'])[0]:
+    if os.name == 'nt':    
+        try:
+            key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, 'SOFTWARE\\ImageMagick\\Current')
+            IMAGEMAGICK_BINARY = wr.QueryValueEx(key, 'BinPath')[0] + r"\convert.exe"
+            key.Close()
+        except:
+            IMAGEMAGICK_BINARY = 'unset'
+    elif try_cmd(['convert'])[0]:
         IMAGEMAGICK_BINARY = 'convert'
     else:
         IMAGEMAGICK_BINARY = 'unset'
+else:
+    success, err = try_cmd([IMAGEMAGICK_BINARY])
+    if not success:
+        raise IOError(err.message +
+                 "The path specified for the ImageMagick binary might be wrong")
 
 
 
