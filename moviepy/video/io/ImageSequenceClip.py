@@ -91,7 +91,7 @@ class ImageSequenceClip(VideoClip):
             self.lastindex = None
             self.lastimage = None
 
-            def get_frame(t):
+            def make_frame(t):
             
                 index = find_image_index(t)
 
@@ -101,11 +101,11 @@ class ImageSequenceClip(VideoClip):
                 
                 return self.lastimage
 
-            if with_mask and (get_frame(0).shape[2]==4):
+            if with_mask and (make_frame(0).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
 
-                def mask_get_frame(t):
+                def mask_make_frame(t):
             
                     index = find_image_index(t)
                     if index != self.lastindex:
@@ -114,17 +114,17 @@ class ImageSequenceClip(VideoClip):
 
                     return self.mask.lastimage
 
-                self.mask.get_frame = mask_get_frame
-                self.mask.size = mask_get_frame(0).shape[:2][::-1]
+                self.mask.make_frame = mask_make_frame
+                self.mask.size = mask_make_frame(0).shape[:2][::-1]
 
 
         else:
 
-            def get_frame(t):
+            def make_frame(t):
             
                 index = find_image_index(t)
                 return self.sequence[index]
         
             
-        self.get_frame = get_frame
-        self.size = get_frame(0).shape[:2][::-1]
+        self.make_frame = make_frame
+        self.size = make_frame(0).shape[:2][::-1]

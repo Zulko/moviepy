@@ -44,8 +44,18 @@ class FramesMatches(list):
             n = len(self)*percent/100
         return self[0] if n==1 else FramesMatches(self[:n])
     
-    def filter(self, fun):
-        return FramesMatches(filter(fun, self))
+    def filter(self, cond):
+        """
+        Returns a FramesMatches object obtained by filtering out the FramesMatch
+        which do not satistify the condition ``cond``. ``cond`` is a function
+        (FrameMatch -> bool).
+
+        Examples
+        ---------
+        >>> # Only keep the matches corresponding to (> 1 second) sequences.
+        >>> new_matches = matches.filter( lambda match: match.time_span > 1)
+        """
+        return FramesMatches(filter(cond, self))
 
     def save(self, filename):
         np.savetxt(filename, np.array([np.array(list(e)) for e in self]),
@@ -53,6 +63,9 @@ class FramesMatches(list):
 
     @staticmethod
     def load(filename):
+        """ Loads a FramesMatches object from a file.
+        >>> matching_frames = FramesMatches.load("somefile")
+        """
         arr = np.loadtxt(filename)
         mfs = [FramesMatch(*e) for e in arr]
         return FramesMatches(mfs)
@@ -160,8 +173,18 @@ class FramesMatches(list):
 
 
 
-    def select_scenes(self, match_thr, time_span_thr, nomatch_thr=None):
+    def select_scenes(self, match_thr, min_time_span, nomatch_thr=None):
         """
+
+        match_thr
+          The smaller, the better-looping the gifs are.
+
+        min_time_span
+          Only GIFs with a duration longer than min_time_span (in seconds)
+          will be extracted.
+
+        nomatch_thr
+          If None, then it is chosen equal to match_thr
 
         """
 
@@ -183,11 +206,11 @@ class FramesMatches(list):
                             if dist<match_thr]
             
             great_long_matches = [end for end in great_matches
-                                  if (end-start)>time_span_thr]
+                                  if (end-start)>min_time_span]
             
             
             if (great_long_matches == []):
-                continue
+                continue # No GIF can be made starting at this time
             
             poor_matches = set([end for (end,dist) in ends_distances
                             if dist>nomatch_thr])
