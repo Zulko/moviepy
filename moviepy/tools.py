@@ -47,7 +47,7 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
             verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
             raise IOError(err.decode('utf8'))
         else:
-        verbose_print(verbose, "\n... command successful.\n")
+            verbose_print(verbose, "\n... command successful.\n")
 
 
 def is_string(obj):
