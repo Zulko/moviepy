@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 from ..VideoClip import VideoClip
-from .ffmpeg_reader import ffmpeg_read_image
+from imageio import imread
 
 
 class ImageSequenceClip(VideoClip):
@@ -60,8 +60,7 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [ffmpeg_read_image( f, with_mask=True)
-                                for f in sequence]
+                    sequence = [imread(f) for f in sequence]
                     fromfiles = False
                 else:
                     fromfiles= True
@@ -92,42 +91,40 @@ class ImageSequenceClip(VideoClip):
             self.lastindex = None
             self.lastimage = None
 
-            def get_frame(t):
+            def make_frame(t):
             
                 index = find_image_index(t)
 
                 if index != self.lastindex:
-                    self.lastimage = ffmpeg_read_image( self.sequence[index], 
-                                                        with_mask=False)
+                    self.lastimage = imread(self.sequence[index])[:,:,:3] 
                     self.lastindex = index
                 
                 return self.lastimage
 
-            if with_mask and (get_frame(0).shape[2]==4):
+            if with_mask and (make_frame(0).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
 
-                def mask_get_frame(t):
+                def mask_make_frame(t):
             
                     index = find_image_index(t)
                     if index != self.lastindex:
-                        self.mask.lastimage = ffmpeg_read_image( self.sequence[index], 
-                                                                 with_mask=True)[:,:,3]
+                        self.mask.lastimage = imread(self.sequence[index])[:,:,3]
                     self.mask.lastindex = index
 
                     return self.mask.lastimage
 
-                self.mask.get_frame = mask_get_frame
-                self.mask.size = mask_get_frame(0).shape[:2][::-1]
+                self.mask.make_frame = mask_make_frame
+                self.mask.size = mask_make_frame(0).shape[:2][::-1]
 
 
         else:
 
-            def get_frame(t):
+            def make_frame(t):
             
                 index = find_image_index(t)
                 return self.sequence[index]
         
             
-        self.get_frame = get_frame
-        self.size = get_frame(0).shape[:2][::-1]
+        self.make_frame = make_frame
+        self.size = make_frame(0).shape[:2][::-1]
