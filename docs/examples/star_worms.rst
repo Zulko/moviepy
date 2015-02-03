@@ -1,7 +1,9 @@
 A Star-Wars like opening title
 -------------------------------
 
-This is an approximate effect (the perspective would require some more complex transformations) but it is a nice exercice. Achtung: clip with sound.
+This is an approximate effect (the perspective would require some more complex transformations) but it is a nice exercise. 
+
+Warning: clip with sound.
 
 .. raw:: html
 

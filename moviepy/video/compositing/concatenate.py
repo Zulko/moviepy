@@ -88,6 +88,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
                  #ColorClip(c.size, col=1, ismask=True).set_duration(c.duration)
                      for c in clips]
             result.mask = concatenate_videoclips(masks, method="chain", ismask=True)
+            result.clips = clips
 
 
     elif method == "compose":
@@ -96,7 +97,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
                size = (w, h), bg_color=bg_color, ismask=ismask)
 
     result.tt = tt
-    result.clips = clips
+    
     result.start_times = tt[:-1]
     result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
     
