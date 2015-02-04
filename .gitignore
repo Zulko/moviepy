@@ -3,8 +3,7 @@
 # C extensions
 *.so
 
-# Packages
-*.egg
+# Packs*.egg
 *.egg-info
 *.tar.gz
 dist
@@ -47,5 +46,5 @@ nosetests.xml
 
 .pypirc
 
-# cloud 9 ide stuff
+#Cloud 9 IDE folders
 .c9/
