@@ -46,3 +46,6 @@ nosetests.xml
 # Pipy codes
 
 .pypirc
+
+#Cloud 9 IDE folders
+.c9/
