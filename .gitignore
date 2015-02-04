@@ -3,8 +3,7 @@
 # C extensions
 *.so
 
-# Packages
-*.egg
+# Packs*.egg
 *.egg-info
 *.tar.gz
 dist

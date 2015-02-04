@@ -38,18 +38,17 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
 
-    proc = sp.Popen(cmd, **popen_params)
+    
+    with sp.Popen(cmd, **popen_params) as proc:
+        out, err = proc.communicate() # proc.wait()
+        proc.stderr.close()
 
-    out, err = proc.communicate() # proc.wait()
-    proc.stderr.close()
+        if proc.returncode:
+            verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
+            raise IOError(err.decode('utf8'))
+        else:
+            verbose_print(verbose, "\n... command successful.\n")
 
-    if proc.returncode:
-        verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
-        raise IOError(err.decode('utf8'))
-    else:
-        verbose_print(verbose, "\n... command successful.\n")
-
-    del proc
 
 def is_string(obj):
     """ Returns true if s is string or string-like object,
