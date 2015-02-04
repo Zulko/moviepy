@@ -37,7 +37,7 @@ class TestSequenceFunctions(unittest.TestCase):
     def test_4(self):
         '''tests the is_string function in tools'''
         lefts = ["hello straight string", r'hello raw string', b'hello bytes',42, True ]
-        rights = [True, True, False, True, False]
+        rights = [True, True, False, False, False]
         for i in range(len(lefts)):
             left = tools.is_string(lefts[i])
             right = rights[i]
