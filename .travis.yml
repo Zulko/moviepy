@@ -4,8 +4,6 @@ python:
   - "3.2"
   - "3.3"
   - "3.4"
-  - "pypy"
-  - "pypy3"
 # command to install dependencies
 install:
   - "pip install -r requirements.txt"
