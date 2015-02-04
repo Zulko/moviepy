@@ -1,5 +1,6 @@
 import unittest
 import moviepy.tools as tools
+import sys
 
 class TestSequenceFunctions(unittest.TestCase):
 
@@ -36,14 +37,25 @@ class TestSequenceFunctions(unittest.TestCase):
     
     def test_4(self):
         '''tests the is_string function in tools'''
-        lefts = ["hello straight string", r'hello raw string', b'hello bytes',42, True ]
-        rights = [True, True, False, False, False]
+        lefts = ["hello straight string", r'hello raw string',42, True ]
+        rights = [True, True, False, False]
         for i in range(len(lefts)):
             left = tools.is_string(lefts[i])
             right = rights[i]
             message = "{0} resulted in {1}, but {2} was expected"\
             .format(lefts[i],left, right)
             self.assertEqual(left, right, msg = message)
-            
+    
+    def test_4a(self):
+        '''as for test 4 - but tests for the different behaviour of byte strings
+        between python 2 and 3'''
+        version = sys.version_info[0]
+        answer = version < 3 #True for py2, else False
+        left = tools.is_string(b'hello bytes')
+        right = answer
+        message = "{0} resulted in {1}, but {2} was expected"\
+        .format(b'hello bytes',left, right)
+        self.assertEqual(left, right, msg = message)
+    
 if __name__ == '__main__':
     unittest.main(verbosity = 3)
