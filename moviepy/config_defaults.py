@@ -48,4 +48,4 @@ IMAGEMAGICK_BINARY
 """
 
 FFMPEG_BINARY = 'ffmpeg-imageio'
-IMAGEMAGICK_BINARY = 'convert'
+IMAGEMAGICK_BINARY = 'auto-detect'
