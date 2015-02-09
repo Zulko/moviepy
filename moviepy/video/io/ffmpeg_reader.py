@@ -61,11 +61,11 @@ class FFMPEG_VideoReader:
 
         self.close() # if any
 
-        if starttime !=0 :
+        if starttime != 0 :
             offset = min(1, starttime)
-            i_arg = ['-ss', "%.03f" % (starttime - offset),
+            i_arg = ['-ss', "%.06f" % (starttime - offset),
                      '-i', self.filename,
-                     '-ss', "%.03f" % offset]
+                     '-ss', "%.06f" % offset]
         else:
             i_arg = [ '-i', self.filename]
 
@@ -144,14 +144,20 @@ class FFMPEG_VideoReader:
         """
 
         # these definitely need to be rechecked sometime. Seems to work.
-
-        pos = int(self.fps*t)+1
+        
+        # I use that horrible '+0.00001' hack because sometimes due to numerical
+        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
+        # go to the previous integer. This makes the fetching more robust in the
+        # case where you get the nth frame by writing get_frame(n/fps).
+        
+        pos = int(self.fps*t + 0.00001)+1
 
         if pos == self.pos:
             return self.lastread
         else:
             if(pos < self.pos) or (pos > self.pos+100):
                 self.initialize(t)
+                self.pos = pos
             else:
                 self.skip_frames(pos-self.pos-1)
             result = self.read_frame()

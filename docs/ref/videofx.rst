@@ -34,19 +34,26 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     :toctree: videofx
     :nosignatures:
     
+    accel_decel
     blackwhite
     blink
     colorx
     crop
+    even_size
     fadein
     fadeout
     freeze
+    freeze_region
     gamma_corr
     headblur
+    invert_colors
     loop
     lum_contrast
     make_loopable
     margin
+    mask_and
+    mask_color
+    mask_or
     mirror_x
     mirror_y
     painting
@@ -54,6 +61,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     rotation
     scroll
     speedx
+    supersample
     time_mirror
     time_symmetrize
 

@@ -173,7 +173,8 @@ class FramesMatches(list):
 
 
 
-    def select_scenes(self, match_thr, min_time_span, nomatch_thr=None):
+    def select_scenes(self, match_thr, min_time_span, nomatch_thr=None,
+                      time_distance=0):
         """
 
         match_thr
@@ -199,8 +200,12 @@ class FramesMatches(list):
         starts_ends = sorted(dict_starts.items(), key = lambda k: k[0])
         
         result = []
-
+        min_start= 0
         for start, ends_distances in starts_ends:
+
+            if start < min_start:
+                continue
+
             ends = [end for (end, distance) in ends_distances]
             great_matches = [end for (end,dist) in ends_distances
                             if dist<match_thr]
@@ -223,6 +228,7 @@ class FramesMatches(list):
     
             end = max(great_long_matches)
             result.append(FramesMatch(start, end, match_thr))
+            min_start = start + time_distance
 
         return FramesMatches( result )
 
