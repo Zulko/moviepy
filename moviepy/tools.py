@@ -48,6 +48,7 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
             raise IOError(err.decode('utf8'))
         else:
             verbose_print(verbose, "\n... command successful.\n")
+        proc.close()
 
 
 def is_string(obj):
