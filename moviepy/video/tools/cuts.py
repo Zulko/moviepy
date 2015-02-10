@@ -18,26 +18,47 @@ def find_video_period(clip,fps=None,tmin=.3):
 
 
 class FramesMatch:
+    """
+    
+    Parameters
+    -----------
 
-    def __init__(self, t1, t2, distance):
-        self.t1, self.t2, self.distance = t1, t2, distance
+    t1
+      Starting time
+
+    t2
+      End time
+
+    d_min
+      Lower bound on the distance between the first and last frames
+
+    d_max
+      Upper bound on the distance between the first and last frames
+
+    """
+
+    def __init__(self, t1, t2, d_min, d_max):
+        self.t1 = t1
+        self.t2 = t2
+        self.d_min = d_min
+        self.d_max = d_max
         self.time_span = t2-t1
 
     def __str__(self):
-        return '(%.04f, %.04f, %.04f)'%(self.t1, self.t2, self.distance)
+        return '(%.04f, %.04f, %.04f)'%(self.t1, self.t2, self.d_min, self.d_max)
 
     def __repr__(self):
-        return '(%.04f, %.04f, %.04f)'%(self.t1, self.t2, self.distance)
+        return '(%.04f, %.04f, %.04f)'%(self.t1, self.t2, self.d_min, self.d_max)
 
     def __iter__(self):
-        return [self.t1, self.t2, self.distance].__iter__()
+        return [self.t1, self.t2, self.d_min, self.d_max].__iter__()
 
 
 class FramesMatches(list):
 
     def __init__(self, lst):
 
-        list.__init__(self, sorted(lst, key=lambda e: e.distance))
+        list.__init__(self, sorted(lst, key=lambda e: e.d_max))
 
     def best(self, n=1, percent=None):
         if percent is not None:
@@ -166,7 +187,7 @@ class FramesMatches(list):
                         t3t['rejected'] = True
         
             # Store all the good matches (t2,t)
-            matching_frames += [(t1, t, F[t1][t]['min']) for t1 in F
+            matching_frames += [(t1, t, F[t1][t]['min'], F[t1][t]['max']) for t1 in F
                                 if (t1!=t) and not F[t1][t]['rejected']]
                        
         return FramesMatches([FramesMatch(*e) for e in matching_frames])
@@ -194,8 +215,8 @@ class FramesMatches(list):
 
         
         dict_starts = defaultdict(lambda : [])
-        for (start, end, distance) in self:
-            dict_starts[start].append([end, distance])
+        for (start, end, d_min, d_max) in self:
+            dict_starts[start].append([end, d_min, d_max])
 
         starts_ends = sorted(dict_starts.items(), key = lambda k: k[0])
         
@@ -206,19 +227,21 @@ class FramesMatches(list):
             if start < min_start:
                 continue
 
-            ends = [end for (end, distance) in ends_distances]
-            great_matches = [end for (end,dist) in ends_distances
-                            if dist<match_thr]
+            ends = [end for (end, d_min, d_max) in ends_distances]
+            great_matches = [(end,d_min, d_max)
+                             for (end,d_min, d_max) in ends_distances
+                             if d_max<match_thr]
             
-            great_long_matches = [end for end in great_matches
+            great_long_matches = [(end,d_min, d_max)
+                                  for (end,d_min, d_max) in great_matches
                                   if (end-start)>min_time_span]
             
             
             if (great_long_matches == []):
                 continue # No GIF can be made starting at this time
             
-            poor_matches = set([end for (end,dist) in ends_distances
-                            if dist>nomatch_thr])
+            poor_matches = set([end for (end,d_min, d_max) in ends_distances
+                            if d_min>nomatch_thr])
             short_matches = [end for end in ends
                              if (end-start)<=0.6]
             
@@ -226,12 +249,12 @@ class FramesMatches(list):
                 continue
     
     
-            end = max(great_long_matches)
-            result.append(FramesMatch(start, end, match_thr))
+            end = max([end for (end, d_min, d_max) in great_long_matches])
+            end, d_min, d_max = [e for e in great_long_matches if e[0]==end][0]
+            result.append(FramesMatch(start, end, d_min, d_max))
             min_start = start + time_distance
 
         return FramesMatches( result )
-
 
 
     def write_gifs(self, clip, gif_dir):
@@ -239,7 +262,7 @@ class FramesMatches(list):
 
         """
 
-        for (start, end, _) in self: 
+        for (start, end, _, _) in self: 
             name = "%s/%08d_%08d.gif"%(gif_dir, 100*start, 100*end)
             clip.subclip(start, end).write_gif(name, verbose=False)
 
