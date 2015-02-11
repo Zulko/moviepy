@@ -150,7 +150,7 @@ class FramesMatches(list):
             F_norm_sq = dot_product(flat_frame, flat_frame)
             F_norm = np.sqrt(F_norm_sq)
             
-            for t2 in F.keys():
+            for t2 in list(F.keys()):
                 # forget old frames, add 't' to the others frames
                 # check for early rejections based on differing norms
                 if (t-t2) > max_d:
