@@ -68,7 +68,7 @@ class TestSequenceFunctions(unittest.TestCase):
         myTime = time.time() - start
         self.assertLess(myTime, 0.0001)
         file = sys.stdout.read()
-        self.assertEqual(file, "")
+        self.assertEqual(str(file), "")
     
     def test_6(self):
         '''
