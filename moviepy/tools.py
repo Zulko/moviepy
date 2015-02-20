@@ -39,15 +39,16 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
         popen_params["creationflags"] = 0x08000000
 
     
-    with sp.Popen(cmd, **popen_params) as proc:
-        out, err = proc.communicate() # proc.wait()
-        proc.stderr.close()
+    proc = sp.Popen(cmd, **popen_params)
+    out, err = proc.communicate() # proc.wait()
+    proc.stderr.close()
 
-        if proc.returncode:
-            verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
-            raise IOError(err.decode('utf8'))
-        else:
-            verbose_print(verbose, "\n... command successful.\n")
+    if proc.returncode:
+        verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
+        raise IOError(err.decode('utf8'))
+    else:
+        verbose_print(verbose, "\n... command successful.\n")
+    #proc.close()
 
 
 def is_string(obj):
@@ -152,7 +153,7 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
 def find_extension(codec):
-    for ext,infos in extensions_dict.items():
+    for ext, infos in extensions_dict.items():
         if ('codec' in infos) and codec in infos['codec']:
             return ext
     raise ValueError
