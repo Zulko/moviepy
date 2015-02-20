@@ -21,6 +21,8 @@ def concatenate_videoclips(clips, method="chain", transition=None,
       not of the same size of anything. If none of the clips have masks the
       resulting clip has no mask, else the mask is a concatenation of masks
       (using completely opaque for clips that don't have masks, obviously).
+      If you have clips of different size and you want to write directly the
+      result of the concatenation to a file, use the method "compose" instead.
 
     - method="compose", if the clips do not have the same
       resolution, the final resolution will be such that no clip has
