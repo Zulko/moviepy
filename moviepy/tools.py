@@ -153,7 +153,7 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
 def find_extension(codec):
-    for ext,infos in extensions_dict.items():
+    for ext, infos in extensions_dict.items():
         if ('codec' in infos) and codec in infos['codec']:
             return ext
     raise ValueError

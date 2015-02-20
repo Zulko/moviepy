@@ -8,7 +8,7 @@ class TestSequenceFunctions(unittest.TestCase):
         pass
 
     def test_1(self):
-        '''Test for find_extension function'''
+        '''Test for find_extension function,'''
         lefts = ['libx264', 'libmpeg4', 'libtheora', 'libvpx']
         rights = ['mp4', 'mp4', 'ogv', 'webm']
         for i in range(len(lefts)):
@@ -56,6 +56,8 @@ class TestSequenceFunctions(unittest.TestCase):
         message = "{0} resulted in {1}, but {2} was expected"\
         .format(b'hello bytes',left, right)
         self.assertEqual(left, right, msg = message)
+    
+    def test_5(self)
     
 if __name__ == '__main__':
     unittest.main(verbosity = 3)
