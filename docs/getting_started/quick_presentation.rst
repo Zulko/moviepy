@@ -18,7 +18,7 @@ Here are a few reasons why you may want to edit videos in Python:
 
 And here are a few uses for which MoviePy is NOT the best solution:
 
-- You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use OpenCV or SimpleCV, these are libraries that specialize in these tasks.
+- You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use imageio_, OpenCV_ or SimpleCV, these are libraries that specialize in these tasks.
 - You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call ``ffmpeg`` (or ``avconv`` or ``mencoder``...) it will be faster more memory-efficient than going through MoviePy.
 
 
@@ -31,7 +31,7 @@ MoviePy has been developed with the following goals in mind:
 - **Flexible**. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.
 - **Portable**. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.
 
-Now for the main limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), it cannot do 3D effects (by lack of a nice 3D library for Python) and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that).
+For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (>100), but this will be fixed in future versions.
 
 Example code
 ~~~~~~~~~~~~~~
@@ -79,6 +79,9 @@ A clip can be modified using one of moviepy's numerous effects (like in ``clip.r
 You will also find a few advanced goodies in ``moviepy.video.tools`` to track objects in a video, draw simple shapes and color gradients (very useful for masks), generate subtitles and end credits, etc. See :ref:`advancedtools` for a description of these.
 
 Finally, although MoviePy has no graphical user interface, there are many ways to preview a clip which allow you to fine-tune your scripts and be sure that everything is perfect when you render you video in high quality. See :ref:`efficient`.
+
+.. _imageio: http://imageio.github.io/
+.. _OpenCV: http://opencv.org/ 
 
 
 

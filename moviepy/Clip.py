@@ -385,17 +385,17 @@ class Clip:
                              "duration (%.02f)."%self.duration)
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
-        
+
         if (t_end is None) and (self.duration is not None):
         
             t_end = self.duration
         
-        elif t_end<0:
+        elif (t_end is not None) and (t_end<0):
         
             if self.duration is None:
         
-                print ("Error: subclip with negative times can only be"+
-                        "extracted from clips with a ``duration``")
+                print ("Error: subclip with negative times (here %s)"%(str((t_start, t_end)))
+                       +" can only be extracted from clips with a ``duration``")
         
             else:
         

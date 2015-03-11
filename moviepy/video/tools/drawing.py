@@ -109,7 +109,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     Examples
     ---------
     
-    >>> grad = colorGradient(blabla).astype('uint8')
+    >>> grad = color_gradient(blabla).astype('uint8')
     
     """
     
@@ -121,7 +121,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     if shape == 'bilinear':
         if vector is None:
             vector = np.array(p2) - np.array(p1)
-        m1,m2 = [ colorGradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
+        m1,m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
                            shape = 'linear', offset= offset)
                   for v in [vector,-vector]]
                   
@@ -216,7 +216,7 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     >>> # an image with all pixels with y<50 red, the others green
     >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
     >>> # An image splitted along an arbitrary line (see below) 
-    >>> colorSplit(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
+    >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
         
     """
     

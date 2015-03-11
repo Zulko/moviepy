@@ -50,7 +50,9 @@ class ImageSequenceClip(VideoClip):
                  ismask=False, load_images=False):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
-
+        
+        if (fps is None) and (duration is None):
+            raise ValueError("Please provide either 'fps' or 'durations'.")
         VideoClip.__init__(self, ismask=ismask)
 
         # Parse the data
@@ -90,6 +92,7 @@ class ImageSequenceClip(VideoClip):
 
             self.lastindex = None
             self.lastimage = None
+            print "lol"
 
             def make_frame(t):
             
@@ -101,7 +104,7 @@ class ImageSequenceClip(VideoClip):
                 
                 return self.lastimage
 
-            if with_mask and (make_frame(0).shape[2]==4):
+            if with_mask and (imread(self.sequence[0]).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
 
@@ -109,7 +112,8 @@ class ImageSequenceClip(VideoClip):
             
                     index = find_image_index(t)
                     if index != self.lastindex:
-                        self.mask.lastimage = imread(self.sequence[index])[:,:,3]
+                        frame = imread(self.sequence[index])[:,:,3]
+                        self.mask.lastimage = frame.astype(float)/255
                     self.mask.lastindex = index
 
                     return self.mask.lastimage
@@ -123,7 +127,18 @@ class ImageSequenceClip(VideoClip):
             def make_frame(t):
             
                 index = find_image_index(t)
-                return self.sequence[index]
+                return self.sequence[index][:,:,:3]
+
+            if with_mask and (self.sequence[0].shape[2]==4):
+
+                self.mask = VideoClip(ismask=True)
+
+                def mask_make_frame(t):
+                    index = find_image_index(t)
+                    return 1.0*self.sequence[index][:,:,3]/255
+
+                self.mask.make_frame = mask_make_frame
+                self.mask.size = mask_make_frame(0).shape[:2][::-1]
         
             
         self.make_frame = make_frame

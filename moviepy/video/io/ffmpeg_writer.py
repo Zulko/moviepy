@@ -164,11 +164,16 @@ class FFMPEG_VideoWriter:
                   "video codec."
                   )%(self.codec, self.ext)
 
-            elif  "encoder setup failed":
+            elif  "encoder setup failed" in ffmpeg_error:
 
                 error = error+("\n\nThe video export "
                   "failed, possibly because the bitrate you specified "
                   "was too high or too low for the video codec.")
+
+            elif "Invalid encoder type" in ffmpeg_error:
+
+                error = error + ("\n\nThe video export failed because the codec "
+                  "or file extension you provided is not a video")
 
 
             raise IOError(error)

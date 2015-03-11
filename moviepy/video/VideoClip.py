@@ -14,7 +14,7 @@ from copy import copy
 from tqdm import tqdm
 import numpy as np
 
-from imageio import imread
+from imageio import imread, imsave
 
 import moviepy.audio.io as aio
 from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
@@ -138,15 +138,15 @@ class VideoClip(Clip):
 
         """
 
-        im = self.get_frame(t)
-        if im.dtype != "uint8":
-            im = im.astype("uint8")
+        im = self.get_frame(t) 
 
         if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
+        else:
+            im = im.astype("uint8")
 
-        ffmpeg_write_image(filename, im)
+        imsave(filename, im)
 
 
     @requires_duration
@@ -394,7 +394,7 @@ class VideoClip(Clip):
         filenames = []
         total = int(self.duration / fps) + 1
         for i, t in tqdm(enumerate(tt), total=total):
-            name = nameformat % (i + 1)
+            name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
 
@@ -787,6 +787,35 @@ class VideoClip(Clip):
         self.audio = self.audio.fx(fun, *a, **k)
 
 
+
+class DataVideoClip(VideoClip):
+    """
+    Class of video clips whose successive frames are functions
+    of successive datasets
+
+    Parameters
+    -----------
+    data
+      A liste of datasets, each dataset being used for one frame of the clip
+
+    data_to_frame
+      A function d -> video frame, where d is one element of the list `data`
+
+    fps
+      Number of frames per second in the animation
+
+    Examples
+    ---------
+    """
+
+    def __init__(self, data, data_to_frame, fps, ismask=False,
+                 has_constant_size=True):
+        self.data = data
+        self.data_to_frame = data_to_frame
+        self.fps=fps
+        make_frame = lambda t: self.data_to_frame( self.data[int(self.fps*t)])
+        VideoClip.__init__(self, make_frame, ismask=ismask,
+               duration=1.0*len(data)/fps, has_constant_size=has_constant_size)
 
 
 

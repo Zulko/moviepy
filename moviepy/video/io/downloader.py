@@ -24,7 +24,11 @@ def download_webfile(url, filename, overwrite=False):
     if '.' in url:
         urlretrieve(url, filename)
     else:
-        subprocess_call(['youtube-dl', url, '-o', filename])
-
+        try:
+            subprocess_call(['youtube-dl', url, '-o', filename])
+        except OSError as e:
+            raise OSError(e.message + '\n A possible reason is that youtube-dl'
+                ' is not installed on your computer. Install it with '
+                ' "pip install youtube-dl"')
 
 
