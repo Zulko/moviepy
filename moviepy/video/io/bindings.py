@@ -21,3 +21,5 @@ def mplfig_to_npimage(fig):
     buf = fig.canvas.tostring_rgb()
     image= +np.fromstring(buf,dtype=np.uint8)
     return image.reshape(h,w,3)
+
+

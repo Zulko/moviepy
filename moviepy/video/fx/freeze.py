@@ -17,12 +17,11 @@ def freeze(clip, t=0, freeze_duration=None, total_duration=None,
 
     if t=='end':
         t = clip.duration - padding_end
-    print t
+
     if freeze_duration is None:
         freeze_duration = total_duration - clip.duration
 
     before = [clip.subclip(0,t)] if (t!=0) else []
     freeze = [clip.to_ImageClip(t).set_duration(freeze_duration)]
     after = [clip.subclip(t)] if (t !=clip.duration) else []
-    #print after[0].duration, freeze[0].duration
     return concatenate_videoclips(before+freeze+after)

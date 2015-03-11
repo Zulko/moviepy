@@ -45,6 +45,7 @@ class FramesMatch:
         self.time_span = t2-t1
 
     def __str__(self):
+
         return '(%.04f, %.04f, %.04f, %.04f)'%(
                 self.t1, self.t2, self.d_min, self.d_max)
 

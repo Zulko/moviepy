@@ -92,7 +92,6 @@ class ImageSequenceClip(VideoClip):
 
             self.lastindex = None
             self.lastimage = None
-            print "lol"
 
             def make_frame(t):
             
