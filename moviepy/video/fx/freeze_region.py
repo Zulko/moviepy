@@ -35,9 +35,9 @@ def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
 
         x1, y1, x2, y2 = region
         freeze = (clip.fx(crop, *region)
-                      .set_position((x1,y1))
                       .to_ImageClip(t=t)
-                      .set_duration(clip.duration))
+                      .set_duration(clip.duration)
+                      .set_position((x1,y1)))
         return CompositeVideoClip([clip, freeze])
     
     elif outside_region is not None:
