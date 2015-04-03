@@ -465,6 +465,8 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
+        
+        nframes = int(self.duration*fps)+1
 
         def generator():
         
@@ -476,6 +478,8 @@ class Clip:
         
                     frame = frame.astype(dtype)
 
+                self.iterframe_callback(t*fps, frame=frame, nframes=nframes)
+
                 if with_times:
         
                     yield t, frame
@@ -485,8 +489,24 @@ class Clip:
                     yield frame
         
         if progress_bar:
-        
-            nframes = int(self.duration*fps)+1
+            
             return tqdm(generator(), total=nframes)
 
         return generator()
+
+    def iterframe_callback(self, iframe, frame=None, nframes=None):
+        """
+        Callback called before each frame is yield
+
+        Parameters
+        -----------
+
+        iframe:
+            index of the frame being processed
+        frame:
+            the extracted frame from the clip
+        nframes:
+            total number of frames
+
+        """
+        pass
