@@ -77,13 +77,32 @@ class AudioClip(Clip):
         def generator():
             for i in range(nchunks):
                 tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-                yield self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
+                audioFrame = self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
                                          buffersize=chunksize)
+                self.iterchunk_callback(i, frame=audioFrame, nframes=nchunks)
+                yield audioFrame
 
         if progress_bar:
             return tqdm(generator(), total=nchunks)
         else:
             return generator()
+
+    def iterchunk_callback(self, ichunk, frame=None, nframes=None):
+        """
+        Callback called before each frame is yield
+
+        Parameters
+        -----------
+
+        ichunk:
+            index of the chunk being processed
+        frame:
+            set to none for now
+        nframes:
+            total number of audio chunks
+
+        """
+        pass
 
     @requires_duration
     def to_soundarray(self,tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
