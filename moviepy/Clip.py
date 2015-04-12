@@ -54,6 +54,7 @@ class Clip:
         self.memoize = False
         self.memoized_t = None
         self.memoize_frame  = None
+        self.iterframe_callback = None
 
 
 
@@ -478,7 +479,8 @@ class Clip:
         
                     frame = frame.astype(dtype)
 
-                self.iterframe_callback(t*fps, frame=frame, nframes=nframes)
+                if self.iterframe_callback is not None :
+                    self.iterframe_callback(t*fps, frame=frame, nframes=nframes)
 
                 if with_times:
         
@@ -493,20 +495,3 @@ class Clip:
             return tqdm(generator(), total=nframes)
 
         return generator()
-
-    def iterframe_callback(self, iframe, frame=None, nframes=None):
-        """
-        Callback called before each frame is yield
-
-        Parameters
-        -----------
-
-        iframe:
-            index of the frame being processed
-        frame:
-            the extracted frame from the clip
-        nframes:
-            total number of frames
-
-        """
-        pass
