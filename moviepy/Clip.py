@@ -479,9 +479,6 @@ class Clip:
         
                     frame = frame.astype(dtype)
 
-                if self.iterframe_callback is not None :
-                    self.iterframe_callback(t*fps, frame=frame, nframes=nframes)
-
                 if with_times:
         
                     yield t, frame
@@ -489,9 +486,24 @@ class Clip:
                 else:
         
                     yield frame
+
+        def callback_generator(iterable, total):
+            
+            n = 0
+
+            for obj in iterable:
+
+                yield obj
+
+                n += 1
+
+                if self.iterframe_callback is not None:
+
+                    self.iterframe_callback(n, frame=obj, nframes=total)
+
         
         if progress_bar:
             
-            return tqdm(generator(), total=nframes)
+            return tqdm(callback_generator(generator(), total=nframes), total=nframes)
 
-        return generator()
+        return callback_generator(generator(), total=nframes)

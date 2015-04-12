@@ -46,7 +46,7 @@ class AudioClip(Clip):
         Clip.__init__(self)
 
         self.iterchunk_callback = None
-        
+
         if make_frame is not None:
             self.make_frame = make_frame
             frame0 = self.get_frame(0)
@@ -83,15 +83,29 @@ class AudioClip(Clip):
                 audioFrame = self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
                                          buffersize=chunksize)
 
-                if self.iterchunk_callback is not None:
-                    self.iterchunk_callback(i, frame=audioFrame, nframes=nchunks)
-
                 yield audioFrame
 
+        def callback_generator(iterable, total):
+
+            n = 0
+
+            for obj in iterable:
+
+                yield obj
+
+                n += 1
+
+                if self.iterchunk_callback is not None:
+
+                    self.iterchunk_callback(n, frame=obj, nframes=total)
+
         if progress_bar:
-            return tqdm(generator(), total=nchunks)
+
+            return tqdm(callback_generator(generator(), total=nchunks), total=nchunks)
+
         else:
-            return generator()
+            
+            return callback_generator(generator(), total=nchunks)
 
     @requires_duration
     def to_soundarray(self,tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
