@@ -285,7 +285,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
             s = list(map(int, line[match.start():match.end()-1].split('x')))
             result['video_size'] = s
         except:
-            raise (("MoviePy error: failed to read video dimensions in file %s.\n"
+            raise IOError(("MoviePy error: failed to read video dimensions in file %s.\n"
                            "Here are the file infos returned by ffmpeg:\n\n%s")%(
                               filename, infos))
 
