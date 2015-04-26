@@ -42,7 +42,7 @@ templates = {"audio":("<audio controls>"
 def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
                center=True, **html_kwargs):
     """ Returns HTML5 code embedding the clip
-    
+
     clip
       Either a file name, or a clip to preview.
       Either an image, a sound or a video. Clips will actually be
@@ -52,10 +52,10 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     filetype
       One of 'video','image','audio'. If None is given, it is determined
       based on the extension of ``filename``, but this can bug.
-    
+
     rd_kwargs
       keyword arguments for the rendering, like {'fps':15, 'bitrate':'50k'}
-    
+
 
     **html_kwargs
       Allow you to give some options, like width=260, autoplay=True,
@@ -78,8 +78,8 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     >>> clip.save_frame("first_frame.jpeg")
     >>> mpy.ipython_display("first_frame.jpeg")
 
-    """  
-    
+    """
+
     if rd_kwargs is None:
         rd_kwargs = {}
 
@@ -105,7 +105,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
 
         return html_embed(filename, maxduration=maxduration, rd_kwargs=rd_kwargs,
                            center=center, **html_kwargs)
-    
+
     filename = clip
     options = " ".join(["%s='%s'"%(str(k), str(v)) for k,v in html_kwargs.items()])
     name, ext = os.path.splitext(filename)
@@ -121,19 +121,19 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
             raise ValueError("No file type is known for the provided file. Please provide "
                              "argument `filetype` (one of 'image', 'video', 'sound') to the "
                              "ipython display function.")
-    
-    
+
+
     if filetype== 'video':
         # The next lines set the HTML5-cvompatible extension and check that the
         # extension is HTML5-valid
         exts_htmltype = {'mp4': 'mp4', 'webm':'webm', 'ogv':'ogg'}
-        allowed_exts = " ".join(exts_htmltype.keys()) 
+        allowed_exts = " ".join(exts_htmltype.keys())
         try:
             ext = exts_htmltype[ext]
         except:
             raise ValueError("This video extension cannot be displayed in the "
                    "IPython Notebook. Allowed extensions: "+allowed_exts)
-    
+
     if filetype in ['audio', 'video']:
 
         duration = ffmpeg_parse_infos(filename)['duration']
@@ -141,9 +141,10 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
             raise ValueError("The duration of video %s (%.1f) exceeds the 'max_duration' "%(filename, duration)+
                              "attribute. You can increase 'max_duration', "
                              "but note that embedding large videos may take all the memory away !")
-            
+
     with open(filename, "rb") as f:
-        data= b64encode(f.read())
+        data = b64encode(f.read()).decode("utf-8")
+
 
     template = templates[filetype]
 
@@ -176,11 +177,11 @@ def ipython_display(clip, filetype=None, maxduration=60, t=None, fps=None,
 
     fps
       Enables to specify an fps, as required for clips whose fps is unknown.
-    
+
     **kwargs:
       Allow you to give some options, like width=260, etc. When editing
       looping gifs, a good choice is loop=1, autoplay=1.
-    
+
     Remarks: If your browser doesn't support HTML5, this should warn you.
     If nothing is displayed, maybe your file or filename is wrong.
     Important: The media will be physically embedded in the notebook.
@@ -202,13 +203,13 @@ def ipython_display(clip, filetype=None, maxduration=60, t=None, fps=None,
     >>> clip.save_frame("first_frame.jpeg")
     >>> mpy.ipython_display("first_frame.jpeg")
     """
-        
+
     if not ipython_available:
         raise ImportError("Only works inside an IPython Notebook")
 
     if rd_kwargs is None:
         rd_kwargs = {}
-        
+
     if fps is not None:
         rd_kwargs['fps'] = fps
 
