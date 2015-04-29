@@ -106,14 +106,16 @@ class ImageSequenceClip(VideoClip):
             if with_mask and (imread(self.sequence[0]).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
+                self.mask.lastindex = None
+                self.mask.lastimage = None
 
                 def mask_make_frame(t):
             
                     index = find_image_index(t)
-                    if index != self.lastindex:
+                    if index != self.mask.lastindex:
                         frame = imread(self.sequence[index])[:,:,3]
                         self.mask.lastimage = frame.astype(float)/255
-                    self.mask.lastindex = index
+                        self.mask.lastindex = index
 
                     return self.mask.lastimage
 
