@@ -40,7 +40,6 @@ from ..decorators import (apply_to_mask,
                           convert_masks_to_RGB,
                           use_clip_fps_by_default)
 
-import os
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
