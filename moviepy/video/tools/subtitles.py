@@ -158,7 +158,7 @@ def file_to_subtitles(filename):
         times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
         if times != []:
             current_times = map(cvsecs, times)
-        elif line == '\n':
+        elif line.strip() == '':
             times_texts.append((current_times, current_text.strip('\n')))
             current_times, current_text = None, ""
         elif current_times is not None:
