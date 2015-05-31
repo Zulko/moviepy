@@ -237,7 +237,13 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
     proc = sp.Popen(cmd, **popen_params)
 
     proc.stdout.readline()
-    proc.terminate()
+    # Terminating the process on windows will cause you to 
+    # get a Permission denied error. You can however safely 
+    # ignore that error and continue as normal.
+    try:
+        proc.terminate()
+    except:
+        pass
     infos = proc.stderr.read().decode('utf8')
     del proc
 
