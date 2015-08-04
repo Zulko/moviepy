@@ -270,7 +270,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
                               filename, infos))
 
     # get the output line that speaks about video
-    lines_video = [l for l in lines if ' Video: ' in l]
+    lines_video = [l for l in lines if ' Video: ' in l and re.search('\d+x\d+', l)]
 
     result['video_found'] = ( lines_video != [] )
 
