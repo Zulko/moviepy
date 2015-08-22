@@ -1,5 +1,5 @@
 """
-This module contains different fonctions for tracking objects in videos,
+This module contains different functions for tracking objects in videos,
 manually or automatically. The tracking functions return results under
 the form:  ``( txy, (fx,fy) )`` where txy is of the form [(ti, xi, yi)...]
 and (fx(t),fy(t)) give the position of the track for all times t (if the
