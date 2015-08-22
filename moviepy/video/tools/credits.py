@@ -1,5 +1,5 @@
 """
-This module contains different fonctions to make end and opening
+This module contains different functions to make end and opening
 credits, even though it is difficult to fill everyone needs in this
 matter.
 """
