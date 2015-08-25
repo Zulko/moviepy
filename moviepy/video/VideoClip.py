@@ -11,6 +11,7 @@ import multiprocessing
 import tempfile
 from copy import copy
 from tqdm import tqdm
+import re
 
 
 import numpy as np
@@ -215,8 +216,8 @@ class VideoClip(Clip):
                         raise ValueError('audio_codec for file'
                                           '%d unkown !'%filename)
 
-                temp_audiofile = (name+Clip._TEMP_FILES_PREFIX +
-                            "to_videofile_SOUND.%s"%audio_ext)
+                audiofile = (re.sub('[^-a-zA-Z0-9_.() ]+', '', name) + Clip._TEMP_FILES_PREFIX +
+                             "wvf_snd.%s" % audio_ext)
 
             make_audio = ( (not os.path.exists(temp_audiofile))
                             or rewrite_audio)
