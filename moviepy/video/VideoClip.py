@@ -5,7 +5,7 @@ main subclasses:
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
 
-import os
+import os, re
 import subprocess as sp
 import multiprocessing
 import tempfile
@@ -314,7 +314,7 @@ class VideoClip(Clip):
                             "You should report this. In the meantime, you can specify a "
                             "temp_audiofile with the right extension in write_videofile.")
 
-                audiofile = (name + Clip._TEMP_FILES_PREFIX +
+                audiofile = (re.sub('[^a-zA-Z0-9]+', '', name) + Clip._TEMP_FILES_PREFIX +
                              "wvf_snd.%s" % audio_ext)
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
