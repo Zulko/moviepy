@@ -658,7 +658,7 @@ class VideoClip(Clip):
         """ Attach an AudioClip to the VideoClip.
 
         Returns a copy of the VideoClip instance, with the `audio`
-        attribute set to ``audio``, hich must be an AudioClip instance.
+        attribute set to ``audio``, which must be an AudioClip instance.
         """
         self.audio = audioclip
 
