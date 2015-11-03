@@ -297,7 +297,13 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
-            tbr = float(line[match.start():match.end()].split(' ')[1])
+
+            s_tbr = line[match.start():match.end()].split(' ')[1]
+            if "k" in s_tbr:
+                tbr = float(s_tbr.replace("k", "")) * 1000
+            else:
+                tbr = float(s_tbr)
+
             result['video_fps'] = tbr
 
         except:
