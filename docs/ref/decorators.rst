@@ -7,4 +7,5 @@ These decorators are implemented to ease the writing of methods and effects in M
 
 .. automodule:: moviepy.decorators
    :members:
+   :inherited-members:
    :show-inheritance:
