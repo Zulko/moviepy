@@ -604,7 +604,7 @@ class VideoClip(Clip):
           Size (width, height) in pixels of the final clip.
           By default it will be the size of the current clip.
 
-        bg_color
+        color
           Background color of the final clip ([R,G,B]).
 
         pos
