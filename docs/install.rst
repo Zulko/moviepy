@@ -21,7 +21,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
-MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in file ``config_defaults.py``.
+MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the FFMPEG_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
 
 Other optional but useful dependencies
@@ -32,6 +32,8 @@ ImageMagick_ is not strictly required, only if you want to write texts. It can a
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
     
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+
+You can also set the IMAGEMAGICK_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
 PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
