@@ -7,8 +7,14 @@ try:
     import numpy as np
     def resizer (pic, newsize):
         lx, ly = int(newsize[0]), int(newsize[1])
-        return  cv2.resize(+pic.astype('uint8'), (lx, ly),
-                         interpolation=cv2.INTER_AREA)
+        if lx > pic.shape[1] or ly > pic.shape[0]:
+            # For upsizing use linear for good quality & decent speed
+            interpolation = cv2.INTER_LINEAR
+        else:
+            # For dowsizing use area to prevent aliasing
+            interpolation = cv2.INTER_AREA
+        return cv2.resize(+pic.astype('uint8'), (lx, ly),
+                          interpolation=interpolation)
 
     resizer.origin = "cv2"
                 
