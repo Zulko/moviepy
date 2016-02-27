@@ -11,7 +11,7 @@ def PIL_to_npimage(im):
     return np.array(im)
     #w,h = im.size
     #d = (4 if im.mode=="RGBA" else 3)
-    #return +np.frombuffer(im.tobytes(), dtype='uint8').reshape((h,w,d))
+    #return np.frombuffer(im.tobytes(), dtype='uint8').reshape((h,w,d))
 
 
 def mplfig_to_npimage(fig):
@@ -19,7 +19,7 @@ def mplfig_to_npimage(fig):
     fig.canvas.draw() # update/draw the elements
     w,h = fig.canvas.get_width_height()
     buf = fig.canvas.tostring_rgb()
-    image= +np.fromstring(buf,dtype=np.uint8)
+    image = np.fromstring(buf,dtype=np.uint8)
     return image.reshape(h,w,3)
 
 
