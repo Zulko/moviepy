@@ -6,18 +6,11 @@ clip = vfx.resize(some_clip, width=400)
 clip = vfx.mirror_x(some_clip)
 """
 
+import pkgutil
 import os
 
-
-_directory = os.path.dirname(
-	            os.path.dirname(
-	            	os.path.realpath(__file__)))
-
-_files = os.listdir(_directory)
-_fx_list = [_f for _f in _files if ( _f.endswith('.py') and
-	                            not _f.startswith('_'))]
-
-__all__ = [_c[:-3] for _c in _fx_list]
+__all__ = [name for _, name, _ in pkgutil.iter_modules(
+    [os.path.join(__path__[0], "..")]) if name != "all"]
 
 for _name in __all__:
     exec("from ..%s import %s"%(_name,_name))
