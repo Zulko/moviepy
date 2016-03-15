@@ -7,10 +7,10 @@ clip = vfx.mirror_x(some_clip)
 """
 
 import pkgutil
-import os
+import moviepy.video.fx as fx
 
 __all__ = [name for _, name, _ in pkgutil.iter_modules(
-    [os.path.join(__path__[0], "..")]) if name != "all"]
+    fx.__path__) if name != "all"]
 
-for _name in __all__:
-    exec("from ..%s import %s"%(_name,_name))
+for name in __all__:
+    exec("from ..%s import %s" % (name, name))
