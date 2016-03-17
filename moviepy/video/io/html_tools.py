@@ -143,7 +143,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
                              "but note that embedding large videos may take all the memory away !")
             
     with open(filename, "rb") as f:
-        data= b64encode(f.read())
+        data= b64encode(f.read()).decode("utf-8")
 
     template = templates[filetype]
 
