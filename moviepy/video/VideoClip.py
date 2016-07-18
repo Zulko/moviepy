@@ -1202,7 +1202,7 @@ class TextClip(ImageClip):
         lines = result.splitlines()
 
         if arg == 'font':
-            return [l[8:] for l in lines if l.startswith("  Font:")]
+            return [l.decode('UTF-8')[8:] for l in lines if l.startswith(b"  Font:")]
         elif arg == 'color':
             return [l.split(" ")[1] for l in lines[2:]]
 
