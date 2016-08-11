@@ -165,10 +165,11 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if hasattr(self, 'proc'):
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
+            self.proc.wait(10)
             del self.proc
 
     def __del__(self):
