@@ -40,6 +40,9 @@ from ..decorators import (apply_to_mask,
                           convert_masks_to_RGB,
                           use_clip_fps_by_default)
 
+from scipy import sparse
+import numpy as np
+
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
@@ -913,7 +916,6 @@ class ImageClip(VideoClip):
 
     """
 
-
     def __init__(self, img, ismask=False, transparent=True,
                  fromalpha=False, duration=None):
 
@@ -922,26 +924,66 @@ class ImageClip(VideoClip):
         if isinstance(img, str):
             img = imread(img)
 
+        size = None
+        do = False
+        color = False
+
+        if isinstance(img, tuple):
+            color = tuple(img)
+            size = color[:2][::-1]
+            img = sparse.csr_matrix((np.prod(color), 1))
+            self.mask = ImageClip(np.zeros(color[:2], dtype=np.uint8), ismask=True)
+
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
             if img.shape[2] == 4:
+
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
                 elif ismask:
-                    img = 1.0 * img[:, :, 0] / 255
+                    img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
+                    do = True
                 elif transparent:
                     self.mask = ImageClip(
-                        1.0 * img[:, :, 3] / 255, ismask=True)
-                    img = img[:, :, :3]
-            elif ismask:
-                img = 1.0 * img[:, :, 0] / 255
+                        img[:, :, 3], ismask=True)
+                    if img.sum() == 0:
+                        color = img.shape
+                        img = sparse.csr_matrix([img.ravel()], dtype=np.int8)
+                    else:
+                        img = img[:, :, :3]
 
+            elif img.shape[2] == 3 and img.sum() == 0:
+                color = img.shape
+                size = color[:2][::-1]
+                img = sparse.csr_matrix((img.shape[0], img.shape[1]*img.shape[2]), dtype=np.int8)
+
+            elif ismask:
+                img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
+                do = True
+
+        if ismask:
+            if img.sum() != img.shape[0]*img.shape[1] and not isinstance(img, sparse.csr_matrix):
+                do = True
+                if img.max() > 1:
+                  img = 1.0*sparse.csr_matrix(img)/255
+                else:
+                  img = sparse.csr_matrix(img)
+
+        if not size:
+            size = img.shape[:2][::-1] 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: img
-        self.size = img.shape[:2][::-1]
+        self.make_frame = lambda t: self.imgt(img, do, color)
+        self.size = size
         self.img = img
 
+    def imgt(self, img, do=False, color=False):
+        if do:
+          return img.toarray()
+        elif color:
+          return img.toarray().reshape(color)
+        else:
+          return img
 
     def fl(self, fl, apply_to=[], keep_duration=True):
         """ General transformation filter.
@@ -1033,10 +1075,14 @@ class ColorClip(ImageClip):
     """
 
 
-    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
+    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None, transparent=False):
         w, h = size
         shape = (h, w) if np.isscalar(col) else (h, w, len(col))
-        ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
+        if transparent:
+            array = shape
+        else:
+            array = np.tile(col, w * h).reshape(shape)
+        ImageClip.__init__(self, array,
                            ismask=ismask, duration=duration)
 
 
