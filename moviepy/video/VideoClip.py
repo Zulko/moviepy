@@ -925,7 +925,6 @@ class ImageClip(VideoClip):
             img = imread(img)
 
         size = None
-        use_sparse = False
         reshape_size = False
 
         if isinstance(img, tuple):
@@ -941,8 +940,7 @@ class ImageClip(VideoClip):
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
                 elif ismask:
-                    img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
-                    use_sparse = True
+                    img = 1.0 * sparse.csr_matrix(img[:, :, 0]) / 255
                 elif transparent:
                     self.mask = ImageClip(
                         img[:, :, 3], ismask=True)
@@ -955,17 +953,15 @@ class ImageClip(VideoClip):
             elif img.shape[2] == 3 and img.sum() == 0:
                 reshape_size = img.shape
                 size = reshape_size[:2][::-1]
-                img = sparse.csr_matrix((img.shape[0], img.shape[1]*img.shape[2]), dtype=np.int8)
+                img = sparse.csr_matrix((img.shape[0], img.shape[1] * img.shape[2]), dtype=np.int8)
 
             elif ismask:
-                img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
-                use_sparse = True
+                img = 1.0 * sparse.csr_matrix(img[:, :, 0]) / 255
 
         if ismask:
             if img.sum() != img.shape[0]*img.shape[1] and not isinstance(img, sparse.csr_matrix):
-                use_sparse = True
                 if img.max() > 1:
-                  img = 1.0*sparse.csr_matrix(img)/255
+                  img = 1.0 * sparse.csr_matrix(img) / 255
                 else:
                   img = sparse.csr_matrix(img)
 
@@ -973,15 +969,16 @@ class ImageClip(VideoClip):
             size = img.shape[:2][::-1] 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: self.imgt(img, use_sparse, reshape_size)
+        self.make_frame = lambda t: self.generate_img(img, reshape_size)
         self.size = size
         self.img = img
 
-    def imgt(self, img, use_sparse=False, reshape_size=False):
-        if use_sparse:
-          return img.toarray()
-        elif reshape_size:
-          return img.toarray().reshape(reshape_size)
+    def generate_img(self, img, reshape_size=False):
+        if isinstance(img, sparse.csr_matrix):
+          if reshape_size:
+            return img.toarray().reshape(reshape_size)
+          else:
+            return img.toarray()
         else:
           return img
 
