@@ -925,14 +925,14 @@ class ImageClip(VideoClip):
             img = imread(img)
 
         size = None
-        do = False
-        color = False
+        use_sparse = False
+        reshape_size = False
 
         if isinstance(img, tuple):
-            color = tuple(img)
-            size = color[:2][::-1]
-            img = sparse.csr_matrix((np.prod(color), 1))
-            self.mask = ImageClip(np.zeros(color[:2], dtype=np.uint8), ismask=True)
+            reshape_size = tuple(img)
+            size = reshape_size[:2][::-1]
+            img = sparse.csr_matrix((np.prod(reshape_size), 1))
+            self.mask = ImageClip(np.zeros(reshape_size[:2], dtype=np.uint8), ismask=True)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
@@ -942,28 +942,28 @@ class ImageClip(VideoClip):
                     img = 1.0 * img[:, :, 3] / 255
                 elif ismask:
                     img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
-                    do = True
+                    use_sparse = True
                 elif transparent:
                     self.mask = ImageClip(
                         img[:, :, 3], ismask=True)
                     if img.sum() == 0:
-                        color = img.shape
+                        reshape_size = img.shape
                         img = sparse.csr_matrix([img.ravel()], dtype=np.int8)
                     else:
                         img = img[:, :, :3]
 
             elif img.shape[2] == 3 and img.sum() == 0:
-                color = img.shape
-                size = color[:2][::-1]
+                reshape_size = img.shape
+                size = reshape_size[:2][::-1]
                 img = sparse.csr_matrix((img.shape[0], img.shape[1]*img.shape[2]), dtype=np.int8)
 
             elif ismask:
                 img = 1.0*sparse.csr_matrix(img[:, :, 0])/255
-                do = True
+                use_sparse = True
 
         if ismask:
             if img.sum() != img.shape[0]*img.shape[1] and not isinstance(img, sparse.csr_matrix):
-                do = True
+                use_sparse = True
                 if img.max() > 1:
                   img = 1.0*sparse.csr_matrix(img)/255
                 else:
@@ -973,15 +973,15 @@ class ImageClip(VideoClip):
             size = img.shape[:2][::-1] 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: self.imgt(img, do, color)
+        self.make_frame = lambda t: self.imgt(img, use_sparse, reshape_size)
         self.size = size
         self.img = img
 
-    def imgt(self, img, do=False, color=False):
-        if do:
+    def imgt(self, img, use_sparse=False, reshape_size=False):
+        if use_sparse:
           return img.toarray()
-        elif color:
-          return img.toarray().reshape(color)
+        elif reshape_size:
+          return img.toarray().reshape(reshape_size)
         else:
           return img
 
