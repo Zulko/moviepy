@@ -56,11 +56,9 @@ class CompositeVideoClip(VideoClip):
             transparent = False
         else:
             transparent = (bg_color is None)
-
-        bg_transparent = False
+        
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
-            bg_transparent = True
 
         
         fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
@@ -79,7 +77,7 @@ class CompositeVideoClip(VideoClip):
             self.clips = clips[1:]
         else:
             self.clips = clips
-            self.bg = ColorClip(size, col=self.bg_color, transparent=bg_transparent)
+            self.bg = ColorClip(size, col=self.bg_color)
 
         
         
