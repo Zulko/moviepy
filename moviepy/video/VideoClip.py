@@ -929,6 +929,7 @@ class ImageClip(VideoClip):
 
         if isinstance(img, tuple):
             reshape_size = tuple(img)
+
             size = reshape_size[:2][::-1]
             img = sparse.csr_matrix((np.prod(reshape_size), 1))
             self.mask = ImageClip(np.zeros(reshape_size[:2], dtype=np.uint8), ismask=True)
@@ -945,8 +946,9 @@ class ImageClip(VideoClip):
                     self.mask = ImageClip(
                         img[:, :, 3], ismask=True)
                     if img.sum() == 0:
-                        reshape_size = img.shape
-                        img = sparse.csr_matrix([img.ravel()], dtype=np.int8)
+                        reshape_size = (img.shape[0], img.shape[1], 3)
+                        size = img.shape[:2][::-1]
+                        img = sparse.csr_matrix([img[:, :, :3].ravel()])
                     else:
                         img = img[:, :, :3]
 
@@ -965,8 +967,9 @@ class ImageClip(VideoClip):
                 else:
                   img = sparse.csr_matrix(img)
 
-        if not size:
-            size = img.shape[:2][::-1] 
+        if size is None:
+            size = img.shape[:2][::-1]
+
         # if the image was just a 2D mask, it should arrive here
         # unchanged
         self.make_frame = lambda t: self.generate_img(img, reshape_size)
