@@ -40,7 +40,8 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
 
     proc = sp.Popen(cmd, **popen_params)
 
-    out, err = proc.communicate() # proc.wait()
+    out, err = proc.communicate()
+    proc.wait()
     proc.stderr.close()
 
     if proc.returncode:
