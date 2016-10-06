@@ -239,7 +239,12 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
     proc.stdout.readline()
     proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
+    info_str = proc.stderr.read()
+    try:
+        infos = info_str.decode('utf8')
+    except UnicodeDecodeError:
+        infos = info_str.replace('\xd0', '').decode('utf8')
+
     del proc
 
     if print_infos:
