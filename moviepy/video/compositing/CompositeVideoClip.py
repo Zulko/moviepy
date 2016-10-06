@@ -46,7 +46,7 @@ class CompositeVideoClip(VideoClip):
     """
 
     def __init__(self, clips, size=None, bg_color=None, use_bgclip=False,
-                 ismask=False, no_mask_blit=False):
+                 ismask=False, use_mask_blit=True):
 
         if size is None:
             size = clips[0].size
@@ -107,7 +107,7 @@ class CompositeVideoClip(VideoClip):
 
             f = self.bg.get_frame(t)
             for c in self.playing_clips(t):
-                    if no_mask_blit:
+                    if not use_mask_blit:
                         c.mask = None
                     f = c.blit_on(f, t)
             return f
