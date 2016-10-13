@@ -40,7 +40,8 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
 
     proc = sp.Popen(cmd, **popen_params)
 
-    out, err = proc.communicate() # proc.wait()
+    out, err = proc.communicate()
+    proc.wait()
     proc.stderr.close()
 
     if proc.returncode:
@@ -146,7 +147,7 @@ extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4']},
                     'ogg':  {'type':'audio', 'codec':['libvorbis']},
                     'mp3':  {'type':'audio', 'codec':['libmp3lame']},
                     'wav':  {'type':'audio', 'codec':['pcm_s16le', 'pcm_s32le']},
-                    'm4a':  {'type':'audio', 'codec':['libfdk_aac']}
+                    'm4a':  {'type':'audio', 'codec':['libfdk_aac', 'aac']}
                   }
 
 for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
