@@ -595,7 +595,7 @@ class VideoClip(Clip):
                  col_opacity=None):
         """ Place the clip on a colored background.
 
-        Returns a clip made of the current clip overlaid on a color
+i        Returns a clip made of the current clip overlaid on a color
         clip of a possibly bigger size. Can serve to flatten transparent
         clips.
 
