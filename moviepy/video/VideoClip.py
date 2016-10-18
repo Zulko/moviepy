@@ -584,18 +584,12 @@ class VideoClip(Clip):
         if self.has_constant_size:
             mask = ColorClip(self.size, 1.0, ismask=True)
 
-            if self.end:
-                return self.set_mask(mask.set_start(self.start).set_end(self.end))
-            else:
-                return self.set_mask(mask.set_duration(self.duration))
+            return self.set_mask(mask.set_duration(self.duration))
 
         else:
             make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
             mask = VideoClip(ismask=True, make_frame=make_frame)
-            if self.end:
-                return self.set_mask(mask.set_start(self.start).set_end(self.end))
-            else:
-                return self.set_mask(mask.set_duration(self.duration))
+            return self.set_mask(mask.set_duration(self.duration))
 
     def on_color(self, size=None, color=(0, 0, 0), pos=None,
                  col_opacity=None):
