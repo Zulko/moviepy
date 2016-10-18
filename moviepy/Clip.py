@@ -263,7 +263,7 @@ class Clip:
         if self.start is None:
             if self.duration is not None:
                 self.start = max(0, t - newclip.duration)
-        else:
+        elif self.end:
             self.duration = self.end - self.start
 
 
