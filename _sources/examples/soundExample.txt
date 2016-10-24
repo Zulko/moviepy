@@ -7,21 +7,13 @@ An example of using MoviePy to assemble movie clips with sounds. Here are two sc
 
 .. raw:: html
 
-        <center>
-        <object><param name="movie"
-        value="http://www.youtube.com/v/gtyFuIoH7W0&hl=en_US&fs=1&rel=0">
-        </param><param name="allowFullScreen" value="true"></param><param
-        name="allowscriptaccess" value="always"></param><embed
-        src="http://www.youtube.com/v/gtyFuIoH7W0&hl=en_US&fs=1&rel=0"
-        type="application/x-shockwave-flash" allowscriptaccess="always"
-        allowfullscreen="true" width="550" height="450"></embed></object>
-        </center>
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;"><iframe src="https://youtube.com/embed/gtyFuIoH7W0&hl=en_US&fs=1&rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;"></iframe></div>
 
 Here is the code: ::
-    
+
     from moviepy import *
     import numpy as np
-    
+
     # LOAD MOVIE
 
     charade = VideoFileClip("./charadePhone.mp4",audio=True)
@@ -44,7 +36,7 @@ Here is the code: ::
     v1 = 2*v1/np.linalg.norm(v1)
     c1b = c1a- v1
     g1 = gradient(clip_left.size,c1a,c1b,col1=0,col2=1.0)
-    clip_left.mask = ImageClip(g1,ismask=True)             
+    clip_left.mask = ImageClip(g1,ismask=True)
 
 
 
@@ -60,8 +52,8 @@ Here is the code: ::
     c2b = c2a+v1
     g2 = gradient(clip_right.size,c2a,c2b,col1=0,col2=1.0)
     clip_right.mask = ImageClip(g2,ismask=True)
-    
-    
+
+
     # ASSEMBLE AND WRITE THE MOVIE
 
     cc = CompositeVideoClip(charade.size,
@@ -70,17 +62,17 @@ Here is the code: ::
 
     cc.to_videofile("biphone.avi")
 
- 
+
 A few remarks:
 
 - In this script we never explicitly consider the sound. MoviePy does all the cutting and the mixing automatically.
 - We do not load the whole movie but just a part of it (never load a 2h00 movie when you are going to use its sound, see the remark in :ref:`goodPractices`). Rather, we first extract the part of interest with ::
-      
+
       import moviepy.ffmpeg as ff
       t1 = 3050 #seconds
       t2 = 3095
       ff.extract_subclip("charade.mp4",t1,t2,"charadePhone.mp4")
-      
+
 - We use a nerdy and complicated way of cutting the clips with the ``gradient`` function (defined in :ref:`gradients`) but you could have done it with masks from images for instance.
 
 

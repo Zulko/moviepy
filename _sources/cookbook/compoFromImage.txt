@@ -6,15 +6,7 @@ So how do you do some complex compositing like this ?
 
 .. raw:: html
 
-        <center>
-        <object><param name="movie"
-        value="http://www.youtube.com/v/1hdgNxX-tas&hl=en_US&fs=1&rel=0">
-        </param><param name="allowFullScreen" value="true"></param><param
-        name="allowscriptaccess" value="always"></param><embed
-        src="http://www.youtube.com/v/1hdgNxX-tas&hl=en_US&fs=1&rel=0"
-        type="application/x-shockwave-flash" allowscriptaccess="always"
-        allowfullscreen="true" width="550" height="450"></embed></object>
-        </center>
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;"><iframe src="https://youtube.com/embed/1hdgNxX-tas&hl=en_US&fs=1&rel=0" frameborder="0" allowfullscreen style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;"></iframe></div>
 
 It takes a lot of bad taste and... the right tools !
 
@@ -23,7 +15,7 @@ So we first make a picture that indicates the regions where the clips will be. T
 .. figure:: motif.jpeg
 
 The next function finds the regions in the picture. For each region found it returns a mask that defines the region, and a tuple ``(x1,y1,x2,y2)`` defining a bounding rectangle giving the position of the region in the picture. ::
-    
+
     import scipy.ndimage as spim
     from pylab import *
 
@@ -35,9 +27,9 @@ The next function finds the regions in the picture. For each region found it ret
         the region. The resolution of maskClip is that of 'pic'
         if crop=True, else, it is the size of the region.
         render=True pops a picture rendering which region has
-        which number    
+        which number
         """
-        
+
         if len(pic.shape)>2:
             pic = pic[:,:,0]
         objects, num = spim.label(pic)
@@ -50,14 +42,14 @@ The next function finds the regions in the picture. For each region found it ret
         YYc = [ YY*c for c in mamasks]
         boxes = [ map(int,(xxc.min(),yyc.min(),xxc.max(),yyc.max()))
                   for xxc, yyc in zip(XXc, YYc)]
-        
+
         if crop:
-            masks = [ m[y1:y2,x1:x2] 
-                      for m,(x1,y1,x2,y2) in zip (masks,boxes)] 
+            masks = [ m[y1:y2,x1:x2]
+                      for m,(x1,y1,x2,y2) in zip (masks,boxes)]
         print [m.shape for m in masks]
-        
+
         maskClips = [ImageClip(m) for m in masks]
-        
+
         if render:
             print "found %d objects"%(num)
             fig,ax = subplots(2)
@@ -65,12 +57,12 @@ The next function finds the regions in the picture. For each region found it ret
             ax[0].imshow(objects)
             ax[1].imshow([range(num)],interpolation='nearest')
             ax[1].set_yticks([])
-            
+
         return zip(maskClips,boxes)
-        
+
 This function returns a list of the regions found. To help visualize which element of the list corresponds to which region in the picture, ``pic2regions`` splashes a Matplotlib figure giving the index of each region. For our picture, it returned this: ::
-    
-    im = imread("./ultracompositing/motif.png")    
+
+    im = imread("./ultracompositing/motif.png")
     regs = pic2regions(im)
 
 .. figure:: matplotlibCompo.jpeg
@@ -82,7 +74,7 @@ Finally, we load 8 different video clips that we assign to the different regions
 - Giving to each clip a mask that will shape it like the region.
 
 So here is the final script: ::
-    
+
     # We load height clips from the US National Parks.
     # These are public domain. :D
     clips = [VideoFileClip(n).subclip(20,25) for n in
@@ -100,7 +92,7 @@ So here is the final script: ::
     regs = pic2regions(im,crop=True)
     # eliminate the first region found (it is the border)
     regs = regs[1:]
-    masks = [r[0] for r in regs] 
+    masks = [r[0] for r in regs]
     poss = [(x1,y1) for m,(x1,y1,x2,y2) in regs]
     comp_clips =  [c.resize(m.size).set_mask(m).set_pos(p)
                    for c,m,p in zip(clips,masks,poss)]
