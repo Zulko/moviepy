@@ -139,7 +139,7 @@ class Clip:
             newclip.duration = None
             newclip.end = None
             
-        if isinstance(apply_to, str):
+        if isinstance(apply_to, basestring):
             apply_to = [apply_to]
 
         for attr in apply_to:
