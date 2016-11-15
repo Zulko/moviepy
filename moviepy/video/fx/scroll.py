@@ -13,7 +13,7 @@ def scroll(clip, h=None, w=None, x_speed=0, y_speed=0,
 
     def f(gf,t):
         if ease_func and t < period:
-            t = ease(t, duration=period)
+            t = ease_func(t, duration=period)
         x = max(0, min(xmax, x_start+ round(x_speed*t)))
         y = max(0, min(ymax, y_start+ round(y_speed*t)))
         return gf(t)[y:y+h, x:x+w]
