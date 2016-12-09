@@ -9,6 +9,8 @@ import os
 import subprocess as sp
 import multiprocessing
 import tempfile
+import random
+import string
 from copy import copy
 
 from tqdm import tqdm
@@ -315,8 +317,10 @@ class VideoClip(Clip):
                             "You should report this. In the meantime, you can specify a "
                             "temp_audiofile with the right extension in write_videofile.")
 
-                audiofile = (name + Clip._TEMP_FILES_PREFIX +
-                             "wvf_snd.%s" % audio_ext)
+                random_text = ''.join([random.choice(string.ascii_lowercase)
+                                      for _ in range(6)])
+                audiofile = (name + Clip._TEMP_FILES_PREFIX + random_text +
+                             ".%s" % audio_ext)
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
