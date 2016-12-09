@@ -9,16 +9,13 @@ def blink(clip, d_on, d_off, start=None, end=None):
     """
     newclip = copy(clip)
 
-    if start is None:
-        start = 0
-
     if newclip.mask is None:
         newclip = newclip.with_mask()
 
     D = d_on + d_off
 
     def fl_blink(gf, t):
-        if t >= start and end and t <= end:
+        if (start is None or t >= start) and (end is None or t <= end):
             return gf(t)*((t % D) < d_on)
         else:
             return gf(t)
