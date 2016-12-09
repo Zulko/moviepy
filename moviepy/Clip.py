@@ -139,7 +139,7 @@ class Clip:
             newclip.duration = None
             newclip.end = None
             
-        if isinstance(apply_to, str):
+        if isinstance(apply_to, basestring):
             apply_to = [apply_to]
 
         for attr in apply_to:
@@ -468,7 +468,7 @@ class Clip:
 
         def generator():
         
-            for t in np.arange(0, self.duration, 1.0/fps):
+            for t in np.arange(0, self.duration - 0.001, 1.0/fps):
         
                 frame = self.get_frame(t)
         

@@ -165,10 +165,11 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if hasattr(self, 'proc'):
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
+            self.proc.wait()
             del self.proc
 
     def __del__(self):
@@ -238,7 +239,14 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
     proc.stdout.readline()
     proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
+    proc.wait()
+
+    info_str = proc.stderr.read()
+    try:
+        infos = info_str.decode('utf8', 'ignore')
+    except UnicodeDecodeError:
+        infos = info_str.replace('\xd0', '').decode('utf8')
+
     del proc
 
     if print_infos:
@@ -297,7 +305,13 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
-            tbr = float(line[match.start():match.end()].split(' ')[1])
+
+            s_tbr = line[match.start():match.end()].split(' ')[1]
+            if "k" in s_tbr:
+                tbr = float(s_tbr.replace("k", "")) * 1000
+            else:
+                tbr = float(s_tbr)
+
             result['video_fps'] = tbr
 
         except:

@@ -58,7 +58,7 @@ except ImportError:
 from moviepy.decorators import apply_to_mask
    
 
-def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
+def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True, strict_even=False):
     """ 
     Returns a video clip that is a resized version of the clip.
     
@@ -96,7 +96,10 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
         def trans_newsize(ns):
             
             if isinstance(ns, (int, float)):
-                return [ns * w, ns * h]
+                if strict_even:
+                    return [round(ns * w / 2.0) * 2, round(ns * h / 2.0)  * 2]
+                else:
+                    return [ns * w, ns * h]
             else:
                 return ns
                 
