@@ -26,4 +26,4 @@ setup(name='moviepy',
     license='MIT License',
     keywords="video editing audio compositing ffmpeg",
     packages= find_packages(exclude='docs'),
-    install_requires= ['numpy', 'decorator', 'imageio<2', 'tqdm'])
+    install_requires= ['numpy', 'decorator', 'imageio<2', 'tqdm==4.8.4'])
