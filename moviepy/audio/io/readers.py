@@ -152,6 +152,7 @@ class FFMPEG_AudioReader:
             for std in [ self.proc.stdout,
                          self.proc.stderr]:
                 std.close()
+            self.proc.wait()
             del self.proc
 
     def get_frame(self, tt):

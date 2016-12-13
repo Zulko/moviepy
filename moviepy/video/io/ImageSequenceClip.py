@@ -60,7 +60,7 @@ class ImageSequenceClip(VideoClip):
         fromfiles = True
 
         if isinstance(sequence, list):
-            if isinstance(sequence[0], str):
+            if isinstance(sequence[0], basestring):
                 if load_images:
                     sequence = [imread(f) for f in sequence]
                     fromfiles = False

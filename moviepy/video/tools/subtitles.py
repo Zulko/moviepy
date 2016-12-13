@@ -38,7 +38,7 @@ class SubtitlesClip(VideoClip):
         
         VideoClip.__init__(self, has_constant_size=False)
 
-        if isinstance( subtitles, str):
+        if isinstance( subtitles, basestring):
             subtitles = file_to_subtitles(subtitles)
 
         subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
