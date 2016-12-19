@@ -1,4 +1,5 @@
 import numpy as np
+from functools import reduce
 
 from moviepy.tools import deprecated_version_of
 from moviepy.video.VideoClip import VideoClip, ColorClip
