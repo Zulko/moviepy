@@ -531,7 +531,7 @@ class VideoClip(Clip):
         hf, wf = framesize = picture.shape[:2]
 
         if self.ismask and picture.max() != 0:
-            return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
+            return np.minimum(1, picture + self.blit_on(np.zeros(framesize, dtype='float32'), t))
 
         ct = t - self.start  # clip time
 
@@ -985,6 +985,12 @@ class ImageClip(VideoClip):
 
         if size is None:
             size = img.shape[:2][::-1]
+
+        if img.dtype == 'float64':
+            if img.max() > 1.0:
+                img = img.astype('uint8')
+            else:
+                img = img.astype(np.float32)
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged

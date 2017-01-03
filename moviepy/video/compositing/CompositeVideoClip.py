@@ -100,6 +100,8 @@ class CompositeVideoClip(VideoClip):
 
             self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
                                                bg_color=0.0)
+            if self.mask.get_frame(0).dtype == 'float64':
+                import pdb;pdb.set_trace()
 
         def make_frame(t):
             """ The clips playing at time `t` are blitted over one
