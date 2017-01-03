@@ -1,9 +1,7 @@
 import subprocess as sp
-import re
+import warnings
 
 import numpy as np
-from moviepy.tools import cvsecs
-
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.config import get_setting
 
@@ -186,11 +184,19 @@ class FFMPEG_AudioReader:
                 indices = frames - self.buffer_startframe
                 result[in_time] = self.buffer[indices]
                 return result
+
             except IndexError as error:
-                raise IOError("Error in file %s, "%(self.filename)+
+
+                warnings.warn("Error in file %s, "%(self.filename)+
                        "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
                        "indices wanted: %d-%d, "%(indices.min(), indices.max())+
-                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))
+                       "but len(buffer)=%d"%(len(self.buffer))+ str(error),
+                   UserWarning)
+
+                # repeat the last frame instead
+                indices[indices>=len(self.buffer)] = len(self.buffer) -1
+                result[in_time] = self.buffer[indices]
+                return result
 
         else:
 

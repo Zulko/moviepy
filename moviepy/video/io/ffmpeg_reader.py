@@ -8,9 +8,6 @@ from __future__ import division
 import subprocess as sp
 import re
 import warnings
-import logging
-logging.captureWarnings(True)
-
 
 import numpy as np
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
