@@ -37,12 +37,26 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
     if mask is not None:
         mask = mask[y1:y2, x1:x2]
         if len(im1.shape) == 3:
-            mask = np.dstack(3 * [mask])
+            # mask = np.dstack(3 * [mask])
+            mask = np.array([mask, mask, mask]).transpose([1, 2, 0])
+
         blit_region = new_im2[yp1:yp2, xp1:xp2]
-        new_im2[yp1:yp2, xp1:xp2] = (
-            1.0 * mask * blitted + (1.0 - mask) * blit_region)
+        # new_im2[yp1:yp2, xp1:xp2] = (
+        #     1.0 * mask * blitted + (1.0 - mask) * blit_region)
+
+        if ismask:
+            # all objects are float32
+            new_im2[yp1:yp2, xp1:xp2] += mask * (blitted - blit_region)
+        else:
+            # change to low-level data types before doing any operations
+            diff = (blitted - blit_region.astype(np.int16))  # uint8 cannot directly do subtraction
+            new_im2[yp1:yp2, xp1:xp2] = blit_region + (mask * diff).astype(np.int16)
+
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
+
+    # if new_im2.dtype == 'float64' or (mask is not None and mask.dtype == 'float64'):
+    #     import pdb;pdb.set_trace()
 
     return new_im2.astype('uint8') if (not ismask) else new_im2
 
@@ -128,7 +142,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
         arr = np.maximum(m1,m2)
         if col1.size > 1:
             arr = np.dstack(3*[arr])
-        return arr*col1 + (1-arr)*col2
+        return (arr*col1 + (1-arr)*col2).astype(np.float32)
         
     
     p1 = np.array(p1[::-1]).astype(float)
@@ -155,7 +169,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
         arr = np.minimum(1,np.maximum(0,arr))
         if col1.size > 1:
             arr = np.dstack(3*[arr])
-        return arr*col1 + (1-arr)*col2
+        return (arr*col1 + (1-arr)*col2).astype(np.float32)
     
     elif shape == 'radial':
         if r is None:
@@ -169,7 +183,7 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
             
         if col1.size > 1:
             arr = np.dstack(3*[arr])
-        return (1-arr)*col1 + arr*col2
+        return ((1-arr)*col1 + arr*col2).astype(np.float32)
         
 
 def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
