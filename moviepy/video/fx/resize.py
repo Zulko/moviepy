@@ -58,7 +58,8 @@ except ImportError:
 from moviepy.decorators import apply_to_mask
    
 
-def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True, strict_even=False):
+def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
+           strict_even=False, threshold=1.3, precision=0.0001, **kwargs):
     """ 
     Returns a video clip that is a resized version of the clip.
     
@@ -90,6 +91,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True, stri
     """
 
     w, h = clip.size
+    ratio = float(w) / h
     
     if newsize is not None:
         
@@ -97,12 +99,40 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True, stri
             
             if isinstance(ns, (int, float)):
                 if strict_even:
-                    return [round(ns * w / 2.0) * 2, round(ns * h / 2.0)  * 2]
+                    return calibrate(ns, threshold, precision)
                 else:
                     return [ns * w, ns * h]
             else:
                 return ns
-                
+
+        def calibrate(ns, threshold=1.3, precision=0.0001):
+            new_w = round(ns * w / 2.0) * 2
+            new_h = round(ns * h / 2.0) * 2
+            new_ratio = new_w / new_h
+            max_iter = int(0.1 / precision)
+
+            distort = abs(new_ratio - ratio) * 1000 / ratio
+            bias = precision * 1
+            ns_new = ns * 1
+            n_iter = 0
+
+            for i in range(max_iter):
+                if distort < threshold:
+                    new_w = round(ns_new * w / 2.0) * 2
+                    new_h = round(ns_new * h / 2.0) * 2
+                    break
+
+                ns_new = ns + bias
+                new_ratio = round(ns_new * w / 2.0) / round(ns_new * h / 2.0)
+                distort = abs(new_ratio - ratio) * 1000 / ratio
+
+                if bias > 0:
+                    bias *= -1
+                else:
+                    bias = precision - bias
+
+            return [new_w, new_h]
+
         if hasattr(newsize, "__call__"):
             
             newsize2 = lambda t : trans_newsize(newsize(t))
