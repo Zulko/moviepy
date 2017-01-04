@@ -531,7 +531,7 @@ class VideoClip(Clip):
         hf, wf = framesize = picture.shape[:2]
 
         if self.ismask and picture.max() != 0:
-            return np.minimum(1, picture + self.blit_on(np.zeros(framesize, dtype='float32'), t))
+            return np.minimum(1, picture + self.blit_on(np.zeros(framesize, dtype=np.float32), t))
 
         ct = t - self.start  # clip time
 

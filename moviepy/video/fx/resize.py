@@ -147,7 +147,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True, stri
     # From here, the resizing is constant (not a function of time), size=newsize
 
     if clip.ismask:
-        fl = lambda pic: (1.0*resizer((255 * pic).astype('uint8'), newsize)/255.0).astype('float32')
+        fl = lambda pic: (1.0*resizer((255 * pic).astype('uint8'), newsize)/255.0).astype(np.float32)
             
     else:
         fl = lambda pic: resizer(pic.astype('uint8'), newsize)
