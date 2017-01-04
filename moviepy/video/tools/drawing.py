@@ -55,8 +55,8 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
 
-    if new_im2.dtype == 'float64' or (mask is not None and mask.dtype == 'float64'):
-        import pdb;pdb.set_trace()
+    # if new_im2.dtype == 'float64' or (mask is not None and mask.dtype == 'float64'):
+    #     import pdb;pdb.set_trace()
 
     return new_im2.astype('uint8') if (not ismask) else new_im2
 
