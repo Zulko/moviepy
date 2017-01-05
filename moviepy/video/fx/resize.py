@@ -95,39 +95,39 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
     
     if newsize is not None:
         
-        def trans_newsize(ns, threshold, precision):
+        def trans_newsize(scale, threshold, precision):
             
-            if isinstance(ns, (int, float)):
+            if isinstance(scale, (int, float)):
                 if strict_even:
-                    return calibrate(ns, threshold, precision)
+                    return calibrate(scale, threshold, precision)
                 else:
-                    return [ns * w, ns * h]
+                    return [scale * w, scale * h]
             else:
-                return ns
+                return scale
 
-        def calibrate(ns, threshold, precision):
-            new_w = round(ns * w / 2.0) * 2
-            new_h = round(ns * h / 2.0) * 2
+        def calibrate(scale, threshold, precision):
+            new_w = round(scale * w / 2.0) * 2
+            new_h = round(scale * h / 2.0) * 2
             new_ratio = new_w / new_h
             max_iter = int(0.1 / precision)
 
             distort = abs(new_ratio - ratio) * 1000 / ratio
-            bias = precision * 1
-            ns_new = ns * 1
+            bias = precision
+            scale_new = scale
 
             min_distort = distort
-            best_ns = ns
+            best_scale = scale
             for i in range(max_iter):
                 if min_distort < threshold:
                     break
 
-                ns_new = ns + bias
-                new_ratio = round(ns_new * w / 2.0) / round(ns_new * h / 2.0)
+                scale_new = scale + bias
+                new_ratio = round(scale_new * w / 2.0) / round(scale_new * h / 2.0)
                 distort = abs(new_ratio - ratio) * 1000 / ratio
 
                 if distort < min_distort:
                     min_distort = distort
-                    best_ns = ns_new
+                    best_scale = scale_new
 
                 if bias > 0:
                     bias *= -1
@@ -137,8 +137,8 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
             if min_distort >= threshold:
                 print "Failed to preserve ratio, disrtort %.3f." % min_distort
 
-            new_w = round(best_ns * w / 2.0) * 2
-            new_h = round(best_ns * h / 2.0) * 2
+            new_w = round(best_scale * w / 2.0) * 2
+            new_h = round(best_scale * h / 2.0) * 2
 
             return [new_w, new_h]
 
