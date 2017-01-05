@@ -59,7 +59,7 @@ from moviepy.decorators import apply_to_mask
    
 
 def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
-           strict_even=False, threshold=1.3, precision=0.0001, **kwargs):
+           strict_even=False, threshold=1.6, precision=0.00005, **kwargs):
     """ 
     Returns a video clip that is a resized version of the clip.
     
@@ -95,7 +95,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
     
     if newsize is not None:
         
-        def trans_newsize(ns):
+        def trans_newsize(ns, threshold, precision):
             
             if isinstance(ns, (int, float)):
                 if strict_even:
@@ -105,7 +105,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
             else:
                 return ns
 
-        def calibrate(ns, threshold=1.3, precision=0.0001):
+        def calibrate(ns, threshold, precision):
             new_w = round(ns * w / 2.0) * 2
             new_h = round(ns * h / 2.0) * 2
             new_ratio = new_w / new_h
@@ -114,28 +114,37 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
             distort = abs(new_ratio - ratio) * 1000 / ratio
             bias = precision * 1
             ns_new = ns * 1
-            n_iter = 0
 
+            min_distort = distort
+            best_ns = ns
             for i in range(max_iter):
-                if distort < threshold:
-                    new_w = round(ns_new * w / 2.0) * 2
-                    new_h = round(ns_new * h / 2.0) * 2
+                if min_distort < threshold:
                     break
 
                 ns_new = ns + bias
                 new_ratio = round(ns_new * w / 2.0) / round(ns_new * h / 2.0)
                 distort = abs(new_ratio - ratio) * 1000 / ratio
 
+                if distort < min_distort:
+                    min_distort = distort
+                    best_ns = ns_new
+
                 if bias > 0:
                     bias *= -1
                 else:
                     bias = precision - bias
 
+            if min_distort >= threshold:
+                print "Failed to preserve ratio, disrtort %.3f." % min_distort
+
+            new_w = round(best_ns * w / 2.0) * 2
+            new_h = round(best_ns * h / 2.0) * 2
+
             return [new_w, new_h]
 
         if hasattr(newsize, "__call__"):
             
-            newsize2 = lambda t : trans_newsize(newsize(t))
+            newsize2 = lambda t : trans_newsize(newsize(t), threshold, precision)
             
             if clip.ismask:
                 
@@ -151,7 +160,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
             
         else:
             
-            newsize = trans_newsize(newsize)
+            newsize = trans_newsize(newsize, threshold, precision)
         
 
     elif height is not None:
