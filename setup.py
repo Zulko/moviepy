@@ -14,8 +14,19 @@ except ImportError:
             "\nInstall ez_setup ([sudo] pip install ez_setup) and try again.")
 
 from setuptools import setup, find_packages
+from distutils.core import Extension
 
 exec(open('moviepy/version.py').read()) # loads __version__
+
+try:
+    import numpy
+except ImportError:
+    sys.exit("install requires: 'numpy'."
+             "  use pip or easy_install."
+             "\n   $ pip install 'numpy'")
+
+ext = Extension("moviepy.cython_blit", ["moviepy/cython_blit.c"],
+                include_dirs = [numpy.get_include()])
 
 setup(name='moviepy',
     version=__version__,
@@ -26,4 +37,5 @@ setup(name='moviepy',
     license='MIT License',
     keywords="video editing audio compositing ffmpeg",
     packages= find_packages(exclude='docs'),
-    install_requires= ['numpy', 'decorator', 'imageio', 'tqdm'])
+    ext_modules=[ext],
+    install_requires= ['numpy', 'decorator', 'imageio<2', 'tqdm==4.8.4'])
