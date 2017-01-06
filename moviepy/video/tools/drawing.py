@@ -4,7 +4,8 @@ methods that are difficult to do with the existing Python libraries.
 """
 
 import numpy as np
-# from mix import cy_update, cy_update_mask
+from cython_blit import cy_update, cy_update_mask
+
 
 def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
     """ Blit an image over another.
@@ -37,32 +38,33 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
 
     if mask is not None:
         mask = mask[y1:y2, x1:x2]
-        if len(im1.shape) == 3:
-            # mask = np.dstack(3 * [mask])
-            mask = np.array([mask, mask, mask]).transpose([1, 2, 0])
+        # (new 1) if len(im1.shape) == 3:
+            # (original) mask = np.dstack(3 * [mask])
+            # (new 1) mask = np.array([mask, mask, mask]).transpose([1, 2, 0])
 
-        # blit_region = new_im2[yp1:yp2, xp1:xp2]
-        # new_im2[yp1:yp2, xp1:xp2] = (
-        #     1.0 * mask * blitted + (1.0 - mask) * blit_region)
+        # (original) blit_region = new_im2[yp1:yp2, xp1:xp2]
+        # (original) new_im2[yp1:yp2, xp1:xp2] = (
+        # (original)     1.0 * mask * blitted + (1.0 - mask) * blit_region)
 
         if ismask:
-            blit_region = new_im2[yp1:yp2, xp1:xp2]
             # all objects are float32
-            # cy_update_mask(blitted, blit_region, mask)
-            # new_im2[yp1:yp2, xp1:xp2] = blit_region
-            new_im2[yp1:yp2, xp1:xp2] += mask * (blitted - blit_region)
-        else:
-            # # change to low-level data types before doing any operations
-            blit_region = new_im2[yp1:yp2, xp1:xp2]#.astype(np.int16)
-            diff = (blitted - blit_region.astype(np.int16))  # uint8 cannot directly do subtraction
-            new_im2[yp1:yp2, xp1:xp2] = blit_region + (mask * diff).astype(np.int16)
+            # (new 1) new_im2[yp1:yp2, xp1:xp2] += mask * (blitted - blit_region)
 
-            # cy_update(blitted.astype(np.int16), blit_region, mask)
-            # new_im2[yp1:yp2, xp1:xp2] = blit_region
+            blit_region = new_im2[yp1:yp2, xp1:xp2]
+            cy_update_mask(blitted, blit_region, mask)
+        else:
+            # change to low-level data types before doing any operations
+            # (new 1) diff = (blitted - blit_region.astype(np.int16))  # uint8 cannot directly do subtraction
+            # (new 1) new_im2[yp1:yp2, xp1:xp2] = blit_region + (mask * diff).astype(np.int16)
+
+            blit_region = new_im2[yp1:yp2, xp1:xp2].astype(np.int16)
+            cy_update(blitted.astype(np.int16), blit_region, mask)
+            new_im2[yp1:yp2, xp1:xp2] = blit_region
 
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
 
+    # debug:
     # if new_im2.dtype == 'float64' or (mask is not None and mask.dtype == 'float64'):
     #     import pdb;pdb.set_trace()
 
