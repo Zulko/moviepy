@@ -137,7 +137,7 @@ class VideoClip(Clip):
 
         """
 
-        im = self.get_frame(t) 
+        im = self.get_frame(t)
 
         if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
@@ -159,7 +159,8 @@ class VideoClip(Clip):
                         temp_audiofile=None,
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
-                        threads=None, ffmpeg_params=None):
+                        threads=None, ffmpeg_params=None,
+                        progress_bar=True):
 
         """Write the clip to a videofile.
 
@@ -335,7 +336,8 @@ class VideoClip(Clip):
                            write_logfile=write_logfile,
                            audiofile = audiofile,
                            verbose=verbose, threads=threads,
-                           ffmpeg_params=ffmpeg_params)
+                           ffmpeg_params=ffmpeg_params,
+                           progress_bar=progress_bar)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
@@ -459,7 +461,7 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)
-        
+
         elif tempfiles:
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt, fuzz=fuzz,
@@ -821,12 +823,12 @@ class DataVideoClip(VideoClip):
 
 class UpdatedVideoClip(VideoClip):
     """
-        
+
     Class of clips whose make_frame requires some objects to
     be updated. Particularly practical in science where some
     algorithm needs to make some steps before a new frame can
     be generated.
-    
+
     UpdatedVideoClips have the following make_frame:
 
     >>> def make_frame(t):
@@ -850,12 +852,12 @@ class UpdatedVideoClip(VideoClip):
 
     duration
       Duration of the clip, in seconds
-          
+
     """
-    
-    
+
+
     def __init__(self, world, ismask=False, duration=None):
-        
+
         self.world = world
         def make_frame(t):
             while self.world.clip_t < t:
@@ -1159,7 +1161,7 @@ class TextClip(ImageClip):
 
         if print_cmd:
             print( " ".join(cmd) )
-        
+
         try:
             subprocess_call(cmd, verbose=False )
         except (IOError,OSError) as err:
@@ -1213,7 +1215,7 @@ class TextClip(ImageClip):
 
            >>> # Find all the available fonts which contain "Courier"
            >>> print ( TextClip.search('Courier', 'font') )
- 
+
         """
         string = string.lower()
         names_list = TextClip.list(arg)
