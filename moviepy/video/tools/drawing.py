@@ -4,7 +4,7 @@ methods that are difficult to do with the existing Python libraries.
 """
 
 import numpy as np
-from cython_blit import cy_update, cy_update_mask
+from moviepy.cython_blit import cy_update, cy_update_mask
 
 
 def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
