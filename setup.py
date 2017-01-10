@@ -26,14 +26,6 @@ except ImportError:
              "  use pip or easy_install."
              "\n   $ pip install 'numpy'")
 
-try:
-    from Cython.Build import cythonize
-except ImportError:
-    import sys
-    sys.exit("install requires: 'Cython'."
-             "  use pip or easy_install."
-             "\n   $ pip install 'Cython'")
-
 ext = Extension("moviepy.cython_blit", ["moviepy/cython_blit.pyx"],
                 include_dirs = [numpy.get_include()])
 
@@ -46,5 +38,6 @@ setup(name='moviepy',
     license='MIT License',
     keywords="video editing audio compositing ffmpeg",
     packages= find_packages(exclude='docs'),
-    ext_modules=cythonize([ext]),
-    install_requires= ['numpy', 'decorator', 'imageio<2', 'tqdm==4.8.4', 'Cython'])
+    setup_requires=['cython==0.25.2'],
+    ext_modules=[ext],
+    install_requires= ['numpy', 'decorator', 'imageio<2', 'tqdm==4.8.4'])
