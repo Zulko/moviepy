@@ -939,6 +939,9 @@ class ImageClip(VideoClip):
 
         if isinstance(img, basestring):
             img = imread(img)
+            # BW picture change to RGB
+            if len(img.shape) == 2:
+              img = np.array([img, img, img]).transpose([1,2,0])
 
         size = None
         reshape_size = False
