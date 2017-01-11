@@ -86,7 +86,8 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result = VideoClip(ismask = ismask, make_frame = make_frame)
         if any([c.mask is not None for c in clips]):
             masks = [c.mask if (c.mask is not None) else
-                     ColorClip([1,1], col=1, ismask=True, duration=c.duration)
+                     #ColorClip([1,1], col=1, ismask=True, duration=c.duration)
+                     c.add_mask().mask
                  #ColorClip(c.size, col=1, ismask=True).set_duration(c.duration)
                      for c in clips]
             result.mask = concatenate_videoclips(masks, method="chain", ismask=True)
