@@ -61,10 +61,11 @@ Other optional but useful dependencies
 
 ImageMagick_ is not strictly required, only if you want to write texts. It can also be used as a backend for GIFs but you can do GIFs with MoviePy without ImageMagick.
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
+Once you have installed it, ImageMagick will be automatically detected by MoviePy, (except windows user and Ubuntu 16.04LTS users) Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
     
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 
+Ubuntu 16.04LTS user, after installed MoviePy on terminal, the IMAGEMAGICK will not be detected by moviepy. This bug is still not fixed. The specific question can be find at this site: http://askubuntu.com/questions/873112/imagemagick-cannot-be-detected-by-moviepy.
 PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
 For advanced image processing you will need one or several of these packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
