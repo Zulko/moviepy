@@ -65,7 +65,7 @@ class Trajectory:
         N = len(trajs)
         arr = np.hstack([np.array(list(t.txy(tms=True))) for t in trajs])
         np.savetxt( filename, arr, fmt="%d", delimiter='\t',
-                    header = "\t".join(N*['t (ms)', 'x', 'y']))
+                    header = "\t".join(N*['t(ms)', 'x', 'y']))
     
     @staticmethod
     def load_list(filename):
