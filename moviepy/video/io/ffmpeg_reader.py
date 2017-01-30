@@ -169,6 +169,7 @@ class FFMPEG_VideoReader:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
+            self.proc.wait()
             del self.proc
 
     def __del__(self):
