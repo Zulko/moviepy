@@ -46,7 +46,7 @@ def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
     totalsize = int(fps*clip.duration)
     pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
     tt = (1.0/fps)*np.arange(pospos[0],pospos[1])
-    sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True)
+    sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True, fps=fps)
     chunk = pg.sndarray.make_sound(sndarray)
     
     if (audioFlag is not None) and (videoFlag is not None):
@@ -56,7 +56,7 @@ def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
     channel = chunk.play()
     for i in range(1,len(pospos)-1):
         tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-        sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True)
+        sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True, fps=fps)
         chunk = pg.sndarray.make_sound(sndarray)
         while channel.get_queue():
             time.sleep(0.003)

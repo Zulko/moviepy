@@ -12,6 +12,7 @@ import tempfile
 from copy import copy
 
 from tqdm import tqdm
+from scipy import sparse
 import numpy as np
 
 from imageio import imread, imsave
@@ -542,7 +543,7 @@ class VideoClip(Clip):
         pos = self.pos(ct)
 
         # preprocess short writings of the position
-        if isinstance(pos, str):
+        if isinstance(pos, basestring):
             pos = {'center': ['center', 'center'],
                    'left': ['left', 'center'],
                    'right': ['right', 'center'],
@@ -553,15 +554,15 @@ class VideoClip(Clip):
 
         # is the position relative (given in % of the clip's size) ?
         if self.relative_pos:
-            for i, dim in enumerate(wf, hf):
-                if not isinstance(pos[i], str):
+            for i, dim in enumerate([wf, hf]):
+                if not isinstance(pos[i], basestring):
                     pos[i] = dim * pos[i]
 
-        if isinstance(pos[0], str):
+        if isinstance(pos[0], basestring):
             D = {'left': 0, 'center': (wf - wi) / 2, 'right': wf - wi}
             pos[0] = D[pos[0]]
 
-        if isinstance(pos[1], str):
+        if isinstance(pos[1], basestring):
             D = {'top': 0, 'center': (hf - hi) / 2, 'bottom': hf - hi}
             pos[1] = D[pos[1]]
 
@@ -582,18 +583,32 @@ class VideoClip(Clip):
         """
         if self.has_constant_size:
             mask = ColorClip(self.size, 1.0, ismask=True)
-            return self.set_mask(mask.set_duration(self.duration))
+
+            if self.start:
+              mask = mask.set_start(self.start)
+
+            if self.end:
+              mask = mask.set_end(self.end)
+
+            return self.set_mask(mask)
+
         else:
             make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
             mask = VideoClip(ismask=True, make_frame=make_frame)
-            return self.set_mask(mask.set_duration(self.duration))
 
+            if self.start:
+              mask = mask.set_start(self.start)
+
+            if self.end:
+              mask = mask.set_end(self.end)
+
+            return self.set_mask(mask)
 
     def on_color(self, size=None, color=(0, 0, 0), pos=None,
                  col_opacity=None):
         """ Place the clip on a colored background.
 
-        Returns a clip made of the current clip overlaid on a color
+i        Returns a clip made of the current clip overlaid on a color
         clip of a possibly bigger size. Can serve to flatten transparent
         clips.
 
@@ -913,35 +928,74 @@ class ImageClip(VideoClip):
 
     """
 
-
     def __init__(self, img, ismask=False, transparent=True,
                  fromalpha=False, duration=None):
 
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
+        if isinstance(img, basestring):
             img = imread(img)
+
+        size = None
+        reshape_size = False
+
+        if isinstance(img, tuple):
+            reshape_size = tuple(img)
+
+            size = reshape_size[:2][::-1]
+            img = sparse.csr_matrix((np.prod(reshape_size), 1))
+            self.mask = ImageClip(np.zeros(reshape_size[:2], dtype=np.uint8), ismask=True)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
             if img.shape[2] == 4:
+
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
                 elif ismask:
-                    img = 1.0 * img[:, :, 0] / 255
+                    img = 1.0 * sparse.csr_matrix(img[:, :, 0]) / 255
                 elif transparent:
                     self.mask = ImageClip(
-                        1.0 * img[:, :, 3] / 255, ismask=True)
-                    img = img[:, :, :3]
+                        img[:, :, 3], ismask=True)
+                    if img.sum() == 0:
+                        reshape_size = (img.shape[0], img.shape[1], 3)
+                        size = img.shape[:2][::-1]
+                        img = sparse.csr_matrix([img[:, :, :3].ravel()])
+                    else:
+                        img = img[:, :, :3]
+
+            elif img.shape[2] == 3 and img.sum() == 0:
+                reshape_size = img.shape
+                size = reshape_size[:2][::-1]
+                img = sparse.csr_matrix((img.shape[0], img.shape[1] * img.shape[2]), dtype=np.int8)
+
             elif ismask:
-                img = 1.0 * img[:, :, 0] / 255
+                img = 1.0 * sparse.csr_matrix(img[:, :, 0]) / 255
+
+        if ismask:
+            if img.sum() != img.shape[0]*img.shape[1] and not isinstance(img, sparse.csr_matrix):
+                if img.max() > 1:
+                  img = 1.0 * sparse.csr_matrix(img) / 255
+                else:
+                  img = sparse.csr_matrix(img)
+
+        if size is None:
+            size = img.shape[:2][::-1]
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: img
-        self.size = img.shape[:2][::-1]
+        self.make_frame = lambda t: self.generate_img(img, reshape_size)
+        self.size = size
         self.img = img
 
+    def generate_img(self, img, reshape_size=False):
+        if isinstance(img, sparse.csr_matrix):
+          if reshape_size:
+            return img.toarray().reshape(reshape_size)
+          else:
+            return img.toarray()
+        else:
+          return img
 
     def fl(self, fl, apply_to=[], keep_duration=True):
         """ General transformation filter.
@@ -1033,11 +1087,14 @@ class ColorClip(ImageClip):
     """
 
 
-    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
+    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None, transparent=False):
         w, h = size
         shape = (h, w) if np.isscalar(col) else (h, w, len(col))
-        ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
-                           ismask=ismask, duration=duration)
+        if transparent:
+            array = shape
+        else:
+            array = np.tile(col, w * h).reshape(shape)
+        ImageClip.__init__(self, array, ismask=ismask, duration=duration)
 
 
 class TextClip(ImageClip):

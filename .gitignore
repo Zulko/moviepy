@@ -46,3 +46,6 @@ nosetests.xml
 # Pipy codes
 
 .pypirc
+
+
+venv
