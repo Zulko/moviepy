@@ -40,7 +40,9 @@ class VideoFileClip(VideoClip):
       Name of the original video file.
     
     fps:
-      Frames per second in the original file. 
+      Frames per second in the original file.
+      
+    Read docstrings for Clip() and VideoClip() for other, more generic, attributes.
         
     """
 
@@ -60,6 +62,8 @@ class VideoFileClip(VideoClip):
         
         self.fps = self.reader.fps
         self.size = self.reader.size
+        
+        self.filename = self.reader.filename
 
         if has_mask:
 
