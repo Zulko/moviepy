@@ -2,7 +2,7 @@
 import numpy as np
 import subprocess as sp
 
-from movie.compat import PY3
+from moviepy.compat import PY3
 
 import os
 if PY3:
