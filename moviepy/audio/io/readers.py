@@ -119,7 +119,7 @@ class FFMPEG_AudioReader:
         dt = {1: 'int8',2:'int16',4:'int32'}[self.nbytes]
         result = np.fromstring(s, dtype=dt)
         result = (1.0*result / 2**(8*self.nbytes-1)).\
-                                 reshape((len(result)/self.nchannels,
+                                 reshape((len(result)//self.nchannels,
                                           self.nchannels))
         #self.proc.stdout.flush()
         self.pos = self.pos+chunksize
