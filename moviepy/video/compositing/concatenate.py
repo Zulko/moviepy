@@ -105,7 +105,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
                size = (w, h), bg_color=bg_color, ismask=ismask)
     else:
         #this is an error!
-        raise Exception("Error method must equal 'chain' or 'compose'")
+        raise Exception("Error! The method argument must equal 'chain' or 'compose'")
 
     result.tt = tt
     
