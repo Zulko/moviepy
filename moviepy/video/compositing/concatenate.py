@@ -1,5 +1,11 @@
 import numpy as np
 
+import sys
+PY3 = sys.version_info.major >= 3
+
+if PY3:
+   from functools import reduce
+
 from moviepy.tools import deprecated_version_of
 from moviepy.video.VideoClip import VideoClip, ColorClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
