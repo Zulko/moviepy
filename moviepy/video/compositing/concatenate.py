@@ -67,6 +67,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
            
     """
 
+
     if transition is not None:
         l = [[v, transition] for v in clips[:-1]]
         clips = reduce(lambda x, y: x + y, l) + [clips[-1]]
@@ -102,6 +103,9 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result = CompositeVideoClip( [c.set_start(t).set_pos('center')
                                 for (c, t) in zip(clips, tt)],
                size = (w, h), bg_color=bg_color, ismask=ismask)
+    else:
+        #this is an error!
+        raise Exception("Error method must equal 'chain' or 'compose'")
 
     result.tt = tt
     
