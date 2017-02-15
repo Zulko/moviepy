@@ -39,8 +39,8 @@ You can also discuss about the project on Reddit_ or on the mailing list moviepy
 Maintainers
 --------------
 
-- [Zulko](https://github.com/Zulko/) - Owner
-- [mbeacom](https://github.com/mbeacom/)
+- Zulko_ - Owner
+- mbeacom_
 
 
 Installation
@@ -85,6 +85,7 @@ For advanced image processing you will need one or several of these packages. Fo
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Pillow: http://pillow.readthedocs.org/en/latest/
 .. _Zulko : https://github.com/Zulko
+.. _mbeacom : https://github.com/mbeacom
 .. _Github: https://github.com/Zulko/moviepy
 .. _here: http://zulko.github.io/moviepy/
 .. _Scipy: http://www.scipy.org/
