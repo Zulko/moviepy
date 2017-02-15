@@ -16,13 +16,13 @@ except ImportError:
 from setuptools import setup, find_packages
 
 
-#exec(open('moviepy/version.py').read()) # loads __version__
+exec(open('moviepy/version.py').read()) # loads __version__
 
 setup(name='moviepy',
-    version="0.2.2.13",
+    version=__version__,
     author='Zulko 2017',
     description='Video editing with Python',
-    long_description="",
+    long_description=open('README.rst').read(),
     url='http://zulko.github.io/moviepy/',
     license='MIT License',
     keywords="video editing audio compositing ffmpeg",
