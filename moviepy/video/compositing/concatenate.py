@@ -1,7 +1,6 @@
 import numpy as np
 
-import sys
-PY3 = sys.version_info.major >= 3
+from moviepy.compat import PY3
 
 if PY3:
    from functools import reduce
@@ -21,7 +20,6 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     (Concatenated means that they will be played one after another).
 
     There are two methods:
-
     - method="chain": will produce a clip that simply outputs
       the frames of the succesive clips, without any correction if they are
       not of the same size of anything. If none of the clips have masks the
@@ -29,7 +27,6 @@ def concatenate_videoclips(clips, method="chain", transition=None,
       (using completely opaque for clips that don't have masks, obviously).
       If you have clips of different size and you want to write directly the
       result of the concatenation to a file, use the method "compose" instead.
-
     - method="compose", if the clips do not have the same
       resolution, the final resolution will be such that no clip has
        to be resized.
@@ -38,19 +35,15 @@ def concatenate_videoclips(clips, method="chain", transition=None,
        clips with smaller dimensions will appear centered. The border
        will be transparent if mask=True, else it will be of the
        color specified by ``bg_color``.
-
-    The clip with the highest FPS will be the FPS of the result clip.
-
+    If all clips with a fps attribute have the same fps, it becomes the fps of
+    the result.
     Parameters
     -----------
-
     clips
       A list of video clips which must all have their ``duration``
       attributes set.
-
     method
       "chain" or "compose": see above.
-
     transition
       A clip that will be played between each two clips of the list.
 
@@ -113,7 +106,9 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])
 
-    result.fps = max(set([c.fps for c in clips if hasattr(c,'fps')]))
+    fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
+    if len(fps_list)==1:
+        result.fps= fps_list[0]
 
     return result
 
