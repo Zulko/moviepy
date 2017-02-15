@@ -114,12 +114,14 @@ class FFMPEG_AudioReader:
 
 
     def read_chunk(self,chunksize):
+        # chunksize is not being autoconverted from float to int
+        chunksize = int(round(chunksize))
         L = self.nchannels*chunksize*self.nbytes
         s = self.proc.stdout.read(L)
         dt = {1: 'int8',2:'int16',4:'int32'}[self.nbytes]
         result = np.fromstring(s, dtype=dt)
         result = (1.0*result / 2**(8*self.nbytes-1)).\
-                                 reshape((len(result)/self.nchannels,
+                                 reshape((int(len(result)/self.nchannels),
                                           self.nchannels))
         #self.proc.stdout.flush()
         self.pos = self.pos+chunksize
@@ -238,6 +240,3 @@ class FFMPEG_AudioReader:
 
     def __del__(self):
         self.close_proc()
-
-
-
