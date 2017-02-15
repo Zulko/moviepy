@@ -11,8 +11,8 @@ class VideoFileClip(VideoClip):
     
     A video clip originating from a movie file. For instance: ::
     
-        >>> clip = VideofileClip("myHolidays.mp4")
-        >>> clip2 = VideofileClip("myMaskVideo.avi")
+        >>> clip = VideoFileClip("myHolidays.mp4")
+        >>> clip2 = VideoFileClip("myMaskVideo.avi")
     
     
     Parameters
