@@ -238,7 +238,7 @@ class VideoClip(Clip):
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
-          Choices are: ultrafast,superfast, veryfast, faster, fast, medium,
+          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
           slow, slower, veryslow, placebo. Note that this does not impact
           the quality of the video, only the size of the video file. So
           choose ultrafast when you are in a hurry and file size does not
