@@ -63,12 +63,3 @@ Getting the average frame of a video
     average_image = ImageClip(total_image/ nframes)
     average_image.save_frame("average_test.png")
 
-Mirroring a video
-""""""""""""""""""
- ::
-    import sys
-    from moviepy.editor import *
-
-    clip = VideoFileClip(sys.argv[1])
-    clip = clip.fx(vfx.mirror_x)
-    clip.write_videofile(sys.argv[2]
