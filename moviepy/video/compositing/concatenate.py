@@ -1,7 +1,6 @@
 import numpy as np
 
-import sys
-PY3 = sys.version_info.major >= 3
+from moviepy.compat import PY3
 
 if PY3:
    from functools import reduce
@@ -11,7 +10,7 @@ from moviepy.video.VideoClip import VideoClip, ColorClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
-from moviepy.video.compositing.on_color import on_color 
+from moviepy.video.compositing.on_color import on_color
 
 def concatenate_videoclips(clips, method="chain", transition=None,
                            bg_color=None, ismask=False, padding = 0):

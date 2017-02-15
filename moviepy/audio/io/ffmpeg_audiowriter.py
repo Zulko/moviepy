@@ -2,13 +2,12 @@
 import numpy as np
 import subprocess as sp
 
-import sys
-PY3=sys.version_info.major >= 3
+from moviepy.compat import PY3
 
 import os
-try:
+if PY3:
     from subprocess import DEVNULL # py3k
-except ImportError:
+else:
     DEVNULL = open(os.devnull, 'wb')
 
 from tqdm import tqdm

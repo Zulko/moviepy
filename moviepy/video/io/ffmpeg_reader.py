@@ -15,11 +15,12 @@ logging.captureWarnings(True)
 import numpy as np
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
+from moviepy.compat import PY3
 
 import os
-try:
+if PY3:
     from subprocess import DEVNULL  # py3k
-except ImportError:
+else:
     DEVNULL = open(os.devnull, 'wb')
 
 

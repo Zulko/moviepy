@@ -7,13 +7,11 @@ import subprocess as sp
 import os
 import numpy as np
 
-import sys
+from moviepy.compat import PY3
 
-PY3 = sys.version_info.major >=3
-
-try:
+if PY3:
     from subprocess import DEVNULL  # py3k
-except ImportError:
+else:
     DEVNULL = open(os.devnull, 'wb')
 
 from moviepy.config import get_setting
