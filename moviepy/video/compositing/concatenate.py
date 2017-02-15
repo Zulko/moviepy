@@ -37,9 +37,8 @@ def concatenate_videoclips(clips, method="chain", transition=None,
        clips with smaller dimensions will appear centered. The border
        will be transparent if mask=True, else it will be of the
        color specified by ``bg_color``.
-
-    If all clips with a fps attribute have the same fps, it becomes the fps of
-    the result.
+    
+    The highest fps among the clips will be the fps of the result clip.
 
     Parameters
     -----------
@@ -113,9 +112,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])
 
-    fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
-    if len(fps_list)==1:
-        result.fps= fps_list[0]
+    result.fps = max([c.fps for c in clips if hasattr(c,'fps')])
 
     return result
 
