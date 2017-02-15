@@ -9,6 +9,8 @@ import os
 import subprocess as sp
 import multiprocessing
 import tempfile
+import six
+
 from copy import copy
 
 from tqdm import tqdm
@@ -919,7 +921,7 @@ class ImageClip(VideoClip):
 
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
+        if isinstance(img, six.string_types):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
