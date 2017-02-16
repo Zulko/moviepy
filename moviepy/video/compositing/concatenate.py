@@ -120,4 +120,4 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     return result
 
 
-concatenate = deprecated_version_of(concatenate_videoclips, "concatenate_videoclips")
+concatenate = deprecated_version_of(concatenate_videoclips, oldname="concatenate")
