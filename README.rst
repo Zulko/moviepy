@@ -12,7 +12,9 @@ MoviePy can read and write all the most common audio and video formats, includin
 Example
 --------
 
-In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file: ::
+In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
+
+.. code:: python
 
     from moviepy.editor import *
 
