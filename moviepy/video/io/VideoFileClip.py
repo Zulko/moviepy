@@ -86,7 +86,7 @@ class VideoFileClip(VideoClip):
                                        nbytes = audio_nbytes)
 
     def __del__(self):
-      """ Close/delete the internal reader. """
+        """ Close/delete the internal reader. """
         try:
             del self.reader
         except AttributeError:
