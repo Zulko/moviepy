@@ -1033,10 +1033,12 @@ class ColorClip(ImageClip):
     """
 
 
-    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
+    def __init__(self, size, color=(0, 0, 0), ismask=False, duration=None, col=None):
+        if col is not None:
+            raise DeprecationWarning("The `ColorClip` parameter `col` has been deprecated. Please use `color` instead")
         w, h = size
-        shape = (h, w) if np.isscalar(col) else (h, w, len(col))
-        ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
+        shape = (h, w) if np.isscalar(color) else (h, w, len(color))
+        ImageClip.__init__(self, np.tile(color, w * h).reshape(shape),
                            ismask=ismask, duration=duration)
 
 
