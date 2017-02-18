@@ -12,7 +12,9 @@ MoviePy can read and write all the most common audio and video formats, includin
 Example
 --------
 
-In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file: ::
+In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
+
+.. code:: python
 
     from moviepy.editor import *
 
@@ -39,8 +41,8 @@ You can also discuss about the project on Reddit_ or on the mailing list moviepy
 Maintainers
 --------------
 
-- [Zulko](https://github.com/Zulko/) - Owner
-- [mbeacom](https://github.com/mbeacom/)
+- Zulko_ - Owner
+- mbeacom_
 
 
 Installation
@@ -85,6 +87,7 @@ For advanced image processing you will need one or several of these packages. Fo
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Pillow: http://pillow.readthedocs.org/en/latest/
 .. _Zulko : https://github.com/Zulko
+.. _mbeacom : https://github.com/mbeacom
 .. _Github: https://github.com/Zulko/moviepy
 .. _here: http://zulko.github.io/moviepy/
 .. _Scipy: http://www.scipy.org/

@@ -1,11 +1,16 @@
 import numpy as np
 
+from moviepy.compat import PY3
+
+if PY3:
+   from functools import reduce
+
 from moviepy.tools import deprecated_version_of
 from moviepy.video.VideoClip import VideoClip, ColorClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
 
-from moviepy.video.compositing.on_color import on_color 
+from moviepy.video.compositing.on_color import on_color
 
 def concatenate_videoclips(clips, method="chain", transition=None,
                            bg_color=None, ismask=False, padding = 0):
@@ -115,4 +120,4 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     return result
 
 
-concatenate = deprecated_version_of(concatenate_videoclips, "concatenate_videoclips")
+concatenate = deprecated_version_of(concatenate_videoclips, oldname="concatenate")

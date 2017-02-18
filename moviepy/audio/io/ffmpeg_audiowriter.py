@@ -2,10 +2,12 @@
 import numpy as np
 import subprocess as sp
 
+from moviepy.compat import PY3
+
 import os
-try:
+if PY3:
     from subprocess import DEVNULL # py3k
-except ImportError:
+else:
     DEVNULL = open(os.devnull, 'wb')
 
 from tqdm import tqdm
@@ -82,14 +84,17 @@ class FFMPEG_AudioWriter:
 
     def write_frames(self,frames_array):
         try:
-            self.proc.stdin.write(frames_array.tostring())
+            if PY3:
+               self.proc.stdin.write(frames_array.tobytes())
+            else:
+               self.proc.stdin.write(frames_array.tostring())
         except IOError as err:
             ffmpeg_error = self.proc.stderr.read()
             error = (str(err)+ ("\n\nMoviePy error: FFMPEG encountered "
                      "the following error while writing file %s:"%self.filename
                      + "\n\n"+ffmpeg_error))
 
-            if "Unknown encoder" in ffmpeg_error:
+            if b"Unknown encoder" in ffmpeg_error:
 
                 error = (error+("\n\nThe audio export failed because "
                     "FFMPEG didn't find the specified codec for audio "
@@ -99,7 +104,7 @@ class FFMPEG_AudioWriter:
                     "   >>> to_videofile('myvid.mp4', audio_codec='libmp3lame')"
                     )%(self.codec))
 
-            elif "incorrect codec parameters ?" in ffmpeg_error:
+            elif b"incorrect codec parameters ?" in ffmpeg_error:
 
                 error = error+("\n\nThe audio export "
                   "failed, possibly because the codec specified for "
@@ -108,7 +113,7 @@ class FFMPEG_AudioWriter:
                   "argument in to_videofile. This would be 'libmp3lame' "
                   "for mp3, 'libvorbis' for ogg...")%(self.codec, self.ext)
 
-            elif  "encoder setup failed":
+            elif  b"encoder setup failed" in ffmpeg_error:
 
                 error = error+("\n\nThe audio export "
                   "failed, possily because the bitrate you specified "
