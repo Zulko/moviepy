@@ -8,7 +8,7 @@ MoviePy
     :target: Gitter_
     :alt: Discuss MoviePy on Gitter
 
-MoviePy (full documentation here_) is a Python module for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
+MoviePy (full documentation_) is a Python module for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
 
@@ -34,22 +34,6 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 
     result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
-
-
-
-Contribute!
------------
-
-MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_, where everyone is welcome to contribute, ask for help or simply give feedback.
-
-You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
-
-
-Maintainers
------------
-
-- Zulko_ - Owner
-- `@mbeacom`_
 
 
 Installation
@@ -90,9 +74,29 @@ For advanced image processing, you will need one or several of the following pac
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
+
+Contribute
+----------
+
+MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_, where everyone is welcome to contribute, ask for help or simply give feedback.
+
+You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
+
+
+Maintainers
+-----------
+
+- Zulko_ (owner)
+
+- `@Gloin1313`_
+- `@earney`_
+- Kay `@kerstin`_
+- `@mbeacom`_
+
+
 .. MoviePy links
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
-.. _here: http://zulko.github.io/moviepy/
+.. _documentation: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 
 .. Websites, Platforms
@@ -116,7 +120,6 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 
 .. People
 .. _Zulko: https://github.com/Zulko
-
 .. _`@Gloin1313`: https://github.com/Gloin1313
 .. _`@earney`: https://github.com/earney
 .. _`@kerstin`: https://github.com/kerstin
