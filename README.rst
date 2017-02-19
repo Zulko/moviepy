@@ -1,6 +1,13 @@
 MoviePy
 ========
 
+.. image:: https://badge.fury.io/py/moviepy.svg
+    :target: PyPI_
+    :alt: MoviePy page on the Python Package Index
+.. image:: https://badges.gitter.im/movie-py/gitter.png
+    :target: Gitter_
+    :alt: Discuss MoviePy on Gitter
+
 MoviePy (full documentation here_) is a Python module for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
@@ -35,7 +42,7 @@ Contribute !
 
 MoviePy is an open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_ , where everyone is welcome to contribute, ask for help or simply give feedback.
 
-You can also discuss about the project on Reddit_ or on the mailing list moviepy@librelist.com .
+You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
 
 
 Maintainers
@@ -103,3 +110,4 @@ For advanced image processing you will need one or several of these packages. Fo
 
 .. _ffmpeg: http://www.ffmpeg.org/download.html
 .. _ImageMagick: http://www.imagemagick.org/script/index.php
+.. _Gitter: https://gitter.im/movie-py/Lobby
