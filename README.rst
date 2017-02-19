@@ -49,7 +49,7 @@ Maintainers
 -----------
 
 - Zulko_ - Owner
-- mbeacom_
+- `@mbeacom`_
 
 
 Installation
@@ -90,16 +90,20 @@ For advanced image processing, you will need one or several of the following pac
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
+.. MoviePy links
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
+.. _here: http://zulko.github.io/moviepy/
+.. _`download MoviePy`: https://github.com/Zulko/moviepy
+
+.. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _Pillow: http://pillow.readthedocs.org/en/latest/
-.. _Zulko: https://github.com/Zulko
-.. _mbeacom: https://github.com/mbeacom
 .. _Github: https://github.com/Zulko/moviepy
-.. _here: http://zulko.github.io/moviepy/
+.. _Gitter: https://gitter.im/movie-py/Lobby
+
+.. Software, Tools, Libraries
+.. _Pillow: http://pillow.readthedocs.org/en/latest/
 .. _Scipy: http://www.scipy.org/
-.. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 .. _Pygame: http://www.pygame.org/download.shtml
 .. _Numpy: http://www.scipy.org/install.html
@@ -107,8 +111,13 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 .. _`Scikit Image`: http://scikit-image.org/download.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
 .. _tqdm: https://github.com/noamraph/tqdm
-
-
 .. _ffmpeg: http://www.ffmpeg.org/download.html
 .. _ImageMagick: http://www.imagemagick.org/script/index.php
-.. _Gitter: https://gitter.im/movie-py/Lobby
+
+.. People
+.. _Zulko: https://github.com/Zulko
+
+.. _`@Gloin1313`: https://github.com/Gloin1313
+.. _`@earney`: https://github.com/earney
+.. _`@kerstin`: https://github.com/kerstin
+.. _`@mbeacom`: https://github.com/mbeacom
