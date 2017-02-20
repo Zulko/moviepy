@@ -102,6 +102,9 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result = CompositeVideoClip( [c.set_start(t).set_pos('center')
                                 for (c, t) in zip(clips, tt)],
                size = (w, h), bg_color=bg_color, ismask=ismask)
+    else:
+        raise Exception("Moviepy Error: The 'method' argument of "
+                        "concatenate_videoclips must be 'chain' or 'compose'")
 
     result.tt = tt
     
