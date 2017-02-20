@@ -53,9 +53,9 @@ class FFMPEG_VideoWriter:
 
     preset
       Sets the time that FFMPEG will take to compress the video. The slower,
-      the better the compression rate. Possibilities are: ultrafast,
-      superfast, veryfast, faster, fast, medium (default), slow, slower,
-      veryslow, placebo.
+      the better the compression rate. Possibilities are: ultrafast,superfast,
+      veryfast, faster, fast, medium (default), slow, slower, veryslow,
+      placebo.
 
     bitrate
       Only relevant for codecs which accept a bitrate. "5000k" offers
