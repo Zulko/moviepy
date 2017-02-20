@@ -1,6 +1,9 @@
 MoviePy
 ========
 
+.. image:: https://travis-ci.org/grimley517/moviepy.svg?branch=testing
+    :target: https://travis-ci.org/grimley517/moviepy
+
 MoviePy (full documentation here_) is a Python module for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:

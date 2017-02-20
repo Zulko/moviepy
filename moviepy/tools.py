@@ -38,8 +38,8 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
 
+    
     proc = sp.Popen(cmd, **popen_params)
-
     out, err = proc.communicate() # proc.wait()
     proc.stderr.close()
 
@@ -48,8 +48,8 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
         raise IOError(err.decode('utf8'))
     else:
         verbose_print(verbose, "\n... command successful.\n")
+    #proc.close()
 
-    del proc
 
 def is_string(obj):
     """ Returns true if s is string or string-like object,
@@ -153,7 +153,7 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
 def find_extension(codec):
-    for ext,infos in extensions_dict.items():
+    for ext, infos in extensions_dict.items():
         if ('codec' in infos) and codec in infos['codec']:
             return ext
     raise ValueError
