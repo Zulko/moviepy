@@ -1067,7 +1067,7 @@ class TextClip(ImageClip):
       for a list of acceptable names.
 
     color
-      Color of the background. See ``TextClip.list('color')`` for a
+      Color of the text. See ``TextClip.list('color')`` for a
       list of acceptable names.
 
     font
