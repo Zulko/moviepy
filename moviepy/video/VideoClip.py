@@ -1,7 +1,7 @@
 """
 This module implements VideoClip (base class for video clips) and its
 main subclasses:
-- Animated clips:     VideofileClip, DirectoryClip
+- Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
 
@@ -382,7 +382,7 @@ class VideoClip(Clip):
         ------
 
         The resulting image sequence can be read using e.g. the class
-        ``DirectoryClip``.
+        ``ImageSequenceClip``.
 
         """
 
