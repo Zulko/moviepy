@@ -1,7 +1,7 @@
 """
 This module implements VideoClip (base class for video clips) and its
 main subclasses:
-- Animated clips:     VideofileClip, DirectoryClip
+- Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
 
@@ -382,7 +382,7 @@ class VideoClip(Clip):
         ------
 
         The resulting image sequence can be read using e.g. the class
-        ``DirectoryClip``.
+        ``ImageSequenceClip``.
 
         """
 
@@ -553,7 +553,7 @@ class VideoClip(Clip):
 
         # is the position relative (given in % of the clip's size) ?
         if self.relative_pos:
-            for i, dim in enumerate(wf, hf):
+            for i, dim in enumerate([wf, hf]):
                 if not isinstance(pos[i], str):
                     pos[i] = dim * pos[i]
 
@@ -1067,7 +1067,7 @@ class TextClip(ImageClip):
       for a list of acceptable names.
 
     color
-      Color of the background. See ``TextClip.list('color')`` for a
+      Color of the text. See ``TextClip.list('color')`` for a
       list of acceptable names.
 
     font
