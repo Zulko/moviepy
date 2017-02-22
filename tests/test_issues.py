@@ -34,3 +34,12 @@ def test_download_media(capsys):
 def test_issue_145():
     with pytest.raises(Exception, message="Expecting Exception"):
          _final = concatenation([knights10], method = 'composite')
+
+def test_issue_417():
+    # failed in python2
+
+    cad = u'media/python_logo.png'
+    myclip = ImageClip(cad).fx(vfx.resize, newsize=[1280, 660])
+    final = CompositeVideoClip([myclip], size=(1280, 720))
+    #final.set_duration(7).write_videofile("test.mp4", fps=30)
+
