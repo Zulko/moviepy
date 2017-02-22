@@ -43,3 +43,5 @@ def test_issue_417():
     final = CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
 
+if __name__ == '__main__':
+   pytest.main()
