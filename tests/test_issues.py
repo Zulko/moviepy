@@ -34,3 +34,13 @@ def test_download_media(capsys):
 def test_issue_145():
     with pytest.raises(Exception, message="Expecting Exception"):
          _final = concatenation([knights10], method = 'composite')
+
+def test_PR_306():
+    assert TextClip.list('font') != []
+    assert TextClip.list('color') != []
+
+    with pytest.raises(Exception, message="Expecting Exception"):
+         TextClip.list('blah')
+
+if __name__ == '__main__':
+   pytest.main()
