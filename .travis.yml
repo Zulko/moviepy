@@ -12,6 +12,8 @@ before_install:
   - "sudo apt-get install -y ffmpeg"
   - "sudo apt-get install -y youtube-dl"
   - sudo apt-get install  -y imagemagick
+  - rm /etc/ImageMagick-6/policy.xml
+  - rm /etc/ImageMagick-7/policy.xml
 install: 
   - "python setup.py install"
   - "pip install -r requirements.txt"
