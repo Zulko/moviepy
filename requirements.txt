@@ -1,3 +1,4 @@
+pytest
 decorator
 imageio
 numpy
