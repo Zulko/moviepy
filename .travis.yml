@@ -12,6 +12,7 @@ before_install:
   - "sudo apt-get install -y ffmpeg"
   - "sudo apt-get install -y youtube-dl"
   - sudo apt-get install  -y imagemagick
+  - type 'identify -list policy'
   - rm -f /etc/ImageMagick-6/policy.xml
   - rm -f /etc/ImageMagick-7/policy.xml
   - mkdir media
