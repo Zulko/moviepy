@@ -40,6 +40,7 @@ from ..decorators import (apply_to_mask,
                           convert_masks_to_RGB,
                           use_clip_fps_by_default)
 
+from ..compat import PY3
 try:
     from subprocess import DEVNULL  # py3k
 except ImportError:
@@ -919,8 +920,12 @@ class ImageClip(VideoClip):
 
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
-            img = imread(img)
+        if PY3:
+           if isinstance(img, str):
+              img = imread(img)
+        else:
+           if isinstance(img, (str, unicode)):
+              img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
