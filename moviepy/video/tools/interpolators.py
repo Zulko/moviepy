@@ -41,7 +41,7 @@ class Trajectory:
 
     def addy(self, y):
 
-        return Trajectory(self.tt, self.xx+y, self.yy)
+        return Trajectory(self.tt, self.xx, self.yy+y)
 
     def update_interpolators(self):
         self.xi =  Interpolator(self.tt, self.xx)
