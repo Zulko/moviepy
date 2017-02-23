@@ -8,10 +8,10 @@ python:
   - "3.6"
 # command to install dependencies
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y ffmpeg
+  - "sudo apt-get -qq update"
+  - "sudo apt-get install -y ffmpeg"
 install: 
-  - python setup.py install
-  - pip install -r requirements.txt
+  - "python setup.py install"
+  - "pip install -r requirements.txt"
 # command to run tests
 script: py.test
