@@ -7,7 +7,6 @@ import pytest
 
 from moviepy.editor import *
 
-
 global knights, knights10
 
 def download_url(url, filename):
