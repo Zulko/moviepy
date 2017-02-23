@@ -22,6 +22,8 @@ def download_youtube_video(youtube_id, filename):
 
 
 def test_download_media(capsys):
+    global knights, knights10
+    
     with capsys.disabled():
        download_youtube_video("zvCvOC2VwDc", "media/knights.mp4")
        download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
