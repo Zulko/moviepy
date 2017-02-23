@@ -17,9 +17,9 @@ This mix of 60 covers of the Cup Song demonstrates the non-linear video editing 
 
 .. raw:: html
 
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; 
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden;
          margin-left: 5%;">
-        <iframe src="http://youtube.com/v/rIehsqqYFEM&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -33,7 +33,7 @@ in the :ref:`examples`.
 .. raw:: html
 
        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-       <iframe src="http://youtube.com/v/zGhoZ4UBxEQ&hl?rel=0" frameborder="0" allowfullscreen
+       <iframe type="text/html" src="https://youtube.com/embed/zGhoZ4UBxEQ&hl?rel=0" frameborder="0"
        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
        </iframe>
        </div>
@@ -86,7 +86,7 @@ With Vapory and MoviePy you can for instance embed a movie in a 3D scene:
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/M9R21SquDSk?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/M9R21SquDSk?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -106,7 +106,7 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/tCqQhmuwgMg?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/tCqQhmuwgMg?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -129,7 +129,7 @@ This `blog post <http://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/V2XCJNZjm4w&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/V2XCJNZjm4w&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -142,7 +142,7 @@ Misc. Programs and Scripts using MoviePy
 Rinconcam
 ----------
 
-`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python. 
+`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python.
 MoviePy is used to add transitions, titles and music to the videos.
 
 
@@ -160,7 +160,7 @@ Videogrep is a python script written by Sam Lavigne, that goes through the subti
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/D7pymdCU5NQ&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/D7pymdCU5NQ&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -171,7 +171,7 @@ Here are `Videogrep's introductory blog post
 If you liked it, also have a look at these Videogrep-inspired projects:
 
 This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
-    
+
     words = ["Americans", "must", "develop", "open ", "source",
               " software", "for the", " rest ", "of the world",
               "instead of", " soldiers"]
@@ -183,7 +183,7 @@ This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-w
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/iWRYGULFd_c?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/iWRYGULFd_c?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -194,7 +194,7 @@ This `other post <http://zulko.github.io/blog/2014/07/04/automatic-soccer-highli
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/zJtWPFX2bA0?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/zJtWPFX2bA0?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>

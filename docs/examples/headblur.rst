@@ -4,15 +4,7 @@ Tracking and blurring someone's face
 
 .. raw:: html
 
-        <center>
-        <object><param name="movie"
-        value="http://www.youtube.com/v/FWCKYTRCrBI&hl=en_US&fs=1&rel=0">
-        </param><param name="allowFullScreen" value="true"></param><param
-        name="allowscriptaccess" value="always"></param><embed
-        src="http://www.youtube.com/v/FWCKYTRCrBI&hl=en_US&fs=1&rel=0"
-        type="application/x-shockwave-flash" allowscriptaccess="always"
-        allowfullscreen="true" width="550" height="450"></embed></object>
-        </center>
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;"><iframe type="text/html" src="https://youtube.com/embed/FWCKYTRCrBI&hl=en_US&fs=1&rel=0" frameborder="0" style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;"></iframe></div>
 
 First we will need to track the face, i.e. to get two functions ``fx`` and ``fy`` such that ``(fx(t),fy(t))`` gives the position of the center of the head at time ``t``. This will be easily done with
 `manual_tracking`. Then we will need to blur the area of the video around the center of the head.
