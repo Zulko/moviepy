@@ -2,16 +2,10 @@
 Tests meant to be run with pytest
 """
 
-import sys
 import os
 import pytest
 
 from moviepy.editor import *
-
-
-#@pytest.fixture
-#def example_video1():
-#    pass
 
 global knights, knights10
 
@@ -49,13 +43,6 @@ def test_issue_407():
     #_video=concatenate_videoclips([_text])
     #assert _video.fps == None
 
-
-def test_PR_306():
-    assert TextClip.list('font') != []
-    assert TextClip.list('color') != []
-
-    with pytest.raises(Exception, message="Expecting Exception"):
-         TextClip.list('blah')
 
 if __name__ == '__main__':
    pytest.main()
