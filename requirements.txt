@@ -3,3 +3,4 @@ decorator
 imageio
 numpy
 tqdm
+Pillow
