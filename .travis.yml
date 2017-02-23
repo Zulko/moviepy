@@ -7,9 +7,11 @@ python:
   - "3.5"
   - "3.6"
 # command to install dependencies
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y ffmpeg
 install: 
-  - "apt-get update && apt-get install ffmpeg"
-  - "python setup.py install"
-  - "pip install -r requirements.txt"
+  - python setup.py install
+  - pip install -r requirements.txt
 # command to run tests
 script: py.test
