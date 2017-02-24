@@ -11,7 +11,7 @@ before_install:
 #  - identify -list policy
   - sudo rm -f /etc/ImageMagick/policy.xml
   - ls -lah /etc/ImageMagick
-  - sudo echo "test" > /etc/ImageMagic/test.blah
+  - sudo echo "test" > /etc/ImageMagick/test.blah
   - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
 #  - identify -list policy
   - mkdir media
