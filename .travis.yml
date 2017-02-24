@@ -13,9 +13,10 @@ before_install:
   - pwd
   - mkdir media
   - sudo chmod a+rwx /tmp
-  - convert -list configure
 install:
   - python setup.py install
   - pip install -r requirements.txt
 # command to run tests
 script: py.test
+after_script:
+  - ls -lah /tmp
