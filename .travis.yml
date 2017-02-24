@@ -8,9 +8,10 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
   - sudo apt-get install  -y imagemagick
-  - identify -list policy
-  - sudo rm -f /etc/ImageMagick/policy.xml
-  - identify -list policy
+#  - identify -list policy
+#  - sudo rm -f /etc/ImageMagick/policy.xml
+  - cat <?xml version="1.0" encoding="UTF-8"?><policymap></policymap> > /etc/ImageMagick/policy.xml
+#  - identify -list policy
   - pwd
   - mkdir media
   - sudo chmod a+rwx /tmp
