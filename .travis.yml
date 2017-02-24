@@ -13,8 +13,7 @@ before_install:
   - "sudo apt-get install -y youtube-dl"
   - sudo apt-get install  -y imagemagick
   - identify -list policy
-  - rm -f /etc/ImageMagick-6/policy.xml
-  - rm -f /etc/ImageMagick-7/policy.xml
+  - rm -f /etc/ImageMagick/policy.xml
   - mkdir media
 install: 
   - "python setup.py install"
