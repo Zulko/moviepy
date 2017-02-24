@@ -9,11 +9,12 @@ before_install:
   - sudo apt-get install -y ffmpeg
   - sudo apt-get install  -y imagemagick
   - mkdir media
-  - mkdir $HOME/.magick
+  - mkdir $HOME/.config/ImageMagick
   - cp /etc/ImageMagick/policy.xml $HOME/.magick/policy.xml
-  - sed -i -e 's/<policy domain="path" rights="none" pattern="@\*" \/>/<!-- <policy domain="path" rights="none" pattern="@*" \/> -->/g' $HOME/.magick/policy.xml
-  - cat $HOME/.magick/policy.xml 
-  - export MAGICK_CONFIGURE_PATH=$HOME/.magick
+  - sudo rm -rf /etc/ImageMagic/policy.xml
+  - sed -i -e 's/<policy domain="path" rights="none" pattern="@\*" \/>/<!-- <policy domain="path" rights="none" pattern="@*" \/> -->/g' $HOME/.config/ImageMagick/policy.xml
+  - cat $HOME/.config/ImageMagick/policy.xml 
+#  - export MAGICK_CONFIGURE_PATH=$HOME/.magick
 install:
   - python setup.py install
   - pip install -r requirements.txt
