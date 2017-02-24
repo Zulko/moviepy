@@ -13,7 +13,7 @@ before_install:
   - pwd
   - mkdir media
   - sudo chmod a+rwx /tmp
-  - ls -lah /tmp
+  - convert -list configure
 install:
   - python setup.py install
   - pip install -r requirements.txt
