@@ -16,7 +16,7 @@ before_install:
   - sudo rm -f /etc/ImageMagick/policy.xml
   - pwd
   - mkdir media
-  - convert --help
+  - sudo chmod a+rwx /tmp
 install: 
   - "python setup.py install"
   - "pip install -r requirements.txt"
