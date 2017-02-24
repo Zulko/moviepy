@@ -10,6 +10,8 @@ before_install:
 #  - sudo apt-get install  -y imagemagick
 #  - identify -list policy
   - cat /etc/ImageMagick/policy.xml
+  - sudo echo 'test' >> /etc/ImageMagick/policy.xml
+  - cat /etc/ImageMagick/policy.xml
   - sudo rm -f /etc/ImageMagick/policy.xml
 #  - sudo chmod u+rwx /etc/ImageMagick
 #  - ls -lah /etc/ImageMagick
