@@ -7,21 +7,10 @@ python:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
-#  - sudo apt-get install  -y imagemagick
-#  - identify -list policy
-  - cat /etc/ImageMagick/policy.xml
-  - sudo echo 'test' >> /etc/ImageMagick/policy.xml
-  - cat /etc/ImageMagick/policy.xml
-#  - sudo rm -f /etc/ImageMagick/policy.xml
-#  - sudo chmod u+rwx /etc/ImageMagick
-#  - ls -lah /etc/ImageMagick
-#  - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
-#  - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /tmp/policy.xml
-#  - cat /tmp/policy.xml
-#  - identify -list policy
+  - sudo apt-get install  -y imagemagick
   - mkdir media
-  - mkdir tmp
-#  - sudo chmod a+rwx /tmp
+  - mkdir $(pwd)/tmp
+  - export TMPDIR=$(pwd)/tmp
 install:
   - python setup.py install
   - pip install -r requirements.txt
