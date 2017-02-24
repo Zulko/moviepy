@@ -20,6 +20,7 @@ before_install:
 #  - cat /tmp/policy.xml
 #  - identify -list policy
   - mkdir media
+  - mkdir tmp
 #  - sudo chmod a+rwx /tmp
 install:
   - python setup.py install
