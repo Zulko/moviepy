@@ -13,6 +13,7 @@ before_install:
   - cp /etc/ImageMagick/policy.xml $HOME/.magick/policy.xml
   - sed -i -e 's/<policy domain="path" rights="none" pattern="@\*" \/>/<!-- <policy domain="path" rights="none" pattern="@*" \/> -->/g' $HOME/.magick/policy.xml
   - cat $HOME/.magick/policy.xml 
+  - export MAGICK_CONFIGURE_PATH=$HOME/.magick
 install:
   - python setup.py install
   - pip install -r requirements.txt
