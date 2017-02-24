@@ -12,7 +12,7 @@ before_install:
   - sudo rm -f /etc/ImageMagick/policy.xml
   - sudo chmod u+rwx /etc/ImageMagick
   - ls -lah /etc/ImageMagick
-  - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
+#  - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
   - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /tmp/policy.xml
   - cat /tmp/policy.xml
 #  - identify -list policy
