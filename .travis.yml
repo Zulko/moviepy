@@ -13,7 +13,7 @@ before_install:
   - cp /etc/ImageMagick/policy.xml $HOME/.config/ImageMagick/policy.xml
   - sudo rm -rf /etc/ImageMagick/policy.xml
 #  - sed -i -e 's/<policy domain="path" rights="none" pattern="@\*" \/>/<policy domain="path" rights="read|write" pattern="@*" \/>/g' $HOME/.config/ImageMagick/policy.xml
-  - sed -i -e 's/</policymap>/<policy domain="path" rights="read|write" pattern="*" \/></policymap>/g' $HOME/.config/ImageMagick/policy.xml
+  - sed -i -e 's/<\/policymap>/<policy domain="path" rights="read|write" pattern="*" \/><\/policymap>/g' $HOME/.config/ImageMagick/policy.xml
 #  - sed -i -e 's/<policy domain="path" rights="none" pattern="@\*" \/>/<!-- <policy domain="path" rights="none" pattern="@*" \/> -->/g' /etc/ImageMagick/policy.xml
   - cat $HOME/.config/ImageMagick/policy.xml 
   - export MAGICK_CONFIGURE_PATH=$HOME/.config/ImageMagick/
