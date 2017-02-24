@@ -10,7 +10,7 @@ before_install:
   - sudo apt-get install  -y imagemagick
 #  - identify -list policy
 #  - sudo rm -f /etc/ImageMagick/policy.xml
-  - echo <?xml version="1.0" encoding="UTF-8"?><policymap></policymap> > /etc/ImageMagick/policy.xml
+  - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
 #  - identify -list policy
   - pwd
   - mkdir media
