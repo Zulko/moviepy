@@ -9,8 +9,8 @@ before_install:
   - sudo apt-get install -y ffmpeg
 #  - sudo apt-get install  -y imagemagick
 #  - identify -list policy
-  - ls -lah /etc/ImageMagick
   - sudo rm -f /etc/ImageMagick/policy.xml
+  - ls -lah /etc/ImageMagick
   - sudo echo '<?xml version="1.0" encoding="UTF-8"?><policymap></policymap>' > /etc/ImageMagick/policy.xml
 #  - identify -list policy
   - mkdir media
