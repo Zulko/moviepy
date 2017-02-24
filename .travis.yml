@@ -11,6 +11,7 @@ before_install:
   - mkdir media
   - mkdir $HOME/.magick
   - cp /etc/ImageMagick/policy.xml $HOME/.magick/policy.xml
+  - sed -i -e 's/<policy domain="path" rights="none" pattern="@*" \/>/<!-- <policy domain="path" rights="none" pattern="@*" \/> -->/g' $HOME/.magick/policy.xml
   - cat $HOME/.magick/policy.xml 
 install:
   - python setup.py install
