@@ -1,0 +1,8 @@
+tqdm>=4.11.2
+imageio>=2.1.2
+decorator>=4.0.11
+pillow>=4.0.0
+numpy>=1.11.2
+pytest=3.0.0
+# scikit-image>=0.12
+# opencv-python>=2.4.6
