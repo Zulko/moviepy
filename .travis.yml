@@ -7,7 +7,7 @@ python:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
-  - sudo apt-get install  -y imagemagick
+#  - sudo apt-get install  -y imagemagick
   - mkdir media
   - mkdir -p $HOME/.config/ImageMagick
   - cp /etc/ImageMagick/policy.xml $HOME/.config/ImageMagick/policy.xml
