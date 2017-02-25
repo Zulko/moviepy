@@ -33,14 +33,15 @@ def test_issue_145():
          _final = concatenation([_video], method = 'composite')
 
 def test_issue_407():
-    _video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
-    _video.fps=30
-    assert round(_video.fps) == 30
+    _red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
+    _red.fps=30
+    assert round(_red.fps) == 30
 
-    _text=TextClip("blah").set_duration(2)  #TextClip has no fps attribute
+    _green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
+    _blue=ColorClip((640, 480), col=(0,0,255)).set_duration(2)  #ColorClip has no fps attribute
 
-    _video1=concatenate_videoclips([_text, _video, _video])
-    assert _video.fps == _video1.fps
+    _video=concatenate_videoclips([_red, _green, _blue])
+    assert _video.fps == _red.fps
 
     # uncomment when PR 416 is merged.
     #_video1=concatenate_videoclips([_text])
