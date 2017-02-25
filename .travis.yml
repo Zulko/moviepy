@@ -24,11 +24,7 @@ before_install:
   - convert -list configure | grep DELEGATES
 install:
   - python setup.py install
-  - if [ $TRAVIS_PYTHON_VERSION == 2.7]; then pip install -r requirements.txt; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.3]; then pip install -r requirements33.txt; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.4]; then pip install -r requirements.txt; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.5]; then pip install -r requirements.txt; fi
-  - if [ $TRAVIS_PYTHON_VERSION == 3.6]; then pip install -r requirements.txt; fi
+#  - pip install -r requirements.txt
 
 # command to run tests
 script: py.test
