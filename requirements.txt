@@ -1,6 +1,2 @@
-pytest
-decorator
-imageio
-numpy
-tqdm
-Pillow
+scikit-image
+pillow
