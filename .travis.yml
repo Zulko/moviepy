@@ -19,6 +19,7 @@ before_install:
 #  - cat $HOME/.config/ImageMagick/policy.xml 
 # - export MAGICK_CONFIGURE_PATH=$HOME/.config/ImageMagick/
   - identify -list policy
+  - convert -version
 install:
   - python setup.py install
   - pip install -r requirements.txt
