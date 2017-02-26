@@ -1,7 +1,7 @@
 """
 This module implements VideoClip (base class for video clips) and its
 main subclasses:
-- Animated clips:     VideofileClip, DirectoryClip
+- Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
 
@@ -40,7 +40,7 @@ from ..decorators import (apply_to_mask,
                           convert_masks_to_RGB,
                           use_clip_fps_by_default)
 
-from ..compat import DEVNULL
+from ..compat import PY3, DEVNULL
 
 
 class VideoClip(Clip):
@@ -379,7 +379,7 @@ class VideoClip(Clip):
         ------
 
         The resulting image sequence can be read using e.g. the class
-        ``DirectoryClip``.
+        ``ImageSequenceClip``.
 
         """
 
@@ -550,7 +550,7 @@ class VideoClip(Clip):
 
         # is the position relative (given in % of the clip's size) ?
         if self.relative_pos:
-            for i, dim in enumerate(wf, hf):
+            for i, dim in enumerate([wf, hf]):
                 if not isinstance(pos[i], str):
                     pos[i] = dim * pos[i]
 
@@ -916,8 +916,12 @@ class ImageClip(VideoClip):
 
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
-            img = imread(img)
+        if PY3:
+           if isinstance(img, str):
+              img = imread(img)
+        else:
+           if isinstance(img, (str, unicode)):
+              img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
@@ -1064,7 +1068,7 @@ class TextClip(ImageClip):
       for a list of acceptable names.
 
     color
-      Color of the background. See ``TextClip.list('color')`` for a
+      Color of the text. See ``TextClip.list('color')`` for a
       list of acceptable names.
 
     font
@@ -1199,9 +1203,12 @@ class TextClip(ImageClip):
         lines = result.splitlines()
 
         if arg == 'font':
-            return [l[8:] for l in lines if l.startswith("  Font:")]
+            return [l.decode('UTF-8')[8:] for l in lines if l.startswith(b"  Font:")]
         elif arg == 'color':
-            return [l.split(" ")[1] for l in lines[2:]]
+            return [l.split(b" ")[0] for l in lines[2:]]
+        else:
+            raise Exception("Moviepy:Error! Argument must equal "
+                            "'font' or 'color'")
 
     @staticmethod
     def search(string, arg):
