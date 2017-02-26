@@ -40,11 +40,7 @@ from ..decorators import (apply_to_mask,
                           convert_masks_to_RGB,
                           use_clip_fps_by_default)
 
-from ..compat import PY3
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from ..compat import PY3, DEVNULL
 
 
 class VideoClip(Clip):

@@ -7,13 +7,7 @@ import subprocess as sp
 import os
 import numpy as np
 
-from moviepy.compat import PY3
-
-if PY3:
-    from subprocess import DEVNULL  # py3k
-else:
-    DEVNULL = open(os.devnull, 'wb')
-
+from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
 from moviepy.tools import verbose_print
 

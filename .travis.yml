@@ -1,0 +1,16 @@
+language: python
+python:
+  - "2.7"
+  - "3.3"
+  - "3.4"
+  - "3.5"
+  - "3.6"
+# command to install dependencies
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y ffmpeg
+  - mkdir media
+install:
+  - python setup.py install
+# command to run tests
+script: py.test
