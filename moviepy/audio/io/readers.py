@@ -6,12 +6,8 @@ from moviepy.tools import cvsecs
 
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.config import get_setting
-from moviepy.compat import PY3
+from moviepy.compat import PY3, DEVNULL
 import os
-if PY3:
-    from subprocess import DEVNULL  # py3k
-else:
-    DEVNULL = open(os.devnull, 'wb')
 
 
 class FFMPEG_AudioReader:
