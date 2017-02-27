@@ -13,9 +13,6 @@ def download_url(url, filename):
        download_webfile(url, filename)
        print("Downloading complete...\n")
 
-def download_youtube_video(youtube_id, filename):
-    # FYI..  travis-ci doesn't like youtube-dl
-    download_url(youtube_id, filename)
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -23,14 +20,18 @@ def test_download_media(capsys):
        download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
                     "media/python_logo.png")
 
-    #knights=VideoFileClip("media/knights.mp4")
-    #knights10 = knights.subclip(60,70)
-
 
 def test_issue_145():
     _video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
     with pytest.raises(Exception, message="Expecting Exception"):
          _final = concatenation([_video], method = 'composite')
+        
+def test_issue_285():
+    clip_1 = ImageClip('media/python_logo.png', duration=10)
+    clip_2 = ImageClip('media/python_logo.png', duration=10)
+    clip_3 = ImageClip('media/python_logo.png', duration=10)
+
+    merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
 
 def test_issue_407():
     _red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
@@ -44,7 +45,7 @@ def test_issue_407():
     assert _video.fps == _red.fps
 
     # uncomment when PR 416 is merged.
-    #_video1=concatenate_videoclips([_text])
+    #_video1=concatenate_videoclips([_green])
     #assert _video1.fps == None
 
 def test_issue_417():
