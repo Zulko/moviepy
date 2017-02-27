@@ -11,6 +11,9 @@ before_install:
   - sudo apt-get install -y ffmpeg
   - mkdir media
 install:
+  - pip install coveralls
   - python setup.py install
 # command to run tests
 script: py.test
+after_success:
+  - coveralls
