@@ -43,9 +43,9 @@ def test_issue_407():
     _video=concatenate_videoclips([_red, _green, _blue])
     assert _video.fps == _red.fps
 
-    # uncomment when PR 416 is merged.
-    #_video1=concatenate_videoclips([_text])
-    #assert _video1.fps == None
+def test_issue_416():
+    _video1=concatenate_videoclips([_green])
+    assert _video1.fps == None
 
 def test_issue_417():
     # failed in python2
