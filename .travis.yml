@@ -14,6 +14,6 @@ install:
   - pip install coveralls
   - python setup.py install
 # command to run tests
-script: py.test --cov=moviepy tests/
+script: py.test
 after_success:
   - coveralls
