@@ -7,11 +7,7 @@ import subprocess as sp
 import os
 import numpy as np
 
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
-
+from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
 from moviepy.tools import verbose_print
 
@@ -134,14 +130,17 @@ class FFMPEG_VideoWriter:
     def write_frame(self, img_array):
         """ Writes one frame in the file."""
         try:
-            self.proc.stdin.write(img_array.tostring())
+            if PY3:
+               self.proc.stdin.write(img_array.tobytes())
+            else:
+               self.proc.stdin.write(img_array.tostring())
         except IOError as err:
             ffmpeg_error = self.proc.stderr.read()
             error = (str(err) + ("\n\nMoviePy error: FFMPEG encountered "
                                  "the following error while writing file %s:"
                                  "\n\n %s" % (self.filename, ffmpeg_error)))
 
-            if "Unknown encoder" in ffmpeg_error:
+            if b"Unknown encoder" in ffmpeg_error:
 
                 error = error+("\n\nThe video export "
                   "failed because FFMPEG didn't find the specified "
@@ -150,7 +149,7 @@ class FFMPEG_VideoWriter:
                   "write_videofile. For instance:\n"
                   "  >>> clip.write_videofile('myvid.webm', codec='libvpx')")%(self.codec)
 
-            elif "incorrect codec parameters ?" in ffmpeg_error:
+            elif b"incorrect codec parameters ?" in ffmpeg_error:
 
                  error = error+("\n\nThe video export "
                   "failed, possibly because the codec specified for "
@@ -164,13 +163,13 @@ class FFMPEG_VideoWriter:
                   "video codec."
                   )%(self.codec, self.ext)
 
-            elif  "encoder setup failed" in ffmpeg_error:
+            elif  b"encoder setup failed" in ffmpeg_error:
 
                 error = error+("\n\nThe video export "
                   "failed, possibly because the bitrate you specified "
                   "was too high or too low for the video codec.")
 
-            elif "Invalid encoder type" in ffmpeg_error:
+            elif b"Invalid encoder type" in ffmpeg_error:
 
                 error = error + ("\n\nThe video export failed because the codec "
                   "or file extension you provided is not a video")

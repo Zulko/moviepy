@@ -15,12 +15,9 @@ logging.captureWarnings(True)
 import numpy as np
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
+from moviepy.compat import PY3, DEVNULL
 
 import os
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
 
 
 class FFMPEG_VideoReader:
