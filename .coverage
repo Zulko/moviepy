@@ -14,4 +14,6 @@ before_install:
 install:
   - python setup.py install
 # command to run tests
-script: py.test
+script: py.test 
+after_success:
+  - coveralls
