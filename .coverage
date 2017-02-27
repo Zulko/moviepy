@@ -13,7 +13,10 @@ before_install:
   - pip install pytest-cov
 install:
   - python setup.py install
+  - py.test moviepy/tests.py --cov=moviepy
 # command to run tests
-script: py.test 
+  - cd -
+script:
+  - py.test coveralls/tests.py --doctest-modules --pep8 coveralls -v --cov coveralls --cov-report term-missing
 after_success:
   - coveralls

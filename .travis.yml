@@ -10,7 +10,6 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
   - mkdir media
-  - pip install pytest-cov
 install:
   - python setup.py install
 # command to run tests
