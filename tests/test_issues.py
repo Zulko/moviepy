@@ -44,6 +44,7 @@ def test_issue_407():
     assert _video.fps == _red.fps
 
 def test_issue_416():
+    _green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
     _video1=concatenate_videoclips([_green])
     assert _video1.fps == None
 
