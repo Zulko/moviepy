@@ -15,6 +15,6 @@ install:
   - pip install pytest-cov
   - python setup.py install
 # command to run tests
-script: py.test --cov=moviepy tests/
+script: py.test --cov
 after_success:
   - coveralls
