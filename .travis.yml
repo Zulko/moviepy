@@ -16,7 +16,7 @@ install:
   - python setup.py install
 # command to run tests
 before_script:
-  - py.test tests/ --cov=moviepy
+  - py.test tests/ --cov
 script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 after_success:
   - coveralls
