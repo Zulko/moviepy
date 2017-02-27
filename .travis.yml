@@ -15,6 +15,8 @@ install:
   - pip install pytest-cov
   - python setup.py install
 # command to run tests
-script: py.test --cov
+before_script:
+  - py.test tests/ --cov=moviepy
+script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 after_success:
   - coveralls
