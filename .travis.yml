@@ -10,10 +10,10 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
   - mkdir media
-  - pip install python-coveralls
+  - pip install pytest-cov
 install:
   - python setup.py install
 # command to run tests
-script: py.test
+script: py.test --cov=moviepy tests/
 after_success:
   - coveralls
