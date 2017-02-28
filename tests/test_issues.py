@@ -30,7 +30,7 @@ def test_download_media(capsys):
 def test_issue_145():
     _video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
     with pytest.raises(Exception, message="Expecting Exception"):
-         _final = concatenation([_video], method = 'composite')
+         _final = concatenate_videoclips([_video], method = 'composite')
 
 def test_issue_407():
     _red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
