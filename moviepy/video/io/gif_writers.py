@@ -6,10 +6,7 @@ from moviepy.decorators import (requires_duration,use_clip_fps_by_default)
 from moviepy.tools import verbose_print, subprocess_call
 import numpy as np
 
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from moviepy.compat import DEVNULL
 
 try:
   import imageio
