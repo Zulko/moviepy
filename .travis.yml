@@ -8,6 +8,7 @@ python:
   - "3.6"
 # command to install dependencies
 before_install:
+  - sudo add-apt-repository 'deb  http://ppa.launchpad.net/jon-severinsson/ffmpeg/ubuntu trusty main
   - sudo apt-get -qq update
   - sudo apt-get install -y ffmpeg
   - mkdir media
