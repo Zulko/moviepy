@@ -91,4 +91,3 @@ class VideoFileClip(VideoClip):
             del self.reader
         except AttributeError:
             pass
-
