@@ -1,3 +1,4 @@
+dist: Trusty
 language: python
 python:
   - "2.7"
@@ -7,7 +8,8 @@ python:
   - "3.6"
 # command to install dependencies
 before_install:
-  - sudo apt-get -qq update
+  - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
+  - sudo apt-get -y update
   - sudo apt-get install -y ffmpeg
   - mkdir media
 install:

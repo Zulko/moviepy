@@ -64,7 +64,7 @@ def test_5():
     start = time.time()
     tools.sys_write_flush("hello world")
     myTime = time.time() - start
-    assert myTime <  0.0001
+    assert myTime <  0.001
     file = sys.stdout.read()
     assert file == b""
 
