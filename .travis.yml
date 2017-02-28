@@ -9,7 +9,7 @@ python:
 # command to install dependencies
 before_install:
   - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
-  - sudo apt-get --q update
+  - sudo apt-get --qq update
   - sudo apt-get install -y ffmpeg
   - mkdir media
 install:
