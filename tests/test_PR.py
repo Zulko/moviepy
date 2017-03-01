@@ -32,6 +32,7 @@ def test_PR_339():
     #overlay = TextClip(txt='foo', method='label')
     pass
 
+
 def test_PR_424():
     # Recommended use
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
