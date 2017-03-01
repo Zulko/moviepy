@@ -8,10 +8,7 @@ import warnings
 import re
 
 import os
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from .compat import DEVNULL
 
 
 def sys_write_flush(s):
