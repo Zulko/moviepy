@@ -2,9 +2,9 @@ import pytest
 from moviepy.editor import *
 
 def test_clips_array():
-    red = ColorClip((1024,800), col=(255,0,0))
-    green = ColorClip((1024,800), col=(0,255,0))
-    blue = ColorClip((1024,800), col=(0,0,255))
+    red = ColorClip((1024,800), color=(255,0,0))
+    green = ColorClip((1024,800), color=(0,255,0))
+    blue = ColorClip((1024,800), color=(0,0,255))
 
     video = clips_array([[red, green, blue]])
 
@@ -14,9 +14,9 @@ def test_clips_array():
 
 
 def test_clips_array():
-    red = ColorClip((1024,800), col=(255,0,0))
-    green = ColorClip((1024,800), col=(0,255,0))
-    blue = ColorClip((1024,800), col=(0,0,255))
+    red = ColorClip((1024,800), color=(255,0,0))
+    green = ColorClip((1024,800), color=(0,255,0))
+    blue = ColorClip((1024,800), color=(0,0,255))
 
     video = clips_array([[red, green, blue]]).set_duration(5)
 

@@ -17,23 +17,24 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_issue_145():
-    video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
+    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     with pytest.raises(Exception, message="Expecting Exception"):
-         final = concatenate_videoclips([_video], method = 'composite')
+         final = concatenate_videoclips([video], method = 'composite')
 
 def test_issue_407():
-    red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
+    red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     red.fps=30
     assert round(red.fps) == 30
 
-    green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
-    blue=ColorClip((640, 480), col=(0,0,255)).set_duration(2)  #ColorClip has no fps attribute
+    #ColorClip has no fps attribute
+    green=ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    blue=ColorClip((640, 480), color=(0,0,255)).set_duration(2)
 
     video=concatenate_videoclips([red, green, blue])
     assert video.fps == red.fps
 
 def test_issue_416():
-    green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
+    green=ColorClip((640, 480), color=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
     video1=concatenate_videoclips([green])
     assert video1.fps == None
 
