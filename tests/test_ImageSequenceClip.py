@@ -2,6 +2,7 @@ import pytest
 from moviepy.editor import *
 
 import sys, os
+print(os.getcwd())
 sys.path.insert(0, os.path.abspath("."))
 import download_media
 
