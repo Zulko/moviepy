@@ -1,7 +1,8 @@
 import pytest
 from moviepy.editor import *
 
-import sys, os
+# must have to work on travis-ci
+import sys
 sys.path.append("tests")
 import download_media
 

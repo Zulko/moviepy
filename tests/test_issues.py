@@ -6,6 +6,10 @@ import os
 import pytest
 
 from moviepy.editor import *
+
+# must have to work on travis-ci
+import sys
+sys.path.append("tests")
 import download_media
 
 def test_download_media(capsys):
@@ -13,25 +17,25 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_issue_145():
-    _video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
+    video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
     with pytest.raises(Exception, message="Expecting Exception"):
-         _final = concatenate_videoclips([_video], method = 'composite')
+         final = concatenate_videoclips([_video], method = 'composite')
 
 def test_issue_407():
-    _red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
-    _red.fps=30
-    assert round(_red.fps) == 30
+    red = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
+    red.fps=30
+    assert round(red.fps) == 30
 
-    _green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
-    _blue=ColorClip((640, 480), col=(0,0,255)).set_duration(2)  #ColorClip has no fps attribute
+    green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
+    blue=ColorClip((640, 480), col=(0,0,255)).set_duration(2)  #ColorClip has no fps attribute
 
-    _video=concatenate_videoclips([_red, _green, _blue])
-    assert _video.fps == _red.fps
+    video=concatenate_videoclips([red, green, blue])
+    assert video.fps == red.fps
 
 def test_issue_416():
-    _green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
-    _video1=concatenate_videoclips([_green])
-    assert _video1.fps == None
+    green=ColorClip((640, 480), col=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
+    video1=concatenate_videoclips([green])
+    assert video1.fps == None
 
 def test_issue_417():
     # failed in python2
