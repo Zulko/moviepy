@@ -1,7 +1,3 @@
-"""
-Tests meant to be run with pytest
-"""
-
 import os
 
 from moviepy.editor import *
