@@ -6,26 +6,11 @@ import os
 import pytest
 
 from moviepy.editor import *
-
-def download_url(url, filename):
-    if not os.path.exists(filename):
-       print("\nDownloading %s\n" % filename)
-       download_webfile(url, filename)
-       print("Downloading complete...\n")
-
-def download_youtube_video(youtube_id, filename):
-    # FYI..  travis-ci doesn't like youtube-dl
-    download_url(youtube_id, filename)
+import download_media
 
 def test_download_media(capsys):
     with capsys.disabled():
-       #download_youtube_video("zvCvOC2VwDc", "media/knights.mp4")
-       download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
-                    "media/python_logo.png")
-
-    #knights=VideoFileClip("media/knights.mp4")
-    #knights10 = knights.subclip(60,70)
-
+       download_media.download()
 
 def test_issue_145():
     _video = ColorClip((800, 600), col=(255,0,0)).set_duration(5)
