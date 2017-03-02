@@ -18,6 +18,9 @@ def download_youtube_video(youtube_id, filename):
 
 
 def download():
+    if not os.path.exists("media"):
+       os.mkdir("media")
+
     download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
                  "media/python_logo.png")
 
