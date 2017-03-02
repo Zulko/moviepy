@@ -10,6 +10,7 @@ import subprocess as sp
 import multiprocessing
 import tempfile
 from copy import copy
+import warnings
 
 from tqdm import tqdm
 import numpy as np
@@ -1031,13 +1032,24 @@ class ColorClip(ImageClip):
 
     ismask
       Set to true if the clip will be used as a mask.
+
+    col
+      Has been deprecated. Do not use.
     """
 
-
-    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
+    def __init__(self, size, color=None, ismask=False, duration=None, col=None):
+        if col is not None:
+            warnings.warn("The `ColorClip` parameter `col` has been deprecated."
+                          " Please use `color` instead", DeprecationWarning)
+            if color is not None:
+                warnings.warn("The arguments `color` and `col` have both been "
+                              "passed to `ColorClip` so `col` has been ignored.",
+                              UserWarning)
+            else:
+                color = col
         w, h = size
-        shape = (h, w) if np.isscalar(col) else (h, w, len(col))
-        ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
+        shape = (h, w) if np.isscalar(color) else (h, w, len(color))
+        ImageClip.__init__(self, np.tile(color, w * h).reshape(shape),
                            ismask=ismask, duration=duration)
 
 
