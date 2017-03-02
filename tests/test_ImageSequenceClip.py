@@ -1,7 +1,8 @@
 import pytest
 from moviepy.editor import *
+
 import sys, os
-sys.path.append(os.getcwd())
+sys.path.insert(0, os.path.abspath("."))
 import download_media
 
 def test_download_media(capsys):
