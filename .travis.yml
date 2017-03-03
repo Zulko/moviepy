@@ -14,7 +14,8 @@ before_install:
   - mkdir media
 install:   
   - pip install matplotlib
-  - pip install scikit-learn
+  - pip install -U  scikit-learn
+  - pip install scipy
   - pip install coveralls
   - pip install pytest-cov
   - python setup.py install
