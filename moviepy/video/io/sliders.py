@@ -40,8 +40,7 @@ def sliders(f, sliders_properties, wait_for_validation = False):
     
     sliders = []
     
-    for i, properties in enumerate(sliders_properties):
-        
+    for i, properties in enumerate(sliders_properties):    
         ax = plt.axes([0.1 , 0.95-0.9*(i+1)*slider_width,
                        0.8 , 0.8* slider_width])
         if not isinstance(properties,dict):
@@ -52,18 +51,13 @@ def sliders(f, sliders_properties, wait_for_validation = False):
     
     # CREATE THE CALLBACK FUNCTIONS
     
-    def on_changed(event) : 
-        
+    def on_changed(event) :     
         res = f(*(s.val for s in sliders))
-        
         if res is not None:
-            
             print( res )
     
     def on_key_press(event):
-        
         if event.key is 'enter':
-            
             on_changed(event)   
     
     figure.canvas.mpl_connect('key_press_event', on_key_press)
@@ -71,12 +65,9 @@ def sliders(f, sliders_properties, wait_for_validation = False):
     # AUTOMATIC UPDATE ?
     
     if not wait_for_validation:
-        
         for s in sliders :
-            
             s.on_changed(on_changed)
     
     
     # DISPLAY THE SLIDERS
-    
     plt.show()
