@@ -147,9 +147,10 @@ class AudioClip(Clip):
     
     @requires_duration
     def write_audiofile(self,filename, fps=44100, nbytes=2,
-                     buffersize=2000, codec=None,
-                     bitrate=None, ffmpeg_params=None,
-                     write_logfile=False, verbose=True):
+                        buffersize=2000, codec=None,
+                        bitrate=None, ffmpeg_params=None,
+                        write_logfile=False, verbose=True,
+                        progress_bar=True):
         """ Writes an audio file from the AudioClip.
 
 
@@ -188,6 +189,8 @@ class AudioClip(Clip):
           If True, displays informations
 
 
+
+
         """
 
         if codec is None:
@@ -200,11 +203,11 @@ class AudioClip(Clip):
                        "write_videofile.")
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
-                      codec=codec, bitrate=bitrate, write_logfile=write_logfile,
-                      verbose=verbose, ffmpeg_params=ffmpeg_params)
+                                 codec=codec, bitrate=bitrate, write_logfile=write_logfile,
+                                 verbose=verbose, ffmpeg_params=ffmpeg_params,
+                                 progress_bar=progress_bar)
 
-###
-#
+
 # The to_audiofile method is replaced by the more explicit write_audiofile.
 AudioClip.to_audiofile = deprecated_version_of(AudioClip.write_audiofile,
                                                'to_audiofile')
