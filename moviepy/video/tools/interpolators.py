@@ -20,7 +20,6 @@ class Interpolator:
         self.tmin, self.tmax = min(tt), max(tt)
 
     def __call__(self, t):
-
         return np.interp(t, self.tt, self.ss, self.left, self.right)
 
 class Trajectory:
@@ -36,11 +35,9 @@ class Trajectory:
         return np.array([self.xi(t), self.yi(t)])
 
     def addx(self, x):
-
         return Trajectory(self.tt, self.xx+x, self.yy)
 
     def addy(self, y):
-
         return Trajectory(self.tt, self.xx, self.yy+y)
 
     def update_interpolators(self):
