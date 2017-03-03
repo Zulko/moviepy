@@ -24,11 +24,24 @@ def test_issue_145():
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     red.fps=30
-    assert round(red.fps) == 30
+    assert red.fps == 30
+    assert red.w == 800
+    assert red.h == 600
+    assert red.size == (800, 600)
 
     #ColorClip has no fps attribute
     green=ColorClip((640, 480), color=(0,255,0)).set_duration(2)
     blue=ColorClip((640, 480), color=(0,0,255)).set_duration(2)
+
+    assert green.w == blue.w == 640
+    assert green.h == blue.h == 480
+    assert green.size == blue.size == (640, 480)
+
+    with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
+         green.fps
+
+    with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
+         blue.fps
 
     video=concatenate_videoclips([red, green, blue])
     assert video.fps == red.fps
