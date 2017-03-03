@@ -66,7 +66,6 @@ class Trajectory:
     
     @staticmethod
     def load_list(filename):
-
         arr = np.loadtxt(filename, delimiter='\t').T
         Nlines = arr.shape[0]
         return [Trajectory(tt=1.0*a[0]/1000, xx=a[1], yy=a[2])
