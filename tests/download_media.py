@@ -22,3 +22,6 @@ def download():
 
     download_url("http://matplotlib.org/_images/barh_demo.png",
                  "media/matplotlib_demo1.png")
+
+    download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Afterimagenpov.svg/1200px-Afterimagenpov.svg.png",
+                 "media/afterimage.png")
