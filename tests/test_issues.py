@@ -59,5 +59,12 @@ def test_issue_417():
     final = CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
 
+def test_issue_467():
+    cad = 'media/python_logo.png'
+    clip = ImageClip(cad)
+
+    #caused an error, NameError: global name 'copy' is not defined
+    clip = clip.fx(vfx.blink, d_on=1, d_off=1)
+
 if __name__ == '__main__':
    pytest.main()
