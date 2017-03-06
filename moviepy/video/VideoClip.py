@@ -255,7 +255,8 @@ class VideoClip(Clip):
           These will be files ending with '.log' with the name of the
           output file in them.
 
-
+        progress_bar
+          If false, will not display the red progress bar
 
         Examples
         ========
@@ -326,7 +327,7 @@ class VideoClip(Clip):
                                        audio_nbytes, audio_bufsize,
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
-                                       verbose=verbose)
+                                       verbose=verbose, progress_bar=progress_bar)
 
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
