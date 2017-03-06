@@ -42,5 +42,9 @@ def test_PR_424():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10, col=(2,2,2))
 
 
+def test_PR_458():
+    clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
+    clip.write_videofile("test.mp4", progress_bar=False, fps=30)
+
 if __name__ == '__main__':
    pytest.main()
