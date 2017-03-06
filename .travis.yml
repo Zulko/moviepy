@@ -13,9 +13,10 @@ before_install:
   - sudo apt-get install -y ffmpeg
   - mkdir media
 install:   
-  - if [[ "${PYTHON_VERSION:0:2}" == "3.4" ]]; then pip install matplotlib; fi
-  - if [[ "${PYTHON_VERSION:0:2}" == "3.5" ]]; then pip install matplotlib; fi
-  - if [[ "${PYTHON_VERSION:0:2}" == "3.6" ]]; then pip install matplotlib; fi
+  - echo ${PYTHON_VERSION}
+  - if [[ "${PYTHON_VERSION:0:3}" == "3.4" ]]; then pip install matplotlib; fi
+  - if [[ "${PYTHON_VERSION:0:3}" == "3.5" ]]; then pip install matplotlib; fi
+  - if [[ "${PYTHON_VERSION:0:3}" == "3.6" ]]; then pip install matplotlib; fi
   - pip install -U  scikit-learn
   - pip install scipy
   - pip install coveralls
