@@ -22,6 +22,10 @@ def test_issue_145():
          final = concatenate_videoclips([video], method = 'composite')
 
 def test_issue_368():
+    import sys
+    if sys.version_info < 3.4:   #matplotlib only supported in python >= 3.4
+       return
+
     import numpy as np
     import matplotlib.pyplot as plt
     from sklearn import svm # sklearn = scikit-learn
