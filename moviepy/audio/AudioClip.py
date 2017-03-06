@@ -187,9 +187,9 @@ class AudioClip(Clip):
 
         verbose
           If True, displays informations
-
-
-
+          
+        progress_bar
+          If False, will not display the red progress bar
 
         """
 
