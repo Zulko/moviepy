@@ -26,15 +26,14 @@ def test_issue_368():
     if sys.version_info < (3,4):   #matplotlib only supported in python >= 3.4
        return
 
-    # $DISPLAY not set error in 3.5, so ignore 3.5 for now
+    # $DISPLAY not set error in (travis-ci) python 3.5, so ignore 3.5 for now
     if sys.version_info.major == 3 and sys.version_info.minor ==5:
        return
 
     import numpy as np
     import matplotlib.pyplot as plt
-    from sklearn import svm # sklearn = scikit-learn
+    from sklearn import svm
     from sklearn.datasets import make_moons
-    #from moviepy.editor import VideoClip
     from moviepy.video.io.bindings import mplfig_to_npimage
     import imageio
 
@@ -63,7 +62,6 @@ def test_issue_368():
 
     animation = VideoClip(make_frame,duration=2)
     animation.write_gif("/tmp/svm.gif",fps=20)
-
 
 
 def test_issue_407():
