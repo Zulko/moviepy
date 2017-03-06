@@ -14,9 +14,7 @@ before_install:
   - mkdir media
 install:   
   - echo ${PYTHON_VERSION}
-  - if [[ "${PYTHON_VERSION:0:3}" == "3.4" ]]; then pip install matplotlib; fi
-  - if [[ "${PYTHON_VERSION:0:3}" == "3.5" ]]; then pip install matplotlib; fi
-  - if [[ "${PYTHON_VERSION:0:3}" == "3.6" ]]; then pip install matplotlib; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.4' || $TRAVIS_PYTHON_VERSION == '3.5' || $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install matplotlib; fi
   - pip install -U  scikit-learn
   - pip install scipy
   - pip install coveralls
