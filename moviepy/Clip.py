@@ -471,25 +471,16 @@ class Clip:
         """
 
         def generator():
-        
             for t in np.arange(0, self.duration, 1.0/fps):
-        
                 frame = self.get_frame(t)
-        
                 if (dtype is not None) and (frame.dtype != dtype):
-        
                     frame = frame.astype(dtype)
-
                 if with_times:
-        
                     yield t, frame
-        
                 else:
-        
                     yield frame
         
         if progress_bar:
-        
             nframes = int(self.duration*fps)+1
             return tqdm(generator(), total=nframes)
 

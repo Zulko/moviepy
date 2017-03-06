@@ -123,7 +123,7 @@ class FFMPEG_VideoWriter:
         # when the child process is created
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-        
+
         self.proc = sp.Popen(cmd, **popen_params)
 
 
@@ -187,7 +187,8 @@ class FFMPEG_VideoWriter:
 
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
-                       audiofile=None, verbose=True, threads=None, ffmpeg_params=None):
+                       audiofile=None, verbose=True, threads=None, ffmpeg_params=None,
+                       progress_bar=True):
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
@@ -204,14 +205,14 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
     nframes = int(clip.duration*fps)
 
-    for t,frame in clip.iter_frames(progress_bar=True, with_times=True,
+    for t,frame in clip.iter_frames(progress_bar=progress_bar, with_times=True,
                                     fps=fps, dtype="uint8"):
         if withmask:
             mask = (255*clip.mask.get_frame(t))
             if mask.dtype != "uint8":
                 mask = mask.astype("uint8")
             frame = np.dstack([frame,mask])
-        
+
         writer.write_frame(frame)
 
     writer.close()
@@ -225,7 +226,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 def ffmpeg_write_image(filename, image, logfile=False):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
-    
+
     if image.dtype != 'uint8':
           image = image.astype("uint8")
 

@@ -10,6 +10,7 @@ import subprocess as sp
 import multiprocessing
 import tempfile
 from copy import copy
+import warnings
 
 from tqdm import tqdm
 import numpy as np
@@ -134,7 +135,7 @@ class VideoClip(Clip):
 
         """
 
-        im = self.get_frame(t) 
+        im = self.get_frame(t)
 
         if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
@@ -156,7 +157,8 @@ class VideoClip(Clip):
                         temp_audiofile=None,
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
-                        threads=None, ffmpeg_params=None):
+                        threads=None, ffmpeg_params=None,
+                        progress_bar=True):
 
         """Write the clip to a videofile.
 
@@ -253,7 +255,8 @@ class VideoClip(Clip):
           These will be files ending with '.log' with the name of the
           output file in them.
 
-
+        progress_bar
+          If false, will not display the red progress bar
 
         Examples
         ========
@@ -324,7 +327,7 @@ class VideoClip(Clip):
                                        audio_nbytes, audio_bufsize,
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
-                                       verbose=verbose)
+                                       verbose=verbose, progress_bar=progress_bar)
 
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
@@ -332,7 +335,8 @@ class VideoClip(Clip):
                            write_logfile=write_logfile,
                            audiofile = audiofile,
                            verbose=verbose, threads=threads,
-                           ffmpeg_params=ffmpeg_params)
+                           ffmpeg_params=ffmpeg_params,
+                           progress_bar=progress_bar)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
@@ -456,7 +460,7 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)
-        
+
         elif tempfiles:
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt, fuzz=fuzz,
@@ -818,12 +822,12 @@ class DataVideoClip(VideoClip):
 
 class UpdatedVideoClip(VideoClip):
     """
-        
+
     Class of clips whose make_frame requires some objects to
     be updated. Particularly practical in science where some
     algorithm needs to make some steps before a new frame can
     be generated.
-    
+
     UpdatedVideoClips have the following make_frame:
 
     >>> def make_frame(t):
@@ -847,12 +851,12 @@ class UpdatedVideoClip(VideoClip):
 
     duration
       Duration of the clip, in seconds
-          
+
     """
-    
-    
+
+
     def __init__(self, world, ismask=False, duration=None):
-        
+
         self.world = world
         def make_frame(t):
             while self.world.clip_t < t:
@@ -1031,13 +1035,24 @@ class ColorClip(ImageClip):
 
     ismask
       Set to true if the clip will be used as a mask.
+
+    col
+      Has been deprecated. Do not use.
     """
 
-
-    def __init__(self, size, col=(0, 0, 0), ismask=False, duration=None):
+    def __init__(self, size, color=None, ismask=False, duration=None, col=None):
+        if col is not None:
+            warnings.warn("The `ColorClip` parameter `col` has been deprecated."
+                          " Please use `color` instead", DeprecationWarning)
+            if color is not None:
+                warnings.warn("The arguments `color` and `col` have both been "
+                              "passed to `ColorClip` so `col` has been ignored.",
+                              UserWarning)
+            else:
+                color = col
         w, h = size
-        shape = (h, w) if np.isscalar(col) else (h, w, len(col))
-        ImageClip.__init__(self, np.tile(col, w * h).reshape(shape),
+        shape = (h, w) if np.isscalar(color) else (h, w, len(color))
+        ImageClip.__init__(self, np.tile(color, w * h).reshape(shape),
                            ismask=ismask, duration=duration)
 
 
@@ -1160,7 +1175,7 @@ class TextClip(ImageClip):
 
         if print_cmd:
             print( " ".join(cmd) )
-        
+
         try:
             subprocess_call(cmd, verbose=False )
         except (IOError,OSError) as err:
@@ -1217,7 +1232,7 @@ class TextClip(ImageClip):
 
            >>> # Find all the available fonts which contain "Courier"
            >>> print ( TextClip.search('Courier', 'font') )
- 
+
         """
         string = string.lower()
         names_list = TextClip.list(arg)
