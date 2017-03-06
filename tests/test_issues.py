@@ -23,7 +23,7 @@ def test_issue_145():
 
 def test_issue_368():
     import sys
-    if sys.version_info < 3.4:   #matplotlib only supported in python >= 3.4
+    if sys.version_info < (3,4):   #matplotlib only supported in python >= 3.4
        return
 
     import numpy as np
