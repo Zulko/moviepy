@@ -83,6 +83,10 @@ def test_issue_470():
     with pytest.raises(IOError, message="Expecting IOError"):
          subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
 
+    #but this one should work..
+    subclip = audio_clip.subclip(t_start=6, t_end=8)
+    subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+
 
 if __name__ == '__main__':
    pytest.main()
