@@ -185,7 +185,11 @@ class FFMPEG_AudioReader:
                 result[in_time] = self.buffer[indices]
                 return result
             except IndexError as error:
-                raise IOError("Error in file %s, "%(self.filename)+
+                if indices.max() > len(self.buffer):
+                   raise IOError("Error reading file '%s', " % self.filename +
+                                 "trying to access beyond the end of the file")
+                else:
+                   raise IOError("Error in file %s, "%(self.filename)+
                        "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
                        "indices wanted: %d-%d, "%(indices.min(), indices.max())+
                        "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))

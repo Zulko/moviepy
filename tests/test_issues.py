@@ -74,5 +74,15 @@ def test_issue_467():
     #caused an error, NameError: global name 'copy' is not defined
     clip = clip.fx(vfx.blink, d_on=1, d_off=1)
 
+def test_issue_470():
+    audio_clip = AudioFileClip('media/crunching.mp3')
+
+    # t_end is out of bounds
+    subclip = audio_clip.subclip(t_start=6, t_end=9)
+
+    with pytest.raises(IOError, message="Expecting IOError"):
+         subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+
+
 if __name__ == '__main__':
    pytest.main()

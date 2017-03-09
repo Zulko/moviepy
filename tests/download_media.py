@@ -25,3 +25,12 @@ def download():
 
     download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Afterimagenpov.svg/1200px-Afterimagenpov.svg.png",
                  "media/afterimage.png")
+
+    download_url("http://www.4uall.net/free-sound-effects/Animal-Music-free-sound-effects/COW_BIRD.WAV",
+                 "media/cow_bird.wav")
+
+    download_url("https://www.soundjay.com/ambient/boarding-accouncement-1.mp3",
+                 "media/boarding_announcement.mp3")
+
+    download_url("https://www.soundjay.com/human/crunching-1.mp3",
+                 "media/crunching.mp3")
