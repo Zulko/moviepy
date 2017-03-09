@@ -21,6 +21,11 @@ def test_issue_145():
     with pytest.raises(Exception, message="Expecting Exception"):
          final = concatenate_videoclips([video], method = 'composite')
 
+def test_issue_359():
+    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
+    video.fps=30
+    video.write_gif(filename="/tmp/issue_359.gif", tempfiles=True)
+
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     red.fps=30
