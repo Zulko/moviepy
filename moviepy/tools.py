@@ -51,10 +51,13 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
 def is_string(obj):
     """ Returns true if s is string or string-like object,
     compatible with Python 2 and Python 3."""
+
+    #returns true for string, unicode, and bytes strings
+
     try:
-        return isinstance(obj, basestring)
+        return isinstance(obj, basestring)  #python 2
     except NameError:
-        return isinstance(obj, str)
+        return isinstance(obj, (str, bytes))  #python3
 
 def cvsecs(time):
     """ Will convert any time into seconds.

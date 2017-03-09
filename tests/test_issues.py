@@ -6,6 +6,8 @@ import os
 import pytest
 
 from moviepy.editor import *
+from moviepy.compat import PY3
+from moviepy.tools import is_string
 
 # must have to work on travis-ci
 import sys
@@ -15,6 +17,23 @@ import download_media
 def test_download_media(capsys):
     with capsys.disabled():
        download_media.download()
+
+def test_issue_120():
+    from imageio import imread
+    assert is_string("abc")
+    assert is_string(u"abc")
+    assert is_string(b"abc")
+
+    assert not is_string(1)
+    assert not is_string(imread("media/python_logo.png"))
+
+    #if PY3:
+    #   assert not is_string(b"abc")
+
+    #is this okay that a byte string is a string in python 2 but not python 3?
+    #if not PY3:
+    #   assert is_string(b"abc")
+
 
 def test_issue_145():
     video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)

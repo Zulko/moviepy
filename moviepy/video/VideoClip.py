@@ -290,6 +290,7 @@ class VideoClip(Clip):
             audio_codec = 'pcm_s32le'
 
         audiofile = audio if is_string(audio) else None
+
         make_audio = ((audiofile is None) and (audio == True) and
                       (self.audio is not None))
 
