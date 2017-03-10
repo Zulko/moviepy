@@ -277,7 +277,7 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
     if fps is None:
         fps = clip.fps
 
-    quantizer = 0 if opt != 0 else 'nq'
+    quantizer = 'nq' if opt != 'nq' else 'nq'
     writer = imageio.save(filename, duration=1.0/fps,
                           quantizer=quantizer, palettesize=colors)
 
