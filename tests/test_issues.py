@@ -21,6 +21,30 @@ def test_issue_145():
     with pytest.raises(Exception, message="Expecting Exception"):
          final = concatenate_videoclips([video], method = 'composite')
 
+def test_issue_285():
+    clip_1 = ImageClip('media/python_logo.png', duration=10)
+    clip_2 = ImageClip('media/python_logo.png', duration=10)
+    clip_3 = ImageClip('media/python_logo.png', duration=10)
+
+    merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
+    assert merged_clip.duration == 30
+    
+def test_issue_354():
+    clip = ImageClip("media/python_logo.png")
+
+    clip.duration = 10
+    crosstime = 1
+
+    #caption = editor.TextClip("test text", font="Liberation-Sans-Bold", color='white', stroke_color='gray', stroke_width=2, method='caption', size=(1280, 720), fontsize=60, align='South-East')
+    #caption.duration = clip.duration
+    fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
+    ret = CompositeVideoClip([clip, fadecaption])
+
+def test_issue_359():
+    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
+    video.fps=30
+    video.write_gif(filename="/tmp/issue_359.gif", tempfiles=True)
+
 def test_issue_368():
     import sys
     if sys.version_info < (3,4):   #matplotlib only supported in python >= 3.4
@@ -63,7 +87,6 @@ def test_issue_368():
     animation = VideoClip(make_frame,duration=2)
     animation.write_gif("/tmp/svm.gif",fps=20)
 
-
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     red.fps=30
@@ -101,6 +124,13 @@ def test_issue_417():
     myclip = ImageClip(cad).fx(vfx.resize, newsize=[1280, 660])
     final = CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
+
+def test_issue_467():
+    cad = 'media/python_logo.png'
+    clip = ImageClip(cad)
+
+    #caused an error, NameError: global name 'copy' is not defined
+    clip = clip.fx(vfx.blink, d_on=1, d_off=1)
 
 if __name__ == '__main__':
    pytest.main()
