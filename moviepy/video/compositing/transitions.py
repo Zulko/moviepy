@@ -9,11 +9,13 @@ from .CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 
+@requires_duration
 @add_mask_if_none
 def crossfadein(clip, duration):
     """ Makes the clip appear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
+    clip.mask.duration = clip.duration
     newclip = clip.copy()
     newclip.mask = clip.mask.fx(fadein, duration)
     return newclip
@@ -111,14 +113,6 @@ def slide_out(clip, duration, side):
                 'bottom': lambda t: ('center',max(0,h*((t-ts)/duration-1))) }
     
     return clip.set_pos( pos_dict[side] )
-
-
-
-
-
-
-
-
 
 
 @requires_duration
