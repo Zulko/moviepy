@@ -408,7 +408,7 @@ class VideoClip(Clip):
     @requires_duration
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
-                  opt=0, fuzz=1, verbose=True,
+                  opt='nq', fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):
         """ Write the VideoClip to a GIF file.
 
@@ -464,7 +464,7 @@ class VideoClip(Clip):
             #convert imageio opt variable to something that can be used with
             #ImageMagick
             opt1=opt
-            if opt1 == 0:
+            if opt1 == 'nq':
                opt1='optimizeplus'
             else:
                opt1='OptimizeTransparency'
