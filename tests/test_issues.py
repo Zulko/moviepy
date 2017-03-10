@@ -29,6 +29,23 @@ def test_issue_285():
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
 
+    
+def test_issue_354():
+    clip = ImageClip("media/python_logo.png")
+
+    clip.duration = 10
+    crosstime = 1
+
+    #caption = editor.TextClip("test text", font="Liberation-Sans-Bold", color='white', stroke_color='gray', stroke_width=2, method='caption', size=(1280, 720), fontsize=60, align='South-East')
+    #caption.duration = clip.duration
+    fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
+    ret = CompositeVideoClip([clip, fadecaption])
+
+def test_issue_359():
+    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
+    video.fps=30
+    video.write_gif(filename="/tmp/issue_359.gif", tempfiles=True)
+
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     red.fps=30
