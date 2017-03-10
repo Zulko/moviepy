@@ -25,6 +25,7 @@ def crossfadeout(clip, duration):
     """ Makes the clip disappear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
+    clip.mask.duration = clip.duration
     newclip = clip.copy()
     newclip.mask = clip.mask.fx(fadeout, duration)
     return newclip
