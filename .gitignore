@@ -51,4 +51,5 @@ nosetests.xml
 # JetBrains
 .idea
 
+# Tests
 tests/media
