@@ -10,8 +10,8 @@ MoviePy
 .. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
     :target: https://travis-ci.org/Zulko/moviepy
     :alt: Build status on travis-ci
-    
-MoviePy (full documentation_) is a Python module for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
+
+MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
 
@@ -44,7 +44,7 @@ Installation
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
 
-**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from Github_, unzip everything into one folder, open a terminal and type: ::
+**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type: ::
 
     $ (sudo) python setup.py install
 
