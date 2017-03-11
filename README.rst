@@ -62,7 +62,7 @@ Optional but useful dependencies
 
 ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!**. Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this ::
+Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this ::
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 
@@ -81,7 +81,7 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 Contribute
 ----------
 
-MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on Github_, where everyone is welcome to contribute, ask for help or simply give feedback.
+MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on GitHub_, where everyone is welcome to contribute, ask for help or simply give feedback.
 
 You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
 
@@ -105,7 +105,7 @@ Maintainers
 .. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _Github: https://github.com/Zulko/moviepy
+.. _GitHub: https://github.com/Zulko/moviepy
 .. _Gitter: https://gitter.im/movie-py/Lobby
 
 .. Software, Tools, Libraries
