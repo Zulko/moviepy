@@ -6,30 +6,30 @@ Creating and exporting video clips
 Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see :ref:`effects`. For how to put clips together see :ref:`CompositeVideoClips` and to see how to preview clips before writing a file, refer to :ref:`efficient`.
 
 The following code summarizes the base clips that you can create with moviepy: ::
-    
+
     # VIDEO CLIPS
     clip = VideoClip(make_frame, duration=4) # for custom animations (see below)
     clip = VideoFileClip("my_video_file.mp4") # or .avi, .webm, .gif ...
     clip = ImageClip("my_picture.png") # or .jpeg, .tiff, ...
     clip = TextClip("Hello !", font="Amiri-Bold", fontsize=70, color="black")
     clip = ColorClip(size=(460,380), color=[R,G,B])
-    
+
     # AUDIO CLIPS
     clip = AudioFileClip("my_audiofile.mp3") # or .ogg, .wav... or a video !
     clip = AudioArrayClip(numpy_array, fps=44100) # from a numerical array
-    clip = AudioClip(make_frame, duration=3) # uses a function make_frame(t) 
+    clip = AudioClip(make_frame, duration=3) # uses a function make_frame(t)
 
 
 
 The best to understand these clips is to read the full documentation for each in the :ref:`reference_manual`. The next sections
-In this section we see how to create clips, (for instance from video or audio files), how to mix them together, and how to write them to a file. 
+In this section we see how to create clips, (for instance from video or audio files), how to mix them together, and how to write them to a file.
 
 
 
 Categories of video clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``,``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip. 
+Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``,``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
 
 VideoClip
 """"""""""
@@ -80,7 +80,7 @@ When you create or load a clip that you will use as a mask you need to declare i
     mclip = VideoClip(makeframe, duration=4, ismask=True)
     mclip = ImageClip("my_mask.jpeg", ismask=True)
     mclip = VideoClip("myvideo.mp4", ismask=True)
-    
+
 In the case of video and image files, if these are not already black and white they will be converted automatically.
 
 Any video clip can be turned into a mask with ``clip.to_mask()``, and a mask can be turned to a standard RGB video clip with ``my_mask_clip.to_RGB()``.
@@ -97,12 +97,12 @@ Video files (.mp4, .webm, .ogv...)
 """"""""""""""""""""""""""""""""""""
 
 To write a clip as a video file, use ::
-    
+
     my_clip.write_videofile("movie.mp4") # default codec: 'libx264', 24 fps
     my_clip.write_videofile("movie.mp4",fps=15)
     my_clip.write_videofile("movie.webm") # webm format
     my_clip.write_videofile("movie.webm",audio=False) # don't render audio.
-    
+
 MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
 
 
@@ -127,7 +127,7 @@ There are many options to optimize the quality and size of a gif. Please refer t
 
 Note that for editing gifs the best way is to preview them in the notebook as explained here: :ref:`ipython_display`
 
-See `this blog post <http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
+See `this blog post <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
 
 .. _CCaudioClips:
 

@@ -19,7 +19,7 @@ exec(open('moviepy/version.py').read()) # loads __version__
 
 setup(name='moviepy',
     version=__version__,
-    author='Zulko 2015',
+    author='Zulko 2017',
     description='Video editing with Python',
     long_description=open('README.rst').read(),
     url='http://zulko.github.io/moviepy/',

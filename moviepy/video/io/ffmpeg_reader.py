@@ -15,12 +15,9 @@ logging.captureWarnings(True)
 import numpy as np
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
+from moviepy.compat import PY3, DEVNULL
 
 import os
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
 
 
 class FFMPEG_VideoReader:
@@ -169,6 +166,7 @@ class FFMPEG_VideoReader:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
+            self.proc.wait()
             del self.proc
 
     def __del__(self):
@@ -275,8 +273,6 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
     result['video_found'] = ( lines_video != [] )
 
     if result['video_found']:
-
-
         try:
             line = lines_video[0]
 
@@ -297,9 +293,14 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
 
         try:
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
-            tbr = float(line[match.start():match.end()].split(' ')[1])
-            result['video_fps'] = tbr
 
+            s_tbr = line[match.start():match.end()].split(' ')[1]
+            if "k" in s_tbr:
+                tbr = float(s_tbr.replace("k", "")) * 1000
+            else:
+                tbr = float(s_tbr)
+
+            result['video_fps'] = tbr
         except:
             match = re.search("( [0-9]*.| )[0-9]* fps", line)
             result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])

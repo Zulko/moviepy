@@ -6,12 +6,8 @@ from moviepy.tools import cvsecs
 
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.config import get_setting
-
+from moviepy.compat import PY3, DEVNULL
 import os
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
 
 
 class FFMPEG_AudioReader:
@@ -114,12 +110,14 @@ class FFMPEG_AudioReader:
 
 
     def read_chunk(self,chunksize):
+        # chunksize is not being autoconverted from float to int
+        chunksize = int(round(chunksize))
         L = self.nchannels*chunksize*self.nbytes
         s = self.proc.stdout.read(L)
         dt = {1: 'int8',2:'int16',4:'int32'}[self.nbytes]
         result = np.fromstring(s, dtype=dt)
         result = (1.0*result / 2**(8*self.nbytes-1)).\
-                                 reshape((len(result)/self.nchannels,
+                                 reshape((int(len(result)/self.nchannels),
                                           self.nchannels))
         #self.proc.stdout.flush()
         self.pos = self.pos+chunksize
@@ -187,7 +185,11 @@ class FFMPEG_AudioReader:
                 result[in_time] = self.buffer[indices]
                 return result
             except IndexError as error:
-                raise IOError("Error in file %s, "%(self.filename)+
+                if indices.max() > len(self.buffer):
+                   raise IOError("Error reading file '%s', " % self.filename +
+                                 "trying to access beyond the end of the file")
+                else:
+                   raise IOError("Error in file %s, "%(self.filename)+
                        "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
                        "indices wanted: %d-%d, "%(indices.min(), indices.max())+
                        "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))
@@ -238,6 +240,3 @@ class FFMPEG_AudioReader:
 
     def __del__(self):
         self.close_proc()
-
-
-

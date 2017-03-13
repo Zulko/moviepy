@@ -8,7 +8,7 @@ Video composition, also known as non-linear editing, is the fact of playing seve
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left:15%;">
-        <iframe src="http://youtube.com/v/rIehsqqYFEM&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
         </iframe>
         </div>
@@ -21,7 +21,7 @@ Stacking and concatenating clips
 Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to them side by side in a single larger clip).
 
 Concatenation is done with the function ``concatenate_videoclips``: ::
-    
+
     from moviepy.editor import VideoFileClip, concatenate_videoclips
     clip1 = VideoFileClip("myvideo.mp4")
     clip2 = VideoFileClip("myvideo2.mp4").subclip(50,60)
@@ -33,7 +33,7 @@ Concatenation is done with the function ``concatenate_videoclips``: ::
 The ``final_clip`` is a clip that plays the clips 1, 2, and 3 one after the other. Note that the clips do not need to be the same size. If they arent's they will all appear centered in a clip large enough to contain the biggest of them, with optionnally a color of your choosing to fill the borders. You have many other options there (see the doc of the function). You can for instance play a transition clip between the clips with the option ``transition=my_clip``.
 
 Stacking is done with ``clip_array``: ::
-    
+
     from moviepy.editor import VideoFileClip, clips_array, vfx
     clip1 = VideoFileClip("myvideo.mp4").margin(10) # add 10px contour
     clip2 = clip1.fx( vfx.mirror_x)
@@ -53,9 +53,9 @@ CompositeVideoClips
 ~~~~~~~~~~~~~~~~~~~~~
 
 The `CompositeVideoClip` class provides a very flexible way to compose clips, but is more complex than ``concatenate_videoclips`` and ``clips_array`` ::
-    
+
     video = CompositeVideoClip([clip1,clip2,clip3])
- 
+
 Now ``video`` plays ``clip1``, and ``clip2`` *on top of* ``clip1``, and ``clip3`` on top of ``clip1``, and ``clip2``. For instance, if ``clip2`` and ``clip3`` have the same size as ``clip1``, then only ``clip3``, which is on top, will be visible in the video... unless  ``clip3`` and ``clip2`` have masks which hide parts of them. Note that by default the composition has the size of its first clip (as it is generally a *background*). But sometimes you will want to make your clips *float* in a bigger composition, so you will specify the size of the final composition as follows ::
 
     video = CompositeVideoClip([clip1,clip2,clip3], size=(720,460))
@@ -64,8 +64,8 @@ Starting and stopping times
 """"""""""""""""""""""""""""
 
 In a CompositionClip, all the clips start to play at a time that is specified by the ``clip.start`` attribute. You can set this starting time as follows: ::
-    
-    clip1 = clip1.set_start(5) # start after 5 seconds 
+
+    clip1 = clip1.set_start(5) # start after 5 seconds
 
 So for instance your composition will look like ::
 
@@ -74,7 +74,7 @@ So for instance your composition will look like ::
                                 clip3.set_start(9)]) # start at t=9s
 
 In the example above, maybe ``clip2`` will start before ``clip1`` is over. In this case you can make ``clip2`` appear with a *fade-in* effect of one second: ::
-    
+
     video = CompositeVideoClip([clip1, # starts at t=0
                                 clip2.set_start(5).crossfadein(1),
                                 clip3.set_start(9).crossfadein(1.5)])
@@ -83,15 +83,15 @@ Positioning clips
 """"""""""""""""""
 
 If ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel of the clips: ::
-    
+
     video = CompositeVideoClip([clip1,
                                clip2.set_pos((45,150)),
                                clip3.set_pos((90,100))])
 
 There are many ways to specify the position: ::
-    
+
     clip2.set_pos((45,150)) # x=45, y=150 , in pixels
-    
+
     clip2.set_pos("center") # automatically centered
 
     # clip2 is horizontally centered, and at the top of the picture
@@ -99,10 +99,10 @@ There are many ways to specify the position: ::
 
     # clip2 is vertically centered, at the left of the picture
     clip2.set_pos(("left","center"))
-    
+
     # clip2 is at 40% of the width, 70% of the height of the screen:
     clip2.set_pos((0.4,0.7), relative=True)
-    
+
     # clip2's position is horizontally centered, and moving down !
     clip2.set_pos(lambda t: ('center', 50+t) )
 
@@ -113,7 +113,7 @@ When indicating the position keep in mind that the ``y`` coordinate has its zero
 .. Transitions
 .. ------------
 
-.. Everyone loves transitions between clips: fade-ins, fade-out, clips that slide in front of the previous one... everything is good to impress your grandparents. 
+.. Everyone loves transitions between clips: fade-ins, fade-out, clips that slide in front of the previous one... everything is good to impress your grandparents.
 
 .. In MoviePy, transitions are effects (see :ref:`effects`_) from the module moviepy.video.compositing.
 

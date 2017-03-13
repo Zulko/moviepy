@@ -1,9 +1,6 @@
 import os
 import subprocess as sp
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from .compat import DEVNULL
     
 if os.name == 'nt':
     try:    
@@ -103,5 +100,3 @@ if __name__ == "__main__":
         print( "MoviePy : ImageMagick successfully found." )
     else:
         print( "MoviePy : can't find or access ImageMagick." )
-
-

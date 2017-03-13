@@ -378,6 +378,10 @@ class Clip:
         they exist.
         """
 
+        if t_start < 0:  #make this more python like a negative value
+                         #means to move backward from the end of the clip
+           t_start = self.duration + t_start   #remeber t_start is negative
+
         if (self.duration is not None) and (t_start>self.duration):
         
             raise ValueError("t_start (%.02f) "%t_start +
@@ -467,25 +471,16 @@ class Clip:
         """
 
         def generator():
-        
             for t in np.arange(0, self.duration, 1.0/fps):
-        
                 frame = self.get_frame(t)
-        
                 if (dtype is not None) and (frame.dtype != dtype):
-        
                     frame = frame.astype(dtype)
-
                 if with_times:
-        
                     yield t, frame
-        
                 else:
-        
                     yield frame
         
         if progress_bar:
-        
             nframes = int(self.duration*fps)+1
             return tqdm(generator(), total=nframes)
 

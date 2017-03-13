@@ -67,7 +67,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     
     newsize:
       Can be either 
-        - ``(height,width)`` in pixels or a float representing
+        - ``(width,height)`` in pixels or a float representing
         - A scaling factor, like 0.5
         - A function of time returning one of these.
             
