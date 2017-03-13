@@ -11,6 +11,9 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_matplotlib():
+    if sys.version_info < (3,4):
+       return
+
     import matplotlib.pyplot as plt
     import numpy as np
     from moviepy.editor import VideoClip
