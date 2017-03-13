@@ -160,8 +160,13 @@ class FFMPEG_AudioReader:
 
             # elements of t that are actually in the range of the
             # audio file.
-
             in_time = (tt>=0) & (tt < self.duration)
+		
+	    # Check that the requested time is in the valid range
+            if not in_time.any():
+                raise IOError("Error in file %s, "%(self.filename)+
+                       "Accessing time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
+                       "with clip duration=%d seconds, "%self.duration)
 
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
@@ -187,7 +192,7 @@ class FFMPEG_AudioReader:
                 warnings.warn("Error in file %s, "%(self.filename)+
                        "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
                        "indices wanted: %d-%d, "%(indices.min(), indices.max())+
-                       "but len(buffer)=%d"%(len(self.buffer))+ str(error),
+                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error),
                    UserWarning)
 
                 # repeat the last frame instead
