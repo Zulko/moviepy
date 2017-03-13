@@ -13,7 +13,10 @@ def test_download_media(capsys):
 def test_matplotlib():
     #for now, python 3.5 installs a version of matplotlib that complains
     #about $DISPLAY variable, so lets just ignore for now.
-    if sys.version_info < (3,4) or sys.version_info == (3,5):
+    if sys.version_info < (3,4):
+       return
+
+    if sys.version_info.major == 3 and sys.version_info.minor == 5:
        return
 
     import matplotlib.pyplot as plt
