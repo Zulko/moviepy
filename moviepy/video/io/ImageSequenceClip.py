@@ -50,8 +50,8 @@ class ImageSequenceClip(VideoClip):
                  ismask=False, load_images=False):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
-        
-        if (fps is None) and (duration is None):
+
+        if (fps is None) and (durations is None):
             raise ValueError("Please provide either 'fps' or 'durations'.")
         VideoClip.__init__(self, ismask=ismask)
 

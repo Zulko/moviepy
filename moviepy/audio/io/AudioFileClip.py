@@ -47,9 +47,9 @@ class AudioFileClip(AudioClip):
     Examples
     ----------
     
-    >>> snd = SoundClip("song.wav")
-    >>> snd = SoundClip("song.mp3", fps = 44100, bitrate=3000)
-    >>> snd = SoundClip(mySoundArray,fps=44100) # from a numeric array
+    >>> snd = AudioFileClip("song.wav")
+    >>> snd = AudioFileClip("song.mp3", fps = 44100, bitrate=3000)
+    >>> snd = AudioFileClip(mySoundArray,fps=44100) # from a numeric array
     
     """
 

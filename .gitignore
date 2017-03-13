@@ -40,9 +40,16 @@ nosetests.xml
 .pydevproject
 
 # Temp files
-
 *~
 
 # Pipy codes
-
 .pypirc
+
+# Mac
+.DS_Store
+
+# JetBrains
+.idea
+
+# Tests
+tests/media

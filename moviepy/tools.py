@@ -8,10 +8,7 @@ import warnings
 import re
 
 import os
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from .compat import DEVNULL
 
 
 def sys_write_flush(s):
@@ -137,7 +134,7 @@ def deprecated_version_of(f, oldname, newname=None):
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
-extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4']},
+extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac']},
                     'ogv':  {'type':'video', 'codec':['libtheora']},
                     'webm': {'type':'video', 'codec':['libvpx']},
                     'avi':  {'type':'video'},

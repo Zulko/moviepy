@@ -7,11 +7,7 @@ import subprocess as sp
 import os
 import numpy as np
 
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
-
+from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
 from moviepy.tools import verbose_print
 
@@ -127,21 +123,25 @@ class FFMPEG_VideoWriter:
         # when the child process is created
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-        
+
         self.proc = sp.Popen(cmd, **popen_params)
 
 
     def write_frame(self, img_array):
         """ Writes one frame in the file."""
         try:
-            self.proc.stdin.write(img_array.tostring())
+            if PY3:
+               self.proc.stdin.write(img_array.tobytes())
+            else:
+               self.proc.stdin.write(img_array.tostring())
         except IOError as err:
-            ffmpeg_error = self.proc.stderr.read()
+            #ffmpeg_error = self.proc.stderr.read()
+            _, ffmpeg_error = self.proc.communicate()
             error = (str(err) + ("\n\nMoviePy error: FFMPEG encountered "
                                  "the following error while writing file %s:"
                                  "\n\n %s" % (self.filename, ffmpeg_error)))
 
-            if "Unknown encoder" in ffmpeg_error:
+            if b"Unknown encoder" in ffmpeg_error:
 
                 error = error+("\n\nThe video export "
                   "failed because FFMPEG didn't find the specified "
@@ -150,7 +150,7 @@ class FFMPEG_VideoWriter:
                   "write_videofile. For instance:\n"
                   "  >>> clip.write_videofile('myvid.webm', codec='libvpx')")%(self.codec)
 
-            elif "incorrect codec parameters ?" in ffmpeg_error:
+            elif b"incorrect codec parameters ?" in ffmpeg_error:
 
                  error = error+("\n\nThe video export "
                   "failed, possibly because the codec specified for "
@@ -164,13 +164,13 @@ class FFMPEG_VideoWriter:
                   "video codec."
                   )%(self.codec, self.ext)
 
-            elif  "encoder setup failed" in ffmpeg_error:
+            elif  b"encoder setup failed" in ffmpeg_error:
 
                 error = error+("\n\nThe video export "
                   "failed, possibly because the bitrate you specified "
                   "was too high or too low for the video codec.")
 
-            elif "Invalid encoder type" in ffmpeg_error:
+            elif b"Invalid encoder type" in ffmpeg_error:
 
                 error = error + ("\n\nThe video export failed because the codec "
                   "or file extension you provided is not a video")
@@ -188,7 +188,8 @@ class FFMPEG_VideoWriter:
 
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
-                       audiofile=None, verbose=True, threads=None, ffmpeg_params=None):
+                       audiofile=None, verbose=True, threads=None, ffmpeg_params=None,
+                       progress_bar=True):
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
@@ -205,14 +206,14 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
     nframes = int(clip.duration*fps)
 
-    for t,frame in clip.iter_frames(progress_bar=True, with_times=True,
+    for t,frame in clip.iter_frames(progress_bar=progress_bar, with_times=True,
                                     fps=fps, dtype="uint8"):
         if withmask:
             mask = (255*clip.mask.get_frame(t))
             if mask.dtype != "uint8":
                 mask = mask.astype("uint8")
             frame = np.dstack([frame,mask])
-        
+
         writer.write_frame(frame)
 
     writer.close()
@@ -226,7 +227,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 def ffmpeg_write_image(filename, image, logfile=False):
     """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
         ffmpeg. """
-    
+
     if image.dtype != 'uint8':
           image = image.astype("uint8")
 
