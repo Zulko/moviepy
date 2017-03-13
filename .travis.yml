@@ -13,13 +13,12 @@ before_install:
   - sudo apt-get install -y ffmpeg
   - mkdir media
 install:   
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.4' || $TRAVIS_PYTHON_VERSION == '3.5' || $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install matplotlib==2.0.0; pip install -U scikit-learn; pip install scipy; fi
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.4' || $TRAVIS_PYTHON_VERSION == '3.5' || $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install matplotlib; pip install -U scikit-learn; pip install scipy; fi
   - pip install coveralls
   - pip install pytest-cov
   - python setup.py install
 # command to run tests
 before_script:
-  - echo $DISPLAY
   - py.test tests/ --cov
 script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 after_success:
