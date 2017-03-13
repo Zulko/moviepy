@@ -11,7 +11,7 @@ from tqdm import tqdm
 class AudioClip(Clip):
     """ Base class for audio clips.
     
-    See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.
+    See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.
     
     An AudioClip is a Clip with a ``make_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
