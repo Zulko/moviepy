@@ -17,11 +17,14 @@ def download():
     if not os.path.exists("media"):
        os.mkdir("media")
 
-    download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/python_logo.png",
                  "media/python_logo.png")
 
-    download_url("http://matplotlib.org/_images/barh_demo.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/matplotlib_demo1.png",
                  "media/matplotlib_demo1.png")
 
-    download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Afterimagenpov.svg/1200px-Afterimagenpov.svg.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/afterimage.png",
                  "media/afterimage.png")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/big_buck_bunny_432_433.webm",
+                 "media/big_buck_bunny_432_433.webm")
