@@ -408,7 +408,7 @@ class VideoClip(Clip):
     @requires_duration
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
-                  opt='wu', fuzz=1, verbose=True,
+                  opt=0, fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):
         """ Write the VideoClip to a GIF file.
 
@@ -460,10 +460,16 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)
-
         elif tempfiles:
+            #convert imageio opt variable to something that can be used with
+            #ImageMagick
+            opt1=opt
+            if opt1 == 0:
+               opt1='optimizeplus'
+            else:
+               opt1='OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
-                                     program=program, opt=opt, fuzz=fuzz,
+                                     program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose,
                                      loop=loop, dispose=dispose, colors=colors)
         else:
