@@ -24,15 +24,11 @@ def test_subtitles():
     myvideo = concatenate_videoclips([red,green,blue])
     assert myvideo.duration == 30
 
-    #if os.getenv("TRAVIS_PYTHON_VERSION") is None:
-    if False:
+    if os.getenv("TRAVIS_PYTHON_VERSION") is None:
        generator = lambda txt: TextClip(txt, font='Georgia-Regular',
                                      size=(800,600), fontsize=24,
                                      method='caption', align='South',
                                      color='white')
-       subtitles = SubtitlesClip("media/subtitles1.srt", generator)
-       final = CompositeVideoClip([myvideo, subtitles])
-       final.to_videofile("/tmp/subtitles1.mp4", fps=30)
     else:
        #travis-ci doesn't like TextClip
        def generator(txt):
@@ -40,10 +36,11 @@ def test_subtitles():
              def __init__(self):
                  self.mask=None
 
-           _t=Temp()
-           return _t
+           return Temp()
 
-       subtitles = SubtitlesClip("media/subtitles1.srt", generator)
+    subtitles = SubtitlesClip("media/subtitles1.srt", generator)
+    final = CompositeVideoClip([myvideo, subtitles])
+    final.to_videofile("/tmp/subtitles1.mp4", fps=30)
 
     data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
             ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
@@ -51,7 +48,7 @@ def test_subtitles():
 
     assert subtitles.subtitles == data
 
-    subtitles = SubtitlesClip(data)
+    subtitles = SubtitlesClip(data, generator)
     assert subtitles.subtitles == data
 
 

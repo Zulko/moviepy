@@ -46,7 +46,6 @@ class SubtitlesClip(VideoClip):
         self.textclips = dict()
 
         if make_textclip is None:
-
             make_textclip = lambda txt: TextClip(txt, font='Georgia-Bold',
                                         fontsize=24, color='white',
                                         stroke_color='black', stroke_width=0.5)
