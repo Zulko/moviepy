@@ -34,7 +34,7 @@ def test_subtitles():
        final.to_videofile("/tmp/subtitles1.mp4", fps=30)
     else:
        #travis-ci doesn't like TextClip
-       generator = lambda txt: pass
+       generator = lambda txt: txt
        subtitles = SubtitlesClip("media/subtitles1.srt", generator)
 
     data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
