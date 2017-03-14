@@ -40,7 +40,8 @@ def test_subtitles():
              def __init__(self):
                  self.mask=None
 
-           return Temp()
+           _t=Temp()
+           return _t
 
        subtitles = SubtitlesClip("media/subtitles1.srt", generator)
 
@@ -55,4 +56,5 @@ def test_subtitles():
 
 
 if __name__ == '__main__':
-   pytest.main()
+   test_subtitles()
+   #pytest.main()
