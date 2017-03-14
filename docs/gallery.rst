@@ -13,13 +13,13 @@ Videos edited with Moviepy
 The Cup Song Covers Mix
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This mix of 60 covers of the Cup Song demonstrates the non-linear video editing capabilities of MoviePy. Here is `the (undocumented) MoviePy code <http://nbviewer.ipython.org/github/Zulko/--video-editing---Cup-Song-Covers-Mix/blob/master/CupSongsCovers.ipynb>`_ that generated the video.
+This mix of 60 covers of the Cup Song demonstrates the non-linear video editing capabilities of MoviePy. Here is `the (undocumented) MoviePy code <https://nbviewer.ipython.org/github/Zulko/--video-editing---Cup-Song-Covers-Mix/blob/master/CupSongsCovers.ipynb>`_ that generated the video.
 
 .. raw:: html
 
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; 
+        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden;
          margin-left: 5%;">
-        <iframe src="http://youtube.com/v/rIehsqqYFEM&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -33,7 +33,7 @@ in the :ref:`examples`.
 .. raw:: html
 
        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-       <iframe src="http://youtube.com/v/zGhoZ4UBxEQ&hl?rel=0" frameborder="0" allowfullscreen
+       <iframe type="text/html" src="https://youtube.com/embed/zGhoZ4UBxEQ&hl?rel=0" frameborder="0"
        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
        </iframe>
        </div>
@@ -47,22 +47,22 @@ GIFs made from videos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This  `tutorial
-<http://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
+<https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
 
 
 .. raw:: html
 
-         <a href="http://imgur.com/Fo2BxBK"><img src="http://i.imgur.com/Fo2BxBK.gif" title="Hosted by imgur.com"
+         <a href="https://imgur.com/Fo2BxBK"><img src="https://i.imgur.com/Fo2BxBK.gif" title="Hosted by imgur.com"
             style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 Vector Animations
 ~~~~~~~~~~~~~~~~~~~
 
-This `tutorial <http://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
+This `tutorial <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
 
 .. raw:: html
 
-         <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/2YdW9yf.gif"
+         <a href="https://imgur.com/2YdW9yf"><img src="https://i.imgur.com/2YdW9yf.gif"
          style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
@@ -72,11 +72,11 @@ It is also possible to combine MoviePy with other graphic librairies like matplo
 3D animations
 ~~~~~~~~~~~~~~~~~~~
 
-This `tutorial <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray
+This `tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray
 
 .. raw:: html
 
-         <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/XN7e2IP.gif"
+         <a href="https://imgur.com/2YdW9yf"><img src="https://i.imgur.com/XN7e2IP.gif"
          style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
@@ -86,7 +86,7 @@ With Vapory and MoviePy you can for instance embed a movie in a 3D scene:
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/M9R21SquDSk?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/M9R21SquDSk?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -96,7 +96,7 @@ Or render the result of this physics simulation made with PyODE (`script <https:
 
 .. raw:: html
 
-         <a href="http://imgur.com/2YdW9yf"><img src="http://i.imgur.com/TdhxwGz.gif"
+         <a href="https://imgur.com/2YdW9yf"><img src="https://i.imgur.com/TdhxwGz.gif"
          style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
@@ -106,7 +106,7 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/tCqQhmuwgMg?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/tCqQhmuwgMg?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -114,7 +114,7 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
 Data animations
 ----------------
 
-This `tutorial <http://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
+This `tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
 
 
 Scientific or technological projects
@@ -124,12 +124,12 @@ Scientific or technological projects
 Piano rolls transcription to sheet music
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This `blog post <http://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls/>`_ explains how to transform a video of a piano roll performance into playable sheet music. MoviePy is used for the frame-by-frame analysis of the piano roll video. The last video is also edited with MoviePy:
+This `blog post <https://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls/>`_ explains how to transform a video of a piano roll performance into playable sheet music. MoviePy is used for the frame-by-frame analysis of the piano roll video. The last video is also edited with MoviePy:
 
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/V2XCJNZjm4w&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/V2XCJNZjm4w&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -142,13 +142,13 @@ Misc. Programs and Scripts using MoviePy
 Rinconcam
 ----------
 
-`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python. 
+`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python.
 MoviePy is used to add transitions, titles and music to the videos.
 
 
 .. raw:: html
 
-         <a href="http://imgur.com/2YdW9yf"><img src="https://pbs.twimg.com/media/B2_NlnwCMAAingW.jpg"
+         <a href="https://imgur.com/2YdW9yf"><img src="https://pbs.twimg.com/media/B2_NlnwCMAAingW.jpg"
          style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
@@ -160,7 +160,7 @@ Videogrep is a python script written by Sam Lavigne, that goes through the subti
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/D7pymdCU5NQ&hl?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/D7pymdCU5NQ&hl?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
@@ -170,8 +170,8 @@ Here are `Videogrep's introductory blog post
 
 If you liked it, also have a look at these Videogrep-inspired projects:
 
-This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
-    
+This `blog post <https://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
+
     words = ["Americans", "must", "develop", "open ", "source",
               " software", "for the", " rest ", "of the world",
               "instead of", " soldiers"]
@@ -183,18 +183,18 @@ This `blog post <http://zulko.github.io/blog/2014/06/21/some-more-videogreping-w
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/iWRYGULFd_c?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/iWRYGULFd_c?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>
 
 
-This `other post <http://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:
+This `other post <https://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:
 
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe src="http://youtube.com/v/zJtWPFX2bA0?rel=0" frameborder="0" allowfullscreen
+        <iframe type="text/html" src="https://youtube.com/embed/zJtWPFX2bA0?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
         </iframe>
         </div>

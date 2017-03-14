@@ -40,12 +40,7 @@ nosetests.xml
 .pydevproject
 
 # Temp files
-
 *~
 
 # Pipy codes
-
 .pypirc
-
-
-venv

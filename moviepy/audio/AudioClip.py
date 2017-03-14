@@ -11,7 +11,7 @@ from tqdm import tqdm
 class AudioClip(Clip):
     """ Base class for audio clips.
     
-    See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.
+    See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.
     
     An AudioClip is a Clip with a ``make_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
@@ -147,9 +147,10 @@ class AudioClip(Clip):
     
     @requires_duration
     def write_audiofile(self,filename, fps=44100, nbytes=2,
-                     buffersize=2000, codec=None,
-                     bitrate=None, ffmpeg_params=None,
-                     write_logfile=False, verbose=True):
+                        buffersize=2000, codec=None,
+                        bitrate=None, ffmpeg_params=None,
+                        write_logfile=False, verbose=True,
+                        progress_bar=True):
         """ Writes an audio file from the AudioClip.
 
 
@@ -186,7 +187,9 @@ class AudioClip(Clip):
 
         verbose
           If True, displays informations
-
+          
+        progress_bar
+          If False, will not display the red progress bar
 
         """
 
@@ -200,11 +203,11 @@ class AudioClip(Clip):
                        "write_videofile.")
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
-                      codec=codec, bitrate=bitrate, write_logfile=write_logfile,
-                      verbose=verbose, ffmpeg_params=ffmpeg_params)
+                                 codec=codec, bitrate=bitrate, write_logfile=write_logfile,
+                                 verbose=verbose, ffmpeg_params=ffmpeg_params,
+                                 progress_bar=progress_bar)
 
-###
-#
+
 # The to_audiofile method is replaced by the more explicit write_audiofile.
 AudioClip.to_audiofile = deprecated_version_of(AudioClip.write_audiofile,
                                                'to_audiofile')

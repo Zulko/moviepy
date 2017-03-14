@@ -8,7 +8,7 @@ screensize = (720,460)
 txtClip = TextClip('Cool effect',color='white', font="Amiri-Bold",
                    kerning = 5, fontsize=100)
 cvc = CompositeVideoClip( [txtClip.set_pos('center')],
-                        size=screensize, transparent=True)
+                        size=screensize)
 
 # THE NEXT FOUR FUNCTIONS DEFINE FOUR WAYS OF MOVING THE LETTERS
 

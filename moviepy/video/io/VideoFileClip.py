@@ -11,8 +11,8 @@ class VideoFileClip(VideoClip):
     
     A video clip originating from a movie file. For instance: ::
     
-        >>> clip = VideofileClip("myHolidays.mp4")
-        >>> clip2 = VideofileClip("myMaskVideo.avi")
+        >>> clip = VideoFileClip("myHolidays.mp4")
+        >>> clip2 = VideoFileClip("myMaskVideo.avi")
     
     
     Parameters
@@ -40,7 +40,9 @@ class VideoFileClip(VideoClip):
       Name of the original video file.
     
     fps:
-      Frames per second in the original file. 
+      Frames per second in the original file.
+      
+    Read docstrings for Clip() and VideoClip() for other, more generic, attributes.
         
     """
 
@@ -52,26 +54,28 @@ class VideoFileClip(VideoClip):
         
         # Make a reader
         pix_fmt= "rgba" if has_mask else "rgb24"
-        reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
-        self.reader = reader
+        self.reader = None #need this just in case FFMPEG has issues (__del__ complains)
+        self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
         self.end = self.reader.duration
         
         self.fps = self.reader.fps
         self.size = self.reader.size
+        
+        self.filename = self.reader.filename
 
         if has_mask:
 
-            self.make_frame = lambda t: reader.get_frame(t)[:,:,:3]
-            mask_mf =  lambda t: reader.get_frame(t)[:,:,3]/255.0
+            self.make_frame = lambda t: self.reader.get_frame(t)[:,:,:3]
+            mask_mf =  lambda t: self.reader.get_frame(t)[:,:,3]/255.0
             self.mask = (VideoClip(ismask = True, make_frame = mask_mf)
                        .set_duration(self.duration))
             self.mask.fps = self.fps
 
         else:
 
-            self.make_frame = lambda t: reader.get_frame(t)
+            self.make_frame = lambda t: self.reader.get_frame(t)
         
         # Make a reader for the audio, if any.
         if audio and self.reader.infos['audio_found']:
@@ -82,5 +86,8 @@ class VideoFileClip(VideoClip):
                                        nbytes = audio_nbytes)
 
     def __del__(self):
-      """ Close/delete the internal reader. """
-      del self.reader
+        """ Close/delete the internal reader. """
+        try:
+            del self.reader
+        except AttributeError:
+            pass
