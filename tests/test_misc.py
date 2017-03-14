@@ -6,6 +6,8 @@ import os
 import sys
 sys.path.append("tests")
 import download_media
+from test_helper import TRAVIS, TMP_DIR
+
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -24,23 +26,19 @@ def test_subtitles():
     myvideo = concatenate_videoclips([red,green,blue])
     assert myvideo.duration == 30
 
-    if os.getenv("TRAVIS_PYTHON_VERSION") is None:
-       generator = lambda txt: TextClip(txt, font='Georgia-Regular',
+    #travis does not like TextClip.. so return for now..
+    #but allow regular users to still run the test below
+    if TRAVIS:
+       return
+
+    generator = lambda txt: TextClip(txt, font='Georgia-Regular',
                                      size=(800,600), fontsize=24,
                                      method='caption', align='South',
                                      color='white')
-    else:
-       #travis-ci doesn't like TextClip
-       def generator(txt):
-           class Temp:
-             def __init__(self):
-                 self.mask=None
-
-           return Temp()
 
     subtitles = SubtitlesClip("media/subtitles1.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
-    final.to_videofile("/tmp/subtitles1.mp4", fps=30)
+    final.to_videofile(os.path.join(TMP_DIR, "subtitles1.mp4"), fps=30)
 
     data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
             ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
@@ -53,5 +51,4 @@ def test_subtitles():
 
 
 if __name__ == '__main__':
-   test_subtitles()
-   #pytest.main()
+   pytest.main()
