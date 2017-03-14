@@ -7,10 +7,10 @@ import pytest
 
 from moviepy.editor import *
 
-# must have to work on travis-ci
 import sys
 sys.path.append("tests")
 import download_media
+from test_helper import PYTHON_VERSION, TMP_DIR
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -28,7 +28,7 @@ def test_issue_285():
 
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
-    
+
 def test_issue_354():
     clip = ImageClip("media/python_logo.png")
 
@@ -43,15 +43,12 @@ def test_issue_354():
 def test_issue_359():
     video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
     video.fps=30
-    video.write_gif(filename="/tmp/issue_359.gif", tempfiles=True)
+    video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"),
+                    tempfiles=True)
 
 def test_issue_368():
     import sys
-    if sys.version_info < (3,4):   #matplotlib only supported in python >= 3.4
-       return
-
-    # $DISPLAY not set error in (travis-ci) python 3.5, so ignore 3.5 for now
-    if sys.version_info.major == 3 and sys.version_info.minor ==5:
+    if PYTHON_VERSION in ('2.7', '3.3', '3.5'): #matplotlib only supported in python >= 3.4
        return
 
     import numpy as np
@@ -85,7 +82,7 @@ def test_issue_368():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame,duration=2)
-    animation.write_gif("/tmp/svm.gif",fps=20)
+    animation.write_gif(os.path.join(TMP_DIR, "svm.gif"),fps=20)
 
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
@@ -143,7 +140,7 @@ def test_issue_470():
 
     #but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
-    subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+    subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
 
 if __name__ == '__main__':

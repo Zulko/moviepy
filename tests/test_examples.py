@@ -5,6 +5,7 @@ import moviepy.video.tools.cuts as cuts
 import sys
 sys.path.append("tests")
 import download_media
+from test_helper import PYTHON_VERSION, TMP_DIR
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -13,10 +14,7 @@ def test_download_media(capsys):
 def test_matplotlib():
     #for now, python 3.5 installs a version of matplotlib that complains
     #about $DISPLAY variable, so lets just ignore for now.
-    if sys.version_info < (3,4):
-       return
-
-    if sys.version_info.major == 3 and sys.version_info.minor == 5:
+    if PYTHON_VERSION in ('2.7', '3.3', '3.5'):
        return
 
     import matplotlib.pyplot as plt
@@ -37,8 +35,7 @@ def test_matplotlib():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame, duration=duration)
-    animation.write_gif('/tmp/matplotlib.gif', fps=20)
-
+    animation.write_gif(os.path.join(TMP_DIR, 'matplotlib.gif'), fps=20)
 
 if __name__ == '__main__':
    pytest.main()
