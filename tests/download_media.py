@@ -12,7 +12,6 @@ def download_youtube_video(youtube_id, filename):
     # FYI..  travis-ci doesn't like youtube-dl
     download_url(youtube_id, filename)
 
-
 def download():
     if not os.path.exists("media"):
        os.mkdir("media")
@@ -31,3 +30,6 @@ def download():
 
     download_url("https://github.com/earney/moviepy_media/raw/master/tests/sounds/crunching.mp3",
                  "media/crunching.mp3")
+
+    download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/subtitles/subtitles1.srt",
+                 "media/subtitle1.srt")

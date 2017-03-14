@@ -41,7 +41,7 @@ class SubtitlesClip(VideoClip):
         if isinstance( subtitles, str):
             subtitles = file_to_subtitles(subtitles)
 
-        subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
+        #subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
 
@@ -157,7 +157,7 @@ def file_to_subtitles(filename):
     for line in lines:
         times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
         if times != []:
-            current_times = map(cvsecs, times)
+            current_times = list(map(cvsecs, times))
         elif line.strip() == '':
             times_texts.append((current_times, current_text.strip('\n')))
             current_times, current_text = None, ""
