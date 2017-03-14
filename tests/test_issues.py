@@ -10,7 +10,7 @@ from moviepy.editor import *
 import sys
 sys.path.append("tests")
 import download_media
-from test_helper import PYTHON_VERSION, TMP_DIR
+from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -48,7 +48,11 @@ def test_issue_359():
 
 def test_issue_368():
     import sys
-    if PYTHON_VERSION in ('2.7', '3.3', '3.5'): #matplotlib only supported in python >= 3.4
+    if PYTHON_VERSION in ('2.7', '3.3'): #matplotlib only supported in python >= 3.4
+       return
+
+    #travis, python 3.5 matplotlib version has problems..
+    if PYTHON_VERSION == '3.5' and TRAVIS:
        return
 
     import numpy as np
