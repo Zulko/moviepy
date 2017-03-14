@@ -2,21 +2,23 @@ import pytest
 from moviepy.editor import *
 import moviepy.video.tools.cuts as cuts
 
+import os
 import sys
 sys.path.append("tests")
 import download_media
+from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 def test_download_media(capsys):
     with capsys.disabled():
        download_media.download()
 
 def test_matplotlib():
-    #for now, python 3.5 installs a version of matplotlib that complains
-    #about $DISPLAY variable, so lets just ignore for now.
-    if sys.version_info < (3,4):
+    if PYTHON_VERSION in ('2.7', '3.3'):
        return
 
-    if sys.version_info.major == 3 and sys.version_info.minor == 5:
+    #for now, python 3.5 installs a version of matplotlib that complains
+    #about $DISPLAY variable, so lets just ignore for now.
+    if PYTHON_VERSION == '3.5' and TRAVIS:
        return
 
     import matplotlib.pyplot as plt
@@ -37,8 +39,7 @@ def test_matplotlib():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame, duration=duration)
-    animation.write_gif('/tmp/matplotlib.gif', fps=20)
-
+    animation.write_gif(os.path.join(TMP_DIR, 'matplotlib.gif'), fps=20)
 
 if __name__ == '__main__':
    pytest.main()
