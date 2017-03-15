@@ -34,14 +34,15 @@ class VideoFileClip(VideoClip):
       wish to read the audio.
 
     target_resolution:
-      Set to (desired_height, desired_width) to have ffmpeg resize the frames before return them.
-      This is much faster than streaming in high-res and then resizing.
-      if either size is None, the frames are resized by keeping the existing aspect ratio.
+      Set to (desired_height, desired_width) to have ffmpeg resize the frames
+      before returning them. This is much faster than streaming in high-res
+      and then resizing. If either dimension is None, the frames are resized
+      by keeping the existing aspect ratio.
 
     resize_algorithm:
-      The algorithm used for resizing. Default: "bicubic", other popular options include "bilinear"
-      and "fast_bilinear".
-      For more information, see https://ffmpeg.org/ffmpeg-scaler.html
+      The algorithm used for resizing. Default: "bicubic", other popular
+      options include "bilinear" and "fast_bilinear". For more information, see
+      https://ffmpeg.org/ffmpeg-scaler.html
 
       
     Attributes
@@ -68,7 +69,8 @@ class VideoFileClip(VideoClip):
         pix_fmt= "rgba" if has_mask else "rgb24"
         self.reader = None # need this just in case FFMPEG has issues (__del__ complains)
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
-                                         target_resolution=target_resolution, resize_algo=resize_algorithm)
+                                         target_resolution=target_resolution,
+                                         resize_algo=resize_algorithm)
 
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
