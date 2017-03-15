@@ -49,14 +49,6 @@ def test_subtitles():
     subtitles = SubtitlesClip(data, generator)
     assert subtitles.subtitles == data
 
-def test_file_to_subtitles():
-    from moviepy.video.tools.subtitles import file_to_subtitles
-
-    data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
-            ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
-            ([20.0, 24.0], 'Blue'), ([25.0, 29.0], 'More Blue!')]
-
-    assert data == file_to_subtitles("media/subtitles1.srt")
 
 if __name__ == '__main__':
    pytest.main()

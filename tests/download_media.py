@@ -33,3 +33,6 @@ def download():
 
     download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/subtitles/subtitles1.srt",
                  "media/subtitles1.srt")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/pigs_in_a_polka.gif",
+                 "media/pigs_in_a_polka.gif")
