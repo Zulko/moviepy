@@ -38,8 +38,8 @@ class FFMPEG_VideoReader:
             if None in target_resolution:
                 ratio = 1
                 for idx, target in enumerate(target_resolution):
-                    if target:
-                        ratio = min(ratio, float(target) / self.size[idx])
+                    if target:  
+                        ratio = target / self.size[idx]
                 self.size = (int(self.size[0] * ratio), int(self.size[1] * ratio))
             else:
                 self.size = target_resolution
