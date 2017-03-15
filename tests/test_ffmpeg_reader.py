@@ -16,8 +16,8 @@ def test_ffmpeg_parse_infos():
     assert d['duration'] == 1.0
 
     d=ffmpeg_parse_infos("media/pigs_in_a_polka.gif")
-    assert d['video_size']= [314, 273]
-    assert d['duration']= 3.0
+    assert d['video_size'] == [314, 273]
+    assert d['duration'] == 3.0
 
 
 if __name__ == '__main__':
