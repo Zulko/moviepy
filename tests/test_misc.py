@@ -58,6 +58,5 @@ def test_file_to_subtitles():
 
     assert data == file_to_subtitles("media/subtitles1.srt")
 
-
 if __name__ == '__main__':
    pytest.main()
