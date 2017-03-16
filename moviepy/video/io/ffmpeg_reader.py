@@ -20,12 +20,28 @@ import os
 class FFMPEG_VideoReader:
 
     def __init__(self, filename, print_infos=False, bufsize = None,
-                 pix_fmt="rgb24", check_duration=True):
+                 pix_fmt="rgb24", check_duration=True,
+                 target_resolution=None, resize_algo='bicubic'):
 
         self.filename = filename
         infos = ffmpeg_parse_infos(filename, print_infos, check_duration)
         self.fps = infos['video_fps']
         self.size = infos['video_size']
+
+        if target_resolution:
+            # revert the order, as ffmpeg used (width, height)
+            target_resolution = target_resolution[1], target_resolution[0]
+
+            if None in target_resolution:
+                ratio = 1
+                for idx, target in enumerate(target_resolution):
+                    if target:  
+                        ratio = target / self.size[idx]
+                self.size = (int(self.size[0] * ratio), int(self.size[1] * ratio))
+            else:
+                self.size = target_resolution
+        self.resize_algo = resize_algo
+
         self.duration = infos['video_duration']
         self.ffmpeg_duration = infos['duration']
         self.nframes = infos['video_nframes']
@@ -63,13 +79,13 @@ class FFMPEG_VideoReader:
         else:
             i_arg = [ '-i', self.filename]
 
-
-        cmd = ([get_setting("FFMPEG_BINARY")]+ i_arg +
-                ['-loglevel', 'error',
+        cmd = ([get_setting("FFMPEG_BINARY")] + i_arg +
+               ['-loglevel', 'error',
                 '-f', 'image2pipe',
+                '-vf', 'scale=%d:%d' % tuple(self.size),
+                '-sws_flags', self.resize_algo,
                 "-pix_fmt", self.pix_fmt,
                 '-vcodec', 'rawvideo', '-'])
-
         popen_params = {"bufsize": self.bufsize,
                         "stdout": sp.PIPE,
                         "stderr": sp.PIPE,
