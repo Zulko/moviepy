@@ -31,3 +31,6 @@ def download():
 
     download_url("https://github.com/earney/moviepy_media/raw/master/tests/sounds/crunching.mp3",
                  "media/crunching.mp3")
+
+    download_url("https://data.vision.ee.ethz.ch/cvl/video2gif/kAKZeIzs0Ag.mp4",
+                 "media/video_with_failing_audio.mp4")
