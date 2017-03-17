@@ -107,3 +107,8 @@ class VideoFileClip(VideoClip):
             del self.reader
         except AttributeError:
             pass
+
+        try:
+            del self.audio
+        except AttributeError:
+            pass
