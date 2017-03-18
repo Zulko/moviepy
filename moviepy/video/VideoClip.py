@@ -107,6 +107,7 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
+
     @property
     def w(self):
         return self.size[0]
@@ -115,6 +116,11 @@ class VideoClip(Clip):
     @property
     def h(self):
         return self.size[1]
+
+
+    @property
+    def aspect_ratio(self):
+        return self.w / float(self.h)
 
 
     # ===============================================================
