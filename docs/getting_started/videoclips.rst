@@ -3,7 +3,7 @@
 Creating and exporting video clips
 ===================================
 
-Video au audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see :ref:`effects`. For how to put clips together see :ref:`CompositeVideoClips` and to see how to preview clips before writing a file, refer to :ref:`efficient`.
+Video and audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see :ref:`effects`. For how to put clips together see :ref:`CompositeVideoClips` and to see how to preview clips before writing a file, refer to :ref:`efficient`.
 
 The following code summarizes the base clips that you can create with moviepy: ::
 
