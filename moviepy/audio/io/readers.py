@@ -176,11 +176,19 @@ class FFMPEG_AudioReader:
             if not (0 <=
                      (fr_min - self.buffer_startframe)
                           < len(self.buffer)):
-                self.buffer_around(fr_min)
+                if np.count_nonzero(self.buffer) == 0:
+                    # out of the buffer while the buffer represents empty audio: return 0
+                    return np.zeros((len(tt),self.nchannels))
+                else:
+                    self.buffer_around(fr_min)
             elif not (0 <=
                         (fr_max - self.buffer_startframe)
                              < len(self.buffer)):
-                self.buffer_around(fr_max)
+                if np.count_nonzero(self.buffer) == 0:
+                    # out of the buffer while the buffer represents empty audio: return 0
+                    return np.zeros((len(tt),self.nchannels))
+                else:
+                    self.buffer_around(fr_max)
 
             try:
                 result = np.zeros((len(tt),self.nchannels))
@@ -200,8 +208,12 @@ class FFMPEG_AudioReader:
                 return np.zeros(self.nchannels)
 
             if not (0 <= (ind - self.buffer_startframe) <len(self.buffer)):
-                # out of the buffer: recenter the buffer
-                self.buffer_around(ind)
+                if np.count_nonzero(self.buffer) == 0:
+                    # out of the buffer while the buffer represents empty audio: return 0
+                    return np.zeros(self.nchannels)
+                else:
+                    # out of the buffer: recenter the buffer
+                    self.buffer_around(ind)
 
             # read the frame in the buffer
             return self.buffer[ind - self.buffer_startframe]
