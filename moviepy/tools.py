@@ -11,16 +11,10 @@ import os
 from .compat import DEVNULL
 
 
-def sys_write_flush(s):
-    """ Writes and flushes without delay a text in the console """
-    sys.stdout.write(s)
-    sys.stdout.flush()
-
-
-def verbose_print(verbose, s):
-    """ Only prints s (with sys_write_flush) if verbose is True."""
+def verbose_print(verbose, *args):
+    """ Prints everything passed execpt the first arguement if verbose is True."""
     if verbose:
-        sys_write_flush(s)
+        print(*args)
 
 
 def subprocess_call(cmd, verbose=True, errorprint=True):

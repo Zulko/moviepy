@@ -56,17 +56,18 @@ def test_4a():
         .format(b'hello bytes',left, right)
     assert left == right, message
 
-def test_5():
-    '''Tests for sys_write-flush function
-        1) checks that this works quickly,
-        2) checks that stdout has no content after flushing
-    '''
-    start = time.time()
-    tools.sys_write_flush("hello world")
-    myTime = time.time() - start
-    assert myTime <  0.001
-    file = sys.stdout.read()
-    assert file == b""
+# test_5 commented out because PR #485 removed sys_write_flush
+#def test_5():
+#    '''Tests for sys_write-flush function
+#        1) checks that this works quickly,
+#        2) checks that stdout has no content after flushing
+#    '''
+#    start = time.time()
+#    tools.sys_write_flush("hello world")
+#    myTime = time.time() - start
+#    assert myTime <  0.001
+#    file = sys.stdout.read()
+#    assert file == b""
 
 def test_6():
     '''

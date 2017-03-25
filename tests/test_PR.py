@@ -7,6 +7,7 @@ import os
 import pytest
 
 from moviepy.editor import *
+import moviepy.tools as tools
 
 
 def test_PR_306():
@@ -45,6 +46,13 @@ def test_PR_424():
 def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
     clip.write_videofile("test.mp4", progress_bar=False, fps=30)
+    
+    
+def test_PR_485():
+    tools.verbose_print(False, "test1")  # Should not print anything
+    tools.verbose_print(True, "test2")  # Should print normally
+    tools.verbose_print(True, 59, "test3", ["test4", 23])  # Should print "59 test3 ["test4", 23]"
+    
 
 if __name__ == '__main__':
    pytest.main()
