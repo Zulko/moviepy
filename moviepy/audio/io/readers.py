@@ -177,16 +177,10 @@ class FFMPEG_AudioReader:
                      (fr_min - self.buffer_startframe)
                           < len(self.buffer)):
                 self.buffer_around(fr_min)
-                if np.count_nonzero(self.buffer) == 0:
-                    # the buffer represents empty audio: return 0
-                    return np.zeros((len(tt),self.nchannels))
             elif not (0 <=
                         (fr_max - self.buffer_startframe)
                              < len(self.buffer)):
                 self.buffer_around(fr_max)
-                if np.count_nonzero(self.buffer) == 0:
-                    # the buffer represents empty audio: return 0
-                    return np.zeros((len(tt),self.nchannels))
 
             try:
                 result = np.zeros((len(tt),self.nchannels))
@@ -194,10 +188,13 @@ class FFMPEG_AudioReader:
                 result[in_time] = self.buffer[indices]
                 return result
             except IndexError as error:
-                raise IOError("Error in file %s, "%(self.filename)+
-                       "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
-                       "indices wanted: %d-%d, "%(indices.min(), indices.max())+
-                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))
+                # out of the buffer : return 0
+                print "Error in file %s, "%(self.filename)+
+                      "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
+                      "indices wanted: %d-%d, "%(indices.min(), indices.max())+
+                      "but len(buffer)=%d\n"%(len(self.buffer))+ str(error)+
+                      "return 0 instead"
+                return np.zeros((len(tt),self.nchannels))
 
         else:
 
@@ -208,8 +205,8 @@ class FFMPEG_AudioReader:
             if not (0 <= (ind - self.buffer_startframe) <len(self.buffer)):
                 # out of the buffer: recenter the buffer
                 self.buffer_around(ind)
-                if np.count_nonzero(self.buffer) == 0:
-                    # the buffer represents empty audio: return 0
+                if not (0 <= (ind - self.buffer_startframe) <len(self.buffer)):
+                    # still out of the buffer: return 0
                     return np.zeros(self.nchannels)
 
             # read the frame in the buffer
