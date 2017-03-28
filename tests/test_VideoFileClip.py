@@ -41,9 +41,6 @@ def test_ffmpeg_resizing():
     frame = video.get_frame(0)
     assert frame.shape[1] == target_resolution[1]
 
-def test_set_start_end:
-    video = VideoFileClip("media/big_buck_bunny_432_433.webm", target_resolution=target_resolution)
-    video.set_start()
 
 if __name__ == '__main__':
    pytest.main()
