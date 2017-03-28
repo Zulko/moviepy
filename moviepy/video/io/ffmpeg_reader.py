@@ -24,10 +24,12 @@ class FFMPEG_VideoReader:
 
     def __init__(self, filename, print_infos=False, bufsize = None,
                  pix_fmt="rgb24", check_duration=True,
-                 target_resolution=None, resize_algo='bicubic'):
+                 target_resolution=None, resize_algo='bicubic',
+                 fps_source='tbr'):
 
         self.filename = filename
-        infos = ffmpeg_parse_infos(filename, print_infos, check_duration)
+        infos = ffmpeg_parse_infos(filename, print_infos, check_duration,
+                                   fps_source)
         self.fps = infos['video_fps']
         self.size = infos['video_size']
 
@@ -221,7 +223,9 @@ def ffmpeg_read_image(filename, with_mask=True):
     del reader
     return im
 
-def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
+
+def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
+                       fps_source='tbr'):
     """Get file infos using ffmpeg.
 
     Returns a dictionnary with the fields:
@@ -301,26 +305,41 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
                            "Here are the file infos returned by ffmpeg:\n\n%s")%(
                               filename, infos))
 
-
-        # get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
+        # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
         # tbc, and sometimes tbc/2...
-        # Current policy: Trust tbr first, then fps. If result is near from x*1000/1001
-        # where x is 23,24,25,50, replace by x*1000/1001 (very common case for the fps).
+        # Current policy: Trust tbr first, then fps unless fps_source is
+        # specified as 'fps' in which case try fps then tbr
 
-        try:
+        # If result is near from x*1000/1001 where x is 23,24,25,50,
+        # replace by x*1000/1001 (very common case for the fps).
+
+        def get_tbr():
             match = re.search("( [0-9]*.| )[0-9]* tbr", line)
 
+            # Sometimes comes as e.g. 12k. We need to replace that with 12000.
             s_tbr = line[match.start():match.end()].split(' ')[1]
             if "k" in s_tbr:
                 tbr = float(s_tbr.replace("k", "")) * 1000
             else:
                 tbr = float(s_tbr)
+            return tbr
 
-            result['video_fps'] = tbr
-        except:
+        def get_fps():
             match = re.search("( [0-9]*.| )[0-9]* fps", line)
-            result['video_fps'] = float(line[match.start():match.end()].split(' ')[1])
+            fps = float(line[match.start():match.end()].split(' ')[1])
+            return fps
 
+        if fps_source == 'tbr':
+            try:
+                result['video_fps'] = get_tbr()
+            except:
+                result['video_fps'] = get_fps()
+
+        elif fps_source == 'fps':
+            try:
+                result['video_fps'] = get_fps()
+            except:
+                result['video_fps'] = get_tbr()
 
         # It is known that a fps of 24 is often written as 24000/1001
         # but then ffmpeg nicely rounds it to 23.98, which we hate.
