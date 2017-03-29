@@ -189,10 +189,10 @@ class FFMPEG_AudioReader:
                 return result
             except IndexError as error:
                 # out of the buffer : return 0
-                print "Error in file %s, "%(self.filename)+
-                      "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
-                      "indices wanted: %d-%d, "%(indices.min(), indices.max())+
-                      "but len(buffer)=%d\n"%(len(self.buffer))+ str(error)+
+                print "Error in file %s, "%(self.filename)+\
+                      "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+\
+                      "indices wanted: %d-%d, "%(indices.min(), indices.max())+\
+                      "but len(buffer)=%d\n"%(len(self.buffer))+ str(error)+\
                       "return 0 instead"
                 return np.zeros((len(tt),self.nchannels))
 
