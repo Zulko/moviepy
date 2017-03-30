@@ -48,11 +48,11 @@ def test_PR_458():
 
 
 def test_PR_515():
-    # I don't know how to do this... how to get Travis to import VideoFileClips?
-    #clip = VideoFileClip("video.mp4", fps_source='tbr')
-    #clip = VideoFileClip("video.mp4", fps_source='fps')
-    #assert
-    pass
+    # Won't actually work until video is in download_media
+    clip = VideoFileClip("video.mp4", fps_source='tbr')
+    assert clip.fps == 90000
+    clip = VideoFileClip("video.mp4", fps_source='fps')
+    assert clip.fps == 10.51
 
 if __name__ == '__main__':
    pytest.main()
