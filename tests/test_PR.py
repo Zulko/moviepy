@@ -46,5 +46,13 @@ def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
     clip.write_videofile("test.mp4", progress_bar=False, fps=30)
 
+
+def test_PR_515():
+    # Won't actually work until video is in download_media
+    clip = VideoFileClip("media/fire2.mp4", fps_source='tbr')
+    assert clip.fps == 90000
+    clip = VideoFileClip("media/fire2.mp4", fps_source='fps')
+    assert clip.fps == 10.51
+
 if __name__ == '__main__':
    pytest.main()
