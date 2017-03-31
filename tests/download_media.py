@@ -36,3 +36,6 @@ def download():
 
     download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/pigs_in_a_polka.gif",
                  "media/pigs_in_a_polka.gif")
+    
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/fire2.mp4",
+                 "media/fire2.mp4")
