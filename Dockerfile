@@ -18,13 +18,13 @@ RUN pip install imageio numpy scipy matplotlib pandas sympy nose decorator tqdm 
 # install scikit-image after the other deps, it doesn't cause errors this way.
 RUN pip install scikit-image sklearn
 
-# install from github since there are bugs in latest versions.
 RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
 RUN cd /var/src/moviepy/ && python setup.py install
 
 # install ffmpeg from imageio.
 RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
 
+#add soft link so that ffmpeg can executed (like usual) from command line
 RUN ln -s /root/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
 
 # modify ImageMagick policy file so that Textclips work correctly.
