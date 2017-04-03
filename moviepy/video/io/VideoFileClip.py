@@ -43,6 +43,11 @@ class VideoFileClip(VideoClip):
       The algorithm used for resizing. Default: "bicubic", other popular
       options include "bilinear" and "fast_bilinear". For more information, see
       https://ffmpeg.org/ffmpeg-scaler.html
+      
+    fps_source:
+      The fps value to collect from the metadata. Set by default to 'tbr', but
+      can be set to 'fps', which may be helpful if importing slow-motion videos
+      that get messed up otherwise.
 
       
     Attributes
@@ -61,7 +66,8 @@ class VideoFileClip(VideoClip):
     def __init__(self, filename, has_mask=False,
                  audio=True, audio_buffersize = 200000,
                  target_resolution=None, resize_algorithm='bicubic',
-                 audio_fps=44100, audio_nbytes=2, verbose=False):
+                 audio_fps=44100, audio_nbytes=2, verbose=False,
+                 fps_source='tbr'):
         
         VideoClip.__init__(self)
 
@@ -70,7 +76,8 @@ class VideoFileClip(VideoClip):
         self.reader = None # need this just in case FFMPEG has issues (__del__ complains)
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
                                          target_resolution=target_resolution,
-                                         resize_algo=resize_algorithm)
+                                         resize_algo=resize_algorithm,
+                                         fps_source=fps_source)
 
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
@@ -105,5 +112,10 @@ class VideoFileClip(VideoClip):
         """ Close/delete the internal reader. """
         try:
             del self.reader
+        except AttributeError:
+            pass
+
+        try:
+            del self.audio
         except AttributeError:
             pass

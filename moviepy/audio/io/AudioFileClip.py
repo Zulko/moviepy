@@ -77,3 +77,10 @@ class AudioFileClip(AudioClip):
             to the audio file. Use copy when you have different clips
             watching the audio file at different times. """
         return AudioFileClip(self.filename,self.buffersize)
+
+    def __del__(self):
+        """ Close/delete the internal reader. """
+        try:
+            del self.reader
+        except AttributeError:
+            pass

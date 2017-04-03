@@ -41,5 +41,6 @@ def test_ffmpeg_resizing():
     frame = video.get_frame(0)
     assert frame.shape[1] == target_resolution[1]
 
+
 if __name__ == '__main__':
    pytest.main()
