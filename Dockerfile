@@ -19,7 +19,8 @@ RUN pip install imageio numpy scipy matplotlib pandas sympy nose decorator tqdm 
 RUN pip install scikit-image sklearn
 
 # install from github since there are bugs in latest versions.
-RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
+ADD . /var/src/moviepy/
+#RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
 RUN cd /var/src/moviepy/ && python setup.py install
 
 # install ffmpeg from imageio.
