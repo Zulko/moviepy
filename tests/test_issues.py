@@ -146,6 +146,12 @@ def test_issue_470():
     subclip = audio_clip.subclip(t_start=6, t_end=8)
     subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
+def test_issue_246():
+    def test_audio_reader():
+        video = VideoFileClip('media/video_with_failing_audio.mp4')
+        subclip = video.subclip(270)
+        subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
+                                write_logfile=True)
 
 if __name__ == '__main__':
    pytest.main()
