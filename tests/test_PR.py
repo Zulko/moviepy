@@ -8,6 +8,8 @@ import pytest
 
 from moviepy.editor import *
 
+from moviepy.video.tools.interpolators import Trajectory
+
 import sys
 sys.path.append("tests")
 import download_media
@@ -43,6 +45,26 @@ def test_PR_339():
 
     #in_label_mode
     overlay = TextClip(txt='foo', font="Liberation-Mono", method='label')
+
+
+def test_PR_373():
+    result = Trajectory.load_list("media/traj.txt")
+
+    Trajectory.save_list(result, os.path.join(TMP_DIR, "traj1.txt"))
+
+    result1 = Trajectory.load_list(os.path.join(TMP_DIR,"traj1.txt"))
+
+    assert len(result[0].tt) == len(result1[0].tt)
+    for i in range(len(result[0].tt)):
+        assert result[0].tt[i] == result1[0].tt[i]
+
+    assert len(result[0].xx) == len(result1[0].xx)
+    for i in range(len(result[0].xx)):
+        assert result[0].xx[i] == result1[0].xx[i]
+
+    assert len(result[0].yy) == len(result1[0].yy)
+    for i in range(len(result[0].yy)):
+        assert result[0].yy[i] == result1[0].yy[i]
 
 
 def test_PR_424():
