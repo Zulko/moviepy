@@ -14,8 +14,8 @@ Steps to run the git repo unittests from docker
 
 1. Get a bash prompt in the moviepy container 
 
-``cd tests``
-``docker run -it -v `pwd`:/tests moviepy bash``
+``cd tests
+  docker run -it -v `pwd`:/tests moviepy bash``
 
 2. run the tests.. 
 ``cd tests``
