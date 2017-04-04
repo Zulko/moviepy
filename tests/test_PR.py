@@ -19,29 +19,32 @@ def test_download_media(capsys):
     with capsys.disabled():
        download_media.download()
 
-
 def test_PR_306():
-    #put this back in once we get ImageMagick working on travis-ci
-    #assert TextClip.list('font') != []
-    #assert TextClip.list('color') != []
+    if TRAVIS:
+       return
 
-    #with pytest.raises(Exception, message="Expecting Exception"):
-    #     TextClip.list('blah')
-    pass
+    #put this back in once we get ImageMagick working on travis-ci
+    assert TextClip.list('font') != []
+    assert TextClip.list('color') != []
+
+    with pytest.raises(Exception, message="Expecting Exception"):
+         TextClip.list('blah')
 
 
 def test_PR_339():
+    if TRAVIS:
+       return
+
     #in caption mode
-    #overlay = TextClip(txt='foo',
-    #                   color='white',
-    #                   size=(640, 480),
-    #                   method='caption',
-    #                   align='center',
-    #                   fontsize=25)
+    overlay = TextClip(txt='foo',
+                       color='white', font="Liberation-Mono",
+                       size=(640, 480),
+                       method='caption',
+                       align='center',
+                       fontsize=25)
 
     #in_label_mode
-    #overlay = TextClip(txt='foo', method='label')
-    pass
+    overlay = TextClip(txt='foo', font="Liberation-Mono", method='label')
 
 
 def test_PR_373():
@@ -75,7 +78,8 @@ def test_PR_424():
 
 def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
-    clip.write_videofile("test.mp4", progress_bar=False, fps=30)
+    clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"),
+                         progress_bar=False, fps=30)
 
 
 def test_PR_515():
