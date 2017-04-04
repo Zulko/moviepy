@@ -26,6 +26,7 @@ User Guide
    getting_started/getting_started
    gallery
    examples/examples
+   docker
    FAQ
    ref/ref
 
