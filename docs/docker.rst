@@ -28,9 +28,9 @@ Running your own moviepy script from docker
 
 Change directory to where your script is located
 
-If moviepy docker container is already running, you can connect by:
+If moviepy docker container is already running, you can connect by: ::
 
-``docker exec -it moviepy python myscript.py``
+     docker exec -it moviepy python myscript.py
 
 If the container isn't running already ::
 
@@ -38,6 +38,6 @@ If the container isn't running already ::
      python myscript.py
 
 
-You can also start a container and run a script in one command:
+You can also start a container and run a script in one command: ::
 
-``docker run -it -v `pwd`:/code moviepy python myscript.py``
+     docker run -it -v `pwd`:/code moviepy python myscript.py
