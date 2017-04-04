@@ -52,7 +52,7 @@ def test_PR_373():
 
     Trajectory.save_list(result, os.path.join(TMP_DIR, "traj1.txt"))
 
-    result1 = Trajectory.load_list(os.path.join(TMP_DIR,"traj.txt"))
+    result1 = Trajectory.load_list(os.path.join(TMP_DIR,"traj1.txt"))
 
     assert len(result[0].tt) == len(result1[0].tt)
     for i in range(len(result[0].tt)):
