@@ -5,16 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Clip &mdash; MoviePy 0.2 documentation</title>
+  <title>Clip &mdash; MoviePy 0.2.3.1 documentation</title>
   
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   
   
@@ -28,76 +30,84 @@
   
 
   
-    <link rel="top" title="MoviePy 0.2 documentation" href="../index.html"/>
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../index.html"/>
         <link rel="up" title="Reference Manual" href="ref.html"/>
         <link rel="next" title="Classes of Video Clips" href="VideoClip/VideoClip.html"/>
         <link rel="prev" title="Reference Manual" href="ref.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../index.html" class="fa fa-home"> MoviePy</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../_static/logo_small.jpeg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../install.html#installation">Installation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../install.html#other-optional-but-useful-dependencies">Other optional but useful dependencies</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/compositing.html">Mixing clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#animations-edited-with-moviepy">Animations edited with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../gallery.html#rinconcam">Rinconcam</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../examples/moving_letters.html">Text with moving letters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/dancing_knights.html">A reconstitution of 15th century dancing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/ukulele_concerto.html">A simple music video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/example_with_sound.html">An example with sound</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/star_worms.html">A Star-Wars like opening title</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/masked_credits.html">Partially Hidden credits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
-</ul>
-</li>
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_tools/advanced_tools.html">Advanced tools</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="ref.html">Reference Manual</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="">Clip</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Clip</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1"><code class="docutils literal"><span class="pre">Clip</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="VideoClip/VideoClip.html">Classes of Video Clips</a></li>
 <li class="toctree-l2"><a class="reference internal" href="AudioClip.html">AudioClip</a></li>
 <li class="toctree-l2"><a class="reference internal" href="videofx.html">moviepy.video.fx (vfx)</a></li>
@@ -106,76 +116,103 @@
 <li class="toctree-l2"><a class="reference internal" href="audiotools.html">audio.tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ffmpeg.html">FFMPEG tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="decorators.html">Decorators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="code_origanization.html">Organization of MoviePy&#8217;s code</a></li>
 </ul>
 </li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../index.html">MoviePy</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MoviePy</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="ref.html">Reference Manual</a> &raquo;</li>
-      
-    <li>Clip</li>
+        
+      <li>Clip</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          <a href="../_sources/ref/Clip.txt" rel="nofollow"> View page source</a>
+            
+            <a href="../_sources/ref/Clip.rst.txt" rel="nofollow"> View page source</a>
+          
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="clip">
 <h1>Clip<a class="headerlink" href="#clip" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="id1">
-<h2><tt class="xref py py-class docutils literal"><span class="pre">Clip</span></tt><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<h2><code class="xref py py-class docutils literal"><span class="pre">Clip</span></code><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="Clip.Clip">
-<em class="property">class </em><tt class="descclassname">Clip.</tt><tt class="descname">Clip</tt><a class="reference internal" href="../_modules/Clip.html#Clip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Clip.</code><code class="descname">Clip</code><a class="reference internal" href="../_modules/Clip.html#Clip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class of all clips (VideoClips and AudioClips).</p>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="13%" />
-<col width="87%" />
+<col width="7%" />
+<col width="93%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>start:</td>
-<td>When the clip is included in a composition, time of the
-composition at which the clip starts playing (in seconds).</td>
+<td>When the clip is included in a composition, time of the composition at which the clip starts playing (in seconds).</td>
 </tr>
 <tr class="row-even"><td>end:</td>
-<td>When the clip is included in a composition, time of the
-composition at which the clip starts playing (in seconds).</td>
+<td>When the clip is included in a composition, time of the composition at which the clip starts playing (in seconds).</td>
 </tr>
 <tr class="row-odd"><td>duration:</td>
-<td>Duration of the clip (in seconds). Some clips are infinite, in
-this case their duration will be <tt class="docutils literal"><span class="pre">None</span></tt>.</td>
+<td>Duration of the clip (in seconds). Some clips are infinite, in this case their duration will be <code class="docutils literal"><span class="pre">None</span></code>.</td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="Clip.Clip.copy">
-<tt class="descname">copy</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.copy" title="Permalink to this definition">¶</a></dt>
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shallow copy of the clip.</p>
 <p>Returns a shwallow copy of the clip whose mask and audio will
 be shallow copies of the clip&#8217;s mask and audio if they exist.</p>
@@ -186,96 +223,96 @@ clip.subclip, etc.)</p>
 
 <dl class="method">
 <dt id="Clip.Clip.cutout">
-<tt class="descname">cutout</tt><big>(</big><em>ta</em>, <em>tb</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.cutout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.cutout" title="Permalink to this definition">¶</a></dt>
+<code class="descname">cutout</code><span class="sig-paren">(</span><em>ta</em>, <em>tb</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.cutout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.cutout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the content of the current clip but
-skips the extract between <tt class="docutils literal"><span class="pre">ta</span></tt> and <tt class="docutils literal"><span class="pre">tb</span></tt>, which can be
+skips the extract between <code class="docutils literal"><span class="pre">ta</span></code> and <code class="docutils literal"><span class="pre">tb</span></code>, which can be
 expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
 or as a string: &#8216;01:03:05.35&#8217;.
-If the original clip has a <tt class="docutils literal"><span class="pre">duration</span></tt> attribute set,
+If the original clip has a <code class="docutils literal"><span class="pre">duration</span></code> attribute set,
 the duration of the returned clip  is automatically computed as
 `` duration - (tb - ta)``.</p>
-<p>The resulting clip&#8217;s <tt class="docutils literal"><span class="pre">audio</span></tt> and <tt class="docutils literal"><span class="pre">mask</span></tt> will also be cutout
+<p>The resulting clip&#8217;s <code class="docutils literal"><span class="pre">audio</span></code> and <code class="docutils literal"><span class="pre">mask</span></code> will also be cutout
 if they exist.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.fl">
-<tt class="descname">fl</tt><big>(</big><em>fun</em>, <em>apply_to=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fl</code><span class="sig-paren">(</span><em>fun</em>, <em>apply_to=[]</em>, <em>keep_duration=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.fl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl" title="Permalink to this definition">¶</a></dt>
 <dd><p>General processing of a clip.</p>
 <p>Returns a new Clip whose frames are a transformation
-(through function <tt class="docutils literal"><span class="pre">fun</span></tt>) of the frames of the current clip.</p>
+(through function <code class="docutils literal"><span class="pre">fun</span></code>) of the frames of the current clip.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fun</strong> :</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>fun</strong></p>
 <blockquote>
-<div><p>A function with signature (gf,t -&gt; frame) where <tt class="docutils literal"><span class="pre">gf</span></tt> will
-represent the current clip&#8217;s <tt class="docutils literal"><span class="pre">get_frame</span></tt> method,
-i.e. <tt class="docutils literal"><span class="pre">gf</span></tt> is a function (t-&gt;image). Parameter <cite>t</cite> is a time
+<div><p>A function with signature (gf,t -&gt; frame) where <code class="docutils literal"><span class="pre">gf</span></code> will
+represent the current clip&#8217;s <code class="docutils literal"><span class="pre">get_frame</span></code> method,
+i.e. <code class="docutils literal"><span class="pre">gf</span></code> is a function (t-&gt;image). Parameter <cite>t</cite> is a time
 in seconds, <cite>frame</cite> is a picture (=Numpy array) which will be
 returned by the transformed clip (see examples below).</p>
 </div></blockquote>
-<p><strong>apply_to</strong> :</p>
+<p><strong>apply_to</strong></p>
 <blockquote>
-<div><p>Can be either <tt class="docutils literal"><span class="pre">'mask'</span></tt>, or <tt class="docutils literal"><span class="pre">'audio'</span></tt>, or
-<tt class="docutils literal"><span class="pre">['mask','audio']</span></tt>.
-Specifies if the filter <tt class="docutils literal"><span class="pre">fl</span></tt> should also be applied to the
+<div><p>Can be either <code class="docutils literal"><span class="pre">'mask'</span></code>, or <code class="docutils literal"><span class="pre">'audio'</span></code>, or
+<code class="docutils literal"><span class="pre">['mask','audio']</span></code>.
+Specifies if the filter <code class="docutils literal"><span class="pre">fl</span></code> should also be applied to the
 audio or the mask of the clip, if any.</p>
 </div></blockquote>
-<p><strong>keep_duration</strong> :</p>
+<p><strong>keep_duration</strong></p>
 <blockquote class="last">
 <div><p>Set to True if the transformation does not change the
-<tt class="docutils literal"><span class="pre">duration</span></tt> of the clip.</p>
+<code class="docutils literal"><span class="pre">duration</span></code> of the clip.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<p>In the following <tt class="docutils literal"><span class="pre">newclip</span></tt> a 100 pixels-high clip whose video
+<p>In the following <code class="docutils literal"><span class="pre">newclip</span></code> a 100 pixels-high clip whose video
 content scrolls from the top to the bottom of the frames of
-<tt class="docutils literal"><span class="pre">clip</span></tt>.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span><span class="n">t</span> <span class="p">:</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="p">:]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="s">&#39;mask&#39;</span><span class="p">)</span>
+<code class="docutils literal"><span class="pre">clip</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span><span class="n">t</span> <span class="p">:</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.fl_time">
-<tt class="descname">fl_time</tt><big>(</big><em>t_func</em>, <em>apply_to=</em><span class="optional">[</span><span class="optional">]</span>, <em>keep_duration=False</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fl_time</code><span class="sig-paren">(</span><em>t_func</em>, <em>apply_to=[]</em>, <em>keep_duration=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.fl_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fl_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a Clip instance playing the content of the current clip
-but with a modified timeline, time <tt class="docutils literal"><span class="pre">t</span></tt> being replaced by another
+but with a modified timeline, time <code class="docutils literal"><span class="pre">t</span></code> being replaced by another
 time <cite>t_func(t)</cite>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t_func:</strong> :</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>t_func:</strong></p>
 <blockquote>
-<div><p>A function <tt class="docutils literal"><span class="pre">t-&gt;</span> <span class="pre">new_t</span></tt></p>
+<div><p>A function <code class="docutils literal"><span class="pre">t-&gt;</span> <span class="pre">new_t</span></code></p>
 </div></blockquote>
-<p><strong>apply_to:</strong> :</p>
+<p><strong>apply_to:</strong></p>
 <blockquote>
 <div><p>Can be either &#8216;mask&#8217;, or &#8216;audio&#8217;, or [&#8216;mask&#8217;,&#8217;audio&#8217;].
-Specifies if the filter <tt class="docutils literal"><span class="pre">fl</span></tt> should also be applied to the
+Specifies if the filter <code class="docutils literal"><span class="pre">fl</span></code> should also be applied to the
 audio or the mask of the clip, if any.</p>
 </div></blockquote>
-<p><strong>keep_duration:</strong> :</p>
+<p><strong>keep_duration:</strong></p>
 <blockquote class="last">
-<div><p><tt class="docutils literal"><span class="pre">False</span></tt> (default) if the transformation modifies the
-<tt class="docutils literal"><span class="pre">duration</span></tt> of the clip.</p>
+<div><p><code class="docutils literal"><span class="pre">False</span></code> (default) if the transformation modifies the
+<code class="docutils literal"><span class="pre">duration</span></code> of the clip.</p>
 </div></blockquote>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># plays the clip (and its mask and sound) twice faster</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;mask&#39;</span><span class="p">,</span><span class="s">&#39;audio&#39;</span><span class="p">])</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip (and its mask and sound) twice faster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span><span class="s1">&#39;audio&#39;</span><span class="p">])</span>
 <span class="go">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># plays the clip starting at t=3, and backwards:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip starting at t=3, and backwards:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">3</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -283,21 +320,21 @@ audio or the mask of the clip, if any.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.fx">
-<tt class="descname">fx</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.fx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fx" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the result of <tt class="docutils literal"><span class="pre">func(self,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></tt>.
+<code class="descname">fx</code><span class="sig-paren">(</span><em>func</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.fx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.fx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the result of <code class="docutils literal"><span class="pre">func(self,</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code>.
 for instance</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>is equivalent to</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The motivation of fx is to keep the name of the effect near its
 parameters, when the effects are chained:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.fx</span> <span class="kn">import</span> <span class="n">volumex</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">mirrorx</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.fx</span> <span class="k">import</span> <span class="n">volumex</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">mirrorx</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">resize</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">mirrorx</span> <span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># Is equivalent, but clearer than</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Is equivalent, but clearer than</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resize</span><span class="p">(</span> <span class="n">volumex</span><span class="p">(</span> <span class="n">mirrorx</span><span class="p">(</span> <span class="n">clip</span> <span class="p">),</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">0.3</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -305,14 +342,14 @@ parameters, when the effects are chained:</p>
 
 <dl class="method">
 <dt id="Clip.Clip.get_frame">
-<tt class="descname">get_frame</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#Clip.Clip.get_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_frame</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.get_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.get_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets a numpy array representing the RGB picture of the clip at time t
 or (mono or stereo) value for a sound clip</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.is_playing">
-<tt class="descname">is_playing</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.is_playing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.is_playing" title="Permalink to this definition">¶</a></dt>
+<code class="descname">is_playing</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.is_playing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.is_playing" title="Permalink to this definition">¶</a></dt>
 <dd><p>If t is a time, returns true if t is between the start and
 the end of the clip. t can be expressed in seconds (15.35),
 in (min, sec), in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
@@ -323,22 +360,22 @@ is true iff tti is in the clip.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.iter_frames">
-<tt class="descname">iter_frames</tt><big>(</big><em>fps=None</em>, <em>with_times=False</em>, <em>progress_bar=False</em>, <em>dtype=None</em><big>)</big><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
+<code class="descname">iter_frames</code><span class="sig-paren">(</span><em>fps=None</em>, <em>with_times=False</em>, <em>progress_bar=False</em>, <em>dtype=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.iter_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.iter_frames" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterates over all the frames of the clip.</p>
 <p>Returns each frame of the clip as a HxWxN np.array,
 where N=1 for mask clips and N=3 for RGB clips.</p>
 <p>This function is not really meant for video editing.
 It provides an easy way to do frame-by-frame treatment of
 a video, for fields like science, computer vision...</p>
-<p>The <tt class="docutils literal"><span class="pre">fps</span></tt> (frames per second) parameter is optional if the
-clip already has a <tt class="docutils literal"><span class="pre">fps</span></tt> attribute.</p>
+<p>The <code class="docutils literal"><span class="pre">fps</span></code> (frames per second) parameter is optional if the
+clip already has a <code class="docutils literal"><span class="pre">fps</span></code> attribute.</p>
 <p>Use dtype=&#8221;uint8&#8221; when using the pictures to write video, images...</p>
 <p class="rubric">Examples</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># prints the maximum of red that is contained</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c"># on the first line of each frame of the clip.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># prints the maximum of red that is contained</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># on the first line of each frame of the clip.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="k">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="go">             for frame in myclip.iter_frames()])</span>
 </pre></div>
 </div>
@@ -346,9 +383,9 @@ clip already has a <tt class="docutils literal"><span class="pre">fps</span></tt
 
 <dl class="method">
 <dt id="Clip.Clip.set_duration">
-<tt class="descname">set_duration</tt><big>(</big><em>t</em>, <em>change_end=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_duration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the clip, with the  <tt class="docutils literal"><span class="pre">duration</span></tt> attribute
-set to <tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+<code class="descname">set_duration</code><span class="sig-paren">(</span><em>t</em>, <em>change_end=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_duration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the clip, with the  <code class="docutils literal"><span class="pre">duration</span></code> attribute
+set to <code class="docutils literal"><span class="pre">t</span></code>, which can be expressed in seconds (15.35), in (min, sec),
 in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
 Also sets the duration of the mask and audio, if any, of the
 returned clip.
@@ -359,9 +396,9 @@ of the clip.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.set_end">
-<tt class="descname">set_end</tt><big>(</big><em>t</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_end" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the clip, with the <tt class="docutils literal"><span class="pre">end</span></tt> attribute set to
-<tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+<code class="descname">set_end</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the clip, with the <code class="docutils literal"><span class="pre">end</span></code> attribute set to
+<code class="docutils literal"><span class="pre">t</span></code>, which can be expressed in seconds (15.35), in (min, sec),
 in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.
 Also sets the duration of the mask and audio, if any,
 of the returned clip.</p>
@@ -369,65 +406,65 @@ of the returned clip.</p>
 
 <dl class="method">
 <dt id="Clip.Clip.set_fps">
-<tt class="descname">set_fps</tt><big>(</big><em>fps</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_fps" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_fps</code><span class="sig-paren">(</span><em>fps</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_fps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_fps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a copy of the clip with a new default fps for functions like
 write_videofile, iterframe, etc.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.set_ismask">
-<tt class="descname">set_ismask</tt><big>(</big><em>ismask</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_ismask" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_ismask</code><span class="sig-paren">(</span><em>ismask</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_ismask"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_ismask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Says wheter the clip is a mask or not (ismask is a boolean)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.set_make_frame">
-<tt class="descname">set_make_frame</tt><big>(</big><em>make_frame</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_make_frame" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets a <tt class="docutils literal"><span class="pre">make_frame</span></tt> attribute for the clip. Useful for setting
+<code class="descname">set_make_frame</code><span class="sig-paren">(</span><em>make_frame</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_make_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_make_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a <code class="docutils literal"><span class="pre">make_frame</span></code> attribute for the clip. Useful for setting
 arbitrary/complicated videoclips.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.set_memoize">
-<tt class="descname">set_memoize</tt><big>(</big><em>memoize</em><big>)</big><a class="headerlink" href="#Clip.Clip.set_memoize" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_memoize</code><span class="sig-paren">(</span><em>memoize</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_memoize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_memoize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets wheter the clip should keep the last frame read in memory</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.set_start">
-<tt class="descname">set_start</tt><big>(</big><em>t</em>, <em>change_end=True</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.set_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a copy of the clip, with the <tt class="docutils literal"><span class="pre">start</span></tt> attribute set
-to <tt class="docutils literal"><span class="pre">t</span></tt>, which can be expressed in seconds (15.35), in (min, sec),
+<code class="descname">set_start</code><span class="sig-paren">(</span><em>t</em>, <em>change_end=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.set_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.set_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the clip, with the <code class="docutils literal"><span class="pre">start</span></code> attribute set
+to <code class="docutils literal"><span class="pre">t</span></code>, which can be expressed in seconds (15.35), in (min, sec),
 in (hour, min, sec), or as a string: &#8216;01:03:05.35&#8217;.</p>
-<p>If <tt class="docutils literal"><span class="pre">change_end=True</span></tt> and the clip has a <tt class="docutils literal"><span class="pre">duration</span></tt> attribute,
-the <tt class="docutils literal"><span class="pre">end</span></tt> atrribute of the clip will be updated to
-<tt class="docutils literal"><span class="pre">start+duration</span></tt>.</p>
-<p>If <tt class="docutils literal"><span class="pre">change_end=False</span></tt> and the clip has a <tt class="docutils literal"><span class="pre">end</span></tt> attribute,
-the <tt class="docutils literal"><span class="pre">duration</span></tt> attribute of the clip will be updated to 
-<tt class="docutils literal"><span class="pre">end-start</span></tt></p>
-<p>These changes are also applied to the <tt class="docutils literal"><span class="pre">audio</span></tt> and <tt class="docutils literal"><span class="pre">mask</span></tt>
+<p>If <code class="docutils literal"><span class="pre">change_end=True</span></code> and the clip has a <code class="docutils literal"><span class="pre">duration</span></code> attribute,
+the <code class="docutils literal"><span class="pre">end</span></code> atrribute of the clip will be updated to
+<code class="docutils literal"><span class="pre">start+duration</span></code>.</p>
+<p>If <code class="docutils literal"><span class="pre">change_end=False</span></code> and the clip has a <code class="docutils literal"><span class="pre">end</span></code> attribute,
+the <code class="docutils literal"><span class="pre">duration</span></code> attribute of the clip will be updated to 
+<code class="docutils literal"><span class="pre">end-start</span></code></p>
+<p>These changes are also applied to the <code class="docutils literal"><span class="pre">audio</span></code> and <code class="docutils literal"><span class="pre">mask</span></code>
 clips of the current clip, if they exist.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="Clip.Clip.subclip">
-<tt class="descname">subclip</tt><big>(</big><em>t_start=0</em>, <em>t_end=None</em><big>)</big><a class="reference internal" href="../_modules/Clip.html#Clip.subclip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.subclip" title="Permalink to this definition">¶</a></dt>
+<code class="descname">subclip</code><span class="sig-paren">(</span><em>t_start=0</em>, <em>t_end=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/Clip.html#Clip.subclip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Clip.Clip.subclip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a clip playing the content of the current clip
-between times <tt class="docutils literal"><span class="pre">t_start</span></tt> and <tt class="docutils literal"><span class="pre">t_end</span></tt>, which can be expressed
+between times <code class="docutils literal"><span class="pre">t_start</span></code> and <code class="docutils literal"><span class="pre">t_end</span></code>, which can be expressed
 in seconds (15.35), in (min, sec), in (hour, min, sec), or as a
 string: &#8216;01:03:05.35&#8217;.
-If <tt class="docutils literal"><span class="pre">t_end</span></tt> is not provided, it is assumed to be the duration
+If <code class="docutils literal"><span class="pre">t_end</span></code> is not provided, it is assumed to be the duration
 of the clip (potentially infinite).
-If <tt class="docutils literal"><span class="pre">t_end</span></tt> is a negative value, it is reset to
+If <code class="docutils literal"><span class="pre">t_end</span></code> is a negative value, it is reset to
 <a href="#id2"><span class="problematic" id="id3">``</span></a>clip.duration + t_end. <a href="#id4"><span class="problematic" id="id5">``</span></a>. For instance:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># cut the last two seconds of the clip:</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># cut the last two seconds of the clip:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If <tt class="docutils literal"><span class="pre">t_end</span></tt> is provided or if the clip has a duration attribute,
+<p>If <code class="docutils literal"><span class="pre">t_end</span></code> is provided or if the clip has a duration attribute,
 the duration of the returned clip is set automatically.</p>
-<p>The <tt class="docutils literal"><span class="pre">mask</span></tt> and <tt class="docutils literal"><span class="pre">audio</span></tt> of the resulting subclip will be
-subclips of <tt class="docutils literal"><span class="pre">mask</span></tt> and <tt class="docutils literal"><span class="pre">audio</span></tt> the original clip, if
+<p>The <code class="docutils literal"><span class="pre">mask</span></code> and <code class="docutils literal"><span class="pre">audio</span></code> of the resulting subclip will be
+subclips of <code class="docutils literal"><span class="pre">mask</span></code> and <code class="docutils literal"><span class="pre">audio</span></code> the original clip, if
 they exist.</p>
 </dd></dl>
 
@@ -437,15 +474,19 @@ they exist.</p>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="VideoClip/VideoClip.html" class="btn btn-neutral float-right" title="Classes of Video Clips"/>Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="VideoClip/VideoClip.html" class="btn btn-neutral float-right" title="Classes of Video Clips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="ref.html" class="btn btn-neutral" title="Reference Manual"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="ref.html" class="btn btn-neutral" title="Reference Manual" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -454,12 +495,14 @@ they exist.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Zulko.
+        &copy; Copyright 2017, Zulko.
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -474,10 +517,11 @@ they exist.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.2',
+            VERSION:'0.2.3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../_static/jquery.js"></script>

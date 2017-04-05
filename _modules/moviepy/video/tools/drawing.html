@@ -5,16 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.tools.drawing &mdash; MoviePy 0.2 documentation</title>
+  <title>moviepy.video.tools.drawing &mdash; MoviePy 0.2.3.1 documentation</title>
   
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   
   
@@ -28,126 +30,150 @@
   
 
   
-    <link rel="top" title="MoviePy 0.2 documentation" href="../../../../index.html"/>
+
+  
+        <link rel="index" title="Index"
+              href="../../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../../search.html"/>
+    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="../../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../../../index.html" class="fa fa-home"> MoviePy</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../../../../_static/logo_small.jpeg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../install.html#installation">Installation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started/compositing.html">Mixing clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started/effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gallery.html#animations-edited-with-moviepy">Animations edited with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../gallery.html#rinconcam">Rinconcam</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/moving_letters.html">Text with moving letters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/dancing_knights.html">A reconstitution of 15th century dancing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/ukulele_concerto.html">A simple music video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/example_with_sound.html">An example with sound</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/star_worms.html">A Star-Wars like opening title</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/masked_credits.html">Partially Hidden credits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/Clip.html">Clip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/VideoClip/VideoClip.html">Classes of Video Clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/AudioClip.html">AudioClip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/videofx.html">moviepy.video.fx (vfx)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/audiofx.html">audio.fx</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/videotools.html">video.tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/audiotools.html">audio.tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/ffmpeg.html">FFMPEG tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../ref/decorators.html">Decorators</a></li>
-</ul>
-</li>
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../../index.html">MoviePy</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MoviePy</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      
-    <li>moviepy.video.tools.drawing</li>
+        
+      <li>moviepy.video.tools.drawing</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.tools.drawing</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module deals with making images (np arrays). It provides drawing</span>
 <span class="sd">methods that are difficult to do with the existing Python libraries.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<div class="viewcode-block" id="blit"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.blit">[docs]</a><span class="k">def</span> <span class="nf">blit</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="blit"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.blit">[docs]</a><span class="k">def</span> <span class="nf">blit</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Blit an image over another.</span>
 <span class="sd">    </span>
 <span class="sd">    Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the</span>
@@ -155,8 +181,8 @@
 <span class="sd">    (2D float arrays) then ``ismask`` must be ``True``.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c"># xp1,yp1,xp2,yp2 = blit area on im2</span>
-    <span class="c"># x1,y1,x2,y2 = area of im1 to blit on im2</span>
+    <span class="c1"># xp1,yp1,xp2,yp2 = blit area on im2</span>
+    <span class="c1"># x1,y1,x2,y2 = area of im1 to blit on im2</span>
     <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span> <span class="o">=</span> <span class="n">pos</span>
     <span class="n">x1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">xp</span><span class="p">)</span>
     <span class="n">y1</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">yp</span><span class="p">)</span>
@@ -176,7 +202,7 @@
 
     <span class="n">new_im2</span> <span class="o">=</span> <span class="o">+</span><span class="n">im2</span>
 
-    <span class="k">if</span> <span class="n">mask</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="n">y1</span><span class="p">:</span><span class="n">y2</span><span class="p">,</span> <span class="n">x1</span><span class="p">:</span><span class="n">x2</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">im1</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="p">[</span><span class="n">mask</span><span class="p">])</span>
@@ -186,12 +212,12 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">new_im2</span><span class="p">[</span><span class="n">yp1</span><span class="p">:</span><span class="n">yp2</span><span class="p">,</span> <span class="n">xp1</span><span class="p">:</span><span class="n">xp2</span><span class="p">]</span> <span class="o">=</span> <span class="n">blitted</span>
 
-    <span class="k">return</span> <span class="n">new_im2</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ismask</span><span class="p">)</span> <span class="k">else</span> <span class="n">new_im2</span>
+    <span class="k">return</span> <span class="n">new_im2</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ismask</span><span class="p">)</span> <span class="k">else</span> <span class="n">new_im2</span></div>
 
 
-</div>
-<div class="viewcode-block" id="color_gradient"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.color_gradient">[docs]</a><span class="k">def</span> <span class="nf">color_gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">vector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-              <span class="n">shape</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="color_gradient"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.color_gradient">[docs]</a><span class="k">def</span> <span class="nf">color_gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">p2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">vector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+              <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Draw a linear, bilinear, or radial gradient.</span>
 <span class="sd">    </span>
 <span class="sd">    The result is a picture of size ``size``, whose color varies</span>
@@ -251,20 +277,20 @@
 <span class="sd">    Examples</span>
 <span class="sd">    ---------</span>
 <span class="sd">    </span>
-<span class="sd">    &gt;&gt;&gt; grad = colorGradient(blabla).astype(&#39;unit8&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; grad = color_gradient(blabla).astype(&#39;uint8&#39;)</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="c"># np-arrayize and change x,y coordinates to y,x</span>
+    <span class="c1"># np-arrayize and change x,y coordinates to y,x</span>
     <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
     
     <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="p">[</span><span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">])</span>
     
-    <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="s">&#39;bilinear&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">)</span>
-        <span class="n">m1</span><span class="p">,</span><span class="n">m2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">colorGradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">col1</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">shape</span> <span class="o">=</span> <span class="s">&#39;linear&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">m1</span><span class="p">,</span><span class="n">m2</span> <span class="o">=</span> <span class="p">[</span> <span class="n">color_gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">vector</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">col1</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                           <span class="n">shape</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span> <span class="n">offset</span><span class="p">)</span>
                   <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="p">[</span><span class="n">vector</span><span class="p">,</span><span class="o">-</span><span class="n">vector</span><span class="p">]]</span>
                   
         <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
@@ -275,22 +301,22 @@
     
     <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     
-    <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">p2</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">p2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p2</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="n">p2</span><span class="o">-</span><span class="n">p1</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vector</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">p2</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">vector</span>
     
-    <span class="k">if</span> <span class="n">vector</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>    
+    <span class="k">if</span> <span class="n">vector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
         <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
     
     <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">w</span><span class="p">),</span><span class="nb">range</span><span class="p">(</span><span class="n">h</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
     
-    <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="s">&#39;linear&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">shape</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
         
-        <span class="n">n_vec</span> <span class="o">=</span> <span class="n">vector</span><span class="o">/</span><span class="n">norm</span><span class="o">**</span><span class="mi">2</span> <span class="c"># norm 1/norm(vector)</span>
+        <span class="n">n_vec</span> <span class="o">=</span> <span class="n">vector</span><span class="o">/</span><span class="n">norm</span><span class="o">**</span><span class="mi">2</span> <span class="c1"># norm 1/norm(vector)</span>
         
         <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span> <span class="o">+</span> <span class="n">offset</span><span class="o">*</span><span class="n">vector</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="n">M</span><span class="o">-</span> <span class="n">p1</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n_vec</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">offset</span><span class="p">)</span>
@@ -299,8 +325,8 @@
             <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">arr</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">arr</span><span class="o">*</span><span class="n">col1</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">arr</span><span class="p">)</span><span class="o">*</span><span class="n">col2</span>
     
-    <span class="k">elif</span> <span class="n">shape</span> <span class="o">==</span> <span class="s">&#39;radial&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">shape</span> <span class="o">==</span> <span class="s1">&#39;radial&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">r</span> <span class="o">=</span> <span class="n">norm</span>
         <span class="k">if</span> <span class="n">r</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
             <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">))</span>
@@ -311,10 +337,10 @@
             
         <span class="k">if</span> <span class="n">col1</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">arr</span><span class="p">])</span>
-        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">arr</span><span class="p">)</span><span class="o">*</span><span class="n">col1</span> <span class="o">+</span> <span class="n">arr</span><span class="o">*</span><span class="n">col2</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">arr</span><span class="p">)</span><span class="o">*</span><span class="n">col1</span> <span class="o">+</span> <span class="n">arr</span><span class="o">*</span><span class="n">col2</span></div>
         
-</div>
-<div class="viewcode-block" id="color_split"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.color_split">[docs]</a><span class="k">def</span> <span class="nf">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">p1</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">p2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">vector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+
+<div class="viewcode-block" id="color_split"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.color_split">[docs]</a><span class="k">def</span> <span class="nf">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">p1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">p2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">vector</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">col1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">col2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">grad_width</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make an image splitted in 2 colored regions.</span>
 <span class="sd">    </span>
@@ -354,23 +380,30 @@
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; size = [200,200]</span>
 <span class="sd">    &gt;&gt;&gt; # an image with all pixels with x&lt;50 =0, the others =1</span>
-<span class="sd">    &gt;&gt;&gt; colorSplit(size, x=50, col1=0, col2=1)</span>
+<span class="sd">    &gt;&gt;&gt; color_split(size, x=50, col1=0, col2=1)</span>
 <span class="sd">    &gt;&gt;&gt; # an image with all pixels with y&lt;50 red, the others green</span>
-<span class="sd">    &gt;&gt;&gt; colorSplit(size, x=50, col1=[255,0,0], col2=[0,255,0])</span>
+<span class="sd">    &gt;&gt;&gt; color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])</span>
 <span class="sd">    &gt;&gt;&gt; # An image splitted along an arbitrary line (see below) </span>
-<span class="sd">    &gt;&gt;&gt; colorSplit(size, p1=[20,50], p2=[25,70] col1=0, col2=1)</span>
+<span class="sd">    &gt;&gt;&gt; color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)</span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">if</span> <span class="n">grad_width</span> <span class="ow">or</span> <span class="p">(</span> <span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">p2</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">grad_width</span> <span class="ow">or</span> <span class="p">(</span> <span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">p2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vector</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">p1</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">])</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+            <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">y</span><span class="p">])</span>
+
         <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">vector</span>
-        <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span><span class="p">,</span><span class="o">-</span><span class="n">x</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">y</span><span class="p">,</span><span class="o">-</span><span class="n">x</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
         <span class="n">vector</span> <span class="o">=</span>  <span class="nb">max</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span><span class="n">grad_width</span><span class="p">)</span><span class="o">*</span><span class="n">vector</span><span class="o">/</span><span class="n">norm</span>
         <span class="k">return</span> <span class="n">color_gradient</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="n">vector</span><span class="o">=</span><span class="n">vector</span><span class="p">,</span>
-                         <span class="n">col1</span> <span class="o">=</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="n">col2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s">&#39;linear&#39;</span><span class="p">)</span>
+                         <span class="n">col1</span> <span class="o">=</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span> <span class="o">=</span> <span class="n">col2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         
         <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
@@ -385,10 +418,10 @@
             
         <span class="k">return</span> <span class="n">arr</span>
      
-    <span class="c"># if we are here, it means we didn&#39;t exit with a proper &#39;return&#39;</span>
-    <span class="k">print</span><span class="p">(</span> <span class="s">&quot;Arguments in color_split not understood !&quot;</span> <span class="p">)</span>
-    <span class="k">raise</span>
-    </div>
+    <span class="c1"># if we are here, it means we didn&#39;t exit with a proper &#39;return&#39;</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Arguments in color_split not understood !&quot;</span> <span class="p">)</span>
+    <span class="k">raise</span></div>
+    
 <div class="viewcode-block" id="circle"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.drawing.circle">[docs]</a><span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="n">screensize</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">col2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">blur</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Draw an image with a circle.</span>
 <span class="sd">    </span>
@@ -398,10 +431,14 @@
 <span class="sd">    pixels</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">color_gradient</span><span class="p">(</span><span class="n">screensize</span><span class="p">,</span><span class="n">p1</span><span class="o">=</span><span class="n">center</span><span class="p">,</span><span class="n">r</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">col1</span><span class="o">=</span><span class="n">col1</span><span class="p">,</span>
-              <span class="n">col2</span><span class="o">=</span><span class="n">col2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s">&#39;radial&#39;</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="p">(</span><span class="n">radius</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span>
+              <span class="n">col2</span><span class="o">=</span><span class="n">col2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;radial&#39;</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="p">(</span><span class="n">radius</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="k">else</span>
                                               <span class="mf">1.0</span><span class="o">*</span><span class="p">(</span><span class="n">radius</span><span class="o">-</span><span class="n">blur</span><span class="p">)</span><span class="o">/</span><span class="n">radius</span><span class="p">)</span></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -410,12 +447,14 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Zulko.
+        &copy; Copyright 2017, Zulko.
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -430,10 +469,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2',
+            VERSION:'0.2.3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../../_static/jquery.js"></script>

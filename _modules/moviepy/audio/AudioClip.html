@@ -5,16 +5,18 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.audio.AudioClip &mdash; MoviePy 0.2 documentation</title>
+  <title>moviepy.audio.AudioClip &mdash; MoviePy 0.2.3.1 documentation</title>
   
 
   
   
+  
+  
 
   
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   
   
@@ -28,139 +30,158 @@
   
 
   
-    <link rel="top" title="MoviePy 0.2 documentation" href="../../../index.html"/>
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  <script src="../../../_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        <a href="../../../index.html" class="fa fa-home"> MoviePy</a>
-        <div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../../../_static/logo_small.jpeg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-      </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
-        
-            <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Download and Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../install.html#installation">Installation</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/getting_started.html">Getting started with MoviePy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/quick_presentation.html">Quick presentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/clips.html">Creating and exporting video clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/compositing.html">Mixing clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../getting_started/efficient_moviepy.html">How to be efficient with MoviePy</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../gallery.html">Gallery</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../gallery.html#videos-edited-with-moviepy">Videos edited with Moviepy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../gallery.html#animations-edited-with-moviepy">Animations edited with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../gallery.html#scientific-or-technological-projects">Scientific or technological projects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../gallery.html#misc-programs-and-scripts-using-moviepy">Misc. Programs and Scripts using MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../gallery.html#rinconcam">Rinconcam</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Example Scripts</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/moving_letters.html">Text with moving letters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/dancing_knights.html">A reconstitution of 15th century dancing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/ukulele_concerto.html">A simple music video</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/example_with_sound.html">An example with sound</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/star_worms.html">A Star-Wars like opening title</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/masked_credits.html">Partially Hidden credits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/painting_effect.html">Freezing a movie frame with a painting effect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/compo_from_image.html">Placing clips according to a picture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../examples/the_end.html">&#8220;The End&#8221; effect</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">FAQ and troubleshooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../FAQ.html#common-errors-that-are-not-bugs">Common errors that are not bugs</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../../ref/ref.html">Reference Manual</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/Clip.html">Clip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/VideoClip/VideoClip.html">Classes of Video Clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/AudioClip.html">AudioClip</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/videofx.html">moviepy.video.fx (vfx)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/audiofx.html">audio.fx</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/videotools.html">video.tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/audiotools.html">audio.tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/ffmpeg.html">FFMPEG tools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../ref/decorators.html">Decorators</a></li>
-</ul>
-</li>
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ref/ref.html">Reference Manual</a></li>
 </ul>
 
-        
+            
+          
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">MoviePy</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MoviePy</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>moviepy.audio.AudioClip</li>
+        
+      <li>moviepy.audio.AudioClip</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
+            
+        
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <h1>Source code for moviepy.audio.AudioClip</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="k">import</span> <span class="n">ffmpeg_audiowrite</span>
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="k">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">deprecated_version_of</span><span class="p">,</span>
+                           <span class="n">extensions_dict</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-
-
-<span class="c"># optimize range in function of Python&#39;s version</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
-    <span class="nb">range</span> <span class="o">=</span> <span class="nb">xrange</span>
-
+<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="k">import</span> <span class="n">Clip</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 
 <div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for audio clips.</span>
+    <span class="sd">&quot;&quot;&quot; Base class for audio clips.</span>
 <span class="sd">    </span>
-<span class="sd">    See ``SoundClip`` and ``CompositeSoundClip`` for usable classes.</span>
+<span class="sd">    See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.</span>
 <span class="sd">    </span>
-<span class="sd">    An AudioClip is a Clip with a ``get_frame``  attribute of</span>
+<span class="sd">    An AudioClip is a Clip with a ``make_frame``  attribute of</span>
 <span class="sd">    the form `` t -&gt; [ f_t ]`` for mono sound and</span>
 <span class="sd">    ``t-&gt; [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).</span>
 <span class="sd">    The `f_t` are floats between -1 and 1. These bounds can be</span>
@@ -170,7 +191,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
 <span class="sd">    </span>
-<span class="sd">    get_frame</span>
+<span class="sd">    make_frame</span>
 <span class="sd">      A function `t-&gt; frame at time t`. The frame does not mean much</span>
 <span class="sd">      for a sound, it is just a float. What &#39;makes&#39; the sound are</span>
 <span class="sd">      the variations of that float in the time.</span>
@@ -183,24 +204,57 @@
 <span class="sd">    </span>
 <span class="sd">    &gt;&gt;&gt; # Plays the note A (a sine wave of frequency 404HZ)</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; gf = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]</span>
-<span class="sd">    &gt;&gt;&gt; clip = AudioClip().set_get_frame(gf)</span>
-<span class="sd">    &gt;&gt;&gt; clip.set_duration(5).preview()</span>
+<span class="sd">    &gt;&gt;&gt; make_frame = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]</span>
+<span class="sd">    &gt;&gt;&gt; clip = AudioClip(make_frame, duration=5)</span>
+<span class="sd">    &gt;&gt;&gt; clip.preview()</span>
 <span class="sd">                     </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">get_frame</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
-        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">get_frame</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">get_frame</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">make_frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
             <span class="n">frame0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">frame0</span><span class="p">,</span> <span class="s">&#39;__iter__&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">frame0</span><span class="p">,</span> <span class="s1">&#39;__iter__&#39;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">frame0</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">duration</span>
+    
+    <span class="nd">@requires_duration</span>
+<div class="viewcode-block" id="AudioClip.iter_chunks"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.iter_chunks">[docs]</a>    <span class="k">def</span> <span class="nf">iter_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Iterator that returns the whole sound array of the clip by chunks</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fps</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+        <span class="k">if</span> <span class="n">chunk_duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">chunksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">chunk_duration</span><span class="o">*</span><span class="n">fps</span><span class="p">)</span>
+        
+        <span class="n">totalsize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">fps</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">totalsize</span> <span class="o">%</span> <span class="n">chunksize</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">nchunks</span> <span class="o">=</span> <span class="n">totalsize</span> <span class="o">//</span> <span class="n">chunksize</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">nchunks</span> <span class="o">=</span> <span class="n">totalsize</span> <span class="o">//</span> <span class="n">chunksize</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="n">pospos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">totalsize</span><span class="p">,</span>  <span class="n">chunksize</span><span class="p">))</span><span class="o">+</span><span class="p">[</span><span class="n">totalsize</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">generator</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchunks</span><span class="p">):</span>
+                <span class="n">tt</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pospos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">pospos</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_soundarray</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="n">quantize</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span>
+                                         <span class="n">buffersize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">progress_bar</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">generator</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="n">nchunks</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">generator</span><span class="p">()</span></div>
 
     <span class="nd">@requires_duration</span>
-<div class="viewcode-block" id="AudioClip.to_soundarray"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_soundarray">[docs]</a>    <span class="k">def</span> <span class="nf">to_soundarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tt</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">fps</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioClip.to_soundarray"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_soundarray">[docs]</a>    <span class="k">def</span> <span class="nf">to_soundarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the sound into an array that can be played by pygame</span>
 <span class="sd">        or written in a wav file. See ``AudioClip.preview``.</span>
@@ -217,23 +271,54 @@
 <span class="sd">          2 for 16bit, 4 for 32bit sound.</span>
 <span class="sd">          </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">tt</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
-
-        <span class="c">#print tt.max() - tt.min(), tt.min(), tt.max()</span>
+        <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+       
+        <span class="n">stacker</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="o">==</span><span class="mi">2</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span> 
+        <span class="n">max_duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">buffersize</span> <span class="o">/</span> <span class="n">fps</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="o">&gt;</span><span class="n">max_duration</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">stacker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_chunks</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="n">quantize</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                                 <span class="n">chunksize</span><span class="o">=</span><span class="n">buffersize</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        elif len(tt)&gt; 1.5*buffersize:</span>
+<span class="sd">            nchunks = int(len(tt)/buffersize+1)</span>
+<span class="sd">            tt_chunks = np.array_split(tt, nchunks)</span>
+<span class="sd">            return stacker([self.to_soundarray(tt=ttc, buffersize=buffersize, fps=fps,</span>
+<span class="sd">                                        quantize=quantize, nbytes=nbytes)</span>
+<span class="sd">                              for ttc in tt_chunks])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#print tt.max() - tt.min(), tt.min(), tt.max()</span>
         
         <span class="n">snd_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
-        <span class="n">snd_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="mf">0.99</span><span class="p">,</span>
-                       <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">0.99</span><span class="p">,</span><span class="n">snd_array</span><span class="p">))</span>
-        <span class="n">inttype</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s">&#39;int8&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s">&#39;int16&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s">&#39;int32&#39;</span><span class="p">}[</span><span class="n">nbytes</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">nbytes</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">snd_array</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inttype</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">quantize</span><span class="p">:</span>
+            <span class="n">snd_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">0.99</span><span class="p">,</span><span class="n">snd_array</span><span class="p">))</span>
+            <span class="n">inttype</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span><span class="s1">&#39;int8&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">:</span><span class="s1">&#39;int16&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="s1">&#39;int32&#39;</span><span class="p">}[</span><span class="n">nbytes</span><span class="p">]</span>
+            <span class="n">snd_array</span><span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">8</span><span class="o">*</span><span class="n">nbytes</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">snd_array</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">inttype</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">snd_array</span></div>
+
+    <span class="k">def</span> <span class="nf">max_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        
+        <span class="n">stereo</span> <span class="o">=</span> <span class="n">stereo</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">maxi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">stereo</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_chunks</span><span class="p">(</span><span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">):</span>
+            <span class="n">maxi</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">maxi</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="k">if</span> <span class="n">stereo</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="n">maxi</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">maxi</span>
+
+
+
     
-    
-    </div>
     <span class="nd">@requires_duration</span>
-<div class="viewcode-block" id="AudioClip.to_audiofile"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_audiofile">[docs]</a>    <span class="k">def</span> <span class="nf">to_audiofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                     <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s">&#39;libvorbis&#39;</span><span class="p">,</span>
-                     <span class="n">bitrate</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioClip.write_audiofile"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.write_audiofile">[docs]</a>    <span class="k">def</span> <span class="nf">write_audiofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                        <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">bitrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ffmpeg_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">write_logfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Writes an audio file from the AudioClip.</span>
 
 
@@ -250,8 +335,8 @@
 <span class="sd">          Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)</span>
 
 <span class="sd">        codec</span>
-<span class="sd">          Which audio codec should be used. Examples are &#39;libmp3lame&#39;</span>
-<span class="sd">          for &#39;.mp3&#39;, &#39;libvorbis&#39; for &#39;ogg&#39;, &#39;libfdk_aac&#39;:&#39;m4a&#39;,</span>
+<span class="sd">          Which audio codec should be used. If None provided, the codec is</span>
+<span class="sd">          determined based on the extension of the filename. Choose</span>
 <span class="sd">          &#39;pcm_s16le&#39; for 16-bit wav and &#39;pcm_s32le&#39; for 32-bit wav.</span>
 
 <span class="sd">        bitrate</span>
@@ -260,20 +345,42 @@
 <span class="sd">          Note that it mainly an indicative goal, the bitrate won&#39;t</span>
 <span class="sd">          necessarily be the this in the output file.</span>
 
+<span class="sd">        ffmpeg_params</span>
+<span class="sd">          Any additional parameters you would like to pass, as a list</span>
+<span class="sd">          of terms, like [&#39;-option1&#39;, &#39;value1&#39;, &#39;-option2&#39;, &#39;value2&#39;]</span>
+
 <span class="sd">        write_logfile</span>
 <span class="sd">          If true, produces a detailed logfile named filename + &#39;.log&#39;</span>
 <span class="sd">          when writing the file</span>
 
 <span class="sd">        verbose</span>
 <span class="sd">          If True, displays informations</span>
+<span class="sd">          </span>
+<span class="sd">        progress_bar</span>
+<span class="sd">          If False, will not display the red progress bar</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-                         
-        <span class="k">return</span> <span class="n">ffmpeg_audiowrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">buffersize</span><span class="p">,</span>
-                      <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="n">bitrate</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
-                      <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
-</div></div>
+        <span class="k">if</span> <span class="n">codec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">codec</span> <span class="o">=</span> <span class="n">extensions_dict</span><span class="p">[</span><span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]][</span><span class="s1">&#39;codec&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;MoviePy couldn&#39;t find the codec associated &quot;</span>
+                       <span class="s2">&quot;with the filename. Provide the &#39;codec&#39; parameter in &quot;</span>
+                       <span class="s2">&quot;write_videofile.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ffmpeg_audiowrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">nbytes</span><span class="p">,</span> <span class="n">buffersize</span><span class="p">,</span>
+                                 <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="n">bitrate</span><span class="p">,</span> <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
+                                 <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">ffmpeg_params</span><span class="o">=</span><span class="n">ffmpeg_params</span><span class="p">,</span>
+                                 <span class="n">progress_bar</span><span class="o">=</span><span class="n">progress_bar</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># The to_audiofile method is replaced by the more explicit write_audiofile.</span>
+<span class="n">AudioClip</span><span class="o">.</span><span class="n">to_audiofile</span> <span class="o">=</span> <span class="n">deprecated_version_of</span><span class="p">(</span><span class="n">AudioClip</span><span class="o">.</span><span class="n">write_audiofile</span><span class="p">,</span>
+                                               <span class="s1">&#39;to_audiofile&#39;</span><span class="p">)</span>
+<span class="c1">###</span>
+
 <span class="k">class</span> <span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
@@ -294,13 +401,13 @@
     
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
         
-        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="n">fps</span>
         
         
-        <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; complicated, but must be able to handle the case where t</span>
 <span class="sd">            is a list of the form sin(t) &quot;&quot;&quot;</span>
             
@@ -317,7 +424,7 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">get_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
         
         
@@ -339,22 +446,22 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
 
-        <span class="n">Clip</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
         
         <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">nchannels</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">])</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">e</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">([(</span><span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">]):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             
             <span class="n">played_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
             
             <span class="n">sounds</span><span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">part</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
                      <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">,</span> <span class="n">played_parts</span><span class="p">)</span>
-                     <span class="k">if</span> <span class="p">(</span><span class="n">part</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">False</span><span class="p">)</span> <span class="p">]</span>
+                     <span class="k">if</span> <span class="p">(</span><span class="n">part</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">)</span> <span class="p">]</span>
                      
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
                 <span class="n">zero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">),</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">))</span>
@@ -364,15 +471,20 @@
                 
             <span class="k">return</span> <span class="n">zero</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sounds</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span> <span class="o">=</span> <span class="n">get_frame</span>
-</div>
-<span class="k">def</span> <span class="nf">concatenate_audio</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span></div>
+
+
+<span class="k">def</span> <span class="nf">concatenate_audioclips</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
     <span class="n">durations</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">duration</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">]</span>
-    <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">durations</span><span class="p">)</span> <span class="c"># start times, and end time.</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">durations</span><span class="p">)</span> <span class="c1"># start times, and end time.</span>
     <span class="n">newclips</span><span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">tt</span><span class="p">)]</span>
     <span class="k">return</span> <span class="n">CompositeAudioClip</span><span class="p">(</span><span class="n">newclips</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
@@ -381,12 +493,14 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014, Zulko.
+        &copy; Copyright 2017, Zulko.
+
     </p>
   </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
 </footer>
+
         </div>
       </div>
 
@@ -401,10 +515,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.2',
+            VERSION:'0.2.3.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
