@@ -11,6 +11,7 @@
 
 .. autoclass:: moviepy.video.VideoClip.VideoClip
    :members:
+   :inherited-members:
    :show-inheritance:
    
 
@@ -20,6 +21,7 @@
 
 .. autoclass:: moviepy.video.io.VideoFileClip.VideoFileClip
    :members:
+   :inherited-members:
    :show-inheritance:
 
 
@@ -29,6 +31,7 @@
 
 .. autoclass:: moviepy.video.VideoClip.ImageClip
    :members:
+   :inherited-members:
    :show-inheritance:
 
 
@@ -38,6 +41,7 @@
 
 .. autoclass::  moviepy.video.VideoClip.ColorClip
    :members:
+   :inherited-members:
    :show-inheritance:
    
    
@@ -46,6 +50,7 @@
 
 .. autoclass::  moviepy.video.VideoClip.TextClip
    :members:
+   :inherited-members:
    :show-inheritance:
 
 
@@ -55,5 +60,6 @@
 
 .. autoclass::  moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip
    :members:
+   :inherited-members:
    :show-inheritance:
 

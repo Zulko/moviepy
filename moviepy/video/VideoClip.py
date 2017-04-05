@@ -108,6 +108,7 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
+
     @property
     def w(self):
         return self.size[0]
@@ -116,6 +117,11 @@ class VideoClip(Clip):
     @property
     def h(self):
         return self.size[1]
+
+
+    @property
+    def aspect_ratio(self):
+        return self.w / float(self.h)
 
 
     # ===============================================================
@@ -238,10 +244,11 @@ class VideoClip(Clip):
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
-          Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-          Note that this does not impact the quality of the video, only the
-          size of the video file. So choose ultrafast when you are in a
-          hurry and file size does not matter.
+          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+          slow, slower, veryslow, placebo. Note that this does not impact
+          the quality of the video, only the size of the video file. So
+          choose ultrafast when you are in a hurry and file size does not
+          matter.
 
         threads
           Number of threads to use for ffmpeg. Can speed up the writing of

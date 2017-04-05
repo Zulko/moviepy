@@ -33,3 +33,15 @@ def download():
 
     download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/subtitles/subtitles1.srt",
                  "media/subtitles1.srt")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/pigs_in_a_polka.gif",
+                 "media/pigs_in_a_polka.gif")
+
+    download_url("https://data.vision.ee.ethz.ch/cvl/video2gif/kAKZeIzs0Ag.mp4",
+                 "media/video_with_failing_audio.mp4")
+    
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/fire2.mp4",
+                 "media/fire2.mp4")
+
+    download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/misc/traj.txt",
+                 "media/traj.txt")

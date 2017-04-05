@@ -32,6 +32,23 @@ class VideoFileClip(VideoClip):
     audio:
       Set to `False` if the clip doesn't have any audio or if you do not
       wish to read the audio.
+
+    target_resolution:
+      Set to (desired_height, desired_width) to have ffmpeg resize the frames
+      before returning them. This is much faster than streaming in high-res
+      and then resizing. If either dimension is None, the frames are resized
+      by keeping the existing aspect ratio.
+
+    resize_algorithm:
+      The algorithm used for resizing. Default: "bicubic", other popular
+      options include "bilinear" and "fast_bilinear". For more information, see
+      https://ffmpeg.org/ffmpeg-scaler.html
+      
+    fps_source:
+      The fps value to collect from the metadata. Set by default to 'tbr', but
+      can be set to 'fps', which may be helpful if importing slow-motion videos
+      that get messed up otherwise.
+
       
     Attributes
     -----------
@@ -48,14 +65,20 @@ class VideoFileClip(VideoClip):
 
     def __init__(self, filename, has_mask=False,
                  audio=True, audio_buffersize = 200000,
-                 audio_fps=44100, audio_nbytes=2, verbose=False):
+                 target_resolution=None, resize_algorithm='bicubic',
+                 audio_fps=44100, audio_nbytes=2, verbose=False,
+                 fps_source='tbr'):
         
         VideoClip.__init__(self)
-        
+
         # Make a reader
         pix_fmt= "rgba" if has_mask else "rgb24"
-        self.reader = None #need this just in case FFMPEG has issues (__del__ complains)
-        self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt)
+        self.reader = None # need this just in case FFMPEG has issues (__del__ complains)
+        self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
+                                         target_resolution=target_resolution,
+                                         resize_algo=resize_algorithm,
+                                         fps_source=fps_source)
+
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
         self.end = self.reader.duration
@@ -89,5 +112,10 @@ class VideoFileClip(VideoClip):
         """ Close/delete the internal reader. """
         try:
             del self.reader
+        except AttributeError:
+            pass
+
+        try:
+            del self.audio
         except AttributeError:
             pass

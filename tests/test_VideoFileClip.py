@@ -18,5 +18,29 @@ def test_setup():
     assert clip.fps == 30
     assert clip.size == [1024*3, 800]
 
+def test_ffmpeg_resizing():
+    # Test downscaling
+    target_resolution = (128,128)
+    video = VideoFileClip("media/big_buck_bunny_432_433.webm", target_resolution=target_resolution)
+    frame = video.get_frame(0)
+    assert frame.shape[0:2] == target_resolution
+
+    target_resolution = (128, None)
+    video = VideoFileClip("media/big_buck_bunny_432_433.webm", target_resolution=target_resolution)
+    frame = video.get_frame(0)
+    assert frame.shape[0] == target_resolution[0]
+
+    target_resolution = (None, 128)
+    video = VideoFileClip("media/big_buck_bunny_432_433.webm", target_resolution=target_resolution)
+    frame = video.get_frame(0)
+    assert frame.shape[1] == target_resolution[1]
+
+    # Test upscaling
+    target_resolution = (None, 2048)
+    video = VideoFileClip("media/big_buck_bunny_432_433.webm", target_resolution=target_resolution)
+    frame = video.get_frame(0)
+    assert frame.shape[1] == target_resolution[1]
+
+
 if __name__ == '__main__':
    pytest.main()

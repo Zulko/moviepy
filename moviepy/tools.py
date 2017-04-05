@@ -13,6 +13,10 @@ from .compat import DEVNULL
 
 def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """
+    # Reason for not using `print` is that in some consoles "print" 
+    # commands get delayed, while stdout.flush are instantaneous, 
+    # so this method is better at providing feedback.
+    # See https://github.com/Zulko/moviepy/pull/485
     sys.stdout.write(s)
     sys.stdout.flush()
 
