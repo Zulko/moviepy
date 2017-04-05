@@ -1,0 +1,6 @@
+Sphinx>=1.5.2
+sphinx_rtd_theme>=0.1.10b0
+numpydoc>=0.6.0
+pygame==1.9.3
+scipy==0.19.0
+tqdm==4.11.2

@@ -47,9 +47,9 @@ class AudioFileClip(AudioClip):
     Examples
     ----------
     
-    >>> snd = SoundClip("song.wav")
-    >>> snd = SoundClip("song.mp3", fps = 44100, bitrate=3000)
-    >>> snd = SoundClip(mySoundArray,fps=44100) # from a numeric array
+    >>> snd = AudioFileClip("song.wav")
+    >>> snd = AudioFileClip("song.mp3", fps = 44100, bitrate=3000)
+    >>> snd = AudioFileClip(mySoundArray,fps=44100) # from a numeric array
     
     """
 
@@ -77,3 +77,10 @@ class AudioFileClip(AudioClip):
             to the audio file. Use copy when you have different clips
             watching the audio file at different times. """
         return AudioFileClip(self.filename,self.buffersize)
+
+    def __del__(self):
+        """ Close/delete the internal reader. """
+        try:
+            del self.reader
+        except AttributeError:
+            pass

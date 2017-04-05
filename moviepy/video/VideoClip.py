@@ -107,6 +107,7 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
+
     @property
     def w(self):
         return self.size[0]
@@ -115,6 +116,11 @@ class VideoClip(Clip):
     @property
     def h(self):
         return self.size[1]
+
+
+    @property
+    def aspect_ratio(self):
+        return self.w / float(self.h)
 
 
     # ===============================================================
@@ -237,10 +243,11 @@ class VideoClip(Clip):
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
-          Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-          Note that this does not impact the quality of the video, only the
-          size of the video file. So choose ultrafast when you are in a
-          hurry and file size does not matter.
+          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+          slow, slower, veryslow, placebo. Note that this does not impact
+          the quality of the video, only the size of the video file. So
+          choose ultrafast when you are in a hurry and file size does not
+          matter.
 
         threads
           Number of threads to use for ffmpeg. Can speed up the writing of
@@ -255,7 +262,8 @@ class VideoClip(Clip):
           These will be files ending with '.log' with the name of the
           output file in them.
 
-
+        progress_bar
+          If false, will not display the red progress bar
 
         Examples
         ========
@@ -326,7 +334,7 @@ class VideoClip(Clip):
                                        audio_nbytes, audio_bufsize,
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
-                                       verbose=verbose)
+                                       verbose=verbose, progress_bar=progress_bar)
 
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
@@ -407,7 +415,7 @@ class VideoClip(Clip):
     @requires_duration
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
-                  opt='wu', fuzz=1, verbose=True,
+                  opt='nq', fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):
         """ Write the VideoClip to a GIF file.
 
@@ -459,10 +467,16 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)
-
         elif tempfiles:
+            #convert imageio opt variable to something that can be used with
+            #ImageMagick
+            opt1=opt
+            if opt1 == 'nq':
+               opt1='optimizeplus'
+            else:
+               opt1='OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
-                                     program=program, opt=opt, fuzz=fuzz,
+                                     program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose,
                                      loop=loop, dispose=dispose, colors=colors)
         else:

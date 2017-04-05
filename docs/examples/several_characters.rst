@@ -1,4 +1,4 @@
-.. charDuplication:
+.. char_duplication:
 
 Character duplication in a video
 -----------------------------------

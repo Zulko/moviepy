@@ -13,6 +13,10 @@ from .compat import DEVNULL
 
 def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """
+    # Reason for not using `print` is that in some consoles "print" 
+    # commands get delayed, while stdout.flush are instantaneous, 
+    # so this method is better at providing feedback.
+    # See https://github.com/Zulko/moviepy/pull/485
     sys.stdout.write(s)
     sys.stdout.flush()
 
@@ -134,7 +138,7 @@ def deprecated_version_of(f, oldname, newname=None):
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
-extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4']},
+extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac']},
                     'ogv':  {'type':'video', 'codec':['libtheora']},
                     'webm': {'type':'video', 'codec':['libvpx']},
                     'avi':  {'type':'video'},

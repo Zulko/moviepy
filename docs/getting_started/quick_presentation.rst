@@ -37,25 +37,25 @@ Example code
 ~~~~~~~~~~~~~~
 
 In a typical MoviePy script, you load video or audio files, modify them, put them together, and write the final result to a new video file. As an example, let us load a video of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file: ::
-    
+
     # Import everything needed to edit video clips
     from moviepy.editor import *
-    
+
     # Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
 
     # Reduce the audio volume (volume x 0.8)
-    clip = clip.volumex(0.8) 
-    
+    clip = clip.volumex(0.8)
+
     # Generate a text clip. You can customize the font, color, etc.
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
-    
+
     # Say that you want it to appear 10s at the center of the screen
     txt_clip = txt_clip.set_pos('center').set_duration(10)
-    
+
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip([clip, txt_clip])
-    
+
     # Write the result to a file (many options available !)
     video.write_videofile("myHolidays_edited.webm")
 
@@ -72,7 +72,7 @@ MoviePy uses the software ``ffmpeg`` to read and to export video and audio files
 Basic concepts
 ~~~~~~~~~~~~~~~
 
-The central objects of MoviePy are *clips*, which can be ``AudioClips`` or ``VideoClips``. They can be modified (cut, slowed down, darkened...) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). ``VideoClips`` for instance can be created from a video file, an image, a text, or a custom animation. They can have an audio track (which is an ``AudioClip``) and a mask (a special ``VideoClip`` indicating which parts of the clip to hide when the clip is mixed with other clips). See :ref:`clips` and :ref:`CompositeVideoClips` for more details. 
+The central objects of MoviePy are *clips*, which can be ``AudioClips`` or ``VideoClips``. They can be modified (cut, slowed down, darkened...) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). ``VideoClips`` for instance can be created from a video file, an image, a text, or a custom animation. They can have an audio track (which is an ``AudioClip``) and a mask (a special ``VideoClip`` indicating which parts of the clip to hide when the clip is mixed with other clips). See :ref:`videoclips` and :ref:`CompositeVideoClips` for more details.
 
 A clip can be modified using one of moviepy's numerous effects (like in ``clip.resize(width="360")``, ``clip.subclip(t1,t2)``, or ``clip.fx(vfx.black_white)``) or using a user-implemented effect. MoviePy implements many functions (like ``clip.fl``, ``clip.fx``, etc.) which make it very easy to code your own effect in a few lines. See :ref:`effects` for more.
 
@@ -80,8 +80,8 @@ You will also find a few advanced goodies in ``moviepy.video.tools`` to track ob
 
 Finally, although MoviePy has no graphical user interface, there are many ways to preview a clip which allow you to fine-tune your scripts and be sure that everything is perfect when you render you video in high quality. See :ref:`efficient`.
 
-.. _imageio: http://imageio.github.io/
-.. _OpenCV: http://opencv.org/ 
+.. _imageio: https://imageio.github.io/
+.. _OpenCV: http://opencv.org/
 
 
 

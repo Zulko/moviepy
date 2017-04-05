@@ -12,8 +12,9 @@ These pages explain everything you need to start editing with MoviePy. To go fur
    :maxdepth: 1
    
    quick_presentation
-   clips
    compositing
    effects
    efficient_moviepy
    working_with_matplotlib
+   audioclips
+   videoclips

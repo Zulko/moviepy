@@ -12,16 +12,36 @@ def download_youtube_video(youtube_id, filename):
     # FYI..  travis-ci doesn't like youtube-dl
     download_url(youtube_id, filename)
 
-
 def download():
     if not os.path.exists("media"):
        os.mkdir("media")
 
-    download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/260px-Python_logo_and_wordmark.svg.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/python_logo.png",
                  "media/python_logo.png")
 
-    download_url("http://matplotlib.org/_images/barh_demo.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/matplotlib_demo1.png",
                  "media/matplotlib_demo1.png")
 
-    download_url("https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Afterimagenpov.svg/1200px-Afterimagenpov.svg.png",
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/afterimage.png",
                  "media/afterimage.png")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/big_buck_bunny_432_433.webm",
+                 "media/big_buck_bunny_432_433.webm")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/sounds/crunching.mp3",
+                 "media/crunching.mp3")
+
+    download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/subtitles/subtitles1.srt",
+                 "media/subtitles1.srt")
+
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/pigs_in_a_polka.gif",
+                 "media/pigs_in_a_polka.gif")
+
+    download_url("https://data.vision.ee.ethz.ch/cvl/video2gif/kAKZeIzs0Ag.mp4",
+                 "media/video_with_failing_audio.mp4")
+    
+    download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/fire2.mp4",
+                 "media/fire2.mp4")
+
+    download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/misc/traj.txt",
+                 "media/traj.txt")
