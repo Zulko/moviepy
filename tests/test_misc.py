@@ -31,7 +31,7 @@ def test_subtitles():
     if TRAVIS:
        return
 
-    generator = lambda txt: TextClip(txt, font='Georgia-Regular',
+    generator = lambda txt: TextClip(txt, font='Liberation-Mono',
                                      size=(800,600), fontsize=24,
                                      method='caption', align='South',
                                      color='white')

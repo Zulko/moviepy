@@ -5,8 +5,6 @@ This is an approximate effect (the perspective would require some more complex t
 
 Warning: clip with sound.
 
-.. raw:: html
-
 Let us also have a look at this tutorial which shows the different steps:
 
 .. raw:: html

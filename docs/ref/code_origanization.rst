@@ -5,7 +5,7 @@ Organization of MoviePy's code
 
 This reviews the folders and files in moviepy's code. It's very easy:
 
-At the root of the project you have everything required for the packaging and installation of moviepy (README, setup.py, LICENCE) etc. Then you the ``docs/`` folder with the source code of the documentation (see :ref:`updating_docs`), a folder for some :ref:`examples`, and the main folder ``moviepy/`` for the source code of the library itself.
+At the root of the project you have everything required for the packaging and installation of moviepy (README, setup.py, LICENCE) etc. Then you the ``docs/`` folder with the source code of the documentation, a folder for some :ref:`examples`, and the main folder ``moviepy/`` for the source code of the library itself.
 
 The folder ``moviepy/`` the classes and modules relative to the video and the audio are clearly separated into two subfolders ``video/`` and ``audio/``. In ``moviepy/`` you will find all the classes, functions and decorations which are useful to both submodules ``audio`` and ``video``:
 
