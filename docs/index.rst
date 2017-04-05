@@ -27,7 +27,9 @@ User Guide
    gallery
    examples/examples
    docker
+   opencv_instructions
    FAQ
+   advanced_tools/advanced_tools
    ref/ref
 
 Contribute !

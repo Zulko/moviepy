@@ -1,6 +1,6 @@
-moviepy.video.fx.all.freeze_at_start
+moviepy\.video\.fx\.all\.supersample
 ====================================
 
 .. currentmodule:: moviepy.video.fx.all
 
-.. autofunction:: freeze_at_start
+.. autofunction:: supersample
