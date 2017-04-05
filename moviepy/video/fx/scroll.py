@@ -11,8 +11,8 @@ def scroll(clip, h=None, w=None, x_speed=0, y_speed=0,
     ymax = clip.h-h-1
 
     def f(gf,t):
-        x = max(0, min(xmax, x_start+ np.round(x_speed*t)))
-        y = max(0, min(ymax, y_start+ np.round(y_speed*t)))
+        x = int(max(0, min(xmax, x_start+ np.round(x_speed*t))))
+        y = int(max(0, min(ymax, y_start+ np.round(y_speed*t))))
         return gf(t)[y:y+h, x:x+w]
     
     return clip.fl(f, apply_to = apply_to)
