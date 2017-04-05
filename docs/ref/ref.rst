@@ -20,4 +20,4 @@ If you want to hack into the code or locate a particular function, read :ref:`co
    audiotools
    ffmpeg
    decorators
-
+   code_origanization

@@ -1,6 +1,6 @@
-moviepy.video.fx.all.rotation
+moviepy.video.fx.all.rotate
 =============================
 
 .. currentmodule:: moviepy.video.fx.all
 
-.. autofunction:: rotation
+.. autofunction:: rotate

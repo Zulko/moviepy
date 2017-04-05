@@ -57,7 +57,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     mirror_y
     painting
     resize
-    rotation
+    rotate
     scroll
     speedx
     supersample

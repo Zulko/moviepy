@@ -1,4 +1,4 @@
-.. _clips:
+.. _videoclips:
 
 Creating and exporting video clips
 ===================================
@@ -10,6 +10,7 @@ The following code summarizes the base clips that you can create with moviepy: :
     # VIDEO CLIPS
     clip = VideoClip(make_frame, duration=4) # for custom animations (see below)
     clip = VideoFileClip("my_video_file.mp4") # or .avi, .webm, .gif ...
+    clip = ImageSequenceClip(['image_file1.jpeg', ...], fps=24)
     clip = ImageClip("my_picture.png") # or .jpeg, .tiff, ...
     clip = TextClip("Hello !", font="Amiri-Bold", fontsize=70, color="black")
     clip = ColorClip(size=(460,380), color=[R,G,B])
@@ -53,35 +54,94 @@ VideoClip
    :width: 128 px
    :align: center
 
-Note: three next sections are in construction
+Note that clips make with a `make_frame` do not have an explicit frame rate, so you must provide a frame rate (``fps``, frames er second) for ``write_gif`` and ``write_videofile``, and more generally for any methods that requires iterating through the frames.
 
 VideoFileClip
 """""""""""""""
-See :py:class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
+
+A VideoFileClip is a clip read from a video file (most formats are supported) or a GIF file. You load the video as follows: ::
+
+    myclip = VideoFileClip("some_video.avi")
+    myclip = VideoFileClip("some_animation.gif")
+
+Note that these clips will have an ``fps`` (frame per second) attribute, which will be transmitted if you do small modifications of the clip, and will be used by default in ``write_videofile``, ``write_gif``, etc. For instance: ::
+
+    myclip = VideoFileClip("some_video.avi")
+    print (myclip.fps) # prints for instance '30'
+    # Now cut the clip between t=10 and 25 secs. This conserves the fps.
+    myclip2 = myclip.subclip(10, 25)
+    myclip2.write_gif("test.gif") # the gif will have 30 fps
+
+
+For more, see :py:class:`~moviepy.video.io.VideoFileClip.VideoFileClip`.
+
+ImageSequenceClip
+""""""""""""""""""
+
+This is a clip made from a series of images, you call it with ::
+
+    clip = ImageSequenceClip(images_list, fps=25)
+
+where ``images_list`` can be either a list of image names (that will be *played*) in that order, a folder name (at which case all the image files in the folder will be played in alphanumerical order), or a list of frames (Numpy arrays), obtained for instance from other clips.
+
+When you provide a folder name or list of file names, you can choose ``load_images=True`` to specify that all images should be loaded into the RAM. This is only interesting if you have a small number of images that will be each used more than once (e.g. if the images form a looping animation).
 
 ImageClip
 """"""""""
-See :py:class:`~moviepy.video.VideoClip.ImageClip`.
+
+An ImageClip is a video clip that always displays the same image. You can create one as follows: ::
+
+    myclip = ImageClip("some_picture.jpeg")
+    myclip = ImageClip(somme_array) # a (height x width x 3) RGB numpy array
+    myclip = some_video_clip.to_ImageClip(t='01:00:00') # frame at t=1 hour.
+
+For more, see :py:class:`~moviepy.video.VideoClip.ImageClip`.
+
+Two examples of ImageClip shown below are the TextClip and ColorClip
 
 TextClip
 """""""""""""""
-See :py:class:`~moviepy.video.VideoClip.TextClip`.
+
+Generating a TextClip requires to have ImageMagick installed and (for windows users) linked to MoviePy, see the installation instructions.
+
+Here is how you make a textclip (you won't need all these options all the time): ::
+
+    myclip = TextClip("Hello", font='Amiri-Bold')
+
+
+The font can be any font installed on your computer, but ImageMagick will have specific names for it. For instance the *normal* Amiri font will be called ``Amiri-Regular`` while the Impact font will be called ``Impact-Normal``. To get a list of the possible fonts, type ``TextClip.list('fonts')``. To find all the font names related to a given font, use for instance ::
+
+    TextClip.search('Amiri', 'fonts') # Returns all font names containing Amiri
+
+Note also that the use of a stroke (or contour) will not work well on small letters, so if you need a small text with a contour, it is better to generate a big text, then downsize it: ::
+
+    myclip = TextClip("Hello", fontsize=70, stroke_width=5).resize(height=15)
+
+
+TextClips have many, many options: alignment, kerning (distance between the letters), stroke size, background, word wrapping, etc. see :py:class:`~moviepy.video.VideoClip.TextClip` for more.
 
 
 Mask clips
 ~~~~~~~~~~~~~~
 
-A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see :ref:`CompositeVideoClips`).
+A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see :ref:`CompositeVideoClips`). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.
 
 The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
 
 When you create or load a clip that you will use as a mask you need to declare it: ::
 
-    mclip = VideoClip(makeframe, duration=4, ismask=True)
-    mclip = ImageClip("my_mask.jpeg", ismask=True)
-    mclip = VideoClip("myvideo.mp4", ismask=True)
+    maskclip = VideoClip(makeframe, duration=4, ismask=True)
+    maskclip = ImageClip("my_mask.jpeg", ismask=True)
+    maskclip = VideoFileClip("myvideo.mp4", ismask=True)
 
 In the case of video and image files, if these are not already black and white they will be converted automatically.
+
+Then you attach this mask to a clip (which must have the same dimensions) with ``myclip.set_mask(maskclip)``.
+
+Some image formats like PNG support transparency with an *alpha layer*, which MoviePy will use as a mask: ::
+
+    myclip = ImageClip("image.png", transparent=True) # True is the default
+    myclip.mask # <- the alpha layer of the picture.
 
 Any video clip can be turned into a mask with ``clip.to_mask()``, and a mask can be turned to a standard RGB video clip with ``my_mask_clip.to_RGB()``.
 
@@ -127,8 +187,14 @@ There are many options to optimize the quality and size of a gif. Please refer t
 
 Note that for editing gifs the best way is to preview them in the notebook as explained here: :ref:`ipython_display`
 
-See `this blog post <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
+For examples of use, see `this blog post <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
 
-.. _CCaudioClips:
+Export images
+"""""""""""""""
 
+You can write a frame to an image file with ::
 
+    myclip.save_frame("frame.png") # by default the first frame is extracted
+    myclip.save_frame("frame.jpeg", t='01:00:00') # frame at time t=1h
+
+If the clip has a mask it will be exported as the alpha layer of the image unless you specify ``withmask=False``.
