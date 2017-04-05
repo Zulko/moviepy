@@ -138,6 +138,17 @@ This `blog post <https://zulko.github.io/blog/2014/02/12/transcribing-piano-roll
 
 Misc. Programs and Scripts using MoviePy
 ------------------------------------------
+Kapwing
+----------
+
+`Kapwing <https://www.kapwing.com/>`_ is an online video meme generator. Content creators use Kapwing to add text around their videos, which results in higher engagement / views on social media sites like Facebook. Kapwing's creation process is powered by MoviePy! MoviePy is used to add the text, borders, and attribution directly to the uploaded videos.
+
+
+.. raw:: html
+
+         <a href="https://www.kapwing.com/videos/58d5d8b96c239227a1622319"><img src="https://cdn-e1.streamable.com/image/z35jz.jpg?token=1491619273_2fa6161bc77a258112bd1b353f1d0fd217d7a8eb"
+         style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
+
 
 Rinconcam
 ----------
