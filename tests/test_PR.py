@@ -91,7 +91,7 @@ def test_PR_515():
 
 def test_PR_529():
     video_clip = VideoFileClip("media/fire2.mp4")
-    assert video_clip.rotation = 180
+    assert video_clip.rotation ==180
 
 if __name__ == '__main__':
    pytest.main()
