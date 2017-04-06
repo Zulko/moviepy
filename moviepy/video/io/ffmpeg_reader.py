@@ -32,7 +32,7 @@ class FFMPEG_VideoReader:
                                    fps_source)
         self.fps = infos['video_fps']
         self.size = infos['video_size']
-        self.rotation = info['video_rotation']
+        self.rotation = infos['video_rotation']
 
         if target_resolution:
             # revert the order, as ffmpeg used (width, height)
