@@ -32,6 +32,7 @@ class FFMPEG_VideoReader:
                                    fps_source)
         self.fps = infos['video_fps']
         self.size = infos['video_size']
+        self.rotation = infos['video_rotation']
 
         if target_resolution:
             # revert the order, as ffmpeg used (width, height)
@@ -40,7 +41,7 @@ class FFMPEG_VideoReader:
             if None in target_resolution:
                 ratio = 1
                 for idx, target in enumerate(target_resolution):
-                    if target:  
+                    if target:
                         ratio = target / self.size[idx]
                 self.size = (int(self.size[0] * ratio), int(self.size[1] * ratio))
             else:
@@ -159,12 +160,12 @@ class FFMPEG_VideoReader:
         """
 
         # these definitely need to be rechecked sometime. Seems to work.
-        
+
         # I use that horrible '+0.00001' hack because sometimes due to numerical
         # imprecisions a 3.0 can become a 2.99999999... which makes the int()
         # go to the previous integer. This makes the fetching more robust in the
         # case where you get the nth frame by writing get_frame(n/fps).
-        
+
         pos = int(self.fps*t + 0.00001)+1
 
         if pos == self.pos:
@@ -358,6 +359,20 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         # We could have also recomputed the duration from the number
         # of frames, as follows:
         # >>> result['video_duration'] = result['video_nframes'] / result['video_fps']
+
+        # get the video rotation info.
+        try:
+            rotation_lines = [l for l in lines if 'rotate          :' in l and re.search('\d+$', l)]
+            if len(rotation_lines):
+                rotation_line = rotation_lines[0]
+                match = re.search('\d+$', rotation_line)
+                result['video_rotation'] = int(rotation_line[match.start() : match.end()])
+            else:
+                result['video_rotation'] = 0
+        except:
+            raise IOError(("MoviePy error: failed to read video rotation in file %s.\n"
+                           "Here are the file infos returned by ffmpeg:\n\n%s")%(
+                              filename, infos))
 
 
     lines_audio = [l for l in lines if ' Audio: ' in l]
