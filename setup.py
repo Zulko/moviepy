@@ -64,7 +64,7 @@ requires = ['decorator==4.0.11', 'imageio==2.1.2', 'tqdm==4.11.2', 'numpy']
 optional_reqs = ['scikit-image==0.13.0', 'scipy==0.19.0', 'matplotlib==2.0.0']
 documentation_reqs = ['pygame==1.9.3', 'numpydoc>=0.6.0',
     'sphinx_rtd_theme>=0.1.10b0', 'Sphinx>=1.5.2'] + optional_reqs
-test_requirements = ['pytest>=2.8.0', 'nose', 'sklearn'] + optional_reqs
+test_reqs = ['pytest>=2.8.0', 'nose', 'sklearn'] + optional_reqs
 
 # Load the README.
 with open('README.rst', 'r', 'utf-8') as f:
@@ -106,10 +106,10 @@ setup(
             'config_dir': ('setup.py', './docs'),
             'version': ('setup.py', __version__.rsplit('.', 2)[0]),
             'release': ('setup.py', __version__)}},
-    tests_require=test_requirements,
+    tests_require=test_reqs,
     install_requires=requires,
     extras_require={
         'optional': optional_reqs,
         'docs': documentation_reqs,
-        'test': test_requirements}
+        'test': test_reqs}
 )
