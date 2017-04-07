@@ -60,8 +60,7 @@ if 'build_docs' in sys.argv:
 exec(open('moviepy/version.py').read()) # loads __version__
 
 # Define the requirements for specific execution needs.
-requires = ['numpy==1.12.1', 'decorator==4.0.11', 'imageio==2.1.2',
-    'tqdm==4.11.2']
+requires = ['decorator==4.0.11', 'imageio==2.1.2', 'tqdm==4.11.2', 'numpy']
 optional_reqs = ['scikit-image==0.13.0', 'scipy==0.19.0', 'matplotlib==2.0.0']
 documentation_reqs = ['pygame==1.9.3', 'numpydoc>=0.6.0',
     'sphinx_rtd_theme>=0.1.10b0', 'Sphinx>=1.5.2'] + optional_reqs
@@ -85,7 +84,6 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
