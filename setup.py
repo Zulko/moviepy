@@ -46,12 +46,28 @@ class PyTest(TestCommand):
         sys.exit(errno)
 
 
+cmdclass = {'test': PyTest} # Define custom commands.
+
+if 'build_docs' in sys.argv:
+    try:
+        from sphinx.setup_command import BuildDoc
+    except ImportError:
+        raise ImportError('Running the documenation builds has additional'
+            ' dependencies. Please run (pip install moviepy[docs])')
+
+    cmdclass['build_docs'] = BuildDoc
+
 exec(open('moviepy/version.py').read()) # loads __version__
 
-requires = ['numpy', 'decorator', 'imageio', 'tqdm']
-test_requirements = ['pytest>=2.8.0', 'nose', 'sklearn']
-optional_requirements = ['scikit-image', 'scipy']
+# Define the requirements for specific execution needs.
+requires = ['numpy==1.12.1', 'decorator==4.0.11', 'imageio==2.1.2',
+    'tqdm==4.11.2']
+optional_reqs = ['scikit-image==0.13.0', 'scipy==0.19.0', 'matplotlib==2.0.0']
+documentation_reqs = ['pygame==1.9.3', 'numpydoc>=0.6.0',
+    'sphinx_rtd_theme>=0.1.10b0', 'Sphinx>=1.5.2'] + optional_reqs
+test_requirements = ['pytest>=2.8.0', 'nose', 'sklearn'] + optional_reqs
 
+# Load the README.
 with open('README.rst', 'r', 'utf-8') as f:
     readme = f.read()
 
@@ -85,8 +101,17 @@ setup(
     ),
     keywords='video editing audio compositing ffmpeg',
     packages=find_packages(exclude='docs'),
-    cmdclass={'test': PyTest},
+    cmdclass=cmdclass,
+    command_options={
+        'build_docs': {
+            'build_dir': ('setup.py', './docs/build'),
+            'config_dir': ('setup.py', './docs'),
+            'version': ('setup.py', __version__.rsplit('.', 2)[0]),
+            'release': ('setup.py', __version__)}},
     tests_require=test_requirements,
     install_requires=requires,
-    extras_require={'optional': optional_requirements}
+    extras_require={
+        'optional': optional_reqs,
+        'docs': documentation_reqs,
+        'test': test_requirements}
 )

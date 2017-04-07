@@ -1,4 +1,0 @@
-imageio==2.1.2
-numpy==1.12.1
-decorator==4.0.11
-tqdm==4.11.2

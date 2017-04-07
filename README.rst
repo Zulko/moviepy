@@ -96,11 +96,19 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 Documentation
 -------------
 
+Running `build_docs` has additional dependencies that require installation.
+
+    $ (sudo) pip install moviepy[docs]
+
 The documentation can be generated and viewed via:
 
-    $ cd docs/
-    $ make clean html
-    $ open build/html/index.html
+    $ python setup.py build_docs
+
+You can pass additional arguments to the documentation build, such as clean build:
+
+    $ python setup.py build_docs -E
+
+More information is available from the `Sphinx`_ documentation.
 
 
 Running Tests
@@ -109,6 +117,11 @@ Running Tests
 The testing suite can be executed via:
 
     $ python setup.py test
+
+Running the test suite in this manner will install the testing dependencies.
+If you opt to run the test suite manually, you can install the dependencies via:
+
+    $ (sudo) pip install moviepy[test]
 
 
 Contribute
@@ -154,6 +167,7 @@ Maintainers
 .. _ffmpeg: http://www.ffmpeg.org/download.html
 .. _ImageMagick: http://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
+.. _`Sphinx`: http://www.sphinx-doc.org/en/master/setuptools.html
 
 .. People
 .. _Zulko: https://github.com/Zulko

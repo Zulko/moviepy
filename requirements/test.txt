@@ -1,4 +1,0 @@
--r optional.txt
-nose==1.3.7
-pytest==3.0.7
-sklearn==0.18.1
