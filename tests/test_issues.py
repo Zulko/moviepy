@@ -153,5 +153,12 @@ def test_issue_246():
         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
                                 write_logfile=True)
 
+def test_issue_527():
+    clip = ImageClip("media/vacation_2017.jpg")
+    new_clip = vfx.scroll(clip, w=1000, x_speed=50)
+    new_clip = new_clip.set_duration(20)
+    new_clip.fps = 24
+    new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
+
 if __name__ == '__main__':
    pytest.main()
