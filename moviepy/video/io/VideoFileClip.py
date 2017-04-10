@@ -8,27 +8,27 @@ from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader
 class VideoFileClip(VideoClip):
 
     """
-    
+
     A video clip originating from a movie file. For instance: ::
-    
+
         >>> clip = VideoFileClip("myHolidays.mp4")
         >>> clip2 = VideoFileClip("myMaskVideo.avi")
-    
-    
+
+
     Parameters
     ------------
-    
+
     filename:
       The name of the video file. It can have any extension supported
       by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.
-      
+
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
       Video files rarely contain masks, but some video codecs enable
       that. For istance if you have a MoviePy VideoClip with a mask you
-      can save it to a videofile with a mask. (see also 
+      can save it to a videofile with a mask. (see also
       ``VideoClip.write_videofile`` for more details).
-    
+
     audio:
       Set to `False` if the clip doesn't have any audio or if you do not
       wish to read the audio.
@@ -43,24 +43,24 @@ class VideoFileClip(VideoClip):
       The algorithm used for resizing. Default: "bicubic", other popular
       options include "bilinear" and "fast_bilinear". For more information, see
       https://ffmpeg.org/ffmpeg-scaler.html
-      
+
     fps_source:
       The fps value to collect from the metadata. Set by default to 'tbr', but
       can be set to 'fps', which may be helpful if importing slow-motion videos
       that get messed up otherwise.
 
-      
+
     Attributes
     -----------
-    
+
     filename:
       Name of the original video file.
-    
+
     fps:
       Frames per second in the original file.
-      
+
     Read docstrings for Clip() and VideoClip() for other, more generic, attributes.
-        
+
     """
 
     def __init__(self, filename, has_mask=False,
@@ -68,7 +68,7 @@ class VideoFileClip(VideoClip):
                  target_resolution=None, resize_algorithm='bicubic',
                  audio_fps=44100, audio_nbytes=2, verbose=False,
                  fps_source='tbr'):
-        
+
         VideoClip.__init__(self)
 
         # Make a reader
@@ -82,10 +82,11 @@ class VideoFileClip(VideoClip):
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
         self.end = self.reader.duration
-        
+
         self.fps = self.reader.fps
         self.size = self.reader.size
-        
+        self.rotation = self.reader.rotation
+
         self.filename = self.reader.filename
 
         if has_mask:
@@ -99,7 +100,7 @@ class VideoFileClip(VideoClip):
         else:
 
             self.make_frame = lambda t: self.reader.get_frame(t)
-        
+
         # Make a reader for the audio, if any.
         if audio and self.reader.infos['audio_found']:
 

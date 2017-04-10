@@ -89,5 +89,9 @@ def test_PR_515():
     clip = VideoFileClip("media/fire2.mp4", fps_source='fps')
     assert clip.fps == 10.51
 
+def test_PR_529():
+    video_clip = VideoFileClip("media/fire2.mp4")
+    assert video_clip.rotation ==180
+
 if __name__ == '__main__':
    pytest.main()
