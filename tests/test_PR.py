@@ -89,5 +89,14 @@ def test_PR_515():
     clip = VideoFileClip("media/fire2.mp4", fps_source='fps')
     assert clip.fps == 10.51
 
+    
+def test_PR_528():
+    clip = ImageClip("media/vacation_2017.jpg")
+    new_clip = vfx.scroll(clip, w=1000, x_speed=50)
+    new_clip = new_clip.set_duration(20)
+    new_clip.fps = 24
+    new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
+    
+    
 if __name__ == '__main__':
    pytest.main()
