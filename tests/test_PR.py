@@ -97,6 +97,11 @@ def test_PR_528():
     new_clip.fps = 24
     new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
     
-    
+
+def test_PR_529():
+    video_clip = VideoFileClip("media/fire2.mp4")
+    assert video_clip.rotation ==180
+
+
 if __name__ == '__main__':
    pytest.main()
