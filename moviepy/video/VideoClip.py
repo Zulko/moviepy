@@ -355,7 +355,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
-                              withmask=True):
+                              withmask=True, progress_bar=True):
         """ Writes the videoclip to a sequence of image files.
 
 
@@ -379,6 +379,9 @@ class VideoClip(Clip):
         verbose
           Verbose output ?
 
+        progress_bar
+          Boolean indicating whether to show the progress bar.
+
 
         Returns
         --------
@@ -400,7 +403,7 @@ class VideoClip(Clip):
 
         filenames = []
         total = int(self.duration / fps) + 1
-        for i, t in tqdm(enumerate(tt), total=total):
+        for i, t in tqdm(enumerate(tt), total=total, disable=not progress_bar):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
