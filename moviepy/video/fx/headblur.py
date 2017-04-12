@@ -5,6 +5,8 @@ import numpy as np
 try:
     import cv2
     headblur_possible = True
+    if cv2.__version__ >= '3.0.0':
+       cv2.CV_AA=cv2.LINE_AA
 except:
     headblur_possible = False
 #-----------------------------------------------------------------------
