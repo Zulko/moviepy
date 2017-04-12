@@ -355,7 +355,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
-                              withmask=True):
+                              withmask=True, progress_bar=True):
         """ Writes the videoclip to a sequence of image files.
 
 
@@ -379,6 +379,9 @@ class VideoClip(Clip):
         verbose
           Verbose output ?
 
+        progress_bar
+          Boolean indicating whether to show the progress bar.
+
 
         Returns
         --------
@@ -400,7 +403,7 @@ class VideoClip(Clip):
 
         filenames = []
         total = int(self.duration / fps) + 1
-        for i, t in tqdm(enumerate(tt), total=total):
+        for i, t in tqdm(enumerate(tt), total=total, disable=not progress_bar):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
@@ -530,6 +533,24 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
 
+    def fill_array(self, pre_array, shape=(0, 0)):
+        pre_shape = pre_array.shape
+        dx = shape[0] - pre_shape[0]
+        dy = shape[1] - pre_shape[1]
+        post_array = pre_array
+        if dx < 0:
+            post_array = pre_array[:shape[0]]
+        elif dx > 0:
+            x_1 = [[[1, 1, 1]] * pre_shape[1]] * dx
+            post_array = np.vstack((pre_array, x_1))
+        if dy < 0:
+            post_array = post_array[:, :shape[1]]
+        elif dy > 0:
+            x_1 = [[[1, 1, 1]] * dy] * post_array.shape[0]
+            post_array = np.hstack((post_array, x_1))
+        return post_array
+
+
     def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
@@ -549,6 +570,9 @@ class VideoClip(Clip):
         img = self.get_frame(ct)
         mask = (None if (self.mask is None) else
                 self.mask.get_frame(ct))
+        if mask is not None:
+            if (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1]):
+                img = self.fill_array(img, mask.shape)
         hi, wi = img.shape[:2]
 
         # SET POSITION
