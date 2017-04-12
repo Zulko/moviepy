@@ -15,7 +15,7 @@ import os
 import sys
 sys.path.append("tests")
 import download_media
-from test_helper import TRAVIS, TMP_DIR
+from test_helper import TRAVIS, TMP_DIR, PYTHON_VERSION
 
 
 def test_download_media(capsys):
@@ -95,11 +95,15 @@ def test_gamma_corr():
 
 def test_headblur():
 
-    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(5,10)
+    #opencv is not supported in python 3.3
+    if PYTHON_VERSION == '3.3':
+       return
+
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(15,20)
 
     fx= lambda t: 100
     fy= lambda t: 100
-    clip1=headblur(clip, fx, fy, 100, 1)
+    clip1=headblur(clip, fx, fy, 25, 100)
     clip1.write_videofile(os.path.join(TMP_DIR,"headblur1.webm"))
 
 if __name__ == '__main__':
