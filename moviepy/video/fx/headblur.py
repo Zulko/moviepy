@@ -5,6 +5,8 @@ import numpy as np
 try:
     import cv2
     headblur_possible = True
+    if cv2.__version__ >= '3.0.0':
+       cv2.CV_AA=cv2.LINE_AA
 except:
     headblur_possible = False
 #-----------------------------------------------------------------------
@@ -51,7 +53,7 @@ def headblur(clip,fx,fy,r_zone,r_blur=None):
 if not headblur_possible:
     doc = headblur.__doc__
     def headblur(clip,fx,fy,r_zone,r_blur=None):
-        raise IOError("fx painting needs scikit-image or scipy")
+        raise IOError("fx painting needs opencv")
     
     headblur.__doc__ = doc
 #----------------------------------------------------------------------- 
