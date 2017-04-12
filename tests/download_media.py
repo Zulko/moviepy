@@ -48,3 +48,4 @@ def download():
 
     download_url("https://raw.githubusercontent.com/earney/moviepy_media/master/tests/misc/traj.txt",
                  "media/traj.txt")
+    

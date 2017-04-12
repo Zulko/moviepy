@@ -261,9 +261,12 @@ class VideoClip(Clip):
           If true, will write log files for the audio and the video.
           These will be files ending with '.log' with the name of the
           output file in them.
+          
+        verbose
+          Boolean indicating whether to print infomation
 
         progress_bar
-          If false, will not display the red progress bar
+          Boolean indicating whether to show the progress bar.
 
         Examples
         ========
@@ -377,7 +380,7 @@ class VideoClip(Clip):
           will save the clip's mask (if any) as an alpha canal (PNGs only)
 
         verbose
-          Verbose output ?
+          Boolean indicating whether to print infomation
 
         progress_bar
           Boolean indicating whether to show the progress bar.
@@ -434,8 +437,8 @@ class VideoClip(Clip):
 
         fps
           Number of frames per second (see note below). If it
-            isn't provided, then the function will look for the clip's
-            ``fps`` attribute (VideoFileClip, for instance, have one).
+          isn't provided, then the function will look for the clip's
+          ``fps`` attribute (VideoFileClip, for instance, have one).
 
         program
           Software to use for the conversion, either 'imageio' (this will use
