@@ -53,7 +53,7 @@ def headblur(clip,fx,fy,r_zone,r_blur=None):
 if not headblur_possible:
     doc = headblur.__doc__
     def headblur(clip,fx,fy,r_zone,r_blur=None):
-        raise IOError("fx painting needs scikit-image or scipy")
+        raise IOError("fx painting needs opencv")
     
     headblur.__doc__ = doc
 #----------------------------------------------------------------------- 
