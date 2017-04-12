@@ -7,6 +7,9 @@ from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+from moviepy.video.fx.freeze import freeze
+from moviepy.video.fx.freeze_region import freeze_region
+from moviepy.video.fx.headblur import headblur
 
 import os
 import sys
@@ -68,5 +71,37 @@ def test_fadeout():
     clip1 = fadeout(clip, 1)
     clip1.write_videofile(os.path.join(TMP_DIR,"fadeout1.webm"))
 
+def test_freeze():
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,5)
+    clip1 = freeze(clip, t=2, freeze_duration=5)
+    clip1.write_videofile(os.path.join(TMP_DIR,"freeze1.webm"))
+
+    clip2 = freeze(clip, t=2, total_duration=10)
+    clip2.write_videofile(os.path.join(TMP_DIR,"freeze2.webm"))
+
+    #freeze1 and freeze2 should be the same (freeze duration = 5)
+
+def test_freeze_region():
+
+    #I'm not sure the output video is correct..
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,5)
+    clip1 = freeze_region(clip, t=2, region=(100,100,300,300))
+    clip1.write_videofile(os.path.join(TMP_DIR,"freeze_region1.webm"))
+
+def test_gamma_corr():
+    #please provide an example of how to use gamma_corr
+
+    return
+
+def test_headblur():
+
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(5,10)
+
+    fx= lambda t: 100
+    fy= lambda t: 100
+    clip1=headblur(clip, fx, fy, 100, 1)
+    clip1.write_videofile(os.path.join(TMP_DIR,"headblur1.webm"))
+
 if __name__ == '__main__':
-   pytest.main()
+   test_headblur()
+   #pytest.main()
