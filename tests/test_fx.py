@@ -94,7 +94,6 @@ def test_gamma_corr():
     return
 
 def test_headblur():
-
     #opencv is not supported in python 3.3
     if PYTHON_VERSION == '3.3':
        return
@@ -107,5 +106,4 @@ def test_headblur():
     clip1.write_videofile(os.path.join(TMP_DIR,"headblur1.webm"))
 
 if __name__ == '__main__':
-   test_headblur()
-   #pytest.main()
+   pytest.main()
