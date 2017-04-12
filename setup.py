@@ -40,7 +40,7 @@ class PyTest(TestCommand):
             import pytest
         except ImportError:
             raise ImportError('Running tests requires additional dependencies.'
-                '\nPlease run (pip install -r requirements/test.txt)')
+                '\nPlease run (pip install moviepy[test])')
 
         errno = pytest.main(self.pytest_args)
         sys.exit(errno)
@@ -64,7 +64,8 @@ requires = ['decorator==4.0.11', 'imageio==2.1.2', 'tqdm==4.11.2', 'numpy']
 optional_reqs = ['scikit-image==0.13.0', 'scipy==0.19.0', 'matplotlib==2.0.0']
 documentation_reqs = ['pygame==1.9.3', 'numpydoc>=0.6.0',
     'sphinx_rtd_theme>=0.1.10b0', 'Sphinx>=1.5.2'] + optional_reqs
-test_reqs = ['pytest>=2.8.0', 'nose', 'sklearn'] + optional_reqs
+test_reqs = ['pytest>=2.8.0', 'nose', 'sklearn', 'pytest-cov', 'coveralls'] \
+    + optional_reqs
 
 # Load the README.
 with open('README.rst', 'r', 'utf-8') as f:
