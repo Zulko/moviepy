@@ -58,8 +58,9 @@ class VideoFileClip(VideoClip):
 
     fps:
       Frames per second in the original file.
-
-    Read docstrings for Clip() and VideoClip() for other, more generic, attributes.
+    
+    
+    Read docs for Clip() and VideoClip() for other, more generic, attributes.
 
     """
 
