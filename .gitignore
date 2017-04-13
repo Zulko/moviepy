@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -53,3 +54,7 @@ nosetests.xml
 
 # Tests
 tests/media
+media/
+
+# Documentation
+docs/build/

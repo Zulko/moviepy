@@ -25,6 +25,9 @@ def download():
     download_url("https://github.com/earney/moviepy_media/raw/master/tests/images/afterimage.png",
                  "media/afterimage.png")
 
+    download_url("https://github.com/earney/moviepy_media/blob/master/tests/videos/big_buck_bunny_0_30.webm?raw=true",
+                 "media/big_buck_bunny_0_30.webm")
+
     download_url("https://github.com/earney/moviepy_media/raw/master/tests/videos/big_buck_bunny_432_433.webm",
                  "media/big_buck_bunny_432_433.webm")
 

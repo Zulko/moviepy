@@ -186,10 +186,10 @@ class AudioClip(Clip):
           when writing the file
 
         verbose
-          If True, displays informations
+          Boolean indicating whether to print infomation
           
         progress_bar
-          If False, will not display the red progress bar
+          Boolean indicating whether to show the progress bar.
 
         """
 

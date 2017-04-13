@@ -2,10 +2,10 @@
 #
 
 # You can set these variables from the command line.
-SPHINXOPTS    = 
+SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
-BUILDDIR      = ../../docs
+BUILDDIR      = build
 PDFBUILDDIR   = /tmp
 PDF           = ../manual.pdf
 
