@@ -261,7 +261,10 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True):
     if check_duration:
         try:
             keyword = ('frame=' if is_GIF else 'Duration: ')
-            line = [l for l in lines if keyword in l][-1]
+            if is_GIF:
+                line = [l for l in lines if keyword in l][-1]
+            else:
+                line = [l for l in lines if keyword in l][0]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result['duration'] = cvsecs(match)
         except:
