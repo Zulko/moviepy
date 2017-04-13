@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.io.VideoFileClip &mdash; MoviePy 0.2.3.1 documentation</title>
+  <title>moviepy.video.io.VideoFileClip &mdash; MoviePy 0.2.3.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../../../../index.html"/>
+    <link rel="top" title="MoviePy 0.2.3.2 documentation" href="../../../../index.html"/>
         <link rel="up" title="Module code" href="../../../index.html"/> 
 
   
@@ -176,27 +176,27 @@
 <div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    </span>
+
 <span class="sd">    A video clip originating from a movie file. For instance: ::</span>
-<span class="sd">    </span>
+
 <span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;myHolidays.mp4&quot;)</span>
 <span class="sd">        &gt;&gt;&gt; clip2 = VideoFileClip(&quot;myMaskVideo.avi&quot;)</span>
-<span class="sd">    </span>
-<span class="sd">    </span>
+
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ------------</span>
-<span class="sd">    </span>
+
 <span class="sd">    filename:</span>
 <span class="sd">      The name of the video file. It can have any extension supported</span>
 <span class="sd">      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
-<span class="sd">      </span>
+
 <span class="sd">    has_mask:</span>
 <span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
 <span class="sd">      Video files rarely contain masks, but some video codecs enable</span>
 <span class="sd">      that. For istance if you have a MoviePy VideoClip with a mask you</span>
-<span class="sd">      can save it to a videofile with a mask. (see also </span>
+<span class="sd">      can save it to a videofile with a mask. (see also</span>
 <span class="sd">      ``VideoClip.write_videofile`` for more details).</span>
-<span class="sd">    </span>
+
 <span class="sd">    audio:</span>
 <span class="sd">      Set to `False` if the clip doesn&#39;t have any audio or if you do not</span>
 <span class="sd">      wish to read the audio.</span>
@@ -211,24 +211,25 @@
 <span class="sd">      The algorithm used for resizing. Default: &quot;bicubic&quot;, other popular</span>
 <span class="sd">      options include &quot;bilinear&quot; and &quot;fast_bilinear&quot;. For more information, see</span>
 <span class="sd">      https://ffmpeg.org/ffmpeg-scaler.html</span>
-<span class="sd">      </span>
+
 <span class="sd">    fps_source:</span>
 <span class="sd">      The fps value to collect from the metadata. Set by default to &#39;tbr&#39;, but</span>
 <span class="sd">      can be set to &#39;fps&#39;, which may be helpful if importing slow-motion videos</span>
 <span class="sd">      that get messed up otherwise.</span>
 
-<span class="sd">      </span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    -----------</span>
-<span class="sd">    </span>
+
 <span class="sd">    filename:</span>
 <span class="sd">      Name of the original video file.</span>
-<span class="sd">    </span>
+
 <span class="sd">    fps:</span>
 <span class="sd">      Frames per second in the original file.</span>
-<span class="sd">      </span>
-<span class="sd">    Read docstrings for Clip() and VideoClip() for other, more generic, attributes.</span>
-<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Read docs for Clip() and VideoClip() for other, more generic, attributes.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -236,7 +237,7 @@
                  <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resize_algorithm</span><span class="o">=</span><span class="s1">&#39;bicubic&#39;</span><span class="p">,</span>
                  <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">fps_source</span><span class="o">=</span><span class="s1">&#39;tbr&#39;</span><span class="p">):</span>
-        
+
         <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="c1"># Make a reader</span>
@@ -250,10 +251,11 @@
         <span class="c1"># Make some of the reader&#39;s attributes accessible from the clip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">rotation</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">filename</span>
 
         <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
@@ -267,7 +269,7 @@
         <span class="k">else</span><span class="p">:</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-        
+
         <span class="c1"># Make a reader for the audio, if any.</span>
         <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s1">&#39;audio_found&#39;</span><span class="p">]:</span>
 
@@ -323,7 +325,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'0.2.3.1',
+            VERSION:'0.2.3.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

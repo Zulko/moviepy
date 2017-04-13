@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Classes of Video Clips &mdash; MoviePy 0.2.3.1 documentation</title>
+  <title>Classes of Video Clips &mdash; MoviePy 0.2.3.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../../index.html"/>
+    <link rel="top" title="MoviePy 0.2.3.2 documentation" href="../../index.html"/>
         <link rel="up" title="Reference Manual" href="../ref.html"/>
         <link rel="next" title="AudioClip" href="../AudioClip.html"/>
         <link rel="prev" title="Clip" href="../Clip.html"/> 
@@ -719,12 +719,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -759,7 +756,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.VideoClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.write_images_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.write_images_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -784,7 +781,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -877,10 +878,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -898,9 +900,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -941,7 +947,7 @@ by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</p>
 <div><p>Set this to &#8216;True&#8217; if there is a mask included in the videofile.
 Video files rarely contain masks, but some video codecs enable
 that. For istance if you have a MoviePy VideoClip with a mask you
-can save it to a videofile with a mask. (see also 
+can save it to a videofile with a mask. (see also
 <code class="docutils literal"><span class="pre">VideoClip.write_videofile</span></code> for more details).</p>
 </div></blockquote>
 <p><strong>audio:</strong></p>
@@ -975,8 +981,8 @@ that get messed up otherwise.</p>
 <p class="rubric">Attributes</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="67%" />
-<col width="33%" />
+<col width="65%" />
+<col width="35%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>filename:</td>
@@ -985,7 +991,7 @@ that get messed up otherwise.</p>
 <tr class="row-even"><td>fps:</td>
 <td>Frames per second in the original file.</td>
 </tr>
-<tr class="row-odd"><td>Read docstrings for Clip() and VideoClip() for other, more generic, attributes.</td>
+<tr class="row-odd"><td>Read docs for Clip() and VideoClip() for other, more generic, attributes.</td>
 <td>&#160;</td>
 </tr>
 </tbody>
@@ -1462,12 +1468,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -1502,7 +1505,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.io.VideoFileClip.VideoFileClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.io.VideoFileClip.VideoFileClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.io.VideoFileClip.VideoFileClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1527,7 +1530,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -1620,10 +1627,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -1641,9 +1649,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2117,12 +2129,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -2157,7 +2166,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ImageClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.ImageClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2182,7 +2191,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2275,10 +2288,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -2296,9 +2310,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2757,12 +2775,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -2797,7 +2812,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.ColorClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.ColorClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2822,7 +2837,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -2915,10 +2934,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -2936,9 +2956,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -3464,12 +3488,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -3504,7 +3525,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.VideoClip.TextClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.VideoClip.TextClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3529,7 +3550,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -3622,10 +3647,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -3643,9 +3669,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -4192,12 +4222,9 @@ or ffmpeg.</p>
 </div></blockquote>
 <p><strong>fps</strong></p>
 <blockquote>
-<div><dl class="docutils">
-<dt>Number of frames per second (see note below). If it</dt>
-<dd><p class="first last">isn&#8217;t provided, then the function will look for the clip&#8217;s
+<div><p>Number of frames per second (see note below). If it
+isn&#8217;t provided, then the function will look for the clip&#8217;s
 <code class="docutils literal"><span class="pre">fps</span></code> attribute (VideoFileClip, for instance, have one).</p>
-</dd>
-</dl>
 </div></blockquote>
 <p><strong>program</strong></p>
 <blockquote>
@@ -4232,7 +4259,7 @@ slower than the clip you will use</p>
 
 <dl class="method">
 <dt id="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.write_images_sequence">
-<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write_images_sequence</code><span class="sig-paren">(</span><em>nameformat</em>, <em>fps=None</em>, <em>verbose=True</em>, <em>withmask=True</em>, <em>progress_bar=True</em><span class="sig-paren">)</span><a class="headerlink" href="#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.write_images_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the videoclip to a sequence of image files.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4257,7 +4284,11 @@ be used if it has one.</p>
 </div></blockquote>
 <p><strong>verbose</strong></p>
 <blockquote>
-<div><p>Verbose output ?</p>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
+<p><strong>progress_bar</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -4350,10 +4381,11 @@ necessarily be the this in the final file.</p>
 <p><strong>preset</strong></p>
 <blockquote>
 <div><p>Sets the time that FFMPEG will spend optimizing the compression.
-Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-Note that this does not impact the quality of the video, only the
-size of the video file. So choose ultrafast when you are in a
-hurry and file size does not matter.</p>
+Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+slow, slower, veryslow, placebo. Note that this does not impact
+the quality of the video, only the size of the video file. So
+choose ultrafast when you are in a hurry and file size does not
+matter.</p>
 </div></blockquote>
 <p><strong>threads</strong></p>
 <blockquote>
@@ -4371,9 +4403,13 @@ of terms, like [&#8216;-option1&#8217;, &#8216;value1&#8217;, &#8216;-option2&#8
 These will be files ending with &#8216;.log&#8217; with the name of the
 output file in them.</p>
 </div></blockquote>
+<p><strong>verbose</strong></p>
+<blockquote>
+<div><p>Boolean indicating whether to print infomation</p>
+</div></blockquote>
 <p><strong>progress_bar</strong></p>
 <blockquote class="last">
-<div><p>If false, will not display the red progress bar</p>
+<div><p>Boolean indicating whether to show the progress bar.</p>
 </div></blockquote>
 </td>
 </tr>
@@ -4437,7 +4473,7 @@ output file in them.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.2.3.1',
+            VERSION:'0.2.3.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.VideoClip &mdash; MoviePy 0.2.3.1 documentation</title>
+  <title>moviepy.video.VideoClip &mdash; MoviePy 0.2.3.2 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MoviePy 0.2.3.1 documentation" href="../../../index.html"/>
+    <link rel="top" title="MoviePy 0.2.3.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -411,10 +411,11 @@
 
 <span class="sd">        preset</span>
 <span class="sd">          Sets the time that FFMPEG will spend optimizing the compression.</span>
-<span class="sd">          Choices are: ultrafast, superfast, fast, medium, slow, superslow.</span>
-<span class="sd">          Note that this does not impact the quality of the video, only the</span>
-<span class="sd">          size of the video file. So choose ultrafast when you are in a</span>
-<span class="sd">          hurry and file size does not matter.</span>
+<span class="sd">          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,</span>
+<span class="sd">          slow, slower, veryslow, placebo. Note that this does not impact</span>
+<span class="sd">          the quality of the video, only the size of the video file. So</span>
+<span class="sd">          choose ultrafast when you are in a hurry and file size does not</span>
+<span class="sd">          matter.</span>
 
 <span class="sd">        threads</span>
 <span class="sd">          Number of threads to use for ffmpeg. Can speed up the writing of</span>
@@ -428,9 +429,12 @@
 <span class="sd">          If true, will write log files for the audio and the video.</span>
 <span class="sd">          These will be files ending with &#39;.log&#39; with the name of the</span>
 <span class="sd">          output file in them.</span>
+<span class="sd">          </span>
+<span class="sd">        verbose</span>
+<span class="sd">          Boolean indicating whether to print infomation</span>
 
 <span class="sd">        progress_bar</span>
-<span class="sd">          If false, will not display the red progress bar</span>
+<span class="sd">          Boolean indicating whether to show the progress bar.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        ========</span>
@@ -522,7 +526,7 @@
     <span class="nd">@use_clip_fps_by_default</span>
     <span class="nd">@convert_masks_to_RGB</span>
 <div class="viewcode-block" id="VideoClip.write_images_sequence"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.write_images_sequence">[docs]</a>    <span class="k">def</span> <span class="nf">write_images_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nameformat</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                              <span class="n">withmask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                              <span class="n">withmask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Writes the videoclip to a sequence of image files.</span>
 
 
@@ -544,7 +548,10 @@
 <span class="sd">          will save the clip&#39;s mask (if any) as an alpha canal (PNGs only)</span>
 
 <span class="sd">        verbose</span>
-<span class="sd">          Verbose output ?</span>
+<span class="sd">          Boolean indicating whether to print infomation</span>
+
+<span class="sd">        progress_bar</span>
+<span class="sd">          Boolean indicating whether to show the progress bar.</span>
 
 
 <span class="sd">        Returns</span>
@@ -567,7 +574,7 @@
 
         <span class="n">filenames</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">/</span> <span class="n">fps</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tt</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">tt</span><span class="p">),</span> <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="ow">not</span> <span class="n">progress_bar</span><span class="p">):</span>
             <span class="n">name</span> <span class="o">=</span> <span class="n">nameformat</span> <span class="o">%</span> <span class="n">i</span>
             <span class="n">filenames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">withmask</span><span class="o">=</span><span class="n">withmask</span><span class="p">)</span>
@@ -598,8 +605,8 @@
 
 <span class="sd">        fps</span>
 <span class="sd">          Number of frames per second (see note below). If it</span>
-<span class="sd">            isn&#39;t provided, then the function will look for the clip&#39;s</span>
-<span class="sd">            ``fps`` attribute (VideoFileClip, for instance, have one).</span>
+<span class="sd">          isn&#39;t provided, then the function will look for the clip&#39;s</span>
+<span class="sd">          ``fps`` attribute (VideoFileClip, for instance, have one).</span>
 
 <span class="sd">        program</span>
 <span class="sd">          Software to use for the conversion, either &#39;imageio&#39; (this will use</span>
@@ -697,6 +704,24 @@
     <span class="c1"># C O M P O S I T I N G</span>
 
 
+    <span class="k">def</span> <span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_array</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="n">pre_shape</span> <span class="o">=</span> <span class="n">pre_array</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pre_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">post_array</span> <span class="o">=</span> <span class="n">pre_array</span>
+        <span class="k">if</span> <span class="n">dx</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">post_array</span> <span class="o">=</span> <span class="n">pre_array</span><span class="p">[:</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="n">dx</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x_1</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">pre_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">dx</span>
+            <span class="n">post_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">pre_array</span><span class="p">,</span> <span class="n">x_1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">dy</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">post_array</span> <span class="o">=</span> <span class="n">post_array</span><span class="p">[:,</span> <span class="p">:</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="n">dy</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x_1</span> <span class="o">=</span> <span class="p">[[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="n">dy</span><span class="p">]</span> <span class="o">*</span> <span class="n">post_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">post_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">post_array</span><span class="p">,</span> <span class="n">x_1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">post_array</span>
+
+
 <div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../ref/VideoClip/VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span> <span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the result of the blit of the clip&#39;s frame at time `t`</span>
@@ -716,6 +741,9 @@
         <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_array</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
         <span class="n">hi</span><span class="p">,</span> <span class="n">wi</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="c1"># SET POSITION</span>
@@ -1453,7 +1481,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.2.3.1',
+            VERSION:'0.2.3.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
