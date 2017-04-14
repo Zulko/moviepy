@@ -10,6 +10,7 @@ from moviepy.video.fx.fadeout import fadeout
 from moviepy.video.fx.invert_colors import invert_colors
 from moviepy.video.fx.loop import loop
 from moviepy.video.fx.lum_contrast import lum_contrast
+from moviepy.video.fx.make_loopable import make_loopable
 from moviepy.video.fx.margin import margin
 from moviepy.video.fx.mirror_x import mirror_x
 from moviepy.video.fx.mirror_y import mirror_y
