@@ -6,7 +6,6 @@ import os
 import pytest
 
 from moviepy.editor import *
-from moviepy.compat import PY3
 from moviepy.tools import is_string
 
 # must have to work on travis-ci
