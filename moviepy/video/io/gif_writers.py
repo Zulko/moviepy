@@ -253,7 +253,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
     verbose_print(verbose, "[MoviePy] >>>> File %s is ready !"%filename)
 
 
-def write_gif_with_image_io(clip, filename, fps=None, opt='wu', loop=0,
+def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
                             colors=None, verbose=True):
     """
     Writes the gif with the Python library ImageIO (calls FreeImage).
@@ -277,7 +277,7 @@ def write_gif_with_image_io(clip, filename, fps=None, opt='wu', loop=0,
     if fps is None:
         fps = clip.fps
 
-    quantizer = 'wu' if opt!= 'nq' else 'nq' 
+    quantizer = 0 if opt!= 0 else 'nq'
     writer = imageio.save(filename, duration=1.0/fps,
                           quantizer=quantizer, palettesize=colors)
 

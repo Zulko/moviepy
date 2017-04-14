@@ -46,7 +46,7 @@ Animations edited with MoviePy
 GIFs made from videos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This  `tutorial
+This  `gifs tutorial
 <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
 
 
@@ -58,7 +58,7 @@ This  `tutorial
 Vector Animations
 ~~~~~~~~~~~~~~~~~~~
 
-This `tutorial <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
+This `vector animations tutorial <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ shows how to combine MoviePy with Gizeh to create animations:
 
 .. raw:: html
 
@@ -72,7 +72,7 @@ It is also possible to combine MoviePy with other graphic librairies like matplo
 3D animations
 ~~~~~~~~~~~~~~~~~~~
 
-This `tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray
+This `3d animation tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to combine MoviePy with Vapory, a library to render 3D scenes using the free ray-tracer POV-Ray
 
 .. raw:: html
 
@@ -114,7 +114,7 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
 Data animations
 ----------------
 
-This `tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
+This `data animation tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
 
 
 Scientific or technological projects
@@ -124,7 +124,7 @@ Scientific or technological projects
 Piano rolls transcription to sheet music
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This `blog post <https://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls/>`_ explains how to transform a video of a piano roll performance into playable sheet music. MoviePy is used for the frame-by-frame analysis of the piano roll video. The last video is also edited with MoviePy:
+This `transcribing piano rolls blog post <https://zulko.github.io/blog/2014/02/12/transcribing-piano-rolls/>`_ explains how to transform a video of a piano roll performance into playable sheet music. MoviePy is used for the frame-by-frame analysis of the piano roll video. The last video is also edited with MoviePy:
 
 .. raw:: html
 
@@ -138,6 +138,17 @@ This `blog post <https://zulko.github.io/blog/2014/02/12/transcribing-piano-roll
 
 Misc. Programs and Scripts using MoviePy
 ------------------------------------------
+Kapwing
+----------
+
+`Kapwing <https://www.kapwing.com/>`_ is an online video meme generator. Content creators use Kapwing to add text around their videos, which results in higher engagement / views on social media sites like Facebook. Kapwing's creation process is powered by MoviePy! MoviePy is used to add the text, borders, and attribution directly to the uploaded videos.
+
+
+.. raw:: html
+
+         <a href="https://www.kapwing.com/videos/58d5d8b96c239227a1622319"><img src="https://cdn-e1.streamable.com/image/z35jz.jpg?token=1491619273_2fa6161bc77a258112bd1b353f1d0fd217d7a8eb"
+         style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
+
 
 Rinconcam
 ----------
@@ -170,7 +181,7 @@ Here are `Videogrep's introductory blog post
 
 If you liked it, also have a look at these Videogrep-inspired projects:
 
-This `blog post <https://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
+This `Videogrep blog post <https://zulko.github.io/blog/2014/06/21/some-more-videogreping-with-python/>`_ attempts to cut a video precisely at the beginning and end of sentences or words: ::
 
     words = ["Americans", "must", "develop", "open ", "source",
               " software", "for the", " rest ", "of the world",

@@ -107,6 +107,7 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
+
     @property
     def w(self):
         return self.size[0]
@@ -115,6 +116,11 @@ class VideoClip(Clip):
     @property
     def h(self):
         return self.size[1]
+
+
+    @property
+    def aspect_ratio(self):
+        return self.w / float(self.h)
 
 
     # ===============================================================
@@ -237,10 +243,11 @@ class VideoClip(Clip):
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
-          Choices are: ultrafast, superfast, fast, medium, slow, superslow.
-          Note that this does not impact the quality of the video, only the
-          size of the video file. So choose ultrafast when you are in a
-          hurry and file size does not matter.
+          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
+          slow, slower, veryslow, placebo. Note that this does not impact
+          the quality of the video, only the size of the video file. So
+          choose ultrafast when you are in a hurry and file size does not
+          matter.
 
         threads
           Number of threads to use for ffmpeg. Can speed up the writing of
@@ -254,9 +261,12 @@ class VideoClip(Clip):
           If true, will write log files for the audio and the video.
           These will be files ending with '.log' with the name of the
           output file in them.
+          
+        verbose
+          Boolean indicating whether to print infomation
 
         progress_bar
-          If false, will not display the red progress bar
+          Boolean indicating whether to show the progress bar.
 
         Examples
         ========
@@ -348,7 +358,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
-                              withmask=True):
+                              withmask=True, progress_bar=True):
         """ Writes the videoclip to a sequence of image files.
 
 
@@ -370,7 +380,10 @@ class VideoClip(Clip):
           will save the clip's mask (if any) as an alpha canal (PNGs only)
 
         verbose
-          Verbose output ?
+          Boolean indicating whether to print infomation
+
+        progress_bar
+          Boolean indicating whether to show the progress bar.
 
 
         Returns
@@ -393,7 +406,7 @@ class VideoClip(Clip):
 
         filenames = []
         total = int(self.duration / fps) + 1
-        for i, t in tqdm(enumerate(tt), total=total):
+        for i, t in tqdm(enumerate(tt), total=total, disable=not progress_bar):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
@@ -408,7 +421,7 @@ class VideoClip(Clip):
     @requires_duration
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
-                  opt='wu', fuzz=1, verbose=True,
+                  opt='nq', fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False):
         """ Write the VideoClip to a GIF file.
 
@@ -424,8 +437,8 @@ class VideoClip(Clip):
 
         fps
           Number of frames per second (see note below). If it
-            isn't provided, then the function will look for the clip's
-            ``fps`` attribute (VideoFileClip, for instance, have one).
+          isn't provided, then the function will look for the clip's
+          ``fps`` attribute (VideoFileClip, for instance, have one).
 
         program
           Software to use for the conversion, either 'imageio' (this will use
@@ -460,10 +473,16 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors)
-
         elif tempfiles:
+            #convert imageio opt variable to something that can be used with
+            #ImageMagick
+            opt1=opt
+            if opt1 == 'nq':
+               opt1='optimizeplus'
+            else:
+               opt1='OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
-                                     program=program, opt=opt, fuzz=fuzz,
+                                     program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose,
                                      loop=loop, dispose=dispose, colors=colors)
         else:
@@ -517,6 +536,24 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
 
+    def fill_array(self, pre_array, shape=(0, 0)):
+        pre_shape = pre_array.shape
+        dx = shape[0] - pre_shape[0]
+        dy = shape[1] - pre_shape[1]
+        post_array = pre_array
+        if dx < 0:
+            post_array = pre_array[:shape[0]]
+        elif dx > 0:
+            x_1 = [[[1, 1, 1]] * pre_shape[1]] * dx
+            post_array = np.vstack((pre_array, x_1))
+        if dy < 0:
+            post_array = post_array[:, :shape[1]]
+        elif dy > 0:
+            x_1 = [[[1, 1, 1]] * dy] * post_array.shape[0]
+            post_array = np.hstack((post_array, x_1))
+        return post_array
+
+
     def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
@@ -536,6 +573,9 @@ class VideoClip(Clip):
         img = self.get_frame(ct)
         mask = (None if (self.mask is None) else
                 self.mask.get_frame(ct))
+        if mask is not None:
+            if (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1]):
+                img = self.fill_array(img, mask.shape)
         hi, wi = img.shape[:2]
 
         # SET POSITION

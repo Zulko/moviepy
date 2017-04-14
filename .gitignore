@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -51,4 +52,9 @@ nosetests.xml
 # JetBrains
 .idea
 
+# Tests
 tests/media
+media/
+
+# Documentation
+docs/build/

@@ -94,7 +94,7 @@ class Clip:
         else:
             return self.make_frame(t)
 
-    def fl(self, fun, apply_to=[] , keep_duration=True):
+    def fl(self, fun, apply_to=[], keep_duration=True):
         """ General processing of a clip.
 
         Returns a new Clip whose frames are a transformation

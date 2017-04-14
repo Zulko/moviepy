@@ -1,9 +1,7 @@
 import subprocess as sp
-import re
+import warnings
 
 import numpy as np
-from moviepy.tools import cvsecs
-
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.config import get_setting
 from moviepy.compat import PY3, DEVNULL
@@ -162,8 +160,13 @@ class FFMPEG_AudioReader:
 
             # elements of t that are actually in the range of the
             # audio file.
-
             in_time = (tt>=0) & (tt < self.duration)
+		
+	    # Check that the requested time is in the valid range
+            if not in_time.any():
+                raise IOError("Error in file %s, "%(self.filename)+
+                       "Accessing time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
+                       "with clip duration=%d seconds, "%self.duration)
 
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
@@ -184,11 +187,18 @@ class FFMPEG_AudioReader:
                 indices = frames - self.buffer_startframe
                 result[in_time] = self.buffer[indices]
                 return result
+
             except IndexError as error:
-                raise IOError("Error in file %s, "%(self.filename)+
+                warnings.warn("Error in file %s, "%(self.filename)+
                        "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
                        "indices wanted: %d-%d, "%(indices.min(), indices.max())+
-                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error))
+                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error),
+                   UserWarning)
+
+                # repeat the last frame instead
+                indices[indices>=len(self.buffer)] = len(self.buffer) -1
+                result[in_time] = self.buffer[indices]
+                return result
 
         else:
 
