@@ -220,5 +220,4 @@ def test_time_symmetrize():
 
 
 if __name__ == '__main__':
-   test_time_symmetrize()
-   #pytest.main()
+   pytest.main()
