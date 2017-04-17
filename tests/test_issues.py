@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import os
-import sys
+#import sys
 
 import pytest
 from moviepy.editor import *
 
-sys.path.append("tests")
+#sys.path.append("tests")
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+
+from moviepy.video.fx.blink import blink
+from moviepy.video.fx.resize import resize
 
 def test_download_media(capsys):
     with capsys.disabled():
