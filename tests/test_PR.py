@@ -9,10 +9,8 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 
-from test_helper import TMP_DIR, TRAVIS
-
 sys.path.append("tests")
-
+from test_helper import TMP_DIR, TRAVIS
 
 def test_download_media(capsys):
     """Test downloading."""
