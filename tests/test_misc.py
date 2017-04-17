@@ -6,7 +6,8 @@ import pytest
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
-from moviepy.video.VideoClip import ColorClip, TextClip, VideoFileClip
+from moviepy.video.VideoClip import ColorClip, TextClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
 from test_helper import TMP_DIR, TRAVIS
