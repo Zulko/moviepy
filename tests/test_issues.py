@@ -6,11 +6,9 @@ import sys
 import pytest
 from moviepy.editor import *
 
+sys.path.append("tests")
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
-
-sys.path.append("tests")
-
 
 def test_download_media(capsys):
     with capsys.disabled():
