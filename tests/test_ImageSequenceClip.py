@@ -4,10 +4,8 @@ import sys
 import pytest
 from moviepy.video.io import ImageSequenceClip
 
-import download_media
-
 sys.path.append("tests")
-
+import download_media
 
 def test_download_media(capsys):
     with capsys.disabled():
