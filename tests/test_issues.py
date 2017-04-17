@@ -1,16 +1,20 @@
-"""
-Tests meant to be run with pytest
-"""
-
+"""Issue tests meant to be run with pytest."""
 import os
-import pytest
-
-from moviepy.editor import *
-
 import sys
-sys.path.append("tests")
+
+import pytest
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.fx import blink, resize
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+
+sys.path.append("tests")
+
 
 def test_download_media(capsys):
     with capsys.disabled():
@@ -18,8 +22,8 @@ def test_download_media(capsys):
 
 def test_issue_145():
     video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
-    with pytest.raises(Exception, message="Expecting Exception"):
-         final = concatenate_videoclips([video], method = 'composite')
+    with pytest.raises(Exception, message='Expecting Exception'):
+        concatenate_videoclips([video], method='composite')
 
 def test_issue_285():
     clip_1 = ImageClip('media/python_logo.png', duration=10)
@@ -29,15 +33,55 @@ def test_issue_285():
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
 
-
 def test_issue_334():
     last_move = None
     last_move1 = None
 
-    lis = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47), (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55), (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127), (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127), (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63), (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63), (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151), (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1), (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48), (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48), (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48), (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48), (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48), (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48), (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104), (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80), (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80), (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104), (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104), (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104), (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48), (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
+    lis = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47),
+           (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55),
+           (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127),
+           (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127),
+           (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63),
+           (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63),
+           (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151),
+           (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1),
+           (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48),
+           (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48),
+           (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48),
+           (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48),
+           (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48),
+           (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48),
+           (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104),
+           (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80),
+           (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80),
+           (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104),
+           (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104),
+           (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104),
+           (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48),
+           (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
 
-    lis1 = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47), (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55), (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127), (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127), (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63), (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63), (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151), (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1), (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48), (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48), (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48), (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48), (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48), (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48), (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104), (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80), (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80), (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104), (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104), (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104), (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48), (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
-
+    lis1 = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47),
+            (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55),
+            (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127),
+            (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127),
+            (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63),
+            (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63),
+            (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151),
+            (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1),
+            (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48),
+            (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48),
+            (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48),
+            (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48),
+            (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48),
+            (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48),
+            (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104),
+            (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80),
+            (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80),
+            (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104),
+            (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104),
+            (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104),
+            (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48),
+            (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
 
     def posi(t):
         global last_move
@@ -74,17 +118,15 @@ def test_issue_334():
               return (nsw, nsh)
            return (last_move1[3], last_move1[3] * 1.33)
 
-
     avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
     avatar.audio=None
     maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
     avatar.set_mask(maskclip)  #must set maskclip here..
 
-    avatar = concatenate([avatar]*11)
+    avatar = concatenate_videoclips([avatar]*11)
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11)
-    #setting mask here does not work.
-    #final = CompositeVideoClip([tt, avatar.set_position(posi).set_mask(maskclip).resize(size)])
+    # TODO: Setting mask here does not work: .set_mask(maskclip).resize(size)])
     final = CompositeVideoClip([tt, avatar.set_position(posi).resize(size)])
     final.duration = tt.duration
     final.write_videofile(os.path.join(TMP_DIR, 'issue_334.mp4'), fps=24)
@@ -95,10 +137,16 @@ def test_issue_354():
     clip.duration = 10
     crosstime = 1
 
-    #caption = editor.TextClip("test text", font="Liberation-Sans-Bold", color='white', stroke_color='gray', stroke_width=2, method='caption', size=(1280, 720), fontsize=60, align='South-East')
+    # TODO: Should this be removed?
+    # caption = editor.TextClip("test text", font="Liberation-Sans-Bold",
+    #                           color='white', stroke_color='gray',
+    #                           stroke_width=2, method='caption',
+    #                           size=(1280, 720), fontsize=60,
+    #                           align='South-East')
     #caption.duration = clip.duration
+
     fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
-    ret = CompositeVideoClip([clip, fadecaption])
+    CompositeVideoClip([clip, fadecaption])
 
 def test_issue_359():
     video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
@@ -107,12 +155,8 @@ def test_issue_359():
                     tempfiles=True)
 
 def test_issue_368():
-    import sys
-    if PYTHON_VERSION in ('2.7', '3.3'): #matplotlib only supported in python >= 3.4
-       return
-
-    #travis, python 3.5 matplotlib version has problems..
-    if PYTHON_VERSION == '3.5' and TRAVIS:
+    # Matplotlib only supported in python >= 3.4 and Travis/3.5 fails.
+    if PYTHON_VERSION in ('2.7', '3.3') or (PYTHON_VERSION == '3.5' and TRAVIS):
        return
 
     import numpy as np
@@ -120,7 +164,6 @@ def test_issue_368():
     from sklearn import svm
     from sklearn.datasets import make_moons
     from moviepy.video.io.bindings import mplfig_to_npimage
-    import imageio
 
     X, Y = make_moons(50, noise=0.1, random_state=2) # semi-random data
 
@@ -145,20 +188,21 @@ def test_issue_368():
 
         return mplfig_to_npimage(fig)
 
-    animation = VideoClip(make_frame,duration=2)
-    animation.write_gif(os.path.join(TMP_DIR, "svm.gif"),fps=20)
+    animation = VideoClip(make_frame, duration=2)
+    animation.write_gif(os.path.join(TMP_DIR, "svm.gif"), fps=20)
 
 def test_issue_407():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
-    red.fps=30
+    red.fps = 30
+
     assert red.fps == 30
     assert red.w == 800
     assert red.h == 600
     assert red.size == (800, 600)
 
-    #ColorClip has no fps attribute
-    green=ColorClip((640, 480), color=(0,255,0)).set_duration(2)
-    blue=ColorClip((640, 480), color=(0,0,255)).set_duration(2)
+    # ColorClip has no fps attribute.
+    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(2)
 
     assert green.w == blue.w == 640
     assert green.h == blue.h == 480
@@ -174,16 +218,16 @@ def test_issue_407():
     assert video.fps == red.fps
 
 def test_issue_416():
-    green=ColorClip((640, 480), color=(0,255,0)).set_duration(2)  #ColorClip has no fps attribute
-    video1=concatenate_videoclips([green])
+    # ColorClip has no fps attribute.
+    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    video1 = concatenate_videoclips([green])
     assert video1.fps == None
 
 def test_issue_417():
     # failed in python2
-
     cad = u'media/python_logo.png'
-    myclip = ImageClip(cad).fx(vfx.resize, newsize=[1280, 660])
-    final = CompositeVideoClip([myclip], size=(1280, 720))
+    myclip = ImageClip(cad).fx(resize, newsize=[1280, 660])
+    CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
 
 def test_issue_467():
@@ -191,7 +235,7 @@ def test_issue_467():
     clip = ImageClip(cad)
 
     #caused an error, NameError: global name 'copy' is not defined
-    clip = clip.fx(vfx.blink, d_on=1, d_off=1)
+    clip = clip.fx(blink, d_on=1, d_off=1)
 
 def test_issue_470():
     audio_clip = AudioFileClip('media/crunching.mp3')

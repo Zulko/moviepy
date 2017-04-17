@@ -1,18 +1,19 @@
-import pytest
-from moviepy.editor import *
-
-from moviepy.video.fx.crop import crop
-from moviepy.video.fx.blackwhite import blackwhite
-from moviepy.video.fx.blink import blink
-from moviepy.video.fx.colorx import colorx
-from moviepy.video.fx.fadein import fadein
-from moviepy.video.fx.fadeout import fadeout
-
 import os
 import sys
-sys.path.append("tests")
+
+import pytest
+from moviepy.video.fx.blackwhite import blackwhite
+# from moviepy.video.fx.blink import blink
+from moviepy.video.fx.colorx import colorx
+from moviepy.video.fx.crop import crop
+from moviepy.video.fx.fadein import fadein
+from moviepy.video.fx.fadeout import fadeout
+from moviepy.video.VideoClip import VideoFileClip
+
 import download_media
-from test_helper import TRAVIS, TMP_DIR
+from test_helper import TMP_DIR
+
+sys.path.append("tests")
 
 
 def test_download_media(capsys):
@@ -24,18 +25,16 @@ def test_blackwhite():
     clip1 = blackwhite(clip)
     clip1.write_videofile(os.path.join(TMP_DIR,"blackwhite1.webm"))
 
-def test_blink():
-    #this currently fails with a with_mask error!
-    return
-    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,10)
-    clip1 = blink(clip, 1, 1)
-    clip1.write_videofile(os.path.join(TMP_DIR,"blink1.webm"))
+# This currently fails with a with_mask error!
+# def test_blink():
+#     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,10)
+#     clip1 = blink(clip, 1, 1)
+#     clip1.write_videofile(os.path.join(TMP_DIR,"blink1.webm"))
 
 def test_colorx():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     clip1 = colorx(clip, 2)
     clip1.write_videofile(os.path.join(TMP_DIR,"colorx1.webm"))
-
 
 def test_crop():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")

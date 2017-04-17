@@ -1,12 +1,17 @@
-import pytest
-from moviepy.editor import *
-import moviepy.video.tools.cuts as cuts
-
 import os
 import sys
-sys.path.append("tests")
+
+import moviepy.video.tools.cuts as cuts
+import pytest
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
+from moviepy.video.VideoClip import ColorClip, TextClip, VideoFileClip
+
 import download_media
-from test_helper import TRAVIS, TMP_DIR
+from test_helper import TMP_DIR, TRAVIS
+
+sys.path.append("tests")
 
 
 def test_download_media(capsys):
@@ -18,8 +23,6 @@ def test_cuts1():
     cuts.find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
 
 def test_subtitles():
-    from moviepy.video.tools.subtitles import SubtitlesClip
-
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(10)
     green = ColorClip((800, 600), color=(0,255,0)).set_duration(10)
     blue = ColorClip((800, 600), color=(0,0,255)).set_duration(10)
@@ -50,8 +53,6 @@ def test_subtitles():
     assert subtitles.subtitles == data
 
 def test_file_to_subtitles():
-    from moviepy.video.tools.subtitles import file_to_subtitles
-
     data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
             ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
             ([20.0, 24.0], 'Blue'), ([25.0, 29.0], 'More Blue!')]
