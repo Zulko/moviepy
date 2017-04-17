@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 """Compositing tests for use with pytest."""
 import pytest
-from moviepy.video.compositing.CompositeVideoClip import clips_array
-from moviepy.video.VideoClip import ColorClip
-
+from moviepy.editor import *
 
 def test_clips_array():
     red = ColorClip((1024,800), color=(255,0,0))
