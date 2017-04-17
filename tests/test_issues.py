@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import os
 import sys
@@ -26,10 +27,10 @@ def test_issue_145():
         concatenate_videoclips([video], method='composite')
 
 def test_issue_285():
-    clip_1 = ImageClip('media/python_logo.png', duration=10)
-    clip_2 = ImageClip('media/python_logo.png', duration=10)
-    clip_3 = ImageClip('media/python_logo.png', duration=10)
 
+    clip_1, clip_2, clip_3 = ImageClip('media/python_logo.png', duration=10), \
+                             ImageClip('media/python_logo.png', duration=10), \
+                             ImageClip('media/python_logo.png', duration=10)
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Define general test helper attributes and utilities."""
 import os
 import sys
 

@@ -1,9 +1,10 @@
-import pytest
-from moviepy.editor import *
-
 import sys
+
+import pytest
+from moviepy.video.fx.blink import blink
+from moviepy.video.VideoClip import TextClip
+
 sys.path.append("tests")
-import download_media
 
 def test_duration():
     return
@@ -15,9 +16,18 @@ def test_duration():
     clip.set_duration(5)
     assert clip.duration == 5
 
-    clip2 = clip.fx(vfx.blink, d_on=1, d_off=1)
+    clip2 = clip.fx(blink, d_on=1, d_off=1)
     clip2.set_duration(5)
     assert clip2.duration == 5
+
+# Moved from tests.py. Maybe we can remove these?
+def test_if_textclip_crashes_in_caption_mode():
+    TextClip(txt='foo', color='white', size=(640, 480), method='caption',
+             align='center', fontsize=25)
+
+def test_if_textclip_crashes_in_label_mode():
+    TextClip(txt='foo', method='label')
+
 
 if __name__ == '__main__':
    pytest.main()
