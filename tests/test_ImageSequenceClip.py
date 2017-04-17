@@ -3,7 +3,7 @@
 import sys
 
 import pytest
-from moviepy.video.io import ImageSequenceClip
+from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
 sys.path.append("tests")
 import download_media
