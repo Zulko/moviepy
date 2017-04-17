@@ -7,7 +7,8 @@ import pytest
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.fx import blink, resize
+from moviepy.video.fx.blink import blink
+from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
