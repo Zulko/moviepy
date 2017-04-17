@@ -8,7 +8,7 @@ from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
-from moviepy.video.VideoClip import VideoFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
 from test_helper import TMP_DIR
