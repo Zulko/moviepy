@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Example tests for use with pytest."""
 import os
 import sys
 
@@ -21,8 +23,8 @@ def test_matplotlib():
 
     import matplotlib.pyplot as plt
     import numpy as np
-    from moviepy.editor import VideoClip
     from moviepy.video.io.bindings import mplfig_to_npimage
+    from moviepy.video.VideoClip import VideoClip
 
     x = np.linspace(-2, 2, 200)
 

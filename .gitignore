@@ -20,6 +20,7 @@ develop-eggs
 lib
 lib64
 __pycache__
+.cache/
 
 # Sublime
 .sublime-project
