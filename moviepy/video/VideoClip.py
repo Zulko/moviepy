@@ -4,44 +4,27 @@ main subclasses:
 - Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
-
 import os
 import subprocess as sp
-import multiprocessing
 import tempfile
-from copy import copy
 import warnings
 
-from tqdm import tqdm
 import numpy as np
-
 from imageio import imread, imsave
+from tqdm import tqdm
 
-import moviepy.audio.io as aio
-from .io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
-from .io.ffmpeg_tools import ffmpeg_merge_video_audio
-from .io.gif_writers import (write_gif,
-                             write_gif_with_tempfiles,
-                             write_gif_with_image_io)
-from .tools.drawing import blit
 from ..Clip import Clip
+from ..compat import DEVNULL, PY3
 from ..config import get_setting
-
-from ..tools import (subprocess_call,
-                     verbose_print,
-                     is_string,
-                     deprecated_version_of,
-                     extensions_dict, find_extension)
-
-from ..decorators import (apply_to_mask,
-                          requires_duration,
-                          outplace,
-                          add_mask_if_none,
-                          convert_to_seconds,
-                          convert_masks_to_RGB,
-                          use_clip_fps_by_default)
-
-from ..compat import PY3, DEVNULL
+from ..decorators import (add_mask_if_none, apply_to_mask,
+                          convert_masks_to_RGB, convert_to_seconds, outplace,
+                          requires_duration, use_clip_fps_by_default)
+from ..tools import (deprecated_version_of, extensions_dict, find_extension,
+                     is_string, subprocess_call, verbose_print)
+from .io.ffmpeg_writer import ffmpeg_write_video
+from .io.gif_writers import (write_gif, write_gif_with_image_io,
+                             write_gif_with_tempfiles)
+from .tools.drawing import blit
 
 
 class VideoClip(Clip):
@@ -107,25 +90,20 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
-
     @property
     def w(self):
         return self.size[0]
-
 
     @property
     def h(self):
         return self.size[1]
 
-
     @property
     def aspect_ratio(self):
         return self.w / float(self.h)
 
-
     # ===============================================================
     # EXPORT OPERATIONS
-
 
     @convert_to_seconds(['t'])
     @convert_masks_to_RGB
@@ -151,7 +129,6 @@ class VideoClip(Clip):
 
         imsave(filename, im)
 
-
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
@@ -165,7 +142,6 @@ class VideoClip(Clip):
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
                         progress_bar=True):
-
         """Write the clip to a videofile.
 
         Parameters
@@ -261,7 +237,7 @@ class VideoClip(Clip):
           If true, will write log files for the audio and the video.
           These will be files ending with '.log' with the name of the
           output file in them.
-          
+
         verbose
           Boolean indicating whether to print infomation.
 
@@ -276,7 +252,6 @@ class VideoClip(Clip):
         >>> clip.write_videofile("my_new_video.mp4")
 
         """
-
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
 
@@ -353,14 +328,12 @@ class VideoClip(Clip):
 
         verbose_print(verbose, "[MoviePy] >>>> Video ready: %s \n\n"%filename)
 
-
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
                               withmask=True, progress_bar=True):
         """ Writes the videoclip to a sequence of image files.
-
 
         Parameters
         -----------
@@ -399,7 +372,6 @@ class VideoClip(Clip):
         ``ImageSequenceClip``.
 
         """
-
         verbose_print(verbose, "[MoviePy] Writing frames %s." % (nameformat))
 
         tt = np.arange(0, self.duration, 1.0 / fps)
@@ -416,8 +388,6 @@ class VideoClip(Clip):
 
         return filenames
 
-
-
     @requires_duration
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
@@ -427,7 +397,6 @@ class VideoClip(Clip):
 
         Converts a VideoClip into an animated GIF using ImageMagick
         or ffmpeg.
-
 
         Parameters
         -----------
@@ -466,7 +435,6 @@ class VideoClip(Clip):
             >>> myClip.speedx(0.5).to_gif('myClip.gif')
 
         """
-
         # A little sketchy at the moment, maybe move all that in write_gif,
         #  refactor a little... we will see.
 
@@ -493,10 +461,8 @@ class VideoClip(Clip):
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-
-
     def subfx(self, fx, ta=0, tb=None, **kwargs):
-        """ Apply a transformation to a part of the clip.
+        """Apply a transformation to a part of the clip.
 
         Returns a new clip in which the function ``fun`` (clip->clip)
         has been applied to the subclip between times `ta` and `tb`
@@ -510,7 +476,6 @@ class VideoClip(Clip):
         >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-
         left = None if (ta == 0) else self.subclip(0, ta)
         center = self.subclip(ta, tb).fx(fx, **kwargs)
         right = None if (tb is None) else self.subclip(t_start=tb)
@@ -524,7 +489,6 @@ class VideoClip(Clip):
 
     # IMAGE FILTERS
 
-
     def fl_image(self, image_func, apply_to=[]):
         """
         Modifies the images of a clip by replacing the frame
@@ -534,7 +498,6 @@ class VideoClip(Clip):
 
     # --------------------------------------------------------------
     # C O M P O S I T I N G
-
 
     def fill_array(self, pre_array, shape=(0, 0)):
         pre_shape = pre_array.shape
@@ -553,14 +516,12 @@ class VideoClip(Clip):
             post_array = np.hstack((post_array, x_1))
         return post_array
 
-
     def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-
         hf, wf = framesize = picture.shape[:2]
 
         if self.ismask and picture.max() != 0:
@@ -610,9 +571,8 @@ class VideoClip(Clip):
 
         return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 
-
     def add_mask(self):
-        """ Add a mask VideoClip to the VideoClip.
+        """Add a mask VideoClip to the VideoClip.
 
         Returns a copy of the clip with a completely opaque mask
         (made of ones). This makes computations slower compared to
@@ -629,10 +589,9 @@ class VideoClip(Clip):
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
-
     def on_color(self, size=None, color=(0, 0, 0), pos=None,
                  col_opacity=None):
-        """ Place the clip on a colored background.
+        """Place the clip on a colored background.
 
         Returns a clip made of the current clip overlaid on a color
         clip of a possibly bigger size. Can serve to flatten transparent
@@ -682,10 +641,9 @@ class VideoClip(Clip):
 
         return result
 
-
     @outplace
     def set_make_frame(self, mf):
-        """ Change the clip's ``get_frame``.
+        """Change the clip's ``get_frame``.
 
         Returns a copy of the VideoClip instance, with the make_frame
         attribute set to `mf`.
@@ -693,43 +651,39 @@ class VideoClip(Clip):
         self.make_frame = mf
         self.size = self.get_frame(0).shape[:2][::-1]
 
-
     @outplace
     def set_audio(self, audioclip):
-        """ Attach an AudioClip to the VideoClip.
+        """Attach an AudioClip to the VideoClip.
 
         Returns a copy of the VideoClip instance, with the `audio`
         attribute set to ``audio``, which must be an AudioClip instance.
         """
         self.audio = audioclip
 
-
     @outplace
     def set_mask(self, mask):
-        """ Set the clip's mask.
+        """Set the clip's mask.
 
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip"""
         assert ( (mask is None) or mask.ismask )
         self.mask = mask
 
-
     @add_mask_if_none
     @outplace
     def set_opacity(self, op):
-        """ Set the opacity/transparency level of the clip.
+        """Set the opacity/transparency level of the clip.
 
         Returns a semi-transparent copy of the clip where the mask is
         multiplied by ``op`` (any float, normally between 0 and 1).
         """
-
         self.mask = self.mask.fl_image(lambda pic: op * pic)
 
 
     @apply_to_mask
     @outplace
     def set_position(self, pos, relative=False):
-        """ Set the clip's position in compositions.
+        """Set the clip's position in compositions.
 
         Sets the position that the clip will have when included
         in compositions. The argument ``pos`` can be either a couple
@@ -752,18 +706,14 @@ class VideoClip(Clip):
         >>> clip.set_pos(lambda t: ('center', 50+t) )
 
         """
-
         self.relative_pos = relative
         if hasattr(pos, '__call__'):
             self.pos = pos
         else:
             self.pos = lambda t: pos
 
-
     #--------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
-
-
 
     @convert_to_seconds(['t'])
     def to_ImageClip(self, t=0, with_mask=True):
@@ -779,9 +729,7 @@ class VideoClip(Clip):
 
 
     def to_mask(self, canal=0):
-        """
-        Returns a mask a video clip made from the clip.
-        """
+        """Return a mask a video clip made from the clip."""
         if self.ismask:
             return self
         else:
@@ -790,11 +738,8 @@ class VideoClip(Clip):
             newclip.ismask = True
             return newclip
 
-
     def to_RGB(self):
-        """
-        Returns a non-mask video clip made from the mask video clip.
-        """
+        """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
             f = lambda pic: np.dstack(3 * [255 * pic]).astype('uint8')
             newclip = self.fl_image(f)
@@ -806,26 +751,23 @@ class VideoClip(Clip):
     #----------------------------------------------------------------
     # Audio
 
-
     @outplace
     def without_audio(self):
-        """ Remove the clip's audio.
+        """Remove the clip's audio.
 
         Return a copy of the clip with audio set to None.
 
         """
         self.audio = None
 
-
     @outplace
     def afx(self, fun, *a, **k):
-        """ Transform the clip's audio.
+        """Transform the clip's audio.
 
         Return a new clip whose audio has been transformed by ``fun``.
 
         """
         self.audio = self.audio.fx(fun, *a, **k)
-
 
 
 class DataVideoClip(VideoClip):
@@ -858,11 +800,8 @@ class DataVideoClip(VideoClip):
                duration=1.0*len(data)/fps, has_constant_size=has_constant_size)
 
 
-
-
 class UpdatedVideoClip(VideoClip):
     """
-
     Class of clips whose make_frame requires some objects to
     be updated. Particularly practical in science where some
     algorithm needs to make some steps before a new frame can
@@ -894,9 +833,7 @@ class UpdatedVideoClip(VideoClip):
 
     """
 
-
     def __init__(self, world, ismask=False, duration=None):
-
         self.world = world
         def make_frame(t):
             while self.world.clip_t < t:
@@ -904,10 +841,6 @@ class UpdatedVideoClip(VideoClip):
             return world.to_frame()
         VideoClip.__init__(self, make_frame= make_frame,
                                ismask=ismask, duration=duration)
-
-
-
-
 
 
 """---------------------------------------------------------------------
@@ -921,7 +854,7 @@ class UpdatedVideoClip(VideoClip):
 
 
 class ImageClip(VideoClip):
-    """ Class for non-moving VideoClips.
+    """Class for non-moving VideoClips.
 
     A video clip originating from a picture. This clip will simply
     display the given picture at all times.
@@ -954,10 +887,8 @@ class ImageClip(VideoClip):
 
     """
 
-
     def __init__(self, img, ismask=False, transparent=True,
                  fromalpha=False, duration=None):
-
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
         if PY3:
@@ -987,14 +918,12 @@ class ImageClip(VideoClip):
         self.size = img.shape[:2][::-1]
         self.img = img
 
-
     def fl(self, fl, apply_to=[], keep_duration=True):
-        """ General transformation filter.
+        """General transformation filter.
 
         Equivalent to VideoClip.fl . The result is no more an
         ImageClip, it has the class VideoClip (since it may be animated)
         """
-
         # When we use fl on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
         newclip = VideoClip.fl(self, fl, apply_to=apply_to,
@@ -1002,16 +931,14 @@ class ImageClip(VideoClip):
         newclip.__class__ = VideoClip
         return newclip
 
-
     @outplace
     def fl_image(self, image_func, apply_to=[]):
-        """ Image-transformation filter.
+        """Image-transformation filter.
 
         Does the same as VideoClip.fl_image, but for ImageClip the
         tranformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
-
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
         self.make_frame = lambda t: arr
@@ -1024,11 +951,10 @@ class ImageClip(VideoClip):
                     new_a = a.fl_image(image_func)
                     setattr(self, attr, new_a)
 
-
     @outplace
     def fl_time(self, time_func, apply_to=['mask', 'audio'],
                 keep_duration=False):
-        """ Time-transformation filter.
+        """Time-transformation filter.
 
         Applies a transformation to the clip's timeline
         (see Clip.fl_time).
@@ -1036,7 +962,6 @@ class ImageClip(VideoClip):
         This method does nothing for ImageClips (but it may affect their
         masks or their audios). The result is still an ImageClip.
         """
-
         for attr in apply_to:
             if hasattr(self, attr):
                 a = getattr(self, attr)
@@ -1060,7 +985,7 @@ VideoClip.to_images_sequence = deprecated_version_of(VideoClip.write_images_sequ
 
 
 class ColorClip(ImageClip):
-    """ An ImageClip showing just one color.
+    """An ImageClip showing just one color.
 
     Parameters
     -----------
@@ -1083,7 +1008,7 @@ class ColorClip(ImageClip):
     def __init__(self, size, color=None, ismask=False, duration=None, col=None):
         if col is not None:
             warnings.warn("The `ColorClip` parameter `col` has been deprecated."
-                          " Please use `color` instead", DeprecationWarning)
+                          " Please use `color` instead.", DeprecationWarning)
             if color is not None:
                 warnings.warn("The arguments `color` and `col` have both been "
                               "passed to `ColorClip` so `col` has been ignored.",
@@ -1097,7 +1022,7 @@ class ColorClip(ImageClip):
 
 
 class TextClip(ImageClip):
-    """ Class for autogenerated text clips.
+    """Class for autogenerated text clips.
 
     Creates an ImageClip originating from a script-generated text image.
     Requires ImageMagick.
@@ -1160,7 +1085,6 @@ class TextClip(ImageClip):
 
     """
 
-
     def __init__(self, txt=None, filename=None, size=None, color='black',
                  bg_color='transparent', fontsize=None, font='Courier',
                  stroke_color=None, stroke_width=1, method='label',
@@ -1168,7 +1092,6 @@ class TextClip(ImageClip):
                  tempfilename=None, temptxt=None,
                  transparent=True, remove_temp=True,
                  print_cmd=False):
-
 
         if txt is not None:
             if temptxt is None:
@@ -1239,10 +1162,9 @@ class TextClip(ImageClip):
             if os.path.exists(temptxt):
                 os.remove(temptxt)
 
-
     @staticmethod
     def list(arg):
-        """ Returns the list of all valid entries for the argument of
+        """Returns the list of all valid entries for the argument of
         ``TextClip`` given (can be ``font``, ``color``, etc...) """
 
         popen_params = {"stdout": sp.PIPE,
@@ -1267,7 +1189,7 @@ class TextClip(ImageClip):
 
     @staticmethod
     def search(string, arg):
-        """ Returns the of all valid entries which contain ``string`` for the
+        """Returns the of all valid entries which contain ``string`` for the
            argument ``arg`` of ``TextClip``, for instance
 
            >>> # Find all the available fonts which contain "Courier"

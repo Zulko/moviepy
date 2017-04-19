@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+"""Compositing tests for use with pytest."""
 import pytest
 from moviepy.editor import *
 
@@ -12,8 +14,7 @@ def test_clips_array():
                        message="Expecting ValueError (duration not set)"):
        video.resize(width=480).write_videofile("/tmp/test_clips_array.mp4")
 
-
-def test_clips_array():
+def test_clips_array_duration():
     red = ColorClip((1024,800), color=(255,0,0))
     green = ColorClip((1024,800), color=(0,255,0))
     blue = ColorClip((1024,800), color=(0,0,255))
