@@ -186,6 +186,15 @@ def test_issue_417():
     final = CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
 
+def test_issue_464():
+    import numpy as np
+    original_frames = [i*np.ones((32, 32, 3), dtype=np.uint8) for i in range(50)]
+    clip = ImageSequenceClip(original_frames, fps=30)
+    for original_frame, clip_frame in zip(original_frames, clip.iter_frames()):
+        # The retrieved frames should be equal to the original ones
+        # Since the frames are constant color, it suffices to compare one pixel
+        assert original_frame[0,0,0] == clip_frame[0,0,0]
+
 def test_issue_467():
     cad = 'media/python_logo.png'
     clip = ImageClip(cad)
