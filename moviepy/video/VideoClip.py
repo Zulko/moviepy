@@ -202,7 +202,7 @@ class VideoClip(Clip):
 
 
           ``png`` (use file extension ``.avi``) will produce a video
-          of perfect quality, of smaller size than with ``rawvideo``
+          of perfect quality, of smaller size than with ``rawvideo``.
 
 
           ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
@@ -251,11 +251,11 @@ class VideoClip(Clip):
 
         threads
           Number of threads to use for ffmpeg. Can speed up the writing of
-          the video on multicore computers
+          the video on multicore computers.
 
         ffmpeg_params
           Any additional ffmpeg parameters you would like to pass, as a list
-          of terms, like ['-option1', 'value1', '-option2', 'value2']
+          of terms, like ['-option1', 'value1', '-option2', 'value2'].
 
         write_logfile
           If true, will write log files for the audio and the video.
@@ -263,7 +263,7 @@ class VideoClip(Clip):
           output file in them.
           
         verbose
-          Boolean indicating whether to print infomation
+          Boolean indicating whether to print infomation.
 
         progress_bar
           Boolean indicating whether to show the progress bar.
@@ -377,10 +377,10 @@ class VideoClip(Clip):
           be used if it has one.
 
         withmask
-          will save the clip's mask (if any) as an alpha canal (PNGs only)
+          will save the clip's mask (if any) as an alpha canal (PNGs only).
 
         verbose
-          Boolean indicating whether to print infomation
+          Boolean indicating whether to print infomation.
 
         progress_bar
           Boolean indicating whether to show the progress bar.
