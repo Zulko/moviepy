@@ -30,7 +30,7 @@ class SubtitlesClip(VideoClip):
     >>> sub = SubtitlesClip("subtitles.srt", generator)
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
-    >>> final.to_videofile("final.mp4", fps=myvideo.fps)
+    >>> final.write_videofile("final.mp4", fps=myvideo.fps)
     
     """
 

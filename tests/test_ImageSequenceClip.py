@@ -1,8 +1,10 @@
-import pytest
-from moviepy.editor import *
-
-# must have to work on travis-ci
+# -*- coding: utf-8 -*-
+"""Image sequencing clip tests meant to be run with pytest."""
 import sys
+
+import pytest
+from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+
 sys.path.append("tests")
 import download_media
 
@@ -19,7 +21,7 @@ def test_1():
         durations.append(i)
         images.append("media/matplotlib_demo1.png")
 
-    clip=ImageSequenceClip(images, durations=durations)
+    clip = ImageSequenceClip(images, durations=durations)
     assert clip.duration == sum(durations)
     clip.write_videofile("/tmp/ImageSequenceClip1.mp4", fps=30)
 

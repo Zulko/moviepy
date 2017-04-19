@@ -1,1 +1,3 @@
-No official test suite for the moment. Coming soon.
+Install testing dependencies: `pip install moviepy[test]`
+
+Run tests: `python setup.py test`

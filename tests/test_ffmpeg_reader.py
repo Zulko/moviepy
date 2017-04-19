@@ -1,11 +1,14 @@
-import pytest
-from moviepy.editor import *
+# -*- coding: utf-8 -*-
+"""FFmpeg reader tests meant to be run with pytest."""
+import sys
 
+import pytest
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
-import sys
-sys.path.append("tests")
 import download_media
+
+sys.path.append("tests")
+
 
 def test_download_media(capsys):
     with capsys.disabled():
