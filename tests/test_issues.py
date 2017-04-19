@@ -267,5 +267,4 @@ def test_issue_246():
 
 
 if __name__ == '__main__':
-   test_issue_190()
-   #pytest.main()
+   pytest.main()

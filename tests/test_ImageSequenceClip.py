@@ -28,5 +28,4 @@ def test_1():
     clip.write_videofile("/tmp/ImageSequenceClip1.mp4", fps=30)
 
 if __name__ == '__main__':
-   test_1()
-   #pytest.main()
+   pytest.main()
