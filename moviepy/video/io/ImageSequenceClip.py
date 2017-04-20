@@ -157,12 +157,17 @@ class ImageSequenceClip(VideoClip):
 
                 return self.sequence[index][:,:,:3]
 
-            if with_mask and (self.sequence[0].shape[2]==4):
+            if with_mask:
                 self.mask = VideoClip(ismask=True)
 
-                def mask_make_frame(t):
-                    index = find_image_index(t)
-                    return 1.0*self.sequence[index][:,:,3]/255
+                if len(self.sequence[0].shape) >= 3 and (self.sequence[0].shape[2]==4):
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       return 1.0*self.sequence[index][:,:,3]/255
+                elif len(self.sequence[0].shape) == 2:
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       return 1.0*self.sequence[index][:,:]/255
 
                 self.mask.make_frame = mask_make_frame
                 self.mask.size = mask_make_frame(0).shape[:2][::-1]
