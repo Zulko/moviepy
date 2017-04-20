@@ -60,5 +60,4 @@ def test_2():
 
 
 if __name__ == '__main__':
-   test_black_white()
-   #pytest.main()
+   pytest.main()
