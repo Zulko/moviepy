@@ -20,8 +20,7 @@ def test_1():
         durations.append(i)
         images.append("media/python_logo.png")
         durations.append(i)
-        images.append("media/python_logo.png")
-        #images.append("media/matplotlib_demo1.png")
+        images.append("media/python_logo_upside_down.png")
 
     clip = ImageSequenceClip(images, durations=durations)
     assert clip.duration == sum(durations)
