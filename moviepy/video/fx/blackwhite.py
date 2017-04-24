@@ -1,11 +1,13 @@
 import numpy as np
 
-def blackwhite(clip, RGB = [1,1,1], preserve_luminosity=True):
+def blackwhite(clip, RGB = None, preserve_luminosity=True):
     """ Desaturates the picture, makes it black and white.
     Parameter RGB allows to set weights for the different color
     channels.
     If RBG is 'CRT_phosphor' a special set of values is used.
     preserve_luminosity maintains the sum of RGB to 1."""
+    if RGB is None:
+        RGB = [1,1,1]
 
     if RGB == 'CRT_phosphor':
         RGB = [0.2125, 0.7154, 0.0721]

@@ -489,11 +489,13 @@ class VideoClip(Clip):
 
     # IMAGE FILTERS
 
-    def fl_image(self, image_func, apply_to=[]):
+    def fl_image(self, image_func, apply_to=None):
         """
         Modifies the images of a clip by replacing the frame
         `get_frame(t)` by another frame,  `image_func(get_frame(t))`
         """
+        if apply_to is None:
+            apply_to = []
         return self.fl(lambda gf, t: image_func(gf(t)), apply_to)
 
     # --------------------------------------------------------------
@@ -918,12 +920,14 @@ class ImageClip(VideoClip):
         self.size = img.shape[:2][::-1]
         self.img = img
 
-    def fl(self, fl, apply_to=[], keep_duration=True):
+    def fl(self, fl, apply_to=None, keep_duration=True):
         """General transformation filter.
 
         Equivalent to VideoClip.fl . The result is no more an
         ImageClip, it has the class VideoClip (since it may be animated)
         """
+        if apply_to is None:
+            apply_to = []
         # When we use fl on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
         newclip = VideoClip.fl(self, fl, apply_to=apply_to,
@@ -932,13 +936,15 @@ class ImageClip(VideoClip):
         return newclip
 
     @outplace
-    def fl_image(self, image_func, apply_to=[]):
+    def fl_image(self, image_func, apply_to=None):
         """Image-transformation filter.
 
         Does the same as VideoClip.fl_image, but for ImageClip the
         tranformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
+        if apply_to is None:
+                apply_to = []
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
         self.make_frame = lambda t: arr
@@ -952,7 +958,7 @@ class ImageClip(VideoClip):
                     setattr(self, attr, new_a)
 
     @outplace
-    def fl_time(self, time_func, apply_to=['mask', 'audio'],
+    def fl_time(self, time_func, apply_to=None,
                 keep_duration=False):
         """Time-transformation filter.
 
@@ -962,6 +968,8 @@ class ImageClip(VideoClip):
         This method does nothing for ImageClips (but it may affect their
         masks or their audios). The result is still an ImageClip.
         """
+        if apply_to is None:
+                apply_to = ['mask', 'audio']
         for attr in apply_to:
             if hasattr(self, attr):
                 a = getattr(self, attr)

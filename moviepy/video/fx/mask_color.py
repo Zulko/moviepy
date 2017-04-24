@@ -1,6 +1,6 @@
 import numpy as np
 
-def mask_color(clip, color=[0,0,0], thr=0, s=1):
+def mask_color(clip, color=None, thr=0, s=1):
     """ Returns a new clip with a mask for transparency where the original
     clip is of the given color.
 
@@ -12,6 +12,8 @@ def mask_color(clip, color=[0,0,0], thr=0, s=1):
     which is 1 when d>>thr and 0 for d<<thr, the stiffness of the effect being
     parametrized by s
     """
+    if color is None:
+        color = [0,0,0]
 
     # code a little sloppy, it just works.
     hill = lambda x: (1.0*(x!=0) if (thr==0) else (x**s/ (thr**s+x**s)))
