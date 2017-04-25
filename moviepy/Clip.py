@@ -94,7 +94,7 @@ class Clip:
         else:
             return self.make_frame(t)
 
-    def fl(self, fun, apply_to=[], keep_duration=True):
+    def fl(self, fun, apply_to=None, keep_duration=True):
         """ General processing of a clip.
 
         Returns a new Clip whose frames are a transformation
@@ -131,6 +131,8 @@ class Clip:
         >>> newclip = clip.fl(fl, apply_to='mask')
         
         """
+        if apply_to is None:
+            apply_to = []
 
         #mf = copy(self.make_frame)
         newclip = self.set_make_frame(lambda t: fun(self.get_frame, t))
@@ -153,7 +155,7 @@ class Clip:
 
     
     
-    def fl_time(self, t_func, apply_to=[], keep_duration=False):
+    def fl_time(self, t_func, apply_to=None, keep_duration=False):
         """
         Returns a Clip instance playing the content of the current clip
         but with a modified timeline, time ``t`` being replaced by another
@@ -184,6 +186,8 @@ class Clip:
         >>> newclip = clip.fl_time(lambda: 3-t)
         
         """
+        if apply_to is None:
+            apply_to = []
         
         return self.fl(lambda gf, t: gf(t_func(t)), apply_to,
                                     keep_duration=keep_duration)
