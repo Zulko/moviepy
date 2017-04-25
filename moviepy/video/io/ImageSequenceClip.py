@@ -89,7 +89,6 @@ class ImageSequenceClip(VideoClip):
             if size != image1.shape:
                raise Exception("Moviepy: ImageSequenceClip requires all images to be the same size")
 
-
         self.fps = fps
         if fps is not None:
             durations = [1.0/fps for image in sequence]
@@ -100,64 +99,78 @@ class ImageSequenceClip(VideoClip):
         self.duration = sum(durations)
         self.end = self.duration
         self.sequence = sequence
-        
+
         def find_image_index(t):
             return max([i for i in range(len(self.sequence))
                               if self.images_starts[i]<=t])
 
         if fromfiles:
-
             self.lastindex = None
             self.lastimage = None
 
             def make_frame(t):
-            
                 index = find_image_index(t)
 
                 if index != self.lastindex:
-                    self.lastimage = imread(self.sequence[index])[:,:,:3] 
+                    if len(imread(self.sequence[index]).shape) == 2: # bw images
+                       self.lastimage = imread(self.sequence[index])
+                    else:
+                       self.lastimage = imread(self.sequence[index])[:,:,:3]
+
                     self.lastindex = index
-                
+
                 return self.lastimage
 
-            if with_mask and (imread(self.sequence[0]).shape[2]==4):
-
+            if with_mask:
                 self.mask = VideoClip(ismask=True)
                 self.mask.lastindex = None
                 self.mask.lastimage = None
+                if len(imread(self.sequence[0]).shape) >=3 and (imread(self.sequence[0]).shape[2]==4):
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       if index != self.mask.lastindex:
+                          frame = imread(self.sequence[index])[:,:,3]
+                          self.mask.lastimage = frame.astype(float)/255
+                          self.mask.lastindex = index
 
-                def mask_make_frame(t):
-            
-                    index = find_image_index(t)
-                    if index != self.mask.lastindex:
-                        frame = imread(self.sequence[index])[:,:,3]
-                        self.mask.lastimage = frame.astype(float)/255
-                        self.mask.lastindex = index
+                       return self.mask.lastimage
 
-                    return self.mask.lastimage
+                   self.mask.make_frame = mask_make_frame
+                   self.mask.size = mask_make_frame(0).shape[:2][::-1]
+                elif len(imread(self.sequence[0]).shape) == 2:
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       if index != self.mask.lastindex:
+                          frame = imread(self.sequence[index])
+                          self.mask.lastimage = frame.astype(float)/255
+                          self.mask.lastindex = index
 
-                self.mask.make_frame = mask_make_frame
-                self.mask.size = mask_make_frame(0).shape[:2][::-1]
+                       return self.mask.lastimage
 
-
+                   self.mask.make_frame = mask_make_frame
+                   self.mask.size = mask_make_frame(0).shape[:2][::-1]
         else:
-
             def make_frame(t):
-            
                 index = find_image_index(t)
+                if len(self.sequence[index].shape) == 2:
+                   return self.sequence[index][:,:]
+
                 return self.sequence[index][:,:,:3]
 
-            if with_mask and (self.sequence[0].shape[2]==4):
-
+            if with_mask:
                 self.mask = VideoClip(ismask=True)
 
-                def mask_make_frame(t):
-                    index = find_image_index(t)
-                    return 1.0*self.sequence[index][:,:,3]/255
+                if len(self.sequence[0].shape) >= 3 and (self.sequence[0].shape[2]==4):
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       return 1.0*self.sequence[index][:,:,3]/255
+                elif len(self.sequence[0].shape) == 2:
+                   def mask_make_frame(t):
+                       index = find_image_index(t)
+                       return 1.0*self.sequence[index][:,:]/255
 
                 self.mask.make_frame = mask_make_frame
                 self.mask.size = mask_make_frame(0).shape[:2][::-1]
-        
-            
+
         self.make_frame = make_frame
         self.size = make_frame(0).shape[:2][::-1]

@@ -23,15 +23,14 @@ def test_issue_145():
         concatenate_videoclips([video], method='composite')
 
 def test_issue_190():
-    #from PIL import Image
-    #Image.new('L', (800,600), 'white').save(os.path.join(TMP_DIR, "issue_190.png"))
+    from PIL import Image
+    Image.new('L', (800,600), 'white').save(os.path.join(TMP_DIR, "issue_190.png"))
 
-    #from imageio import imread
-    #image = imread(os.path.join(TMP_DIR, "issue_190.png"))
+    from imageio import imread
+    image = imread(os.path.join(TMP_DIR, "issue_190.png"))
     
-    #clip = ImageSequenceClip([image, image], fps=1)
-    #clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
-    pass
+    clip = ImageSequenceClip([image, image], fps=1)
+    clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
 
 def test_issue_285():
 
