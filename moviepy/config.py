@@ -80,8 +80,10 @@ def get_setting(varname):
     return gl[varname]
 
 
-def change_settings(new_settings={}, file=None):
+def change_settings(new_settings=None, file=None):
     """ Changes the value of configuration variables."""
+    if new_settings is None:
+        new_settings = {}
     gl = globals()
     if file is not None:
         execfile(file)
