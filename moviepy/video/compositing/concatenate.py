@@ -1,4 +1,5 @@
 import numpy as np
+from functools import reduce
 
 from moviepy.compat import PY3
 
