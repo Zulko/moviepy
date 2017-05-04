@@ -48,7 +48,7 @@ def audio_levels(clip, levels, fast=False):
             ant, sig = get_range_levels(t[0])
 
             for it in range(len(t)):
-                if t[it] > sig[0]:
+                if sig[0] <= t[it]:
                     ant, sig = get_range_levels(t[it])
 
                 pos = (t[it] - ant[0]) / (sig[0] - ant[0])
