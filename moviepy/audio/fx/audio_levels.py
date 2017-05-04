@@ -16,6 +16,7 @@ def audio_levels(clip, levels, fast=False):
         def get_range_levels(t):
             ant = levels[0]
             sig = None
+            final = False
 
             for l in levels:
                 if l[0] <= t:
@@ -25,11 +26,12 @@ def audio_levels(clip, levels, fast=False):
                     break
             if not sig:  # hack time
                 sig = ant[0] + 1, ant[1]
-            return ant, sig
+                final = True
+            return ant, sig, final
 
         def scalar(t):
             gft = gf(t)
-            ant, sig = get_range_levels(t)
+            ant, sig, final = get_range_levels(t)
 
             pos = (t - ant[0]) / (sig[0] - ant[0])
             factor = pos * sig[1] + (1 - pos) * ant[1]
@@ -39,7 +41,7 @@ def audio_levels(clip, levels, fast=False):
             gft = gf(t)
 
             if not ant or not sig:
-                ant, sig = get_range_levels(t[0])
+                ant, sig, final = get_range_levels(t[0])
 
             pos = (t - ant[0]) / (sig[0] - ant[0])
             factor = pos * sig[1] + (1 - pos) * ant[1]
@@ -47,13 +49,14 @@ def audio_levels(clip, levels, fast=False):
 
         def not_scalar(t):
             gft = gf(t)
-            ant, sig = get_range_levels(t[0])
-            if not t[-1] >= sig[0]:
+            ant, sig, final = get_range_levels(t[0])
+
+            if not t[-1] >= sig[0] or final:
                 return not_scalar_fast(t, ant, sig)
 
             for it in range(len(t)):
-                if t[it] >= sig[0]:
-                    ant, sig = get_range_levels(t[it])
+                if t[it] >= sig[0] and not final:
+                    ant, sig, final = get_range_levels(t[it])
 
                 pos = (t[it] - ant[0]) / (sig[0] - ant[0])
                 factor = pos * sig[1] + (1 - pos) * ant[1]
