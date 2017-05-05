@@ -1,7 +1,6 @@
 dist: trusty
 sudo: required
 language: python
-cache: pip
 python:
   - "2.7"
   - "3.3"
@@ -11,7 +10,7 @@ python:
 # command to install dependencies
 before_install:
   - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
-  - sudo apt-get -y update
+  - sudo apt-get -y -qq update
   - sudo apt-get install -y -qq ffmpeg
   - mkdir media
 install:
@@ -26,3 +25,5 @@ before_script:
 script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 after_success:
   - coveralls
+matrix:
+    fast_finish: true
