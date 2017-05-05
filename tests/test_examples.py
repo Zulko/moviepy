@@ -21,7 +21,7 @@ def test_matplotlib():
     if PYTHON_VERSION in ('2.7', '3.3') or (PYTHON_VERSION == '3.5' and TRAVIS):
        return
 
-    import matplotlib.pyplot as plt
+    import matplotlib
     import numpy as np
     from moviepy.video.io.bindings import mplfig_to_npimage
     from moviepy.video.VideoClip import VideoClip
@@ -30,7 +30,8 @@ def test_matplotlib():
 
     duration = 2
 
-    fig, ax = plt.subplots()
+    matplotlib.use('Agg')
+    fig, ax = matplotlib.plt.subplots()
 
     def make_frame(t):
         ax.clear()
