@@ -56,12 +56,12 @@ def audio_levels(clip, levels, fast=False):
             return np.vstack([factor, factor]).T * gft
 
         def not_scalar(t):
-            gft = gf(t)
             prv, nxt, final = get_range_levels(t[0])
 
             if t[-1] < nxt[0] or final:
                 return not_scalar_fast(t, prv, nxt)
 
+            gft = gf(t)
             for it in range(len(t)):
                 if t[it] >= nxt[0] and not final:
                     prv, nxt, final = get_range_levels(t[it])
