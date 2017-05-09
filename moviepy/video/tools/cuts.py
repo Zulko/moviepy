@@ -320,7 +320,7 @@ def detect_scenes(clip=None, luminosities=None, thr=10,
         
     if luminosities is None:
         luminosities = [f.sum() for f in clip.iter_frames(
-                             fps=fps, dtype='uint32', progress_bar=1)]
+                             fps=fps, dtype='uint32', progress_bar=progress_bar)]
     
     luminosities = np.array(luminosities, dtype=float)
     if clip is not None:
