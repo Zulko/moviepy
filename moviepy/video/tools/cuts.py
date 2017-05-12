@@ -307,7 +307,7 @@ def detect_scenes(clip=None, luminosities=None, thr=10,
       between consecutive frames.
       
     progress_bar
-      We all love progress bars ! Here is one for you, in option.
+      Set to true to display a progress bar
       
     fps
       Must be provided if you provide no clip or a clip without
