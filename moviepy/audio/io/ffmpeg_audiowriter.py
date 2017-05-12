@@ -2,11 +2,9 @@
 import numpy as np
 import subprocess as sp
 
+from moviepy.compat import PY3, DEVNULL
+
 import os
-try:
-    from subprocess import DEVNULL # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
 
 from tqdm import tqdm
 from moviepy.config import get_setting
@@ -82,14 +80,17 @@ class FFMPEG_AudioWriter:
 
     def write_frames(self,frames_array):
         try:
-            self.proc.stdin.write(frames_array.tostring())
+            if PY3:
+               self.proc.stdin.write(frames_array.tobytes())
+            else:
+               self.proc.stdin.write(frames_array.tostring())
         except IOError as err:
             ffmpeg_error = self.proc.stderr.read()
             error = (str(err)+ ("\n\nMoviePy error: FFMPEG encountered "
                      "the following error while writing file %s:"%self.filename
                      + "\n\n"+ffmpeg_error))
 
-            if "Unknown encoder" in ffmpeg_error:
+            if b"Unknown encoder" in ffmpeg_error:
 
                 error = (error+("\n\nThe audio export failed because "
                     "FFMPEG didn't find the specified codec for audio "
@@ -99,7 +100,7 @@ class FFMPEG_AudioWriter:
                     "   >>> to_videofile('myvid.mp4', audio_codec='libmp3lame')"
                     )%(self.codec))
 
-            elif "incorrect codec parameters ?" in ffmpeg_error:
+            elif b"incorrect codec parameters ?" in ffmpeg_error:
 
                 error = error+("\n\nThe audio export "
                   "failed, possibly because the codec specified for "
@@ -108,7 +109,7 @@ class FFMPEG_AudioWriter:
                   "argument in to_videofile. This would be 'libmp3lame' "
                   "for mp3, 'libvorbis' for ogg...")%(self.codec, self.ext)
 
-            elif  "encoder setup failed":
+            elif  b"encoder setup failed" in ffmpeg_error:
 
                 error = error+("\n\nThe audio export "
                   "failed, possily because the bitrate you specified "
@@ -136,7 +137,7 @@ class FFMPEG_AudioWriter:
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None,
                       write_logfile = False, verbose=True,
-                      ffmpeg_params=None):
+                      ffmpeg_params=None, progress_bar=True):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
@@ -154,11 +155,10 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                                 logfile=logfile,
                                 ffmpeg_params=ffmpeg_params)
 
-    
-    
     for chunk in clip.iter_chunks(chunksize=buffersize,
-                                  progress_bar=True, quantize=True,
-                                  nbytes= nbytes, fps=fps):
+                                  quantize=True,
+                                  nbytes= nbytes, fps=fps,
+                                  progress_bar=progress_bar):
         writer.write_frames(chunk)
 
     """

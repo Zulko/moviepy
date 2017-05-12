@@ -21,14 +21,17 @@ User Guide
 
 .. toctree::
    :maxdepth: 1
-   
+
    install
    getting_started/getting_started
    gallery
    examples/examples
+   docker
+   opencv_instructions
    FAQ
+   advanced_tools/advanced_tools
    ref/ref
-    
+
 Contribute !
 --------------
 
@@ -43,8 +46,8 @@ MoviePy is an open source software originally written by Zulko_ and released und
     if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';
     fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
     </script>
-    
-    <iframe src="http://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
+
+    <iframe type="text/html" src="https://ghbtns.com/github-btn.html?user=Zulko&repo=moviepy&type=watch&count=true&size=large"
     allowtransparency="true" frameborder="0" scrolling="0" width="152px" height="30px"></iframe>
 ..    <a href="https://github.com/Zulko/moviepy">
 ..    <img style="position: absolute; top: 0; right: 0; border: 0;"
@@ -53,7 +56,7 @@ MoviePy is an open source software originally written by Zulko_ and released und
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _Zulko: https://github.com/Zulko/
-.. _Stackoverflow: http://stackoverflow.com/
+.. _Stackoverflow: https://stackoverflow.com/
 .. _Github: https://github.com/Zulko/moviepy
-.. _Reddit: http://www.reddit.com/r/moviepy/
+.. _Reddit: https://www.reddit.com/r/moviepy/
 .. _librelist: mailto:moviepy@librelist.com

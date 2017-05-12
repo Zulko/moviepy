@@ -16,10 +16,18 @@ def PIL_to_npimage(im):
 
 def mplfig_to_npimage(fig):
     """ Converts a matplotlib figure to a RGB frame after updating the canvas"""
-    fig.canvas.draw() # update/draw the elements
-    w,h = fig.canvas.get_width_height()
-    buf = fig.canvas.tostring_rgb()
-    image= +np.fromstring(buf,dtype=np.uint8)
+    #  only the Agg backend now supports the tostring_rgb function
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    canvas = FigureCanvasAgg(fig)
+    canvas.draw() # update/draw the elements
+
+    # get the width and the height to resize the matrix
+    l,b,w,h = canvas.figure.bbox.bounds
+    w, h = int(w), int(h)
+
+    #  exports the canvas to a string buffer and then to a numpy nd.array
+    buf = canvas.tostring_rgb()
+    image= np.fromstring(buf,dtype=np.uint8)
     return image.reshape(h,w,3)
 
 

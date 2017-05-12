@@ -1,6 +1,6 @@
-moviepy.video.fx.all.freeze_at_end
+moviepy\.video\.fx\.all\.mask\_and
 ==================================
 
 .. currentmodule:: moviepy.video.fx.all
 
-.. autofunction:: freeze_at_end
+.. autofunction:: mask_and

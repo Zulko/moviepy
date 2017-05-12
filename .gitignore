@@ -10,6 +10,7 @@
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
@@ -19,6 +20,7 @@ develop-eggs
 lib
 lib64
 __pycache__
+.cache/
 
 # Sublime
 .sublime-project
@@ -40,9 +42,20 @@ nosetests.xml
 .pydevproject
 
 # Temp files
-
 *~
 
 # Pipy codes
-
 .pypirc
+
+# Mac
+.DS_Store
+
+# JetBrains
+.idea
+
+# Tests
+tests/media
+media/
+
+# Documentation
+docs/build/

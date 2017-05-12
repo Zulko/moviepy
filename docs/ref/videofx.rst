@@ -5,27 +5,26 @@ moviepy.video.fx (vfx)
 ***********************
 The module ``moviepy.video.fx`` regroups functions meant to be used with ``videoclip.fx()``.
 
-Because this module is starting to be large and will be larger in the future, it allows two kinds of import.
-You can either im
-For all the other modifications, we use ``clip.fx`` and ``clip.fl``. ``clip.fx`` is meant to make it easy to use already-written transformation functions, while  ``clip.fl`` makes it easy to write new transformation functions.
-port a single function like this: ::
-    
+For all other modifications, we use ``clip.fx`` and ``clip.fl``. ``clip.fx`` is meant to make it easy to use already-written transformation functions, while  ``clip.fl`` makes it easy to write new transformation functions.
+
+Because this module is starting to get large and will only get larger in the future, it allows two kinds of imports. You can either import a single function like this: ::
+
     from moviepy.video.fx.scroll import crop
     newclip = myclip.fx( vfx.crop, x1=15)
 
 Or import everything: ::
-    
+
     import moviepy.video.fx.all as vfx
     newclip = (myclip.fx( vfx.crop, x1=15)
                      .fx( vfx.resize, width=200)
                      .fx( vfx.freeze_at_end, 1))
 
 
-When you type ::
-    
+When you type: ::
+
     from moviepy.editor import *
 
-the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``vfx.resize``, etc.
+the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``vfx.resize`` etc.
 
 
 .. currentmodule:: moviepy.video.fx.all
@@ -33,7 +32,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
 .. autosummary::
     :toctree: videofx
     :nosignatures:
-    
+
     accel_decel
     blackwhite
     blink
@@ -58,7 +57,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     mirror_y
     painting
     resize
-    rotation
+    rotate
     scroll
     speedx
     supersample
@@ -66,4 +65,4 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     time_symmetrize
 
 
-   
+

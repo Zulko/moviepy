@@ -6,18 +6,19 @@ This file enables you to specify a configuration for MoviePy. In
 particular you can enter the path to the FFMPEG and ImageMagick
 binaries.
 
-These changes must be done BEFORE installing MoviePy: first make the changes,
+Defaults must be done BEFORE installing MoviePy: first make the changes,
 then install MoviePy with
 
     [sudo] python setup.py install
 
-Note that you can also change the path to the binaries AFTER installation, but
-only for one script at a time, as follows:
+Note that you can also change the path by setting environment variables.
+e.g.
 
->>> import moviepy.config as cf
->>> cf.change_settings({"FFMPEG_BINARY": "some/new/path/to/ffmpeg"})
->>> print( cf.get_setting("FFMPEG_BINARY") )  # prints the current setting
+Linux/Mac:
+   export FFMPEG_BINARY=path/to/ffmpeg
 
+Windows:
+   set FFMPEG_BINARY=path\to\ffmpeg
 
 Instructions
 --------------
@@ -47,5 +48,7 @@ IMAGEMAGICK_BINARY
 
 """
 
-FFMPEG_BINARY = 'ffmpeg-imageio'
-IMAGEMAGICK_BINARY = 'auto-detect'
+import os
+
+FFMPEG_BINARY = os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio')
+IMAGEMAGICK_BINARY = os.getenv('IMAGEMAGICK_BINARY', 'auto-detect')

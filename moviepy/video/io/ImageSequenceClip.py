@@ -50,8 +50,8 @@ class ImageSequenceClip(VideoClip):
                  ismask=False, load_images=False):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
-        
-        if (fps is None) and (duration is None):
+
+        if (fps is None) and (durations is None):
             raise ValueError("Please provide either 'fps' or 'durations'.")
         VideoClip.__init__(self, ismask=ismask)
 
@@ -75,11 +75,28 @@ class ImageSequenceClip(VideoClip):
             sequence = sorted([os.path.join(sequence, f)
                         for f in os.listdir(sequence)])
 
+
+        #check that all the images are of the same size
+        if isinstance(sequence[0], str):
+           size = imread(sequence[0]).shape
+        else:
+           size = sequence[0].shape
+
+        for image in sequence:
+            image1=image
+            if isinstance(image, str):
+               image1=imread(image)
+            if size != image1.shape:
+               raise Exception("Moviepy: ImageSequenceClip requires all images to be the same size")
+
+
         self.fps = fps
         if fps is not None:
             durations = [1.0/fps for image in sequence]
+            self.images_starts = [1.0*i/fps-np.finfo(np.float32).eps for i in range(len(sequence))]
+        else:
+            self.images_starts = [0]+list(np.cumsum(durations))
         self.durations = durations
-        self.images_starts = [0]+list(np.cumsum(durations))
         self.duration = sum(durations)
         self.end = self.duration
         self.sequence = sequence
@@ -106,14 +123,16 @@ class ImageSequenceClip(VideoClip):
             if with_mask and (imread(self.sequence[0]).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
+                self.mask.lastindex = None
+                self.mask.lastimage = None
 
                 def mask_make_frame(t):
             
                     index = find_image_index(t)
-                    if index != self.lastindex:
+                    if index != self.mask.lastindex:
                         frame = imread(self.sequence[index])[:,:,3]
                         self.mask.lastimage = frame.astype(float)/255
-                    self.mask.lastindex = index
+                        self.mask.lastindex = index
 
                     return self.mask.lastimage
 

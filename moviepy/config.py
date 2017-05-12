@@ -1,9 +1,6 @@
 import os
 import subprocess as sp
-try:
-    from subprocess import DEVNULL  # py3k
-except ImportError:
-    DEVNULL = open(os.devnull, 'wb')
+from .compat import DEVNULL
     
 if os.name == 'nt':
     try:    
@@ -83,8 +80,10 @@ def get_setting(varname):
     return gl[varname]
 
 
-def change_settings(new_settings={}, file=None):
+def change_settings(new_settings=None, file=None):
     """ Changes the value of configuration variables."""
+    if new_settings is None:
+        new_settings = {}
     gl = globals()
     if file is not None:
         execfile(file)
@@ -103,5 +102,3 @@ if __name__ == "__main__":
         print( "MoviePy : ImageMagick successfully found." )
     else:
         print( "MoviePy : can't find or access ImageMagick." )
-
-

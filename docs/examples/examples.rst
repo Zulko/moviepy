@@ -17,6 +17,10 @@ Here are a few example scripts to get you started. Most are quite old now and wi
    masked_credits
    painting_effect
    compo_from_image
+   logo
+   headblur
+   quick_recipes
+   several_characters
    the_end
    
    
