@@ -262,12 +262,12 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
 
     if print_infos:
         # print the whole info text returned by FFMPEG
-        print( infos )
+        print(infos)
 
 
     lines = infos.splitlines()
     if "No such file or directory" in lines[-1]:
-        raise IOError(("MoviePy error: the file %s could not be found !\n"
+        raise IOError(("MoviePy error: the file %s could not be found!\n"
                       "Please check that you entered the correct "
                       "path.")%filename)
 
