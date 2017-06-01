@@ -371,6 +371,12 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
                 result['video_rotation'] = int(rotation_line[match.start() : match.end()])
             else:
                 result['video_rotation'] = 0
+
+            # ffmpeg automatically rotates videos if rotation information is
+            # available, so exchange width and height
+            if abs(result['video_rotation']) in [90, 270]:
+                w,h = result['video_size']
+                result['video_size'] = [h, w]
         except:
             raise IOError(("MoviePy error: failed to read video rotation in file %s.\n"
                            "Here are the file infos returned by ffmpeg:\n\n%s")%(
