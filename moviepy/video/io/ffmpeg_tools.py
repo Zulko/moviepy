@@ -120,7 +120,7 @@ def ffmpeg_resize(video, output, size):
 
     subprocess_call(cmd)
     
-def ffmpeg_stabilize_video(filename, output = None):
+def ffmpeg_stabilized_video(filename, output = None):
     """    
     Makes a new video file, from the given one
     which is more stable
