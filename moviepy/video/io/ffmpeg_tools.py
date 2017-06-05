@@ -131,7 +131,7 @@ def ffmpeg_stabilized_video(filename, output=None):
     filename
     The name of the shaky video
     output
-    The name of new stabilazed video
+    The name of new stabilized video
     """
     name, ext = os.path.splitext(filename)
     if not output:
