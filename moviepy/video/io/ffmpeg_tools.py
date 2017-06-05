@@ -120,8 +120,8 @@ def ffmpeg_resize(video, output, size):
 
     subprocess_call(cmd)
     
-def ffmpeg_stabilized_video(filename, output = None):
-    """    
+def ffmpeg_stabilized_video(filename, output=None):
+    """
     Makes a new video file, from the given one
     which is more stable
 
@@ -135,11 +135,11 @@ def ffmpeg_stabilized_video(filename, output = None):
     """
     name, ext = os.path.splitext(filename)
     if not output:
-        output = "%s_stabilized%s"%(name, ext)
+        output = output = "{0}_stabilized{1}".format(name, ext)
 
     cmd = [get_setting("FFMPEG_BINARY"), "-i",
-	    filename, "-vf",
-	    "deshake", output]
-
+           filename, "-vf",
+           "deshake", output]
     subprocess_call(cmd)
+
 
