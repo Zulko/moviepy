@@ -909,7 +909,7 @@ class ImageClip(VideoClip):
                     img = 1.0 * img[:, :, 0] / 255
                 elif transparent:
                     self.mask = ImageClip(
-                        1.0 * img[:, :, 3] / 255, ismask=True)
+                        1.0 * img[:, :, 3] / 255, ismask=True, duration=self.duration)
                     img = img[:, :, :3]
             elif ismask:
                 img = 1.0 * img[:, :, 0] / 255
