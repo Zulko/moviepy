@@ -271,11 +271,11 @@ def test_issue_547():
     green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
     blue = ColorClip((640, 480), color=(0,0,255)).set_duration(3)
 
-    video=concatenate([red, green, blue], method="compose")
+    video=concatenate_videoclips([red, green, blue], method="compose")
     assert video.duration == 6
     assert video.mask.duration == 6
 
-    video=concatenate([red, green, blue])
+    video=concatenate_videoclips([red, green, blue])
     assert video.duration == 6
 
 
