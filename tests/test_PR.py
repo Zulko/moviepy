@@ -9,8 +9,11 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 
+
 sys.path.append("tests")
-from test_helper import TMP_DIR, TRAVIS
+from test_helper import TMP_DIR, TRAVIS, FONT
+
+
 
 def test_download_media(capsys):
     """Test downloading."""
@@ -34,11 +37,11 @@ def test_PR_339():
        return
 
     # In caption mode.
-    TextClip(txt='foo', color='white', font="Liberation-Mono", size=(640, 480),
+    TextClip(txt='foo', color='white', font=FONT, size=(640, 480),
              method='caption', align='center', fontsize=25)
 
     # In label mode.
-    TextClip(txt='foo', font="Liberation-Mono", method='label')
+    TextClip(txt='foo', font=FONT, method='label')
 
 def test_PR_373():
     result = Trajectory.load_list("media/traj.txt")
