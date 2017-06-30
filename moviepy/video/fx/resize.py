@@ -155,8 +155,10 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
                 fun = lambda gf,t: resizer(gf(t).astype('uint8'),
                                           newsize2(t))
                 
-            return clip.fl(fun, keep_duration=True,
-                           apply_to= (["mask"] if apply_to_mask else []))
+            if apply_to_mask and clip.mask is not None:
+                clip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+
+            return clip.fl(fun, keep_duration=True)
             
         else:
             
