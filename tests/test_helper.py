@@ -10,7 +10,7 @@ TMP_DIR = tempfile.tempdir
 
 # Arbitrary font used in caption testing.
 if sys.platform in ("win32", "cygwin"):
-    FONT = "Helvetica"
+    FONT = "Arial"
     # Even if Windows users install the Liberation fonts, it is called LiberationMono on Windows, so
     # it doesn't help.
 else:
