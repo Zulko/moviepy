@@ -2,9 +2,9 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 import sys
 import time
+import pytest
 
 import moviepy.tools as tools
-import pytest
 
 
 def test_ext():
@@ -69,17 +69,6 @@ def test_5():
     file = sys.stdout.read()
     assert file == b""
 
-def test_6():
-    """Test subprocess_call for operation.
-
-    The process sleep should run for a given time in seconds.
-    This checks that the process has deallocated from the stack on
-        completion of the called process.
-
-    """
-    process = tools.subprocess_call(["sleep" , '1'])
-    time.sleep(1)
-    assert process is None
 
 if __name__ == '__main__':
-   pytest.main()
+    pytest.main()
