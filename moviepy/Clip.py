@@ -60,7 +60,7 @@ class Clip:
     def copy(self):
         """ Shallow copy of the clip. 
         
-        Returns a shwallow copy of the clip whose mask and audio will
+        Returns a shallow copy of the clip whose mask and audio will
         be shallow copies of the clip's mask and audio if they exist.
         
         This method is intensively used to produce new clips every time
@@ -288,6 +288,7 @@ class Clip:
         of the clip.
         """
         self.duration = t
+
         if change_end:
             self.end = None if (t is None) else (self.start + t)
         else:
@@ -489,3 +490,24 @@ class Clip:
             return tqdm(generator(), total=nframes)
 
         return generator()
+
+    def close(self):
+        """ 
+            Release any resources that are in use.
+            
+            Implementation note for subclasses: 
+            * Memory-based resources can be left to the garbage-collector. 
+            * However, any open files should be closed, and subprocesses should be terminated.
+            * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+            * Therefore, should NOT be called by __del__().
+        """
+        pass
+
+    # Support the Context Manager protocol, to ensure that resources are cleaned up.
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+
