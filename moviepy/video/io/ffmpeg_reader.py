@@ -103,9 +103,6 @@ class FFMPEG_VideoReader:
         self.proc = sp.Popen(cmd, **popen_params)
 
 
-
-
-
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
         w, h = self.size
@@ -155,7 +152,7 @@ class FFMPEG_VideoReader:
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
-        This function tries to avoid fectching arbitrary frames
+        This function tries to avoid fetching arbitrary frames
         whenever possible, by moving between adjacent frames.
         """
 
@@ -186,13 +183,9 @@ class FFMPEG_VideoReader:
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
-            del self.proc
-
-    def __del__(self):
-        self.close()
-        if hasattr(self,'lastread'):
+            self.proc = None
+        if hasattr(self, 'lastread'):
             del self.lastread
-
 
 
 def ffmpeg_read_image(filename, with_mask=True):

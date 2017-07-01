@@ -148,7 +148,7 @@ class FFMPEG_AudioReader:
             for std in [ self.proc.stdout,
                          self.proc.stderr]:
                 std.close()
-            del self.proc
+            self.proc = None
 
     def get_frame(self, tt):
 
@@ -245,4 +245,5 @@ class FFMPEG_AudioReader:
 
 
     def __del__(self):
+        # If the garbage collector comes, make sure the subprocess is terminated.
         self.close_proc()
