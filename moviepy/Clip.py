@@ -39,7 +39,7 @@ class Clip:
      
      """
     
-    # prefix for all tmeporary video and audio files.
+    # prefix for all temporary video and audio files.
     # You can overwrite it with 
     # >>> Clip._TEMP_FILES_PREFIX = "temp_"
     
@@ -180,7 +180,7 @@ class Clip:
         --------
         
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> newclip = clip.fl_time(lambda: 2*t, apply_to=['mask','audio'])
+        >>> newclip = clip.fl_time(lambda: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
         >>> newclip = clip.fl_time(lambda: 3-t)
@@ -494,13 +494,15 @@ class Clip:
     def close(self):
         """ 
             Release any resources that are in use.
-            
-            Implementation note for subclasses: 
-            * Memory-based resources can be left to the garbage-collector. 
-            * However, any open files should be closed, and subprocesses should be terminated.
-            * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
-            * Therefore, should NOT be called by __del__().
         """
+
+        #    Implementation note for subclasses:
+        #
+        #    * Memory-based resources can be left to the garbage-collector.
+        #    * However, any open files should be closed, and subprocesses should be terminated.
+        #    * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+        #    * Therefore, should NOT be called by __del__().
+
         pass
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
