@@ -8,6 +8,8 @@ from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+from moviepy.audio.fx.audio_normalize import audio_normalize
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
@@ -66,6 +68,11 @@ def test_fadeout():
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,5)
     clip1 = fadeout(clip, 1)
     clip1.write_videofile(os.path.join(TMP_DIR,"fadeout1.webm"))
+
+def test_normalize():
+    clip = AudioFileClip('media/crunching.mp3')
+    clip = audio_normalize(clip)
+    assert clip.max_volume() == 1
 
 
 if __name__ == '__main__':
