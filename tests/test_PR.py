@@ -8,6 +8,7 @@ from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 sys.path.append("tests")
 from test_helper import TMP_DIR, TRAVIS
@@ -110,6 +111,19 @@ def test_PR_528():
 def test_PR_529():
     video_clip = VideoFileClip("media/fire2.mp4")
     assert video_clip.rotation == 180
+
+
+def test_PR_610():
+    """
+    Test that the max fps of the video clips is used for the composite video clip
+    """
+    clip1 = ColorClip((640, 480), color=(255, 0, 0)).set_duration(1)
+    clip2 = ColorClip((640, 480), color=(0, 255, 0)).set_duration(1)
+    clip1.fps = 24
+    clip2.fps = 25
+    composite = CompositeVideoClip([clip1, clip2])
+
+    assert composite.fps == 25
 
 
 if __name__ == '__main__':
