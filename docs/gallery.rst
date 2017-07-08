@@ -19,9 +19,7 @@ This mix of 60 covers of the Cup Song demonstrates the non-linear video editing 
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden;
          margin-left: 5%;">
-        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM&hl?rel=0" frameborder="0"
-        style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;">
-        </iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rIehsqqYFEM" frameborder="0" allowfullscreen></iframe>
         </div>
 
 The (old) MoviePy reel video.
@@ -33,8 +31,7 @@ in the :ref:`examples`.
 .. raw:: html
 
        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-       <iframe type="text/html" src="https://youtube.com/embed/zGhoZ4UBxEQ&hl?rel=0" frameborder="0"
-       style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+       <iframe width="560" height="315" src="https://www.youtube.com/embed/zGhoZ4UBxEQ" frameborder="0" allowfullscreen>
        </iframe>
        </div>
 
@@ -129,8 +126,7 @@ This `transcribing piano rolls blog post <https://zulko.github.io/blog/2014/02/1
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; margin-bottom:30px; overflow: hidden; margin-left: 5%;">
-        <iframe type="text/html" src="https://youtube.com/embed/V2XCJNZjm4w&hl?rel=0" frameborder="0"
-        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/V2XCJNZjm4w" frameborder="0" allowfullscreen>
         </iframe>
         </div>
 
@@ -171,8 +167,7 @@ Videogrep is a python script written by Sam Lavigne, that goes through the subti
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe type="text/html" src="https://youtube.com/embed/D7pymdCU5NQ&hl?rel=0" frameborder="0"
-        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/D7pymdCU5NQ" frameborder="0" allowfullscreen>
         </iframe>
         </div>
 
@@ -200,12 +195,5 @@ This `Videogrep blog post <https://zulko.github.io/blog/2014/06/21/some-more-vid
         </div>
 
 
-This `other post <https://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together all the highlights of a soccer game, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:
+This `other post <https://zulko.github.io/blog/2014/07/04/automatic-soccer-highlights-compilations-with-python/>`_ uses MoviePy to automatically cut together `all the highlights of a soccer game <http://youtu.be/zJtWPFX2bA0>`_, based on the fact that the crowd cheers louder when something interesting happens. All in under 30 lines of Python:
 
-.. raw:: html
-
-        <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
-        <iframe type="text/html" src="https://youtube.com/embed/zJtWPFX2bA0?rel=0" frameborder="0"
-        style="position: absolute; top: 0; bottom: 10; left: 0; width: 90%; height: 100%;">
-        </iframe>
-        </div>
