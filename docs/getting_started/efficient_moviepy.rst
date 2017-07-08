@@ -34,7 +34,7 @@ When to close() a clip
 
 When you create some types of clip instances - e.g. ``VideoFileClip`` or ``AudioFileClip`` - MoviePy creates a subprocess and locks the file. In order to release those resources when you are finished you should call the ``close()`` method.
 
-This is more important for more complex applications and it particularly important when running on Windows. While Python's garbage collector should eventually clean it the resources for you, clsing them makes them available earlier.
+This is more important for more complex applications and it particularly important when running on Windows. While Python's garbage collector should eventually clean it the resources for you, closing them makes them available earlier.
 
 However, if you close a clip too early, methods on the clip (and any clips derived from it) become unsafe.
 
