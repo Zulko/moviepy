@@ -15,7 +15,7 @@ def test_duration():
        return
     
     clip = TextClip('hello world', size=(1280,720), color='white')
-    clip.set_duration(5)
+    clip=clip.set_duration(5)
     assert clip.duration == 5
 
     clip2 = clip.fx(blink, d_on=1, d_off=1)

@@ -264,6 +264,7 @@ class Clip:
         of the returned clip.
         """
         self.end = t
+        if self.end is None: return
         if self.start is None:
             if self.duration is not None:
                 self.start = max(0, t - newclip.duration)
@@ -387,7 +388,6 @@ class Clip:
            t_start = self.duration + t_start   #remeber t_start is negative
 
         if (self.duration is not None) and (t_start>self.duration):
-        
             raise ValueError("t_start (%.02f) "%t_start +
                              "should be smaller than the clip's "+
                              "duration (%.02f)."%self.duration)
