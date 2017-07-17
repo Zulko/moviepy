@@ -266,6 +266,19 @@ def test_issue_246():
         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
                                 write_logfile=True)
 
+def test_issue_547():
+    red = ColorClip((640, 480), color=(255,0,0)).set_duration(1)
+    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(3)
+
+    video=concatenate_videoclips([red, green, blue], method="compose")
+    assert video.duration == 6
+    assert video.mask.duration == 6
+
+    video=concatenate_videoclips([red, green, blue])
+    assert video.duration == 6
+
 
 if __name__ == '__main__':
    pytest.main()
+

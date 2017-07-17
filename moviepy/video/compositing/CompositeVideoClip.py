@@ -95,7 +95,7 @@ class CompositeVideoClip(VideoClip):
         # compute mask if necessary
         if transparent:
             maskclips = [(c.mask if (c.mask is not None) else
-                          c.add_mask().mask).set_pos(c.pos)
+                          c.add_mask().mask).set_pos(c.pos).set_end(c.end).set_start(c.start, change_end=False)
                           for c in self.clips]
 
             self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
