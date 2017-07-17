@@ -40,8 +40,7 @@ class CompositeVideoClip(VideoClip):
       have the same size as the final clip. If it has no transparency, the final
       clip will have no mask. 
     
-    If all clips with a fps attribute have the same fps, it becomes the fps of
-    the result.
+    The clip with the highest FPS will be the FPS of the composite clip.
 
     """
 
@@ -60,10 +59,11 @@ class CompositeVideoClip(VideoClip):
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
 
-        
-        fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
-        if len(fps_list)==1:
-            self.fps= fps_list[0]
+        fpss = [c.fps for c in clips if hasattr(c, 'fps') and c.fps is not None]
+        if len(fpss) == 0:
+            self.fps = None
+        else:
+            self.fps = max(fpss)
 
         VideoClip.__init__(self)
         
