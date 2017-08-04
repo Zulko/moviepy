@@ -2,9 +2,9 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 import sys
 import time
-import pytest
 
 import moviepy.tools as tools
+import pytest
 
 
 def test_ext():
@@ -69,6 +69,5 @@ def test_5():
     file = sys.stdout.read()
     assert file == b""
 
-
 if __name__ == '__main__':
-    pytest.main()
+   pytest.main()

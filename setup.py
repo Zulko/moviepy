@@ -61,7 +61,7 @@ exec(open('moviepy/version.py').read()) # loads __version__
 
 # Define the requirements for specific execution needs.
 requires = ['decorator==4.0.11', 'imageio==2.1.2', 'tqdm==4.11.2', 'numpy']
-optional_reqs = ['scikit-image==0.13.0', 'scipy==0.19.0', 'matplotlib==2.0.0']
+optional_reqs = ['scikit-image==0.13.0', 'scipy>=0.19.0,<=0.19.1', 'matplotlib>=2.0.0,<=2.0.2']
 documentation_reqs = ['pygame==1.9.3', 'numpydoc>=0.6.0',
     'sphinx_rtd_theme>=0.1.10b0', 'Sphinx>=1.5.2'] + optional_reqs
 test_reqs = ['pytest>=2.8.0', 'nose', 'sklearn', 'pytest-cov', 'coveralls'] \
