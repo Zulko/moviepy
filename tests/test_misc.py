@@ -10,7 +10,7 @@ from moviepy.video.VideoClip import ColorClip, TextClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
-from test_helper import TMP_DIR, TRAVIS
+from test_helper import TMP_DIR, TRAVIS, FONT
 
 sys.path.append("tests")
 
@@ -35,7 +35,7 @@ def test_subtitles():
     if TRAVIS:
        return
 
-    generator = lambda txt: TextClip(txt, font='Liberation-Mono',
+    generator = lambda txt: TextClip(txt, font=FONT,
                                      size=(800,600), fontsize=24,
                                      method='caption', align='South',
                                      color='white')

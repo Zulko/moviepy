@@ -26,7 +26,7 @@ class SubtitlesClip(VideoClip):
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
     >>> generator = lambda txt: TextClip(txt, font='Georgia-Regular',
-                                        fontsize=24, color='white')
+    ...                                 fontsize=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
