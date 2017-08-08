@@ -15,6 +15,7 @@ def test_duration():
        return
     
     clip = TextClip('hello world', size=(1280,720), color='white')
+
     clip = clip.set_duration(5) #  Changed due to #598.
     assert clip.duration == 5
     clip.close()
