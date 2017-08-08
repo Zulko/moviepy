@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 """Video file clip tests meant to be run with pytest."""
 import os
+import sys
 
 import pytest
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.VideoClip import ColorClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
+sys.path.append("tests")
+from test_helper import TMP_DIR
 
 def test_setup():
     """Test VideoFileClip setup."""
@@ -16,11 +19,11 @@ def test_setup():
 
     red.fps = green.fps = blue.fps = 30
     with clips_array([[red, green, blue]]).set_duration(5) as video:
-        video.write_videofile("/tmp/test.mp4")
+        video.write_videofile(os.path.join(TMP_DIR, "test.mp4"))
 
-    assert os.path.exists("/tmp/test.mp4")
+    assert os.path.exists(os.path.join(TMP_DIR, "test.mp4"))
 
-    with VideoFileClip("/tmp/test.mp4") as clip:
+    with VideoFileClip(os.path.join(TMP_DIR, "test.mp4")) as clip:
         assert clip.duration == 5
         assert clip.fps == 30
         assert clip.size == [1024*3, 800]

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import os
-#import sys
+import sys
 
 import pytest
 from moviepy.editor import *
 
-#sys.path.append("tests")
+sys.path.append("tests")
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
@@ -256,7 +256,7 @@ def test_issue_470():
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
     with pytest.raises(IOError, message="Expecting IOError"):
-         subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
     #but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
