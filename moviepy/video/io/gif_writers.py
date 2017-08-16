@@ -278,8 +278,13 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
         fps = clip.fps
 
     quantizer = 0 if opt!= 0 else 'nq'
-    writer = imageio.save(filename, duration=1.0/fps,
-                          quantizer=quantizer, palettesize=colors)
+    writer = imageio.save(
+        filename,
+        duration=1.0/fps,
+        quantizer=quantizer,
+        palettesize=colors,
+        loop=loop
+        )
 
     verbose_print(verbose, "\n[MoviePy] Building file %s with imageio\n"%filename)
     
