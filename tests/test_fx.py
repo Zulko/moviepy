@@ -20,6 +20,8 @@ from moviepy.video.fx.rotate import rotate
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
+from moviepy.audio.fx.audio_normalize import audio_normalize
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
@@ -217,6 +219,11 @@ def test_time_symmetrize():
 
     clip1=time_symmetrize(clip)
     clip1.write_videofile(os.path.join(TMP_DIR, "time_symmetrize1.webm"))
+
+def test_normalize():
+    clip = AudioFileClip('media/crunching.mp3')
+    clip = audio_normalize(clip)
+    assert clip.max_volume() == 1
 
 
 if __name__ == '__main__':

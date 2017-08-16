@@ -44,7 +44,7 @@ For advanced image processing you will need one or several of these packages. Fo
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV 2.4.6`_ or more recent (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation.
 
-If you are on linux, these softwares will surely be in your repos.
+If you are on linux, these packages will likely be in your repos.
 
 .. _`Numpy`: https://www.scipy.org/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator

@@ -88,7 +88,7 @@ class FFMPEG_AudioWriter:
             ffmpeg_error = self.proc.stderr.read()
             error = (str(err)+ ("\n\nMoviePy error: FFMPEG encountered "
                      "the following error while writing file %s:"%self.filename
-                     + "\n\n"+ffmpeg_error))
+                     + "\n\n" + str(ffmpeg_error)))
 
             if b"Unknown encoder" in ffmpeg_error:
 

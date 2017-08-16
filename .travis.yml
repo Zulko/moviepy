@@ -1,5 +1,7 @@
-dist: Trusty
+dist: trusty
+sudo: required
 language: python
+cache: pip
 python:
   - "2.7"
   - "3.3"
@@ -9,10 +11,10 @@ python:
 # command to install dependencies
 before_install:
   - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
-  - sudo apt-get -y update
-  - sudo apt-get install -y ffmpeg
+  - sudo apt-get -y -qq update
+  - sudo apt-get install -y -qq ffmpeg
   - mkdir media
-install:   
+install:
   - if [[ $TRAVIS_PYTHON_VERSION == '3.4' || $TRAVIS_PYTHON_VERSION == '3.5' || $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install matplotlib; pip install -U scikit-learn; pip install scipy; pip install opencv-python; fi
   - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install scipy; pip install opencv-python; fi
   - pip install coveralls
@@ -24,3 +26,5 @@ before_script:
 script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 after_success:
   - coveralls
+matrix:
+    fast_finish: true
