@@ -45,10 +45,9 @@ elif FFMPEG_BINARY=='auto-detect':
 else:
     success, err = try_cmd([FFMPEG_BINARY])
     if not success:
-        raise IOError(err.message +
-                 "The path specified for the ffmpeg binary might be wrong")
-
-
+        raise IOError(
+            str(err) +
+            " - The path specified for the ffmpeg binary might be wrong")
 
 if IMAGEMAGICK_BINARY=='auto-detect':
     if os.name == 'nt':    
@@ -65,8 +64,10 @@ if IMAGEMAGICK_BINARY=='auto-detect':
 else:
     success, err = try_cmd([IMAGEMAGICK_BINARY])
     if not success:
-        raise IOError(err.message +
-                 "The path specified for the ImageMagick binary might be wrong")
+        raise IOError(
+            "%s - The path specified for the ImageMagick binary might be wrong: %s" %
+            (err, IMAGEMAGICK_BINARY)
+        )
 
 
 

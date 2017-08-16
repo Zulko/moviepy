@@ -8,23 +8,36 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-# command to install dependencies
+
 before_install:
   - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
   - sudo apt-get -y -qq update
   - sudo apt-get install -y -qq ffmpeg
   - mkdir media
+
+  # Ensure PIP is up-to-date to avoid warnings.
+  - python -m pip install --upgrade pip
+  # Ensure setuptools is up-to-date to avoid environment_markers bug.
+  - pip install --upgrade setuptools
+  # The default py that is installed is too old on some platforms, leading to version conflicts
+  - pip install --upgrade py pytest
+
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.4' || $TRAVIS_PYTHON_VERSION == '3.5' || $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install matplotlib; pip install -U scikit-learn; pip install scipy; pip install opencv-python; fi
-  - if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then pip install scipy; pip install opencv-python; fi
-  - pip install coveralls
-  - pip install pytest-cov
-  - python setup.py install
-# command to run tests
-before_script:
-  - py.test tests/ --cov
-script: py.test tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+  - echo "No install action required. Implicitly performed by the testing."
+
+# before_script:
+
+script:
+  - python setup.py test --pytest-args "tests/ --doctest-modules -v --cov moviepy --cov-report term-missing"
+  # Now the *code* is tested, let's check that the setup is compatible with PIP without falling over.
+  - pip install -e .
+  - pip install -e .[optional]
+  - pip install -e .[test]
+  # Only test doc generation on latest. Doesn't work on some earlier versions (3.3), but doesn't matter.
+  - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install -e .[doc]; fi
+
 after_success:
   - coveralls
+
 matrix:
     fast_finish: true

@@ -8,9 +8,9 @@ from moviepy.video.io.downloader import download_webfile
 def download_url(url, filename):
     """Download a file."""
     if not os.path.exists(filename):
-       print('\nDownloading {}\n'.format(filename))
-       download_webfile(url, filename)
-       print('Downloading complete...\n')
+        print('Downloading {} ...'.format(filename))
+        download_webfile(url, filename)
+        print('Downloading complete.')
 
 def download_youtube_video(youtube_id, filename):
     """Download a video from youtube."""
@@ -35,8 +35,14 @@ def download():
     # Loop through download url strings, build out path, and download the asset.
     for url in urls:
         _, tail = os.path.split(url)
-        download_url('{}/{}'.format(github_prefix, url), output.format(tail))
+        download_url(
+            url='{}/{}'.format(github_prefix, url),
+            filename=output.format(tail))
 
     # Download remaining asset.
-    download_url('https://data.vision.ee.ethz.ch/cvl/video2gif/kAKZeIzs0Ag.mp4',
-                 'media/video_with_failing_audio.mp4')
+    download_url(
+        url='https://data.vision.ee.ethz.ch/cvl/video2gif/kAKZeIzs0Ag.mp4',
+        filename='media/video_with_failing_audio.mp4')
+
+if __name__ == "__main__":
+    download()

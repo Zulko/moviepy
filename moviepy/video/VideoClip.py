@@ -250,6 +250,7 @@ class VideoClip(Clip):
         >>> from moviepy.editor import VideoFileClip
         >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
+        >>> clip.close()
 
         """
         name, ext = os.path.splitext(os.path.basename(filename))
