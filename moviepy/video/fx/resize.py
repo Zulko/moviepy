@@ -156,7 +156,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
                                           newsize2(t))
                 
             if apply_to_mask and clip.mask is not None:
-                clip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+                clip.mask = resize(clip.mask, newsize2, apply_to_mask=False)
 
             return clip.fl(fun, keep_duration=True)
             
