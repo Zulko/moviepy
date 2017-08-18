@@ -79,7 +79,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
 
     if method == "chain":
         def make_frame(t):
-            i = max([i for i, e in enumerate(tt) if e <= t])
+            i = max([i for i, e in zip(range(len(tt) - 1), tt) if e <= t])
             return clips[i].get_frame(t - tt[i])
 
         def get_mask(c):
