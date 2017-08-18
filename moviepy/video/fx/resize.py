@@ -59,7 +59,7 @@ from moviepy.decorators import apply_to_mask
    
 
 def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True,
-           strict_even=False, threshold=1.6, precision=0.00005, **kwargs):
+           strict_even=False, threshold=2.0, precision=0.00005, **kwargs):
     """ 
     Returns a video clip that is a resized version of the clip.
     
