@@ -5,9 +5,10 @@ def supersample(clip, d, nframes):
     taken in the interval [t-d, t+d]. This results in motion blur."""
 
     def fl(gf, t):
-        lower_bound = t - d
-        lower_bound = 0 if lower_bound < 0 else lower_bound
-        tt = np.linspace(lower_bound, t+d, nframes)
+        lo_bound = t - d + ((2 * d) / (nframes + 1))
+        hi_bound = t + d
+        tt = np.linspace(lo_bound, hi_bound, nframes, endpoint=False)
+        tt = filter(lambda x: 0 <= x and x < clip.duration, tt)
         avg = np.mean(1.0*np.array([gf(t_) for t_ in tt], dtype='uint16'), axis=0)
         return avg.astype("uint8")
 
