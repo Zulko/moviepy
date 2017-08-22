@@ -281,7 +281,11 @@ def test_issue_547():
     video=concatenate_videoclips([red, green, blue])
     assert video.duration == 6
 
-
+def test_issue_636():
+   with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as video:
+       with video.subclip(0,1) as subclip:
+           pass
+      
 if __name__ == '__main__':
    pytest.main()
 
