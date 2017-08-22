@@ -28,6 +28,7 @@ class FFMPEG_VideoReader:
                  fps_source='tbr'):
 
         self.filename = filename
+        self.proc = None
         infos = ffmpeg_parse_infos(filename, print_infos, check_duration,
                                    fps_source)
         self.fps = infos['video_fps']
@@ -178,7 +179,7 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
