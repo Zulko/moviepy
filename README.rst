@@ -171,7 +171,7 @@ Maintainers
 
 .. People
 .. _Zulko: https://github.com/Zulko
-.. _`@Gloin1313`: https://github.com/Gloin1313
+.. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
 .. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom
