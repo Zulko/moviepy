@@ -137,7 +137,7 @@ Maintainers
 
 - Zulko_ (owner)
 
-- `@Gloin1313`_
+- `@tburrows13`_
 - `@earney`_
 - Kay `@kerstin`_
 - `@mbeacom`_
