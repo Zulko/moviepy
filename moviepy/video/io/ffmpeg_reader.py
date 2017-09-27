@@ -100,7 +100,7 @@ class FFMPEG_VideoReader:
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-
+        self.pos = 1
         self.proc = sp.Popen(cmd, **popen_params)
 
 
@@ -145,7 +145,7 @@ class FFMPEG_VideoReader:
             result = np.fromstring(s, dtype='uint8')
             result.shape =(h, w, len(s)//(w*h)) # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
-
+        self.pos += 1
         return result
 
     def get_frame(self, t):
