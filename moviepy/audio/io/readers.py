@@ -185,6 +185,8 @@ class FFMPEG_AudioReader:
             try:
                 result = np.zeros((len(tt),self.nchannels))
                 indices = frames - self.buffer_startframe
+                if len(self.buffer) < self.buffersize // 2:
+                    indices = indices - (self.buffersize // 2 - len(self.buffer) + 1)
                 result[in_time] = self.buffer[indices]
                 return result
 
