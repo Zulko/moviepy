@@ -175,7 +175,7 @@ class FFMPEG_VideoReader:
         if pos == self.pos:
             return self.lastread
         else:
-            if not self.proc or (pos < self.pos) or (pos > self.pos + 100):
+            if (pos < self.pos) or (pos > self.pos + 100):
                 self.initialize(t)
                 self.pos = pos
             else:
