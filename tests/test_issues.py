@@ -285,7 +285,18 @@ def test_issue_636():
    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as video:
        with video.subclip(0,1) as subclip:
            pass
-      
+
+def test_issue_655():
+    video_file = 'media/fire2.mp4'
+    for subclip in [(0,2),(1,2),(2,3)]:
+        with VideoFileClip(video_file) as v:
+            with v.subclip(1,2) as s:
+                pass
+            v.subclip(*subclip).iter_frames().next()
+    assert True
+
+
+
 if __name__ == '__main__':
    pytest.main()
 

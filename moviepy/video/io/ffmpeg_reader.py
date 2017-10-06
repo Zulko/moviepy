@@ -166,10 +166,16 @@ class FFMPEG_VideoReader:
 
         pos = int(self.fps*t + 0.00001)+1
 
+        # Initialize proc if it is not open
+        if not self.proc:
+            self.initialize(t)
+            self.pos = pos
+            self.lastread = self.read_frame()
+
         if pos == self.pos:
             return self.lastread
         else:
-            if(pos < self.pos) or (pos > self.pos+100):
+            if not self.proc or (pos < self.pos) or (pos > self.pos + 100):
                 self.initialize(t)
                 self.pos = pos
             else:
