@@ -292,7 +292,7 @@ def test_issue_655():
         with VideoFileClip(video_file) as v:
             with v.subclip(1,2) as s:
                 pass
-            v.subclip(*subclip).iter_frames().next()
+            next(v.subclip(*subclip).iter_frames())
     assert True
 
 
