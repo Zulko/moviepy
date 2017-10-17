@@ -18,6 +18,7 @@ from moviepy.video.fx.mirror_y import mirror_y
 from moviepy.video.fx.resize import resize
 from moviepy.video.fx.rotate import rotate
 from moviepy.video.fx.speedx import speedx
+from moviepy.video.fx.supersample import supersample
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.audio.fx.audio_normalize import audio_normalize
@@ -206,7 +207,11 @@ def test_speedx():
     clip2.write_videofile(os.path.join(TMP_DIR, "speedx3.webm"))
 
 def test_supersample():
-    pass
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+
+    clip1 = supersample(clip)
+    assert clip1.duration == clip.duration
+    clip1.write_videofile(os.path.join(TMP_DIR, "supersample1.webm"))
 
 def test_time_mirror():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
