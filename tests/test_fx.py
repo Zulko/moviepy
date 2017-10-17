@@ -209,9 +209,13 @@ def test_speedx():
 def test_supersample():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
 
-    clip1 = supersample(clip)
+    clip1 = supersample(clip, clip.duration, 1)
     assert clip1.duration == clip.duration
     clip1.write_videofile(os.path.join(TMP_DIR, "supersample1.webm"))
+
+    clip2 = supersample(clip, clip.duration / 2, 2)
+    assert clip2.duration == clip.duration
+    clip2.write_videofile(os.path.join(TMP_DIR, "supersample2.webm"))
 
 def test_time_mirror():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
