@@ -64,7 +64,6 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
             blit_region = new_im2[yp1:yp2, xp1:xp2].astype(np.int16)
             cy_update(blitted.astype(np.int16), blit_region, mask)
             new_im2[yp1:yp2, xp1:xp2] = blit_region
-            tend = time.time()
 
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
