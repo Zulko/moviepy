@@ -57,9 +57,14 @@ def blit(im1, im2, pos=[0, 0], mask=None, ismask=False):
             # (new 1) diff = (blitted - blit_region.astype(np.int16))  # uint8 cannot directly do subtraction
             # (new 1) new_im2[yp1:yp2, xp1:xp2] = blit_region + (mask * diff).astype(np.int16)
 
+            # check for data type, py(float64) = c(double), py(float32) = c(float)
+            if mask.dtype.type != np.float32:
+                mask = mask.astype(np.float32)
+
             blit_region = new_im2[yp1:yp2, xp1:xp2].astype(np.int16)
             cy_update(blitted.astype(np.int16), blit_region, mask)
             new_im2[yp1:yp2, xp1:xp2] = blit_region
+            tend = time.time()
 
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
