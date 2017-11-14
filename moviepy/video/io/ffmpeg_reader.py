@@ -385,7 +385,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         line = lines_audio[0]
         try:
             match = re.search(" [0-9]* Hz", line)
-            result['audio_fps'] = int(line[match.start()+1:match.end()])
+            result['audio_fps'] = int(line[match.start()+1:match.end()-3])
         except:
             result['audio_fps'] = 'unknown'
 
