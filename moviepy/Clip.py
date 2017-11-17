@@ -127,7 +127,7 @@ class Clip:
         content scrolls from the top to the bottom of the frames of
         ``clip``.
 
-        >>> fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]
+        >>> def fl(gf, t): return gf(t)[int(t):int(t)+50, :]
         >>> newclip = clip.fl(fl, apply_to='mask')
 
         """
@@ -435,7 +435,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta)*(tb - ta)
+        def fl(t): return t + (t >= ta)*(tb - ta)
         newclip = self.fl_time(fl)
 
         if self.duration is not None:

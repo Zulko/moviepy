@@ -19,7 +19,7 @@ logo = ImageClip("../../videos/logo_descr.png").\
 screen = logo.on_color(moviesize, color = (0,0,0), pos='center')
 
 shade = ColorClip(moviesize,col=(0,0,0))
-mask_frame = lambda t : f(t,moviesize,duration)
+def mask_frame(t): return f(t,moviesize,duration)
 shade.mask = VideoClip(ismask=True, get_frame = mask_frame)
                     
 cc = CompositeVideoClip([im.set_pos(2*["center"]),shade],

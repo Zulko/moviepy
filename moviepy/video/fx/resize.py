@@ -45,7 +45,7 @@ except ImportError:
         # TRY USING SCIPY AS RESIZER
         try:
             from scipy.misc import imresize
-            resizer = lambda pic, newsize : imresize(pic,
+            def resizer(pic, newsize): return imresize(pic,
                                             map(int, newsize[::-1]))
             resizer.origin = "Scipy"
                                                
@@ -102,15 +102,15 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
                 
         if hasattr(newsize, "__call__"):
             
-            newsize2 = lambda t : trans_newsize(newsize(t))
+            def newsize2(t): return trans_newsize(newsize(t))
             
             if clip.ismask:
                 
-                fun = lambda gf,t: (1.0*resizer((255 * gf(t)).astype('uint8'),
+                def fun(gf, t): return (1.0*resizer((255 * gf(t)).astype('uint8'),
                                                  newsize2(t))/255)
             else:
                 
-                fun = lambda gf,t: resizer(gf(t).astype('uint8'),
+                def fun(gf, t): return resizer(gf(t).astype('uint8'),
                                           newsize2(t))
                 
             return clip.fl(fun, keep_duration=True,
@@ -124,7 +124,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     elif height is not None:
         
         if hasattr(height, "__call__"):
-            fun = lambda t : 1.0*int(height(t))/h
+            def fun(t): return 1.0*int(height(t))/h
             return resize(clip, fun)
 
 
@@ -135,7 +135,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     elif width is not None:
 
         if hasattr(width, "__call__"):
-            fun = lambda t : 1.0*width(t)/w
+            def fun(t): return 1.0*width(t)/w
             return resize(clip, fun)
         
         newsize = [width, h * width / w]
@@ -144,10 +144,10 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     # From here, the resizing is constant (not a function of time), size=newsize
 
     if clip.ismask:
-        fl = lambda pic: 1.0*resizer((255 * pic).astype('uint8'), newsize)/255.0
+        def fl(pic): return 1.0*resizer((255 * pic).astype('uint8'), newsize)/255.0
             
     else:
-        fl = lambda pic: resizer(pic.astype('uint8'), newsize)
+        def fl(pic): return resizer(pic.astype('uint8'), newsize)
 
     newclip = clip.fl_image(fl)
 

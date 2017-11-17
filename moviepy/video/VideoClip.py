@@ -588,7 +588,7 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
+            def make_frame(t): return np.ones(self.get_frame(t).shape[:2], dtype=float)
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -744,7 +744,7 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            f = lambda pic: np.dstack(3 * [255 * pic]).astype('uint8')
+            def f(pic): return np.dstack(3 * [255 * pic]).astype('uint8')
             newclip = self.fl_image(f)
             newclip.ismask = False
             return newclip
@@ -798,7 +798,7 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps=fps
-        make_frame = lambda t: self.data_to_frame( self.data[int(self.fps*t)])
+        def make_frame(t): return self.data_to_frame( self.data[int(self.fps*t)])
         VideoClip.__init__(self, make_frame, ismask=ismask,
                duration=1.0*len(data)/fps, has_constant_size=has_constant_size)
 

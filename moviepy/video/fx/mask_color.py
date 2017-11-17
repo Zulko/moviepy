@@ -16,9 +16,9 @@ def mask_color(clip, color=None, thr=0, s=1):
         color = [0,0,0]
 
     # code a little sloppy, it just works.
-    hill = lambda x: (1.0*(x!=0) if (thr==0) else (x**s/ (thr**s+x**s)))
+    def hill(x): return (1.0*(x!=0) if (thr==0) else (x**s/ (thr**s+x**s)))
     color = np.array(color)
-    flim = lambda im: hill(np.sqrt(((im-color)**2).sum(axis=2)))
+    def flim(im): return hill(np.sqrt(((im-color)**2).sum(axis=2)))
     mask = clip.fl_image(flim)
     mask.ismask= True
     newclip = clip.set_mask(mask)

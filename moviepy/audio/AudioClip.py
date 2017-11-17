@@ -36,7 +36,7 @@ class AudioClip(Clip):
     
     >>> # Plays the note A (a sine wave of frequency 404HZ)
     >>> import numpy as np
-    >>> make_frame = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
+    >>> def make_frame(t): return 2*[ np.sin(404 * 2 * np.pi * t) ]
     >>> clip = AudioClip(make_frame, duration=5)
     >>> clip.preview()
                      

@@ -102,7 +102,7 @@ class VideoFileClip(VideoClip):
         if has_mask:
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:,:,:3]
-            mask_mf =  lambda t: self.reader.get_frame(t)[:,:,3]/255.0
+            def mask_mf(t): return self.reader.get_frame(t)[:,:,3]/255.0
             self.mask = (VideoClip(ismask = True, make_frame = mask_mf)
                        .set_duration(self.duration))
             self.mask.fps = self.fps

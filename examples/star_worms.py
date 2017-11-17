@@ -54,7 +54,7 @@ clip_txt = TextClip(txt,color='white', align='West',fontsize=25,
 # SCROLL THE TEXT IMAGE BY CROPPING A MOVING AREA
 
 txt_speed = 27
-fl = lambda gf,t : gf(t)[int(txt_speed*t):int(txt_speed*t)+h,:]
+def fl(gf, t): return gf(t)[int(txt_speed*t):int(txt_speed*t)+h,:]
 moving_txt= clip_txt.fl(fl, apply_to=['mask'])
 
 
@@ -63,7 +63,7 @@ moving_txt= clip_txt.fl(fl, apply_to=['mask'])
 grad = color_gradient(moving_txt.size,p1=(0,2*h/3),
                 p2=(0,h/4),col1=0.0,col2=1.0)
 gradmask = ImageClip(grad,ismask=True)
-fl = lambda pic : np.minimum(pic,gradmask.img)
+def fl(pic): return np.minimum(pic,gradmask.img)
 moving_txt.mask = moving_txt.mask.fl_image(fl)
 
 
@@ -79,8 +79,8 @@ def trapzWarp(pic,cx,cy,ismask=False):
     im = tf.warp(pic, tform.inverse, output_shape=(Y,X))
     return im if ismask else (im*255).astype('uint8')
 
-fl_im = lambda pic : trapzWarp(pic,0.2,0.3)
-fl_mask = lambda pic : trapzWarp(pic,0.2,0.3, ismask=True)
+def fl_im(pic): return trapzWarp(pic,0.2,0.3)
+def fl_mask(pic): return trapzWarp(pic,0.2,0.3, ismask=True)
 warped_txt= moving_txt.fl_image(fl_im)
 warped_txt.mask = warped_txt.mask.fl_image(fl_mask)
 

@@ -14,11 +14,11 @@ def even_size(clip):
         return clip
     
     if (w%2 != 0) and (h%2!=0):
-        fl_image = lambda a : a[:-1,:-1,:]
+        def fl_image(a): return a[:-1,:-1,:]
     elif (w%2 != 0):
-        fl_image = lambda a : a[:,:-1,:]
+        def fl_image(a): return a[:,:-1,:]
     else:
-        fl_image = lambda a : a[:-1,:,:]
+        def fl_image(a): return a[:-1,:,:]
 
     return clip.fl_image(fl_image)
 
