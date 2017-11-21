@@ -85,6 +85,8 @@ Once you have installed it, ImageMagick will be automatically detected by MovieP
 For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+    
+If you are using the latest version of ImageMagick, keep in mind the name of the executable is no longer "convert.exe" but "magick.exe". In that case, the IMAGEMAGICK_BINARY property should be "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
 
 For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
 
