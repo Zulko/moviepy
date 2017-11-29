@@ -141,7 +141,7 @@ class VideoClip(Clip):
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
-                        progress_bar=True):
+                        progress_bar=True, withmask=False):
         """Write the clip to a videofile.
 
         Parameters
@@ -244,6 +244,10 @@ class VideoClip(Clip):
         progress_bar
           Boolean indicating whether to show the progress bar.
 
+        withmask
+          Boolean indicating to export with clip's mask as an alpha
+          channel (with a codec that support this).
+
         Examples
         ========
 
@@ -322,7 +326,8 @@ class VideoClip(Clip):
                            audiofile = audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           progress_bar=progress_bar)
+                           progress_bar=progress_bar
+                           withmask=withmask)
 
         if remove_temp and make_audio:
             os.remove(audiofile)

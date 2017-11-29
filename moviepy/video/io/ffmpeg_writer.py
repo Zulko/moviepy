@@ -210,7 +210,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     with FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
                                 audiofile=audiofile, threads=threads,
-                                ffmpeg_params=ffmpeg_params) as writer:
+                                ffmpeg_params=ffmpeg_params, withmask=withmask) as writer:
 
         nframes = int(clip.duration*fps)
 
