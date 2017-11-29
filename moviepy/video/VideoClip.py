@@ -326,7 +326,7 @@ class VideoClip(Clip):
                            audiofile = audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           progress_bar=progress_bar
+                           progress_bar=progress_bar,
                            withmask=withmask)
 
         if remove_temp and make_audio:
