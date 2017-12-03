@@ -56,6 +56,19 @@ def test_ffmpeg_resizing():
         frame = video.get_frame(0)
         assert frame.shape[1] == target_resolution[1]
 
+def test_ffmpeg_resizing_with_autorotate():
+    # This test requires ffmpeg >=2.7
+    video_file = 'media/ficus_vertical.mp4'
+    target_resolution=(720, None)
+    with VideoFileClip(video_file, target_resolution=target_resolution) as video:
+        frame = video.get_frame(0)
+        assert frame.shape[0:2] == (720, 405)
+
+    with VideoFileClip(video_file, target_resolution=target_resolution,
+                       ffmpeg_params=['-noautorotate']) as video:
+        frame = video.get_frame(0)
+        assert frame.shape[0:2] == (720, 1280)
+
 
 if __name__ == '__main__':
    pytest.main()

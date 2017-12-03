@@ -25,7 +25,7 @@ class FFMPEG_VideoReader:
     def __init__(self, filename, print_infos=False, bufsize = None,
                  pix_fmt="rgb24", check_duration=True,
                  target_resolution=None, resize_algo='bicubic',
-                 fps_source='tbr'):
+                 fps_source='tbr', ffmpeg_params=None):
 
         self.filename = filename
         self.proc = None
@@ -34,6 +34,13 @@ class FFMPEG_VideoReader:
         self.fps = infos['video_fps']
         self.size = infos['video_size']
         self.rotation = infos['video_rotation']
+        self.ffmpeg_params = ffmpeg_params or []
+
+        autorotate = get_setting('FFMPEG_SUPPORTS_AUTOROTATE') \
+            and not '-noautorotate' in self.ffmpeg_params
+        if autorotate and abs(self.rotation) in [90, 270]:
+            # swap dimensions to preserve aspect ratio after autorotate
+            self.size = self.size[::-1]
 
         if target_resolution:
             # revert the order, as ffmpeg used (width, height)
@@ -85,6 +92,9 @@ class FFMPEG_VideoReader:
                      '-ss', "%.06f" % offset]
         else:
             i_arg = [ '-i', self.filename]
+
+        if self.ffmpeg_params:
+            i_arg = self.ffmpeg_params + i_arg
 
         cmd = ([get_setting("FFMPEG_BINARY")] + i_arg +
                ['-loglevel', 'error',
@@ -231,7 +241,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
 
     Returns a dictionnary with the fields:
     "video_found", "video_fps", "duration", "video_nframes",
-    "video_duration", "audio_found", "audio_fps"
+    "video_duration", "video_rotation", "audio_found", "audio_fps"
 
     "video_duration" is slightly smaller than "duration" to avoid
     fetching the uncomplete frames at the end, which raises an error.

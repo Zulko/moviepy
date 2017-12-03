@@ -24,11 +24,11 @@ def try_cmd(cmd):
                 popen_params["creationflags"] = 0x08000000
 
             proc = sp.Popen(cmd, **popen_params)
-            proc.communicate()
+            stdout, stderr = proc.communicate()
         except Exception as err:
             return False, err
         else:
-            return True, None
+            return True, stderr
 
 if FFMPEG_BINARY=='ffmpeg-imageio':
     from imageio.plugins.ffmpeg import get_exe
@@ -48,6 +48,15 @@ else:
         raise IOError(
             str(err) +
             " - The path specified for the ffmpeg binary might be wrong")
+
+# ffmpeg >=2.7 autorotates videos with rotation metadata. Detect this by testing
+# if '-noautorotate' is a recognized option.
+success, err = try_cmd([FFMPEG_BINARY, '-noautorotate'])
+if success:
+    FFMPEG_SUPPORTS_AUTOROTATE = not 'Unrecognized option' in str(err)
+else:
+    FFMPEG_SUPPORTS_AUTOROTATE = False
+
 
 if IMAGEMAGICK_BINARY=='auto-detect':
     if os.name == 'nt':    
@@ -98,6 +107,11 @@ if __name__ == "__main__":
         print( "MoviePy : ffmpeg successfully found." )
     else:
         print( "MoviePy : can't find or access ffmpeg." )
+
+    if FFMPEG_SUPPORTS_AUTOROTATE:
+        print( "MoviePy : ffmpeg supports autorotate." )
+    else:
+        print( "MoviePy : ffmpeg does not support autorotate." )
 
     if try_cmd([IMAGEMAGICK_BINARY])[0]:
         print( "MoviePy : ImageMagick successfully found." )
