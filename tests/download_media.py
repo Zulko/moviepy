@@ -31,7 +31,7 @@ def download():
             '/videos/fire2.mp4', '/videos/big_buck_bunny_0_30.webm',
             '/subtitles/subtitles1.srt', '/misc/traj.txt',
             '/images/vacation_2017.jpg', '/images/python_logo_upside_down.png',
-            '/videos/ficus_vertical.mp4']
+            '/videos/ficus_vertical.mp4', '/images/balloons_portrait.jpg']
 
     # Loop through download url strings, build out path, and download the asset.
     for url in urls:

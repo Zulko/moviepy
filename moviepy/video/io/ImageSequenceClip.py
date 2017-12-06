@@ -1,4 +1,6 @@
 import os
+from functools import partial
+
 import numpy as np
 
 from ..VideoClip import VideoClip
@@ -36,6 +38,10 @@ class ImageSequenceClip(VideoClip):
     ismask
       Will this sequence of pictures be used as an animated mask.
 
+    imageio_params
+      Any additional imageio parameters to pass when reading files, as a dict.
+      ex: {'exifrotate': False}
+
     Notes
     ------
 
@@ -47,13 +53,16 @@ class ImageSequenceClip(VideoClip):
 
 
     def __init__(self, sequence, fps=None, durations=None, with_mask=True,
-                 ismask=False, load_images=False):
+                 ismask=False, load_images=False, imageio_params=None):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
 
         if (fps is None) and (durations is None):
             raise ValueError("Please provide either 'fps' or 'durations'.")
         VideoClip.__init__(self, ismask=ismask)
+
+        imageio_params = imageio_params or {}
+        _imread = partial(imread, **imageio_params)
 
         # Parse the data
 
@@ -62,7 +71,7 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [imread(f) for f in sequence]
+                    sequence = [_imread(f) for f in sequence]
                     fromfiles = False
                 else:
                     fromfiles= True
@@ -78,14 +87,14 @@ class ImageSequenceClip(VideoClip):
 
         #check that all the images are of the same size
         if isinstance(sequence[0], str):
-           size = imread(sequence[0]).shape
+           size = _imread(sequence[0]).shape
         else:
            size = sequence[0].shape
 
         for image in sequence:
             image1=image
             if isinstance(image, str):
-               image1=imread(image)
+               image1=_imread(image)
             if size != image1.shape:
                raise Exception("Moviepy: ImageSequenceClip requires all images to be the same size")
 
@@ -115,12 +124,12 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.lastindex:
-                    self.lastimage = imread(self.sequence[index])[:,:,:3] 
+                    self.lastimage = _imread(self.sequence[index])[:,:,:3] 
                     self.lastindex = index
                 
                 return self.lastimage
 
-            if with_mask and (imread(self.sequence[0]).shape[2]==4):
+            if with_mask and (_imread(self.sequence[0]).shape[2]==4):
 
                 self.mask = VideoClip(ismask=True)
                 self.mask.lastindex = None
@@ -130,7 +139,7 @@ class ImageSequenceClip(VideoClip):
             
                     index = find_image_index(t)
                     if index != self.mask.lastindex:
-                        frame = imread(self.sequence[index])[:,:,3]
+                        frame = _imread(self.sequence[index])[:,:,3]
                         self.mask.lastimage = frame.astype(float)/255
                         self.mask.lastindex = index
 

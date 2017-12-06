@@ -41,6 +41,19 @@ def test_2():
     with pytest.raises(Exception, message='Expecting Exception'):
          ImageSequenceClip(images, durations=durations).close()
 
+def test_exifrotate():
+    image_file = 'media/balloons_portrait.jpg'
+    with ImageSequenceClip([image_file], fps=1) as clip:
+        frame = clip.get_frame(0)
+        assert frame.meta['EXIF_MAIN']['ExifImageWidth'] == 4032
+        assert frame.meta['EXIF_MAIN']['ExifImageHeight'] == 3024
+        assert frame.meta['EXIF_MAIN']['Orientation'] == 6
+        assert clip.size == (3024, 4032)
+
+    with ImageSequenceClip([image_file], fps=1,
+                           imageio_params={'exifrotate': False}) as clip:
+        assert clip.size == (4032, 3024)
+
 
 if __name__ == '__main__':
    pytest.main()

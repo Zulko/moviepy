@@ -8,6 +8,7 @@ import os
 import subprocess as sp
 import tempfile
 import warnings
+from functools import partial
 
 import numpy as np
 from imageio import imread, imsave
@@ -882,6 +883,10 @@ class ImageClip(VideoClip):
       Set this parameter to `True` (default) if you want the alpha layer
       of the picture (if it exists) to be used as a mask.
 
+    imageio_params
+      Any additional imageio parameters to pass when reading files, as a dict.
+      ex: {'exifrotate': False}
+
     Attributes
     -----------
 
@@ -891,15 +896,18 @@ class ImageClip(VideoClip):
     """
 
     def __init__(self, img, ismask=False, transparent=True,
-                 fromalpha=False, duration=None):
+                 fromalpha=False, duration=None, imageio_params=None):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
+
+        imageio_params = imageio_params or {}
+        _imread = partial(imread, **imageio_params)
 
         if PY3:
            if isinstance(img, str):
-              img = imread(img)
+              img = _imread(img)
         else:
            if isinstance(img, (str, unicode)):
-              img = imread(img)
+              img = _imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
