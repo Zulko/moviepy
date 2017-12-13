@@ -29,7 +29,7 @@ except ImportError:
 ext = Extension("moviepy.cython_blit", ["moviepy/cython_blit.pyx"],
                 include_dirs = [numpy.get_include()])
 
-setup(name='moviepy',
+setup(name='livingbio-moviepy',
     version=__version__,
     author='Zulko 2015',
     description='Video editing with Python',
