@@ -33,10 +33,10 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         targetname = name+ "%sSUB%d_%d.%s"(name, T1, T2, ext)
     
     cmd = [get_setting("FFMPEG_BINARY"),"-y",
-      "-i", filename,
       "-ss", "%0.2f"%t1,
       "-t", "%0.2f"%(t2-t1),
-      "-vcodec", "copy", "-acodec", "copy", targetname]
+      "-i", filename,
+      "-vcodec", "copy", "-acodec", "copy", "-avoid_negative_ts", "make_zero", targetname]
     
     subprocess_call(cmd)
 
