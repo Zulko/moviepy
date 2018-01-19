@@ -38,9 +38,9 @@ class Clip:
        this case their duration will be ``None``.
 
      """
-   
+
     # prefix for all temporary video and audio files.
-    # You can overwrite it with 
+    # You can overwrite it with
     # >>> Clip._TEMP_FILES_PREFIX = "temp_"
 
     _TEMP_FILES_PREFIX = 'TEMP_MPY_'
@@ -54,12 +54,14 @@ class Clip:
         self.memoize = False
         self.memoized_t = None
         self.memoize_frame  = None
+        self.generator = None
+        self.generator_args = {}
 
 
 
     def copy(self):
-        """ Shallow copy of the clip. 
-        
+        """ Shallow copy of the clip.
+
         Returns a shallow copy of the clip whose mask and audio will
         be shallow copies of the clip's mask and audio if they exist.
 
@@ -73,7 +75,7 @@ class Clip:
             newclip.audio = copy(self.audio)
         if hasattr(self, 'mask'):
             newclip.mask = copy(self.mask)
-            
+
         return newclip
 
     @convert_to_seconds(['t'])
@@ -449,7 +451,7 @@ class Clip:
     @requires_duration
     @use_clip_fps_by_default
     def iter_frames(self, fps=None, with_times = False, progress_bar=False,
-                    dtype=None):
+                    dtype=None, extrathreads=0):
         """ Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN np.array,
@@ -461,6 +463,11 @@ class Clip:
 
         The ``fps`` (frames per second) parameter is optional if the
         clip already has a ``fps`` attribute.
+
+        Using extrathreads requires the clip to have the `generator`
+        and `generator_args` attributes set so that calling
+        generator(**generator_args) results in a functionally identical
+        copy of the clip.
 
         Use dtype="uint8" when using the pictures to write video, images...
 
@@ -474,25 +481,24 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
+        from moviepy.iterframes import iterframes
 
-        def generator():
-            for t in np.arange(0, self.duration, 1.0/fps):
-                frame = self.get_frame(t)
-                if (dtype is not None) and (frame.dtype != dtype):
-                    frame = frame.astype(dtype)
-                if with_times:
-                    yield t, frame
-                else:
-                    yield frame
+        params = {
+            "clip": self,
+            "fps": fps,
+            "dtype": dtype,
+            "with_times": with_times,
+            "threads": extrathreads,
+        }
 
         if progress_bar:
             nframes = int(self.duration*fps)+1
-            return tqdm(generator(), total=nframes)
+            return tqdm(iterframes(**params), total=nframes)
 
-        return generator()
+        return iterframes(**params)
 
     def close(self):
-        """ 
+        """
             Release any resources that are in use.
         """
 

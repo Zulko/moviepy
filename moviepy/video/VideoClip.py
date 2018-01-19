@@ -141,7 +141,7 @@ class VideoClip(Clip):
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
-                        progress_bar=True):
+                        progress_bar=True, moviepy_threads=0):
         """Write the clip to a videofile.
 
         Parameters
@@ -244,6 +244,17 @@ class VideoClip(Clip):
         progress_bar
           Boolean indicating whether to show the progress bar.
 
+        moviepy_threads
+          Count of extra threads to spawn for moviepy's frame
+          processing. Default is 0, using any value over that
+          will use the multithreaded frame iterator.
+
+          Best threads : moviepy_threads ratio is heavily
+          dependant on what kind of edits you have applied
+          on your video. Generally the more edits you have,
+          the more you will benefit from having extra
+          moviepy threads
+
         Examples
         ========
 
@@ -322,7 +333,8 @@ class VideoClip(Clip):
                            audiofile = audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           progress_bar=progress_bar)
+                           progress_bar=progress_bar,
+                           moviepy_threads=moviepy_threads)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
