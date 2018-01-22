@@ -464,6 +464,13 @@ class Clip:
 
         Use dtype="uint8" when using the pictures to write video, images...
 
+        Parameters
+        ----------
+
+        progress_bar
+          Boolean indicating whether to display a progress bar in the terminal
+          while exporting the file.
+
         Examples
         ---------
 

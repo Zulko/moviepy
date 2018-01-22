@@ -357,7 +357,8 @@ class VideoClip(Clip):
           Boolean indicating whether to print infomation.
 
         progress_bar
-          Boolean indicating whether to show the progress bar.
+          Boolean indicating whether to display a progress bar in the terminal
+          while exporting the file.
 
 
         Returns
@@ -393,7 +394,8 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
                   opt='nq', fuzz=1, verbose=True,
-                  loop=0, dispose=False, colors=None, tempfiles=False):
+                  loop=0, dispose=False, colors=None, tempfiles=False,
+                  progress_bar=True, progress_cb=None):
         """ Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
@@ -424,6 +426,16 @@ class VideoClip(Clip):
           the colors that are less than fuzz% different are in fact
           the same.
 
+        progress_bar
+          Boolean indicating whether to display a progress bar in the terminal
+          while exporting the file.
+
+        progress_cb
+          Callback function to call during export. It should accept
+          the current frame index being exported and the total number
+          of frames. It can be used to update a gui progressbar while
+          running in a separate thread.
+
 
         Notes
         -----
@@ -441,7 +453,9 @@ class VideoClip(Clip):
 
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
-                                    verbose=verbose, colors=colors)
+                                    verbose=verbose, colors=colors,
+                                    progress_bar=progress_bar,
+                                    progress_cb=progress_cb)
         elif tempfiles:
             #convert imageio opt variable to something that can be used with
             #ImageMagick
@@ -453,11 +467,14 @@ class VideoClip(Clip):
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose,
-                                     loop=loop, dispose=dispose, colors=colors)
+                                     loop=loop, dispose=dispose, colors=colors,
+                                     progress_bar=progress_bar,
+                                     progress_cb=progress_cb)
         else:
             write_gif(self, filename, fps=fps, program=program,
                       opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
-                      dispose=dispose, colors=colors)
+                      dispose=dispose, colors=colors, progress_bar=progress_bar,
+                      progress_cb=progress_cb)
 
     # -----------------------------------------------------------------
     # F I L T E R I N G

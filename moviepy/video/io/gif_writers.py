@@ -22,7 +22,8 @@ except ImportError:
 @use_clip_fps_by_default
 def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
        opt="OptimizeTransparency", fuzz=1, verbose=True,
-       loop=0, dispose=True, colors=None, tempfiles=False):
+       loop=0, dispose=True, colors=None, tempfiles=False, progress_bar=True,
+       progress_cb=None):
     """ Write the VideoClip to a GIF file.
 
 
@@ -30,6 +31,40 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
     or ffmpeg. Does the same as write_gif (see this one for more
     docstring), but writes every frame to a file instead of passing
     them in the RAM. Useful on computers with little RAM.
+
+    Parameters
+    -----------
+
+    filename
+      Name of the resulting gif file.
+
+    fps
+      Number of frames per second (see note below). If it
+        isn't provided, then the function will look for the clip's
+        ``fps`` attribute (VideoFileClip, for instance, have one).
+
+    program
+      Software to use for the conversion, either 'ImageMagick' or
+      'ffmpeg'.
+
+    opt
+      (ImageMagick only) optimalization to apply, either
+      'optimizeplus' or 'OptimizeTransparency'.
+
+    fuzz
+      (ImageMagick only) Compresses the GIF by considering that
+      the colors that are less than fuzz% different are in fact
+      the same.
+
+    progress_bar
+      Boolean indicating whether to display a progress bar in the terminal
+      while exporting the file.
+
+    progress_cb
+      Callback function to call during export. It should accept
+      the current frame index being exported and the total number
+      of frames. It can be used to update a gui progressbar while
+      running in a separate thread.
 
     """
 
@@ -44,11 +79,21 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
     verbose_print(verbose, "[MoviePy] Generating GIF frames...\n")
 
     total = int(clip.duration*fps)+1
-    for i, t in tqdm(enumerate(tt), total=total):
 
+    if progress_bar:
+        # Show a terminal-based progress bar while exporting
+        iterator = tqdm(enumerate(tt), total=total)
+    else:
+        iterator = enumerate(tt)
+
+    for i, t in iterator:
         name = "%s_GIFTEMP%04d.png"%(fileName, i+1)
         tempfiles.append(name)
         clip.save_frame(name, t, withmask=True)
+
+        # if progress callback was define, call it
+        if callable(progress_cb):
+            progress_cb(i+1, total)
 
     delay = int(100.0/fps)
 
@@ -99,7 +144,8 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
 @use_clip_fps_by_default
 def write_gif(clip, filename, fps=None, program= 'ImageMagick',
            opt="OptimizeTransparency", fuzz=1, verbose=True, withmask=True,
-           loop=0, dispose=True, colors=None):
+           loop=0, dispose=True, colors=None, progress_bar=True,
+           progress_cb=None):
     """ Write the VideoClip to a GIF file, without temporary files.
 
     Converts a VideoClip into an animated GIF using ImageMagick
@@ -129,6 +175,16 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
       (ImageMagick only) Compresses the GIF by considering that
       the colors that are less than fuzz% different are in fact
       the same.
+
+    progress_bar
+      Determines whether to display a progress bar in the terminal
+      while exporting the file.
+
+    progress_cb
+      Callback function to call during export. It should accept
+      the current frame index being exported and the total number
+      of frames. It can be used to update a gui progressbar while
+      running in a separate thread.
 
 
     Notes
@@ -222,13 +278,22 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
     verbose_print(verbose, "[MoviePy] Generating GIF frames...\n")
 
     try:
+        # if progress callback was define, call it
+        if callable(progress_cb):
+            nframes = int(clip.duration*fps)+1
+            count = 1
 
-        for t,frame in clip.iter_frames(fps=fps, progress_bar=True,
+        for t,frame in clip.iter_frames(fps=fps, progress_bar=progress_bar,
                                         with_times=True,  dtype="uint8"):
             if withmask:
                 mask = 255 * clip.mask.get_frame(t)
                 frame = np.dstack([frame, mask]).astype('uint8')
             proc1.stdin.write(frame.tostring())
+
+            # if progress callback was define, call it
+            if callable(progress_cb):
+                progress_cb(count, nframes)
+                count += 1
 
     except IOError as err:
 
@@ -254,7 +319,8 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
 
 def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
-                            colors=None, verbose=True):
+                            colors=None, verbose=True, progress_bar=True,
+                            progress_cb=None):
     """
     Writes the gif with the Python library ImageIO (calls FreeImage).
     
@@ -264,6 +330,16 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
     Parameters
     -----------
     opt
+
+    progress_bar
+      Boolean indicating whether to display a progress bar in the terminal
+      while exporting the file.
+
+    progress_cb
+      Callback function to call during export. It should accept
+      the current frame index being exported and the total number
+      of frames. It can be used to update a gui progressbar while
+      running in a separate thread.
 
     """
 
@@ -287,7 +363,17 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
         )
 
     verbose_print(verbose, "\n[MoviePy] Building file %s with imageio\n"%filename)
-    
-    for frame in clip.iter_frames(fps=fps, progress_bar=True, dtype='uint8'):
+
+    # if progress callback was define, call it
+    if callable(progress_cb):
+        nframes = int(clip.duration*fps)+1
+        count = 1
+
+    for frame in clip.iter_frames(fps=fps, progress_bar=progress_bar, dtype='uint8'):
 
         writer.append_data(frame)
+
+        # if progress callback was define, call it
+        if callable(progress_cb):
+            progress_cb(count, nframes)
+            count += 1
