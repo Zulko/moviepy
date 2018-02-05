@@ -8,7 +8,7 @@ from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
     
 
-def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
+def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
     """
     Writes a movie out of the frames (picture files) in a folder.
     Almost deprecated.
@@ -18,7 +18,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
              "-r", "%d"%fps,
              "-i", os.path.join(folder,folder) + '/' + s,
              "-b", "%dk"%bitrate,
-             "-r", "%d"%self.fps,
+             "-r", "%d"%fps,
              filename]
     
     subprocess_call(cmd)
