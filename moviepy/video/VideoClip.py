@@ -14,7 +14,7 @@ from imageio import imread, imsave
 from tqdm import tqdm
 
 from ..Clip import Clip
-from ..compat import DEVNULL, PY3
+from ..compat import DEVNULL, string_types
 from ..config import get_setting
 from ..decorators import (add_mask_if_none, apply_to_mask,
                           convert_masks_to_RGB, convert_to_seconds, outplace,
@@ -896,12 +896,8 @@ class ImageClip(VideoClip):
                  fromalpha=False, duration=None):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if PY3:
-            if isinstance(img, str):
-                img = imread(img)
-        else:
-            if isinstance(img, (str, unicode)):
-                img = imread(img)
+        if isinstance(img, string_types):
+            img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
 
