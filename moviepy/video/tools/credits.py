@@ -6,7 +6,7 @@ matter.
 
 from moviepy.video.VideoClip import TextClip, ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx import resize
+from moviepy.video.fx.resize import resize
 
 
 def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
@@ -37,25 +37,38 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
       Total width of the credits text in pixels
       
     gap
-      Gap in pixels between the jobs and the names.
+      Horizontal gap in pixels between the jobs and the names
     
-    **txt_kw
-      Additional argument passed to TextClip (font, colors, etc.)
-    
-    
+    color
+      Color of the text. See ``TextClip.list('color')``
+      for a list of acceptable names.
+
+    font
+      Name of the font to use. See ``TextClip.list('font')`` for
+      the list of fonts you can use on your computer.
+
+    fontsize
+      Size of font to use
+
+    stroke_color
+      Color of the stroke (=contour line) of the text. If ``None``,
+      there will be no stroke.
+
+    stroke_width
+      Width of the stroke, in pixels. Can be a float, like 1.5.
     
         
     Returns
     ---------
     
     image
-       An ImageClip instance that looks like this and can be scrolled
-       to make some credits:
-        
-        Executive Story Editor    MARCEL DURAND
-           Associate Producers    MARTIN MARCEL
-                                  DIDIER MARTIN
-              Music Supervisor    JEAN DIDIER
+      An ImageClip instance that looks like this and can be scrolled
+      to make some credits:
+
+          Executive Story Editor    MARCEL DURAND
+             Associate Producers    MARTIN MARCEL
+                                    DIDIER MARTIN
+                Music Supervisor    JEAN DIDIER
               
     """
 
@@ -93,11 +106,11 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
 
     cc = CompositeVideoClip([left, right.set_pos((left.w+gap, 0))],
                             size=(left.w+right.w+gap, right.h),
-                            transparent=True)
+                            bg_color=None)
     
     # SCALE TO THE REQUIRED SIZE
     
-    scaled = cc.fx(resize, width=width)
+    scaled = resize(cc, width=width)
     
     # TRANSFORM THE WHOLE CREDIT CLIP INTO AN ImageCLip
     
