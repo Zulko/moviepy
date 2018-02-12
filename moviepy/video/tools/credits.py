@@ -10,7 +10,7 @@ from moviepy.video.fx import resize
 
 
 def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
-             stroke_width=2, font='Impact-Normal', fontsize=60):
+             stroke_width=2, font='Impact-Normal', fontsize=60, gap=0):
     """
 
     Parameters
