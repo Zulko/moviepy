@@ -64,10 +64,8 @@ if IMAGEMAGICK_BINARY=='auto-detect':
 else:
     success, err = try_cmd([IMAGEMAGICK_BINARY])
     if not success:
-        raise IOError(
-            "%s - The path specified for the ImageMagick binary might be wrong: %s" %
-            (err, IMAGEMAGICK_BINARY)
-        )
+        raise IOError("%s - The path specified for the ImageMagick binary might "
+                      "be wrong: %s" % (err, IMAGEMAGICK_BINARY))
 
 
 
