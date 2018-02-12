@@ -25,18 +25,18 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
 
 
 def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
-    """ makes a new video file playing video file ``filename`` between
+    """ Makes a new video file playing video file ``filename`` between
         the times ``t1`` and ``t2``. """
-    name,ext = os.path.splitext(filename)
+    name, ext = os.path.splitext(filename)
     if not targetname:
         T1, T2 = [int(1000*t) for t in [t1, t2]]
-        targetname = name+ "%sSUB%d_%d.%s"(name, T1, T2, ext)
+        targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
     
     cmd = [get_setting("FFMPEG_BINARY"),"-y",
-      "-i", filename,
-      "-ss", "%0.2f"%t1,
-      "-t", "%0.2f"%(t2-t1),
-      "-vcodec", "copy", "-acodec", "copy", targetname]
+           "-i", filename,
+           "-ss", "%0.2f"%t1,
+           "-t", "%0.2f"%(t2-t1),
+           "-vcodec", "copy", "-acodec", "copy", targetname]
     
     subprocess_call(cmd)
 
