@@ -78,7 +78,7 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
             else:
                 if oneline:
                     texts.append(['', l])
-                    oneline=False
+                    oneline = False
                 else:
                     texts.append(['\n', l])
                
