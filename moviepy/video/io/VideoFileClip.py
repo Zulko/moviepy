@@ -5,6 +5,7 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.Clip import Clip
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader
 
+
 class VideoFileClip(VideoClip):
 
     """
@@ -14,7 +15,7 @@ class VideoFileClip(VideoClip):
         >>> clip = VideoFileClip("myHolidays.mp4")
         >>> clip.close()
         >>> with VideoFileClip("myMaskVideo.avi") as clip2:
-        >>>    pass  # Implicit close called by contex manager.
+        >>>    pass  # Implicit close called by context manager.
 
 
     Parameters
@@ -75,7 +76,7 @@ class VideoFileClip(VideoClip):
     """
 
     def __init__(self, filename, has_mask=False,
-                 audio=True, audio_buffersize = 200000,
+                 audio=True, audio_buffersize=200000,
                  target_resolution=None, resize_algorithm='bicubic',
                  audio_fps=44100, audio_nbytes=2, verbose=False,
                  fps_source='tbr'):
@@ -83,7 +84,7 @@ class VideoFileClip(VideoClip):
         VideoClip.__init__(self)
 
         # Make a reader
-        pix_fmt= "rgba" if has_mask else "rgb24"
+        pix_fmt = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
                                          target_resolution=target_resolution,
                                          resize_algo=resize_algorithm,
@@ -102,9 +103,9 @@ class VideoFileClip(VideoClip):
         if has_mask:
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:,:,:3]
-            mask_mf =  lambda t: self.reader.get_frame(t)[:,:,3]/255.0
-            self.mask = (VideoClip(ismask = True, make_frame = mask_mf)
-                       .set_duration(self.duration))
+            mask_mf = lambda t: self.reader.get_frame(t)[:,:,3]/255.0
+            self.mask = (VideoClip(ismask=True, make_frame=mask_mf)
+                         .set_duration(self.duration))
             self.mask.fps = self.fps
 
         else:
@@ -115,9 +116,9 @@ class VideoFileClip(VideoClip):
         if audio and self.reader.infos['audio_found']:
 
             self.audio = AudioFileClip(filename,
-                                       buffersize= audio_buffersize,
-                                       fps = audio_fps,
-                                       nbytes = audio_nbytes)
+                                       buffersize=audio_buffersize,
+                                       fps=audio_fps,
+                                       nbytes=audio_nbytes)
 
     def close(self):
         """ Close the internal reader. """
