@@ -20,8 +20,8 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_cuts1():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").resize(0.2)
-    cuts.find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
+    with VideoFileClip("media/big_buck_bunny_432_433.webm").resize(0.2) as clip:
+        cuts.find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
 
 def test_subtitles():
     red = ColorClip((800, 600), color=(255,0,0)).set_duration(10)
@@ -41,8 +41,8 @@ def test_subtitles():
                                      color='white')
 
     subtitles = SubtitlesClip("media/subtitles1.srt", generator)
-    final = CompositeVideoClip([myvideo, subtitles])
-    final.to_videofile(os.path.join(TMP_DIR, "subtitles1.mp4"), fps=30)
+    with CompositeVideoClip([myvideo, subtitles]) as final:
+        final.to_videofile(os.path.join(TMP_DIR, "subtitles1.mp4"), fps=30)
 
     data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
             ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),

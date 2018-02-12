@@ -4,10 +4,7 @@ Utilities to get a file from the internet
 
 import os
 
-try: # Py2 and Py3 compatibility
-    from urllib import urlretrieve
-except:
-    from urllib.request import urlretrieve
+import requests
 
 from moviepy.tools import subprocess_call
 
@@ -22,13 +19,16 @@ def download_webfile(url, filename, overwrite=False):
         return
 
     if '.' in url:
-        urlretrieve(url, filename)
+        r = requests.get(url, stream=True)
+        with open(filename, 'wb') as fd:
+            for chunk in r.iter_content(chunk_size=128):
+                fd.write(chunk)
+
     else:
         try:
             subprocess_call(['youtube-dl', url, '-o', filename])
         except OSError as e:
-            raise OSError(e.message + '\n A possible reason is that youtube-dl'
+            raise OSError(
+                e.message + '\n A possible reason is that youtube-dl'
                 ' is not installed on your computer. Install it with '
-                ' "pip install youtube-dl"')
-
-
+                ' "pip install youtube_dl"')

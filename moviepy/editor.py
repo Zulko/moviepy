@@ -53,6 +53,7 @@ except ImportError:
 for method in [
           "afx.audio_fadein",
           "afx.audio_fadeout",
+          "afx.audio_normalize",
           "afx.volumex",
           "transfx.crossfadein",
           "transfx.crossfadeout",
@@ -75,6 +76,7 @@ for method in [
 for method in ["afx.audio_fadein",
                "afx.audio_fadeout",
                "afx.audio_loop",
+               "afx.audio_normalize",
                "afx.volumex"
               ]:
               
