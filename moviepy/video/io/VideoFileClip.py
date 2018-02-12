@@ -15,7 +15,7 @@ class VideoFileClip(VideoClip):
         >>> clip = VideoFileClip("myHolidays.mp4")
         >>> clip.close()
         >>> with VideoFileClip("myMaskVideo.avi") as clip2:
-        >>>    pass  # Implicit close called by contex manager.
+        >>>    pass  # Implicit close called by context manager.
 
 
     Parameters
@@ -76,7 +76,7 @@ class VideoFileClip(VideoClip):
     """
 
     def __init__(self, filename, has_mask=False,
-                 audio=True, audio_buffersize = 200000,
+                 audio=True, audio_buffersize=200000,
                  target_resolution=None, resize_algorithm='bicubic',
                  audio_fps=44100, audio_nbytes=2, verbose=False,
                  fps_source='tbr'):
@@ -104,7 +104,7 @@ class VideoFileClip(VideoClip):
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:,:,:3]
             mask_mf = lambda t: self.reader.get_frame(t)[:,:,3]/255.0
-            self.mask = (VideoClip(ismask = True, make_frame=mask_mf)
+            self.mask = (VideoClip(ismask=True, make_frame=mask_mf)
                          .set_duration(self.duration))
             self.mask.fps = self.fps
 
