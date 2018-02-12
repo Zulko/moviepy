@@ -44,12 +44,27 @@ class AudioFileClip(AudioClip):
     buffersize
       See Parameters.
       
+    Lifetime
+    --------
+    
+    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
+    close() afterwards, or the subresources will not be cleaned up until the process ends.
+    
+    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  
+    
+    However, coreaders must be closed separately.
+      
     Examples
     ----------
     
     >>> snd = AudioFileClip("song.wav")
+    >>> snd.close()
     >>> snd = AudioFileClip("song.mp3", fps = 44100, bitrate=3000)
-    >>> snd = AudioFileClip(mySoundArray,fps=44100) # from a numeric array
+    >>> second_reader = snd.coreader()
+    >>> second_reader.close()
+    >>> snd.close()
+    >>> with AudioFileClip(mySoundArray,fps=44100) as snd:  # from a numeric array
+    >>>     pass  # Close is implicitly performed by context manager.
     
     """
 
@@ -59,28 +74,26 @@ class AudioFileClip(AudioClip):
         AudioClip.__init__(self)
             
         self.filename = filename
-        reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
+        self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
                                          buffersize=buffersize)
-        
-        self.reader = reader
         self.fps = fps
-        self.duration = reader.duration
-        self.end = reader.duration
+        self.duration = self.reader.duration
+        self.end = self.reader.duration
         
         
-        self.make_frame =  lambda t: reader.get_frame(t)
-        self.nchannels = reader.nchannels
+        self.make_frame =  lambda t: self.reader.get_frame(t)
+        self.nchannels = self.reader.nchannels
     
     
     def coreader(self):
         """ Returns a copy of the AudioFileClip, i.e. a new entrance point
             to the audio file. Use copy when you have different clips
             watching the audio file at different times. """
-        return AudioFileClip(self.filename,self.buffersize)
+        return AudioFileClip(self.filename, self.buffersize)
 
-    def __del__(self):
-        """ Close/delete the internal reader. """
-        try:
-            del self.reader
-        except AttributeError:
-            pass
+
+    def close(self):
+        """ Close the internal reader. """
+        if self.reader:
+            self.reader.close_proc()
+            self.reader = None

@@ -28,6 +28,7 @@ class FFMPEG_VideoReader:
                  fps_source='tbr'):
 
         self.filename = filename
+        self.proc = None
         infos = ffmpeg_parse_infos(filename, print_infos, check_duration,
                                    fps_source)
         self.fps = infos['video_fps']
@@ -103,9 +104,6 @@ class FFMPEG_VideoReader:
         self.proc = sp.Popen(cmd, **popen_params)
 
 
-
-
-
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
         w, h = self.size
@@ -155,7 +153,7 @@ class FFMPEG_VideoReader:
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
-        This function tries to avoid fectching arbitrary frames
+        This function tries to avoid fetching arbitrary frames
         whenever possible, by moving between adjacent frames.
         """
 
@@ -168,10 +166,16 @@ class FFMPEG_VideoReader:
 
         pos = int(self.fps*t + 0.00001)+1
 
+        # Initialize proc if it is not open
+        if not self.proc:
+            self.initialize(t)
+            self.pos = pos
+            self.lastread = self.read_frame()
+
         if pos == self.pos:
             return self.lastread
         else:
-            if(pos < self.pos) or (pos > self.pos+100):
+            if (pos < self.pos) or (pos > self.pos + 100):
                 self.initialize(t)
                 self.pos = pos
             else:
@@ -181,18 +185,14 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
-            del self.proc
-
-    def __del__(self):
-        self.close()
-        if hasattr(self,'lastread'):
+            self.proc = None
+        if hasattr(self, 'lastread'):
             del self.lastread
-
 
 
 def ffmpeg_read_image(filename, with_mask=True):

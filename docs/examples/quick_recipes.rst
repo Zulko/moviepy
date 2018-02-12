@@ -11,7 +11,7 @@ Blurring all frames of a video
 
 ::
 
-    from skimage.filter import gaussian_filter
+    from skimage.filters import gaussian_filter
     from moviepy.editor import VideoFileClip
 
     def blur(image):

@@ -29,11 +29,37 @@ provides all you need to play around and edit your videos but it will  take time
 
 .. _previewing:
 
+When to close() a clip
+~~~~~~~~~~~~~~~~~~~~~~
+
+When you create some types of clip instances - e.g. ``VideoFileClip`` or ``AudioFileClip`` - MoviePy creates a subprocess and locks the file. In order to release those resources when you are finished you should call the ``close()`` method.
+
+This is more important for more complex applications and it particularly important when running on Windows. While Python's garbage collector should eventually clean it the resources for you, clsing them makes them available earlier.
+
+However, if you close a clip too early, methods on the clip (and any clips derived from it) become unsafe.
+
+So, the rules of thumb are:
+
+    * Call ``close()`` on any clip that you **construct** once you have finished using it, and have also finished using any clip that was derived from it.
+    * Also close any clips you create through ``AudioFileClip.coreader()``.
+    * Even if you close a ``CompositeVideoClip`` instance, you still need to close the clips it was created from.
+    * Otherwise, if you have a clip that was created by deriving it from from another clip (e.g. by calling ``set_mask()``), then generally you shouldn't close it. Closing the original clip will also close the copy.
+
+Clips act as `context managers <https://docs.python.org/3/reference/datamodel.html#context-managers>`_. This means you
+can use them with a ``with`` statement, and they will automatically be closed at the end of the block, even if there is
+an exception. ::
+
+    with AudioFileClip("song.wav") as clip:
+        raise NotImplementedError("I will work out how process this song later")
+    # clip.close() is implicitly called, so the lock on song.wav file is immediately released.
+
+
 The many ways of previewing a clip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 When you are editing a video or trying to achieve an effect with MoviePy through a trial and error process, generating the video at each trial can be very long. This section presents a few tricks to go faster.
+
 
 clip.save_frame
 """""""""""""""""

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import os
-#import sys
+import sys
 
 import pytest
 from moviepy.editor import *
 
-#sys.path.append("tests")
+sys.path.append("tests")
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
@@ -18,9 +18,9 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_issue_145():
-    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
-    with pytest.raises(Exception, message='Expecting Exception'):
-        concatenate_videoclips([video], method='composite')
+    with ColorClip((800, 600), color=(255,0,0)).set_duration(5) as video:
+        with pytest.raises(Exception, message='Expecting Exception'):
+            concatenate_videoclips([video], method='composite')
 
 def test_issue_190():
     #from PIL import Image
@@ -40,6 +40,9 @@ def test_issue_285():
                              ImageClip('media/python_logo.png', duration=10)
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
+    clip_1.close()
+    clip_2.close()
+    clip_3.close()
 
 def test_issue_334():
     last_move = None
@@ -126,41 +129,41 @@ def test_issue_334():
               return (nsw, nsh)
            return (last_move1[3], last_move1[3] * 1.33)
 
-    avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
-    avatar.audio=None
-    maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
-    avatar.set_mask(maskclip)  #must set maskclip here..
+    with VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True) as avatar:
+        avatar.audio=None
+        maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
+        avatar.set_mask(maskclip)  #must set maskclip here..
 
-    avatar = concatenate_videoclips([avatar]*11)
+        concatenated = concatenate_videoclips([avatar]*11)
 
-    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11)
-    # TODO: Setting mask here does not work: .set_mask(maskclip).resize(size)])
-    final = CompositeVideoClip([tt, avatar.set_position(posi).resize(size)])
-    final.duration = tt.duration
-    final.write_videofile(os.path.join(TMP_DIR, 'issue_334.mp4'), fps=24)
+        with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as tt:
+            # TODO: Setting mask here does not work: .set_mask(maskclip).resize(size)])
+            final = CompositeVideoClip([tt, concatenated.set_position(posi).resize(size)])
+            final.duration = tt.duration
+            final.write_videofile(os.path.join(TMP_DIR, 'issue_334.mp4'), fps=24)
 
 def test_issue_354():
-    clip = ImageClip("media/python_logo.png")
+    with ImageClip("media/python_logo.png") as clip:
 
-    clip.duration = 10
-    crosstime = 1
+        clip.duration = 10
+        crosstime = 1
 
-    # TODO: Should this be removed?
-    # caption = editor.TextClip("test text", font="Liberation-Sans-Bold",
-    #                           color='white', stroke_color='gray',
-    #                           stroke_width=2, method='caption',
-    #                           size=(1280, 720), fontsize=60,
-    #                           align='South-East')
-    #caption.duration = clip.duration
+        # TODO: Should this be removed?
+        # caption = editor.TextClip("test text", font="Liberation-Sans-Bold",
+        #                           color='white', stroke_color='gray',
+        #                           stroke_width=2, method='caption',
+        #                           size=(1280, 720), fontsize=60,
+        #                           align='South-East')
+        #caption.duration = clip.duration
 
-    fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
-    CompositeVideoClip([clip, fadecaption])
+        fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
+        CompositeVideoClip([clip, fadecaption]).close()
 
 def test_issue_359():
-    video = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
-    video.fps=30
-    video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"),
-                    tempfiles=True)
+    with ColorClip((800, 600), color=(255,0,0)).set_duration(5) as video:
+        video.fps=30
+        video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"),
+                        tempfiles=True)
 
 # TODO: Debug matplotlib failures following successful travis builds.
 # def test_issue_368():
@@ -253,7 +256,7 @@ def test_issue_470():
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
     with pytest.raises(IOError, message="Expecting IOError"):
-         subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
     #but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
@@ -266,6 +269,34 @@ def test_issue_246():
         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
                                 write_logfile=True)
 
+def test_issue_547():
+    red = ColorClip((640, 480), color=(255,0,0)).set_duration(1)
+    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(3)
+
+    video=concatenate_videoclips([red, green, blue], method="compose")
+    assert video.duration == 6
+    assert video.mask.duration == 6
+
+    video=concatenate_videoclips([red, green, blue])
+    assert video.duration == 6
+
+def test_issue_636():
+   with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as video:
+       with video.subclip(0,1) as subclip:
+           pass
+
+def test_issue_655():
+    video_file = 'media/fire2.mp4'
+    for subclip in [(0,2),(1,2),(2,3)]:
+        with VideoFileClip(video_file) as v:
+            with v.subclip(1,2) as s:
+                pass
+            next(v.subclip(*subclip).iter_frames())
+    assert True
+
+
 
 if __name__ == '__main__':
    pytest.main()
+
