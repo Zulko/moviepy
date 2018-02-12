@@ -8,7 +8,7 @@ from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
     
 
-def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
+def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
     """
     Writes a movie out of the frames (picture files) in a folder.
     Almost deprecated.
@@ -18,7 +18,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6):
              "-r", "%d"%fps,
              "-i", os.path.join(folder,folder) + '/' + s,
              "-b", "%dk"%bitrate,
-             "-r", "%d"%self.fps,
+             "-r", "%d"%fps,
              filename]
     
     subprocess_call(cmd)
@@ -62,7 +62,7 @@ def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):
 def ffmpeg_resize(video,output,size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
-    cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(res[0], res[1]),
+    cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(size[0], size[1]),
              output]
              
     subprocess_call(cmd)
