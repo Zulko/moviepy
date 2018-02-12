@@ -3,9 +3,9 @@ import sys
 PY3=sys.version_info.major >= 3
 
 try:
-    string_types = (str, unicode)
+    string_types = (str, unicode)     # Python 2
 except NameError:
-    string_types = (str)
+    string_types = (str)              # Python 3
    
 try:
     from subprocess import DEVNULL    # Python 3
