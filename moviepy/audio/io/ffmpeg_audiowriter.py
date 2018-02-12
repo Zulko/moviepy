@@ -88,7 +88,7 @@ class FFMPEG_AudioWriter:
             ffmpeg_error = self.proc.stderr.read()
             error = (str(err)+ ("\n\nMoviePy error: FFMPEG encountered "
                      "the following error while writing file %s:"%self.filename
-                     + "\n\n"+ffmpeg_error))
+                     + "\n\n" + str(ffmpeg_error)))
 
             if b"Unknown encoder" in ffmpeg_error:
 
@@ -125,11 +125,27 @@ class FFMPEG_AudioWriter:
 
 
     def close(self):
-        self.proc.stdin.close()
-        if self.proc.stderr is not None:
-            self.proc.stderr.close()
-        self.proc.wait()
-        del self.proc
+        if self.proc:
+            self.proc.stdin.close()
+            self.proc.stdin = None
+            if self.proc.stderr is not None:
+                self.proc.stderr.close()
+                self.proc.stdee = None
+            # If this causes deadlocks, consider terminating instead.
+            self.proc.wait()
+            self.proc = None
+
+    def __del__(self):
+        # If the garbage collector comes, make sure the subprocess is terminated.
+        self.close()
+
+    # Support the Context Manager protocol, to ensure that resources are cleaned up.
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
 
 
 

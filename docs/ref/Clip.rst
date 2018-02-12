@@ -5,7 +5,7 @@ Clip
 :class:`Clip`
 ==========================
 
-.. autoclass:: Clip.Clip
+.. autoclass:: moviepy.Clip.Clip
    :members:
    :inherited-members:
    :show-inheritance:

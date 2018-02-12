@@ -67,15 +67,14 @@ class AudioClip(Clip):
         
         totalsize = int(fps*self.duration)
 
-        if (totalsize % chunksize == 0):
-            nchunks = totalsize // chunksize
-        else:
-            nchunks = totalsize // chunksize + 1
+        nchunks = totalsize // chunksize + 1
 
-        pospos = list(range(0, totalsize,  chunksize))+[totalsize]
+        pospos = np.linspace(0, totalsize, nchunks + 1, endpoint=True, dtype=int)
 
         def generator():
             for i in range(nchunks):
+                size = pospos[i+1] - pospos[i]
+                assert(size <= chunksize)
                 tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
                 yield self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
                                          buffersize=chunksize)

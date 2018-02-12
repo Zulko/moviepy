@@ -40,8 +40,7 @@ class CompositeVideoClip(VideoClip):
       have the same size as the final clip. If it has no transparency, the final
       clip will have no mask. 
     
-    If all clips with a fps attribute have the same fps, it becomes the fps of
-    the result.
+    The clip with the highest FPS will be the FPS of the composite clip.
 
     """
 
@@ -60,10 +59,11 @@ class CompositeVideoClip(VideoClip):
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
 
-        
-        fps_list = list(set([c.fps for c in clips if hasattr(c,'fps')]))
-        if len(fps_list)==1:
-            self.fps= fps_list[0]
+        fpss = [c.fps for c in clips if hasattr(c, 'fps') and c.fps is not None]
+        if len(fpss) == 0:
+            self.fps = None
+        else:
+            self.fps = max(fpss)
 
         VideoClip.__init__(self)
         
@@ -75,9 +75,11 @@ class CompositeVideoClip(VideoClip):
         if use_bgclip:
             self.bg = clips[0]
             self.clips = clips[1:]
+            self.created_bg = False
         else:
             self.clips = clips
             self.bg = ColorClip(size, col=self.bg_color)
+            self.created_bg = True
 
         
         
@@ -95,7 +97,7 @@ class CompositeVideoClip(VideoClip):
         # compute mask if necessary
         if transparent:
             maskclips = [(c.mask if (c.mask is not None) else
-                          c.add_mask().mask).set_pos(c.pos)
+                          c.add_mask().mask).set_pos(c.pos).set_end(c.end).set_start(c.start, change_end=False)
                           for c in self.clips]
 
             self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
@@ -116,6 +118,18 @@ class CompositeVideoClip(VideoClip):
         """ Returns a list of the clips in the composite clips that are
             actually playing at the given time `t`. """
         return [c for c in self.clips if c.is_playing(t)]
+
+    def close(self):
+        if self.created_bg and self.bg:
+            # Only close the background clip if it was locally created.
+            # Otherwise, it remains the job of whoever created it.
+            self.bg.close()
+            self.bg = None
+        if hasattr(self, "audio") and self.audio:
+            self.audio.close()
+            self.audio = None
+
+
 
 
 
