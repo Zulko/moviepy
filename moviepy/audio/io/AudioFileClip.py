@@ -59,10 +59,6 @@ class AudioFileClip(AudioClip):
     
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
-    >>> snd = AudioFileClip("song.mp3", fps = 44100, bitrate=3000)
-    >>> second_reader = snd.coreader()
-    >>> second_reader.close()
-    >>> snd.close()
     >>> with AudioFileClip(mySoundArray,fps=44100) as snd:  # from a numeric array
     >>>     pass  # Close is implicitly performed by context manager.
     
