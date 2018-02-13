@@ -1,9 +1,9 @@
 from __future__ import division
 
-import numpy as np
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
+
 
 class AudioFileClip(AudioClip):
 
@@ -17,7 +17,7 @@ class AudioFileClip(AudioClip):
     Parameters
     ------------
     
-    snd
+    filename
       Either a soundfile name (of any extension supported by ffmpeg)
       or an array representing a sound. If the soundfile is not a .wav,
       it will be converted to .wav first, using the ``fps`` and
@@ -63,34 +63,31 @@ class AudioFileClip(AudioClip):
     >>> second_reader = snd.coreader()
     >>> second_reader.close()
     >>> snd.close()
-    >>> with AudioFileClip(mySoundArray,fps=44100) as snd:  # from a numeric array
+    >>> with AudioFileClip(mySoundArray, fps=44100) as snd:  # from a numeric array
     >>>     pass  # Close is implicitly performed by context manager.
     
     """
 
     def __init__(self, filename, buffersize=200000, nbytes=2, fps=44100):
-        
 
         AudioClip.__init__(self)
             
         self.filename = filename
-        self.reader = FFMPEG_AudioReader(filename,fps=fps,nbytes=nbytes,
+        self.reader = FFMPEG_AudioReader(filename, fps=fps, nbytes=nbytes,
                                          buffersize=buffersize)
         self.fps = fps
         self.duration = self.reader.duration
         self.end = self.reader.duration
-        
-        
-        self.make_frame =  lambda t: self.reader.get_frame(t)
+        self.buffersize = self.reader.buffersize
+
+        self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
-    
-    
+
     def coreader(self):
         """ Returns a copy of the AudioFileClip, i.e. a new entrance point
             to the audio file. Use copy when you have different clips
             watching the audio file at different times. """
         return AudioFileClip(self.filename, self.buffersize)
-
 
     def close(self):
         """ Close the internal reader. """
