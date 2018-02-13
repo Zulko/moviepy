@@ -133,6 +133,8 @@ MoviePy is open-source software originally written by Zulko_ and released under 
 
 You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
 
+We have a list of tags used in our `Tag Wiki`_. The 'Pull Requests' tags are well defined, and all PRs should fall under exactly one of these.  The 'Issues' tags are less precise, and may not be a complete list.
+
 
 Maintainers
 -----------
@@ -149,6 +151,7 @@ Maintainers
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
 .. _documentation: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
+.. _`Tag Wiki`: https://github.com/Zulko/moviepy/wiki/Tag-Wiki
 
 .. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
