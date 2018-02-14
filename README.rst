@@ -44,15 +44,21 @@ Installation
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
 
-**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type: ::
+**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
+
+.. code:: bash
 
     $ (sudo) python setup.py install
 
-**Installation with pip:** if you have ``pip`` installed, just type this in a terminal: ::
+**Installation with pip:** if you have ``pip`` installed, just type this in a terminal:
+
+.. code:: bash
 
     $ (sudo) pip install moviepy
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing: ::
+If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing:
+
+.. code:: bash
 
     $ (sudo) pip install ez_setup
 
@@ -62,11 +68,15 @@ Optional but useful dependencies
 
 You can install ``moviepy`` with all dependencies via:
 
+.. code:: bash
+
     $ (sudo) pip install moviepy[optional]
 
 ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this ::
+Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this:
+
+.. code:: python
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 
@@ -82,7 +92,9 @@ For advanced image processing, you will need one or several of the following pac
 
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, (except for windows users and Ubuntu 16.04LTS users).
 
-For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called ``magick``. It should look like this ::
+For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called ``magick``. It should look like this:
+
+.. code:: python
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
     
@@ -100,13 +112,19 @@ Documentation
 
 Running `build_docs` has additional dependencies that require installation.
 
+.. code:: bash
+
     $ (sudo) pip install moviepy[docs]
 
 The documentation can be generated and viewed via:
 
+.. code:: bash
+
     $ python setup.py build_docs
 
 You can pass additional arguments to the documentation build, such as clean build:
+
+.. code:: bash
 
     $ python setup.py build_docs -E
 
@@ -118,10 +136,14 @@ Running Tests
 
 The testing suite can be executed via:
 
+.. code:: bash
+
     $ python setup.py test
 
 Running the test suite in this manner will install the testing dependencies.
 If you opt to run the test suite manually, you can install the dependencies via:
+
+.. code:: bash
 
     $ (sudo) pip install moviepy[test]
 
