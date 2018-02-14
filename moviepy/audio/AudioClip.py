@@ -34,16 +34,20 @@ class AudioClip(Clip):
     Examples
     ---------
     
-    >>> # Plays the note A (a sine wave of frequency 404HZ)
+    >>> # Plays the note A (a sine wave of frequency 440HZ)
     >>> import numpy as np
-    >>> make_frame = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
+    >>> make_frame = lambda t: 2*[ np.sin(440 * 2 * np.pi * t) ]
     >>> clip = AudioClip(make_frame, duration=5)
     >>> clip.preview()
                      
     """
     
-    def __init__(self, make_frame=None, duration=None):
+    def __init__(self, make_frame=None, duration=None, fps=None):
         Clip.__init__(self)
+
+        if fps is not None:
+            self.fps = fps
+
         if make_frame is not None:
             self.make_frame = make_frame
             frame0 = self.get_frame(0)
@@ -142,7 +146,7 @@ class AudioClip(Clip):
         return maxi
 
     @requires_duration
-    def write_audiofile(self, filename, fps=44100, nbytes=2, buffersize=2000,
+    def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
                         codec=None, bitrate=None, ffmpeg_params=None,
                         write_logfile=False, verbose=True, progress_bar=True):
         """ Writes an audio file from the AudioClip.
@@ -155,7 +159,8 @@ class AudioClip(Clip):
           Name of the output file
 
         fps
-          Frames per second
+          Frames per second. If not set, it will try default to self.fps if
+          already set, otherwise it will default to 44100
 
         nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
@@ -186,6 +191,11 @@ class AudioClip(Clip):
           Boolean indicating whether to show the progress bar.
 
         """
+        if not fps:
+            if not self.fps:
+                fps = 44100
+            else:
+                fps = self.fps
 
         if codec is None:
             name, ext = os.path.splitext(os.path.basename(filename))
@@ -194,7 +204,7 @@ class AudioClip(Clip):
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
                                  "with the filename. Provide the 'codec' "
-                                 "parameter in write_videofile.")
+                                 "parameter in write_audiofile.")
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
                                  codec=codec, bitrate=bitrate,
@@ -302,7 +312,19 @@ class CompositeAudioClip(AudioClip):
 
 
 def concatenate_audioclips(clips):
+    """
+    The clip with the highest FPS will be the FPS of the result clip.
+    """
     durations = [c.duration for c in clips]
     tt = np.cumsum([0]+durations)  # start times, and end time.
     newclips = [c.set_start(t) for c, t in zip(clips, tt)]
-    return CompositeAudioClip(newclips).set_duration(tt[-1])
+
+    result = CompositeAudioClip(newclips).set_duration(tt[-1])
+
+    fpss = [c.fps for c in clips if hasattr(c, 'fps') and c.fps is not None]
+    if len(fpss) == 0:
+        result.fps = None
+    else:
+        result.fps = max(fpss)
+
+    return result

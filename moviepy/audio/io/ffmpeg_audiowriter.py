@@ -55,7 +55,7 @@ class FFMPEG_AudioWriter:
                 '-i', '-']
                + (['-vn'] if input_video is None else ["-i", input_video, '-vcodec', 'copy'])
                + ['-acodec', codec]
-               + ['-ar', "%d"%fps_input]
+               + ['-ar', "%d" % fps_input]
                + ['-strict', '-2']  # needed to support codec 'aac'
                + (['-ab', bitrate] if (bitrate is not None) else [])
                + (ffmpeg_params if ffmpeg_params else [])
@@ -166,7 +166,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
 
     for chunk in clip.iter_chunks(chunksize=buffersize,
                                   quantize=True,
-                                  nbytes= nbytes, fps=fps,
+                                  nbytes=nbytes, fps=fps,
                                   progress_bar=progress_bar):
         writer.write_frames(chunk)
 

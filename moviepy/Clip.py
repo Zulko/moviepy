@@ -335,7 +335,7 @@ class Clip:
             # is the whole list of t outside the clip ?
             tmin, tmax = t.min(), t.max()
 
-            if (self.end is not None) and (tmin >= self.end) :
+            if (self.end is not None) and (tmin >= self.end):
                 return False
 
             if tmax < self.start:
@@ -349,9 +349,8 @@ class Clip:
 
         else:
 
-            return( (t >= self.start) and
-                    ((self.end is None) or (t < self.end) ) )
-
+            return((t >= self.start) and
+                   ((self.end is None) or (t < self.end)))
 
 
     @convert_to_seconds(['t_start', 't_end'])
@@ -385,9 +384,9 @@ class Clip:
             t_start = self.duration + t_start   # Remember t_start is negative
 
         if (self.duration is not None) and (t_start > self.duration):
-            raise ValueError("t_start (%.02f) "% t_start +
-                             "should be smaller than the clip's "+
-                             "duration (%.02f)."% self.duration)
+            raise ValueError("t_start (%.02f) " % t_start +
+                             "should be smaller than the clip's " +
+                             "duration (%.02f)." % self.duration)
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
 
@@ -395,7 +394,7 @@ class Clip:
 
             t_end = self.duration
 
-        elif (t_end is not None) and (t_end<0):
+        elif (t_end is not None) and (t_end < 0):
 
             if self.duration is None:
 

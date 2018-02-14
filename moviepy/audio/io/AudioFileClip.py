@@ -25,12 +25,7 @@ class AudioFileClip(AudioClip):
     
     buffersize:
       Size to load in memory (in number of frames)
-    
-    temp_wav:
-      Name for the temporary wav file in case conversion is required.
-      If not provided, the default will be filename.wav with some prefix.
-      If the temp_wav already exists it will not be rewritten.
-        
+
         
     Attributes
     ------------
@@ -59,7 +54,7 @@ class AudioFileClip(AudioClip):
     
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
-    >>> snd = AudioFileClip("song.mp3", fps = 44100, bitrate=3000)
+    >>> snd = AudioFileClip("song.mp3", fps = 44100)
     >>> second_reader = snd.coreader()
     >>> second_reader.close()
     >>> snd.close()
