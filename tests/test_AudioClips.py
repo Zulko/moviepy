@@ -14,6 +14,11 @@ import download_media
 from test_helper import TMP_DIR
 
 
+def test_download_media(capsys):
+    with capsys.disabled():
+        download_media.download()
+
+
 def test_audio_coreader():
     sound = AudioFileClip("media/crunching.mp3")
     sound = sound.subclip(1, 4)
