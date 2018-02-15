@@ -9,20 +9,17 @@ import numpy as np
 from moviepy.compat import DEVNULL
 
 try:
-  import imageio
-  IMAGEIO_FOUND = True
+    import imageio
+    IMAGEIO_FOUND = True
 except ImportError:
-  IMAGEIO_FOUND = False
-
-
-
+    IMAGEIO_FOUND = False
 
 
 @requires_duration
 @use_clip_fps_by_default
 def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
        opt="OptimizeTransparency", fuzz=1, verbose=True,
-       loop=0, dispose=True, colors=None, tempfiles=False):
+       loop=0, dispose=True, colors=None):
     """ Write the VideoClip to a GIF file.
 
 
@@ -250,16 +247,13 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
         proc2.wait()
         if opt:
             proc3.wait()
-    verbose_print(verbose, "[MoviePy] >>>> File %s is ready !"%filename)
+    verbose_print(verbose, "[MoviePy] >>>> File %s is ready!"%filename)
 
 
 def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
                             colors=None, verbose=True):
     """
     Writes the gif with the Python library ImageIO (calls FreeImage).
-    
-    For the moment ImageIO is not installed with MoviePy. You need to install
-    imageio (pip install imageio) to use this.
 
     Parameters
     -----------
@@ -268,16 +262,17 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
     """
 
     if colors is None:
-        colors=256
+        colors = 256
 
     if not IMAGEIO_FOUND:
-      raise ImportError("Writing a gif with imageio requires ImageIO installed,"
+        raise ImportError("Writing a gif with imageio requires ImageIO installed,"
                          " with e.g. 'pip install imageio'")
 
     if fps is None:
         fps = clip.fps
 
-    quantizer = 0 if opt!= 0 else 'nq'
+    quantizer = 0 if opt != 0 else 'nq'
+
     writer = imageio.save(
         filename,
         duration=1.0/fps,
@@ -286,7 +281,7 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
         loop=loop
         )
 
-    verbose_print(verbose, "\n[MoviePy] Building file %s with imageio\n"%filename)
+    verbose_print(verbose, "\n[MoviePy] Building file %s with imageio\n" % filename)
     
     for frame in clip.iter_frames(fps=fps, progress_bar=True, dtype='uint8'):
 
