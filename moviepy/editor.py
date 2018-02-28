@@ -17,8 +17,11 @@ clip.preview().
 # Note that these imports could have been performed in the __init__.py
 # file, but this would make the loading of moviepy slower.
 
-# Clips
+# Downloads ffmpeg if it isn't already installed
+import imageio
+imageio.plugins.ffmpeg.download()
 
+# Clips
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
