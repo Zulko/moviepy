@@ -425,6 +425,11 @@ class VideoClip(Clip):
           the colors that are less than fuzz% different are in fact
           the same.
 
+        tempfiles
+          Writes every frame to a file instead of passing them in the RAM.
+          Useful on computers with little RAM. Can only be used with
+          ImageMagick' or 'ffmpeg'.
+
 
         Notes
         -----
@@ -453,8 +458,8 @@ class VideoClip(Clip):
                 opt1 ='OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt1, fuzz=fuzz,
-                                     verbose=verbose,
-                                     loop=loop, dispose=dispose, colors=colors)
+                                     verbose=verbose, loop=loop,
+                                     dispose=dispose, colors=colors)
         else:
             write_gif(self, filename, fps=fps, program=program,
                       opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
@@ -719,13 +724,14 @@ class VideoClip(Clip):
     # CONVERSIONS TO OTHER TYPES
 
     @convert_to_seconds(['t'])
-    def to_ImageClip(self, t=0, with_mask=True):
+    def to_ImageClip(self, t=0, with_mask=True, duration=None):
         """
         Returns an ImageClip made out of the clip's frame at time ``t``,
         which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
         """
-        newclip = ImageClip(self.get_frame(t), ismask=self.ismask)
+        newclip = ImageClip(self.get_frame(t), ismask=self.ismask,
+                            duration=duration)
         if with_mask and self.mask is not None:
             newclip.mask = self.mask.to_ImageClip(t)
         return newclip
