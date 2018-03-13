@@ -5,7 +5,7 @@ from .compat import DEVNULL
 if os.name == 'nt':
     try:    
         import winreg as wr # py3k
-    except:
+    except ImportError:
         import _winreg as wr # py2k
 
 from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
@@ -64,11 +64,8 @@ if IMAGEMAGICK_BINARY=='auto-detect':
 else:
     success, err = try_cmd([IMAGEMAGICK_BINARY])
     if not success:
-        raise IOError(
-            "%s - The path specified for the ImageMagick binary might be wrong: %s" %
-            (err, IMAGEMAGICK_BINARY)
-        )
-
+        raise IOError("%s - The path specified for the ImageMagick binary might "
+                      "be wrong: %s" % (err, IMAGEMAGICK_BINARY))
 
 
 def get_setting(varname):
@@ -81,17 +78,18 @@ def get_setting(varname):
     return gl[varname]
 
 
-def change_settings(new_settings=None, file=None):
+def change_settings(new_settings=None, filename=None):
     """ Changes the value of configuration variables."""
-    if new_settings is None:
-        new_settings = {}
+    new_settings = new_settings or {}
     gl = globals()
-    if file is not None:
-        execfile(file)
+    if filename:
+        with open(filename) as in_file:
+            exec(in_file)
         gl.update(locals())
     gl.update(new_settings)
     # Here you can add some code  to check that the new configuration
     # values are valid.
+
 
 if __name__ == "__main__":
     if try_cmd([FFMPEG_BINARY])[0]:

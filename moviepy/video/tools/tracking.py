@@ -8,6 +8,7 @@ fx and fy return the position of the object at the start or at the end
 of the tracking time interval).
 """
 
+import numpy as np
 from scipy.interpolate import interp1d
 
 from ..io.preview import imdisplay
