@@ -161,8 +161,8 @@ class FFMPEG_AudioReader:
             # elements of t that are actually in the range of the
             # audio file.
             in_time = (tt>=0) & (tt < self.duration)
-		
-	    # Check that the requested time is in the valid range
+
+        # Check that the requested time is in the valid range
             if not in_time.any():
                 raise IOError("Error in file %s, "%(self.filename)+
                        "Accessing time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
