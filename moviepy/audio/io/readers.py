@@ -161,8 +161,8 @@ class FFMPEG_AudioReader:
             # elements of t that are actually in the range of the
             # audio file.
             in_time = (tt>=0) & (tt < self.duration)
-		
-	    # Check that the requested time is in the valid range
+
+        # Check that the requested time is in the valid range
             if not in_time.any():
                 raise IOError("Error in file %s, "%(self.filename)+
                        "Accessing time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+
@@ -185,6 +185,8 @@ class FFMPEG_AudioReader:
             try:
                 result = np.zeros((len(tt),self.nchannels))
                 indices = frames - self.buffer_startframe
+                if len(self.buffer) < self.buffersize // 2:
+                    indices = indices - (self.buffersize // 2 - len(self.buffer) + 1)
                 result[in_time] = self.buffer[indices]
                 return result
 

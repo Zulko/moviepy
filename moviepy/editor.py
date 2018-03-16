@@ -53,6 +53,7 @@ except ImportError:
 for method in [
           "afx.audio_fadein",
           "afx.audio_fadeout",
+          "afx.audio_normalize",
           "afx.volumex",
           "transfx.crossfadein",
           "transfx.crossfadeout",
@@ -69,16 +70,17 @@ for method in [
           "vfx.speedx"
           ]:
 
-    exec("VideoClip.%s = %s"%( method.split('.')[1], method))
+    exec("VideoClip.%s = %s" % (method.split('.')[1], method))
 
 
 for method in ["afx.audio_fadein",
                "afx.audio_fadeout",
                "afx.audio_loop",
+               "afx.audio_normalize",
                "afx.volumex"
               ]:
               
-    exec("AudioClip.%s = %s"%( method.split('.')[1], method))
+    exec("AudioClip.%s = %s" % (method.split('.')[1], method))
 
 
 # adds easy ipython integration
@@ -96,6 +98,7 @@ except ImportError:
     def preview(self, *args, **kwargs):
         """NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
+
     def show(self, *args, **kwargs):
         """NOT AVAILABLE : clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")

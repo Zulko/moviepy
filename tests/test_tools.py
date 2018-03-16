@@ -69,6 +69,5 @@ def test_5():
     file = sys.stdout.read()
     assert file == b""
 
-
 if __name__ == '__main__':
     pytest.main()

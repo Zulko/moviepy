@@ -71,5 +71,6 @@ def test_failure_to_release_file():
 
             remove(local_video_filename)
             print("You are not running Windows, because that worked.")
-        except PermissionError:
+
+        except OSError:  # More specifically, PermissionError in Python 3.
             print("Yes, on Windows this fails.")

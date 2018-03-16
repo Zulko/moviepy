@@ -44,15 +44,21 @@ Installation
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
 
-**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type: ::
+**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
+
+.. code:: bash
 
     $ (sudo) python setup.py install
 
-**Installation with pip:** if you have ``pip`` installed, just type this in a terminal: ::
+**Installation with pip:** if you have ``pip`` installed, just type this in a terminal:
+
+.. code:: bash
 
     $ (sudo) pip install moviepy
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing: ::
+If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing:
+
+.. code:: bash
 
     $ (sudo) pip install ez_setup
 
@@ -62,11 +68,15 @@ Optional but useful dependencies
 
 You can install ``moviepy`` with all dependencies via:
 
+.. code:: bash
+
     $ (sudo) pip install moviepy[optional]
 
 ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this ::
+Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this:
+
+.. code:: python
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
 
@@ -82,9 +92,13 @@ For advanced image processing, you will need one or several of the following pac
 
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, (except for windows users and Ubuntu 16.04LTS users).
 
-For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
+For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called ``magick``. It should look like this:
 
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+.. code:: python
+
+    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
+    
+If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
 
 For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
 
@@ -98,13 +112,19 @@ Documentation
 
 Running `build_docs` has additional dependencies that require installation.
 
+.. code:: bash
+
     $ (sudo) pip install moviepy[docs]
 
 The documentation can be generated and viewed via:
 
+.. code:: bash
+
     $ python setup.py build_docs
 
 You can pass additional arguments to the documentation build, such as clean build:
+
+.. code:: bash
 
     $ python setup.py build_docs -E
 
@@ -116,10 +136,14 @@ Running Tests
 
 The testing suite can be executed via:
 
+.. code:: bash
+
     $ python setup.py test
 
 Running the test suite in this manner will install the testing dependencies.
 If you opt to run the test suite manually, you can install the dependencies via:
+
+.. code:: bash
 
     $ (sudo) pip install moviepy[test]
 
@@ -131,13 +155,15 @@ MoviePy is open-source software originally written by Zulko_ and released under 
 
 You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
 
+We have a list of tags used in our `Tag Wiki`_. The 'Pull Requests' tags are well defined, and all PRs should fall under exactly one of these.  The 'Issues' tags are less precise, and may not be a complete list.
+
 
 Maintainers
 -----------
 
 - Zulko_ (owner)
 
-- `@Gloin1313`_
+- `@tburrows13`_
 - `@earney`_
 - Kay `@kerstin`_
 - `@mbeacom`_
@@ -147,6 +173,7 @@ Maintainers
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
 .. _documentation: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
+.. _`Tag Wiki`: https://github.com/Zulko/moviepy/wiki/Tag-Wiki
 
 .. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
@@ -171,7 +198,7 @@ Maintainers
 
 .. People
 .. _Zulko: https://github.com/Zulko
-.. _`@Gloin1313`: https://github.com/Gloin1313
+.. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
 .. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom

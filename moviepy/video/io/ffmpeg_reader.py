@@ -28,6 +28,7 @@ class FFMPEG_VideoReader:
                  fps_source='tbr'):
 
         self.filename = filename
+        self.proc = None
         infos = ffmpeg_parse_infos(filename, print_infos, check_duration,
                                    fps_source)
         self.fps = infos['video_fps']
@@ -165,10 +166,16 @@ class FFMPEG_VideoReader:
 
         pos = int(self.fps*t + 0.00001)+1
 
+        # Initialize proc if it is not open
+        if not self.proc:
+            self.initialize(t)
+            self.pos = pos
+            self.lastread = self.read_frame()
+
         if pos == self.pos:
             return self.lastread
         else:
-            if(pos < self.pos) or (pos > self.pos+100):
+            if (pos < self.pos) or (pos > self.pos + 100):
                 self.initialize(t)
                 self.pos = pos
             else:
@@ -178,7 +185,7 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import os
-#import sys
+import sys
 
 import pytest
 from moviepy.editor import *
 
-#sys.path.append("tests")
+sys.path.append("tests")
 import download_media
 from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
@@ -256,7 +256,7 @@ def test_issue_470():
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
     with pytest.raises(IOError, message="Expecting IOError"):
-         subclip.write_audiofile('/tmp/issue_470.wav', write_logfile=True)
+         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
     #but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
@@ -269,6 +269,34 @@ def test_issue_246():
         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
                                 write_logfile=True)
 
+def test_issue_547():
+    red = ColorClip((640, 480), color=(255,0,0)).set_duration(1)
+    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(3)
+
+    video=concatenate_videoclips([red, green, blue], method="compose")
+    assert video.duration == 6
+    assert video.mask.duration == 6
+
+    video=concatenate_videoclips([red, green, blue])
+    assert video.duration == 6
+
+def test_issue_636():
+   with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as video:
+       with video.subclip(0,1) as subclip:
+           pass
+
+def test_issue_655():
+    video_file = 'media/fire2.mp4'
+    for subclip in [(0,2),(1,2),(2,3)]:
+        with VideoFileClip(video_file) as v:
+            with v.subclip(1,2) as s:
+                pass
+            next(v.subclip(*subclip).iter_frames())
+    assert True
+
+
 
 if __name__ == '__main__':
    pytest.main()
+
