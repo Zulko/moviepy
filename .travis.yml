@@ -22,7 +22,8 @@ before_install:
   - pip install --upgrade py pytest
   
   # modify ImageMagick policy file so that Textclips work correctly.
-  - sudo cat /etc/ImageMagick/policy.xml # | sed 's/none/read,write/g'> /etc/ImageMagick/policy.xml
+  - cat /etc/ImageMagick/policy.xml
+  - sudo cat /etc/ImageMagick/policy.xml | sudo sed 's/none/read,write/g'> /etc/ImageMagick/policy.xml
 
 install:
   - echo "No install action required. Implicitly performed by the testing."
