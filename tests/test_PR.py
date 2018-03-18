@@ -12,7 +12,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 
 sys.path.append("tests")
-from test_helper import TMP_DIR, TRAVIS, FONT
+from test_helper import TMP_DIR, FONT
 
 
 
@@ -23,10 +23,7 @@ def test_download_media(capsys):
        download_media.download()
 
 def test_PR_306():
-    if TRAVIS:
-       return
 
-    #put this back in once we get ImageMagick working on travis-ci
     assert TextClip.list('font') != []
     assert TextClip.list('color') != []
 
@@ -34,9 +31,6 @@ def test_PR_306():
          TextClip.list('blah')
 
 def test_PR_339():
-    if TRAVIS:
-       return
-
     # In caption mode.
     TextClip(txt='foo', color='white', font=FONT, size=(640, 480),
              method='caption', align='center', fontsize=25).close()

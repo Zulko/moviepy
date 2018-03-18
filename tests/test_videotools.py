@@ -6,13 +6,10 @@ import os
 from moviepy.video.tools.credits import credits1
 
 sys.path.append("tests")
-from test_helper import TMP_DIR, TRAVIS
+from test_helper import TMP_DIR
 
 
 def test_credits():
-    if TRAVIS:
-        # Same issue with ImageMagick on Travis as in `test_TextClip.py`
-        return
     credit_file = "# This is a comment\n" \
                   "# The next line says : leave 4 blank lines\n" \
                   ".blank 2\n" \
