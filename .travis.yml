@@ -25,7 +25,7 @@ install:
   - echo "No install action required. Implicitly performed by the testing."
   - pip install flake8
   # modify ImageMagick policy file so that Textclips work correctly.
-  - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick/policy.xml
+  - sudo cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick/policy.xml
 
 before_script:
   # stop the build if there are Python syntax errors or undefined names
