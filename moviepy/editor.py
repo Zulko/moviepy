@@ -17,6 +17,8 @@ clip.preview().
 # Note that these imports could have been performed in the __init__.py
 # file, but this would make the loading of moviepy slower.
 
+import os
+
 # Downloads ffmpeg if it isn't already installed
 import imageio
 # Checks to see if the user has set a place for their own version of ffmpeg
