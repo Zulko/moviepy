@@ -19,7 +19,9 @@ clip.preview().
 
 # Downloads ffmpeg if it isn't already installed
 import imageio
-imageio.plugins.ffmpeg.download()
+# Checks to see if the user has set a place for their own version of ffmpeg
+if os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio') == 'ffmpeg-imageio':
+    imagio.plugins.ffmpeg.downlad()
 
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
