@@ -10,7 +10,7 @@ from moviepy.video.VideoClip import ColorClip, TextClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 import download_media
-from test_helper import TMP_DIR, TRAVIS, FONT
+from test_helper import TMP_DIR, FONT
 
 sys.path.append("tests")
 
@@ -29,11 +29,6 @@ def test_subtitles():
     blue = ColorClip((800, 600), color=(0,0,255)).set_duration(10)
     myvideo = concatenate_videoclips([red,green,blue])
     assert myvideo.duration == 30
-
-    #travis does not like TextClip.. so return for now..
-    #but allow regular users to still run the test below
-    if TRAVIS:
-       return
 
     generator = lambda txt: TextClip(txt, font=FONT,
                                      size=(800,600), fontsize=24,
