@@ -1,13 +1,14 @@
 """
 Here is the current catalogue. These are meant
 to be used with clip.fx. There are available as transfx.crossfadein etc.
-if you load them with ``from moviepy.all import *``
+if you load them with ``from moviepy.editor import *``
 """
 
 from moviepy.decorators import requires_duration, add_mask_if_none
 from .CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+
 
 @requires_duration
 @add_mask_if_none
@@ -31,8 +32,6 @@ def crossfadeout(clip, duration):
     newclip = clip.copy()
     newclip.mask = clip.mask.fx(fadeout, duration)
     return newclip
-
-
 
 
 def slide_in(clip, duration, side):
@@ -64,14 +63,13 @@ def slide_in(clip, duration, side):
     >>> final_clip = concatenate( slided_clips, padding=-1)
 
     """
-    w,h = clip.size
-    pos_dict = {'left' : lambda t: (min(0,w*(t/duration-1)),'center'),
-                'right' : lambda t: (max(0,w*(1-t/duration)),'center'),
-                'top' : lambda t: ('center',min(0,h*(t/duration-1))),
-                'bottom': lambda t: ('center',max(0,h*(1-t/duration)))}
+    w, h = clip.size
+    pos_dict = {'left': lambda t: (min(0, w*(t/duration-1)), 'center'),
+                'right': lambda t: (max(0, w*(1-t/duration)), 'center'),
+                'top': lambda t: ('center', min(0, h*(t/duration-1))),
+                'bottom': lambda t: ('center', max(0, h*(1-t/duration)))}
 
-    return clip.set_pos( pos_dict[side] )
-
+    return clip.set_pos(pos_dict[side])
 
 
 @requires_duration
@@ -105,14 +103,14 @@ def slide_out(clip, duration, side):
 
     """
 
-    w,h = clip.size
-    ts = clip.duration - duration # start time of the effect.
-    pos_dict = {'left' : lambda t: (min(0,w*(1-(t-ts)/duration)),'center'),
-                'right' : lambda t: (max(0,w*((t-ts)/duration-1)),'center'),
-                'top' : lambda t: ('center',min(0,h*(1-(t-ts)/duration))),
-                'bottom': lambda t: ('center',max(0,h*((t-ts)/duration-1))) }
+    w, h = clip.size
+    ts = clip.duration - duration  # start time of the effect.
+    pos_dict = {'left': lambda t: (min(0, w*(-(t-ts)/duration)), 'center'),
+                'right': lambda t: (max(0, w*((t-ts)/duration)), 'center'),
+                'top': lambda t: ('center', min(0, h*(-(t-ts)/duration))),
+                'bottom': lambda t: ('center', max(0, h*((t-ts)/duration)))}
 
-    return clip.set_pos( pos_dict[side] )
+    return clip.set_pos(pos_dict[side])
 
 
 @requires_duration
@@ -121,7 +119,5 @@ def make_loopable(clip, cross_duration):
     it can be looped indefinitely. ``cross`` is the duration in seconds
     of the fade-in.  """
     d = clip.duration
-    clip2 = clip.fx(crossfadein, cross_duration).\
-                 set_start(d - cross_duration)
-    return CompositeVideoClip([ clip, clip2 ]).\
-                 subclip(cross_duration,d)
+    clip2 = clip.fx(crossfadein, cross_duration).set_start(d - cross_duration)
+    return CompositeVideoClip([clip, clip2]).subclip(cross_duration, d)
