@@ -59,9 +59,10 @@ def slide_in(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_in, 1, 'left')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx( transfx.slide_in, 1, 'left')])
                         for clip in clips]
-    >>> final_clip = concatenate( slided_clips, padding=-1)
+    >>> final_clip = concatenate( slided_clips)
 
     """
     w,h = clip.size
@@ -99,7 +100,8 @@ def slide_out(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_out, 1, 'bottom')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx( transfx.slide_in, 1, 'left')])
                         for clip in clips]
     >>> final_clip = concatenate( slided_clips, padding=-1)
 
