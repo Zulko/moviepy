@@ -119,7 +119,11 @@ class VideoFileClip(VideoClip):
                                        buffersize=audio_buffersize,
                                        fps=audio_fps,
                                        nbytes=audio_nbytes)
-
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+        
     def close(self):
         """ Close the internal reader. """
         if self.reader:
