@@ -77,6 +77,10 @@ class AudioFileClip(AudioClip):
 
         self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
 
     def coreader(self):
         """ Returns a copy of the AudioFileClip, i.e. a new entrance point

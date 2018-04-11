@@ -90,6 +90,19 @@ class VideoClip(Clip):
             self.duration = duration
             self.end = duration
 
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+        
+
+    def close():
+         try:
+            if self.audio:
+                self.audio.close()
+                self.audio = None
+        except AttributeError:
+            pass
     @property
     def w(self):
         return self.size[0]
