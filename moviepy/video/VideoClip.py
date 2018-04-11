@@ -97,7 +97,7 @@ class VideoClip(Clip):
         
 
     def close():
-         try:
+        try:
             if self.audio:
                 self.audio.close()
                 self.audio = None
