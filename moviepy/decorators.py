@@ -25,7 +25,7 @@ def convert_masks_to_RGB(f, clip, *a, **k):
 def apply_to_mask(f, clip, *a, **k):
     """ This decorator will apply the same function f to the mask of
         the clip created with f """
-        
+
     newclip = f(clip, *a, **k)
     if hasattr(newclip, 'mask') and (newclip.mask is not None):
         newclip.mask = f(newclip.mask, *a, **k)
@@ -37,7 +37,7 @@ def apply_to_mask(f, clip, *a, **k):
 def apply_to_audio(f, clip, *a, **k):
     """ This decorator will apply the function f to the audio of
         the clip created with f """
-        
+
     newclip = f(clip, *a, **k)
     if hasattr(newclip, 'audio') and (newclip.audio is not None):
         newclip.audio = f(newclip.audio, *a, **k)
@@ -47,7 +47,7 @@ def apply_to_audio(f, clip, *a, **k):
 @decorator.decorator
 def requires_duration(f, clip, *a, **k):
     """ Raise an error if the clip has no duration."""
-    
+
     if clip.duration is None:
         raise ValueError("Attribute 'duration' not set")
     else:
@@ -58,12 +58,12 @@ def requires_duration(f, clip, *a, **k):
 @decorator.decorator
 def audio_video_fx(f, clip, *a, **k):
     """ Use an audio function on a video/audio clip
-    
+
     This decorator tells that the function f (audioclip -> audioclip)
     can be also used on a video clip, at which case it returns a
     videoclip with unmodified video and modified audio.
     """
-    
+
     if hasattr(clip, "audio"):
         newclip = clip.copy()
         if clip.audio is not None:
@@ -74,13 +74,13 @@ def audio_video_fx(f, clip, *a, **k):
 
 def preprocess_args(fun,varnames):
     """ Applies fun to variables in varnames before launching the function """
-    
+
     def wrapper(f, *a, **kw):
         if hasattr(f, "func_code"):
             func_code = f.func_code # Python 2
         else:
             func_code = f.__code__ # Python 3
-            
+
         names = func_code.co_varnames
         new_a = [fun(arg) if (name in varnames) else arg
                  for (arg, name) in zip(a, names)]
@@ -98,7 +98,7 @@ def convert_to_seconds(varnames):
 
 @decorator.decorator
 def add_mask_if_none(f, clip, *a, **k):
-    """ Add a mask to the clip if there is none. """        
+    """ Add a mask to the clip if there is none. """
     if clip.mask is None:
         clip = clip.add_mask()
     return f(clip, *a, **k)
@@ -108,7 +108,7 @@ def add_mask_if_none(f, clip, *a, **k):
 @decorator.decorator
 def use_clip_fps_by_default(f, clip, *a, **k):
     """ Will use clip.fps if no fps=... is provided in **k """
-    
+
     def fun(fps):
         if fps is not None:
             return fps
@@ -126,12 +126,23 @@ def use_clip_fps_by_default(f, clip, *a, **k):
         func_code = f.func_code # Python 2
     else:
         func_code = f.__code__ # Python 3
-        
+
     names = func_code.co_varnames[1:]
-    
+
     new_a = [fun(arg) if (name=='fps') else arg
              for (arg, name) in zip(a, names)]
     new_kw = {k: fun(v) if k=='fps' else v
              for (k,v) in k.items()}
 
     return f(clip, *new_a, **new_kw)
+
+
+@decorator.decorator
+def pygame_quit(f, *a, **k):
+    value = f(*a, **k)
+    import pygame as pg
+    pg.mixer.quit()
+    pg.quit()
+    return value
+
+
