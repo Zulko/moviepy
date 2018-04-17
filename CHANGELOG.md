@@ -1,7 +1,7 @@
 # Change Log
 
-## [0.2.3.3](https://github.com/Zulko/moviepy/tree/0.2.3.3) (2018-04-17)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.2...0.2.3.3)
+## [v0.2.3.3](https://github.com/Zulko/moviepy/tree/v0.2.3.3) (2018-04-17)
+[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.2...v0.2.3.3)
 
 **Implemented enhancements:**
 
