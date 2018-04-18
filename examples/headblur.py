@@ -1,6 +1,5 @@
 from moviepy.editor import *
-from moviepy.video.tools.tracking import manual_tracking
-
+from moviepy.video.tools.tracking import manual_tracking, Trajectory
 
 # LOAD THE CLIP (subclip 6'51 - 7'01 of a chaplin movie)
 clip = VideoFileClip("../../videos/chaplin.mp4")#.subclip((6,51.7),(7,01.3))
@@ -21,9 +20,6 @@ clip = VideoFileClip("../../videos/chaplin.mp4")#.subclip((6,51.7),(7,01.3))
 
 # IF THE MANUAL TRACKING HAS BEEN PREVIOUSLY DONE,
 # RECOVER THESE TRAJECTORIES
-
-from moviepy.video.tools.tracking import Trajectory
-
 traj, = Trajectory.load_list('../../videos/chaplin_traj.txt')
 
 

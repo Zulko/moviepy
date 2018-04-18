@@ -12,7 +12,7 @@ except:
 #-----------------------------------------------------------------------
 
 
-def headblur(clip,traj,r_zone,r_blur=None):
+def headblur(clip, traj, r_zone, r_blur=None):
     """
     Returns a filter that will blurr a moving part (a head ?) of
     the frames. The position of the blur at time t is
@@ -25,7 +25,7 @@ def headblur(clip,traj,r_zone,r_blur=None):
 
     if r_blur is None: r_blur = 2*r_zone/3
     r_blur = int(r_blur)
-    
+
     def fl(gf,t):
 
         im = gf(t)
