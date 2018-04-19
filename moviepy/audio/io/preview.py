@@ -10,8 +10,8 @@ pg.display.set_caption('MoviePy')
 
 
 @requires_duration
-def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
-                 audioFlag=None, videoFlag=None):
+def preview(clip, fps=22050,  buffersize=4000, nbytes=2, audioFlag=None,
+            videoFlag=None):
     """
     Plays the sound clip with pygame.
     
@@ -45,8 +45,8 @@ def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
     pg.mixer.init(fps, -8 * nbytes, clip.nchannels, 1024)
     totalsize = int(fps*clip.duration)
     pospos = np.array(list(range(0, totalsize,  buffersize))+[totalsize])
-    tt = (1.0/fps)*np.arange(pospos[0],pospos[1])
-    sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True)
+    tt = (1.0/fps)*np.arange(pospos[0], pospos[1])
+    sndarray = clip.to_soundarray(tt, nbytes=nbytes, quantize=True)
     chunk = pg.sndarray.make_sound(sndarray)
     
     if (audioFlag is not None) and (videoFlag is not None):
@@ -54,13 +54,13 @@ def preview(clip, fps=22050,  buffersize=4000, nbytes= 2,
         videoFlag.wait()
         
     channel = chunk.play()
-    for i in range(1,len(pospos)-1):
-        tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-        sndarray = clip.to_soundarray(tt,nbytes=nbytes, quantize=True)
+    for i in range(1, len(pospos)-1):
+        tt = (1.0/fps)*np.arange(pospos[i], pospos[i+1])
+        sndarray = clip.to_soundarray(tt, nbytes=nbytes, quantize=True)
         chunk = pg.sndarray.make_sound(sndarray)
         while channel.get_queue():
             time.sleep(0.003)
-            if (videoFlag!= None):
+            if videoFlag is not None:
                 if not videoFlag.is_set():
                     channel.stop()
                     del channel

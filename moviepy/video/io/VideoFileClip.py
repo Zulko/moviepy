@@ -5,6 +5,7 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.Clip import Clip
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader
 
+
 class VideoFileClip(VideoClip):
 
     """
@@ -12,7 +13,9 @@ class VideoFileClip(VideoClip):
     A video clip originating from a movie file. For instance: ::
 
         >>> clip = VideoFileClip("myHolidays.mp4")
-        >>> clip2 = VideoFileClip("myMaskVideo.avi")
+        >>> clip.close()
+        >>> with VideoFileClip("myMaskVideo.avi") as clip2:
+        >>>    pass  # Implicit close called by context manager.
 
 
     Parameters
@@ -61,11 +64,19 @@ class VideoFileClip(VideoClip):
     
     
     Read docs for Clip() and VideoClip() for other, more generic, attributes.
+    
+    Lifetime
+    --------
+    
+    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
+    close() afterwards, or the subresources will not be cleaned up until the process ends.
+    
+    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  
 
     """
 
     def __init__(self, filename, has_mask=False,
-                 audio=True, audio_buffersize = 200000,
+                 audio=True, audio_buffersize=200000,
                  target_resolution=None, resize_algorithm='bicubic',
                  audio_fps=44100, audio_nbytes=2, verbose=False,
                  fps_source='tbr'):
@@ -73,8 +84,7 @@ class VideoFileClip(VideoClip):
         VideoClip.__init__(self)
 
         # Make a reader
-        pix_fmt= "rgba" if has_mask else "rgb24"
-        self.reader = None # need this just in case FFMPEG has issues (__del__ complains)
+        pix_fmt = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
                                          target_resolution=target_resolution,
                                          resize_algo=resize_algorithm,
@@ -93,9 +103,9 @@ class VideoFileClip(VideoClip):
         if has_mask:
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:,:,:3]
-            mask_mf =  lambda t: self.reader.get_frame(t)[:,:,3]/255.0
-            self.mask = (VideoClip(ismask = True, make_frame = mask_mf)
-                       .set_duration(self.duration))
+            mask_mf = lambda t: self.reader.get_frame(t)[:,:,3]/255.0
+            self.mask = (VideoClip(ismask=True, make_frame=mask_mf)
+                         .set_duration(self.duration))
             self.mask.fps = self.fps
 
         else:
@@ -106,18 +116,19 @@ class VideoFileClip(VideoClip):
         if audio and self.reader.infos['audio_found']:
 
             self.audio = AudioFileClip(filename,
-                                       buffersize= audio_buffersize,
-                                       fps = audio_fps,
-                                       nbytes = audio_nbytes)
+                                       buffersize=audio_buffersize,
+                                       fps=audio_fps,
+                                       nbytes=audio_nbytes)
 
-    def __del__(self):
-        """ Close/delete the internal reader. """
-        try:
-            del self.reader
-        except AttributeError:
-            pass
+    def close(self):
+        """ Close the internal reader. """
+        if self.reader:
+            self.reader.close()
+            self.reader = None
 
         try:
-            del self.audio
+            if self.audio:
+                self.audio.close()
+                self.audio = None
         except AttributeError:
             pass

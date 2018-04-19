@@ -1,0 +1,155 @@
+# This file is used to configure the AppVeyor CI system, for testing on Windows machines.
+#
+# Code loosely based on https://github.com/ogrisel/python-appveyor-demo
+# 
+# To test with AppVeyor:
+#    Register on appveyor.com with your GitHub account.
+#    Create a new appveyor project, using the GitHub details.
+#    Ideally, configure notifications to post back to GitHub. (Untested)
+
+environment:
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script interpreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+
+  matrix:
+  
+     # MoviePy supports Python 2.7 and 3.4 onwards.
+     # Strategy:
+     #    Test the latest known patch in each version
+     #    Test the oldest and the newest 32 bit release. 64-bit otherwise.
+  
+    - PYTHON: "C:\\Python27-x64"
+      PYTHON_VERSION: "2.7.13"
+      PYTHON_ARCH: "64"
+      MINICONDA: C:\Miniconda
+      CONDA_INSTALL: "numpy"
+
+    - PYTHON: "C:\\Python34-x64"
+      PYTHON_VERSION: "3.4.5"
+      PYTHON_ARCH: "64"
+      MINICONDA: C:\Miniconda3-x64
+      CONDA_INSTALL: "numpy"
+
+    - PYTHON: "C:\\Python35-x64"
+      PYTHON_VERSION: "3.5.3"
+      PYTHON_ARCH: "64"
+      MINICONDA: C:\Miniconda35-x64
+      CONDA_INSTALL: "numpy"
+
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.2"
+      PYTHON_ARCH: "64"
+      MINICONDA: C:\Miniconda36-x64
+      CONDA_INSTALL: "numpy"
+
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7.13"
+      PYTHON_ARCH: "32"
+      MINICONDA: C:\Miniconda
+      CONDA_INSTALL: "numpy"
+
+    - PYTHON: "C:\\Python34"
+      PYTHON_VERSION: "3.6.2"
+      PYTHON_ARCH: "32"
+      MINICONDA: C:\Miniconda36
+      CONDA_INSTALL: "numpy"
+
+install:
+  # If there is a newer build queued for the same PR, cancel this one.
+  # The AppVeyor 'rollout builds' option is supposed to serve the same
+  # purpose but it is problematic because it tends to cancel builds pushed
+  # directly to master instead of just PR builds (or the converse).
+  # credits: JuliaLang developers.
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+  
+  # Dump some debugging information about the machine.
+  # - ECHO "Filesystem root:"
+  # - ps: "ls \"C:/\""
+  #
+  # - ECHO "Installed SDKs:"
+  # - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+  #
+  # - ECHO "Installed projects:"
+  # - ps: "ls \"C:\\projects\""
+  # - ps: "ls \"C:\\projects\\moviepy\""
+  
+  # - ECHO "Environment Variables"
+  # - set
+
+
+  # Prepend desired Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
+  # Prepare Miniconda.
+  - "ECHO Miniconda is installed in %MINICONDA%, and will be used to install %CONDA_INSTALL%"
+
+  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%PATH%"
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+
+  # Avoid warning from conda info.
+  - conda install -q -n root _license
+  # Dump the setup for debugging.
+  - conda info -a
+
+  # PIP finds some packages challenging. Let Miniconda install them.
+  - conda create --verbose -q -n test-environment python=%PYTHON_VERSION% %CONDA_INSTALL%
+  - activate test-environment
+
+  # Upgrade to the latest version of pip to avoid it displaying warnings
+  # about it being out of date.
+  - pip install --disable-pip-version-check --user --upgrade pip
+  - pip install --user --upgrade setuptools
+
+
+  # Install ImageMagick (which also installs ffmpeg.)
+  # This installation process is a big fragile, as new releases are issued, but no Conda package exists yet.
+  - "ECHO Downloading ImageMagick"
+    # Versions >=7.0 have problems - executables changed names.
+    # Assume 64-bit. Need to change to x86 for 32-bit.
+    # The available version at this site changes - each time it needs to be corrected in four places
+    # in the next few lines.
+  - curl -fskLO ftp://ftp.fifi.org/pub/ImageMagick/binaries/ImageMagick-6.9.9-5-Q16-x64-static.exe
+  - "ECHO Installing ImageMagick"
+  - "ImageMagick-6.9.9-5-Q16-x64-static.exe /verySILENT /SP"
+  - set IMAGEMAGICK_BINARY=c:\\Program Files\\ImageMagick-6.9.9-Q16\\convert.exe
+  - set FFMPEG_BINARY=c:\\Program Files\\ImageMagick-6.9.9-Q16\\ffmpeg.exe
+
+  # Check that we have the expected set-up.
+  - "ECHO We specified %PYTHON_VERSION% win%PYTHON_ARCH%"
+  - "python --version"
+  - "python -c \"import struct; print('Architecture is win'+str(struct.calcsize('P') * 8))\""
+
+build_script:
+
+  # Build the compiled extension
+  - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
+
+test_script:
+  # Run the project tests
+  - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py test"
+
+# TODO: Support the post-test generation of binaries - Pending a version number that is supported (e.g. 0.3.0)
+#
+# after_test:
+#
+# # If tests are successful, create binary packages for the project.
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_wheel"
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_wininst"
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_msi"
+# - ps: "ls dist"
+#
+# artifacts:
+#   # Archive the generated packages in the ci.appveyor.com build report.
+#   - path: dist\*
+#
+# on_success:
+#   - TODO: upload the content of dist/*.whl to a public wheelhouse
