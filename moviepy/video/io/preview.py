@@ -65,7 +65,8 @@ def show(clip, t=0, with_mask=True, interactive=False):
 @requires_duration
 @convert_masks_to_RGB
 def preview(clip, fps=15, audio=True, audio_fps=22050,
-             audio_buffersize=3000, audio_nbytes=2):
+            audio_buffersize=3000, audio_nbytes=2,
+            fullscreen=False):
     """ 
     Displays the clip in a window, at the given frames per second
     (of movie) rate. It will avoid that the clip be played faster
@@ -86,12 +87,20 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     audiofps
       The frames per second to use when generating the audio sound.
       
+    fullscreen
+      ``True`` if you want the preview to be displayed fullscreen.
+      
     """
     
     import pygame as pg
     
+    if fullscreen:
+        flags = pg.FULLSCREEN
+    else:
+        flags = 0
+    
     # compute and splash the first image
-    screen = pg.display.set_mode(clip.size)
+    screen = pg.display.set_mode(clip.size, flags=flags)
     
     audio = audio and (clip.audio is not None)
     
@@ -105,8 +114,10 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
         audioFlag = threading.Event()
         # launch the thread
         audiothread = threading.Thread(target=clip.audio.preview,
-            args = (audio_fps,audio_buffersize, audio_nbytes,
-                    audioFlag, videoFlag))
+                                       args=(audio_fps,
+                                             audio_buffersize,
+                                             audio_nbytes,
+                                             audioFlag, videoFlag))
         audiothread.start()
     
     img = clip.get_frame(0)
@@ -136,9 +147,9 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
                 rgb = img[y,x]
                 result.append({'time':t, 'position':(x,y),
                                 'color':rgb})
-                print( "time, position, color : ", "%.03f, %s, %s"%(
-                             t,str((x,y)),str(rgb)))
+                print("time, position, color : ", "%.03f, %s, %s"%(
+                             t, str((x,y)), str(rgb)))
                     
         t1 = time.time()
-        time.sleep(max(0, t - (t1-t0)) )
+        time.sleep(max(0, t - (t1-t0)))
         imdisplay(img, screen)
