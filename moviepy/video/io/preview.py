@@ -1,4 +1,3 @@
-
 import threading
 import time
 import pygame as pg
@@ -10,6 +9,7 @@ from moviepy.tools import cvsecs
 
 pg.init()
 pg.display.set_caption('MoviePy')
+
 
 def imdisplay(imarray, screen=None):
     """Splashes the given image array on the given pygame screen """
@@ -42,31 +42,31 @@ def show(clip, t=0, with_mask=True, interactive=False):
 
     if with_mask and (clip.mask is not None):
         import moviepy.video.compositing.CompositeVideoClip as cvc
-        clip = cvc.CompositeVideoClip([clip.set_pos((0,0))])
+        clip = cvc.CompositeVideoClip([clip.set_pos((0, 0))])
     img = clip.get_frame(t)
     imdisplay(img)
 
     if interactive:
-        result=[]
+        result = []
         while True:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    if (event.key == pg.K_ESCAPE):
-                        print( "Keyboard interrupt" )
+                    if event.key == pg.K_ESCAPE:
+                        print("Keyboard interrupt")
                         return result
                 elif event.type == pg.MOUSEBUTTONDOWN:
-                     x,y = pg.mouse.get_pos()
-                     rgb = img[y,x]
-                     result.append({'position':(x,y), 'color':rgb})
-                     print( "position, color : ", "%s, %s"%(
-                             str((x,y)),str(rgb)))
+                    x, y = pg.mouse.get_pos()
+                    rgb = img[y, x]
+                    result.append({'position': (x, y), 'color': rgb})
+                    print("position, color : ", "%s, %s" %
+                          (str((x, y)), str(rgb)))
             time.sleep(.03)
+
 
 @requires_duration
 @convert_masks_to_RGB
-def preview(clip, fps=15, audio=True, audio_fps=22050,
-            audio_buffersize=3000, audio_nbytes=2,
-            fullscreen=False):
+def preview(clip, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000,
+            audio_nbytes=2, fullscreen=False):
     """ 
     Displays the clip in a window, at the given frames per second
     (of movie) rate. It will avoid that the clip be played faster
@@ -84,23 +84,20 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
       ``True`` (default) if you want the clip's audio be played during
       the preview.
         
-    audiofps
+    audio_fps
       The frames per second to use when generating the audio sound.
       
     fullscreen
       ``True`` if you want the preview to be displayed fullscreen.
       
     """
-    
-    import pygame as pg
-    
     if fullscreen:
         flags = pg.FULLSCREEN
     else:
         flags = 0
     
     # compute and splash the first image
-    screen = pg.display.set_mode(clip.size, flags=flags)
+    screen = pg.display.set_mode(clip.size, flags)
     
     audio = audio and (clip.audio is not None)
     
@@ -122,9 +119,9 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
     
     img = clip.get_frame(0)
     imdisplay(img, screen)
-    if audio: # synchronize with audio
-        videoFlag.set() # say to the audio: video is ready
-        audioFlag.wait() # wait for the audio to be ready
+    if audio:  # synchronize with audio
+        videoFlag.set()  # say to the audio: video is ready
+        audioFlag.wait()  # wait for the audio to be ready
     
     result = []
     
@@ -134,21 +131,20 @@ def preview(clip, fps=15, audio=True, audio_fps=22050,
         img = clip.get_frame(t)
         
         for event in pg.event.get():
-            if event.type == pg.KEYDOWN:
-                if (event.key == pg.K_ESCAPE):
-                    
-                    if audio:
-                        videoFlag.clear()
-                    print( "Keyboard interrupt" )
-                    return result
+            if event.type == pg.QUIT or \
+                    (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
+                if audio:
+                    videoFlag.clear()
+                print("Window closed")
+                return result
                     
             elif event.type == pg.MOUSEBUTTONDOWN:
-                x,y = pg.mouse.get_pos()
-                rgb = img[y,x]
-                result.append({'time':t, 'position':(x,y),
-                                'color':rgb})
-                print("time, position, color : ", "%.03f, %s, %s"%(
-                             t, str((x,y)), str(rgb)))
+                x, y = pg.mouse.get_pos()
+                rgb = img[y, x]
+                result.append({'time': t, 'position': (x, y),
+                               'color': rgb})
+                print("time, position, color : ", "%.03f, %s, %s" %
+                      (t, str((x, y)), str(rgb)))
                     
         t1 = time.time()
         time.sleep(max(0, t - (t1-t0)))
