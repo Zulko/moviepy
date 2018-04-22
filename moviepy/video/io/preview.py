@@ -135,7 +135,7 @@ def preview(clip, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000,
                     (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 if audio:
                     videoFlag.clear()
-                print("Window closed")
+                print("Interrupt")
                 return result
                     
             elif event.type == pg.MOUSEBUTTONDOWN:
