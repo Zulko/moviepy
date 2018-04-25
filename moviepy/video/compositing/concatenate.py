@@ -76,6 +76,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     h = max([r[1] for r in sizes])
 
     tt = np.maximum(0, tt + padding*np.arange(len(tt)))
+    tt[-1]-=padding # last element is the duration of the whole
 
     if method == "chain":
         def make_frame(t):
