@@ -2,11 +2,11 @@ import os
 import numpy as np
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
-from moviepy.tools import (deprecated_version_of,
-                           extensions_dict)
+from moviepy.tools import deprecated_version_of, extensions_dict
 
 from moviepy.Clip import Clip
 from tqdm import tqdm
+
 
 class AudioClip(Clip):
     """ Base class for audio clips.
@@ -34,16 +34,20 @@ class AudioClip(Clip):
     Examples
     ---------
     
-    >>> # Plays the note A (a sine wave of frequency 404HZ)
+    >>> # Plays the note A (a sine wave of frequency 440HZ)
     >>> import numpy as np
-    >>> make_frame = lambda t : 2*[ np.sin(404 * 2 * np.pi * t) ]
+    >>> make_frame = lambda t: 2*[ np.sin(440 * 2 * np.pi * t) ]
     >>> clip = AudioClip(make_frame, duration=5)
     >>> clip.preview()
                      
     """
     
-    def __init__(self, make_frame = None, duration=None):
+    def __init__(self, make_frame=None, duration=None, fps=None):
         Clip.__init__(self)
+
+        if fps is not None:
+            self.fps = fps
+
         if make_frame is not None:
             self.make_frame = make_frame
             frame0 = self.get_frame(0)
@@ -61,7 +65,7 @@ class AudioClip(Clip):
         """ Iterator that returns the whole sound array of the clip by chunks
         """
         if fps is None:
-            fps=self.fps
+            fps = self.fps
         if chunk_duration is not None:
             chunksize = int(chunk_duration*fps)
         
@@ -75,9 +79,9 @@ class AudioClip(Clip):
             for i in range(nchunks):
                 size = pospos[i+1] - pospos[i]
                 assert(size <= chunksize)
-                tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-                yield self.to_soundarray(tt, nbytes= nbytes, quantize=quantize, fps=fps,
-                                         buffersize=chunksize)
+                tt = (1.0/fps)*np.arange(pospos[i], pospos[i+1])
+                yield self.to_soundarray(tt, nbytes=nbytes, quantize=quantize,
+                                         fps=fps, buffersize=chunksize)
 
         if progress_bar:
             return tqdm(generator(), total=nchunks)
@@ -85,7 +89,7 @@ class AudioClip(Clip):
             return generator()
 
     @requires_duration
-    def to_soundarray(self,tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
+    def to_soundarray(self, tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
         """
         Transforms the sound into an array that can be played by pygame
         or written in a wav file. See ``AudioClip.preview``.
@@ -105,12 +109,12 @@ class AudioClip(Clip):
         if fps is None:
             fps = self.fps
        
-        stacker = np.vstack if self.nchannels==2 else np.hstack 
+        stacker = np.vstack if self.nchannels == 2 else np.hstack
         max_duration = 1.0 * buffersize / fps
-        if (tt is None):
-            if self.duration>max_duration:
-                return stacker(self.iter_chunks(fps=fps, quantize=quantize, nbytes=2,
-                                                 chunksize=buffersize))
+        if tt is None:
+            if self.duration > max_duration:
+                return stacker(self.iter_chunks(fps=fps, quantize=quantize,
+                                                nbytes=2, chunksize=buffersize))
             else:
                 tt = np.arange(0, self.duration, 1.0/fps)
         """
@@ -126,9 +130,9 @@ class AudioClip(Clip):
         snd_array = self.get_frame(tt)
 
         if quantize:
-            snd_array = np.maximum(-0.99, np.minimum(0.99,snd_array))
-            inttype = {1:'int8',2:'int16', 4:'int32'}[nbytes]
-            snd_array= (2**(8*nbytes-1)*snd_array).astype(inttype)
+            snd_array = np.maximum(-0.99, np.minimum(0.99, snd_array))
+            inttype = {1: 'int8', 2: 'int16', 4: 'int32'}[nbytes]
+            snd_array = (2**(8*nbytes-1)*snd_array).astype(inttype)
         
         return snd_array
 
@@ -136,20 +140,15 @@ class AudioClip(Clip):
         
         stereo = stereo and (self.nchannels == 2)
 
-        maxi = np.array([0,0]) if stereo else 0
+        maxi = np.array([0, 0]) if stereo else 0
         for chunk in self.iter_chunks(chunksize=chunksize, progress_bar=progress_bar):
-            maxi =  np.maximum(maxi,abs(chunk).max(axis=0)) if stereo else max(maxi,abs(chunk).max())
+            maxi = np.maximum(maxi, abs(chunk).max(axis=0)) if stereo else max(maxi, abs(chunk).max())
         return maxi
 
-
-
-    
     @requires_duration
-    def write_audiofile(self,filename, fps=44100, nbytes=2,
-                        buffersize=2000, codec=None,
-                        bitrate=None, ffmpeg_params=None,
-                        write_logfile=False, verbose=True,
-                        progress_bar=True):
+    def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
+                        codec=None, bitrate=None, ffmpeg_params=None,
+                        write_logfile=False, verbose=True, progress_bar=True):
         """ Writes an audio file from the AudioClip.
 
 
@@ -160,9 +159,10 @@ class AudioClip(Clip):
           Name of the output file
 
         fps
-          Frames per second
+          Frames per second. If not set, it will try default to self.fps if
+          already set, otherwise it will default to 44100
 
-        nbyte
+        nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
 
         codec
@@ -191,6 +191,11 @@ class AudioClip(Clip):
           Boolean indicating whether to show the progress bar.
 
         """
+        if not fps:
+            if not self.fps:
+                fps = 44100
+            else:
+                fps = self.fps
 
         if codec is None:
             name, ext = os.path.splitext(os.path.basename(filename))
@@ -198,12 +203,13 @@ class AudioClip(Clip):
                 codec = extensions_dict[ext[1:]]['codec'][0]
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
-                       "with the filename. Provide the 'codec' parameter in "
-                       "write_videofile.")
+                                 "with the filename. Provide the 'codec' "
+                                 "parameter in write_audiofile.")
 
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
-                                 codec=codec, bitrate=bitrate, write_logfile=write_logfile,
-                                 verbose=verbose, ffmpeg_params=ffmpeg_params,
+                                 codec=codec, bitrate=bitrate,
+                                 write_logfile=write_logfile, verbose=verbose,
+                                 ffmpeg_params=ffmpeg_params,
                                  progress_bar=progress_bar)
 
 
@@ -211,6 +217,7 @@ class AudioClip(Clip):
 AudioClip.to_audiofile = deprecated_version_of(AudioClip.write_audiofile,
                                                'to_audiofile')
 ###
+
 
 class AudioArrayClip(AudioClip):
     """
@@ -236,16 +243,15 @@ class AudioArrayClip(AudioClip):
         self.array = array
         self.fps = fps
         self.duration = 1.0 * len(array) / fps
-        
-        
+
         def make_frame(t):
             """ complicated, but must be able to handle the case where t
             is a list of the form sin(t) """
             
             if isinstance(t, np.ndarray):
                 array_inds = (self.fps*t).astype(int)
-                in_array = (array_inds>0) & (array_inds < len(self.array))
-                result = np.zeros((len(t),2))
+                in_array = (array_inds > 0) & (array_inds < len(self.array))
+                result = np.zeros((len(t), 2))
                 result[in_array] = self.array[array_inds[in_array]]
                 return result
             else:
@@ -290,12 +296,12 @@ class CompositeAudioClip(AudioClip):
             
             played_parts = [c.is_playing(t) for c in self.clips]
             
-            sounds= [c.get_frame(t - c.start)*np.array([part]).T
-                     for c,part in zip(self.clips, played_parts)
-                     if (part is not False) ]
+            sounds = [c.get_frame(t - c.start)*np.array([part]).T
+                      for c, part in zip(self.clips, played_parts)
+                      if (part is not False)]
                      
-            if isinstance(t,np.ndarray):
-                zero = np.zeros((len(t),self.nchannels))
+            if isinstance(t, np.ndarray):
+                zero = np.zeros((len(t), self.nchannels))
                 
             else:
                 zero = np.zeros(self.nchannels)
@@ -306,7 +312,19 @@ class CompositeAudioClip(AudioClip):
 
 
 def concatenate_audioclips(clips):
+    """
+    The clip with the highest FPS will be the FPS of the result clip.
+    """
     durations = [c.duration for c in clips]
-    tt = np.cumsum([0]+durations) # start times, and end time.
-    newclips= [c.set_start(t) for c,t in zip(clips, tt)]
-    return CompositeAudioClip(newclips).set_duration(tt[-1])
+    tt = np.cumsum([0]+durations)  # start times, and end time.
+    newclips = [c.set_start(t) for c, t in zip(clips, tt)]
+
+    result = CompositeAudioClip(newclips).set_duration(tt[-1])
+
+    fpss = [c.fps for c in clips if hasattr(c, 'fps') and c.fps is not None]
+    if len(fpss) == 0:
+        result.fps = None
+    else:
+        result.fps = max(fpss)
+
+    return result

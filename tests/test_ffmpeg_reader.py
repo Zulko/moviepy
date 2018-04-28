@@ -21,6 +21,15 @@ def test_ffmpeg_parse_infos():
     d=ffmpeg_parse_infos("media/pigs_in_a_polka.gif")
     assert d['video_size'] == [314, 273]
     assert d['duration'] == 3.0
+    assert not d['audio_found']
+
+    d=ffmpeg_parse_infos("media/video_with_failing_audio.mp4")
+    assert d['audio_found']
+    assert d['audio_fps'] == 44100
+
+    d=ffmpeg_parse_infos("media/crunching.mp3")
+    assert d['audio_found']
+    assert d['audio_fps'] == 48000
 
 
 if __name__ == '__main__':
