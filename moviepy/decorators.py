@@ -4,7 +4,7 @@ all decorators used in moviepy go there
 
 import decorator
 from moviepy.tools import cvsecs
-
+import pygame as pg
 
 
 @decorator.decorator
@@ -139,10 +139,13 @@ def use_clip_fps_by_default(f, clip, *a, **k):
 
 @decorator.decorator
 def pygame_quit(f, *a, **k):
-    value = f(*a, **k)
-    import pygame as pg
-    pg.mixer.quit()
-    pg.quit()
+    value = None
+    try:
+        value = f(*a, **k)
+        pg.mixer.quit()
+        pg.quit()
+    except pg.error:
+        pass
     return value
 
 

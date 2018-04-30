@@ -1,5 +1,21 @@
 # Change Log
 
+## [v0.2.3.4](https://github.com/Zulko/moviepy/tree/v0.2.3.4) (2018-04-22)
+[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.3...v0.2.3.4)
+
+**Closed issues:**
+
+- fail to install [\#771](https://github.com/Zulko/moviepy/issues/771)
+- install moviepy [\#758](https://github.com/Zulko/moviepy/issues/758)
+- How to prepend hexadecimal data to a binary file? [\#757](https://github.com/Zulko/moviepy/issues/757)
+- It’s time for a new release [\#742](https://github.com/Zulko/moviepy/issues/742)
+- wrong video duration value when concatenating videos with method = compose [\#574](https://github.com/Zulko/moviepy/issues/574)
+
+**Merged pull requests:**
+
+- Added `fullscreen` parameter to `preview\(\)` [\#773](https://github.com/Zulko/moviepy/pull/773) ([tburrows13](https://github.com/tburrows13))
+- add pcm\_s24le codec [\#769](https://github.com/Zulko/moviepy/pull/769) ([lsde](https://github.com/lsde))
+
 ## [v0.2.3.3](https://github.com/Zulko/moviepy/tree/v0.2.3.3) (2018-04-17)
 [Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.2...v0.2.3.3)
 
@@ -13,11 +29,6 @@
 
 **Fixed bugs:**
 
-- Issue with nesting context managers [\#655](https://github.com/Zulko/moviepy/issues/655)
-- Is there one potential bug in FFMPEG\_READER? [\#546](https://github.com/Zulko/moviepy/issues/546)
-- vfx.scroll giving TypeError: slice indices must be integers or None or have an \_\_index\_\_ method [\#527](https://github.com/Zulko/moviepy/issues/527)
-- IndexError when converting audio to\_soundarray\(\) [\#246](https://github.com/Zulko/moviepy/issues/246)
-- Unable to use unicode strings with Python 2 [\#76](https://github.com/Zulko/moviepy/issues/76)
 - Added ffmpeg download when importing moviepy.editor [\#731](https://github.com/Zulko/moviepy/pull/731) ([tburrows13](https://github.com/tburrows13))
 - Fixed bugs, neater code, changed docstrings in audiofiles [\#722](https://github.com/Zulko/moviepy/pull/722) ([tburrows13](https://github.com/tburrows13))
 - Resolve undefined name execfile in Python 3 [\#718](https://github.com/Zulko/moviepy/pull/718) ([cclauss](https://github.com/cclauss))
@@ -65,6 +76,7 @@
 - In idle, 25 % CPU [\#676](https://github.com/Zulko/moviepy/issues/676)
 - Audio error [\#675](https://github.com/Zulko/moviepy/issues/675)
 - Insert a ImageClip in a CompositeVideoClip. How to add nil audio [\#669](https://github.com/Zulko/moviepy/issues/669)
+- Issue with nesting context managers [\#655](https://github.com/Zulko/moviepy/issues/655)
 - Output video is garbled, single frames output are fine [\#651](https://github.com/Zulko/moviepy/issues/651)
 - 'missing handle' error [\#644](https://github.com/Zulko/moviepy/issues/644)
 - issue with proc being None [\#636](https://github.com/Zulko/moviepy/issues/636)
@@ -77,13 +89,17 @@
 - test\_duration\(\) fails in test\_TextClip\(\) [\#598](https://github.com/Zulko/moviepy/issues/598)
 - Geting framesize from moviepy [\#571](https://github.com/Zulko/moviepy/issues/571)
 - Write\_videofile results in 1930x1080 even when I force clip.resize\(width=1920,height=1080\) before write\_videofile [\#547](https://github.com/Zulko/moviepy/issues/547)
+- Is there one potential bug in FFMPEG\_READER? [\#546](https://github.com/Zulko/moviepy/issues/546)
+- vfx.scroll giving TypeError: slice indices must be integers or None or have an \_\_index\_\_ method [\#527](https://github.com/Zulko/moviepy/issues/527)
 - AttributeError: AudioFileClip instance has no attribute 'afx' [\#513](https://github.com/Zulko/moviepy/issues/513)
 - ImageSequenceClip repeats frames depending on fps [\#464](https://github.com/Zulko/moviepy/issues/464)
 - manual\_tracking format issue [\#373](https://github.com/Zulko/moviepy/issues/373)
 - resize video when time changed trigger a error [\#334](https://github.com/Zulko/moviepy/issues/334)
 - WindowsError: \[Error 5\] Access is denied [\#294](https://github.com/Zulko/moviepy/issues/294)
 - TypeError in Adding Soundtrack [\#279](https://github.com/Zulko/moviepy/issues/279)
+- IndexError when converting audio to\_soundarray\(\) [\#246](https://github.com/Zulko/moviepy/issues/246)
 - Defaults fail for ImageSequenceClip\(\) [\#218](https://github.com/Zulko/moviepy/issues/218)
+- Unable to use unicode strings with Python 2 [\#76](https://github.com/Zulko/moviepy/issues/76)
 - audio normalization [\#32](https://github.com/Zulko/moviepy/issues/32)
 - Unclosed processes. [\#19](https://github.com/Zulko/moviepy/issues/19)
 
@@ -123,15 +139,12 @@
 - Modify setup.py handling [\#531](https://github.com/Zulko/moviepy/pull/531) ([mbeacom](https://github.com/mbeacom))
 - Resolve documentation build errors [\#526](https://github.com/Zulko/moviepy/pull/526) ([mbeacom](https://github.com/mbeacom))
 
-**Fixed bugs:**
-
-- Documentation build failures [\#525](https://github.com/Zulko/moviepy/issues/525)
-- Index is out of bounds - AudioFileClip [\#521](https://github.com/Zulko/moviepy/issues/521)
-
 **Closed issues:**
 
 - Youtube videos fail to load in documentation [\#536](https://github.com/Zulko/moviepy/issues/536)
 - unicodeDecoderError by running the setup.py during moviepy pip install [\#532](https://github.com/Zulko/moviepy/issues/532)
+- Documentation build failures [\#525](https://github.com/Zulko/moviepy/issues/525)
+- Index is out of bounds - AudioFileClip [\#521](https://github.com/Zulko/moviepy/issues/521)
 - Should we push another version? [\#481](https://github.com/Zulko/moviepy/issues/481)
 - Add matplotlib example to the user guide? [\#421](https://github.com/Zulko/moviepy/issues/421)
 - Fails to list fx after freezing an app with moviepy [\#274](https://github.com/Zulko/moviepy/issues/274)
@@ -162,20 +175,6 @@
 - Fix for cleaning up os calls through Popen [\#501](https://github.com/Zulko/moviepy/pull/501) ([gyglim](https://github.com/gyglim))
 - pick highest fps when concatenating [\#416](https://github.com/Zulko/moviepy/pull/416) ([BrianLee608](https://github.com/BrianLee608))
 
-**Fixed bugs:**
-
-- Possible to create out of bounds subclip [\#470](https://github.com/Zulko/moviepy/issues/470)
-- TypeError: 'float' object cannot be interpreted as an integer [\#376](https://github.com/Zulko/moviepy/issues/376)
-- TextClip.list\('color'\) failed to return color list [\#371](https://github.com/Zulko/moviepy/issues/371)
-- Bug in write\_gif [\#359](https://github.com/Zulko/moviepy/issues/359)
-- crossfadeout "Attribute 'duration' not set" [\#354](https://github.com/Zulko/moviepy/issues/354)
-- AAC support for mp4 [\#344](https://github.com/Zulko/moviepy/issues/344)
-- Python2 unicode\_literals errors [\#293](https://github.com/Zulko/moviepy/issues/293)
-- concatenate ImageClip  [\#285](https://github.com/Zulko/moviepy/issues/285)
-- VideoFileClip instance has no attribute 'reader' [\#255](https://github.com/Zulko/moviepy/issues/255)
-- TextClip.list\('color'\) fails [\#200](https://github.com/Zulko/moviepy/issues/200)
-- transparency bug in concatenate\_videoclips\(\) [\#103](https://github.com/Zulko/moviepy/issues/103)
-
 **Closed issues:**
 
 - concatenate\_videoclips\(\[clip1,clip2\]\) results in a clip where the second clip is skewed and has severe lines [\#520](https://github.com/Zulko/moviepy/issues/520)
@@ -185,6 +184,7 @@
 - How to remove original audio from the video file ? [\#504](https://github.com/Zulko/moviepy/issues/504)
 - Duration Format With Moviepy [\#502](https://github.com/Zulko/moviepy/issues/502)
 - AttributeError: 'numpy.ndarray' object has no attribute 'tobytes' [\#499](https://github.com/Zulko/moviepy/issues/499)
+- Possible to create out of bounds subclip [\#470](https://github.com/Zulko/moviepy/issues/470)
 - New install... VideoFileClip\("x.mp4"\).subclip\(0,13\) gives "reader not defined error" [\#461](https://github.com/Zulko/moviepy/issues/461)
 - Bytes-like object is required, not 'str' in version 0.2.2.13 [\#455](https://github.com/Zulko/moviepy/issues/455)
 - Can't import gifs into moviepy [\#452](https://github.com/Zulko/moviepy/issues/452)
@@ -203,16 +203,21 @@
 - moviepy not able to find installed ffmpeg    bug? [\#396](https://github.com/Zulko/moviepy/issues/396)
 - Cannot open audio: AttributeError: 'NoneType' object has no attribute 'start' [\#393](https://github.com/Zulko/moviepy/issues/393)
 - DirectoryClip??? Where is it? [\#385](https://github.com/Zulko/moviepy/issues/385)
+- TypeError: 'float' object cannot be interpreted as an integer [\#376](https://github.com/Zulko/moviepy/issues/376)
 - Minor Documentation typo in VideoFileClip [\#375](https://github.com/Zulko/moviepy/issues/375)
 - Documentation Update: VideoTools [\#372](https://github.com/Zulko/moviepy/issues/372)
+- TextClip.list\('color'\) failed to return color list [\#371](https://github.com/Zulko/moviepy/issues/371)
 - ValueError: Invalid value for quantizer: 'wu' [\#368](https://github.com/Zulko/moviepy/issues/368)
 - Parameter color in ColorClip [\#366](https://github.com/Zulko/moviepy/issues/366)
 - Different size videos [\#365](https://github.com/Zulko/moviepy/issues/365)
+- Bug in write\_gif [\#359](https://github.com/Zulko/moviepy/issues/359)
 - Add support for dithering GIF output [\#358](https://github.com/Zulko/moviepy/issues/358)
 - VideoFileClip instance has no attribute 'coreader' [\#357](https://github.com/Zulko/moviepy/issues/357)
+- crossfadeout "Attribute 'duration' not set" [\#354](https://github.com/Zulko/moviepy/issues/354)
 - ffmpeg\_parse\_infos fails while parsing tbr [\#352](https://github.com/Zulko/moviepy/issues/352)
 - No audio when adding Mp3 to VideoFileClip MoviePy [\#350](https://github.com/Zulko/moviepy/issues/350)
 - ImportError: No module named tracking \(OS: 10.11.6 "El Capitan", Python 2.7.12\) [\#348](https://github.com/Zulko/moviepy/issues/348)
+- AAC support for mp4 [\#344](https://github.com/Zulko/moviepy/issues/344)
 - Moviepy not compatible with Python 3.2 [\#333](https://github.com/Zulko/moviepy/issues/333)
 - Attribute Error \(Raspberry Pi\) [\#332](https://github.com/Zulko/moviepy/issues/332)
 - ImageSequenceClip: Error when fps not provided but durations provided [\#326](https://github.com/Zulko/moviepy/issues/326)
@@ -224,7 +229,10 @@
 - Broken Gallery in Documentation [\#304](https://github.com/Zulko/moviepy/issues/304)
 - File IOError when trying to extract subclips from mov file on Ubuntu [\#303](https://github.com/Zulko/moviepy/issues/303)
 - write\_gif failing [\#296](https://github.com/Zulko/moviepy/issues/296)
+- Python2 unicode\_literals errors [\#293](https://github.com/Zulko/moviepy/issues/293)
+- concatenate ImageClip  [\#285](https://github.com/Zulko/moviepy/issues/285)
 - Resize not working [\#272](https://github.com/Zulko/moviepy/issues/272)
+- VideoFileClip instance has no attribute 'reader' [\#255](https://github.com/Zulko/moviepy/issues/255)
 - stretch image to size of frame [\#250](https://github.com/Zulko/moviepy/issues/250)
 - ffprobe metadata on video file clips [\#249](https://github.com/Zulko/moviepy/issues/249)
 - Credits1 is not working - gap missing, isTransparent flag not available [\#247](https://github.com/Zulko/moviepy/issues/247)
@@ -235,6 +243,7 @@
 - Video overlay \(gauges...\) [\#222](https://github.com/Zulko/moviepy/issues/222)
 - OSError: \[WinError 193\] %1 n’est pas une application Win32 valide [\#221](https://github.com/Zulko/moviepy/issues/221)
 - Warning: skimage.filter is deprecated [\#214](https://github.com/Zulko/moviepy/issues/214)
+- TextClip.list\('color'\) fails [\#200](https://github.com/Zulko/moviepy/issues/200)
 - External FFmpeg issues [\#193](https://github.com/Zulko/moviepy/issues/193)
 - Video and Audio are out of sync after write [\#192](https://github.com/Zulko/moviepy/issues/192)
 - Broken image on PyPI [\#187](https://github.com/Zulko/moviepy/issues/187)
@@ -257,6 +266,7 @@
 - Attempt to Download freeimage failing [\#111](https://github.com/Zulko/moviepy/issues/111)
 - Invalid buffer size, packet size \< expected frame\_size [\#109](https://github.com/Zulko/moviepy/issues/109)
 - imageio has permission problems as WSGI user on Amazon Web Server [\#106](https://github.com/Zulko/moviepy/issues/106)
+- transparency bug in concatenate\_videoclips\(\) [\#103](https://github.com/Zulko/moviepy/issues/103)
 - Possibility to avoid code duplication [\#99](https://github.com/Zulko/moviepy/issues/99)
 - Memory Leak In VideoFileClip [\#96](https://github.com/Zulko/moviepy/issues/96)
 
@@ -341,23 +351,20 @@
 
 - Add `self.filename` as a `VideoFileClip` attribute [\#405](https://github.com/Zulko/moviepy/pull/405) ([tburrows13](https://github.com/tburrows13))
 
-**Fixed bugs:**
-
-- Bug in ffmpeg\_audiowriter.py for python 3 [\#335](https://github.com/Zulko/moviepy/issues/335)
-- concatenate.py - Python3 incompatible [\#313](https://github.com/Zulko/moviepy/issues/313)
-- fix issue \#313, make concatenate\_videoclips python 3 compatible. [\#410](https://github.com/Zulko/moviepy/pull/410) ([earney](https://github.com/earney))
-- ensures int arguments to np.reshape; closes \#383 [\#384](https://github.com/Zulko/moviepy/pull/384) ([tyarkoni](https://github.com/tyarkoni))
-
 **Closed issues:**
 
 - keep github releases in sync with PyPI [\#398](https://github.com/Zulko/moviepy/issues/398)
 - accidentally opened, sorry [\#397](https://github.com/Zulko/moviepy/issues/397)
 - BrokenPipeError [\#349](https://github.com/Zulko/moviepy/issues/349)
+- Bug in ffmpeg\_audiowriter.py for python 3 [\#335](https://github.com/Zulko/moviepy/issues/335)
+- concatenate.py - Python3 incompatible [\#313](https://github.com/Zulko/moviepy/issues/313)
 
 **Merged pull requests:**
 
+- fix issue \#313, make concatenate\_videoclips python 3 compatible. [\#410](https://github.com/Zulko/moviepy/pull/410) ([earney](https://github.com/earney))
 - Update maintainer section in README [\#409](https://github.com/Zulko/moviepy/pull/409) ([mbeacom](https://github.com/mbeacom))
 - fix issue \#401 [\#403](https://github.com/Zulko/moviepy/pull/403) ([earney](https://github.com/earney))
+- ensures int arguments to np.reshape; closes \#383 [\#384](https://github.com/Zulko/moviepy/pull/384) ([tyarkoni](https://github.com/tyarkoni))
 - on\_color function docstring has wrong parameter [\#244](https://github.com/Zulko/moviepy/pull/244) ([cblument](https://github.com/cblument))
 
 ## [v0.2.2.12](https://github.com/Zulko/moviepy/tree/v0.2.2.12) (2017-01-30)
@@ -367,14 +374,10 @@
 
 - Update version and readme to include maintainers section [\#395](https://github.com/Zulko/moviepy/pull/395) ([mbeacom](https://github.com/mbeacom))
 
-**Fixed bugs:**
-
-- read\_chunk\(\) breaks in numpy 1.12.0 [\#383](https://github.com/Zulko/moviepy/issues/383)
-- Fix \#164 - Resolve ffmpeg zombie processes [\#374](https://github.com/Zulko/moviepy/pull/374) ([mbeacom](https://github.com/mbeacom))
-
 **Closed issues:**
 
 - Numpy 1.12.0 Breaks VideoFileClip [\#392](https://github.com/Zulko/moviepy/issues/392)
+- read\_chunk\(\) breaks in numpy 1.12.0 [\#383](https://github.com/Zulko/moviepy/issues/383)
 - Intel MKL FATAL ERROR: Cannot load libmkl\_avx.so or libmkl\_def.so [\#379](https://github.com/Zulko/moviepy/issues/379)
 - Memory Error [\#370](https://github.com/Zulko/moviepy/issues/370)
 - module 'cv2' has no attribute 'resize' [\#369](https://github.com/Zulko/moviepy/issues/369)
@@ -431,6 +434,7 @@
 
 **Merged pull requests:**
 
+- Fix \#164 - Resolve ffmpeg zombie processes [\#374](https://github.com/Zulko/moviepy/pull/374) ([mbeacom](https://github.com/mbeacom))
 - Updated resize function to use cv2.INTER\_LINEAR when upsizing images … [\#268](https://github.com/Zulko/moviepy/pull/268) ([kuchi](https://github.com/kuchi))
 - Read FFMPEG\_BINARY and/or IMAGEMAGICK\_BINARY environment variables [\#238](https://github.com/Zulko/moviepy/pull/238) ([dkarchmer](https://github.com/dkarchmer))
 - Fixing a minor typo. [\#205](https://github.com/Zulko/moviepy/pull/205) ([TheNathanBlack](https://github.com/TheNathanBlack))
@@ -451,13 +455,6 @@
 - additional safe check in close\_proc [\#100](https://github.com/Zulko/moviepy/pull/100) ([Eloar](https://github.com/Eloar))
 
 ## [v0.2.2](https://github.com/Zulko/moviepy/tree/v0.2.2) (2014-12-11)
-**Fixed bugs:**
-
-- Python 3.3.3 - invalid syntax error [\#12](https://github.com/Zulko/moviepy/issues/12)
-- something went wrong with the audio writing, Exit code 1 [\#10](https://github.com/Zulko/moviepy/issues/10)
-- `error: string:` When trying to import from moviepy [\#9](https://github.com/Zulko/moviepy/issues/9)
-- "list index out of range" error or Arch Linux x86-64 [\#3](https://github.com/Zulko/moviepy/issues/3)
-
 **Closed issues:**
 
 - Incorrect size being sent to ffmpeg [\#102](https://github.com/Zulko/moviepy/issues/102)
@@ -508,8 +505,12 @@
 - Problems with preview + missing explanation of crop + resize not working [\#15](https://github.com/Zulko/moviepy/issues/15)
 - AssertionError in ffmpeg\_reader.py [\#14](https://github.com/Zulko/moviepy/issues/14)
 - ffmpeg hangs [\#13](https://github.com/Zulko/moviepy/issues/13)
+- Python 3.3.3 - invalid syntax error [\#12](https://github.com/Zulko/moviepy/issues/12)
+- something went wrong with the audio writing, Exit code 1 [\#10](https://github.com/Zulko/moviepy/issues/10)
+- `error: string:` When trying to import from moviepy [\#9](https://github.com/Zulko/moviepy/issues/9)
 - Reading video on Ubuntu 13.10 does not work [\#8](https://github.com/Zulko/moviepy/issues/8)
 - List decorator and pygame as dependencies on PyPI [\#4](https://github.com/Zulko/moviepy/issues/4)
+- "list index out of range" error or Arch Linux x86-64 [\#3](https://github.com/Zulko/moviepy/issues/3)
 - IndexError? [\#2](https://github.com/Zulko/moviepy/issues/2)
 - Can't write a movie with default codec [\#1](https://github.com/Zulko/moviepy/issues/1)
 
