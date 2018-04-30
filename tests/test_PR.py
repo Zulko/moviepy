@@ -2,6 +2,7 @@
 """Pull request tests meant to be run with pytest."""
 import os
 import sys
+import time
 
 import pytest
 from moviepy.video.fx.scroll import scroll
@@ -122,6 +123,12 @@ def test_PR_610():
     composite = CompositeVideoClip([clip1, clip2])
 
     assert composite.fps == 25
+
+
+def test_PR_766():
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
+    clip.preview()
+    time.sleep(0.5)
 
 
 if __name__ == '__main__':
