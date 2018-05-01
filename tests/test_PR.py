@@ -2,7 +2,6 @@
 """Pull request tests meant to be run with pytest."""
 import os
 import sys
-import time
 
 import pytest
 from moviepy.video.fx.scroll import scroll
