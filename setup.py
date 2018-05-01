@@ -88,8 +88,7 @@ test_reqs = [
         'coveralls>=1.1,<2.0',
         'pytest-cov>=2.5.1,<3.0',
         'pytest>=3.0.0,<4.0',
-        'requests>=2.8.1,<3.0',
-        'pygame>=1.9,<2'
+        'requests>=2.8.1,<3.0'
     ]
 
 extra_reqs = {

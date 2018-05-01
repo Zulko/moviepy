@@ -125,11 +125,5 @@ def test_PR_610():
     assert composite.fps == 25
 
 
-def test_PR_766():
-    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
-    clip.preview()
-    time.sleep(0.5)
-
-
 if __name__ == '__main__':
    pytest.main()
