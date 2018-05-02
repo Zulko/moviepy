@@ -31,6 +31,10 @@ from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
+try:
+    from .video.compositing.BlendedCompositeVideoClip import BlendedCompositeVideoClip
+except ImportError:
+    pass
 from .video.compositing.concatenate import concatenate_videoclips, concatenate # concatenate=deprecated
 
 from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
