@@ -4,14 +4,36 @@ methods that are difficult to do with the existing Python libraries.
 """
 
 import numpy as np
+try:
+    from blend_modes import blend_modes
+    blending_enabled = True
+except ImportError:
+    blending_enabled = False
 
-def blit(im1, im2, pos=None, mask=None, ismask=False):
+def blit(im1, im2, pos=None, mask=None, ismask=False, blend_mode='normal',
+         blend_opacity=1.0, blend_weight=1.0):
     """ Blit an image over another.
     
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided. If ``im1`` and ``im2`` are mask pictures
     (2D float arrays) then ``ismask`` must be ``True``.
+
+    By default, and if the blend_modes package is not installed, ``im1`` will
+    be follow the "normal" blend mode, see
+    https://en.wikipedia.org/wiki/Blend_modes#Normal_blend_mode
+
+    If blend_modes is installed, then any of the blend_modes can be used. There
+    are two additional parameters which can be used to fine-tune the output:
+    ``blend_opacity`` (float, [0,1]) the opacity that is passed through
+    to the blend_mode
+    ``blend_weight`` (float, [0,1]) allows for combining a blend_mode with
+    the "normal" blend mode, which is useful for layers that can end up
+    looking dark. A value of 1 corresponds to using blend_mode fully and a
+    value of 0 corresponds to using "normal" fully.
     """
+    def _blend_normal(mask, blitted, blit_region):
+        return (1.0 * mask * blitted) + ((1.0 - mask) * blit_region)
+
     if pos is None:
         pos = [0, 0]
 
@@ -41,13 +63,49 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
-        new_im2[yp1:yp2, xp1:xp2] = (
-            1.0 * mask * blitted + (1.0 - mask) * blit_region)
+
+        # Sanity check on inputs
+        blend_mode = blend_mode.strip().lower()
+        blend_opacity = max(min(abs(blend_opacity), 1.0), 0.0)
+        blend_weight = max(min(abs(blend_weight), 1.0), 0.0)
+        if ((blend_mode == 'normal') or (not blending_enabled)):
+            new_im2[yp1:yp2, xp1:xp2] = _blend_normal(mask, blitted, blit_region)
+        else:
+            # Arrays are converted to be four-dimensional since blend_modes
+            # works with the alpha-channel for the blending
+            # For now assume all background (im2) to be visible
+            background = np.ones(
+                (blit_region.shape[0], blit_region.shape[1], 4), dtype='float'
+            )
+            background[:,:,:3] = blit_region
+
+            # Layer / im1
+            layer = np.zeros(
+                (blit_region.shape[0], blit_region.shape[1], 4), dtype='float'
+            )
+            layer[:,:,:3] = blitted
+            # Mask is duplicated across channels above, so just take the first
+            layer[:,:,3] = mask[:,:,0]
+
+            # Defer the blending calculations to blend_modes package
+            try:
+                blend_method = getattr(blend_modes, blend_mode)
+                blended = blend_method(background, layer, blend_opacity)
+            except AttributeError:
+                blended = _blend_normal(mask, blitted, blit_region)
+
+            # Combine if non-unity blend_weight
+            if blend_weight < 1.0:
+                blended *= blend_weight
+                blended[:,:,:3] += (1.0 - blend_weight) * _blend_normal(mask, blitted, blit_region)
+
+            # Update the relevant part of new_im2
+            new_im2[yp1:yp2, xp1:xp2] = blended[:,:,:3]
+
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
 
     return new_im2.astype('uint8') if (not ismask) else new_im2
-
 
 
 def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
@@ -255,7 +313,8 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     # if we are here, it means we didn't exit with a proper 'return'
     print( "Arguments in color_split not understood !" )
     raise
-    
+
+
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     """ Draw an image with a circle.
     
