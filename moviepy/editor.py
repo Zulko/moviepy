@@ -6,7 +6,7 @@ MoviePy by simply typing:
 
 In particular it will load many effects from the video.fx and audio.fx
 folders and turn them into VideoClip methods, so that instead of
->>> clip.fx( vfx.resize, 2 ) # or equivalently vfx.resize(clip, 2)
+>>> clip.fx(vfx.resize, 2) # or equivalently vfx.resize(clip, 2)
 we can write
 >>> clip.resize(2)
 
@@ -28,7 +28,6 @@ if os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio') == 'ffmpeg-imageio':
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
-from .video.io.downloader import download_webfile
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from .video.compositing.concatenate import concatenate_videoclips, concatenate # concatenate=deprecated
@@ -56,7 +55,7 @@ except ImportError:
 
 # The next loop transforms many effects into VideoClip methods so that
 # they can be walled with myclip.resize(width=500) instead of 
-# myclip.fx( vfx.resize, width= 500)
+# myclip.fx(vfx.resize, width=500)
 for method in [
           "afx.audio_fadein",
           "afx.audio_fadeout",
@@ -85,7 +84,7 @@ for method in ["afx.audio_fadein",
                "afx.audio_loop",
                "afx.audio_normalize",
                "afx.volumex"
-              ]:
+               ]:
               
     exec("AudioClip.%s = %s" % (method.split('.')[1], method))
 
@@ -93,7 +92,7 @@ for method in ["afx.audio_fadein",
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 # Previews: try to import pygame, else make methods which raise
 # exceptions saying to install PyGame
 
