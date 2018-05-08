@@ -525,15 +525,11 @@ class VideoClip(Clip):
             post_array = np.hstack((post_array, x_1))
         return post_array
 
-    def blit_on(self, picture, t, blend_mode='normal', blend_opacity=1.0,
-                blend_weight=1.0):
+    def blit_on(self, picture, t):
         """
         Returns the result of the blit of the clip's frame at time `t`
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
-
-        Blending parameters are exposed for BlendedCompositeVideoClip,
-        otherwise they are ignored.
         """
         hf, wf = framesize = picture.shape[:2]
 
@@ -582,11 +578,7 @@ class VideoClip(Clip):
 
         pos = map(int, pos)
 
-        result = blit(
-            img, picture, pos, mask=mask, ismask=self.ismask, blend_mode=blend_mode,
-            blend_opacity=blend_opacity, blend_weight=blend_weight,
-        )
-        return result
+        return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 
     def add_mask(self):
         """Add a mask VideoClip to the VideoClip.
