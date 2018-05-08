@@ -4,7 +4,8 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 try:
     from blend_modes import blend_modes
 except ImportError as ex:
-    msg = 'Using BlendedCompositeVideoClip requires the "blend_modes" package.'
+    msg = 'Using BlendedCompositeVideoClip requires the "blend_modes" package.' +\
+        ' Please install with "pip install blend_modes" and try again.'
     raise ImportError(msg)
 
 
