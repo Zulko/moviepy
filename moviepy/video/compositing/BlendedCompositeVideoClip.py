@@ -6,6 +6,7 @@ except ImportError as ex:
         ' Please install with "pip install blend_modes" and try again.'
     raise ImportError(msg)
 
+import types
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.tools.blending import blended_blit_on
 
@@ -89,7 +90,7 @@ class BlendedCompositeVideoClip(CompositeVideoClip):
 
         # Add in the blended_blit_on method to each of the VideoClips
         for c in self.clips:
-            c.blended_blit_on = blended_blit_on
+            c.blended_blit_on = types.MethodType(blended_blit_on, c)
 
         # Custom definition of make_frame including blend_modes
         def make_frame(t):
