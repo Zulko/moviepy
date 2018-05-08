@@ -130,9 +130,6 @@ class CompositeVideoClip(VideoClip):
             self.audio = None
 
 
-
-
-
 def clips_array(array, rows_widths=None, cols_widths=None,
                 bg_color = None):
 
@@ -178,5 +175,3 @@ def clips_array(array, rows_widths=None, cols_widths=None,
                  
     return CompositeVideoClip(array.flatten(), size = (xx[-1],yy[-1]),
                               bg_color = bg_color)
-    
-    
