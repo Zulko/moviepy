@@ -1,9 +1,11 @@
 import numpy as np
+# Ensure that blend_modes is available, otherwise this cannot be used
 try:
     from blend_modes import blend_modes
-    blending_enabled = True
-except ImportError:
-    blending_enabled = False
+except ImportError as ex:
+    msg = 'Using blending requires the "blend_modes" package.' +\
+        ' Please install with "pip install blend_modes" and try again.'
+    raise ImportError(msg)
 
 
 def blended_blit_on(self, picture, t, blend_mode='normal', blend_opacity=1.0,
@@ -128,7 +130,7 @@ def blended_blit(im1, im2, pos=None, mask=None, ismask=False, blend_mode='normal
         blend_mode = blend_mode.strip().lower()
         blend_opacity = max(min(abs(blend_opacity), 1.0), 0.0)
         blend_weight = max(min(abs(blend_weight), 1.0), 0.0)
-        if ((blend_mode == 'normal') or (not blending_enabled)):
+        if (blend_mode == 'normal'):
             new_im2[yp1:yp2, xp1:xp2] = _blend_normal(mask, blitted, blit_region)
         else:
             # Arrays are converted to be four-dimensional since blend_modes
