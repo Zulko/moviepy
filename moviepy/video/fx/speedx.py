@@ -9,7 +9,7 @@ def _stretch_audio(audioclip, factor):
 
     if audioclip.nchannels == 1:
         stretched_array = time_stretch(sound_array, factor)
-    else
+    else:
         stretched_array = np.transpose( np.array([time_stretch(sound_array[:,0]), time_stretch(sound_array[:,1])]) )
 
     return AudioArrayClip(stretched_array, fps=44100)
