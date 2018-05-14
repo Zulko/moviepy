@@ -10,6 +10,9 @@ MoviePy
 .. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
     :target: https://travis-ci.org/Zulko/moviepy
     :alt: Build status on travis-ci
+.. image:: https://coveralls.io/repos/github/Zulko/moviepy/badge.svg?branch=master
+    :target: https://coveralls.io/github/Zulko/moviepy?branch=master
+    :alt: Code coverage from coveralls.io
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
