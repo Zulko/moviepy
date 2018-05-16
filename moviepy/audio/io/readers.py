@@ -171,27 +171,25 @@ class FFMPEG_AudioReader:
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
             frames = np.round((self.fps*tt)).astype(int)[in_time]
-            fr_min, fr_max = frames.min(), frames.max()
-
-            if not (0 <=
-                     (fr_min - self.buffer_startframe)
-                          < len(self.buffer)):
-                self.buffer_around(fr_min)
-            elif not (0 <=
-                        (fr_max - self.buffer_startframe)
-                             < len(self.buffer)):
-                self.buffer_around(fr_max)
-
             try:
+                fr_min, fr_max = frames.min(), frames.max()
+                if not (0 <=
+                        (fr_min - self.buffer_startframe)
+                            < len(self.buffer)):
+                    self.buffer_around(fr_min)
+                elif not (0 <=
+                            (fr_max - self.buffer_startframe)
+                                < len(self.buffer)):
+                    self.buffer_around(fr_max)
+
                 result = np.zeros((len(tt),self.nchannels))
                 indices = frames - self.buffer_startframe
                 result[in_time] = self.buffer[indices]
                 return result
-            except IndexError as error:
+            except Exception as error:
                 # out of the buffer : return 0
                 print "Error in file %s, "%(self.filename)+\
                       "At time t=%.02f-%.02f seconds, "%(tt[0], tt[-1])+\
-                      "indices wanted: %d-%d, "%(indices.min(), indices.max())+\
                       "but len(buffer)=%d\n"%(len(self.buffer))+ str(error)+\
                       "return 0 instead"
                 return np.zeros((len(tt),self.nchannels))
