@@ -1,21 +1,19 @@
 from moviepy.decorators import apply_to_mask,apply_to_audio
 from moviepy.audio.AudioClip import AudioArrayClip
 from librosa.effects import time_stretch
-#from moviepy.editor import *
 
 
-def stretch_audio(audioclip, factor):
+def _stretch_audio(audioclip, factor):
     """Stretches audioclip by factor."""
     sound_array = audioclip.to_soundarray()
 
     if audioclip.nchannels == 1:
         stretched_array = time_stretch(sound_array, factor)
     else:
-        stretched_array = np.transpose( np.array([time_stretch(sound_array[:,0]), time_stretch(sound_array[:,1])]) )
+        stretched_array = np.transpose( np.array([time_stretch(sound_array[:,0], factor), time_stretch(sound_array[:,1], factor)]) )
 
     return AudioArrayClip(stretched_array, fps=44100)
 
-#testclip = VideoFileClip("~/dev/python/slowmo_video/GOPR3689.MP4").subclip(3,6)
 
 def speedx(clip, factor = None, final_duration=None):
     """
