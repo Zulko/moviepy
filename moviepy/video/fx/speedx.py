@@ -1,5 +1,6 @@
 from moviepy.decorators import apply_to_mask,apply_to_audio
 from moviepy.audio.AudioClip import AudioArrayClip
+import numpy as np
 from librosa.effects import time_stretch
 
 
