@@ -15,7 +15,7 @@ def _stretch_audio(audioclip, factor):
     return AudioArrayClip(stretched_array, fps=44100)
 
 
-def speedx(clip, factor = None, final_duration=None):
+def speedx(clip, factor = None, final_duration=None, stretch_audio=True):
     """
     Returns a clip playing the current clip but at a speed multiplied
     by ``factor``. Instead of factor one can indicate the desired
@@ -31,5 +31,9 @@ def speedx(clip, factor = None, final_duration=None):
 
     if clip.duration is not None:
         newclip = newclip.set_duration(1.0 * clip.duration / factor)
+
+    if stretch_audio:
+        stretched_audio = _stretch_audio(clip.audio, factor)
+        newclip = newclip.set_audio(stretched_audio)
 
     return newclip
