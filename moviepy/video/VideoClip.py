@@ -394,7 +394,7 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
                   opt='nq', fuzz=1, verbose=True,
-                  loop=0, dispose=False, colors=None, tempfiles=False):
+                  loop=0, dispose=False, colors=None, tempfiles=False, progress_bar=True):
         """ Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
@@ -430,6 +430,9 @@ class VideoClip(Clip):
           Useful on computers with little RAM. Can only be used with
           ImageMagick' or 'ffmpeg'.
 
+        progress_bar
+          If True, displays a progress bar
+
 
         Notes
         -----
@@ -447,7 +450,8 @@ class VideoClip(Clip):
 
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
-                                    verbose=verbose, colors=colors)
+                                    verbose=verbose, colors=colors,
+                                    progress_bar=progress_bar)
         elif tempfiles:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
@@ -459,11 +463,13 @@ class VideoClip(Clip):
             write_gif_with_tempfiles(self, filename, fps=fps,
                                      program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose, loop=loop,
-                                     dispose=dispose, colors=colors)
+                                     dispose=dispose, colors=colors,
+                                     progress_bar=progress_bar)
         else:
             write_gif(self, filename, fps=fps, program=program,
                       opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
-                      dispose=dispose, colors=colors)
+                      dispose=dispose, colors=colors,
+                      progress_bar=progress_bar)
 
     # -----------------------------------------------------------------
     # F I L T E R I N G
