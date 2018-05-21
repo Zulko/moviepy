@@ -314,7 +314,8 @@ class VideoClip(Clip):
                                        audio_nbytes, audio_bufsize,
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
-                                       verbose=verbose, progress_bar=progress_bar)
+                                       verbose=verbose,
+                                       progress_bar=progress_bar)
 
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
@@ -394,7 +395,8 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     def write_gif(self, filename, fps=None, program='imageio',
                   opt='nq', fuzz=1, verbose=True,
-                  loop=0, dispose=False, colors=None, tempfiles=False, progress_bar=True):
+                  loop=0, dispose=False, colors=None, tempfiles=False,
+                  progress_bar=True):
         """ Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
