@@ -16,6 +16,6 @@ If you are reporting a bug, please ensure moviepy is updated to the latest versi
 ### Specifications
 
   - Python Version:
-  - Moviepy Version
+  - Moviepy Version:
   - Platform Name:
   - Platform Version:
