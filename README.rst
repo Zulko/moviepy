@@ -154,11 +154,11 @@ If you opt to run the test suite manually, you can install the dependencies via:
 Contribute
 ----------
 
-MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on GitHub_, where everyone is welcome to contribute, ask for help or simply give feedback.
+MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on GitHub_, where everyone is welcome to contribute, ask for help or simply give feedback. Please read our `Contributing Guidelines`_ for more information about how to contribute!
 
-You can also discuss the project on Reddit_ (preferred over GitHub issues for usage/examples), Gitter_ or the mailing list moviepy@librelist.com.
+You can also discuss the project on Reddit_ or Gitter_. These are preferred over GitHub issues for usage questions and examples.
 
-We have a list of tags used in our `Tag Wiki`_. The 'Pull Requests' tags are well defined, and all PRs should fall under exactly one of these.  The 'Issues' tags are less precise, and may not be a complete list.
+We have a list of labels used in our `Label Wiki`_. The 'Pull Requests' labels are well defined, and all PRs should fall under exactly one of these.  The 'Issues' labels are less precise, and may not be a complete list.
 
 
 Maintainers
@@ -176,7 +176,8 @@ Maintainers
 .. _gallery: http://zulko.github.io/moviepy/gallery.html
 .. _documentation: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
-.. _`Tag Wiki`: https://github.com/Zulko/moviepy/wiki/Tag-Wiki
+.. _`Label Wiki`: https://github.com/Zulko/moviepy/wiki/Label-Wiki
+.. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/README.rst
 
 .. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
