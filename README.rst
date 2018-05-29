@@ -177,7 +177,7 @@ Maintainers
 .. _documentation: http://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`Label Wiki`: https://github.com/Zulko/moviepy/wiki/Label-Wiki
-.. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/README.rst
+.. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md
 
 .. Websites, Platforms
 .. _Reddit: http://www.reddit.com/r/moviepy/
