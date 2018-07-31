@@ -42,7 +42,7 @@ In this example we open a video file, select the subclip between t=50s and t=60s
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
 
 
-Installation
+Installation : Unix
 ------------
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
@@ -65,6 +65,27 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above
 
     $ (sudo) pip install ez_setup
 
+Installation : Windows
+-------
+
+**Installation by hand:** Open up Command Prompt and run the following command to clone the project:
+
+.. code:: bash
+
+    $ git clone https://github.com/Zulko/moviepy && cd moviepy
+    $ python setup.py install
+	
+**Installation with pip:** if you have ```pip``` installed, just type this in the cmd.
+
+.. code:: bash
+
+    $ pip install moviepy
+	
+If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing:
+
+.. code:: bash
+
+    $ pip install ez_setup
 
 Optional but useful dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
