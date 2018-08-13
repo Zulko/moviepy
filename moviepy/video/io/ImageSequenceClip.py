@@ -65,7 +65,7 @@ class ImageSequenceClip(VideoClip):
                     sequence = [imread(f) for f in sequence]
                     fromfiles = False
                 else:
-                    fromfiles= True
+                    fromfiles = True
             else:
                 # sequence is already a list of numpy arrays
                 fromfiles = False
@@ -76,19 +76,23 @@ class ImageSequenceClip(VideoClip):
                         for f in os.listdir(sequence)])
 
 
-        #check that all the images are of the same size
+        #check that all the images are of the same size and check if they are grayscale
+        grayscale = False
+
         if isinstance(sequence[0], str):
            size = imread(sequence[0]).shape
         else:
            size = sequence[0].shape
 
         for image in sequence:
-            image1=image
+            image1 = image
             if isinstance(image, str):
-               image1=imread(image)
+                image1 = imread(image)
             if size != image1.shape:
-               raise Exception("Moviepy: ImageSequenceClip requires all images to be the same size")
+                raise Exception("Moviepy: ImageSequenceClip requires all images to be the same size")
 
+        if len(size) == 2 or size[2] == 1:
+            grayscale = True
 
         self.fps = fps
         if fps is not None:
@@ -103,7 +107,14 @@ class ImageSequenceClip(VideoClip):
         
         def find_image_index(t):
             return max([i for i in range(len(self.sequence))
-                              if self.images_starts[i]<=t])
+                              if self.images_starts[i] <= t])
+
+        # wrapper for optional conversion from grayscale into rgb
+        def read_image(name, grayscale):
+            image = imread(name)
+            if grayscale:
+                image = np.stack((image,) * 3, -1)
+            return image
 
         if fromfiles:
 
@@ -115,12 +126,12 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.lastindex:
-                    self.lastimage = imread(self.sequence[index])[:,:,:3] 
+                    self.lastimage = read_image(self.sequence[index], grayscale)[:,:,:3]
                     self.lastindex = index
                 
                 return self.lastimage
 
-            if with_mask and (imread(self.sequence[0]).shape[2]==4):
+            if with_mask and (read_image(self.sequence[0], grayscale).shape[2] == 4):
 
                 self.mask = VideoClip(ismask=True)
                 self.mask.lastindex = None
