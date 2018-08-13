@@ -109,8 +109,10 @@ class ImageSequenceClip(VideoClip):
             return max([i for i in range(len(self.sequence))
                               if self.images_starts[i] <= t])
 
-        # wrapper for optional conversion from grayscale into rgb
         def read_image(name, grayscale):
+            """
+            Wrapper for optional conversion from grayscale into rgb by duplicating single channel into 3 channels.
+            """
             image = imread(name)
             if grayscale:
                 image = np.stack((image,) * 3, -1)
@@ -126,6 +128,7 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.lastindex:
+                    # using wrapper function to resolve possible grayscale issues
                     self.lastimage = read_image(self.sequence[index], grayscale)[:,:,:3]
                     self.lastindex = index
                 
