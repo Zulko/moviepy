@@ -1093,7 +1093,7 @@ class TextClip(ImageClip):
 
     kerning
       Changes the default spacing between letters. For
-      nstance ``kerning=-1`` will make the letters 1 pixel nearer from
+      instance ``kerning=-1`` will make the letters 1 pixel nearer from
       ach other compared to the default spacing.
 
     align
