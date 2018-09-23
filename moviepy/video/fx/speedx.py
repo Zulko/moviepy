@@ -8,7 +8,9 @@ def speedx(clip, factor=None, final_duration=None, stretch_audio=False):
     by ``factor``. Instead of factor one can indicate the desired
     ``final_duration`` of the clip, and the factor will be automatically
     computed.
-    The same effect is applied to the clip's audio and mask if any.
+    If stretch_audio is set to True, the clip's audio is stretched by the
+    same factor. Otherwise the same effect is applied to the clip's audio
+    and mask if any.
     """
 
     if final_duration:
