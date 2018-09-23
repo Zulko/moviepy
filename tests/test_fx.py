@@ -21,6 +21,7 @@ from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.audio.fx.audio_normalize import audio_normalize
+from moviepy.audio.fx.time_stretch import time_stretch
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -225,6 +226,15 @@ def test_normalize():
     clip = AudioFileClip('media/crunching.mp3')
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
+
+def test_time_stretch():
+    clip = AudioFileClip("media/crunching.mp3")
+
+    clip1=time_stretch(clip, factor=0.5)
+    assert clip1.duration == 0.5*clip.duration
+
+    clip2=time_stretch(clip, factor=1.5)
+    assert clip2.duration == 1.5*clip.duration
 
 
 if __name__ == '__main__':
