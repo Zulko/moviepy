@@ -10,7 +10,8 @@ def time_stretch(audioclip, factor):
     if audioclip.nchannels == 1:
         stretched_array = lr_time_stretch(snd_array, factor)
     else:
-        stretched_array = transpose( array([lr_time_stretch(snd_array[:,0], factor), lr_time_stretch(snd_array[:,1], factor)]) )
+        stretched_array = transpose(
+          array([lr_time_stretch(snd_array[:, 0], factor),
+                 lr_time_stretch(snd_array[:, 1], factor)]))
 
     return AudioArrayClip(stretched_array, fps=44100)
-

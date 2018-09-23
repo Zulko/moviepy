@@ -1,7 +1,8 @@
-from moviepy.decorators import apply_to_mask,apply_to_audio
+from moviepy.decorators import apply_to_mask, apply_to_audio
 from moviepy.audio.fx.time_stretch import time_stretch
 
-def speedx(clip, factor = None, final_duration=None, stretch_audio=False):
+
+def speedx(clip, factor=None, final_duration=None, stretch_audio=False):
     """
     Returns a clip playing the current clip but at a speed multiplied
     by ``factor``. Instead of factor one can indicate the desired
@@ -11,7 +12,7 @@ def speedx(clip, factor = None, final_duration=None, stretch_audio=False):
     """
 
     if final_duration:
-        factor = 1.0* clip.duration / final_duration
+        factor = 1.0 * clip.duration / final_duration
 
     newclip = clip.fl_time(lambda t: factor * t, apply_to=['mask', 'audio'])
 
