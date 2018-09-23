@@ -231,10 +231,10 @@ def test_time_stretch():
     clip = AudioFileClip("media/crunching.mp3")
 
     clip1=time_stretch(clip, factor=0.5)
-    assert clip1.duration == 0.5*clip.duration
+    assert abs(clip1.duration - 2*clip.duration) < 0.1
 
     clip2=time_stretch(clip, factor=1.5)
-    assert clip2.duration == 1.5*clip.duration
+    assert abs(1.5*clip2.duration - clip.duration) < 0.1
 
 
 if __name__ == '__main__':
