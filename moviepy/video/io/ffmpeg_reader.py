@@ -256,7 +256,10 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
     proc = sp.Popen(cmd, **popen_params)
 
     proc.stdout.readline()
-    proc.terminate()
+    try:
+        proc.terminate()
+    except ProcessLookupError:
+        pass  # process already terminated
     infos = proc.stderr.read().decode('utf8')
     del proc
 
