@@ -144,7 +144,10 @@ class FFMPEG_AudioReader:
 
     def close_proc(self):
         if hasattr(self, 'proc') and self.proc is not None:
-            self.proc.terminate()
+            try:
+                self.proc.terminate()
+            except ProcessLookupError:
+                pass  # process already terminated
             for std in [ self.proc.stdout,
                          self.proc.stderr]:
                 std.close()
