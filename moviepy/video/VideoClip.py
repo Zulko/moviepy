@@ -30,7 +30,7 @@ from .tools.drawing import blit
 class VideoClip(Clip):
     """Base class for video clips.
 
-    See ``VideofileClip``, ``ImageClip`` etc. for more user-friendly
+    See ``VideoFileClip``, ``ImageClip`` etc. for more user-friendly
     classes.
 
 
