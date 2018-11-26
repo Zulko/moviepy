@@ -138,9 +138,10 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
 
         duration = ffmpeg_parse_infos(filename)['duration']
         if duration > maxduration:
-            raise ValueError("The duration of video %s (%.1f) exceeds the 'max_duration' "%(filename, duration)+
-                             "attribute. You can increase 'max_duration', "
-                             "but note that embedding large videos may take all the memory away !")
+            raise ValueError("The duration of video %s (%.1f) exceeds the 'maxduration' "%(filename, duration)+
+                             "attribute. You can increase 'maxduration', by passing 'maxduration' parameter"
+                             "to ipython_display function."
+                             "But note that embedding large videos may take all the memory away !")
             
     with open(filename, "rb") as f:
         data= b64encode(f.read()).decode("utf-8")
