@@ -141,7 +141,8 @@ class VideoClip(Clip):
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
-                        progress_bar=True):
+                        progress_bar=True,
+                        progress_callback=None):
         """Write the clip to a videofile.
 
         Parameters
@@ -244,6 +245,10 @@ class VideoClip(Clip):
         progress_bar
           Boolean indicating whether to show the progress bar.
 
+        progress_callback
+          After writing each frame, the callback function will be invoked.
+          The function should have a signature ```func(serial_of_current_frame, total_number_of_frames)'''
+
         Examples
         ========
 
@@ -324,7 +329,8 @@ class VideoClip(Clip):
                            audiofile=audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           progress_bar=progress_bar)
+                           progress_bar=progress_bar,
+                           progress_callback=progress_callback)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
