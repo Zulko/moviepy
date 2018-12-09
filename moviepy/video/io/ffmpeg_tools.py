@@ -32,9 +32,10 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         T1, T2 = [int(1000*t) for t in [t1, t2]]
         targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
     
+    # See https://stackoverflow.com/a/33188399/5459467 about the arg order
     cmd = [get_setting("FFMPEG_BINARY"),"-y",
-           "-i", filename,
            "-ss", "%0.2f"%t1,
+           "-i", filename,
            "-t", "%0.2f"%(t2-t1),
            "-vcodec", "copy", "-acodec", "copy", targetname]
     
