@@ -141,8 +141,10 @@ class FFMPEG_VideoReader:
             result = self.lastread
 
         else:
-
-            result = np.fromstring(s, dtype='uint8')
+            if hasattr(np, 'frombuffer'):
+                result = np.frombuffer(s, dtype='uint8')
+            else:
+                result = np.fromstring(s, dtype='uint8')
             result.shape =(h, w, len(s)//(w*h)) # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
 

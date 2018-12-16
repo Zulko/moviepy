@@ -10,8 +10,8 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.audio.AudioClip import AudioClip, concatenate_audioclips, CompositeAudioClip
 
 sys.path.append("tests")
-import download_media
-from test_helper import TMP_DIR
+from . import download_media
+from .test_helper import TMP_DIR
 
 
 def test_download_media(capsys):

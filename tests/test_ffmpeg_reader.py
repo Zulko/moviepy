@@ -5,7 +5,7 @@ import sys
 import pytest
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
-import download_media
+from . import download_media
 
 sys.path.append("tests")
 

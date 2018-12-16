@@ -638,14 +638,14 @@ class VideoClip(Clip):
             size = self.size
         if pos is None:
             pos = 'center'
-        colorclip = ColorClip(size, color)
+        colorclip = ColorClip(size, color=color)
 
         if col_opacity is not None:
-            colorclip = (ColorClip(size, color, duration=self.duration)
+            colorclip = (ColorClip(size, color=color, duration=self.duration)
                          .set_opacity(col_opacity))
-            result = CompositeVideoClip([colorclip, self.set_pos(pos)])
+            result = CompositeVideoClip([colorclip, self.set_position(pos)])
         else:
-            result = CompositeVideoClip([self.set_pos(pos)],
+            result = CompositeVideoClip([self.set_position(pos)],
                                         size=size,
                                         bg_color=color)
 
@@ -710,16 +710,16 @@ class VideoClip(Clip):
         Examples
         ----------
 
-        >>> clip.set_pos((45,150)) # x=45, y=150
+        >>> clip.set_position((45,150)) # x=45, y=150
         >>>
         >>> # clip horizontally centered, at the top of the picture
-        >>> clip.set_pos(("center","top"))
+        >>> clip.set_position(("center","top"))
         >>>
         >>> # clip is at 40% of the width, 70% of the height:
-        >>> clip.set_pos((0.4,0.7), relative=True)
+        >>> clip.set_position((0.4,0.7), relative=True)
         >>>
         >>> # clip's position is horizontally centered, and moving up !
-        >>> clip.set_pos(lambda t: ('center', 50+t) )
+        >>> clip.set_position(lambda t: ('center', 50+t) )
 
         """
         self.relative_pos = relative

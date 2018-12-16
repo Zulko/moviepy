@@ -9,8 +9,8 @@ TODO:
 #
 # import pytest
 #
-# import download_media
-# from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+# from . import download_media
+# from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 #
 # sys.path.append("tests")
 #

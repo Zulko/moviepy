@@ -494,10 +494,11 @@ class Clip:
         #    Implementation note for subclasses:
         #
         #    * Memory-based resources can be left to the garbage-collector.
-        #    * However, any open files should be closed, and subprocesses should be terminated.
-        #    * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+        #    * However, any open files should be closed, and subprocesses
+        #      should be terminated.
+        #    * Be wary that shallow copies are frequently used.
+        #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
-
         pass
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.

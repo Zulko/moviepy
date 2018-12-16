@@ -5,22 +5,26 @@ import sys
 
 import pytest
 from moviepy.editor import *
+from moviepy.utils import close_all_clips
 
 sys.path.append("tests")
-import download_media
-from test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+from . import download_media
+from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
 
+
 def test_download_media(capsys):
     with capsys.disabled():
-       download_media.download()
+        download_media.download()
+
 
 def test_issue_145():
-    with ColorClip((800, 600), color=(255,0,0)).set_duration(5) as video:
-        with pytest.raises(Exception, message='Expecting Exception'):
-            concatenate_videoclips([video], method='composite')
+    video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
+    with pytest.raises(Exception, message='Expecting Exception'):
+        concatenate_videoclips([video], method='composite')
+
 
 def test_issue_190():
     #from PIL import Image
@@ -33,18 +37,19 @@ def test_issue_190():
     #clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
     pass
 
+
 def test_issue_285():
 
     clip_1, clip_2, clip_3 = ImageClip('media/python_logo.png', duration=10), \
-                             ImageClip('media/python_logo.png', duration=10), \
-                             ImageClip('media/python_logo.png', duration=10)
+        ImageClip('media/python_logo.png', duration=10), \
+        ImageClip('media/python_logo.png', duration=10)
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
-    clip_1.close()
-    clip_2.close()
-    clip_3.close()
+    close_all_clips(locals())
+
 
 def test_issue_334():
+   # NOTE: this is horrible. Any simpler version ?
     last_move = None
     last_move1 = None
 
@@ -97,50 +102,54 @@ def test_issue_334():
     def posi(t):
         global last_move
         if len(lis) == 0:
-           return (last_move[1], last_move[2])
+            return (last_move[1], last_move[2])
         if t >= lis[0][0]:
-           last_move = item = lis.pop(0)
-           return (item[1], item[2])
+            last_move = item = lis.pop(0)
+            return (item[1], item[2])
         else:
-           if len(lis) > 0:
-              dura = lis[0][0] - last_move[0]
-              now = t - last_move[0]
-              w = (lis[0][1] - last_move[1]) * (now / dura)
-              h = (lis[0][2] - last_move[2]) * (now / dura)
-              # print t, last_move[1] + w, last_move[2] + h
-              return (last_move[1] + w, last_move[2] + h)
-           return (last_move[1], last_move[2])
+            if len(lis) > 0:
+                dura = lis[0][0] - last_move[0]
+                now = t - last_move[0]
+                w = (lis[0][1] - last_move[1]) * (now / dura)
+                h = (lis[0][2] - last_move[2]) * (now / dura)
+                # print t, last_move[1] + w, last_move[2] + h
+                return (last_move[1] + w, last_move[2] + h)
+            return (last_move[1], last_move[2])
 
     def size(t):
         global last_move1
         if len(lis1) == 0:
-           return (last_move1[3], last_move1[3] * 1.33)
+            return (last_move1[3], last_move1[3] * 1.33)
         if t >= lis1[0][0]:
-           last_move1 = item = lis1.pop(0)
-           return (item[3], item[3] * 1.33)
+            last_move1 = item = lis1.pop(0)
+            return (item[3], item[3] * 1.33)
         else:
-           if len(lis) > 0:
-              dura = lis1[0][0] - last_move1[0]
-              now = t - last_move1[0]
-              s = (lis1[0][3] - last_move1[3]) * (now / dura)
-              nsw = last_move1[3] + s
-              nsh = nsw * 1.33
-              # print t, nsw, nsh
-              return (nsw, nsh)
-           return (last_move1[3], last_move1[3] * 1.33)
+            if len(lis) > 0:
+                dura = lis1[0][0] - last_move1[0]
+                now = t - last_move1[0]
+                s = (lis1[0][3] - last_move1[3]) * (now / dura)
+                nsw = last_move1[3] + s
+                nsh = nsw * 1.33
+                # print t, nsw, nsh
+                return (nsw, nsh)
+            return (last_move1[3], last_move1[3] * 1.33)
 
-    with VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True) as avatar:
-        avatar.audio=None
-        maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
-        avatar.set_mask(maskclip)  #must set maskclip here..
+    avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
+    avatar.audio = None
+    maskclip = ImageClip("media/afterimage.png",
+                         ismask=True, transparent=True)
+    avatar.set_mask(maskclip)  # must set maskclip here..
+    concatenated = concatenate_videoclips([avatar] * 3)
 
-        concatenated = concatenate_videoclips([avatar]*11)
+    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
+    # TODO: Setting mask here does not work:
+    # .set_mask(maskclip).resize(size)])
+    final = CompositeVideoClip(
+        [tt, concatenated.set_position(posi).resize(size)])
+    final.duration = tt.duration
+    final.write_videofile(
+       os.path.join(TMP_DIR, 'issue_334.mp4'), fps=10)
 
-        with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as tt:
-            # TODO: Setting mask here does not work: .set_mask(maskclip).resize(size)])
-            final = CompositeVideoClip([tt, concatenated.set_position(posi).resize(size)])
-            final.duration = tt.duration
-            final.write_videofile(os.path.join(TMP_DIR, 'issue_334.mp4'), fps=24)
 
 def test_issue_354():
     with ImageClip("media/python_logo.png") as clip:
@@ -159,9 +168,10 @@ def test_issue_354():
         fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
         CompositeVideoClip([clip, fadecaption]).close()
 
+
 def test_issue_359():
-    with ColorClip((800, 600), color=(255,0,0)).set_duration(5) as video:
-        video.fps=30
+    with ColorClip((800, 600), color=(255, 0, 0)).set_duration(5) as video:
+        video.fps = 30
         video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"),
                         tempfiles=True)
 
@@ -203,8 +213,9 @@ def test_issue_359():
 #     animation = VideoClip(make_frame, duration=2)
 #     animation.write_gif(os.path.join(TMP_DIR, "svm.gif"), fps=20)
 
+
 def test_issue_407():
-    red = ColorClip((800, 600), color=(255,0,0)).set_duration(5)
+    red = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
     red.fps = 30
 
     assert red.fps == 30
@@ -213,27 +224,29 @@ def test_issue_407():
     assert red.size == (800, 600)
 
     # ColorClip has no fps attribute.
-    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
-    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(2)
+    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0, 0, 255)).set_duration(2)
 
     assert green.w == blue.w == 640
     assert green.h == blue.h == 480
     assert green.size == blue.size == (640, 480)
 
     with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
-         green.fps
+        green.fps
 
     with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
-         blue.fps
+        blue.fps
 
-    video=concatenate_videoclips([red, green, blue])
+    video = concatenate_videoclips([red, green, blue])
     assert video.fps == red.fps
+
 
 def test_issue_416():
     # ColorClip has no fps attribute.
-    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
+    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
     video1 = concatenate_videoclips([green])
     assert video1.fps == None
+
 
 def test_issue_417():
     # failed in python2
@@ -242,12 +255,14 @@ def test_issue_417():
     CompositeVideoClip([myclip], size=(1280, 720))
     #final.set_duration(7).write_videofile("test.mp4", fps=30)
 
+
 def test_issue_467():
     cad = 'media/python_logo.png'
     clip = ImageClip(cad)
 
-    #caused an error, NameError: global name 'copy' is not defined
+    # caused an error, NameError: global name 'copy' is not defined
     clip = clip.fx(blink, d_on=1, d_off=1)
+
 
 def test_issue_470():
     audio_clip = AudioFileClip('media/crunching.mp3')
@@ -256,11 +271,14 @@ def test_issue_470():
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
     with pytest.raises(IOError, message="Expecting IOError"):
-         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
+        subclip.write_audiofile(os.path.join(
+            TMP_DIR, 'issue_470.wav'), write_logfile=True)
 
-    #but this one should work..
+    # but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
-    subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_470.wav'), write_logfile=True)
+    subclip.write_audiofile(os.path.join(
+        TMP_DIR, 'issue_470.wav'), write_logfile=True)
+
 
 def test_issue_246():
     def test_audio_reader():
@@ -269,34 +287,35 @@ def test_issue_246():
         subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
                                 write_logfile=True)
 
-def test_issue_547():
-    red = ColorClip((640, 480), color=(255,0,0)).set_duration(1)
-    green = ColorClip((640, 480), color=(0,255,0)).set_duration(2)
-    blue = ColorClip((640, 480), color=(0,0,255)).set_duration(3)
 
-    video=concatenate_videoclips([red, green, blue], method="compose")
+def test_issue_547():
+    red = ColorClip((640, 480), color=(255, 0, 0)).set_duration(1)
+    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
+    blue = ColorClip((640, 480), color=(0, 0, 255)).set_duration(3)
+
+    video = concatenate_videoclips([red, green, blue], method="compose")
     assert video.duration == 6
     assert video.mask.duration == 6
 
-    video=concatenate_videoclips([red, green, blue])
+    video = concatenate_videoclips([red, green, blue])
     assert video.duration == 6
 
+
 def test_issue_636():
-   with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,11) as video:
-       with video.subclip(0,1) as subclip:
-           pass
+    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 11) as video:
+        with video.subclip(0, 1) as subclip:
+            pass
+
 
 def test_issue_655():
     video_file = 'media/fire2.mp4'
-    for subclip in [(0,2),(1,2),(2,3)]:
+    for subclip in [(0, 2), (1, 2), (2, 3)]:
         with VideoFileClip(video_file) as v:
-            with v.subclip(1,2) as s:
+            with v.subclip(1, 2) as s:
                 pass
             next(v.subclip(*subclip).iter_frames())
     assert True
 
 
-
 if __name__ == '__main__':
-   pytest.main()
-
+    pytest.main()

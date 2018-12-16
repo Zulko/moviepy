@@ -6,7 +6,7 @@ import os
 from moviepy.video.tools.credits import credits1
 
 sys.path.append("tests")
-from test_helper import TMP_DIR
+from .test_helper import TMP_DIR
 
 
 def test_credits():

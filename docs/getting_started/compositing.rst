@@ -85,26 +85,26 @@ Positioning clips
 If ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel of the clips: ::
 
     video = CompositeVideoClip([clip1,
-                               clip2.set_pos((45,150)),
-                               clip3.set_pos((90,100))])
+                               clip2.set_position((45,150)),
+                               clip3.set_position((90,100))])
 
 There are many ways to specify the position: ::
 
-    clip2.set_pos((45,150)) # x=45, y=150 , in pixels
+    clip2.set_position((45,150)) # x=45, y=150 , in pixels
 
-    clip2.set_pos("center") # automatically centered
+    clip2.set_position("center") # automatically centered
 
     # clip2 is horizontally centered, and at the top of the picture
-    clip2.set_pos(("center","top"))
+    clip2.set_position(("center","top"))
 
     # clip2 is vertically centered, at the left of the picture
-    clip2.set_pos(("left","center"))
+    clip2.set_position(("left","center"))
 
     # clip2 is at 40% of the width, 70% of the height of the screen:
-    clip2.set_pos((0.4,0.7), relative=True)
+    clip2.set_position((0.4,0.7), relative=True)
 
     # clip2's position is horizontally centered, and moving down !
-    clip2.set_pos(lambda t: ('center', 50+t) )
+    clip2.set_position(lambda t: ('center', 50+t) )
 
 When indicating the position keep in mind that the ``y`` coordinate has its zero at the top of the picture:
 

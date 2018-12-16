@@ -1,11 +1,12 @@
 import sys
 
 import pytest
+from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
 
 sys.path.append("tests")
-from test_helper import TMP_DIR
+from .test_helper import TMP_DIR
 
 def test_duration():
 
@@ -17,7 +18,7 @@ def test_duration():
     clip2 = clip.fx(blink, d_on=1, d_off=1)
     clip2 = clip2.set_duration(5)
     assert clip2.duration == 5
-    clip2.close()
+    close_all_clips(locals())
 
 # Moved from tests.py. Maybe we can remove these?
 def test_if_textclip_crashes_in_caption_mode():

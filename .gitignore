@@ -21,6 +21,7 @@ lib
 lib64
 __pycache__
 .cache/
+.vscode
 
 # Sublime
 .sublime-project

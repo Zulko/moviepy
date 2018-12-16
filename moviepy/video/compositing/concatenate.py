@@ -83,7 +83,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
             return clips[i].get_frame(t - tt[i])
 
         def get_mask(c):
-            mask = c.mask or ColorClip([1, 1], col=1, ismask=True)
+            mask = c.mask or ColorClip([1, 1], color=1, ismask=True)
             if mask.duration is None:
                mask.duration = c.duration
             return mask
@@ -91,10 +91,11 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result = VideoClip(ismask = ismask, make_frame = make_frame)
         if any([c.mask is not None for c in clips]):
             masks = [get_mask(c) for c in clips]
-            result.mask = concatenate_videoclips(masks, method="chain", ismask=True)
+            result.mask = concatenate_videoclips(masks, method="chain",
+                                                 ismask=True)
             result.clips = clips
     elif method == "compose":
-        result = CompositeVideoClip( [c.set_start(t).set_pos('center')
+        result = CompositeVideoClip( [c.set_start(t).set_position('center')
                                 for (c, t) in zip(clips, tt)],
                size = (w, h), bg_color=bg_color, ismask=ismask)
     else:
@@ -120,4 +121,5 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     return result
 
 
-concatenate = deprecated_version_of(concatenate_videoclips, oldname="concatenate")
+concatenate = deprecated_version_of(concatenate_videoclips,
+                                    oldname="concatenate")
