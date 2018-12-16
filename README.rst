@@ -133,6 +133,30 @@ You can pass additional arguments to the documentation build, such as clean buil
 
 More information is available from the `Sphinx`_ documentation.
 
+New in 0.2.3.6: Progress bars and messages with Proglog
+-------------------------------------------------------
+
+Non-backwards-compatible changes were introduced in 0.2.3.6 to
+manage progress bars and messages using
+`Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
+ enables to display nice progress bars in the console as well as in
+a Jupyter notebook or any user interface, like a website.
+
+To display notebook friendly progress bars, first install IPyWidgets:
+
+.. code::
+
+    sudo pip install ipywidgets
+    sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
+
+Then at the beginning of your notebook enter:
+
+.. code:: python
+
+    import proglog
+    proglog.notebook()
+
+Have a look at the Proglog project page for more options.
 
 Running Tests
 -------------
