@@ -133,7 +133,7 @@ You can pass additional arguments to the documentation build, such as clean buil
 
 More information is available from the `Sphinx`_ documentation.
 
-New in 0.2.3.6: Progress bars and messages with Proglog
+New in 0.2.4.0: Progress bars and messages with Proglog
 -------------------------------------------------------
 
 Non-backwards-compatible changes were introduced in 0.2.3.6 to
