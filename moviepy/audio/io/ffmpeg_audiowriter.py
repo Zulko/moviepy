@@ -1,13 +1,11 @@
 import subprocess as sp
+import os
+import proglog
 
 from moviepy.compat import DEVNULL
 
-import os
-
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
-
-from moviepy.tools import verbose_print
 
 
 class FFMPEG_AudioWriter:
@@ -146,19 +144,20 @@ class FFMPEG_AudioWriter:
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None,
                       write_logfile=False, verbose=True,
-                      ffmpeg_params=None, progress_bar=True):
+                      ffmpeg_params=None, logger='bar'):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
+
+    NOTE: verbose is deprecated.
     """
 
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
-
-    verbose_print(verbose, "[MoviePy] Writing audio in %s\n"%filename)
-
+    logger = proglog.default_bar_logger(logger)
+    logger(message="MoviePy - Writing audio in %s")
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile,
@@ -167,27 +166,11 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     for chunk in clip.iter_chunks(chunksize=buffersize,
                                   quantize=True,
                                   nbytes=nbytes, fps=fps,
-                                  progress_bar=progress_bar):
+                                  logger=logger):
         writer.write_frames(chunk)
-
-    """
-    totalsize = int(fps*clip.duration)
-
-    if (totalsize % buffersize == 0):
-        nchunks = totalsize // buffersize
-    else:
-        nchunks = totalsize // buffersize + 1
-
-    pospos = list(range(0, totalsize,  buffersize))+[totalsize]
-    for i in tqdm(range(nchunks)):
-        tt = (1.0/fps)*np.arange(pospos[i],pospos[i+1])
-        sndarray = clip.to_soundarray(tt, nbytes= nbytes)
-        writer.write_frames(sndarray)
-    """
 
     writer.close()
 
     if write_logfile:
         logfile.close()
-
-    verbose_print(verbose, "[MoviePy] Done.\n")
+    logger(message="MoviePy - Done.")

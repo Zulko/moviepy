@@ -66,7 +66,8 @@ requires = [
     'imageio>=2.1.2,<3.0',
     'tqdm>=4.11.2,<5.0',
     'numpy',
-    'requests>=2.8.1,<3.0'
+    'requests>=2.8.1,<3.0',
+    'proglog<=1.0.0'
     ]
 
 optional_reqs = [

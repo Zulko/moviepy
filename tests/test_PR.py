@@ -89,7 +89,7 @@ def test_PR_424():
 def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=2)
     clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"),
-                         progress_bar=False, fps=30)
+                         logger=None, fps=30)
     clip.close()
 
 def test_PR_515():

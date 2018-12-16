@@ -43,13 +43,13 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
 
 def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
                              acodec='copy', ffmpeg_output=False,
-                             verbose = True):
+                             logger = 'bar'):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", audio,"-i", video,
              "-vcodec", vcodec, "-acodec", acodec, output]
              
-    subprocess_call(cmd, verbose = verbose)
+    subprocess_call(cmd, logger = logger)
     
 
 def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):

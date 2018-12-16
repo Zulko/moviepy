@@ -11,7 +11,7 @@ import warnings
 
 import numpy as np
 from imageio import imread, imsave
-from tqdm import tqdm
+import proglog
 
 from ..Clip import Clip
 from ..compat import DEVNULL, string_types
@@ -20,7 +20,7 @@ from ..decorators import (add_mask_if_none, apply_to_mask,
                           convert_masks_to_RGB, convert_to_seconds, outplace,
                           requires_duration, use_clip_fps_by_default)
 from ..tools import (deprecated_version_of, extensions_dict, find_extension,
-                     is_string, subprocess_call, verbose_print)
+                     is_string, subprocess_call)
 from .io.ffmpeg_writer import ffmpeg_write_video
 from .io.gif_writers import (write_gif, write_gif_with_image_io,
                              write_gif_with_tempfiles)
@@ -141,7 +141,7 @@ class VideoClip(Clip):
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
-                        progress_bar=True):
+                        logger='bar'):
         """Write the clip to a videofile.
 
         Parameters
@@ -238,11 +238,11 @@ class VideoClip(Clip):
           These will be files ending with '.log' with the name of the
           output file in them.
 
-        verbose
-          Boolean indicating whether to print infomation.
-
-        progress_bar
-          Boolean indicating whether to show the progress bar.
+        logger
+          Either "bar" for progress bar or None or any Proglog logger.
+        
+        verbose (deprecated, kept for compatibility)
+          Formerly used for toggling messages on/off. Use logger=None now.
 
         Examples
         ========
@@ -255,6 +255,7 @@ class VideoClip(Clip):
         """
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
+        logger = proglog.default_bar_logger(logger)
 
         if codec is None:
 
@@ -306,16 +307,14 @@ class VideoClip(Clip):
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-
-        verbose_print(verbose, "[MoviePy] >>>> Building video %s\n" % filename)
-
+        logger(message="Moviepy - Building video %s.")
         if make_audio:
             self.audio.write_audiofile(audiofile, audio_fps,
                                        audio_nbytes, audio_bufsize,
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
                                        verbose=verbose,
-                                       progress_bar=progress_bar)
+                                       logger=logger)
 
         ffmpeg_write_video(self, filename, fps, codec,
                            bitrate=bitrate,
@@ -324,18 +323,17 @@ class VideoClip(Clip):
                            audiofile=audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           progress_bar=progress_bar)
+                           logger=logger)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
-
-        verbose_print(verbose, "[MoviePy] >>>> Video ready: %s \n\n"%filename)
+        logger(message="Moviepy - video ready %s")
 
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, verbose=True,
-                              withmask=True, progress_bar=True):
+                              withmask=True, logger='bar'):
         """ Writes the videoclip to a sequence of image files.
 
         Parameters
@@ -358,8 +356,8 @@ class VideoClip(Clip):
         verbose
           Boolean indicating whether to print information.
 
-        progress_bar
-          Boolean indicating whether to show the progress bar.
+        logger
+          Either 'bar' (progress bar) or None or any Proglog logger.
 
 
         Returns
@@ -375,19 +373,18 @@ class VideoClip(Clip):
         ``ImageSequenceClip``.
 
         """
-        verbose_print(verbose, "[MoviePy] Writing frames %s." % (nameformat))
+        logger = proglog.default_bar_logger(logger)
+        logger(message='Moviepy - Writing frames %s.' % nameformat)
 
         tt = np.arange(0, self.duration, 1.0 / fps)
 
         filenames = []
         total = int(self.duration / fps) + 1
-        for i, t in tqdm(enumerate(tt), total=total, disable=not progress_bar):
+        for i, t in logger.iter_bar(t=list(enumerate(tt))):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
-
-        verbose_print(verbose,
-                      "[MoviePy]: Done writing frames %s.\n\n" % (nameformat))
+        logger(message='Moviepy - Done writing frames %s.' % nameformat)
 
         return filenames
 
@@ -396,7 +393,7 @@ class VideoClip(Clip):
     def write_gif(self, filename, fps=None, program='imageio',
                   opt='nq', fuzz=1, verbose=True,
                   loop=0, dispose=False, colors=None, tempfiles=False,
-                  progress_bar=True):
+                  logger='bar'):
         """ Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
@@ -453,7 +450,7 @@ class VideoClip(Clip):
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
                                     verbose=verbose, colors=colors,
-                                    progress_bar=progress_bar)
+                                    logger=logger)
         elif tempfiles:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
@@ -466,12 +463,12 @@ class VideoClip(Clip):
                                      program=program, opt=opt1, fuzz=fuzz,
                                      verbose=verbose, loop=loop,
                                      dispose=dispose, colors=colors,
-                                     progress_bar=progress_bar)
+                                     logger=logger)
         else:
             write_gif(self, filename, fps=fps, program=program,
                       opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
                       dispose=dispose, colors=colors,
-                      progress_bar=progress_bar)
+                      logger=logger)
 
     # -----------------------------------------------------------------
     # F I L T E R I N G
@@ -1161,7 +1158,7 @@ class TextClip(ImageClip):
             print(" ".join(cmd))
 
         try:
-            subprocess_call(cmd, verbose=False)
+            subprocess_call(cmd, logger=None)
         except (IOError, OSError) as err:
             error = ("MoviePy Error: creation of %s failed because of the "
                      "following error:\n\n%s.\n\n." % (filename, str(err))
