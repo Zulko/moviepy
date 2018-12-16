@@ -139,7 +139,7 @@ New in 0.2.3.6: Progress bars and messages with Proglog
 Non-backwards-compatible changes were introduced in 0.2.3.6 to
 manage progress bars and messages using
 `Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
- enables to display nice progress bars in the console as well as in
+enables to display nice progress bars in the console as well as in
 a Jupyter notebook or any user interface, like a website.
 
 To display notebook friendly progress bars, first install IPyWidgets:
