@@ -68,7 +68,7 @@ class FFMPEG_VideoWriter:
 
         if logfile is None:
             logfile = sp.PIPE
-
+        self.logfile = logfile
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
@@ -134,7 +134,9 @@ class FFMPEG_VideoWriter:
             else:
                self.proc.stdin.write(img_array.tostring())
         except IOError as err:
-            _, ffmpeg_error = self.proc.communicate()
+            ffmpeg_error = (self.proc.communicate()[1]
+                            or (b"(see logs in %s)"
+                                % self.logfile.name.encode('utf-8')))
             error = (str(err) + ("\n\nMoviePy error: FFMPEG encountered "
                                  "the following error while writing file %s:"
                                  "\n\n %s" % (self.filename, str(ffmpeg_error))))

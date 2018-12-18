@@ -32,6 +32,17 @@ def test_check_codec():
     close_all_clips(locals())
 
 
+def test_errors_with_redirected_logs():
+    """Checks error cases return helpful messages even when logs redirected
+    See https://github.com/Zulko/moviepy/issues/877"""
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "logged-write.mp4")
+    with pytest.raises(OSError) as e:
+        clip.write_videofile(location, codec='nonexistent-codec',
+                             write_logfile=True)
+    assert '(see logs in /tmp/logged-write.mp4.log)' in str(e.value)
+    close_all_clips(locals())
+
 def test_save_frame():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "save_frame.png")
