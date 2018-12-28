@@ -80,7 +80,8 @@ class Clip:
     def get_frame(self, t):
         """
         Gets a numpy array representing the RGB picture of the clip at time t
-        or (mono or stereo) value for a sound clip
+        or (mono or stereo) value for a sound clip.
+        Can also be used as `clip[t]`.
         """
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
@@ -377,6 +378,8 @@ class Clip:
         The ``mask`` and ``audio`` of the resulting subclip will be
         subclips of ``mask`` and ``audio`` the original clip, if
         they exist.
+        
+        Can also be used as `clip[t_start:t_end]`.
         """
 
         if t_start < 0:
@@ -479,6 +482,11 @@ class Clip:
                 yield t, frame
             else:
                 yield frame
+    
+    def __getitem__(self, item):
+        if isinstance(item, slice):
+            return self.subclip(item.start or 0, item.stop)
+        return self.get_frame(item)
 
     def close(self):
         """ 
