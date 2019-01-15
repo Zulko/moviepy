@@ -259,7 +259,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
 
     proc.stdout.readline()
     proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
+    infos = proc.stderr.read().decode('utf8', errors='replace')
     del proc
 
     if print_infos:
