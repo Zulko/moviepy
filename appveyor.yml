@@ -39,12 +39,6 @@ environment:
       MINICONDA: C:\Miniconda36-x64
       CONDA_INSTALL: "numpy"
 
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.13"
-      PYTHON_ARCH: "32"
-      MINICONDA: C:\Miniconda
-      CONDA_INSTALL: "numpy"
-
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.6.2"
       PYTHON_ARCH: "32"
