@@ -63,7 +63,9 @@ exec(open('moviepy/version.py').read()) # loads __version__
 # Define the requirements for specific execution needs.
 requires = [
     'decorator>=4.0.2,<5.0',
-    'imageio>=2.1.2,<3.0',
+    'imageio>=2.5,<3.0',
+    "imageio>=2.0,<2.5; python_version<'3.4'",
+    "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
     'tqdm>=4.11.2,<5.0',
     'numpy',
     'requests>=2.8.1,<3.0',
