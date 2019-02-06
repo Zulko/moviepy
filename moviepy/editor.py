@@ -22,8 +22,6 @@ import os
 # Downloads ffmpeg if it isn't already installed
 import imageio
 # Checks to see if the user has set a place for their own version of ffmpeg
-if os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio') == 'ffmpeg-imageio':
-    imageio.plugins.ffmpeg.download()
 
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
