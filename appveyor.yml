@@ -16,16 +16,10 @@ environment:
 
   matrix:
   
-     # MoviePy supports Python 2.7 and 3.4 onwards.
+     # MoviePy supports Python 3.4 onwards.
      # Strategy:
      #    Test the latest known patch in each version
      #    Test the oldest and the newest 32 bit release. 64-bit otherwise.
-  
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.13"
-      PYTHON_ARCH: "64"
-      MINICONDA: C:\Miniconda
-      CONDA_INSTALL: "numpy"
 
     - PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.5"
