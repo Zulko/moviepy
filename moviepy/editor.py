@@ -18,10 +18,16 @@ clip.preview().
 # file, but this would make the loading of moviepy slower.
 
 import os
+import sys
 
 # Downloads ffmpeg if it isn't already installed
 import imageio
 # Checks to see if the user has set a place for their own version of ffmpeg
+
+if os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio') == 'ffmpeg-imageio':
+    if sys.version_info[0] < (3, 4):
+        #uses an old version of imageio with ffmpeg.download.
+        imageio.plugins.ffmpeg.download()
 
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
