@@ -2,6 +2,7 @@
 
 import re
 import numpy as np
+from moviepy.compat import fspath
 from moviepy.video.VideoClip import VideoClip, TextClip
 from moviepy.tools import cvsecs
 from moviepy.decorators import convert_to_seconds
@@ -36,6 +37,12 @@ class SubtitlesClip(VideoClip):
     def __init__(self, subtitles, make_textclip=None):
         
         VideoClip.__init__(self, has_constant_size=False)
+
+        # only convert subtitles if it's a path-like
+        try:
+            subtitles = fspath(subtitles)
+        except TypeError:
+            pass
 
         if isinstance( subtitles, str):
             subtitles = file_to_subtitles(subtitles)

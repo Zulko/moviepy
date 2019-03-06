@@ -14,7 +14,7 @@ from imageio import imread, imsave
 import proglog
 
 from ..Clip import Clip
-from ..compat import DEVNULL, string_types
+from ..compat import DEVNULL, string_types, fspath
 from ..config import get_setting
 from ..decorators import (add_mask_if_none, apply_to_mask,
                           convert_masks_to_RGB, convert_to_seconds, outplace,
@@ -253,6 +253,7 @@ class VideoClip(Clip):
         >>> clip.close()
 
         """
+        filename = fspath(filename)
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
         logger = proglog.default_bar_logger(logger)
@@ -446,6 +447,8 @@ class VideoClip(Clip):
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
         #  refactor a little... we will see.
+        
+        filename = fspath(filename)
 
         if program == 'imageio':
             write_gif_with_image_io(self, filename, fps=fps, opt=opt, loop=loop,
@@ -1122,6 +1125,7 @@ class TextClip(ImageClip):
             txt = '@' + temptxt
         else:
             # use a file instead of a text.
+            filename = fspath(filename)
             txt = "@%" + filename
 
         if size is not None:

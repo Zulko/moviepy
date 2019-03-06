@@ -6,20 +6,22 @@ import subprocess as sp
 
 from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
-    
+from moviepy.compat import fspath
+
 
 def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
     """
     Writes a movie out of the frames (picture files) in a folder.
     Almost deprecated.
     """
+    folder = fspath(folder)
     s = "%" + "%02d" % digits + "d.png"
     cmd = [get_setting("FFMPEG_BINARY"), "-y", "-f","image2",
              "-r", "%d"%fps,
              "-i", os.path.join(folder,folder) + '/' + s,
              "-b", "%dk"%bitrate,
              "-r", "%d"%fps,
-             filename]
+             fspath(filename)]
     
     subprocess_call(cmd)
 
@@ -27,6 +29,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
 def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
     """ Makes a new video file playing video file ``filename`` between
         the times ``t1`` and ``t2``. """
+    filename = fspath(filename)
     name, ext = os.path.splitext(filename)
     if not targetname:
         T1, T2 = [int(1000*t) for t in [t1, t2]]
@@ -46,7 +49,7 @@ def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
                              logger = 'bar'):
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
-    cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", audio,"-i", video,
+    cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", fspath(audio),"-i", fspath(video),
              "-vcodec", vcodec, "-acodec", acodec, output]
              
     subprocess_call(cmd, logger = logger)
@@ -63,7 +66,7 @@ def ffmpeg_resize(video,output,size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
     cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(size[0], size[1]),
-             output]
+             fspath(output)]
              
     subprocess_call(cmd)
 

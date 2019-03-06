@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import proglog
+from moviepy.compat import fspath
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
 from moviepy.tools import deprecated_version_of, extensions_dict
@@ -187,6 +188,8 @@ class AudioClip(Clip):
           Either 'bar' or None or any Proglog logger
 
         """
+        filename = fspath(filename)
+        
         if not fps:
             if not self.fps:
                 fps = 44100

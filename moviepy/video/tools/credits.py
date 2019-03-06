@@ -7,6 +7,7 @@ matter.
 from moviepy.video.VideoClip import TextClip, ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.resize import resize
+from moviepy.compat import fspath
 
 
 def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
@@ -74,7 +75,7 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
 
     # PARSE THE TXT FILE
     
-    with open(creditfile) as f:
+    with open(fspath(creditfile)) as f:
         lines = f.readlines()
     
     lines = filter(lambda x: not x.startswith('\n'), lines)

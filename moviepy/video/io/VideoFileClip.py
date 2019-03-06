@@ -1,5 +1,6 @@
 import os
 
+from moviepy.compat import fspath
 from moviepy.video.VideoClip import VideoClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.Clip import Clip
@@ -85,7 +86,7 @@ class VideoFileClip(VideoClip):
 
         # Make a reader
         pix_fmt = "rgba" if has_mask else "rgb24"
-        self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
+        self.reader = FFMPEG_VideoReader(fspath(filename), pix_fmt=pix_fmt,
                                          target_resolution=target_resolution,
                                          resize_algo=resize_algorithm,
                                          fps_source=fps_source)
@@ -98,7 +99,7 @@ class VideoFileClip(VideoClip):
         self.size = self.reader.size
         self.rotation = self.reader.rotation
 
-        self.filename = self.reader.filename
+        self.filename = filename
 
         if has_mask:
 
