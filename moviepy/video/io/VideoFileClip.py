@@ -23,7 +23,8 @@ class VideoFileClip(VideoClip):
     ------------
 
     filename:
-      The name of the video file. It can have any extension supported
+      The name of the video file, as a string or a path-like object.
+      It can have any extension supported
       by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.
 
     has_mask:

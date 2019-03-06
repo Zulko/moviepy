@@ -148,7 +148,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file to write in.
+          Name of the video file to write in, as a string or a path-like object.
           The extension must correspond to the "codec" used (see below),
           or simply be '.avi' (which will work with any codec).
 
@@ -404,7 +404,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the resulting gif file.
+          Name of the resulting gif file, as a string or a path-like object.
 
         fps
           Number of frames per second (see note below). If it
@@ -888,8 +888,8 @@ class ImageClip(VideoClip):
     -----------
 
     img
-      Any picture file (png, tiff, jpeg, etc.) or any array representing
-      an RGB image (for instance a frame from a VideoClip).
+      Any picture file (png, tiff, jpeg, etc.) as a string or a path-like object,
+      or any array representing an RGB image (for instance a frame from a VideoClip).
 
     ismask
       Set this parameter to `True` if the clip is a mask.
@@ -1056,7 +1056,8 @@ class TextClip(ImageClip):
       ``filename``.
 
     filename
-      The name of a file in which there is the text to write.
+      The name of a file in which there is the text to write,
+      as a string or a path-like object.
       Can be provided instead of argument ``txt``
 
     size

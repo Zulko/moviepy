@@ -19,7 +19,7 @@ class SubtitlesClip(VideoClip):
     ==========
 
     subtitles
-      Either the name of a file, or a list
+      Either the name of a file (a string or a path-like object), or a list
 
     Examples
     =========

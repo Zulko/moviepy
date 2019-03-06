@@ -20,6 +20,7 @@ class AudioFileClip(AudioClip):
     
     filename
       Either a soundfile name (of any extension supported by ffmpeg)
+      as a string or a path-like object,
       or an array representing a sound. If the soundfile is not a .wav,
       it will be converted to .wav first, using the ``fps`` and
       ``bitrate`` arguments. 

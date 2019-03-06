@@ -153,7 +153,7 @@ class AudioClip(Clip):
         -----------
 
         filename
-          Name of the output file
+          Name of the output file, as a string or a path-like object.
 
         fps
           Frames per second. If not set, it will try default to self.fps if
