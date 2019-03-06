@@ -910,7 +910,7 @@ class ImageClip(VideoClip):
                  fromalpha=False, duration=None):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, string_types):
+        if not isinstance(img, np.ndarray):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
