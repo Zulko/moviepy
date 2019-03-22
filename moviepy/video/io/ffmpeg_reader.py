@@ -52,7 +52,7 @@ class FFMPEG_VideoReader:
         self.duration = infos['video_duration']
         self.ffmpeg_duration = infos['duration']
         self.nframes = infos['video_nframes']
-
+        self.video_bitrate = infos['video_bitrate']
         self.infos = infos
 
         self.pix_fmt = pix_fmt
@@ -233,7 +233,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
 
     Returns a dictionnary with the fields:
     "video_found", "video_fps", "duration", "video_nframes",
-    "video_duration", "audio_found", "audio_fps"
+    "video_duration", "video_bitrate","audio_found", "audio_fps", "audio_bitrate"
 
     "video_duration" is slightly smaller than "duration" to avoid
     fetching the uncomplete frames at the end, which raises an error.
@@ -309,6 +309,8 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
             raise IOError(("MoviePy error: failed to read video dimensions in file %s.\n"
                            "Here are the file infos returned by ffmpeg:\n\n%s")%(
                               filename, infos))
+        match_bit = re.search(r"(\d+) kb/s", line)
+        result["video_bitrate"] = int(match_bit.group(1)) if match_bit else None
 
         # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
         # tbc, and sometimes tbc/2...
@@ -391,5 +393,6 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
             result['audio_fps'] = int(hz_string)
         except:
             result['audio_fps'] = 'unknown'
-
+        match_bit = re.search(r"(\d+) kb/s", line)
+        result["audio_bitrate"] = int(match_bit.group(1)) if match_bit else None
     return result
