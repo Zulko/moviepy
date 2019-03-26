@@ -117,7 +117,7 @@ class FFMPEG_AudioWriter:
             raise IOError(error)
 
     def close(self):
-        if self.proc:
+        if hasattr(self, 'proc') and self.proc:
             self.proc.stdin.close()
             self.proc.stdin = None
             if self.proc.stderr is not None:

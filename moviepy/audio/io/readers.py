@@ -63,8 +63,6 @@ class FFMPEG_AudioReader:
         self.initialize()
         self.buffer_around(1)
 
-
-
     def initialize(self, starttime = 0):
         """ Opens the file, creates the pipe. """
 
