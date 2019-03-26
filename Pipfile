@@ -8,5 +8,6 @@ moviepy = {editable = true, path = "."}
 
 [dev-packages]
 pytest = "*"
+"pathlib2" = "*"
 
 [requires]
