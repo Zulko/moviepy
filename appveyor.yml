@@ -78,6 +78,7 @@ install:
   - echo 'Installing ImageMagick'
   - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
   - dir "c://Program Files"
+  - dir "%IMAGE_MAGICK_INSTALL_DIR%"
   - set IMAGEMAGICK_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//convert.exe"
   - echo %IMAGEMAGICK_BINARY%
   - set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
