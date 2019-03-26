@@ -76,7 +76,7 @@ install:
   # Might need to be updated from time to time
   - curl ftp.fifi.org/ImageMagick/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
   - echo 'Installing ImageMagick'
-  - ImageMagick.exe /VERYSILENT /SP /DIR=%IMAGE_MAGICK_INSTALL_DIR%
+  - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
   - dir "c://Program Files"
   - set IMAGEMAGICK_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//convert.exe"
   - echo %IMAGEMAGICK_BINARY%
