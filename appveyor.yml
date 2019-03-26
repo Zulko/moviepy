@@ -77,10 +77,10 @@ install:
   - curl ftp.fifi.org/ImageMagick/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
   - "ECHO Installing ImageMagick"
   - "ImageMagick.exe /verySILENT /SP"
-  - dir "C:\\Program Files"
-  - set IMAGEMAGICK_BINARY="C:\\Program Files\\ImageMagick-%IMAGE_MAGICK_VERSION%\\convert.exe"
+  - dir "c://Program Files"
+  - set IMAGEMAGICK_BINARY="c:\\Program Files\\ImageMagick-%IMAGE_MAGICK_VERSION%\\convert.exe"
   - echo %IMAGEMAGICK_BINARY%
-  - set FMPEG_BINARY="C:\\Program Files\\ImageMagick-%IMAGE_MAGICK_VERSION%\\ffmpeg.exe"
+  - set FMPEG_BINARY="c:\\Program Files\\ImageMagick-%IMAGE_MAGICK_VERSION%\\ffmpeg.exe"
   - echo %FMPEG_BINARY%
 
 build_script:
