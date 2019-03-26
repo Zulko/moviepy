@@ -1,0 +1,12 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+moviepy = {editable = true, path = "."}
+
+[dev-packages]
+pytest = "*"
+
+[requires]
