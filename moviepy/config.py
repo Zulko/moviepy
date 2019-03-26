@@ -29,7 +29,7 @@ def try_cmd(cmd):
             print('Modified params: {}'.format(popen_params))
             print('Modified base cmd: {}'.format(cmd))
 
-        proc = sp.Popen(cmd, executable **popen_params)
+        proc = sp.Popen(cmd, **popen_params)
         proc.communicate()
     except Exception as err:
         print(err)
