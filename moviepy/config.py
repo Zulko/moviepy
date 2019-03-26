@@ -11,25 +11,31 @@ if os.name == 'nt':
 from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
 def try_cmd(cmd):
-        try:
-            popen_params = { "stdout": sp.PIPE,
-                             "stderr": sp.PIPE,
-                              "stdin": DEVNULL
-                            }
+    try:
+        popen_params = {
+            "stdout": sp.PIPE,
+            "stderr": sp.PIPE,
+            "stdin": DEVNULL
+        }
 
+        # This was added so that no extra unwanted window opens on windows
+        # when the child process is created
+        if os.name == "nt":
+            popen_params["creationflags"] = 0x08000000
 
-            # This was added so that no extra unwanted window opens on windows
-            # when the child process is created
-            if os.name == "nt":
-                popen_params["creationflags"] = 0x08000000
+        if not isinstance(cmd, list):
+            popen_params['executable'] = cmd
+            cmd = [os.path.basename(cmd)]
+            print('Modified params: {}'.format(popen_params))
+            print('Modified base cmd: {}'.format(cmd))
 
-            proc = sp.Popen(cmd, **popen_params)
-            proc.communicate()
-        except Exception as err:
-            print(err)
-            return False, err
-        else:
-            return True, None
+        proc = sp.Popen(cmd, executable **popen_params)
+        proc.communicate()
+    except Exception as err:
+        print(err)
+        return False, err
+    else:
+        return True, None
 
 if FFMPEG_BINARY=='ffmpeg-imageio':
     from imageio.plugins.ffmpeg import get_exe
@@ -69,7 +75,7 @@ else:
     if not os.path.isfile(IMAGEMAGICK_BINARY):
         raise IOError("Image magick binary is not a file")
 
-    success, err = try_cmd([IMAGEMAGICK_BINARY])
+    success, err = try_cmd(IMAGEMAGICK_BINARY)
     if not success:
         raise IOError("%s - The path specified for the ImageMagick binary might "
                       "be wrong: %s" % (err, IMAGEMAGICK_BINARY))
