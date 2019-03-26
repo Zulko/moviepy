@@ -61,8 +61,8 @@ install:
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - sudo pip install --upgrade pip
-  - sudo pip install pipenv
+  - pip install --upgrade pip
+  - pip install pipenv
 
   # Install ImageMagick (which also installs ffmpeg.)
   # This installation process is a big fragile, as new releases are issued, but no Conda package exists yet.
