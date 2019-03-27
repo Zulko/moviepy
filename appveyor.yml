@@ -7,6 +7,8 @@
 #    Create a new appveyor project, using the GitHub details.
 #    Ideally, configure notifications to post back to GitHub. (Untested)
 
+image: Visual Studio 2017
+
 environment:
   global:
     IMAGE_MAGICK_VERSION: 6.9.10-35-Q16
