@@ -23,16 +23,9 @@ def try_cmd(cmd):
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
-        if not isinstance(cmd, list):
-            popen_params['executable'] = cmd
-            cmd = [os.path.basename(cmd)]
-            print('Modified params: {}'.format(popen_params))
-            print('Modified base cmd: {}'.format(cmd))
-
         proc = sp.Popen(cmd, **popen_params)
         proc.communicate()
     except Exception as err:
-        print(err)
         return False, err
     else:
         return True, None
@@ -70,12 +63,20 @@ if IMAGEMAGICK_BINARY=='auto-detect':
         IMAGEMAGICK_BINARY = 'unset'
 else:
     if not os.path.exists(IMAGEMAGICK_BINARY):
-        raise IOError("Image magick binary cannot be found at {}".format(IMAGEMAGICK_BINARY))
+        raise IOError(
+            "ImageMagick binary cannot be found at {}".format(
+                IMAGEMAGICK_BINARY
+            )
+        )
 
     if not os.path.isfile(IMAGEMAGICK_BINARY):
-        raise IOError("Image magick binary is not a file")
+        raise IOError(
+            "ImageMagick binary found at {} is not a file".format(
+                IMAGEMAGICK_BINARY
+            )
+        )
 
-    success, err = try_cmd(IMAGEMAGICK_BINARY)
+    success, err = try_cmd([IMAGEMAGICK_BINARY])
     if not success:
         raise IOError("%s - The path specified for the ImageMagick binary might "
                       "be wrong: %s" % (err, IMAGEMAGICK_BINARY))
