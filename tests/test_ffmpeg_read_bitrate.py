@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 import pytest
-
+import sys
+sys.path.append("tests")
 media = "D://1.mp4"
 
 
