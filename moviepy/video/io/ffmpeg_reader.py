@@ -256,10 +256,9 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         popen_params["creationflags"] = 0x08000000
 
     proc = sp.Popen(cmd, **popen_params)
-
-    proc.stdout.readline()
-    proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
+    (output, error) = proc.communicate()
+    infos = error.decode('utf8')
+    
     del proc
 
     if print_infos:
