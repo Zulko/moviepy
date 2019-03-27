@@ -20,15 +20,15 @@ environment:
      #    Test the latest known patch in each version
      #    Test the oldest and the newest 32 bit release. 64-bit otherwise.
 
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_ARCH: "64"
-      ARCH: x64
-
     - PYTHON: "C:\\Python35-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
 
     - PYTHON: "C:\\Python36-x64"
+      PYTHON_ARCH: "64"
+      ARCH: x64
+
+    - PYTHON: "C:\\Python37-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
 
