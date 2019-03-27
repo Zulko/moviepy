@@ -1,12 +1,3 @@
-# This file is used to configure the AppVeyor CI system, for testing on Windows machines.
-#
-# Code loosely based on https://github.com/ogrisel/python-appveyor-demo
-#
-# To test with AppVeyor:
-#    Register on appveyor.com with your GitHub account.
-#    Create a new appveyor project, using the GitHub details.
-#    Ideally, configure notifications to post back to GitHub. (Untested)
-
 image: Visual Studio 2017
 
 environment:
@@ -43,21 +34,6 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  # Dump some debugging information about the machine.
-  # - ECHO "Filesystem root:"
-  # - ps: "ls \"C:/\""
-  #
-  # - ECHO "Installed SDKs:"
-  # - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-  #
-  # - ECHO "Installed projects:"
-  # - ps: "ls \"C:\\projects\""
-  # - ps: "ls \"C:\\projects\\moviepy\""
-
-  # - ECHO "Environment Variables"
-  # - set
-
-
   # Prepend desired Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
@@ -66,20 +42,17 @@ install:
   - pip install --upgrade pip --user
   - pip install pipenv
 
-  # Install ImageMagick (which also installs ffmpeg.)
-  # This installation process is a big fragile, as new releases are issued, but no Conda package exists yet.
-  - "ECHO Downloading ImageMagick"
-  # Versions >=7.0 have problems - executables changed names.
-  # Assume 64-bit. Need to change to x86 for 32-bit.
-  # The available version at this site changes - each time it needs to be corrected in four places
-  # in the next few lines.
-
+  # Download ImageMagick installer (which also installs ffmpeg.)
   # From http://ftp.fifi.org/ImageMagick/binaries/
   # Might need to be updated from time to time
+  # Versions >=7.0 have problems - executables changed names.
+  # Assume 64-bit. Need to change to x86 for 32-bit.
   - curl ftp.fifi.org/ImageMagick/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
-  - echo 'Installing ImageMagick'
+
+  # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
   - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
-  - dir "c://Program Files"
+
+  # Inspect contents and set env vars
   - dir "%IMAGE_MAGICK_INSTALL_DIR%"
   - set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
   - echo %IMAGEMAGICK_BINARY%
