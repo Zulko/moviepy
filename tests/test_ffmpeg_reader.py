@@ -1,18 +1,9 @@
 # -*- coding: utf-8 -*-
 """FFmpeg reader tests meant to be run with pytest."""
 import sys
-
 import pytest
+
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
-
-from . import download_media
-
-sys.path.append("tests")
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-       download_media.download()
 
 def test_ffmpeg_parse_infos():
     d=ffmpeg_parse_infos("media/big_buck_bunny_432_433.webm")

@@ -11,17 +11,7 @@ from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.utils import close_all_clips
 
-
-sys.path.append("tests")
 from .test_helper import TMP_DIR, FONT
-
-
-
-def test_download_media(capsys):
-    """Test downloading."""
-    from . import download_media
-    with capsys.disabled():
-       download_media.download()
 
 def test_PR_306():
 

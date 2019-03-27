@@ -9,15 +9,10 @@ TODO:
 #
 # import pytest
 #
-# from . import download_media
 # from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 #
-# sys.path.append("tests")
 #
 #
-# def test_download_media(capsys):
-#     with capsys.disabled():
-#        download_media.download()
 #
 # def test_matplotlib():
 #     #for now, python 3.5 installs a version of matplotlib that complains

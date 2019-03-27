@@ -8,14 +8,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.mask_color import mask_color
 from moviepy.video.VideoClip import ColorClip, ImageClip
 
-from . import download_media
-
-sys.path.append("tests")
 from .test_helper import TMP_DIR
-
-def test_download_media(capsys):
-    with capsys.disabled():
-       download_media.download()
 
 def test_afterimage():
     ai = ImageClip("media/afterimage.png")

@@ -9,14 +9,7 @@ import pytest
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.audio.AudioClip import AudioClip, concatenate_audioclips, CompositeAudioClip
 
-sys.path.append("tests")
-from . import download_media
 from .test_helper import TMP_DIR
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-        download_media.download()
 
 def test_audio_coreader():
     if sys.platform.startswith("win"):
