@@ -31,6 +31,9 @@ def test_ffmpeg_parse_infos():
     assert d['audio_found']
     assert d['audio_fps'] == 48000
 
+def test_ffmpeg_parse_infos_for_i926():
+    d = ffmpeg_parse_infos("tests/resource/sintel_with_15_chapters.mp4")
+    assert d['audio_found']
 
 if __name__ == '__main__':
    pytest.main()
