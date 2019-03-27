@@ -5,12 +5,6 @@ environment:
     IMAGE_MAGICK_VERSION: 6.9.10-35-Q16
     IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
   matrix:
-
-     # MoviePy supports Python 3.4 onwards.
-     # Strategy:
-     #    Test the latest known patch in each version
-     #    Test the oldest and the newest 32 bit release. 64-bit otherwise.
-
     - PYTHON: "C:\\Python35-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
