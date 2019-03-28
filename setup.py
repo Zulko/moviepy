@@ -132,7 +132,7 @@ setup(
         'Topic :: Multimedia :: Video :: Conversion',
     ],
     keywords='video editing audio compositing ffmpeg',
-    packages=find_packages(exclude='docs'),
+    packages=find_packages(exclude=['docs', 'tests']),
     cmdclass=cmdclass,
     command_options={
         'build_docs': {
