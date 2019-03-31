@@ -140,8 +140,8 @@ def test_PR_924():
     subtitles = SubtitlesClip(Path('media/subtitles1.srt'))
     audio = AudioFileClip(Path('media/crunching.mp3'))
     
-    video.write_videofile(Path(TMP_DIR) / 'pathlike.mp4')
-    audio.write_audiofile(Path(TMP_DIR) / 'pathlike.mp3')
+    video.write_videofile(Path(os.path.join(TMP_DIR, 'pathlike.mp4')))
+    audio.write_audiofile(Path(os.path.join(TMP_DIR, 'pathlike.mp3')))
     
     assert isinstance(video.filename, Path)
 
