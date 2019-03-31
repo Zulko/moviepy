@@ -2,13 +2,16 @@
 """Pull request tests meant to be run with pytest."""
 import os
 import sys
+from pathlib import Path
 
 import pytest
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.utils import close_all_clips
 
 
@@ -123,6 +126,21 @@ def test_PR_610():
     clip2.fps = 25
     composite = CompositeVideoClip([clip1, clip2])
     assert composite.fps == 25
+
+
+def test_PR_924():
+    """
+    Test support for path-like objects.
+    """
+    video = VideoFileClip(Path('media/fire2.mp4'))
+    image = ImageClip(Path('media/vacation_2017.jpg'))
+    subtitles = SubtitlesClip(Path('media/subtitles1.srt'))
+    audio = AudioFileClip(Path('media/crunching.mp3'))
+    
+    video.write_videofile(Path(TMP_DIR) / 'pathlike.mp4')
+    audio.write_audiofile(Path(TMP_DIR) / 'pathlike.mp3')
+    
+    assert isinstance(video.filename, Path)
 
 
 if __name__ == '__main__':
