@@ -2,7 +2,6 @@
 """Pull request tests meant to be run with pytest."""
 import os
 import sys
-from pathlib import Path
 
 import pytest
 from moviepy.video.fx.scroll import scroll
@@ -14,6 +13,10 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.utils import close_all_clips
 
+try:
+    from pathlib import Path
+except ImportError:
+    Path = lambda s: s
 
 sys.path.append("tests")
 from .test_helper import TMP_DIR, FONT
