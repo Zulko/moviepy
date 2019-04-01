@@ -6,13 +6,7 @@ import sys
 import pytest
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
-sys.path.append("tests")
-from . import download_media
 from .test_helper import TMP_DIR
-
-def test_download_media(capsys):
-    with capsys.disabled():
-       download_media.download()
 
 def test_1():
     images=[]

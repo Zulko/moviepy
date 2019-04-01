@@ -5,7 +5,6 @@ from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
 
-sys.path.append("tests")
 from .test_helper import TMP_DIR
 
 def test_duration():

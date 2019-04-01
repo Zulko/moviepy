@@ -11,15 +11,7 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.utils import close_all_clips
 
-sys.path.append("tests")
-from . import download_media
 from .test_helper import TMP_DIR
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-        download_media.download()
-
 
 def test_check_codec():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
