@@ -37,7 +37,9 @@ install:
 
   # Find latest image magick version by parsing website
 
-  - IMAGE_MAGICK_VERSION=`python find_latest_imagemagick_version.py`
+  - python find_latest_imagemagick_version.py > temp.txt
+  - set /p IMAGE_MAGICK_VERSION=<temp.txt
+
   - echo %IMAGE_MAGICK_VERSION%
   # Download ImageMagick installer (which also installs ffmpeg.)
   # From http://ftp.fifi.org/ImageMagick/binaries/
