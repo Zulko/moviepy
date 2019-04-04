@@ -22,9 +22,9 @@ def test_ffmpeg_parse_infos():
     assert d['audio_found']
     assert d['audio_fps'] == 48000
 
-    infos = ffmpeg_parse_infos("tests/resource/1.mp4")
-    assert infos["audio_bitrate"]
-    assert infos["video_bitrate"]
+    d = ffmpeg_parse_infos("tests/resource/sintel_with_15_chapters.mp4")
+    assert d["audio_bitrate"]
+    assert d["video_bitrate"]
 
 
 def test_ffmpeg_parse_infos_for_i926():
