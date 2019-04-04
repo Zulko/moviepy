@@ -5,7 +5,6 @@ import sys
 import pytest
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
-sys.path.append("tests")
 from .test_helper import TMP_DIR
 
 
