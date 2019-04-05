@@ -2,7 +2,6 @@ image: Visual Studio 2017
 
 environment:
   global:
-    IMAGE_MAGICK_VERSION: 6.9.10-35-Q16
     IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
   matrix:
     - PYTHON: "C:\\Python35-x64"
@@ -36,6 +35,12 @@ install:
   - pip install --upgrade pip --user
   - pip install pipenv
 
+  # Find latest image magick version by parsing website
+
+  - python find_latest_imagemagick_version.py > temp.txt
+  - set /p IMAGE_MAGICK_VERSION=<temp.txt
+
+  - echo %IMAGE_MAGICK_VERSION%
   # Download ImageMagick installer (which also installs ffmpeg.)
   # From http://ftp.fifi.org/ImageMagick/binaries/
   # Might need to be updated from time to time
