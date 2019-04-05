@@ -1,5 +1,29 @@
 # Change Log
 
+## [v2.3.5](https://github.com/Zulko/moviepy/tree/v2.3.5) (2018-05-31)
+[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.4...v2.3.5)
+
+**Fixed bugs:**
+
+- Removed Hz from audio\_fps match in ffmpeg\_parse\_infos [\#665](https://github.com/Zulko/moviepy/pull/665) ([qmac](https://github.com/qmac))
+
+**Closed issues:**
+
+- 100% of GIF does not convert to MP4, gets cut short. [\#802](https://github.com/Zulko/moviepy/issues/802)
+- How to add audio track to MP4? [\#794](https://github.com/Zulko/moviepy/issues/794)
+- ffmpeg 4.0 NVIDIA NVDEC-accelerated Support ? [\#790](https://github.com/Zulko/moviepy/issues/790)
+- Help!!!! errors during installation on Mac [\#788](https://github.com/Zulko/moviepy/issues/788)
+- Blink fx uses deprecated\(?\) method `with\_mask\(\)` [\#786](https://github.com/Zulko/moviepy/issues/786)
+- Built-in file downloader downloads files repeatedly? [\#779](https://github.com/Zulko/moviepy/issues/779)
+- Error in compositing video and SubtitlesClip by CompositeVideoClip  [\#778](https://github.com/Zulko/moviepy/issues/778)
+- SubtitlesClip [\#777](https://github.com/Zulko/moviepy/issues/777)
+- Video Background [\#774](https://github.com/Zulko/moviepy/issues/774)
+
+**Merged pull requests:**
+
+- Progress bar optional for GIF creation [\#799](https://github.com/Zulko/moviepy/pull/799) ([mdfirman](https://github.com/mdfirman))
+- Added contributing guide and issue template [\#792](https://github.com/Zulko/moviepy/pull/792) ([tburrows13](https://github.com/tburrows13))
+
 ## [v0.2.3.4](https://github.com/Zulko/moviepy/tree/v0.2.3.4) (2018-04-22)
 [Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.3...v0.2.3.4)
 
