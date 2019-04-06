@@ -16,7 +16,7 @@ from moviepy.utils import close_all_clips
 try:
     from pathlib import Path
 except ImportError:
-    Path = lambda s: s
+    Path = str
 
 sys.path.append("tests")
 from .test_helper import TMP_DIR, FONT
@@ -127,7 +127,7 @@ def test_PR_924():
     """
     Test support for path-like objects.
     """
-    video = VideoFileClip(Path('media/fire2.mp4'))
+    video = VideoFileClip(Path('media/big_buck_bunny_432_433.webm'))
     image = ImageClip(Path('media/vacation_2017.jpg'))
     subtitles = SubtitlesClip(Path('media/subtitles1.srt'))
     audio = AudioFileClip(Path('media/crunching.mp3'))
