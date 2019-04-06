@@ -30,7 +30,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
     name, ext = os.path.splitext(filename)
     if not targetname:
         T1, T2 = [int(1000*t) for t in [t1, t2]]
-        targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
+        targetname = "%sSUB%d_%d%s" % (name, T1, T2, ext)
     
     cmd = [get_setting("FFMPEG_BINARY"),"-y",
            "-ss", "%0.2f"%t1,
