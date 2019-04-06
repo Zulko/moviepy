@@ -9,7 +9,6 @@ from moviepy.video.VideoClip import ColorClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.utils import close_all_clips
 
-sys.path.append("tests")
 from .test_helper import TMP_DIR
 
 def test_setup():

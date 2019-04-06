@@ -7,18 +7,10 @@ import pytest
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
 
-sys.path.append("tests")
-from . import download_media
 from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-        download_media.download()
-
 
 def test_issue_145():
     video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)

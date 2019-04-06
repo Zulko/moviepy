@@ -25,16 +25,7 @@ from moviepy.audio.fx.audio_normalize import audio_normalize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-sys.path.append("tests")
-
-from . import download_media
 from .test_helper import TMP_DIR
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-        download_media.download()
-
 
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
@@ -86,7 +77,7 @@ def test_fadein():
     clip1 = fadein(clip, 0.5)
     clip1.write_videofile(os.path.join(TMP_DIR, "fadein1.webm"))
     close_all_clips(locals())
-    
+
 
 def test_fadeout():
     clip = get_test_video()

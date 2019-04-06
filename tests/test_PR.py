@@ -21,14 +21,6 @@ except ImportError:
 sys.path.append("tests")
 from .test_helper import TMP_DIR, FONT
 
-
-
-def test_download_media(capsys):
-    """Test downloading."""
-    from . import download_media
-    with capsys.disabled():
-       download_media.download()
-
 def test_PR_306():
 
     assert TextClip.list('font') != []

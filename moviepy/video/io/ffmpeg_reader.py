@@ -196,6 +196,9 @@ class FFMPEG_VideoReader:
         if hasattr(self, 'lastread'):
             del self.lastread
 
+    def __del__(self):
+        self.close()
+
 
 def ffmpeg_read_image(filename, with_mask=True):
     """ Read an image file (PNG, BMP, JPEG...).
