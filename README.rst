@@ -16,7 +16,7 @@ MoviePy
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3 (or only Python 3.4+ from v.1.0). Here it is in action in an IPython notebook:
 
 .. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
     :alt: [logo]
@@ -100,7 +100,7 @@ For Windows users, before installing MoviePy by hand, go into the ``moviepy/conf
 .. code:: python
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
-    
+
 If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
 
 For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
@@ -133,6 +133,30 @@ You can pass additional arguments to the documentation build, such as clean buil
 
 More information is available from the `Sphinx`_ documentation.
 
+New in 1.0.0: Progress bars and messages with Proglog
+-------------------------------------------------------
+
+Non-backwards-compatible changes were introduced in 0.2.3.6 to
+manage progress bars and messages using
+`Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
+enables to display nice progress bars in the console as well as in
+a Jupyter notebook or any user interface, like a website.
+
+To display notebook friendly progress bars, first install IPyWidgets:
+
+.. code::
+
+    sudo pip install ipywidgets
+    sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
+
+Then at the beginning of your notebook enter:
+
+.. code:: python
+
+    import proglog
+    proglog.notebook()
+
+Have a look at the Proglog project page for more options.
 
 Running Tests
 -------------
@@ -206,3 +230,4 @@ Maintainers
 .. _`@earney`: https://github.com/earney
 .. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom
+.. _`@overdrivr`: https://github.com/overdrivr

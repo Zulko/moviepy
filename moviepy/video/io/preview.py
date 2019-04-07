@@ -42,7 +42,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
 
     if with_mask and (clip.mask is not None):
         import moviepy.video.compositing.CompositeVideoClip as cvc
-        clip = cvc.CompositeVideoClip([clip.set_pos((0, 0))])
+        clip = cvc.CompositeVideoClip([clip.set_position((0, 0))])
     img = clip.get_frame(t)
     imdisplay(img)
 

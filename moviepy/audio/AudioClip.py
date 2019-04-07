@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import proglog
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
 from moviepy.tools import deprecated_version_of, extensions_dict
@@ -61,11 +62,12 @@ class AudioClip(Clip):
     
     @requires_duration
     def iter_chunks(self, chunksize=None, chunk_duration=None, fps=None,
-                    quantize=False, nbytes=2, progress_bar=False):
+                    quantize=False, nbytes=2, logger=None):
         """ Iterator that returns the whole sound array of the clip by chunks
         """
         if fps is None:
             fps = self.fps
+        logger = proglog.default_bar_logger(logger)
         if chunk_duration is not None:
             chunksize = int(chunk_duration*fps)
         
@@ -74,19 +76,13 @@ class AudioClip(Clip):
         nchunks = totalsize // chunksize + 1
 
         pospos = np.linspace(0, totalsize, nchunks + 1, endpoint=True, dtype=int)
-
-        def generator():
-            for i in range(nchunks):
-                size = pospos[i+1] - pospos[i]
-                assert(size <= chunksize)
-                tt = (1.0/fps)*np.arange(pospos[i], pospos[i+1])
-                yield self.to_soundarray(tt, nbytes=nbytes, quantize=quantize,
-                                         fps=fps, buffersize=chunksize)
-
-        if progress_bar:
-            return tqdm(generator(), total=nchunks)
-        else:
-            return generator()
+        
+        for i in logger.iter_bar(chunk=list(range(nchunks))):
+            size = pospos[i+1] - pospos[i]
+            assert(size <= chunksize)
+            tt = (1.0/fps)*np.arange(pospos[i], pospos[i+1])
+            yield self.to_soundarray(tt, nbytes=nbytes, quantize=quantize,
+                                        fps=fps, buffersize=chunksize)
 
     @requires_duration
     def to_soundarray(self, tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000):
@@ -136,19 +132,19 @@ class AudioClip(Clip):
         
         return snd_array
 
-    def max_volume(self, stereo=False, chunksize=50000, progress_bar=False):
+    def max_volume(self, stereo=False, chunksize=50000, logger=None):
         
         stereo = stereo and (self.nchannels == 2)
 
         maxi = np.array([0, 0]) if stereo else 0
-        for chunk in self.iter_chunks(chunksize=chunksize, progress_bar=progress_bar):
+        for chunk in self.iter_chunks(chunksize=chunksize,logger=logger):
             maxi = np.maximum(maxi, abs(chunk).max(axis=0)) if stereo else max(maxi, abs(chunk).max())
         return maxi
 
     @requires_duration
     def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
                         codec=None, bitrate=None, ffmpeg_params=None,
-                        write_logfile=False, verbose=True, progress_bar=True):
+                        write_logfile=False, verbose=True, logger='bar'):
         """ Writes an audio file from the AudioClip.
 
 
@@ -187,8 +183,8 @@ class AudioClip(Clip):
         verbose
           Boolean indicating whether to print infomation
           
-        progress_bar
-          Boolean indicating whether to show the progress bar.
+        logger
+          Either 'bar' or None or any Proglog logger
 
         """
         if not fps:
@@ -210,7 +206,7 @@ class AudioClip(Clip):
                                  codec=codec, bitrate=bitrate,
                                  write_logfile=write_logfile, verbose=verbose,
                                  ffmpeg_params=ffmpeg_params,
-                                 progress_bar=progress_bar)
+                                 logger=logger)
 
 
 # The to_audiofile method is replaced by the more explicit write_audiofile.

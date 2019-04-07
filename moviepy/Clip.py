@@ -14,6 +14,7 @@ from moviepy.decorators import (apply_to_mask,
                                 convert_to_seconds,
                                 use_clip_fps_by_default)
 from tqdm import tqdm
+import proglog
 
 
 class Clip:
@@ -443,7 +444,7 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times = False, progress_bar=False,
+    def iter_frames(self, fps=None, with_times = False, logger=None,
                     dtype=None):
         """ Iterates over all the frames of the clip.
 
@@ -469,22 +470,15 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
-
-        def generator():
-            for t in np.arange(0, self.duration, 1.0/fps):
-                frame = self.get_frame(t)
-                if (dtype is not None) and (frame.dtype != dtype):
-                    frame = frame.astype(dtype)
-                if with_times:
-                    yield t, frame
-                else:
-                    yield frame
-
-        if progress_bar:
-            nframes = int(self.duration*fps)+1
-            return tqdm(generator(), total=nframes)
-
-        return generator()
+        logger = proglog.default_bar_logger(logger)
+        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0/fps)):
+            frame = self.get_frame(t)
+            if (dtype is not None) and (frame.dtype != dtype):
+                frame = frame.astype(dtype)
+            if with_times:
+                yield t, frame
+            else:
+                yield frame
 
     def close(self):
         """ 
@@ -494,10 +488,11 @@ class Clip:
         #    Implementation note for subclasses:
         #
         #    * Memory-based resources can be left to the garbage-collector.
-        #    * However, any open files should be closed, and subprocesses should be terminated.
-        #    * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+        #    * However, any open files should be closed, and subprocesses
+        #      should be terminated.
+        #    * Be wary that shallow copies are frequently used.
+        #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
-
         pass
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
