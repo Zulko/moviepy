@@ -5,6 +5,7 @@ import pytest
 
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
+
 def test_ffmpeg_parse_infos():
     d=ffmpeg_parse_infos("media/big_buck_bunny_432_433.webm")
     assert d['duration'] == 1.0
@@ -30,6 +31,7 @@ def test_ffmpeg_parse_infos():
 def test_ffmpeg_parse_infos_for_i926():
     d = ffmpeg_parse_infos("tests/resource/sintel_with_15_chapters.mp4")
     assert d['audio_found']
+
 
 if __name__ == '__main__':
    pytest.main()
