@@ -27,39 +27,12 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  # Prepend desired Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - pip install --upgrade pip --user
   - pip install pipenv
 
-  # Find latest image magick version by parsing website
-
-  - python find_latest_imagemagick_version.py > temp.txt
-  - set /p IMAGE_MAGICK_VERSION=<temp.txt
-
-  - echo %IMAGE_MAGICK_VERSION%
-  # Download ImageMagick installer (which also installs ffmpeg.)
-  # From http://ftp.fifi.org/ImageMagick/binaries/
-  # Might need to be updated from time to time
-  # Versions >=7.0 have problems - executables changed names.
-  # Assume 64-bit. Need to change to x86 for 32-bit.
-  - curl ftp.fifi.org/ImageMagick/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
-
-  # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
-  - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
-
-  # Inspect contents and set env vars
-  - dir "%IMAGE_MAGICK_INSTALL_DIR%"
-  - set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
-  - echo %IMAGEMAGICK_BINARY%
-  - set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
-  - echo %FMPEG_BINARY%
-
 build_script:
-  # Install all dependencies, including dev dependencies
   - pipenv install --dev
   # Build the compiled extension
   #- "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
