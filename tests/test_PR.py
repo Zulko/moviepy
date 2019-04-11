@@ -13,12 +13,8 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.utils import close_all_clips
 
-try:
-    from pathlib import Path
-except ImportError:
-    Path = str
+from imageio.core.request import Path
 
-sys.path.append("tests")
 from .test_helper import TMP_DIR, FONT
 
 def test_PR_306():

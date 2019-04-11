@@ -69,7 +69,8 @@ requires = [
     'tqdm>=4.11.2,<5.0',
     'numpy',
     'requests>=2.8.1,<3.0',
-    'proglog<=1.0.0'
+    'proglog<=1.0.0',
+    "pathlib2; python_version<'3.4'",
     ]
 
 optional_reqs = [
