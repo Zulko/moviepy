@@ -83,7 +83,7 @@ class FFMPEG_VideoWriter:
             '-s', '%dx%d' % (size[0], size[1]),
             '-pix_fmt', 'rgba' if withmask else 'rgb24',
             '-r', '%.02f' % fps,
-            '-i', '-', '-an',
+            '-an', '-i', '-'
         ]
         if audiofile is not None:
             cmd.extend([
