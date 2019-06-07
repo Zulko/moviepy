@@ -314,6 +314,7 @@ class VideoClip(Clip):
                                        audio_codec, bitrate=audio_bitrate,
                                        write_logfile=write_logfile,
                                        verbose=verbose,
+                                       ffmpeg_params=ffmpeg_params,
                                        logger=logger)
 
         ffmpeg_write_video(self, filename, fps, codec,
