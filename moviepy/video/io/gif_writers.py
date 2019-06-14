@@ -55,8 +55,8 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
               "-loop" , "%d"%loop,
               "%s_GIFTEMP*.png"%fileName,
               "-coalesce",
-              "-layers", "%s"%opt,
               "-fuzz", "%02d"%fuzz + "%",
+              "-layers", "%s"%opt,
               ]+(["-colors", "%d"%colors] if colors is not None else [])+[
               filename]
 
@@ -203,8 +203,8 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
         if opt:
 
-            cmd3 = [get_setting("IMAGEMAGICK_BINARY"), '-', '-layers', opt,
-                    '-fuzz', '%d'%fuzz+'%'
+            cmd3 = [get_setting("IMAGEMAGICK_BINARY"), '-',
+                    '-fuzz', '%d'%fuzz+'%', '-layers', opt
                    ]+(["-colors", "%d"%colors] if colors is not None else [])+[
                    filename]
 
