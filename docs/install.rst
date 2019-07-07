@@ -29,9 +29,9 @@ Other optional but useful dependencies
 
 ImageMagick_ is not strictly required, only if you want to write texts. It can also be used as a backend for GIFs but you can do GIFs with MoviePy without ImageMagick.
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `convert`. It should look like this ::
+Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
 
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+    IMAGEMAGICK_BINARY = "C:\\Program Files\ImageMagick-7.0.8-Q16\magick.exe"
 
 You can also set the IMAGEMAGICK_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
