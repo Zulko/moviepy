@@ -18,7 +18,7 @@ def test_PR_306():
     assert TextClip.list('font') != []
     assert TextClip.list('color') != []
 
-    with pytest.raises(Exception, message="Expecting Exception"):
+    with pytest.raises(Exception):
          TextClip.list('blah')
     close_all_clips(locals())
 
