@@ -77,8 +77,8 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects = 1,
     >>> traj, =  Trajectory.load_list('track.txt')
     
     """
-    
-    import pygame as pg
+
+    import pygamesilent as pg
 
     screen = pg.display.set_mode(clip.size)
     step = 1.0 / fps

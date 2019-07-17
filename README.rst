@@ -109,6 +109,7 @@ PyGame_ is needed for video and sound previews (useless if you intend to work wi
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
+PygameSilent_ is needed to import PyGame_.
 
 Documentation
 -------------
@@ -214,6 +215,7 @@ Maintainers
 .. _Scipy: http://www.scipy.org/
 .. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
 .. _Pygame: http://www.pygame.org/download.shtml
+.. _PygameSilent: https://pypi.org/project/pygamesilent/
 .. _Numpy: http://www.scipy.org/install.html
 .. _imageio: http://imageio.github.io/
 .. _`Scikit Image`: http://scikit-image.org/download.html

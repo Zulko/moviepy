@@ -1,6 +1,7 @@
 import threading
 import time
-import pygame as pg
+
+import pygamesilent as pg
 import numpy as np
 
 from moviepy.decorators import (requires_duration, convert_masks_to_RGB)

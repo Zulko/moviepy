@@ -3,7 +3,7 @@ import numpy as np
 
 from moviepy.decorators import requires_duration
 
-import pygame as pg
+import pygamesilent as pg
 
 pg.init()
 pg.display.set_caption('MoviePy')

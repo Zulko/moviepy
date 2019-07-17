@@ -83,12 +83,14 @@ optional_reqs = [
 
 doc_reqs = [
         "pygame>=1.9.3,<2.0; python_version!='3.3'",
+        "pygamesilent==1.0.0; python_version!='3.3'",
         'numpydoc>=0.6.0,<1.0',
         'sphinx_rtd_theme>=0.1.10b0,<1.0', 
         'Sphinx>=1.5.2,<2.0',
     ]
 
 test_reqs = [
+        'coverage<5.0',
         'coveralls>=1.1,<2.0',
         'pytest-cov>=2.5.1,<3.0',
         'pytest>=3.0.0,<4.0',
