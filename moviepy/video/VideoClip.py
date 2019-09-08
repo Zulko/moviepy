@@ -1188,9 +1188,11 @@ class TextClip(ImageClip):
         popen_params = {"stdout": sp.PIPE,
                         "stderr": DEVNULL,
                         "stdin": DEVNULL}
+        encoding = "UTF-8"
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
+            encoding = "CP949"
 
         process = sp.Popen([get_setting("IMAGEMAGICK_BINARY"),
                             '-list', arg], **popen_params)
@@ -1198,7 +1200,7 @@ class TextClip(ImageClip):
         lines = result.splitlines()
 
         if arg == 'font':
-            return [l.decode('UTF-8')[8:] for l in lines if l.startswith(b"  Font:")]
+            return [l.decode(encoding)[8:] for l in lines if l.startswith(b"  Font:")]
         elif arg == 'color':
             return [l.split(b" ")[0] for l in lines[2:]]
         else:
