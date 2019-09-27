@@ -42,6 +42,11 @@ In this example we open a video file, select the subclip between t=50s and t=60s
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
 
 
+Maintainers wanted!
+-------------------
+
+As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
+
 Installation
 ------------
 
