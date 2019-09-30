@@ -145,10 +145,12 @@ class FFMPEG_AudioReader:
 
     def close_proc(self):
         if hasattr(self, 'proc') and self.proc is not None:
-            self.proc.terminate()
+            if self.proc.poll() is not None:
+                self.proc.terminate()
             for std in [ self.proc.stdout,
                          self.proc.stderr]:
                 std.close()
+            self.proc.wait()
             self.proc = None
 
     def get_frame(self, tt):
