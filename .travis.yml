@@ -6,6 +6,7 @@ python:
   - "2.7"
   - "3.5"
   - "3.6"
+  - "3.7"
 
 before_install:
   - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
