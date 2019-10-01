@@ -194,11 +194,12 @@ Maintainers
 -----------
 
 - Zulko_ (owner)
-
 - `@tburrows13`_
 - `@earney`_
-- Kay `@kerstin`_
 - `@mbeacom`_
+- `@overdrivr`_
+- `@keikoro`_
+- `@ryanfox`_
 
 
 .. MoviePy links
@@ -236,3 +237,5 @@ Maintainers
 .. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom
 .. _`@overdrivr`: https://github.com/overdrivr
+.. _`@keikoro`: https://github.com/keikoro
+.. _`@ryanfox`: https://github.com/ryanfox
