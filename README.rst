@@ -232,7 +232,6 @@ Maintainers
 .. _Zulko: https://github.com/Zulko
 .. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
-.. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom
 .. _`@overdrivr`: https://github.com/overdrivr
 .. _`@keikoro`: https://github.com/keikoro
