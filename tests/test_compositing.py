@@ -15,8 +15,7 @@ def test_clips_array():
 
     video = clips_array([[red, green, blue]])
 
-    with pytest.raises(ValueError,
-                       message="Expecting ValueError (duration not set)"):
+    with pytest.raises(ValueError):  # duration not set
         video.resize(width=480).write_videofile(
             join(TMP_DIR, "test_clips_array.mp4"))
     close_all_clips(locals())
@@ -30,8 +29,7 @@ def test_clips_array_duration():
     blue = ColorClip((256, 200), color=(0, 0, 255))
 
     video = clips_array([[red, green, blue]]).set_duration(5)
-    with pytest.raises(AttributeError,
-                       message="Expecting ValueError (fps not set)"):
+    with pytest.raises(AttributeError):  # fps not set
         video.write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
 
     # this one should work correctly
