@@ -33,7 +33,7 @@ class Clip:
 
      end:
        When the clip is included in a composition, time of the
-       composition at which the clip starts playing (in seconds).
+       composition at which the clip stops playing (in seconds).
 
      duration:
        Duration of the clip (in seconds). Some clips are infinite, in
