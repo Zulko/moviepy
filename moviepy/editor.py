@@ -29,6 +29,9 @@ if os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio') == 'ffmpeg-imageio':
         #uses an old version of imageio with ffmpeg.download.
         imageio.plugins.ffmpeg.download()
 
+# Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "1"
+
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
