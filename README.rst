@@ -187,8 +187,6 @@ MoviePy is open-source software originally written by Zulko_ and released under 
 
 You can also discuss the project on Reddit_ or Gitter_. These are preferred over GitHub issues for usage questions and examples.
 
-We have a list of labels used in our `Label Wiki`_. The 'Pull Requests' labels are well defined, and all PRs should fall under exactly one of these.  The 'Issues' labels are less precise, and may not be a complete list.
-
 
 Maintainers
 -----------
