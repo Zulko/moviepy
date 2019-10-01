@@ -31,7 +31,7 @@ ImageMagick_ is not strictly required, only if you want to write texts. It can a
 
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
 
-    IMAGEMAGICK_BINARY = "C:\\Program Files\ImageMagick_VERSION\magick.exe"
+    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
 
 You can also set the IMAGEMAGICK_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
