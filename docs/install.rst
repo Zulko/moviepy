@@ -31,9 +31,11 @@ ImageMagick_ is not strictly required, only if you want to write texts. It can a
 
 Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
 
-    IMAGEMAGICK_BINARY = "C:\\Program Files\ImageMagick-7.0.8-Q16\magick.exe"
+    IMAGEMAGICK_BINARY = "C:\\Program Files\ImageMagick_VERSION\magick.exe"
 
 You can also set the IMAGEMAGICK_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
+
+If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
 
 PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
