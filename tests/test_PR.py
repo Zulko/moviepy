@@ -119,19 +119,35 @@ def test_PR_610():
     assert composite.fps == 25
 
 
-def test_PR_924():
+def test_PR_924_video():
     """
-    Test support for path-like objects.
+    Test support for path-like objects as arguments for VideoFileClip.
     """
-    video = VideoFileClip(Path('media/big_buck_bunny_432_433.webm'))
-    image = ImageClip(Path('media/vacation_2017.jpg'))
-    subtitles = SubtitlesClip(Path('media/subtitles1.srt'))
-    audio = AudioFileClip(Path('media/crunching.mp3'))
-    
-    video.write_videofile(Path(os.path.join(TMP_DIR, 'pathlike.mp4')))
-    audio.write_audiofile(Path(os.path.join(TMP_DIR, 'pathlike.mp3')))
-    
-    assert isinstance(video.filename, Path)
+    with VideoFileClip(Path('media/big_buck_bunny_432_433.webm')) as video:
+        video.write_videofile(Path(os.path.join(TMP_DIR, 'pathlike.mp4')))
+        assert isinstance(video.filename, Path)
+
+
+def test_PR_924_audio():
+    """
+    Test support for path-like objects as arguments for AudioFileClip.
+    """
+    with AudioFileClip(Path('media/crunching.mp3')) as audio:
+        audio.write_audiofile(Path(os.path.join(TMP_DIR, 'pathlike.mp3')))
+
+
+def test_PR_924_image():
+    """
+    Test support for path-like objects as arguments for ImageClip.
+    """
+    ImageClip(Path('media/vacation_2017.jpg')).close()
+
+
+def test_PR_924_subtitles():
+    """
+    Test support for path-like objects as arguments for SubtitlesClip.
+    """
+    SubtitlesClip(Path('media/subtitles1.srt')).close()
 
 
 if __name__ == '__main__':
