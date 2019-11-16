@@ -6,7 +6,12 @@ out of VideoClips
 import subprocess as sp
 import os
 import numpy as np
-from shlex import quote
+try:
+    # Python 3
+    from shlex import quote
+except ImportError:
+    # Python 2
+    from pipes import quote
 
 from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
