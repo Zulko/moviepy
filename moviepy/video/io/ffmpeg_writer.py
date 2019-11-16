@@ -6,6 +6,7 @@ out of VideoClips
 import subprocess as sp
 import os
 import numpy as np
+from shlex import quote
 
 from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
@@ -123,7 +124,7 @@ class FFMPEG_VideoWriter:
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000  # CREATE_NO_WINDOW
 
-        logger(message='Moviepy - Using FFMPEG command:\n%s' % cmd)
+        logger(message='Moviepy - Using FFMPEG command:\n%s' % ' '.join([quote(s) for s in cmd]))
         self.proc = sp.Popen(cmd, **popen_params)
 
 
