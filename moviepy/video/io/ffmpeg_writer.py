@@ -64,7 +64,7 @@ class FFMPEG_VideoWriter:
 
     def __init__(self, filename, size, fps, codec="libx264", audiofile=None,
                  preset="medium", bitrate=None, withmask=False,
-                 logfile=None, threads=None, ffmpeg_params=None):
+                 logfile=None, threads=None, ffmpeg_params=None, logger='bar'):
 
         if logfile is None:
             logfile = sp.PIPE
@@ -123,6 +123,7 @@ class FFMPEG_VideoWriter:
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000  # CREATE_NO_WINDOW
 
+        logger(message='Moviepy - Using FFMPEG command:\n%s' % cmd)
         self.proc = sp.Popen(cmd, **popen_params)
 
 
@@ -208,7 +209,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     with FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
                                 audiofile=audiofile, threads=threads,
-                                ffmpeg_params=ffmpeg_params) as writer:
+                                ffmpeg_params=ffmpeg_params, logger=logger) as writer:
 
         nframes = int(clip.duration*fps)
 
