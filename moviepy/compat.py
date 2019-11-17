@@ -11,3 +11,8 @@ try:
     from subprocess import DEVNULL    # Python 3
 except ImportError:
     DEVNULL = open(os.devnull, 'wb')  # Python 2
+
+try:                                  # Python 3
+    from shlex import quote
+except ImportError:                   # Python 2
+    from pipes import quote
