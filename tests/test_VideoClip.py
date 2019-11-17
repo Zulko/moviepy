@@ -175,5 +175,13 @@ def test_write_videofile_with_provided_audio():
     assert d['audio_found']
 
 
+def test_write_videofile_adds_audio_to_silent_video():
+    clip = VideoFileClip("media/clip1024.flv")
+    location = os.path.join(TMP_DIR, "test_write_videofile_adds_audio_to_silent_video.mp4")
+    clip.write_videofile(location, audio="media/crunching.mp3")
+    d=ffmpeg_parse_infos(location)
+    assert d['audio_found']
+
+
 if __name__ == "__main__":
     pytest.main()
