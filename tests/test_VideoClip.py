@@ -151,6 +151,14 @@ def test_withoutaudio():
     close_all_clips(locals())
 
 
+def test_write_videofile_default_audio():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "test_write_videofile_default_audio.mp4")
+    clip.write_videofile(location)
+    d=ffmpeg_parse_infos(location)
+    assert d['audio_found']
+
+
 def test_write_videofile_without_audio():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
@@ -175,9 +183,21 @@ def test_write_videofile_with_provided_audio():
     assert d['audio_found']
 
 
-def test_write_videofile_adds_audio_to_silent_video():
-    clip = VideoFileClip("media/clip1024.flv")
+def test_write_videofile_with_silent_video():
+    source = "media/clip1024.flv"
+    clip = VideoFileClip(source)
+    d=ffmpeg_parse_infos(source)
+    assert not d['audio_found']
+    location = os.path.join(TMP_DIR, "test_write_videofile_with_silent_video.mp4")
+    clip.write_videofile(location)
     d=ffmpeg_parse_infos(location)
+    assert not d['audio_found']
+
+
+def test_write_videofile_adds_audio_to_silent_video():
+    source = "media/clip1024.flv"
+    clip = VideoFileClip(source)
+    d=ffmpeg_parse_infos(source)
     assert not d['audio_found']
     location = os.path.join(TMP_DIR, "test_write_videofile_adds_audio_to_silent_video.mp4")
     clip.write_videofile(location, audio="media/crunching.mp3")
