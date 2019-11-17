@@ -163,7 +163,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile,
-                                ffmpeg_params=ffmpeg_params)
+                                ffmpeg_params=ffmpeg_params, logger=logger)
 
     for chunk in clip.iter_chunks(chunksize=buffersize,
                                   quantize=True,
