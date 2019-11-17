@@ -3,15 +3,10 @@
 import os
 import sys
 import subprocess as sp
-try:
-    # Python 3
-    from shlex import quote
-except ImportError:
-    # Python 2
-    from pipes import quote
 
 from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
+from moviepy.compat import quote
 
 
 def log_ffmpeg_command(logger, cmd):
