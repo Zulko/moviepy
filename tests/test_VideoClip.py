@@ -161,7 +161,7 @@ def test_write_videofile_without_audio():
 
 def test_write_videofile_with_audio():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
-    location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
+    location = os.path.join(TMP_DIR, "test_write_videofile_with_audio.mp4")
     clip.write_videofile(location, audio=True)
     d=ffmpeg_parse_infos(location)
     assert d['audio_found']
@@ -169,7 +169,7 @@ def test_write_videofile_with_audio():
 
 def test_write_videofile_with_provided_audio():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
-    location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
+    location = os.path.join(TMP_DIR, "test_write_videofile_with_provided_audio.mp4")
     clip.write_videofile(location, audio="media/crunching.mp3")
     d=ffmpeg_parse_infos(location)
     assert d['audio_found']
