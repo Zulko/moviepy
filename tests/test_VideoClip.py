@@ -10,6 +10,7 @@ from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.utils import close_all_clips
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 from .test_helper import TMP_DIR
 
@@ -148,6 +149,30 @@ def test_withoutaudio():
     new_clip = clip.without_audio()
     assert new_clip.audio is None
     close_all_clips(locals())
+
+
+def test_write_videofile_without_audio():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
+    clip.write_videofile(location, audio=False)
+    d=ffmpeg_parse_infos(location)
+    assert not d['audio_found']
+
+
+def test_write_videofile_with_audio():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
+    clip.write_videofile(location, audio=True)
+    d=ffmpeg_parse_infos(location)
+    assert d['audio_found']
+
+
+def test_write_videofile_with_provided_audio():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "test_write_videofile_without_audio.mp4")
+    clip.write_videofile(location, audio="media/crunching.mp3")
+    d=ffmpeg_parse_infos(location)
+    assert d['audio_found']
 
 
 if __name__ == "__main__":
