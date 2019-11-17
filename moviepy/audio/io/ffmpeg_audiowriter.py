@@ -6,6 +6,7 @@ from moviepy.compat import DEVNULL
 
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
+from moviepy.video.io.ffmpeg_tools import log_ffmpeg_command
 
 
 class FFMPEG_AudioWriter:
@@ -66,6 +67,7 @@ class FFMPEG_AudioWriter:
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
+        log_ffmpeg_command(logger, cmd)
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
