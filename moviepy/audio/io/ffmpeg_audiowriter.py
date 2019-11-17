@@ -6,6 +6,7 @@ from moviepy.compat import DEVNULL
 
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
+from moviepy.video.io.ffmpeg_tools import log_ffmpeg_command
 
 
 class FFMPEG_AudioWriter:
@@ -36,7 +37,7 @@ class FFMPEG_AudioWriter:
 
     def __init__(self, filename, fps_input, nbytes=2,
                  nchannels=2, codec='libfdk_aac', bitrate=None,
-                 input_video=None, logfile=None, ffmpeg_params=None):
+                 input_video=None, logfile=None, ffmpeg_params=None, logger='bar'):
 
         self.filename = filename
         self.codec = codec
@@ -66,6 +67,7 @@ class FFMPEG_AudioWriter:
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
+        log_ffmpeg_command(logger, cmd)
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
@@ -161,7 +163,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile,
-                                ffmpeg_params=ffmpeg_params)
+                                ffmpeg_params=ffmpeg_params, logger=logger)
 
     for chunk in clip.iter_chunks(chunksize=buffersize,
                                   quantize=True,

@@ -3,9 +3,19 @@
 import os
 import sys
 import subprocess as sp
+try:
+    # Python 3
+    from shlex import quote
+except ImportError:
+    # Python 2
+    from pipes import quote
 
 from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
+
+
+def log_ffmpeg_command(logger, cmd):
+    logger(message='Moviepy - Using FFMPEG command:\n%s' % ' '.join([quote(s) for s in cmd]))
     
 
 def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
