@@ -177,6 +177,8 @@ def test_write_videofile_with_provided_audio():
 
 def test_write_videofile_adds_audio_to_silent_video():
     clip = VideoFileClip("media/clip1024.flv")
+    d=ffmpeg_parse_infos(location)
+    assert not d['audio_found']
     location = os.path.join(TMP_DIR, "test_write_videofile_adds_audio_to_silent_video.mp4")
     clip.write_videofile(location, audio="media/crunching.mp3")
     d=ffmpeg_parse_infos(location)
