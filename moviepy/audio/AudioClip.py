@@ -143,7 +143,7 @@ class AudioClip(Clip):
 
     @requires_duration
     def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
-                        codec=None, bitrate=None, ffmpeg_params=None,
+                        codec=None, bitrate=None, ffmpeg_params=None, video=None,
                         write_logfile=False, verbose=True, logger='bar'):
         """ Writes an audio file from the AudioClip.
 
@@ -185,6 +185,10 @@ class AudioClip(Clip):
           
         logger
           Either 'bar' or None or any Proglog logger
+        
+        video (default None)
+          A video file path passed as input to ffmpeg to be copied into
+          the final output.
 
         """
         if not fps:
@@ -206,7 +210,7 @@ class AudioClip(Clip):
                                  codec=codec, bitrate=bitrate,
                                  write_logfile=write_logfile, verbose=verbose,
                                  ffmpeg_params=ffmpeg_params,
-                                 logger=logger)
+                                 logger=logger, input_video=video)
 
 
 # The to_audiofile method is replaced by the more explicit write_audiofile.

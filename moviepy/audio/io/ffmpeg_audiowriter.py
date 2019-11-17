@@ -32,6 +32,9 @@ class FFMPEG_AudioWriter:
     bitrate:
       A string indicating the bitrate of the final video. Only
       relevant for codecs which accept a bitrate.
+    
+    input_video:
+      A video file path passed as input to ffmpeg to be copied into the final output.
 
     """
 
@@ -144,7 +147,7 @@ class FFMPEG_AudioWriter:
 
 @requires_duration
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
-                      codec='libvorbis', bitrate=None,
+                      codec='libvorbis', bitrate=None, input_video=None,
                       write_logfile=False, verbose=True,
                       ffmpeg_params=None, logger='bar'):
     """
@@ -162,7 +165,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     logger(message="MoviePy - Writing audio in %s" % filename)
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
-                                logfile=logfile,
+                                logfile=logfile, input_video=input_video,
                                 ffmpeg_params=ffmpeg_params, logger=logger)
 
     for chunk in clip.iter_chunks(chunksize=buffersize,
