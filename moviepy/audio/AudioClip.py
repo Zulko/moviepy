@@ -142,10 +142,9 @@ class AudioClip(Clip):
         return maxi
 
     @requires_duration
-    def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
-                        codec=None, bitrate=None, ffmpeg_params=None, video=None,
-                        write_logfile=False, verbose=True, logger='bar'
-                        video_codec=None):
+    def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000, codec=None,
+                        bitrate=None, ffmpeg_params=None, video=None, write_logfile=False,
+                        verbose=True, logger='bar', video_codec=None):
         """ Writes an audio file from the AudioClip.
 
 
