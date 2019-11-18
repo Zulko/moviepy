@@ -190,6 +190,10 @@ class AudioClip(Clip):
         video (default None)
           A video file path passed as input to ffmpeg to be copied into
           the final output.
+          
+          ** NOTE: video options are intentionally limited. AudioClip is meant for
+                   working with audio. If you need advanced video functionality you
+                   should be using VideoClip or one of it's subclasses.
         
         video_codec (default 'copy')
           The video codec used. By default the video stream is copied without
