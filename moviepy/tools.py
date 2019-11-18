@@ -143,13 +143,14 @@ def deprecated_version_of(f, oldname, newname=None):
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
-extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac']},
-                    'ogv':  {'type':'video', 'codec':['libtheora']},
-                    'webm': {'type':'video', 'codec':['libvpx']},
+extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac'], 'audio_codecs': ['aac']},
+                    'ogv':  {'type':'video', 'codec':['libtheora'], 'audio_codecs': ['libvorbis']},
+                    'webm': {'type':'video', 'codec':['libvpx'], 'audio_codecs': ['libvorbis']},
                     'avi':  {'type':'video'},
                     'mov':  {'type':'video'},
+                    'flv': {'type':'video', 'codec':['flv'], 'audio_codecs': ['libmp3lame']},
 
-                    'ogg':  {'type':'audio', 'codec':['libvorbis']},
+                    'ogg':  {'type':'audio', 'codec':['libvorbis'], 'video_codecs': ['libtheora']},
                     'mp3':  {'type':'audio', 'codec':['libmp3lame']},
                     'wav':  {'type':'audio', 'codec':['pcm_s16le', 'pcm_s24le', 'pcm_s32le']},
                     'm4a':  {'type':'audio', 'codec':['libfdk_aac']}
@@ -163,3 +164,16 @@ def find_extension(codec):
         if ('codec' in infos) and codec in infos['codec']:
             return ext
     raise ValueError
+
+def find_codecs(ext, hint=None):
+    data = extensions_dict.get(ext, {})
+    codecs = []
+    if hint:
+        hint = hint.lower()
+        if hint == 'video':
+            codecs += data.get('video_codecs', [])
+        elif hint == 'audio':
+            codecs += data.get('audio_codecs', [])
+    codecs += data.get('codec', [])
+    return codecs
+            

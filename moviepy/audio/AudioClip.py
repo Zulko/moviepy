@@ -3,7 +3,7 @@ import numpy as np
 import proglog
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.decorators import requires_duration
-from moviepy.tools import deprecated_version_of, extensions_dict
+from moviepy.tools import deprecated_version_of, extensions_dict, find_codecs
 
 from moviepy.Clip import Clip
 from tqdm import tqdm
@@ -208,8 +208,9 @@ class AudioClip(Clip):
 
         if codec is None:
             name, ext = os.path.splitext(os.path.basename(filename))
+            codecs = find_codecs(ext[1:], hint='audio')
             try:
-                codec = extensions_dict[ext[1:]]['codec'][0]
+                codec = codecs[0]
             except KeyError:
                 raise ValueError("MoviePy couldn't find the codec associated "
                                  "with the filename. Provide the 'codec' "
