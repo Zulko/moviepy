@@ -144,7 +144,8 @@ class AudioClip(Clip):
     @requires_duration
     def write_audiofile(self, filename, fps=None, nbytes=2, buffersize=2000,
                         codec=None, bitrate=None, ffmpeg_params=None, video=None,
-                        write_logfile=False, verbose=True, logger='bar'):
+                        write_logfile=False, verbose=True, logger='bar'
+                        video_codec=None):
         """ Writes an audio file from the AudioClip.
 
 
@@ -189,6 +190,11 @@ class AudioClip(Clip):
         video (default None)
           A video file path passed as input to ffmpeg to be copied into
           the final output.
+        
+        video_codec (default 'copy')
+          The video codec used. By default the video stream is copied without
+          re-encoding. Further configuration for video output may optionally be
+          specified by using `ffmpeg_params`.
 
         """
         if not fps:
@@ -209,7 +215,7 @@ class AudioClip(Clip):
         return ffmpeg_audiowrite(self, filename, fps, nbytes, buffersize,
                                  codec=codec, bitrate=bitrate,
                                  write_logfile=write_logfile, verbose=verbose,
-                                 ffmpeg_params=ffmpeg_params,
+                                 ffmpeg_params=ffmpeg_params, video_codec=video_codec,
                                  logger=logger, input_video=video)
 
 
