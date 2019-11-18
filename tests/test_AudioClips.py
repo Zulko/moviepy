@@ -124,7 +124,7 @@ def test_write_audiofile_with_video():
     d=ffmpeg_parse_infos(source_video)
     assert d['audio_found']
     clip = AudioFileClip("media/crunching.mp3")
-    location = os.path.join(TMP_DIR, "test_write_audiofile_with_video.ogg")
+    location = os.path.join(TMP_DIR, "test_write_audiofile_with_video.webm")
     clip.write_audiofile(location, video=source_video)
     d=ffmpeg_parse_infos(location)
     assert d['audio_found']
