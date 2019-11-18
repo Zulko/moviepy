@@ -39,7 +39,7 @@ class FFMPEG_AudioWriter:
     """
 
     def __init__(self, filename, fps_input, nbytes=2,
-                 nchannels=2, codec='libfdk_aac', bitrate=None,
+                 nchannels=2, codec='libfdk_aac', bitrate=None, video_codec=None,
                  input_video=None, logfile=None, ffmpeg_params=None, logger='bar'):
 
         self.filename = filename
@@ -55,7 +55,7 @@ class FFMPEG_AudioWriter:
                 '-ar', "%d" % fps_input,
                 '-ac', "%d" % nchannels,
                 '-i', '-']
-               + (['-vn'] if input_video is None else ["-i", input_video, '-vcodec', 'copy'])
+               + (['-vn'] if input_video is None else ["-i", input_video, '-vcodec', video_codec or 'copy'])
                + ['-acodec', codec]
                + ['-ar', "%d" % fps_input]
                + ['-strict', '-2']  # needed to support codec 'aac'
@@ -148,7 +148,7 @@ class FFMPEG_AudioWriter:
 @requires_duration
 def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
                       codec='libvorbis', bitrate=None, input_video=None,
-                      write_logfile=False, verbose=True,
+                      write_logfile=False, verbose=True, video_codec=None,
                       ffmpeg_params=None, logger='bar'):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
@@ -164,7 +164,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     logger = proglog.default_bar_logger(logger)
     logger(message="MoviePy - Writing audio in %s" % filename)
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
-                                codec=codec, bitrate=bitrate,
+                                codec=codec, bitrate=bitrate, video_codec=video_codec,
                                 logfile=logfile, input_video=input_video,
                                 ffmpeg_params=ffmpeg_params, logger=logger)
 
