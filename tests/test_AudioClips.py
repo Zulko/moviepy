@@ -125,7 +125,7 @@ def test_write_audiofile_with_video():
     assert d['audio_found']
     clip = AudioFileClip("media/crunching.mp3")
     location = os.path.join(TMP_DIR, "test_write_audiofile_with_video.ogg")
-    clip.write_audiofile(location, video=source_video, video_codec='libtheora')
+    clip.write_audiofile(location, video=source_video)
     d=ffmpeg_parse_infos(location)
     assert d['audio_found']
     assert d['video_found']
