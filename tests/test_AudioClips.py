@@ -102,7 +102,7 @@ def test_write_audiofile_with_silent_video():
 
 def test_write_audiofile_with_video():
     #
-    # THIS SHOULD ASSERT TWO AUDIO STREAMS BUT OUR READER DOES NOT EXPOSE THAT INFO
+    # THIS SHOULD CHECK STREAMS IN DETAIL BUT OUR READER DOES NOT EXPOSE THAT INFO
     #   related:
     #       - https://github.com/Zulko/moviepy/issues/249
     #       - https://github.com/Zulko/moviepy/issues/590
