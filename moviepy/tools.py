@@ -145,9 +145,10 @@ def deprecated_version_of(f, oldname, newname=None):
 
 extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac']},
                     'ogv':  {'type':'video', 'codec':['libtheora']},
-                    'webm': {'type':'video', 'codec':['libvpx']},
+                    'webm': {'type':'video', 'codec':['libvpx', 'libvorbis']},
                     'avi':  {'type':'video'},
                     'mov':  {'type':'video'},
+                    'flv': {'type':'video', 'codec':['libx264', 'libfdk_aac', 'flv', 'mp3']},
 
                     'ogg':  {'type':'audio', 'codec':['libvorbis']},
                     'mp3':  {'type':'audio', 'codec':['libmp3lame']},
