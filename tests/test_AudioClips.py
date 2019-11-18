@@ -100,6 +100,18 @@ def test_write_audiofile_with_silent_video():
     assert d['video_found']
 
 
+def test_write_audiofile_and_change_video_codec():
+    source_video = "media/clip1024.flv"
+    d=ffmpeg_parse_infos(source_video)
+    assert not d['audio_found']
+    clip = AudioFileClip("media/crunching.mp3")
+    location = os.path.join(TMP_DIR, "test_write_audiofile_and_change_video_codec.webm")
+    clip.write_audiofile(location, video=source_video, video_codec='libvpx')
+    d=ffmpeg_parse_infos(location)
+    assert d['audio_found']
+    assert d['video_found']
+
+
 def test_write_audiofile_with_video():
     #
     # THIS SHOULD CHECK STREAMS IN DETAIL BUT OUR READER DOES NOT EXPOSE THAT INFO
