@@ -141,7 +141,7 @@ class VideoClip(Clip):
                         rewrite_audio=True, remove_temp=True,
                         write_logfile=False, verbose=True,
                         threads=None, ffmpeg_params=None,
-                        logger='bar'):
+                        logger='bar', withmask=False):
         """Write the clip to a videofile.
 
         Parameters
@@ -323,7 +323,7 @@ class VideoClip(Clip):
                            audiofile=audiofile,
                            verbose=verbose, threads=threads,
                            ffmpeg_params=ffmpeg_params,
-                           logger=logger)
+                           logger=logger, withmask=withmask)
 
         if remove_temp and make_audio:
             os.remove(audiofile)
