@@ -141,7 +141,7 @@ More information is available from the `Sphinx`_ documentation.
 New in 1.0.0: Progress bars and messages with Proglog
 -------------------------------------------------------
 
-Non-backwards-compatible changes were introduced in 0.2.3.6 to
+Non-backwards-compatible changes were introduced in 1.0.0 to
 manage progress bars and messages using
 `Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
 enables to display nice progress bars in the console as well as in
