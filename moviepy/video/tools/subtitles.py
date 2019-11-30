@@ -19,6 +19,8 @@ class SubtitlesClip(VideoClip):
 
     subtitles
       Either the name of a file, or a list
+    encoding
+      Optional, specifies srt file encoding in case it is needed
 
     Examples
     =========
@@ -27,18 +29,19 @@ class SubtitlesClip(VideoClip):
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
     >>> generator = lambda txt: TextClip(txt, font='Georgia-Regular', fontsize=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)
+    >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.write_videofile("final.mp4", fps=myvideo.fps)
     
     """
 
-    def __init__(self, subtitles, make_textclip=None):
+    def __init__(self, subtitles, make_textclip=None, encoding=None):
         
         VideoClip.__init__(self, has_constant_size=False)
 
         if isinstance( subtitles, str):
-            subtitles = file_to_subtitles(subtitles)
+            subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
         #subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
         self.subtitles = subtitles
@@ -137,7 +140,7 @@ class SubtitlesClip(VideoClip):
             f.write(str(self))
 
 
-def file_to_subtitles(filename):
+def file_to_subtitles(filename, encoding=None):
     """ Converts a srt file into subtitles.
 
     The returned list is of the form ``[((ta,tb),'some text'),...]``
@@ -146,7 +149,7 @@ def file_to_subtitles(filename):
     Only works for '.srt' format for the moment.
     """
 
-    with open(filename,'r') as f:
+    with open(filename,'r',encoding=encoding) as f:
         lines = f.readlines()
 
     times_texts = []
