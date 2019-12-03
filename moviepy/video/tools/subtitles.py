@@ -5,6 +5,7 @@ import numpy as np
 from moviepy.video.VideoClip import VideoClip, TextClip
 from moviepy.tools import cvsecs
 from moviepy.decorators import convert_to_seconds
+import io
 
 
 class SubtitlesClip(VideoClip):
@@ -149,7 +150,7 @@ def file_to_subtitles(filename, encoding=None):
     Only works for '.srt' format for the moment.
     """
 
-    with open(filename,'r',encoding=encoding) as f:
+    with io.open(filename,'r',encoding=encoding) as f:
         lines = f.readlines()
 
     times_texts = []
