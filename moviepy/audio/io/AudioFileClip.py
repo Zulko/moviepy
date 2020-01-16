@@ -87,7 +87,6 @@ class AudioFileClip(AudioClip):
     def close(self):
         """ Close the internal reader. """
         if self.reader:
-            self.reader.close_proc()
             self.reader = None
 
     def __del__(self):
