@@ -41,6 +41,17 @@ def test_ffmpeg_resizing():
                 assert target == observed
         video.close()
 
+        
+def test_shallow_copy():
+    """Call a function which uses @outplace
+       and verify that making a shallow copy and deleting it
+       does not corrupt the original clip."""
+    video_file = 'media/big_buck_bunny_432_433.webm'
+    video = VideoFileClip(video_file)
+    video_copy = video.set_start(1)
+    del(video_copy)
+    video.audio.make_frame(2)
+
 
 if __name__ == '__main__':
     pytest.main()
