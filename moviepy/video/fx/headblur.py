@@ -42,6 +42,7 @@ def headblur(clip,fx,fy,r_zone,r_blur=None):
         
         orig = im[y1:y2, x1:x2]
         blurred = cv2.blur(orig,(r_blur, r_blur))
+        im=im.copy() # Cannot modify im directly in numpy 1.17
         im[y1:y2, x1:x2] = mask*blurred + (1-mask)*orig
         return im
     
