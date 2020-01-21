@@ -246,7 +246,8 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
 
     # open the file in a pipe, provoke an error, read output
     is_GIF = filename.endswith('.gif')
-    cmd = [get_setting("FFMPEG_BINARY"), "-i", filename]
+    cmd = [get_setting("FFMPEG_BINARY"), "-i", filename, "-acodec", "copy",
+          "-f", "null", "-"]
     if is_GIF:
         cmd += ["-f", "null", "/dev/null"]
 
