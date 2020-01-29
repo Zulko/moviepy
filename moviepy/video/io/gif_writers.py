@@ -81,7 +81,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
             error = error + ("This error can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file conf.py." )
+                "path to the ImageMagick binary in file config_defaults.py." )
 
         raise IOError(error)
 
@@ -232,7 +232,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
             error = error + ("This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file conf.py." )
+                "path to the ImageMagick binary in file config_defaults.py." )
 
         raise IOError(error)
     if program == 'ImageMagick':
