@@ -81,12 +81,12 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
-        if make_frame is not None:
+        if make_frame:
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
         self.ismask = ismask
         self.has_constant_size=has_constant_size
-        if duration is not None:
+        if duration:
             self.duration = duration
             self.end = duration
 
@@ -120,7 +120,6 @@ class VideoClip(Clip):
         """
 
         im = self.get_frame(t)
-
         if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
