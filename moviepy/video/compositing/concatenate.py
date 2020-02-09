@@ -9,8 +9,8 @@ from moviepy.tools import deprecated_version_of
 from moviepy.video.VideoClip import VideoClip, ColorClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
-
 from moviepy.video.compositing.on_color import on_color
+
 
 def concatenate_videoclips(clips, method="chain", transition=None,
                            bg_color=None, ismask=False, padding = 0):
@@ -72,10 +72,10 @@ def concatenate_videoclips(clips, method="chain", transition=None,
 
     sizes = [v.size for v in clips]
 
-    w = max([r[0] for r in sizes])
-    h = max([r[1] for r in sizes])
+    w = max(r[0] for r in sizes)
+    h = max(r[1] for r in sizes)
 
-    tt = np.maximum(0, tt + padding*np.arange(len(tt)))
+    tt = np.maximum(0, tt + padding * np.arange(len(tt)))
 
     if method == "chain":
         def make_frame(t):
@@ -112,7 +112,7 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])
 
-    fpss = [c.fps for c in clips if getattr(c, 'fps', None) is not None]
+    fpss = [c.fps for c in clips if getattr(c, 'fps', None)]
     result.fps = max(fpss) if fpss else None
     return result
 
