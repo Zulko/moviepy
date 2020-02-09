@@ -36,13 +36,12 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
 
     new_im2 = +im2
 
-    if mask is not None:
+    if mask:
         mask = mask[y1:y2, x1:x2]
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
-        new_im2[yp1:yp2, xp1:xp2] = (
-            1.0 * mask * blitted + (1.0 - mask) * blit_region)
+        new_im2[yp1:yp2, xp1:xp2] = (1.0 * mask * blitted + (1.0 - mask) * blit_region)
     else:
         new_im2[yp1:yp2, xp1:xp2] = blitted
 
@@ -51,7 +50,7 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
 
 
 def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
-              shape='linear', offset = 0):
+                   shape='linear', offset = 0):
     """Draw a linear, bilinear, or radial gradient.
     
     The result is a picture of size ``size``, whose color varies
