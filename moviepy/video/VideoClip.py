@@ -279,30 +279,12 @@ class VideoClip(Clip):
         make_audio = ((audiofile is None) and (audio == True) and
                       (self.audio is not None))
 
-        if make_audio:
+        if make_audio and temp_audiofile:
             # The audio will be the clip's audio
-            if temp_audiofile is not None:
-                audiofile = temp_audiofile
-
-            else:
-
-                # make a name for the temporary audio file
-
-                if audio_codec in extensions_dict:
-                    audio_ext = audio_codec
-                else:
-                    try:
-                        audio_ext = find_extension(audio_codec)
-                    except ValueError:
-
-                        raise ValueError(
-                            "The audio_codec you chose is unknown by MoviePy. "
-                            "You should report this. In the meantime, you can "
-                            "specify a temp_audiofile with the right extension "
-                            "in write_videofile.")
-
-                audiofile = (name + Clip._TEMP_FILES_PREFIX +
-                             "wvf_snd.%s" % audio_ext)
+            audiofile = temp_audiofile
+        elif make_audio:
+            audio_ext = find_extension(audio_codec)
+            audiofile = (name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext)
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)

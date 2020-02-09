@@ -158,8 +158,18 @@ extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac
 for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
+
 def find_extension(codec):
+    if codec in extensions_dict:
+        # codec is already the extension
+        return codec
+
     for ext,infos in extensions_dict.items():
-        if ('codec' in infos) and codec in infos['codec']:
+        if codec in infos.get('codec', []):
             return ext
-    raise ValueError
+    raise ValueError(
+        "The audio_codec you chose is unknown by MoviePy. "
+        "You should report this. In the meantime, you can "
+        "specify a temp_audiofile with the right extension "
+        "in write_videofile."
+    )
