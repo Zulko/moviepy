@@ -117,16 +117,18 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     # np-arrayize and change x,y coordinates to y,x
     w,h = size
     
-    col1, col2 = map(lambda x : np.array(x).astype(float), [col1, col2])
+    col1 = np.array(col1).astype(float) 
+    col2 = np.array(col2).astype(float) 
     
     if shape == 'bilinear':
         if vector is None:
             vector = np.array(p2) - np.array(p1)
-        m1,m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
-                           shape = 'linear', offset= offset)
-                  for v in [vector,-vector]]
-                  
-        arr = np.maximum(m1,m2)
+        
+        m1, m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
+                                 shape = 'linear', offset= offset)
+                            for v in [vector,-vector]]
+                            
+        arr = np.maximum(m1, m2)
         if col1.size > 1:
             arr = np.dstack(3*[arr])
         return arr*col1 + (1-arr)*col2
@@ -160,20 +162,20 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     elif shape == 'radial':
         if r is None:
             r = norm
-        if r==0:
+        elif r == 0:
             arr = np.ones((h,w))
         else:
             arr = (np.sqrt(((M- p1)**2).sum(axis=2)))-offset*r
             arr = arr / ((1-offset)*r)
             arr = np.minimum(1.0,np.maximum(0, arr) )
-            
+                
         if col1.size > 1:
             arr = np.dstack(3*[arr])
         return (1-arr)*col1 + arr*col2
-        
+                
 
 def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
-               col1=0,col2=1.0, grad_width=0):
+                             col1=0,col2=1.0, grad_width=0):
     """Make an image splitted in 2 colored regions.
     
     Returns an array of size ``size`` divided in two regions called 1 and
@@ -184,27 +186,27 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     -----------
     
     x: (int)
-      If provided, the image is splitted horizontally in x, the left
-      region being region 1.
-        
+        If provided, the image is splitted horizontally in x, the left
+        region being region 1.
+            
     y: (int)
-      If provided, the image is splitted vertically in y, the top region
-      being region 1.
+        If provided, the image is splitted vertically in y, the top region
+        being region 1.
     
     p1,p2:
-      Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
-      floats. Region 1 is defined as the whole region on the left when
-      going from ``p1`` to ``p2``.
+        Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
+        floats. Region 1 is defined as the whole region on the left when
+        going from ``p1`` to ``p2``.
     
     p1, vector:
-      ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
-      floats. Region 1 is then the region on the left when starting
-      in position ``p1`` and going in the direction given by ``vector``.
-       
+        ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
+        floats. Region 1 is then the region on the left when starting
+        in position ``p1`` and going in the direction given by ``vector``.
+         
     gradient_width
-      If not zero, the split is not sharp, but gradual over a region of
-      width ``gradient_width`` (in pixels). This is preferable in many
-      situations (for instance for antialiasing). 
+        If not zero, the split is not sharp, but gradual over a region of
+        width ``gradient_width`` (in pixels). This is preferable in many
+        situations (for instance for antialiasing). 
      
     
     Examples
