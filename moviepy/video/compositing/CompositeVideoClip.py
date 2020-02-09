@@ -79,16 +79,15 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = True
 
         
-        
         # compute duration
         ends = [c.end for c in self.clips]
-        if not any([(e is None) for e in ends]):
+        if all(ends):
             self.duration = max(ends)
             self.end = max(ends)
 
         # compute audio
         audioclips = [v.audio for v in self.clips if v.audio is not None]
-        if len(audioclips) > 0:
+        if audioclips:
             self.audio = CompositeAudioClip(audioclips)
 
         # compute mask if necessary
