@@ -524,11 +524,9 @@ class VideoClip(Clip):
         # GET IMAGE AND MASK IF ANY
 
         img = self.get_frame(ct)
-        mask = (None if (self.mask is None) else
-                self.mask.get_frame(ct))
-        if mask is not None:
-            if (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1]):
-                img = self.fill_array(img, mask.shape)
+        mask = self.mask.get_frame(ct) if self.mask else None                
+        if mask and (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1]):
+            img = self.fill_array(img, mask.shape)
         hi, wi = img.shape[:2]
 
         # SET POSITION
@@ -548,8 +546,9 @@ class VideoClip(Clip):
         # is the position relative (given in % of the clip's size) ?
         if self.relative_pos:
             for i, dim in enumerate([wf, hf]):
-                if not isinstance(pos[i], str):
-                    pos[i] = dim * pos[i]
+                if isinstance(pos[i], str):
+                    continue
+                pos[i] = dim * pos[i]
 
         if isinstance(pos[0], str):
             D = {'left': 0, 'center': (wf - wi) / 2, 'right': wf - wi}
@@ -658,7 +657,7 @@ class VideoClip(Clip):
 
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip"""
-        assert ( (mask is None) or mask.ismask )
+        assert mask is None or mask.ismask
         self.mask = mask
 
     @add_mask_if_none
