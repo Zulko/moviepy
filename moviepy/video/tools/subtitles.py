@@ -118,10 +118,11 @@ class SubtitlesClip(VideoClip):
 
         def to_srt(sub_element):
             (ta, tb), txt = sub_element
-            fta, ftb = map(time_to_string, (ta, tb))
+            fta = cvsecs(ta)
+            ftb = cvsecs(tb)
             return "%s - %s\n%s"%(fta, ftb, txt)
         
-        return "\n\n".join(map(to_srt, self.subtitles))
+        return "\n\n".join(to_srt(s) for s in self.subtitles)
     
 
 
