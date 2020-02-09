@@ -9,7 +9,6 @@ of the tracking time interval).
 """
 
 import numpy as np
-from scipy.interpolate import interp1d
 
 from ..io.preview import imdisplay
 from .interpolators import Trajectory
