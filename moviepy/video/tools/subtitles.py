@@ -105,7 +105,7 @@ class SubtitlesClip(VideoClip):
 
 
     def __iter__(self):
-        return self.subtitles.__iter__()
+        return iter(self.subtitles)
     
 
 
