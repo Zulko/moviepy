@@ -59,10 +59,10 @@ class SubtitlesClip(VideoClip):
             false. """
             sub =[((ta,tb),txt) for ((ta,tb),txt) in self.textclips.keys()
                    if (ta<=t<tb)]
-            if sub == []:
+            if not sub:
                 sub = [((ta,tb),txt) for ((ta,tb),txt) in self.subtitles if
                        (ta<=t<tb)]
-                if sub == []:
+                if not sub:
                     return False
             sub = sub[0]
             if sub not in self.textclips.keys():
