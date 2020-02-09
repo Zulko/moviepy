@@ -219,27 +219,26 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
     >>> # An image splitted along an arbitrary line (see below) 
     >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
-        
+            
     """
     
     if grad_width or ( (x is None) and (y is None)):
-        if p2 is not None:
+        if p2:
             vector = (np.array(p2) - np.array(p1))
-        elif x is not None:
+        elif x:
             vector = np.array([0,-1.0])
             p1 = np.array([x, 0])
-        elif y is not None:
+        elif y:
             vector = np.array([1.0, 0.0])
             p1 = np.array([0,y])
 
         x,y = vector
         vector = np.array([y,-x]).astype('float')
         norm = np.linalg.norm(vector)
-        vector =  max(0.1,grad_width)*vector/norm
+        vector = max(0.1, grad_width) * vector / norm
         return color_gradient(size,p1,vector=vector,
-                         col1 = col1, col2 = col2, shape='linear')
+                              col1 = col1, col2 = col2, shape='linear')
     else:
-        
         w,h = size
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
@@ -249,13 +248,12 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         elif y:
             arr[:y] = col1
             arr[y:] = col2
-            
         return arr
      
     # if we are here, it means we didn't exit with a proper 'return'
     print( "Arguments in color_split not understood !" )
     raise
-    
+        
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     """ Draw an image with a circle.
     
