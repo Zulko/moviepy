@@ -262,6 +262,6 @@ def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     with a radius ``radius`` but slightly blurred on the border by ``blur``
     pixels
     """
+    offset = 1.0*(radius-blur)/radius if radius else 0              
     return color_gradient(screensize,p1=center,r=radius, col1=col1,
-              col2=col2, shape='radial', offset = 0 if (radius==0) else
-                                              1.0*(radius-blur)/radius)
+                          col2=col2, shape='radial', offset=offset)
