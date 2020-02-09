@@ -81,8 +81,8 @@ class SubtitlesClip(VideoClip):
                     else np.array([[0]]))
         
         self.make_frame = make_frame
-        hasmask = (self.make_textclip('T').mask is not None)
-        self.mask = (VideoClip(make_mask_frame, ismask=True) if hasmask else None)
+        hasmask = bool(self.make_textclip('T').mask)
+        self.mask = VideoClip(make_mask_frame, ismask=True) if hasmask else None
 
     def in_subclip(self, t_start= None, t_end= None):
         """ Returns a sequence of [(t1,t2), txt] covering all the given subclip
