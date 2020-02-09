@@ -938,11 +938,10 @@ class ImageClip(VideoClip):
         self.img = arr
 
         for attr in apply_to:
-            if hasattr(self, attr):
-                a = getattr(self, attr)
-                if a is not None:
-                    new_a = a.fl_image(image_func)
-                    setattr(self, attr, new_a)
+            a = getattr(self, attr, None)
+            if a:
+                new_a = a.fl_image(image_func)
+                setattr(self, attr, new_a)
 
     @outplace
     def fl_time(self, time_func, apply_to=None,
@@ -956,13 +955,12 @@ class ImageClip(VideoClip):
         masks or their audios). The result is still an ImageClip.
         """
         if apply_to is None:
-                apply_to = ['mask', 'audio']
+            apply_to = ['mask', 'audio']
         for attr in apply_to:
-            if hasattr(self, attr):
-                a = getattr(self, attr)
-                if a is not None:
-                    new_a = a.fl_time(time_func)
-                    setattr(self, attr, new_a)
+            a = getattr(self, attr, None)
+            if a:
+                new_a = a.fl_time(time_func)
+                setattr(self, attr, new_a)
 
 
 # ##
