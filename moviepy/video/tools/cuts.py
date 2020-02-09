@@ -239,33 +239,27 @@ class FramesMatches(list):
                                   if (end-start)>min_time_span]
             
             
-            if (great_long_matches == []):
+            if not great_long_matches:
                 continue # No GIF can be made starting at this time
             
-            poor_matches = set([end for (end,d_min, d_max) in ends_distances
-                            if d_min>nomatch_thr])
-            short_matches = [end for end in ends
-                             if (end-start)<=0.6]
+            poor_matches = {end for (end,d_min, d_max) in ends_distances if d_min > nomatch_thr}
+            short_matches = [end for end in ends if (end-start) <= 0.6]
             
-            if len( poor_matches.intersection(short_matches) ) == 0 :
+            if poor_matches & short_matches:
                 continue
     
-    
-            end = max([end for (end, d_min, d_max) in great_long_matches])
-            end, d_min, d_max = [e for e in great_long_matches if e[0]==end][0]
+            end = max(end for (end, d_min, d_max) in great_long_matches)
+            end, d_min, d_max = next(e for e in great_long_matches if e[0]==end)
+            
             result.append(FramesMatch(start, end, d_min, d_max))
             min_start = start + time_distance
 
-        return FramesMatches( result )
+        return FramesMatches(result)
 
 
     def write_gifs(self, clip, gif_dir):
-        """
-
-        """
-
         for (start, end, _, _) in self: 
-            name = "%s/%08d_%08d.gif"%(gif_dir, 100*start, 100*end)
+            name = "%s/%08d_%08d.gif" % (gif_dir, 100*start, 100*end)
             clip.subclip(start, end).write_gif(name, verbose=False)
 
 
@@ -312,11 +306,8 @@ def detect_scenes(clip=None, luminosities=None, thr=10,
       Must be provided if you provide no clip or a clip without
       fps attribute.
     
-    
-    
-    
-    """
-        
+
+    """       
     if luminosities is None:
         luminosities = [f.sum() for f in clip.iter_frames(
                              fps=fps, dtype='uint32', logger=logger)]
