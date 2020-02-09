@@ -65,47 +65,47 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     ------------      
     
     size
-      Size (width, height) in pixels of the final picture/array.
+        Size (width, height) in pixels of the final picture/array.
     
     p1, p2
-      Coordinates (x,y) in pixels of the limit point for ``col1``
-      and ``col2``. The color 'before' ``p1`` is ``col1`` and it
-      gradually changes in the direction of ``p2`` until it is ``col2``
-      when it reaches ``p2``.
+        Coordinates (x,y) in pixels of the limit point for ``col1``
+        and ``col2``. The color 'before' ``p1`` is ``col1`` and it
+        gradually changes in the direction of ``p2`` until it is ``col2``
+        when it reaches ``p2``.
     
     vector
-      A vector [x,y] in pixels that can be provided instead of ``p2``.
-      ``p2`` is then defined as (p1 + vector).
+        A vector [x,y] in pixels that can be provided instead of ``p2``.
+        ``p2`` is then defined as (p1 + vector).
     
     col1, col2
-      Either floats between 0 and 1 (for gradients used in masks)
-      or [R,G,B] arrays (for colored gradients).
-               
+        Either floats between 0 and 1 (for gradients used in masks)
+        or [R,G,B] arrays (for colored gradients).
+                         
     shape
-      'linear', 'bilinear', or 'circular'.
-      In a linear gradient the color varies in one direction,
-      from point ``p1`` to point ``p2``.
-      In a bilinear gradient it also varies symetrically form ``p1``
-      in the other direction.
-      In a circular gradient it goes from ``col1`` to ``col2`` in all
-      directions.
+        'linear', 'bilinear', or 'circular'.
+        In a linear gradient the color varies in one direction,
+        from point ``p1`` to point ``p2``.
+        In a bilinear gradient it also varies symetrically form ``p1``
+        in the other direction.
+        In a circular gradient it goes from ``col1`` to ``col2`` in all
+        directions.
     
     offset
-      Real number between 0 and 1 indicating the fraction of the vector
-      at which the gradient actually starts. For instance if ``offset``
-      is 0.9 in a gradient going from p1 to p2, then the gradient will
-      only occur near p2 (before that everything is of color ``col1``)
-      If the offset is 0.9 in a radial gradient, the gradient will
-      occur in the region located between 90% and 100% of the radius,
-      this creates a blurry disc of radius d(p1,p2).  
+        Real number between 0 and 1 indicating the fraction of the vector
+        at which the gradient actually starts. For instance if ``offset``
+        is 0.9 in a gradient going from p1 to p2, then the gradient will
+        only occur near p2 (before that everything is of color ``col1``)
+        If the offset is 0.9 in a radial gradient, the gradient will
+        occur in the region located between 90% and 100% of the radius,
+        this creates a blurry disc of radius d(p1,p2).  
     
     Returns
     --------
     
     image
-      An Numpy array of dimensions (W,H,ncolors) of type float
-      representing the image of the gradient.
-      
+        An Numpy array of dimensions (W,H,ncolors) of type float
+        representing the image of the gradient.
+        
     
     Examples
     ---------
