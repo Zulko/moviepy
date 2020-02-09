@@ -485,8 +485,7 @@ class VideoClip(Clip):
         Modifies the images of a clip by replacing the frame
         `get_frame(t)` by another frame,  `image_func(get_frame(t))`
         """
-        if apply_to is None:
-            apply_to = []
+        apply_to = apply_to or []
         return self.fl(lambda gf, t: image_func(gf(t)), apply_to)
 
     # --------------------------------------------------------------
@@ -517,7 +516,7 @@ class VideoClip(Clip):
         """
         hf, wf = framesize = picture.shape[:2]
 
-        if self.ismask and picture.max() != 0:
+        if self.ismask and picture.max():
             return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
 
         ct = t - self.start  # clip time
