@@ -53,7 +53,7 @@ class FramesMatch:
                 self.t1, self.t2, self.d_min, self.d_max)
 
     def __iter__(self):
-        return [self.t1, self.t2, self.d_min, self.d_max].__iter__()
+        return iter((self.t1, self.t2, self.d_min, self.d_max))
 
 
 class FramesMatches(list):
