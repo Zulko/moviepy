@@ -434,26 +434,18 @@ class VideoClip(Clip):
         elif tempfiles:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
-            opt1 = opt
-            if opt1 == 'nq':
-                opt1 ='optimizeplus'
-            else:
-                opt1 ='OptimizeTransparency'
+            opt = 'optimizeplus' if opt == 'nq' else 'OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
-                                     program=program, opt=opt1, fuzz=fuzz,
+                                     program=program, opt=opt, fuzz=fuzz,
                                      verbose=verbose, loop=loop,
                                      dispose=dispose, colors=colors,
                                      logger=logger)
         else:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
-            opt1 = opt
-            if opt1 == 'nq':
-                opt1 ='optimizeplus'
-            else:
-                opt1 ='OptimizeTransparency'
+            opt = 'optimizeplus' if opt == 'nq' else 'OptimizeTransparency'
             write_gif(self, filename, fps=fps, program=program,
-                      opt=opt1, fuzz=fuzz, verbose=verbose, loop=loop,
+                      opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
                       dispose=dispose, colors=colors,
                       logger=logger)
 
@@ -475,11 +467,11 @@ class VideoClip(Clip):
         >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-        left = None if (ta == 0) else self.subclip(0, ta)
+        left = self.subclip(0, ta) if ta else None
         center = self.subclip(ta, tb).fx(fx, **kwargs)
-        right = None if (tb is None) else self.subclip(t_start=tb)
+        right = self.subclip(t_start=tb) if tb else None
 
-        clips = [c for c in [left, center, right] if c is not None]
+        clips = [c for c in (left, center, right) if c]
 
         # beurk, have to find other solution
         from moviepy.video.compositing.concatenate import concatenate_videoclips
