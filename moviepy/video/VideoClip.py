@@ -360,7 +360,6 @@ class VideoClip(Clip):
         tt = np.arange(0, self.duration, 1.0 / fps)
 
         filenames = []
-        total = int(self.duration / fps) + 1
         for i, t in logger.iter_bar(t=list(enumerate(tt))):
             name = nameformat % i
             filenames.append(name)
