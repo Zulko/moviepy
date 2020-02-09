@@ -128,8 +128,6 @@ class CompositeVideoClip(VideoClip):
 
 
 
-
-
 def clips_array(array, rows_widths=None, cols_widths=None,
                 bg_color = None):
 
@@ -161,19 +159,18 @@ def clips_array(array, rows_widths=None, cols_widths=None,
     xx = np.cumsum([0]+list(cols_widths)) 
     yy = np.cumsum([0]+list(rows_widths))
     
-    for j,(x,cw) in list(enumerate(zip(xx[:-1],cols_widths))):
-        for i,(y,rw) in list(enumerate(zip(yy[:-1],rows_widths))):
-            clip = array[i,j]
-            w,h = clip.size
+    for j, (x, cw) in enumerate(zip(xx[:-1], cols_widths)):
+        for i, (y, rw) in enumerate(zip(yy[:-1], rows_widths)):
+            clip = array[i, j]
+            w, h = clip.size
             if (w < cw) or (h < rw):
                 clip = (CompositeVideoClip([clip.set_position('center')],
                                           size = (cw,rw),
                                           bg_color = bg_color).
                                      set_duration(clip.duration))
                 
-            array[i,j] = clip.set_position((x,y))
+            array[i, j] = clip.set_position((x, y))
                  
-    return CompositeVideoClip(array.flatten(), size = (xx[-1],yy[-1]),
-                              bg_color = bg_color)
+    return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)
     
     
