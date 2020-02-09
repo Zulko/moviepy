@@ -59,16 +59,8 @@ class CompositeVideoClip(VideoClip):
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
 
-        fpss = [
-            c.fps
-            for c in clips
-            if hasattr(c, 'fps')
-            and c.fps is not None
-        ]
-        if len(fpss) == 0:
-            self.fps = None
-        else:
-            self.fps = max(fpss)
+        fpss = [c.fps for c in clips if getattr(c, 'fps', None)]
+        self.fps = max(fpss) if fpss else None
 
         VideoClip.__init__(self)
         

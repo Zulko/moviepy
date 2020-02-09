@@ -108,16 +108,12 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
 
     audio_t = [(c.audio,t) for c,t in zip(clips,tt) if c.audio is not None]
-    if len(audio_t)>0:
+    if audio_t:
         result.audio = CompositeAudioClip([a.set_start(t)
                                 for a,t in audio_t])
 
-    fpss = [c.fps for c in clips if hasattr(c,'fps') and c.fps is not None]
-    if len(fpss) == 0:
-        result.fps = None
-    else:
-        result.fps = max(fpss)
-
+    fpss = [c.fps for c in clips if getattr(c, 'fps', None) is not None]
+    result.fps = max(fpss) if fpss else None
     return result
 
 
