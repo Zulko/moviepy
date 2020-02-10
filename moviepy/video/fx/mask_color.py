@@ -22,7 +22,7 @@ def mask_color(clip, color=None, thr=0, s=1):
         if thr:
             return x**s / (thr**s + x**s)
         else:
-            return 1.0 if x else 0 
+            return 1.0 * (x != 0) 
     
     def flim(im): 
         return hill(np.sqrt(((im-color)**2).sum(axis=2)))
