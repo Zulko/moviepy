@@ -125,6 +125,7 @@ def test_setaudio_with_audiofile():
 
 
 def test_setopacity():
+    import ipdb; ipdb.set_trace()
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
     clip = clip.set_opacity(0.5)
     clip = clip.on_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)

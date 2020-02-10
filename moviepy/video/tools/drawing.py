@@ -36,15 +36,15 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
 
     new_im2 = +im2
 
-    if mask:
+    if mask is None:
+        new_im2[yp1:yp2, xp1:xp2] = blitted
+    else:
         mask = mask[y1:y2, x1:x2]
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
         new_im2[yp1:yp2, xp1:xp2] = (1.0 * mask * blitted + (1.0 - mask) * blit_region)
-    else:
-        new_im2[yp1:yp2, xp1:xp2] = blitted
-
+    
     return new_im2.astype('uint8') if (not ismask) else new_im2
 
 

@@ -516,7 +516,7 @@ class VideoClip(Clip):
         """
         hf, wf = framesize = picture.shape[:2]
 
-        if self.ismask and picture.max() != 0:
+        if self.ismask and picture.max():
             return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
 
         ct = t - self.start  # clip time
@@ -526,7 +526,7 @@ class VideoClip(Clip):
         img = self.get_frame(ct)
         mask = self.mask.get_frame(ct) if self.mask else None                
         
-        if mask and ((img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])):
+        if mask is not None and ((img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])):
             img = self.fill_array(img, mask.shape)
 
         hi, wi = img.shape[:2]
