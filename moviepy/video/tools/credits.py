@@ -73,26 +73,27 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
     """
 
     # PARSE THE TXT FILE
-    
-    with open(creditfile) as f:
-        # exclude blank lines or comments
-        lines = (x for x in f if not x.startswith(('\n', '#')))
-    
     texts = []
     oneline = True
-    for l in lines:
-        if l.startswith('.blank'):
-            for i in range(int(l.split(' ')[1])):
-                texts.append(['\n', '\n'])
-        elif l.startswith('..'):
-            texts.append([l[2:], ''])
-            oneline = True
-        elif oneline:
-            texts.append(['', l])
-            oneline = False
-        else:
-            texts.append(['\n', l])
-           
+    
+    with open(creditfile) as f:
+        for l in f:
+            if l.startswith(('\n', '#')):
+                # exclude blank lines or comments
+                continue
+            elif l.startswith('.blank'):
+                # ..blank n  
+                for i in range(int(l.split(' ')[1])):
+                    texts.append(['\n', '\n'])
+            elif l.startswith('..'):
+                texts.append([l[2:], ''])
+                oneline = True
+            elif oneline:
+                texts.append(['', l])
+                oneline = False
+            else:
+                texts.append(['\n', l])
+       
     left, right = ("".join(l) for l in zip(*texts))
     
     # MAKE TWO COLUMNS FOR THE CREDITS    
