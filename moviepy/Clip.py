@@ -146,7 +146,7 @@ class Clip:
 
         for attr in apply_to:
             a = getattr(newclip, attr, None) 
-            if a:    
+            if a is not None:    
                 new_a = a.fl(fun, keep_duration=keep_duration)
                 setattr(newclip, attr, new_a)
 

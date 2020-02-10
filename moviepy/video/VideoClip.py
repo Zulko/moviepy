@@ -939,7 +939,7 @@ class ImageClip(VideoClip):
 
         for attr in apply_to:
             a = getattr(self, attr, None)
-            if a:
+            if a is not None:
                 new_a = a.fl_image(image_func)
                 setattr(self, attr, new_a)
 
@@ -958,7 +958,7 @@ class ImageClip(VideoClip):
             apply_to = ['mask', 'audio']
         for attr in apply_to:
             a = getattr(self, attr, None)
-            if a:
+            if a is not None:
                 new_a = a.fl_time(time_func)
                 setattr(self, attr, new_a)
 
