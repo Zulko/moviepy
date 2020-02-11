@@ -10,16 +10,7 @@ from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-from . import download_media
 from .test_helper import TMP_DIR, FONT
-
-sys.path.append("tests")
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-        download_media.download()
-
 
 def test_cuts1():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").resize(0.2)

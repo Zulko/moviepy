@@ -465,8 +465,15 @@ class VideoClip(Clip):
                                      dispose=dispose, colors=colors,
                                      logger=logger)
         else:
+            # convert imageio opt variable to something that can be used with
+            # ImageMagick
+            opt1 = opt
+            if opt1 == 'nq':
+                opt1 ='optimizeplus'
+            else:
+                opt1 ='OptimizeTransparency'
             write_gif(self, filename, fps=fps, program=program,
-                      opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
+                      opt=opt1, fuzz=fuzz, verbose=verbose, loop=loop,
                       dispose=dispose, colors=colors,
                       logger=logger)
 

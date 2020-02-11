@@ -117,7 +117,7 @@ class FFMPEG_AudioWriter:
             raise IOError(error)
 
     def close(self):
-        if self.proc:
+        if hasattr(self, 'proc') and self.proc:
             self.proc.stdin.close()
             self.proc.stdin = None
             if self.proc.stderr is not None:
@@ -157,7 +157,7 @@ def ffmpeg_audiowrite(clip, filename, fps, nbytes, buffersize,
     else:
         logfile = None
     logger = proglog.default_bar_logger(logger)
-    logger(message="MoviePy - Writing audio in %s")
+    logger(message="MoviePy - Writing audio in %s" % filename)
     writer = FFMPEG_AudioWriter(filename, fps, nbytes, clip.nchannels,
                                 codec=codec, bitrate=bitrate,
                                 logfile=logfile,

@@ -56,7 +56,6 @@ nosetests.xml
 
 # Tests
 tests/media
-media/
 
 # Documentation
 docs/build/

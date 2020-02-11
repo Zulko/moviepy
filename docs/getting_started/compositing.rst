@@ -8,7 +8,7 @@ Video composition, also known as non-linear editing, is the fact of playing seve
 .. raw:: html
 
         <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left:15%;">
-        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM&hl?rel=0" frameborder="0"
+        <iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM?rel=0" frameborder="0"
         style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
         </iframe>
         </div>

@@ -1,9 +1,9 @@
 import os
 import subprocess as sp
 from .compat import DEVNULL
-    
+
 if os.name == 'nt':
-    try:    
+    try:
         import winreg as wr # py3k
     except ImportError:
         import _winreg as wr # py2k
@@ -11,24 +11,24 @@ if os.name == 'nt':
 from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
 def try_cmd(cmd):
-        try:
-            popen_params = { "stdout": sp.PIPE,
-                             "stderr": sp.PIPE,
-                              "stdin": DEVNULL
-                            }
+    try:
+        popen_params = {
+            "stdout": sp.PIPE,
+            "stderr": sp.PIPE,
+            "stdin": DEVNULL
+        }
 
-            
-            # This was added so that no extra unwanted window opens on windows
-            # when the child process is created
-            if os.name == "nt":
-                popen_params["creationflags"] = 0x08000000
+        # This was added so that no extra unwanted window opens on windows
+        # when the child process is created
+        if os.name == "nt":
+            popen_params["creationflags"] = 0x08000000
 
-            proc = sp.Popen(cmd, **popen_params)
-            proc.communicate()
-        except Exception as err:
-            return False, err
-        else:
-            return True, None
+        proc = sp.Popen(cmd, **popen_params)
+        proc.communicate()
+    except Exception as err:
+        return False, err
+    else:
+        return True, None
 
 if FFMPEG_BINARY=='ffmpeg-imageio':
     from imageio.plugins.ffmpeg import get_exe
@@ -50,7 +50,7 @@ else:
             " - The path specified for the ffmpeg binary might be wrong")
 
 if IMAGEMAGICK_BINARY=='auto-detect':
-    if os.name == 'nt':    
+    if os.name == 'nt':
         try:
             key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, 'SOFTWARE\\ImageMagick\\Current')
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, 'BinPath')[0] + r"\convert.exe"
@@ -62,6 +62,20 @@ if IMAGEMAGICK_BINARY=='auto-detect':
     else:
         IMAGEMAGICK_BINARY = 'unset'
 else:
+    if not os.path.exists(IMAGEMAGICK_BINARY):
+        raise IOError(
+            "ImageMagick binary cannot be found at {}".format(
+                IMAGEMAGICK_BINARY
+            )
+        )
+
+    if not os.path.isfile(IMAGEMAGICK_BINARY):
+        raise IOError(
+            "ImageMagick binary found at {} is not a file".format(
+                IMAGEMAGICK_BINARY
+            )
+        )
+
     success, err = try_cmd([IMAGEMAGICK_BINARY])
     if not success:
         raise IOError("%s - The path specified for the ImageMagick binary might "
@@ -69,7 +83,7 @@ else:
 
 
 def get_setting(varname):
-    """ Returns the value of a configuration variable. """ 
+    """ Returns the value of a configuration variable. """
     gl = globals()
     if varname not in gl.keys():
         raise ValueError("Unknown setting %s"%varname)

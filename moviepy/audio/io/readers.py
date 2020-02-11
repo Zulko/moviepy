@@ -63,8 +63,6 @@ class FFMPEG_AudioReader:
         self.initialize()
         self.buffer_around(1)
 
-
-
     def initialize(self, starttime = 0):
         """ Opens the file, creates the pipe. """
 
@@ -114,9 +112,9 @@ class FFMPEG_AudioReader:
         s = self.proc.stdout.read(L)
         dt = {1: 'int8',2:'int16',4:'int32'}[self.nbytes]
         if hasattr(np, 'frombuffer'):
-            result = np.frombuffer(s, dtype='uint8')
+            result = np.frombuffer(s, dtype=dt)
         else:
-            result = np.fromstring(s, dtype='uint8')
+            result = np.fromstring(s, dtype=dt)
         result = (1.0*result / 2**(8*self.nbytes-1)).\
                                  reshape((int(len(result)/self.nchannels),
                                           self.nchannels))
