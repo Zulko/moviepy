@@ -32,7 +32,7 @@ def test_errors_with_redirected_logs():
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec='nonexistent-codec',
                              write_logfile=True)
-    assert '(see logs in /tmp/logged-write.mp4.log)' in str(e.value)
+    assert "Unknown encoder 'nonexistent-codec\'" in str(e.value)
     close_all_clips(locals())
 
 def test_save_frame():
