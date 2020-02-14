@@ -5,13 +5,13 @@ cache: pip
 matrix:
     include:
         - python: 2.7
-          dist: trusty
+          dist: xenial
           sudo: false
         - python: 3.5
-          dist: trusty
+          dist: xenial
           sudo: false
         - python: 3.6
-          dist: trusty
+          dist: xenial
           sudo: false
         - python: 3.7
           dist: xenial
@@ -33,7 +33,7 @@ before_install:
 
   # modify ImageMagick policy file so that Textclips work correctly.
   # `| sudo tee` replaces `>` so that it can have root permissions
-  - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
+  # - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
 
 install:
   - echo "No install action required. Implicitly performed by the testing."
