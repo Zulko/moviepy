@@ -89,10 +89,9 @@ def cvsecs(time):
     
     if isinstance(time, Real):
         return float(time)
-
     elif is_string(time):     
         time = [float(f.replace(',', '.')) for f in time.split(':')]
-            
+
     return sum(mult * part for mult, part in zip(multipliers, reversed(time)))
 
 
