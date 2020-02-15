@@ -1,15 +1,15 @@
 """
 Misc. useful functions that can be used at many places in the program.
 """
-
+from numbers import Real
 import subprocess as sp
 import sys
 import warnings
-import re
 import proglog
 
 import os
 from .compat import DEVNULL
+
 
 
 def sys_write_flush(s):
@@ -65,38 +65,36 @@ def is_string(obj):
     except NameError:
         return isinstance(obj, str)
 
+
 def cvsecs(time):
     """ Will convert any time into seconds.
-    Here are the accepted formats:
+    Here are the accepted formats::
 
-    >>> cvsecs(15.4) -> 15.4 # seconds
-    >>> cvsecs( (1,21.5) ) -> 81.5 # (min,sec)
-    >>> cvsecs( (1,1,2) ) -> 3662 # (hr, min, sec)
-    >>> cvsecs('01:01:33.5') -> 3693.5  #(hr,min,sec)
-    >>> cvsecs('01:01:33.045') -> 3693.045
-    >>> cvsecs('01:01:33,5') #coma works too
+    >>> cvsecs(15.4)   # seconds 
+    15.4 
+    >>> cvsecs((1, 21.5))   # (min,sec) 
+    81.5 
+    >>> cvsecs((1, 1, 2))   # (hr, min, sec)  
+    3662  
+    >>> cvsecs('01:01:33.045') 
+    3693.045
+    >>> cvsecs('01:01:33,5')    # coma works too
+    3693.5
+    >>> cvsecs('1:33,5')    # only minutes and secs
+    99.5
+    >>> cvsecs('33.5')      # only secs
+    33.5
     """
+    multipliers = (1, 60, 3600)
+    
+    if isinstance(time, Real):
+        return float(time)
 
-    if is_string(time):
-        if (',' not in time) and ('.' not in time):
-            time = time + '.0'
-        expr = r"(\d+):(\d+):(\d+)[,|.](\d+)"
-        finds = re.findall(expr, time)[0]
-        nums = list( map(float, finds) )
-        return ( 3600*int(finds[0])
-                + 60*int(finds[1])
-                + int(finds[2])
-                + nums[3]/(10**len(finds[3])))
+    elif is_string(time):     
+        time = [float(f.replace(',', '.')) for f in time.split(':')]
+            
+    return sum(mult * part for mult, part in zip(multipliers, reversed(time)))
 
-    elif isinstance(time, tuple):
-        if len(time)== 3:
-            hr, mn, sec = time
-        elif len(time)== 2:
-            hr, mn, sec = 0, time[0], time[1]
-        return 3600*hr + 60*mn + sec
-
-    else:
-        return time
 
 def deprecated_version_of(f, oldname, newname=None):
     """ Indicates that a function is deprecated and has a new name.

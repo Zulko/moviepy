@@ -23,16 +23,20 @@ def test_2():
     with pytest.raises(ValueError):  # asking for a silly video format
          tools.find_extension('flashvideo')
 
-def test_3():
+
+@pytest.mark.parametrize('input, expected', [
+    (15.4, 15.4),
+    ((1, 21.5), 81.5),
+    ((1, 1, 2), 3662),
+    ('01:01:33.5', 3693.5),
+    ('01:01:33.045', 3693.045),
+    ('01:01:33,5', 3693.5),
+    ('1:33', 93.0),
+    ('33.4', 33.4)
+])
+def test_cvsecs(input, expected):
     """Test the cvsecs funtion outputs correct times as per the docstring."""
-    lefts = [15.4, (1,21.5), (1,1,2), '01:01:33.5', '01:01:33.045' ]
-    rights = [15.4, 81.5, 3662, 3693.5, 3693.045]
-    for i in range(len(lefts)):
-        left = tools.cvsecs(lefts[i])
-        right = rights[i]
-        message = "{0} resulted in {1}, but {2} was expected"\
-            .format(lefts[i],left, right)
-        assert left == right, message
+    assert tools.cvsecs(input) == expected
 
 def test_4():
     """Test the is_string function in tools."""
