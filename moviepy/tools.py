@@ -92,7 +92,7 @@ def cvsecs(time):
     factors = (1, 60, 3600)
     
     if is_string(time):     
-        time = tuple(float(f.replace(',', '.')) for f in time.split(':'))
+        time = [float(f.replace(',', '.')) for f in time.split(':')]
 
     if not isinstance(time, (tuple, list)):
         return time
