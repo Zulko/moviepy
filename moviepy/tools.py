@@ -1,7 +1,6 @@
 """
 Misc. useful functions that can be used at many places in the program.
 """
-from numbers import Real
 import subprocess as sp
 import sys
 import warnings
