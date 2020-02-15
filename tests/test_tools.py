@@ -28,11 +28,13 @@ def test_find_extensions_not_found():
     (15.4, 15.4),
     ((1, 21.5), 81.5),
     ((1, 1, 2), 3662),
+    ([1, 1, 2], 3662),
     ('01:01:33.5', 3693.5),
     ('01:01:33.045', 3693.045),
     ('01:01:33,5', 3693.5),
     ('1:33', 93.0),
-    ('33.4', 33.4)
+    ('33.4', 33.4),
+    (None, None)
 ])
 def test_cvsecs(given, expected):
     """Test the cvsecs funtion outputs correct times as per the docstring."""
