@@ -30,9 +30,6 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from test_helper import TRAVIS, TMP_DIR, PYTHON_VERSION
 
-import download_media
-
-
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
 
