@@ -7,13 +7,15 @@ and AudioClip.
 from copy import copy
 import numpy as np
 
-from moviepy.decorators import ( apply_to_mask,
-                                 apply_to_audio,
-                                 requires_duration,
-                                 outplace,
-                                 convert_to_seconds,
-                                 use_clip_fps_by_default)
+from moviepy.decorators import (apply_to_mask,
+                                apply_to_audio,
+                                requires_duration,
+                                outplace,
+                                convert_to_seconds,
+                                use_clip_fps_by_default)
 from tqdm import tqdm
+import proglog
+
 
 class Clip:
 
@@ -31,7 +33,7 @@ class Clip:
 
      end:
        When the clip is included in a composition, time of the
-       composition at which the clip starts playing (in seconds).
+       composition at which the clip stops playing (in seconds).
 
      duration:
        Duration of the clip (in seconds). Some clips are infinite, in
@@ -53,9 +55,7 @@ class Clip:
 
         self.memoize = False
         self.memoized_t = None
-        self.memoize_frame  = None
-
-
+        self.memoize_frame = None
 
     def copy(self):
         """ Shallow copy of the clip. 
@@ -148,12 +148,10 @@ class Clip:
             if hasattr(newclip, attr):
                 a = getattr(newclip, attr)
                 if a is not None:
-                    new_a =  a.fl(fun, keep_duration=keep_duration)
+                    new_a = a.fl(fun, keep_duration=keep_duration)
                     setattr(newclip, attr, new_a)
 
         return newclip
-
-
 
     def fl_time(self, t_func, apply_to=None, keep_duration=False):
         """
@@ -190,9 +188,7 @@ class Clip:
             apply_to = []
 
         return self.fl(lambda gf, t: gf(t_func(t)), apply_to,
-                                    keep_duration=keep_duration)
-
-
+                       keep_duration=keep_duration)
 
     def fx(self, func, *args, **kwargs):
         """
@@ -246,7 +242,7 @@ class Clip:
         self.start = t
         if (self.duration is not None) and change_end:
             self.end = t + self.duration
-        elif (self.end is not None):
+        elif self.end is not None:
             self.duration = self.end - self.start
 
 
@@ -340,7 +336,7 @@ class Clip:
             # is the whole list of t outside the clip ?
             tmin, tmax = t.min(), t.max()
 
-            if (self.end is not None) and (tmin >= self.end) :
+            if (self.end is not None) and (tmin >= self.end):
                 return False
 
             if tmax < self.start:
@@ -348,15 +344,14 @@ class Clip:
 
             # If we arrive here, a part of t falls in the clip
             result = 1 * (t >= self.start)
-            if (self.end is not None):
+            if self.end is not None:
                 result *= (t <= self.end)
             return result
 
         else:
 
-            return( (t >= self.start) and
-                    ((self.end is None) or (t < self.end) ) )
-
+            return((t >= self.start) and
+                   ((self.end is None) or (t < self.end)))
 
 
     @convert_to_seconds(['t_start', 't_end'])
@@ -384,14 +379,15 @@ class Clip:
         they exist.
         """
 
-        if t_start < 0:  #make this more python like a negative value
-                         #means to move backward from the end of the clip
-           t_start = self.duration + t_start   #remeber t_start is negative
+        if t_start < 0:
+            # Make this more Python-like, a negative value means to move
+            # backward from the end of the clip
+            t_start = self.duration + t_start   # Remember t_start is negative
 
-        if (self.duration is not None) and (t_start>self.duration):
-            raise ValueError("t_start (%.02f) "%t_start +
-                             "should be smaller than the clip's "+
-                             "duration (%.02f)."%self.duration)
+        if (self.duration is not None) and (t_start > self.duration):
+            raise ValueError("t_start (%.02f) " % t_start +
+                             "should be smaller than the clip's " +
+                             "duration (%.02f)." % self.duration)
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
 
@@ -399,18 +395,18 @@ class Clip:
 
             t_end = self.duration
 
-        elif (t_end is not None) and (t_end<0):
+        elif (t_end is not None) and (t_end < 0):
 
             if self.duration is None:
 
-                print ("Error: subclip with negative times (here %s)"%(str((t_start, t_end)))
-                       +" can only be extracted from clips with a ``duration``")
+                print("Error: subclip with negative times (here %s)" % (str((t_start, t_end)))
+                      + " can only be extracted from clips with a ``duration``")
 
             else:
 
                 t_end = self.duration + t_end
 
-        if (t_end is not None):
+        if t_end is not None:
 
             newclip.duration = t_end - t_start
             newclip.end = newclip.start + newclip.duration
@@ -448,7 +444,7 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times = False, progress_bar=False,
+    def iter_frames(self, fps=None, with_times = False, logger=None,
                     dtype=None):
         """ Iterates over all the frames of the clip.
 
@@ -474,22 +470,15 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
-
-        def generator():
-            for t in np.arange(0, self.duration, 1.0/fps):
-                frame = self.get_frame(t)
-                if (dtype is not None) and (frame.dtype != dtype):
-                    frame = frame.astype(dtype)
-                if with_times:
-                    yield t, frame
-                else:
-                    yield frame
-
-        if progress_bar:
-            nframes = int(self.duration*fps)+1
-            return tqdm(generator(), total=nframes)
-
-        return generator()
+        logger = proglog.default_bar_logger(logger)
+        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0/fps)):
+            frame = self.get_frame(t)
+            if (dtype is not None) and (frame.dtype != dtype):
+                frame = frame.astype(dtype)
+            if with_times:
+                yield t, frame
+            else:
+                yield frame
 
     def close(self):
         """ 
@@ -499,10 +488,11 @@ class Clip:
         #    Implementation note for subclasses:
         #
         #    * Memory-based resources can be left to the garbage-collector.
-        #    * However, any open files should be closed, and subprocesses should be terminated.
-        #    * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+        #    * However, any open files should be closed, and subprocesses
+        #      should be terminated.
+        #    * Be wary that shallow copies are frequently used.
+        #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
-
         pass
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.

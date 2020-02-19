@@ -63,9 +63,13 @@ exec(open('moviepy/version.py').read()) # loads __version__
 # Define the requirements for specific execution needs.
 requires = [
     'decorator>=4.0.2,<5.0',
-    'imageio>=2.1.2,<3.0',
+    "imageio>=2.5,<3.0; python_version>='3.4'",
+    "imageio>=2.0,<2.5; python_version<'3.4'",
+    "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
     'tqdm>=4.11.2,<5.0',
     'numpy',
+    'requests>=2.8.1,<3.0',
+    'proglog<=1.0.0'
     ]
 
 optional_reqs = [
@@ -85,6 +89,7 @@ doc_reqs = [
     ]
 
 test_reqs = [
+        'coverage<5.0',
         'coveralls>=1.1,<2.0',
         'pytest-cov>=2.5.1,<3.0',
         'pytest>=3.0.0,<4.0',
@@ -109,7 +114,7 @@ setup(
     long_description=readme,
     url='https://zulko.github.io/moviepy/',
     license='MIT License',
-    classifiers=(
+    classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Natural Language :: English',
@@ -117,7 +122,6 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -127,9 +131,9 @@ setup(
         'Topic :: Multimedia :: Video',
         'Topic :: Multimedia :: Video :: Capture',
         'Topic :: Multimedia :: Video :: Conversion',
-    ),
+    ],
     keywords='video editing audio compositing ffmpeg',
-    packages=find_packages(exclude='docs'),
+    packages=find_packages(exclude=['docs', 'tests']),
     cmdclass=cmdclass,
     command_options={
         'build_docs': {
