@@ -9,7 +9,6 @@ import numpy as np
 
 from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
-from moviepy.tools import verbose_print
 
 class FFMPEG_VideoWriter:
     """ A class for FFMPEG-based video writing.
@@ -122,7 +121,7 @@ class FFMPEG_VideoWriter:
         # This was added so that no extra unwanted window opens on windows
         # when the child process is created
         if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+            popen_params["creationflags"] = 0x08000000  # CREATE_NO_WINDOW
 
         self.proc = sp.Popen(cmd, **popen_params)
 
@@ -138,7 +137,7 @@ class FFMPEG_VideoWriter:
             _, ffmpeg_error = self.proc.communicate()
             error = (str(err) + ("\n\nMoviePy error: FFMPEG encountered "
                                  "the following error while writing file %s:"
-                                 "\n\n %s" % (self.filename, ffmpeg_error)))
+                                 "\n\n %s" % (self.filename, str(ffmpeg_error))))
 
             if b"Unknown encoder" in ffmpeg_error:
 
@@ -178,17 +177,26 @@ class FFMPEG_VideoWriter:
             raise IOError(error)
 
     def close(self):
-        self.proc.stdin.close()
-        if self.proc.stderr is not None:
-            self.proc.stderr.close()
-        self.proc.wait()
+        if self.proc:
+            self.proc.stdin.close()
+            if self.proc.stderr is not None:
+                self.proc.stderr.close()
+            self.proc.wait()
 
-        del self.proc
+        self.proc = None
+
+    # Support the Context Manager protocol, to ensure that resources are cleaned up.
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
 
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
                        audiofile=None, verbose=True, threads=None, ffmpeg_params=None,
-                       progress_bar=True):
+                       logger='bar'):
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
@@ -196,31 +204,27 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
-
-    verbose_print(verbose, "[MoviePy] Writing video %s\n"%filename)
-    writer = FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
+    logger(message='Moviepy - Writing video %s\n' % filename)
+    with FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
                                 audiofile=audiofile, threads=threads,
-                                ffmpeg_params=ffmpeg_params)
+                                ffmpeg_params=ffmpeg_params) as writer:
 
-    nframes = int(clip.duration*fps)
+        nframes = int(clip.duration*fps)
 
-    for t,frame in clip.iter_frames(progress_bar=progress_bar, with_times=True,
-                                    fps=fps, dtype="uint8"):
-        if withmask:
-            mask = (255*clip.mask.get_frame(t))
-            if mask.dtype != "uint8":
-                mask = mask.astype("uint8")
-            frame = np.dstack([frame,mask])
+        for t,frame in clip.iter_frames(logger=logger, with_times=True,
+                                        fps=fps, dtype="uint8"):
+            if withmask:
+                mask = (255*clip.mask.get_frame(t))
+                if mask.dtype != "uint8":
+                    mask = mask.astype("uint8")
+                frame = np.dstack([frame,mask])
 
-        writer.write_frame(frame)
-
-    writer.close()
+            writer.write_frame(frame)
 
     if write_logfile:
         logfile.close()
-
-    verbose_print(verbose, "[MoviePy] Done.\n")
+    logger(message='Moviepy - Done !')
 
 
 def ffmpeg_write_image(filename, image, logfile=False):

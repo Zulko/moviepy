@@ -18,9 +18,9 @@ def on_color(clip, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
         size = clip.size
     if pos is None:
         pos = 'center'
-    colorclip = ColorClip(size, color)
+    colorclip = ColorClip(size, color=color)
     if col_opacity:
         colorclip = colorclip.with_mask().set_opacity(col_opacity)
 
-    return CompositeVideoClip([colorclip, clip.set_pos(pos)],
+    return CompositeVideoClip([colorclip, clip.set_position(pos)],
                               transparent=(col_opacity is not None))

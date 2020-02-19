@@ -19,8 +19,8 @@ def test_ext():
 
 def test_2():
     """Test for raising erre if codec not in dictionaries."""
-    message = "asking for a silly video format did not Raise a Value Error"
-    with pytest.raises(ValueError, message=message):
+
+    with pytest.raises(ValueError):  # asking for a silly video format
          tools.find_extension('flashvideo')
 
 def test_3():
@@ -68,18 +68,6 @@ def test_5():
     assert myTime <  0.001
     file = sys.stdout.read()
     assert file == b""
-
-def test_6():
-    """Test subprocess_call for operation.
-
-    The process sleep should run for a given time in seconds.
-    This checks that the process has deallocated from the stack on
-        completion of the called process.
-
-    """
-    process = tools.subprocess_call(["sleep" , '1'])
-    time.sleep(1)
-    assert process is None
 
 if __name__ == '__main__':
    pytest.main()

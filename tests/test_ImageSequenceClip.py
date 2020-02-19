@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
+import os
 import sys
 
 import pytest
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
-sys.path.append("tests")
-import download_media
-
-def test_download_media(capsys):
-    with capsys.disabled():
-       download_media.download()
+from .test_helper import TMP_DIR
 
 def test_1():
     images=[]
@@ -22,9 +18,9 @@ def test_1():
         durations.append(i)
         images.append("media/python_logo_upside_down.png")
 
-    clip = ImageSequenceClip(images, durations=durations)
-    assert clip.duration == sum(durations)
-    clip.write_videofile("/tmp/ImageSequenceClip1.mp4", fps=30)
+    with ImageSequenceClip(images, durations=durations) as clip:
+        assert clip.duration == sum(durations)
+        clip.write_videofile(os.path.join(TMP_DIR, "ImageSequenceClip1.mp4"), fps=30)
 
 def test_2():
     images=[]
@@ -36,8 +32,8 @@ def test_2():
     images.append("media/matplotlib_demo1.png")
 
     #images are not the same size..
-    with pytest.raises(Exception, message='Expecting Exception'):
-         ImageSequenceClip(images, durations=durations)
+    with pytest.raises(Exception):
+         ImageSequenceClip(images, durations=durations).close()
 
 
 if __name__ == '__main__':

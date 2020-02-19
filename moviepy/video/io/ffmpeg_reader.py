@@ -28,6 +28,7 @@ class FFMPEG_VideoReader:
                  fps_source='tbr'):
 
         self.filename = filename
+        self.proc = None
         infos = ffmpeg_parse_infos(filename, print_infos, check_duration,
                                    fps_source)
         self.fps = infos['video_fps']
@@ -103,9 +104,6 @@ class FFMPEG_VideoReader:
         self.proc = sp.Popen(cmd, **popen_params)
 
 
-
-
-
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
         w, h = self.size
@@ -143,8 +141,10 @@ class FFMPEG_VideoReader:
             result = self.lastread
 
         else:
-
-            result = np.fromstring(s, dtype='uint8')
+            if hasattr(np, 'frombuffer'):
+                result = np.frombuffer(s, dtype='uint8')
+            else:
+                result = np.fromstring(s, dtype='uint8')
             result.shape =(h, w, len(s)//(w*h)) # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
 
@@ -155,7 +155,7 @@ class FFMPEG_VideoReader:
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
-        This function tries to avoid fectching arbitrary frames
+        This function tries to avoid fetching arbitrary frames
         whenever possible, by moving between adjacent frames.
         """
 
@@ -168,10 +168,16 @@ class FFMPEG_VideoReader:
 
         pos = int(self.fps*t + 0.00001)+1
 
+        # Initialize proc if it is not open
+        if not self.proc:
+            self.initialize(t)
+            self.pos = pos
+            self.lastread = self.read_frame()
+
         if pos == self.pos:
             return self.lastread
         else:
-            if(pos < self.pos) or (pos > self.pos+100):
+            if (pos < self.pos) or (pos > self.pos + 100):
                 self.initialize(t)
                 self.pos = pos
             else:
@@ -181,18 +187,17 @@ class FFMPEG_VideoReader:
             return result
 
     def close(self):
-        if hasattr(self,'proc'):
+        if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
-            del self.proc
+            self.proc = None
+        if hasattr(self, 'lastread'):
+            del self.lastread
 
     def __del__(self):
         self.close()
-        if hasattr(self,'lastread'):
-            del self.lastread
-
 
 
 def ffmpeg_read_image(filename, with_mask=True):
@@ -254,20 +259,19 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         popen_params["creationflags"] = 0x08000000
 
     proc = sp.Popen(cmd, **popen_params)
+    (output, error) = proc.communicate()
+    infos = error.decode('utf8')
 
-    proc.stdout.readline()
-    proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
     del proc
 
     if print_infos:
         # print the whole info text returned by FFMPEG
-        print( infos )
+        print(infos)
 
 
     lines = infos.splitlines()
     if "No such file or directory" in lines[-1]:
-        raise IOError(("MoviePy error: the file %s could not be found !\n"
+        raise IOError(("MoviePy error: the file %s could not be found!\n"
                       "Please check that you entered the correct "
                       "path.")%filename)
 
@@ -385,7 +389,8 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         line = lines_audio[0]
         try:
             match = re.search(" [0-9]* Hz", line)
-            result['audio_fps'] = int(line[match.start()+1:match.end()])
+            hz_string = line[match.start()+1:match.end()-3]  # Removes the 'hz' from the end
+            result['audio_fps'] = int(hz_string)
         except:
             result['audio_fps'] = 'unknown'
 
