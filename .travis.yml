@@ -10,6 +10,11 @@ before_install:
   # Ensure PIP is up-to-date to avoid warnings.
   - python -m pip install --upgrade pip
 
+  # modify ImageMagick policy file so that Textclips work correctly.
+  # `| sudo tee` replaces `>` so that it can have root permissions
+  - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
+
+
 install:
   - pip install tox-travis
   - pip install flake8
