@@ -6,6 +6,7 @@ out of VideoClips
 import subprocess as sp
 import os
 import numpy as np
+from proglog import proglog
 
 from moviepy.compat import PY3, DEVNULL
 from moviepy.config import get_setting
@@ -200,6 +201,8 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
+    logger = proglog.default_bar_logger(logger)
+
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
