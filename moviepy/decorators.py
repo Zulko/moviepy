@@ -3,8 +3,8 @@ all decorators used in moviepy go there
 """
 
 import decorator
-from moviepy.tools import cvsecs
 
+from moviepy.tools import cvsecs
 
 
 @decorator.decorator

@@ -10,8 +10,8 @@ import tempfile
 import warnings
 
 import numpy as np
-from imageio import imread, imsave
 import proglog
+from imageio import imread, imsave
 
 from ..Clip import Clip
 from ..compat import DEVNULL, string_types

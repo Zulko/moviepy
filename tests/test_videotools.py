@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """Video file clip tests meant to be run with pytest."""
-import sys
 import os
+import sys
 
 from moviepy.video.tools.credits import credits1
 
 from .test_helper import TMP_DIR
+
 
 def test_credits():
     credit_file = "# This is a comment\n" \

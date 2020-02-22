@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def mask_color(clip, color=None, thr=0, s=1):
     """ Returns a new clip with a mask for transparency where the original
     clip is of the given color.

@@ -1,6 +1,7 @@
 import numpy as np
-from moviepy.video.VideoClip import VideoClip, ColorClip
+
 from moviepy.audio.AudioClip import CompositeAudioClip
+from moviepy.video.VideoClip import ColorClip, VideoClip
 
 #  CompositeVideoClip
 
@@ -172,5 +173,3 @@ def clips_array(array, rows_widths=None, cols_widths=None,
             array[i, j] = clip.set_position((x, y))
                  
     return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)
-    
-    

@@ -1,17 +1,18 @@
-import sys
 import os
-from numpy import sin, pi
+import sys
 
 import pytest
+from numpy import pi, sin
 
-from moviepy.video.VideoClip import VideoClip, ColorClip
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.video.fx.speedx import speedx
 from moviepy.utils import close_all_clips
+from moviepy.video.fx.speedx import speedx
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import ColorClip, VideoClip
 
 from .test_helper import TMP_DIR
+
 
 def test_check_codec():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")

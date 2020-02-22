@@ -4,13 +4,14 @@ import os
 import sys
 
 import pytest
+
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
+from moviepy.video.fx.blink import blink
+from moviepy.video.fx.resize import resize
 
 from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
-from moviepy.video.fx.blink import blink
-from moviepy.video.fx.resize import resize
 
 def test_issue_145():
     video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)

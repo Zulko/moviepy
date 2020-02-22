@@ -56,7 +56,7 @@ except ImportError:
         
     
 from moviepy.decorators import apply_to_mask
-   
+
 
 def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
     """ 

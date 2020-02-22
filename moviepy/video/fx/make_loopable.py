@@ -1,6 +1,7 @@
 import moviepy.video.compositing.transitions as transfx
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
+
 def make_loopable(clip, cross):
     """
     Makes the clip fade in progressively at its own end, this way
