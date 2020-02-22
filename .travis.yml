@@ -79,7 +79,7 @@ before_install:
   - uname -a
   - lsb_release -a || true
 install:
-  - python -mpip install --progress-bar=off tox -rci/requirements.txt
+  - python -mpip install --progress-bar=off tox
   - virtualenv --version
   - easy_install --version
   - pip --version
