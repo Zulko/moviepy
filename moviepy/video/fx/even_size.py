@@ -2,6 +2,7 @@ import numpy as np
 
 from moviepy.decorators import apply_to_mask
 
+
 @apply_to_mask
 def even_size(clip):
     """ Crops the clip to make dimensions even.
@@ -21,5 +22,3 @@ def even_size(clip):
         fl_image = lambda a : a[:-1,:,:]
 
     return clip.fl_image(fl_image)
-
-

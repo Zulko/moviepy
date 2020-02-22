@@ -1,5 +1,7 @@
-from moviepy.decorators import apply_to_mask
 import numpy as np
+
+from moviepy.decorators import apply_to_mask
+
 try:
     from PIL import Image
     PIL_FOUND = True

@@ -5,6 +5,7 @@ methods that are difficult to do with the existing Python libraries.
 
 import numpy as np
 
+
 def blit(im1, im2, pos=None, mask=None, ismask=False):
     """ Blit an image over another.
     

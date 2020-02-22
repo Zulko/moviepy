@@ -13,6 +13,7 @@ except:
 
 import numpy as np
 
+
 def to_painting(image,saturation = 1.4,black = 0.006):
     """ transforms any photo into some kind of painting """
     edges = sobel(image.mean(axis=2))
@@ -40,4 +41,3 @@ if not painting_possible:
     
     painting.__doc__ = doc
 #----------------------------------------------------------------------- 
-

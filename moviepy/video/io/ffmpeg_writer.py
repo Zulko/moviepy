@@ -3,13 +3,15 @@ On the long term this will implement several methods to make videos
 out of VideoClips
 """
 
-import subprocess as sp
 import os
+import subprocess as sp
+
 import numpy as np
 from proglog import proglog
 
-from moviepy.compat import PY3, DEVNULL
+from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
+
 
 class FFMPEG_VideoWriter:
     """ A class for FFMPEG-based video writing.
