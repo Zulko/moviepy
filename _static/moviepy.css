@@ -1,0 +1,9 @@
+@import url(flasky.css)
+
+.indexwrapper .sphinxsidebar { visibility: hidden; }
+
+.logo img.logo { width: 120px; height: 120px; padding-right: 30px; }
+
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6
+  { font-family: 'Times New Roman', 'Garamond', 'Georgia', serif; }
+
