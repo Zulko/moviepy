@@ -17,7 +17,7 @@ TODO:
 # def test_matplotlib():
 #     #for now, python 3.5 installs a version of matplotlib that complains
 #     #about $DISPLAY variable, so lets just ignore for now.
-#     if PYTHON_VERSION in ('2.7', '3.3') or (PYTHON_VERSION == '3.5' and TRAVIS):
+#     if PYTHON_VERSION == '2.7' or (PYTHON_VERSION == '3.5' and TRAVIS):
 #        return
 #
 #     import matplotlib

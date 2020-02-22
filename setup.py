@@ -57,15 +57,14 @@ if 'build_docs' in sys.argv:
 
     cmdclass['build_docs'] = BuildDoc
 
-__version__ = None # Explicitly set version to quieten static code checkers.
-exec(open('moviepy/version.py').read()) # loads __version__
+__version__ = None  # Explicitly set version to quieten static code checkers.
+exec(open('moviepy/version.py').read())  # loads __version__
 
 # Define the requirements for specific execution needs.
 requires = [
     'decorator>=4.0.2,<5.0',
-    "imageio>=2.5,<3.0; python_version>='3.4'",
-    "imageio>=2.0,<2.5; python_version<'3.4'",
-    "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
+    "imageio>=2.5,<3.0",
+    "imageio_ffmpeg>=0.2.0",
     'tqdm>=4.11.2,<5.0',
     'numpy',
     'requests>=2.8.1,<3.0',
@@ -74,15 +73,15 @@ requires = [
 
 optional_reqs = [
         "opencv-python>=3.0,<4.0; python_version!='2.7'",
-        "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
-        "scikit-learn; python_version>='3.4'",
-        "scipy>=0.19.0,<1.0; python_version!='3.3'",
-        "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
+        "scikit-image>=0.13.0,<1.0",
+        "scikit-learn",
+        "scipy>=0.19.0,<1.0",
+        "matplotlib>=2.0.0,<3.0",
         "youtube_dl"
         ]
 
 doc_reqs = [
-        "pygame>=1.9.3,<2.0; python_version!='3.3'",
+        "pygame>=1.9.3,<2.0",
         'numpydoc>=0.6.0,<1.0',
         'sphinx_rtd_theme>=0.1.10b0,<1.0', 
         'Sphinx>=1.5.2,<2.0',
