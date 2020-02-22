@@ -1,0 +1,42 @@
+# https://github.com/ionelmc/python-nameless/blob/test-matrix-separate-cext/setup.cfg
+
+language: python
+dist: xenial
+cache: false
+
+matrix:
+  include:
+    - python: '3.6'
+      env:
+        - TOXENV=check
+{%- for env, config in tox_environments|dictsort %}{{ '' }}
+    - env:
+        - TOXENV={{ env }}{% if config.cover %},codecov,extension-coveralls,coveralls{% endif %}
+{%- if env.startswith('pypy3') %}{{ '' }}
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+{%- elif env.startswith('pypy') %}{{ '' }}
+      python: 'pypy'
+{%- else %}{{ '' }}
+      python: '{{ '{0[2]}.{0[3]}'.format(env) }}'
+{%- endif %}
+{%- endfor %}{{ '' }}
+before_install:
+  - python --version
+  - uname -a
+  - lsb_release -a || true
+install:
+  - python -mpip install --progress-bar=off tox -rci/requirements.txt
+  - virtualenv --version
+  - easy_install --version
+  - pip --version
+  - tox --version
+script:
+  - tox -v
+after_failure:
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
+notifications:
+  email:
+    on_success: never
+    on_failure: always
