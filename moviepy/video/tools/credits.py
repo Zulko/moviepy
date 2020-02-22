@@ -104,7 +104,7 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
                             fontsize=fontsize, align=al)
                    for txt, al in [(left, 'East'), (right, 'West')]]
 
-    cc = CompositeVideoClip([left, right.set_pos((left.w+gap, 0))],
+    cc = CompositeVideoClip([left, right.set_position((left.w+gap, 0))],
                             size=(left.w+right.w+gap, right.h),
                             bg_color=None)
     
