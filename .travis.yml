@@ -25,7 +25,6 @@ before_install:
 
 install:
   - echo "No install action required. Implicitly performed by the testing."
-  - python -m pip install enum34  # Apparently now required for py2.7
   - pip install flake8
 
 before_script:
