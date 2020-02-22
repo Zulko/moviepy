@@ -201,32 +201,32 @@ Maintainers
 
 
 .. MoviePy links
-.. _gallery: http://zulko.github.io/moviepy/gallery.html
-.. _documentation: http://zulko.github.io/moviepy/
+.. _gallery: https://zulko.github.io/moviepy/gallery.html
+.. _documentation: https://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`Label Wiki`: https://github.com/Zulko/moviepy/wiki/Label-Wiki
 .. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md
 
 .. Websites, Platforms
-.. _Reddit: http://www.reddit.com/r/moviepy/
+.. _Reddit: https://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _GitHub: https://github.com/Zulko/moviepy
 .. _Gitter: https://gitter.im/movie-py/Lobby
 
 .. Software, Tools, Libraries
-.. _Pillow: http://pillow.readthedocs.org/en/latest/
-.. _Scipy: http://www.scipy.org/
-.. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
-.. _Pygame: http://www.pygame.org/download.shtml
-.. _Numpy: http://www.scipy.org/install.html
-.. _imageio: http://imageio.github.io/
-.. _`Scikit Image`: http://scikit-image.org/download.html
+.. _Pillow: https://pillow.readthedocs.org/en/latest/
+.. _Scipy: https://www.scipy.org/
+.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _Pygame: https://www.pygame.org/download.shtml
+.. _Numpy: https://www.scipy.org/install.html
+.. _imageio: https://imageio.github.io/
+.. _`Scikit Image`: https://scikit-image.org/docs/stable/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
 .. _tqdm: https://github.com/noamraph/tqdm
-.. _ffmpeg: http://www.ffmpeg.org/download.html
-.. _ImageMagick: http://www.imagemagick.org/script/index.php
+.. _ffmpeg: https://www.ffmpeg.org/download.html
+.. _ImageMagick: https://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
-.. _`Sphinx`: http://www.sphinx-doc.org/en/master/setuptools.html
+.. _`Sphinx`: https://www.sphinx-doc.org/en/master/setuptools.html
 
 .. People
 .. _Zulko: https://github.com/Zulko
