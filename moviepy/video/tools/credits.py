@@ -4,9 +4,9 @@ credits, even though it is difficult to fill everyone needs in this
 matter.
 """
 
-from moviepy.video.VideoClip import TextClip, ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.resize import resize
+from moviepy.video.VideoClip import ImageClip, TextClip
 
 
 def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',

@@ -8,7 +8,6 @@ movie put together.
 from moviepy.editor import *
 from moviepy.video.tools.drawing import color_split
 
-
 duration = 6 # duration of the final clip
 
 # LOAD THE MAIN SCENE

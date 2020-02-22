@@ -1,5 +1,6 @@
 from ..AudioClip import concatenate_audioclips
 
+
 def audio_loop(audioclip, nloops=None, duration=None):
     """ Loops over an audio clip.
 
@@ -25,4 +26,3 @@ def audio_loop(audioclip, nloops=None, duration=None):
     else:
 
         return concatenate_audioclips(nloops*[audioclip])
-    

@@ -1,6 +1,7 @@
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ImageClip
+
 
 def close_all_clips(objects='globals', types=('audio', 'video', 'image')):
     if objects == 'globals':

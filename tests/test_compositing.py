@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """Compositing tests for use with pytest."""
-from os.path import join
 import sys
+from os.path import join
+
 import pytest
+
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
+
 from .test_helper import TMP_DIR
 
 

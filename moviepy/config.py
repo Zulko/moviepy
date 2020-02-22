@@ -1,6 +1,8 @@
 import os
 import subprocess as sp
+
 from .compat import DEVNULL
+from .config_defaults import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 
 if os.name == 'nt':
     try:
@@ -8,7 +10,6 @@ if os.name == 'nt':
     except ImportError:
         import _winreg as wr # py2k
 
-from .config_defaults import (FFMPEG_BINARY, IMAGEMAGICK_BINARY)
 
 def try_cmd(cmd):
     try:

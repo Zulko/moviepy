@@ -15,4 +15,3 @@ if sys.platform in ("win32", "cygwin"):
     # it doesn't help.
 else:
     FONT = "Liberation-Mono" # This is available in the fonts-liberation package on Linux.
-

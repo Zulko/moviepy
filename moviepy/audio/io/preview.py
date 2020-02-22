@@ -1,9 +1,9 @@
 import time
+
 import numpy as np
 
-from moviepy.decorators import requires_duration
-
 import pygame as pg
+from moviepy.decorators import requires_duration
 
 pg.init()
 pg.display.set_caption('MoviePy')
