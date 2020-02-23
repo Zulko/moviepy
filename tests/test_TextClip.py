@@ -7,6 +7,7 @@ from moviepy.video.VideoClip import TextClip
 
 from .test_helper import TMP_DIR
 
+@pytest.mark.timeout(30)
 def test_duration():
 
     clip = TextClip('hello world', size=(1280,720), color='white')
@@ -20,10 +21,12 @@ def test_duration():
     close_all_clips(locals())
 
 # Moved from tests.py. Maybe we can remove these?
+@pytest.mark.timeout(30)
 def test_if_textclip_crashes_in_caption_mode():
     TextClip(txt='foo', color='white', size=(640, 480), method='caption',
              align='center', fontsize=25).close()
 
+@pytest.mark.timeout(30)
 def test_if_textclip_crashes_in_label_mode():
     TextClip(txt='foo', method='label').close()
 

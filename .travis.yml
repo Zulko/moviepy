@@ -17,7 +17,7 @@ before_install:
   # Ensure setuptools is up-to-date to avoid environment_markers bug.
   - pip install --upgrade setuptools
   # The default pytest that is installed is too old on some platforms, leading to version conflicts
-  - pip install --upgrade pytest-cov
+  - pip install --upgrade pytest-cov pytest-timeout
 
   - pip install flake8
 
