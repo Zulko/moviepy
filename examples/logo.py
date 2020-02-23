@@ -1,6 +1,6 @@
-from moviepy.editor import *
-
 import numpy as np
+
+from moviepy.editor import *
 
 w,h = moviesize = (720,380)
 

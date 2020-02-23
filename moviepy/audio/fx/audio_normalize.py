@@ -1,5 +1,7 @@
 from moviepy.decorators import audio_video_fx
+
 from .volumex import volumex
+
 
 @audio_video_fx
 def audio_normalize(clip):

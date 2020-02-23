@@ -1,4 +1,5 @@
 import numpy as np
+
 from moviepy.editor import *
 from moviepy.video.tools.segmenting import findObjects
 
@@ -62,4 +63,3 @@ clips = [ CompositeVideoClip( moveLetters(letters,funcpos),
 
 final_clip = concatenate_videoclips(clips)
 final_clip.write_videofile('../../coolTextEffects.avi',fps=25,codec='mpeg4')
-

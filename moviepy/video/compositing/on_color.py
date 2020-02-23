@@ -1,5 +1,6 @@
-from moviepy.video.VideoClip import ColorClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.VideoClip import ColorClip
+
 
 def on_color(clip, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
     """ 

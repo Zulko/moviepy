@@ -4,14 +4,16 @@ import os
 import sys
 
 import pytest
+
+from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.utils import close_all_clips
 
-from .test_helper import TMP_DIR, FONT
+from .test_helper import FONT, TMP_DIR
+
 
 def test_PR_306():
 

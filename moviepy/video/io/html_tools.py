@@ -11,10 +11,12 @@ A function to embed images/videos/audio in the IPython Notebook
 
 import os
 from base64 import b64encode
+
+from moviepy.audio.AudioClip import AudioClip
 from moviepy.tools import extensions_dict
 
-from ..VideoClip import VideoClip, ImageClip
-from moviepy.audio.AudioClip import AudioClip
+from ..VideoClip import ImageClip, VideoClip
+from .ffmpeg_reader import ffmpeg_parse_infos
 
 try:
     from IPython.display import HTML
@@ -26,7 +28,6 @@ try:
 except ImportError:
     ipython_available = False
 
-from .ffmpeg_reader import ffmpeg_parse_infos
 
 sorry = "Sorry, seems like your browser doesn't support HTML5 audio/video"
 templates = {"audio":("<audio controls>"

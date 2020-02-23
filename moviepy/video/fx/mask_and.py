@@ -1,5 +1,7 @@
 import numpy as np
+
 from ..VideoClip import ImageClip
+
 
 def mask_and(clip, other_clip):
     """ Returns the logical 'and' (min) between two masks.

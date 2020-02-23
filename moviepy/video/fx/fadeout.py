@@ -1,5 +1,7 @@
-from moviepy.decorators import requires_duration
 import numpy as np
+
+from moviepy.decorators import requires_duration
+
 
 @requires_duration
 def fadeout(clip, duration, final_color=None):
@@ -24,7 +26,3 @@ def fadeout(clip, duration, final_color=None):
             return fading*gf(t) + (1-fading)*final_color
 
     return clip.fl(fl)
-
-    
-
-                     

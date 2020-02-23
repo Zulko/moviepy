@@ -1,9 +1,9 @@
-import subprocess as sp
 import os
+import subprocess as sp
+
 import proglog
 
 from moviepy.compat import DEVNULL
-
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
 

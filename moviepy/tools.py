@@ -2,13 +2,14 @@
 Misc. useful functions that can be used at many places in the program.
 """
 
+import os
+import re
 import subprocess as sp
 import sys
 import warnings
-import re
+
 import proglog
 
-import os
 from .compat import DEVNULL
 
 

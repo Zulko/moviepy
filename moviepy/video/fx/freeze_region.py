@@ -1,6 +1,7 @@
 from moviepy.decorators import apply_to_mask
-from .crop import crop
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
+from .crop import crop
 
 
 #@apply_to_mask

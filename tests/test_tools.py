@@ -3,8 +3,9 @@
 import sys
 import time
 
-import moviepy.tools as tools
 import pytest
+
+import moviepy.tools as tools
 
 
 def test_ext():
