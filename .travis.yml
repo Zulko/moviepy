@@ -1,27 +1,40 @@
 dist: xenial
+sudo: required
 language: python
 cache: pip
+matrix:
+    include:
+        - python: 2.7
+          dist: xenial
+          sudo: false
+        - python: 3.5
+          dist: xenial
+          sudo: false
+        - python: 3.6
+          dist: xenial
+          sudo: false
+        - python: 3.7
+          dist: xenial
+          sudo: true
 
-python:
-  - 2.7
-  - 3.5
-  - 3.6
-  - 3.7
 
+    fast_finish: true
 
 before_install:
-  #- sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
-  #- sudo apt-get -y -qq update
-  #- sudo apt-get install -y -qq ffmpeg
+  - sudo snap install ffmpeg
 
+  - sudo apt-get -y -qq update
+  
   # Ensure PIP is up-to-date to avoid warnings.
   - python -m pip install --upgrade pip
+  # Ensure setuptools is up-to-date to avoid environment_markers bug.
+  - pip install --upgrade setuptools
   # The default py that is installed is too old on some platforms, leading to version conflicts
-  - pip install --upgrade pytest
+  - pip install --upgrade py pytest
 
   # modify ImageMagick policy file so that Textclips work correctly.
   # `| sudo tee` replaces `>` so that it can have root permissions
-  - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
+  - cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
 
 install:
   - echo "No install action required. Implicitly performed by the testing."
