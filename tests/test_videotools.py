@@ -5,7 +5,7 @@ import sys
 
 from moviepy.video.tools.credits import credits1
 
-from .test_helper import TMP_DIR
+from .test_helper import TMP_DIR, FONT
 
 
 def test_credits():
@@ -31,7 +31,7 @@ def test_credits():
         file.write(credit_file)
 
     image = credits1(file_location, 600, gap=100, stroke_color="blue",
-                     stroke_width=5)
+                     stroke_width=5, font=FONT)
     image = image.set_duration(3)
     image.write_videofile(vid_location, fps=24)
     assert os.path.isfile(vid_location)
