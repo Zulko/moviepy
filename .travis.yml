@@ -9,6 +9,15 @@ python:
   - 3.7
   - 3.8
 
+jobs:
+  include:
+    - python: 2.7
+      dist: trusty
+      before_install:
+        - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
+        - sudo apt-get -y -qq update
+        - sudo apt-get install -y -qq ffmpeg
+
 before_install:
   - sudo apt-get -y -qq update
   
