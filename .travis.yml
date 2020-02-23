@@ -4,7 +4,6 @@ cache: pip
 os: linux
 
 python:
-  - 2.7
   - 3.5
   - 3.6
   - 3.7
@@ -33,7 +32,7 @@ before_script:
   # stop the build if there are Python syntax errors or undefined names
   - flake8 . --count --select=E901,E999,F821,F822,F823 --show-source --statistics --exit-zero
   # exit-zero treats all errors as warnings.  The GitHub editor is 127 chars wide
-  - flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+  - flake8 . --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
 
 script:
   - pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
@@ -41,8 +40,7 @@ script:
   - pip install -e .
   - pip install -e .[optional]
   - pip install -e .[test]
-  # Only test doc generation on latest. Doesn't work on some earlier versions (3.3), but doesn't matter.
-  - if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then pip install -e .[doc]; fi
+  - pip install -e .[doc]
 
 after_success:
   - coveralls
