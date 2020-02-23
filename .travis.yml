@@ -1,4 +1,4 @@
-dist: xenial
+dist: trusty
 language: python
 cache: pip
 os: linux
