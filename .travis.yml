@@ -23,7 +23,7 @@ before_install:
 
   # modify ImageMagick policy file so that Textclips work correctly.
   # `| sudo tee` replaces `>` so that it can have root permissions
-  - cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
+  - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
 
 install:
   - pip install .[test]
