@@ -3,8 +3,9 @@
 import sys
 import time
 
-import moviepy.tools as tools
 import pytest
+
+import moviepy.tools as tools
 
 
 def test_ext():
@@ -19,8 +20,8 @@ def test_ext():
 
 def test_2():
     """Test for raising erre if codec not in dictionaries."""
-    message = "asking for a silly video format did not Raise a Value Error"
-    with pytest.raises(ValueError, message=message):
+
+    with pytest.raises(ValueError):  # asking for a silly video format
          tools.find_extension('flashvideo')
 
 def test_3():

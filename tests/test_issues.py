@@ -4,17 +4,18 @@ import os
 import sys
 
 import pytest
+
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
-
-from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
-
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
 
+from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+
+
 def test_issue_145():
     video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
-    with pytest.raises(Exception, message='Expecting Exception'):
+    with pytest.raises(Exception):
         concatenate_videoclips([video], method='composite')
 
 
@@ -223,10 +224,10 @@ def test_issue_407():
     assert green.h == blue.h == 480
     assert green.size == blue.size == (640, 480)
 
-    with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
+    with pytest.raises(AttributeError):
         green.fps
 
-    with pytest.raises(AttributeError, message="Expecting ValueError Exception"):
+    with pytest.raises(AttributeError):
         blue.fps
 
     video = concatenate_videoclips([red, green, blue])
@@ -262,7 +263,7 @@ def test_issue_470():
     # t_end is out of bounds
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
-    with pytest.raises(IOError, message="Expecting IOError"):
+    with pytest.raises(IOError):
         subclip.write_audiofile(os.path.join(
             TMP_DIR, 'issue_470.wav'), write_logfile=True)
 

@@ -1,11 +1,11 @@
 import threading
 import time
-import pygame as pg
+
 import numpy as np
 
-from moviepy.decorators import (requires_duration, convert_masks_to_RGB)
+import pygame as pg
+from moviepy.decorators import convert_masks_to_RGB, requires_duration
 from moviepy.tools import cvsecs
-
 
 pg.init()
 pg.display.set_caption('MoviePy')

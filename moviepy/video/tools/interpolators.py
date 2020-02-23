@@ -5,6 +5,7 @@ Requires Scipy installed.
 
 import numpy as np
 
+
 class Interpolator:
     """ Poorman's linear interpolator, doesn't require Scipy. """
     

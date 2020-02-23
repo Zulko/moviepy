@@ -18,4 +18,3 @@ def volumex(clip, factor):
     """
     return clip.fl(lambda gf, t: factor * gf(t),
                    keep_duration=True)
-

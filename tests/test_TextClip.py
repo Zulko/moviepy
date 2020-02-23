@@ -1,11 +1,13 @@
 import sys
 
 import pytest
+
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
 
 from .test_helper import TMP_DIR
+
 
 def test_duration():
 

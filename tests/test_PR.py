@@ -4,6 +4,9 @@ import os
 import sys
 
 import pytest
+
+from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -15,14 +18,15 @@ from moviepy.utils import close_all_clips
 
 from imageio.core.request import Path
 
-from .test_helper import TMP_DIR, FONT
+from .test_helper import FONT, TMP_DIR
+
 
 def test_PR_306():
 
     assert TextClip.list('font') != []
     assert TextClip.list('color') != []
 
-    with pytest.raises(Exception, message="Expecting Exception"):
+    with pytest.raises(Exception):
          TextClip.list('blah')
     close_all_clips(locals())
 

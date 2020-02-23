@@ -3,13 +3,15 @@
 import os
 import sys
 
-from numpy import sin, pi
 import pytest
+from numpy import pi, sin
 
+from moviepy.audio.AudioClip import (AudioClip, CompositeAudioClip,
+                                     concatenate_audioclips)
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.audio.AudioClip import AudioClip, concatenate_audioclips, CompositeAudioClip
 
 from .test_helper import TMP_DIR
+
 
 def test_audio_coreader():
     if sys.platform.startswith("win"):

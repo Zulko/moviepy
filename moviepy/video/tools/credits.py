@@ -4,10 +4,10 @@ credits, even though it is difficult to fill everyone needs in this
 matter.
 """
 
-from moviepy.video.VideoClip import TextClip, ImageClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.resize import resize
 from moviepy.compat import fspath
+from moviepy.video.VideoClip import ImageClip, TextClip
 
 
 def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
@@ -105,7 +105,7 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
                             fontsize=fontsize, align=al)
                    for txt, al in [(left, 'East'), (right, 'West')]]
 
-    cc = CompositeVideoClip([left, right.set_pos((left.w+gap, 0))],
+    cc = CompositeVideoClip([left, right.set_position((left.w+gap, 0))],
                             size=(left.w+right.w+gap, right.h),
                             bg_color=None)
     

@@ -1,5 +1,7 @@
 
 import numpy as np
+
+
 def find_audio_period(aclip, t_min=.1, t_max=2, t_res=.01):
     """ Finds the period, in seconds of an audioclip.
     

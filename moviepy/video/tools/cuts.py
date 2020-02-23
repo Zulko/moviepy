@@ -2,8 +2,11 @@
 the cuts in MoviePy """
 
 from collections import defaultdict
-from moviepy.decorators import use_clip_fps_by_default
+
 import numpy as np
+
+from moviepy.decorators import use_clip_fps_by_default
+
 
 @use_clip_fps_by_default
 def find_video_period(clip,fps=None,tmin=.3):

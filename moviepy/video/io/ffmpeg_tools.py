@@ -1,12 +1,12 @@
 """ Misc. bindings to ffmpeg and ImageMagick."""
 
 import os
-import sys
 import subprocess as sp
+import sys
 
-from moviepy.tools import subprocess_call
 from moviepy.config import get_setting
 from moviepy.compat import fspath
+from moviepy.tools import subprocess_call
 
 
 def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
@@ -69,4 +69,3 @@ def ffmpeg_resize(video,output,size):
              fspath(output)]
              
     subprocess_call(cmd)
-
