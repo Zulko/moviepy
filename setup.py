@@ -77,7 +77,7 @@ optional_reqs = [
         "opencv-python>=3.0,<4.0; python_version!='2.7'",
         "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
         "scikit-learn; python_version>='3.4'",
-        "scipy>=0.19.0,<1.0; python_version!='3.3'",
+        "scipy>=0.19.0,<1.5; python_version!='3.3'",
         "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
         "youtube_dl"
         ]
