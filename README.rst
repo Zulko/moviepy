@@ -166,18 +166,17 @@ Have a look at the Proglog project page for more options.
 Running Tests
 -------------
 
-The testing suite can be executed via:
-
-.. code:: bash
-
-    $ python setup.py test
-
-Running the test suite in this manner will install the testing dependencies.
-If you opt to run the test suite manually, you can install the dependencies via:
+In order to run the test suite locally, first install the dependencies by navigating to the project directory and running:
 
 .. code:: bash
 
     $ (sudo) pip install moviepy[test]
+
+The test suite can then be executed via:
+
+.. code:: bash
+
+    $ pytest
 
 
 Contribute
