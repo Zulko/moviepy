@@ -67,7 +67,7 @@ requires = [
     "imageio>=2.0,<2.5; python_version<'3.4'",
     "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
     'tqdm>=4.11.2,<5.0',
-    'numpy',
+    'numpy>=1.17.3',
     'requests>=2.8.1,<3.0',
     'proglog<=1.0.0'
     ]
