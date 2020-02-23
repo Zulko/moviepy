@@ -9,6 +9,9 @@ from moviepy.video.VideoClip import TextClip
 from .test_helper import TMP_DIR
 
 
+def test_fontlist():
+    print(TextClip.list('font'))
+
 @pytest.mark.timeout(30)
 def test_duration():
 
