@@ -22,11 +22,5 @@ ADD . /var/src/moviepy/
 #RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
 RUN cd /var/src/moviepy/ && python setup.py install
 
-# install ffmpeg from imageio.
-RUN python -c "import imageio; imageio.plugins.ffmpeg.download()"
-
-#add soft link so that ffmpeg can executed (like usual) from command line
-RUN ln -s /root/.imageio/ffmpeg/ffmpeg.linux64 /usr/bin/ffmpeg
-
 # modify ImageMagick policy file so that Textclips work correctly.
 RUN cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml 
