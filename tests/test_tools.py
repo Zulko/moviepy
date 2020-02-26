@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 import sys
-import time
 
 import pytest
 
@@ -20,9 +19,10 @@ def test_find_extensions(given, expected):
 
 
 def test_find_extensions_not_found():
-    """Test for raising erre if codec not in dictionaries."""
+    """Test for raising error if codec not in dictionaries."""
     with pytest.raises(ValueError):  # asking for a silly video format
-         tools.find_extension('flashvideo')
+        tools.find_extension('flashvideo')
+
 
 
 @pytest.mark.parametrize('given, expected', [
@@ -55,16 +55,9 @@ def test_is_string(given, expected):
 
 
 def test_sys_write_flush():
-    """Test for sys_write_flush function.
-
-    1) Check that this works quickly.
-    2) Check that stdout has no content after flushing.
-
-    """
-    start = time.time()
+    """Test for sys_write-flush function. Check that stdout has no content after flushing."""
     tools.sys_write_flush("hello world")
-    myTime = time.time() - start
-    assert myTime < 0.001
+
     file = sys.stdout.read()
     assert file == b""
 
