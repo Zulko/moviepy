@@ -245,9 +245,9 @@ class FramesMatches(list):
                 continue # No GIF can be made starting at this time
             
             poor_matches = {end for (end,d_min, d_max) in ends_distances if d_min > nomatch_thr}
-            short_matches = [end for end in ends if (end-start) <= 0.6]
+            short_matches = {end for end in ends if (end-start) <= 0.6}
             
-            if poor_matches & short_matches:
+            if not poor_matches.intersection(short_matches):
                 continue
     
             end = max(end for (end, d_min, d_max) in great_long_matches)
