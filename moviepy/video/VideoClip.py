@@ -86,7 +86,7 @@ class VideoClip(Clip):
             self.size = self.get_frame(0).shape[:2][::-1]
         self.ismask = ismask
         self.has_constant_size=has_constant_size
-        if duration:
+        if duration is not None:
             self.duration = duration
             self.end = duration
 
