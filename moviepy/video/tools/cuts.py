@@ -218,7 +218,6 @@ class FramesMatches(list):
         if nomatch_thr is None:
             nomatch_thr = match_thr
 
-        
         dict_starts = defaultdict(lambda : [])
         for (start, end, d_min, d_max) in self:
             dict_starts[start].append([end, d_min, d_max])
