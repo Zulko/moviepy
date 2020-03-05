@@ -162,13 +162,14 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     
     elif shape == 'radial':
         if r is None:
-            r = norm
-        elif r == 0:
+           r = norm
+
+        if r == 0:
             arr = np.ones((h,w))
         else:
-            arr = (np.sqrt(((M- p1)**2).sum(axis=2)))-offset*r
+            arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * r
             arr = arr / ((1-offset)*r)
-            arr = np.minimum(1.0,np.maximum(0, arr) )
+            arr = np.minimum(1.0, np.maximum(0, arr))
                 
         if col1.size > 1:
             arr = np.dstack(3*[arr])
