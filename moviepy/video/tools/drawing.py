@@ -225,12 +225,12 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     """
     
     if grad_width or ( (x is None) and (y is None)):
-        if p2:
+        if p2 is not None:
             vector = (np.array(p2) - np.array(p1))
-        elif x:
+        elif x is not None:
             vector = np.array([0,-1.0])
             p1 = np.array([x, 0])
-        elif y:
+        elif y is not None:
             vector = np.array([1.0, 0.0])
             p1 = np.array([0,y])
 
@@ -241,7 +241,7 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         return color_gradient(size,p1,vector=vector,
                               col1 = col1, col2 = col2, shape='linear')
     else:
-        w,h = size
+        w, h = size
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
         if x:
