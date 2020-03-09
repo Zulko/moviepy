@@ -67,7 +67,8 @@ requires = [
     "imageio>=2.0,<2.5; python_version<'3.4'",
     "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
     'tqdm>=4.11.2,<5.0',
-    'numpy',
+    "numpy>=1.17.3; python_version!='2.7'",
+    "numpy; python_version>='2.7'",
     'requests>=2.8.1,<3.0',
     'proglog<=1.0.0'
     ]
@@ -76,13 +77,13 @@ optional_reqs = [
         "opencv-python>=3.0,<4.0; python_version!='2.7'",
         "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
         "scikit-learn; python_version>='3.4'",
-        "scipy>=0.19.0,<1.0; python_version!='3.3'",
+        "scipy>=0.19.0,<1.5; python_version!='3.3'",
         "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
         "youtube_dl"
         ]
 
 doc_reqs = [
-        "pygame>=1.9.3,<2.0; python_version!='3.3'",
+        "pygame>=1.9.3,<2.0; python_version<'3.8'",
         'numpydoc>=0.6.0,<1.0',
         'sphinx_rtd_theme>=0.1.10b0,<1.0', 
         'Sphinx>=1.5.2,<2.0',
