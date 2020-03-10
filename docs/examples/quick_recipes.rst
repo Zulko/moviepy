@@ -59,7 +59,7 @@ Getting the average frame of a video
     clip = VideoFileClip("video.mp4")
     fps= 1.0 # take one frame per second
     nframes = clip.duration*fps # total number of frames used
-    total_image = sum(clip.iter_frames(fps,dtype=float,progress_bar=True))
+    total_image = sum(clip.iter_frames(fps,dtype=float,logger='bar'))
     average_image = ImageClip(total_image/ nframes)
     average_image.save_frame("average_test.png")
 

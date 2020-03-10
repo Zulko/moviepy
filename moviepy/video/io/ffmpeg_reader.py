@@ -5,19 +5,22 @@ using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 
 from __future__ import division
 
-import subprocess as sp
-import re
-import warnings
 import logging
+import os
+import re
+import subprocess as sp
+import warnings
+
+import numpy as np
+
+from moviepy.compat import DEVNULL, PY3
+from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
+from moviepy.tools import cvsecs
+
 logging.captureWarnings(True)
 
 
-import numpy as np
-from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import cvsecs
-from moviepy.compat import PY3, DEVNULL
 
-import os
 
 
 class FFMPEG_VideoReader:
@@ -141,8 +144,10 @@ class FFMPEG_VideoReader:
             result = self.lastread
 
         else:
-
-            result = np.fromstring(s, dtype='uint8')
+            if hasattr(np, 'frombuffer'):
+                result = np.frombuffer(s, dtype='uint8')
+            else:
+                result = np.fromstring(s, dtype='uint8')
             result.shape =(h, w, len(s)//(w*h)) # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
 
@@ -193,6 +198,9 @@ class FFMPEG_VideoReader:
             self.proc = None
         if hasattr(self, 'lastread'):
             del self.lastread
+
+    def __del__(self):
+        self.close()
 
 
 def ffmpeg_read_image(filename, with_mask=True):
@@ -254,10 +262,9 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         popen_params["creationflags"] = 0x08000000
 
     proc = sp.Popen(cmd, **popen_params)
+    (output, error) = proc.communicate()
+    infos = error.decode('utf8')
 
-    proc.stdout.readline()
-    proc.terminate()
-    infos = proc.stderr.read().decode('utf8')
     del proc
 
     if print_infos:

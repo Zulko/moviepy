@@ -11,10 +11,12 @@ A function to embed images/videos/audio in the IPython Notebook
 
 import os
 from base64 import b64encode
+
+from moviepy.audio.AudioClip import AudioClip
 from moviepy.tools import extensions_dict
 
-from ..VideoClip import VideoClip, ImageClip
-from moviepy.audio.AudioClip import AudioClip
+from ..VideoClip import ImageClip, VideoClip
+from .ffmpeg_reader import ffmpeg_parse_infos
 
 try:
     from IPython.display import HTML
@@ -26,7 +28,6 @@ try:
 except ImportError:
     ipython_available = False
 
-from .ffmpeg_reader import ffmpeg_parse_infos
 
 sorry = "Sorry, seems like your browser doesn't support HTML5 audio/video"
 templates = {"audio":("<audio controls>"
@@ -138,9 +139,10 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
 
         duration = ffmpeg_parse_infos(filename)['duration']
         if duration > maxduration:
-            raise ValueError("The duration of video %s (%.1f) exceeds the 'max_duration' "%(filename, duration)+
-                             "attribute. You can increase 'max_duration', "
-                             "but note that embedding large videos may take all the memory away !")
+            raise ValueError("The duration of video %s (%.1f) exceeds the 'maxduration' "%(filename, duration)+
+                             "attribute. You can increase 'maxduration', by passing 'maxduration' parameter"
+                             "to ipython_display function."
+                             "But note that embedding large videos may take all the memory away !")
             
     with open(filename, "rb") as f:
         data= b64encode(f.read()).decode("utf-8")

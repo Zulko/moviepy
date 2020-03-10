@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 import sys
-import time
+
+import pytest
 
 import moviepy.tools as tools
-import pytest
 
 
 def test_ext():
@@ -17,11 +17,12 @@ def test_ext():
         message = "{0} did not get associated with {1}".format(left, right)
         assert left == right, message
 
+
 def test_2():
     """Test for raising erre if codec not in dictionaries."""
-    message = "asking for a silly video format did not Raise a Value Error"
-    with pytest.raises(ValueError, message=message):
-         tools.find_extension('flashvideo')
+    with pytest.raises(ValueError):  # asking for a silly video format
+        tools.find_extension('flashvideo')
+
 
 def test_3():
     """Test the cvsecs funtion outputs correct times as per the docstring."""
@@ -34,6 +35,7 @@ def test_3():
             .format(lefts[i],left, right)
         assert left == right, message
 
+
 def test_4():
     """Test the is_string function in tools."""
     lefts = ["hello straight string", r'hello raw string',42, True ]
@@ -45,6 +47,7 @@ def test_4():
             .format(lefts[i],left, right)
         assert left == right, message
 
+
 def test_4a():
     """Test for the different behaviour of byte strings between python 2/3."""
     version = sys.version_info[0]
@@ -55,19 +58,13 @@ def test_4a():
         .format(b'hello bytes',left, right)
     assert left == right, message
 
+
 def test_5():
-    """Test for sys_write-flush function.
-
-    1) Check that this works quickly.
-    2) Check that stdout has no content after flushing.
-
-    """
-    start = time.time()
+    """Test for sys_write-flush function. Check that stdout has no content after flushing."""
     tools.sys_write_flush("hello world")
-    myTime = time.time() - start
-    assert myTime <  0.001
     file = sys.stdout.read()
     assert file == b""
+
 
 if __name__ == '__main__':
    pytest.main()

@@ -5,15 +5,14 @@ and AudioClip.
 """
 
 from copy import copy
-import numpy as np
 
-from moviepy.decorators import (apply_to_mask,
-                                apply_to_audio,
-                                requires_duration,
-                                outplace,
-                                convert_to_seconds,
-                                use_clip_fps_by_default)
+import numpy as np
+import proglog
 from tqdm import tqdm
+
+from moviepy.decorators import (apply_to_audio, apply_to_mask,
+                                convert_to_seconds, outplace,
+                                requires_duration, use_clip_fps_by_default)
 
 
 class Clip:
@@ -32,7 +31,7 @@ class Clip:
 
      end:
        When the clip is included in a composition, time of the
-       composition at which the clip starts playing (in seconds).
+       composition at which the clip stops playing (in seconds).
 
      duration:
        Duration of the clip (in seconds). Some clips are infinite, in
@@ -443,7 +442,7 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times = False, progress_bar=False,
+    def iter_frames(self, fps=None, with_times = False, logger=None,
                     dtype=None):
         """ Iterates over all the frames of the clip.
 
@@ -469,22 +468,15 @@ class Clip:
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
-
-        def generator():
-            for t in np.arange(0, self.duration, 1.0/fps):
-                frame = self.get_frame(t)
-                if (dtype is not None) and (frame.dtype != dtype):
-                    frame = frame.astype(dtype)
-                if with_times:
-                    yield t, frame
-                else:
-                    yield frame
-
-        if progress_bar:
-            nframes = int(self.duration*fps)+1
-            return tqdm(generator(), total=nframes)
-
-        return generator()
+        logger = proglog.default_bar_logger(logger)
+        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0/fps)):
+            frame = self.get_frame(t)
+            if (dtype is not None) and (frame.dtype != dtype):
+                frame = frame.astype(dtype)
+            if with_times:
+                yield t, frame
+            else:
+                yield frame
 
     def close(self):
         """ 
@@ -494,10 +486,11 @@ class Clip:
         #    Implementation note for subclasses:
         #
         #    * Memory-based resources can be left to the garbage-collector.
-        #    * However, any open files should be closed, and subprocesses should be terminated.
-        #    * Be wary that shallow copies are frequently used. Closing a Clip may affect its copies.
+        #    * However, any open files should be closed, and subprocesses
+        #      should be terminated.
+        #    * Be wary that shallow copies are frequently used.
+        #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
-
         pass
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
@@ -507,4 +500,3 @@ class Clip:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
-

@@ -21,10 +21,11 @@ This example has been originally edited in an IPython Notebook, which makes it
 easy to preview and fine-tune each part of the editing.
 """
 
+import os
+
+from moviepy.audio.tools.cuts import find_audio_period
 from moviepy.editor import *
 from moviepy.video.tools.cuts import find_video_period
-from moviepy.audio.tools.cuts import find_audio_period
-
 
 # Next lines are for downloading the required videos from Youtube.
 # To do this you must have youtube-dl installed, otherwise you will need to
@@ -32,7 +33,6 @@ from moviepy.audio.tools.cuts import find_audio_period
 #     https://www.youtube.com/watch?v=zvCvOC2VwDc => knights.mp4
 #     https://www.youtube.com/watch?v=lkY3Ek9VPtg => frontier.mp4
 
-import os
 if not os.path.exists("knights.mp4"):
     os.system("youtube-dl zvCvOC2VwDc -o knights.mp4")
     os.system("youtube-dl lkY3Ek9VPtg -o frontier.mp4")
