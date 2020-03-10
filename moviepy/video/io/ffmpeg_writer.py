@@ -3,13 +3,15 @@ On the long term this will implement several methods to make videos
 out of VideoClips
 """
 
-import subprocess as sp
 import os
-import numpy as np
+import subprocess as sp
 
-from moviepy.compat import PY3, DEVNULL
+import numpy as np
+from proglog import proglog
+
+from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
-from moviepy.tools import verbose_print
+
 
 class FFMPEG_VideoWriter:
     """ A class for FFMPEG-based video writing.
@@ -84,7 +86,7 @@ class FFMPEG_VideoWriter:
             '-s', '%dx%d' % (size[0], size[1]),
             '-pix_fmt', 'rgba' if withmask else 'rgb24',
             '-r', '%.02f' % fps,
-            '-i', '-', '-an',
+            '-an', '-i', '-'
         ]
         if audiofile is not None:
             cmd.extend([
@@ -197,16 +199,17 @@ class FFMPEG_VideoWriter:
 def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
                        preset="medium", withmask=False, write_logfile=False,
                        audiofile=None, verbose=True, threads=None, ffmpeg_params=None,
-                       progress_bar=True):
+                       logger='bar'):
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
+    logger = proglog.default_bar_logger(logger)
+
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:
         logfile = None
-
-    verbose_print(verbose, "[MoviePy] Writing video %s\n"%filename)
+    logger(message='Moviepy - Writing video %s\n' % filename)
     with FFMPEG_VideoWriter(filename, clip.size, fps, codec = codec,
                                 preset=preset, bitrate=bitrate, logfile=logfile,
                                 audiofile=audiofile, threads=threads,
@@ -214,7 +217,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
         nframes = int(clip.duration*fps)
 
-        for t,frame in clip.iter_frames(progress_bar=progress_bar, with_times=True,
+        for t,frame in clip.iter_frames(logger=logger, with_times=True,
                                         fps=fps, dtype="uint8"):
             if withmask:
                 mask = (255*clip.mask.get_frame(t))
@@ -226,8 +229,7 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
 
     if write_logfile:
         logfile.close()
-
-    verbose_print(verbose, "[MoviePy] Done.\n")
+    logger(message='Moviepy - Done !')
 
 
 def ffmpeg_write_image(filename, image, logfile=False):

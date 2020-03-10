@@ -17,7 +17,7 @@
 ## Preparing for development
 - Fork moviepy using the button in the top right corner
 - Clone your fork: `git clone https://github.com/yourname/moviepy.git`
-- Add the main repository as a remote: `git add remote upstream https://github.com/Zulko/moviepy.git`
+- Add the main repository as a remote: `git remote add upstream https://github.com/Zulko/moviepy.git`
 
 ## Standard workflow
 - Pull any changes made to the main repository: `git pull upstream master`

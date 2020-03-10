@@ -1,4 +1,5 @@
 import numpy as np
+
 from moviepy.decorators import apply_to_mask
 from moviepy.video.VideoClip import ImageClip
 
@@ -55,5 +56,3 @@ def margin(clip, mar=None, left=0, right=0, top=0,
             im[top:top + h, left:left + w] = pic
             return im
         return clip.fl(fl)
-            
-    

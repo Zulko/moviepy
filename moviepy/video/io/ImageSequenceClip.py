@@ -1,8 +1,9 @@
 import os
+
 import numpy as np
+from imageio import imread
 
 from ..VideoClip import VideoClip
-from imageio import imread
 
 
 class ImageSequenceClip(VideoClip):

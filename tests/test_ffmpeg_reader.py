@@ -3,16 +3,9 @@
 import sys
 
 import pytest
+
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
-import download_media
-
-sys.path.append("tests")
-
-
-def test_download_media(capsys):
-    with capsys.disabled():
-       download_media.download()
 
 def test_ffmpeg_parse_infos():
     d=ffmpeg_parse_infos("media/big_buck_bunny_432_433.webm")
@@ -31,6 +24,9 @@ def test_ffmpeg_parse_infos():
     assert d['audio_found']
     assert d['audio_fps'] == 48000
 
+def test_ffmpeg_parse_infos_for_i926():
+    d = ffmpeg_parse_infos("tests/resource/sintel_with_15_chapters.mp4")
+    assert d['audio_found']
 
 if __name__ == '__main__':
    pytest.main()

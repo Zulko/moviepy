@@ -1,5 +1,7 @@
-from moviepy.decorators import audio_video_fx
 import numpy as np
+
+from moviepy.decorators import audio_video_fx
+
 
 @audio_video_fx
 def audio_fadein(clip, duration):

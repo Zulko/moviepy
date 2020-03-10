@@ -7,6 +7,7 @@ clip = vfx.mirror_x(some_clip)
 """
 
 import pkgutil
+
 import moviepy.video.fx as fx
 
 __all__ = [name for _, name, _ in pkgutil.iter_modules(

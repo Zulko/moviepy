@@ -4,10 +4,11 @@ to be used with clip.fx. There are available as transfx.crossfadein etc.
 if you load them with ``from moviepy.editor import *``
 """
 
-from moviepy.decorators import requires_duration, add_mask_if_none
-from .CompositeVideoClip import CompositeVideoClip
+from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+
+from .CompositeVideoClip import CompositeVideoClip
 
 
 @requires_duration
@@ -69,7 +70,7 @@ def slide_in(clip, duration, side):
                 'top': lambda t: ('center', min(0, h*(t/duration-1))),
                 'bottom': lambda t: ('center', max(0, h*(1-t/duration)))}
 
-    return clip.set_pos(pos_dict[side])
+    return clip.set_position(pos_dict[side])
 
 
 @requires_duration
@@ -110,7 +111,7 @@ def slide_out(clip, duration, side):
                 'top': lambda t: ('center', min(0, h*(1-(t-ts)/duration))),
                 'bottom': lambda t: ('center', max(0, h*((t-ts)/duration-1)))}
 
-    return clip.set_pos(pos_dict[side])
+    return clip.set_position(pos_dict[side])
 
 
 @requires_duration

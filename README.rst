@@ -16,7 +16,7 @@ MoviePy
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3. Here it is in action in an IPython notebook:
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 2.7+ and 3 (or only Python 3.4+ from v.1.0). Here it is in action in an IPython notebook:
 
 .. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
     :alt: [logo]
@@ -41,6 +41,11 @@ In this example we open a video file, select the subclip between t=50s and t=60s
     result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
 
+
+Maintainers wanted!
+-------------------
+
+As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
 Installation
 ------------
@@ -100,7 +105,7 @@ For Windows users, before installing MoviePy by hand, go into the ``moviepy/conf
 .. code:: python
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
-    
+
 If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
 
 For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
@@ -133,22 +138,45 @@ You can pass additional arguments to the documentation build, such as clean buil
 
 More information is available from the `Sphinx`_ documentation.
 
+New in 1.0.0: Progress bars and messages with Proglog
+-------------------------------------------------------
+
+Non-backwards-compatible changes were introduced in 1.0.0 to
+manage progress bars and messages using
+`Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
+enables to display nice progress bars in the console as well as in
+a Jupyter notebook or any user interface, like a website.
+
+To display notebook friendly progress bars, first install IPyWidgets:
+
+.. code::
+
+    sudo pip install ipywidgets
+    sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
+
+Then at the beginning of your notebook enter:
+
+.. code:: python
+
+    import proglog
+    proglog.notebook()
+
+Have a look at the Proglog project page for more options.
 
 Running Tests
 -------------
 
-The testing suite can be executed via:
-
-.. code:: bash
-
-    $ python setup.py test
-
-Running the test suite in this manner will install the testing dependencies.
-If you opt to run the test suite manually, you can install the dependencies via:
+In order to run the test suite locally, first install the dependencies by navigating to the project directory and running:
 
 .. code:: bash
 
     $ (sudo) pip install moviepy[test]
+
+The test suite can then be executed via:
+
+.. code:: bash
+
+    $ pytest
 
 
 Contribute
@@ -158,51 +186,52 @@ MoviePy is open-source software originally written by Zulko_ and released under 
 
 You can also discuss the project on Reddit_ or Gitter_. These are preferred over GitHub issues for usage questions and examples.
 
-We have a list of labels used in our `Label Wiki`_. The 'Pull Requests' labels are well defined, and all PRs should fall under exactly one of these.  The 'Issues' labels are less precise, and may not be a complete list.
-
 
 Maintainers
 -----------
 
 - Zulko_ (owner)
-
 - `@tburrows13`_
 - `@earney`_
-- Kay `@kerstin`_
 - `@mbeacom`_
+- `@overdrivr`_
+- `@keikoro`_
+- `@ryanfox`_
 
 
 .. MoviePy links
-.. _gallery: http://zulko.github.io/moviepy/gallery.html
-.. _documentation: http://zulko.github.io/moviepy/
+.. _gallery: https://zulko.github.io/moviepy/gallery.html
+.. _documentation: https://zulko.github.io/moviepy/
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`Label Wiki`: https://github.com/Zulko/moviepy/wiki/Label-Wiki
 .. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md
 
 .. Websites, Platforms
-.. _Reddit: http://www.reddit.com/r/moviepy/
+.. _Reddit: https://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _GitHub: https://github.com/Zulko/moviepy
 .. _Gitter: https://gitter.im/movie-py/Lobby
 
 .. Software, Tools, Libraries
-.. _Pillow: http://pillow.readthedocs.org/en/latest/
-.. _Scipy: http://www.scipy.org/
-.. _`OpenCV 2.4.6`: http://sourceforge.net/projects/opencvlibrary/files/
-.. _Pygame: http://www.pygame.org/download.shtml
-.. _Numpy: http://www.scipy.org/install.html
-.. _imageio: http://imageio.github.io/
-.. _`Scikit Image`: http://scikit-image.org/download.html
+.. _Pillow: https://pillow.readthedocs.org/en/latest/
+.. _Scipy: https://www.scipy.org/
+.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _Pygame: https://www.pygame.org/download.shtml
+.. _Numpy: https://www.scipy.org/install.html
+.. _imageio: https://imageio.github.io/
+.. _`Scikit Image`: https://scikit-image.org/docs/stable/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
 .. _tqdm: https://github.com/noamraph/tqdm
-.. _ffmpeg: http://www.ffmpeg.org/download.html
-.. _ImageMagick: http://www.imagemagick.org/script/index.php
+.. _ffmpeg: https://www.ffmpeg.org/download.html
+.. _ImageMagick: https://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
-.. _`Sphinx`: http://www.sphinx-doc.org/en/master/setuptools.html
+.. _`Sphinx`: https://www.sphinx-doc.org/en/master/setuptools.html
 
 .. People
 .. _Zulko: https://github.com/Zulko
 .. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
-.. _`@kerstin`: https://github.com/kerstin
 .. _`@mbeacom`: https://github.com/mbeacom
+.. _`@overdrivr`: https://github.com/overdrivr
+.. _`@keikoro`: https://github.com/keikoro
+.. _`@ryanfox`: https://github.com/ryanfox

@@ -2,12 +2,14 @@
 Misc. useful functions that can be used at many places in the program.
 """
 
+import os
+import re
 import subprocess as sp
 import sys
 import warnings
-import re
 
-import os
+import proglog
+
 from .compat import DEVNULL
 
 
@@ -27,10 +29,13 @@ def verbose_print(verbose, s):
         sys_write_flush(s)
 
 
-def subprocess_call(cmd, verbose=True, errorprint=True):
-    """ Executes the given subprocess command."""
-
-    verbose_print(verbose, "\n[MoviePy] Running:\n>>> "+ " ".join(cmd))
+def subprocess_call(cmd, logger='bar', errorprint=True):
+    """ Executes the given subprocess command.
+    
+    Set logger to None or a custom Proglog logger to avoid printings.
+    """
+    logger = proglog.default_bar_logger(logger)
+    logger(message='Moviepy - Running:\n>>> "+ " ".join(cmd)')
 
     popen_params = {"stdout": DEVNULL,
                     "stderr": sp.PIPE,
@@ -45,10 +50,11 @@ def subprocess_call(cmd, verbose=True, errorprint=True):
     proc.stderr.close()
 
     if proc.returncode:
-        verbose_print(errorprint, "\n[MoviePy] This command returned an error !")
+        if errorprint:
+            logger(message='Moviepy - Command returned an error')
         raise IOError(err.decode('utf8'))
     else:
-        verbose_print(verbose, "\n... command successful.\n")
+        logger(message='Moviepy - Command successful')
 
     del proc
 
