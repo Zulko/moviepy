@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def blackwhite(clip, RGB = None, preserve_luminosity=True):
     """ Desaturates the picture, makes it black and white.
     Parameter RGB allows to set weights for the different color

@@ -5,19 +5,22 @@ using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 
 from __future__ import division
 
-import subprocess as sp
-import re
-import warnings
 import logging
+import os
+import re
+import subprocess as sp
+import warnings
+
+import numpy as np
+
+from moviepy.compat import DEVNULL, PY3
+from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
+from moviepy.tools import cvsecs
+
 logging.captureWarnings(True)
 
 
-import numpy as np
-from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import cvsecs
-from moviepy.compat import PY3, DEVNULL
 
-import os
 
 
 class FFMPEG_VideoReader:

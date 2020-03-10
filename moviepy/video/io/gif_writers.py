@@ -1,12 +1,13 @@
 import os
 import subprocess as sp
-from moviepy.config import get_setting
-from moviepy.decorators import (requires_duration,use_clip_fps_by_default)
-from moviepy.tools import subprocess_call
-import proglog
+
 import numpy as np
+import proglog
 
 from moviepy.compat import DEVNULL
+from moviepy.config import get_setting
+from moviepy.decorators import requires_duration, use_clip_fps_by_default
+from moviepy.tools import subprocess_call
 
 try:
     import imageio
@@ -81,7 +82,7 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
             error = error + ("This error can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file conf.py." )
+                "path to the ImageMagick binary in file config_defaults.py." )
 
         raise IOError(error)
 
@@ -232,7 +233,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
             error = error + ("This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file conf.py." )
+                "path to the ImageMagick binary in file config_defaults.py." )
 
         raise IOError(error)
     if program == 'ImageMagick':

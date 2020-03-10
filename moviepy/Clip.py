@@ -5,16 +5,14 @@ and AudioClip.
 """
 
 from copy import copy
-import numpy as np
 
-from moviepy.decorators import (apply_to_mask,
-                                apply_to_audio,
-                                requires_duration,
-                                outplace,
-                                convert_to_seconds,
-                                use_clip_fps_by_default)
-from tqdm import tqdm
+import numpy as np
 import proglog
+from tqdm import tqdm
+
+from moviepy.decorators import (apply_to_audio, apply_to_mask,
+                                convert_to_seconds, outplace,
+                                requires_duration, use_clip_fps_by_default)
 
 
 class Clip:
@@ -502,4 +500,3 @@ class Clip:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
-

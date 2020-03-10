@@ -4,11 +4,13 @@ import os
 import sys
 
 import pytest
+
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.mask_color import mask_color
 from moviepy.video.VideoClip import ColorClip, ImageClip
 
 from .test_helper import TMP_DIR
+
 
 def test_afterimage():
     ai = ImageClip("media/afterimage.png")

@@ -1,11 +1,12 @@
+import os
 import subprocess as sp
 import warnings
 
 import numpy as np
-from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+
+from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
-from moviepy.compat import PY3, DEVNULL
-import os
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
 class FFMPEG_AudioReader:

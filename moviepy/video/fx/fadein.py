@@ -1,4 +1,5 @@
-import numpy as np                                                        
+import numpy as np
+
 
 def fadein(clip, duration, initial_color=None):
     """

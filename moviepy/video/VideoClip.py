@@ -10,8 +10,8 @@ import tempfile
 import warnings
 
 import numpy as np
-from imageio import imread, imsave
 import proglog
+from imageio import imread, imsave
 
 from ..Clip import Clip
 from ..compat import DEVNULL, string_types
@@ -240,7 +240,7 @@ class VideoClip(Clip):
 
         logger
           Either "bar" for progress bar or None or any Proglog logger.
-        
+
         verbose (deprecated, kept for compatibility)
           Formerly used for toggling messages on/off. Use logger=None now.
 
@@ -326,7 +326,8 @@ class VideoClip(Clip):
                            logger=logger)
 
         if remove_temp and make_audio:
-            os.remove(audiofile)
+            if os.path.exists(audiofile):
+                os.remove(audiofile)
         logger(message="Moviepy - video ready %s" % filename)
 
     @requires_duration

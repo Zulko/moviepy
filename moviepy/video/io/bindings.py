@@ -5,6 +5,7 @@ modules (PIL, matplotlib, mayavi, etc.)
 
 import numpy as np
 
+
 def PIL_to_npimage(im):
     """ Transforms a PIL/Pillow image into a numpy RGB(A) image.
         Actually all this do is returning numpy.array(im)."""
@@ -29,5 +30,3 @@ def mplfig_to_npimage(fig):
     buf = canvas.tostring_rgb()
     image= np.fromstring(buf,dtype=np.uint8)
     return image.reshape(h,w,3)
-
-

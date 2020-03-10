@@ -1,5 +1,7 @@
 import numpy as np
+
 from ..VideoClip import ImageClip
+
 
 def mask_or(clip, other_clip):
     """ Returns the logical 'or' (max) between two masks.

@@ -1,11 +1,13 @@
 """ Experimental module for subtitles support. """
 
 import re
+
 import numpy as np
-from moviepy.video.VideoClip import VideoClip, TextClip
-from moviepy.tools import cvsecs
-from moviepy.decorators import convert_to_seconds
 import io
+
+from moviepy.decorators import convert_to_seconds
+from moviepy.tools import cvsecs
+from moviepy.video.VideoClip import TextClip, VideoClip
 
 
 class SubtitlesClip(VideoClip):

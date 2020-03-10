@@ -3,12 +3,15 @@ On the long term this will implement several methods to make videos
 out of VideoClips
 """
 
-import subprocess as sp
 import os
-import numpy as np
+import subprocess as sp
 
-from moviepy.compat import PY3, DEVNULL
+import numpy as np
+from proglog import proglog
+
+from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
+
 
 class FFMPEG_VideoWriter:
     """ A class for FFMPEG-based video writing.
@@ -83,7 +86,7 @@ class FFMPEG_VideoWriter:
             '-s', '%dx%d' % (size[0], size[1]),
             '-pix_fmt', 'rgba' if withmask else 'rgb24',
             '-r', '%.02f' % fps,
-            '-i', '-', '-an',
+            '-an', '-i', '-'
         ]
         if audiofile is not None:
             cmd.extend([
@@ -200,6 +203,8 @@ def ffmpeg_write_video(clip, filename, fps, codec="libx264", bitrate=None,
     """ Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
+    logger = proglog.default_bar_logger(logger)
+
     if write_logfile:
         logfile = open(filename + ".log", 'w+')
     else:

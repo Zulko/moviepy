@@ -1,4 +1,4 @@
-from moviepy.decorators import apply_to_mask,apply_to_audio
+from moviepy.decorators import apply_to_audio, apply_to_mask
 
 
 def speedx(clip, factor = None, final_duration=None):

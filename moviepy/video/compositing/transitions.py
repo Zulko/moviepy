@@ -4,10 +4,11 @@ to be used with clip.fx. There are available as transfx.crossfadein etc.
 if you load them with ``from moviepy.editor import *``
 """
 
-from moviepy.decorators import requires_duration, add_mask_if_none
-from .CompositeVideoClip import CompositeVideoClip
+from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+
+from .CompositeVideoClip import CompositeVideoClip
 
 
 @requires_duration

@@ -2,6 +2,9 @@ import os
 import sys
 
 import pytest
+
+from moviepy.audio.fx.audio_normalize import audio_normalize
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blackwhite import blackwhite
 # from moviepy.video.fx.blink import blink
@@ -21,11 +24,10 @@ from moviepy.video.fx.rotate import rotate
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
-from moviepy.audio.fx.audio_normalize import audio_normalize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from .test_helper import TMP_DIR
+
 
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
