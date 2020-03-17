@@ -25,4 +25,5 @@ def freeze(clip, t=0, freeze_duration=None, total_duration=None,
     before = [clip.subclip(0,t)] if (t!=0) else []
     freeze = [clip.to_ImageClip(t).set_duration(freeze_duration)]
     after = [clip.subclip(t)] if (t !=clip.duration) else []
-    return concatenate_videoclips(before+freeze+after)
+    return concatenate_videoclips(before + freeze + after)
+  

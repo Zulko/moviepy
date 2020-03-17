@@ -59,10 +59,7 @@ class FFMPEG_VideoReader:
         self.infos = infos
 
         self.pix_fmt = pix_fmt
-        if pix_fmt == 'rgba':
-            self.depth = 4
-        else:
-            self.depth = 3
+        self.depth = 4 if pix_fmt == 'rgba' else 3
 
         if bufsize is None:
             w, h = self.size
@@ -179,15 +176,14 @@ class FFMPEG_VideoReader:
 
         if pos == self.pos:
             return self.lastread
-        else:
-            if (pos < self.pos) or (pos > self.pos + 100):
-                self.initialize(t)
-                self.pos = pos
-            else:
-                self.skip_frames(pos-self.pos-1)
-            result = self.read_frame()
+        elif (pos < self.pos) or (pos > self.pos + 100):
+            self.initialize(t)
             self.pos = pos
-            return result
+        else:
+            self.skip_frames(pos-self.pos-1)
+        result = self.read_frame()
+        self.pos = pos
+        return result
 
     def close(self):
         if self.proc:
@@ -223,10 +219,7 @@ def ffmpeg_read_image(filename, with_mask=True):
       this layer as the mask of the returned ImageClip
 
     """
-    if with_mask:
-        pix_fmt = 'rgba'
-    else:
-        pix_fmt = "rgb24"
+    pix_fmt = 'rgba' if with_mask else "rgb24" 
     reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
     im = reader.lastread
     del reader

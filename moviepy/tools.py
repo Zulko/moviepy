@@ -1,9 +1,7 @@
 """
 Misc. useful functions that can be used at many places in the program.
 """
-
 import os
-import re
 import subprocess as sp
 import sys
 import warnings
@@ -11,6 +9,7 @@ import warnings
 import proglog
 
 from .compat import DEVNULL
+
 
 
 def sys_write_flush(s):
@@ -66,38 +65,40 @@ def is_string(obj):
     except NameError:
         return isinstance(obj, str)
 
+
 def cvsecs(time):
-    """ Will convert any time into seconds.
-    Here are the accepted formats:
+    """ Will convert any time into seconds. 
+    
+    If the type of `time` is not valid, 
+    it's returned as is. 
 
-    >>> cvsecs(15.4) -> 15.4 # seconds
-    >>> cvsecs( (1,21.5) ) -> 81.5 # (min,sec)
-    >>> cvsecs( (1,1,2) ) -> 3662 # (hr, min, sec)
-    >>> cvsecs('01:01:33.5') -> 3693.5  #(hr,min,sec)
-    >>> cvsecs('01:01:33.045') -> 3693.045
-    >>> cvsecs('01:01:33,5') #coma works too
+    Here are the accepted formats::
+
+    >>> cvsecs(15.4)   # seconds 
+    15.4 
+    >>> cvsecs((1, 21.5))   # (min,sec) 
+    81.5 
+    >>> cvsecs((1, 1, 2))   # (hr, min, sec)  
+    3662  
+    >>> cvsecs('01:01:33.045') 
+    3693.045
+    >>> cvsecs('01:01:33,5')    # coma works too
+    3693.5
+    >>> cvsecs('1:33,5')    # only minutes and secs
+    99.5
+    >>> cvsecs('33.5')      # only secs
+    33.5
     """
+    factors = (1, 60, 3600)
+    
+    if is_string(time):     
+        time = [float(f.replace(',', '.')) for f in time.split(':')]
 
-    if is_string(time):
-        if (',' not in time) and ('.' not in time):
-            time = time + '.0'
-        expr = r"(\d+):(\d+):(\d+)[,|.](\d+)"
-        finds = re.findall(expr, time)[0]
-        nums = list( map(float, finds) )
-        return ( 3600*int(finds[0])
-                + 60*int(finds[1])
-                + int(finds[2])
-                + nums[3]/(10**len(finds[3])))
-
-    elif isinstance(time, tuple):
-        if len(time)== 3:
-            hr, mn, sec = time
-        elif len(time)== 2:
-            hr, mn, sec = 0, time[0], time[1]
-        return 3600*hr + 60*mn + sec
-
-    else:
+    if not isinstance(time, (tuple, list)):
         return time
+
+    return sum(mult * part for mult, part in zip(factors, reversed(time)))
+
 
 def deprecated_version_of(f, oldname, newname=None):
     """ Indicates that a function is deprecated and has a new name.
@@ -159,8 +160,18 @@ extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac
 for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {'type':'image'}
 
+
 def find_extension(codec):
+    if codec in extensions_dict:
+        # codec is already the extension
+        return codec
+
     for ext,infos in extensions_dict.items():
-        if ('codec' in infos) and codec in infos['codec']:
+        if codec in infos.get('codec', []):
             return ext
-    raise ValueError
+    raise ValueError(
+        "The audio_codec you chose is unknown by MoviePy. "
+        "You should report this. In the meantime, you can "
+        "specify a temp_audiofile with the right extension "
+        "in write_videofile."
+    )

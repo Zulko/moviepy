@@ -12,9 +12,8 @@ from moviepy.decorators import use_clip_fps_by_default
 def find_video_period(clip,fps=None,tmin=.3):
     """ Finds the period of a video based on frames correlation """
     
-
     frame = lambda t: clip.get_frame(t).flatten()
-    tt = np.arange(tmin,clip.duration,1.0/ fps)[1:]
+    tt = np.arange(tmin, clip.duration, 1.0/ fps)[1:]
     ref = frame(0)
     corrs = [ np.corrcoef(ref, frame(t))[0,1] for t in tt]
     return tt[np.argmax(corrs)]
@@ -57,7 +56,7 @@ class FramesMatch:
                 self.t1, self.t2, self.d_min, self.d_max)
 
     def __iter__(self):
-        return [self.t1, self.t2, self.d_min, self.d_max].__iter__()
+        return iter((self.t1, self.t2, self.d_min, self.d_max))
 
 
 class FramesMatches(list):
@@ -219,7 +218,6 @@ class FramesMatches(list):
         if nomatch_thr is None:
             nomatch_thr = match_thr
 
-        
         dict_starts = defaultdict(lambda : [])
         for (start, end, d_min, d_max) in self:
             dict_starts[start].append([end, d_min, d_max])
@@ -243,33 +241,27 @@ class FramesMatches(list):
                                   if (end-start)>min_time_span]
             
             
-            if (great_long_matches == []):
+            if not great_long_matches:
                 continue # No GIF can be made starting at this time
             
-            poor_matches = set([end for (end,d_min, d_max) in ends_distances
-                            if d_min>nomatch_thr])
-            short_matches = [end for end in ends
-                             if (end-start)<=0.6]
+            poor_matches = {end for (end,d_min, d_max) in ends_distances if d_min > nomatch_thr}
+            short_matches = {end for end in ends if (end-start) <= 0.6}
             
-            if len( poor_matches.intersection(short_matches) ) == 0 :
+            if not poor_matches.intersection(short_matches):
                 continue
     
-    
-            end = max([end for (end, d_min, d_max) in great_long_matches])
-            end, d_min, d_max = [e for e in great_long_matches if e[0]==end][0]
+            end = max(end for (end, d_min, d_max) in great_long_matches)
+            end, d_min, d_max = next(e for e in great_long_matches if e[0]==end)
+            
             result.append(FramesMatch(start, end, d_min, d_max))
             min_start = start + time_distance
 
-        return FramesMatches( result )
+        return FramesMatches(result)
 
 
     def write_gifs(self, clip, gif_dir):
-        """
-
-        """
-
         for (start, end, _, _) in self: 
-            name = "%s/%08d_%08d.gif"%(gif_dir, 100*start, 100*end)
+            name = "%s/%08d_%08d.gif" % (gif_dir, 100*start, 100*end)
             clip.subclip(start, end).write_gif(name, verbose=False)
 
 
@@ -316,11 +308,8 @@ def detect_scenes(clip=None, luminosities=None, thr=10,
       Must be provided if you provide no clip or a clip without
       fps attribute.
     
-    
-    
-    
-    """
-        
+
+    """       
     if luminosities is None:
         luminosities = [f.sum() for f in clip.iter_frames(
                              fps=fps, dtype='uint32', logger=logger)]

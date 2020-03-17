@@ -37,22 +37,21 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
 
     new_im2 = +im2
 
-    if mask is not None:
+    if mask is None:
+        new_im2[yp1:yp2, xp1:xp2] = blitted
+    else:
         mask = mask[y1:y2, x1:x2]
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
-        new_im2[yp1:yp2, xp1:xp2] = (
-            1.0 * mask * blitted + (1.0 - mask) * blit_region)
-    else:
-        new_im2[yp1:yp2, xp1:xp2] = blitted
-
+        new_im2[yp1:yp2, xp1:xp2] = (1.0 * mask * blitted + (1.0 - mask) * blit_region)
+    
     return new_im2.astype('uint8') if (not ismask) else new_im2
 
 
 
 def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
-              shape='linear', offset = 0):
+                   shape='linear', offset = 0):
     """Draw a linear, bilinear, or radial gradient.
     
     The result is a picture of size ``size``, whose color varies
@@ -67,47 +66,47 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     ------------      
     
     size
-      Size (width, height) in pixels of the final picture/array.
+        Size (width, height) in pixels of the final picture/array.
     
     p1, p2
-      Coordinates (x,y) in pixels of the limit point for ``col1``
-      and ``col2``. The color 'before' ``p1`` is ``col1`` and it
-      gradually changes in the direction of ``p2`` until it is ``col2``
-      when it reaches ``p2``.
+        Coordinates (x,y) in pixels of the limit point for ``col1``
+        and ``col2``. The color 'before' ``p1`` is ``col1`` and it
+        gradually changes in the direction of ``p2`` until it is ``col2``
+        when it reaches ``p2``.
     
     vector
-      A vector [x,y] in pixels that can be provided instead of ``p2``.
-      ``p2`` is then defined as (p1 + vector).
+        A vector [x,y] in pixels that can be provided instead of ``p2``.
+        ``p2`` is then defined as (p1 + vector).
     
     col1, col2
-      Either floats between 0 and 1 (for gradients used in masks)
-      or [R,G,B] arrays (for colored gradients).
-               
+        Either floats between 0 and 1 (for gradients used in masks)
+        or [R,G,B] arrays (for colored gradients).
+                         
     shape
-      'linear', 'bilinear', or 'circular'.
-      In a linear gradient the color varies in one direction,
-      from point ``p1`` to point ``p2``.
-      In a bilinear gradient it also varies symetrically form ``p1``
-      in the other direction.
-      In a circular gradient it goes from ``col1`` to ``col2`` in all
-      directions.
+        'linear', 'bilinear', or 'circular'.
+        In a linear gradient the color varies in one direction,
+        from point ``p1`` to point ``p2``.
+        In a bilinear gradient it also varies symetrically form ``p1``
+        in the other direction.
+        In a circular gradient it goes from ``col1`` to ``col2`` in all
+        directions.
     
     offset
-      Real number between 0 and 1 indicating the fraction of the vector
-      at which the gradient actually starts. For instance if ``offset``
-      is 0.9 in a gradient going from p1 to p2, then the gradient will
-      only occur near p2 (before that everything is of color ``col1``)
-      If the offset is 0.9 in a radial gradient, the gradient will
-      occur in the region located between 90% and 100% of the radius,
-      this creates a blurry disc of radius d(p1,p2).  
+        Real number between 0 and 1 indicating the fraction of the vector
+        at which the gradient actually starts. For instance if ``offset``
+        is 0.9 in a gradient going from p1 to p2, then the gradient will
+        only occur near p2 (before that everything is of color ``col1``)
+        If the offset is 0.9 in a radial gradient, the gradient will
+        occur in the region located between 90% and 100% of the radius,
+        this creates a blurry disc of radius d(p1,p2).  
     
     Returns
     --------
     
     image
-      An Numpy array of dimensions (W,H,ncolors) of type float
-      representing the image of the gradient.
-      
+        An Numpy array of dimensions (W,H,ncolors) of type float
+        representing the image of the gradient.
+        
     
     Examples
     ---------
@@ -119,16 +118,18 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     # np-arrayize and change x,y coordinates to y,x
     w,h = size
     
-    col1, col2 = map(lambda x : np.array(x).astype(float), [col1, col2])
+    col1 = np.array(col1).astype(float) 
+    col2 = np.array(col2).astype(float) 
     
     if shape == 'bilinear':
         if vector is None:
             vector = np.array(p2) - np.array(p1)
-        m1,m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
-                           shape = 'linear', offset= offset)
-                  for v in [vector,-vector]]
-                  
-        arr = np.maximum(m1,m2)
+        
+        m1, m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
+                                 shape = 'linear', offset= offset)
+                            for v in [vector,-vector]]
+                            
+        arr = np.maximum(m1, m2)
         if col1.size > 1:
             arr = np.dstack(3*[arr])
         return arr*col1 + (1-arr)*col2
@@ -136,15 +137,14 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     
     p1 = np.array(p1[::-1]).astype(float)
     
-    if vector is None:
-        if p2 is not None:
-            p2 = np.array(p2[::-1])
-            vector = p2-p1
+    if vector is None and p2:
+        p2 = np.array(p2[::-1])
+        vector = p2-p1
     else:
         vector = np.array(vector[::-1])
         p2 = p1 + vector
     
-    if vector is not None:    
+    if vector:    
         norm = np.linalg.norm(vector)
     
     M = np.dstack(np.meshgrid(range(w),range(h))[::-1]).astype(float)
@@ -162,21 +162,22 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     
     elif shape == 'radial':
         if r is None:
-            r = norm
-        if r==0:
+           r = norm
+
+        if r == 0:
             arr = np.ones((h,w))
         else:
-            arr = (np.sqrt(((M- p1)**2).sum(axis=2)))-offset*r
+            arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * r
             arr = arr / ((1-offset)*r)
-            arr = np.minimum(1.0,np.maximum(0, arr) )
-            
+            arr = np.minimum(1.0, np.maximum(0, arr))
+                
         if col1.size > 1:
             arr = np.dstack(3*[arr])
         return (1-arr)*col1 + arr*col2
-        
+                
 
 def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
-               col1=0,col2=1.0, grad_width=0):
+                             col1=0,col2=1.0, grad_width=0):
     """Make an image splitted in 2 colored regions.
     
     Returns an array of size ``size`` divided in two regions called 1 and
@@ -187,27 +188,27 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     -----------
     
     x: (int)
-      If provided, the image is splitted horizontally in x, the left
-      region being region 1.
-        
+        If provided, the image is splitted horizontally in x, the left
+        region being region 1.
+            
     y: (int)
-      If provided, the image is splitted vertically in y, the top region
-      being region 1.
+        If provided, the image is splitted vertically in y, the top region
+        being region 1.
     
     p1,p2:
-      Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
-      floats. Region 1 is defined as the whole region on the left when
-      going from ``p1`` to ``p2``.
+        Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
+        floats. Region 1 is defined as the whole region on the left when
+        going from ``p1`` to ``p2``.
     
     p1, vector:
-      ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
-      floats. Region 1 is then the region on the left when starting
-      in position ``p1`` and going in the direction given by ``vector``.
-       
+        ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
+        floats. Region 1 is then the region on the left when starting
+        in position ``p1`` and going in the direction given by ``vector``.
+         
     gradient_width
-      If not zero, the split is not sharp, but gradual over a region of
-      width ``gradient_width`` (in pixels). This is preferable in many
-      situations (for instance for antialiasing). 
+        If not zero, the split is not sharp, but gradual over a region of
+        width ``gradient_width`` (in pixels). This is preferable in many
+        situations (for instance for antialiasing). 
      
     
     Examples
@@ -220,7 +221,7 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
     >>> # An image splitted along an arbitrary line (see below) 
     >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
-        
+            
     """
     
     if grad_width or ( (x is None) and (y is None)):
@@ -236,12 +237,11 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         x,y = vector
         vector = np.array([y,-x]).astype('float')
         norm = np.linalg.norm(vector)
-        vector =  max(0.1,grad_width)*vector/norm
+        vector = max(0.1, grad_width) * vector / norm
         return color_gradient(size,p1,vector=vector,
-                         col1 = col1, col2 = col2, shape='linear')
+                              col1 = col1, col2 = col2, shape='linear')
     else:
-        
-        w,h = size
+        w, h = size
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
         if x:
@@ -250,13 +250,12 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
         elif y:
             arr[:y] = col1
             arr[y:] = col2
-            
         return arr
      
     # if we are here, it means we didn't exit with a proper 'return'
     print( "Arguments in color_split not understood !" )
     raise
-    
+        
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     """ Draw an image with a circle.
     
@@ -265,6 +264,6 @@ def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     with a radius ``radius`` but slightly blurred on the border by ``blur``
     pixels
     """
+    offset = 1.0*(radius-blur)/radius if radius else 0              
     return color_gradient(screensize,p1=center,r=radius, col1=col1,
-              col2=col2, shape='radial', offset = 0 if (radius==0) else
-                                              1.0*(radius-blur)/radius)
+                          col2=col2, shape='radial', offset=offset)

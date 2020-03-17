@@ -318,10 +318,6 @@ def concatenate_audioclips(clips):
 
     result = CompositeAudioClip(newclips).set_duration(tt[-1])
 
-    fpss = [c.fps for c in clips if hasattr(c, 'fps') and c.fps is not None]
-    if len(fpss) == 0:
-        result.fps = None
-    else:
-        result.fps = max(fpss)
-
+    fpss = [c.fps for c in clips if getattr(c, 'fps', None)]
+    result.fps = max(fpss) if fpss else None
     return result

@@ -28,5 +28,5 @@ def mplfig_to_npimage(fig):
 
     #  exports the canvas to a string buffer and then to a numpy nd.array
     buf = canvas.tostring_rgb()
-    image= np.fromstring(buf,dtype=np.uint8)
+    image= np.frombuffer(buf, dtype=np.uint8)
     return image.reshape(h,w,3)

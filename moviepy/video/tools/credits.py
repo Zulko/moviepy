@@ -73,39 +73,37 @@ def credits1(creditfile, width, stretch=30, color='white', stroke_color='black',
     """
 
     # PARSE THE TXT FILE
-    
-    with open(creditfile) as f:
-        lines = f.readlines()
-    
-    lines = filter(lambda x: not x.startswith('\n'), lines)
     texts = []
     oneline = True
-    for l in lines:
-        if not l.startswith('#'):
-            if l.startswith('.blank'):
+    
+    with open(creditfile) as f:
+        for l in f:
+            if l.startswith(('\n', '#')):
+                # exclude blank lines or comments
+                continue
+            elif l.startswith('.blank'):
+                # ..blank n  
                 for i in range(int(l.split(' ')[1])):
                     texts.append(['\n', '\n'])
             elif l.startswith('..'):
                 texts.append([l[2:], ''])
                 oneline = True
+            elif oneline:
+                texts.append(['', l])
+                oneline = False
             else:
-                if oneline:
-                    texts.append(['', l])
-                    oneline = False
-                else:
-                    texts.append(['\n', l])
-               
-    left, right = ["".join(l) for l in zip(*texts)]
+                texts.append(['\n', l])
+       
+    left, right = ("".join(l) for l in zip(*texts))
     
-    # MAKE TWO COLUMNS FOR THE CREDITS
-    
+    # MAKE TWO COLUMNS FOR THE CREDITS    
     left, right = [TextClip(txt, color=color, stroke_color=stroke_color,
                             stroke_width=stroke_width, font=font,
                             fontsize=fontsize, align=al)
                    for txt, al in [(left, 'East'), (right, 'West')]]
 
-    cc = CompositeVideoClip([left, right.set_position((left.w+gap, 0))],
-                            size=(left.w+right.w+gap, right.h),
+    cc = CompositeVideoClip([left, right.set_position((left.w + gap, 0))],
+                            size=(left.w + right.w + gap, right.h),
                             bg_color=None)
     
     # SCALE TO THE REQUIRED SIZE

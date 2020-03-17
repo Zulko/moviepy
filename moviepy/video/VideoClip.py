@@ -81,7 +81,7 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
-        if make_frame is not None:
+        if make_frame:
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
         self.ismask = ismask
@@ -120,7 +120,6 @@ class VideoClip(Clip):
         """
 
         im = self.get_frame(t)
-
         if withmask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
             im = np.dstack([im, mask]).astype('uint8')
@@ -280,30 +279,12 @@ class VideoClip(Clip):
         make_audio = ((audiofile is None) and (audio == True) and
                       (self.audio is not None))
 
-        if make_audio:
+        if make_audio and temp_audiofile:
             # The audio will be the clip's audio
-            if temp_audiofile is not None:
-                audiofile = temp_audiofile
-
-            else:
-
-                # make a name for the temporary audio file
-
-                if audio_codec in extensions_dict:
-                    audio_ext = audio_codec
-                else:
-                    try:
-                        audio_ext = find_extension(audio_codec)
-                    except ValueError:
-
-                        raise ValueError(
-                            "The audio_codec you chose is unknown by MoviePy. "
-                            "You should report this. In the meantime, you can "
-                            "specify a temp_audiofile with the right extension "
-                            "in write_videofile.")
-
-                audiofile = (name + Clip._TEMP_FILES_PREFIX +
-                             "wvf_snd.%s" % audio_ext)
+            audiofile = temp_audiofile
+        elif make_audio:
+            audio_ext = find_extension(audio_codec)
+            audiofile = (name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext)
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
@@ -380,7 +361,6 @@ class VideoClip(Clip):
         tt = np.arange(0, self.duration, 1.0 / fps)
 
         filenames = []
-        total = int(self.duration / fps) + 1
         for i, t in logger.iter_bar(t=list(enumerate(tt))):
             name = nameformat % i
             filenames.append(name)
@@ -455,26 +435,18 @@ class VideoClip(Clip):
         elif tempfiles:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
-            opt1 = opt
-            if opt1 == 'nq':
-                opt1 ='optimizeplus'
-            else:
-                opt1 ='OptimizeTransparency'
+            opt = 'optimizeplus' if opt == 'nq' else 'OptimizeTransparency'
             write_gif_with_tempfiles(self, filename, fps=fps,
-                                     program=program, opt=opt1, fuzz=fuzz,
+                                     program=program, opt=opt, fuzz=fuzz,
                                      verbose=verbose, loop=loop,
                                      dispose=dispose, colors=colors,
                                      logger=logger)
         else:
             # convert imageio opt variable to something that can be used with
             # ImageMagick
-            opt1 = opt
-            if opt1 == 'nq':
-                opt1 ='optimizeplus'
-            else:
-                opt1 ='OptimizeTransparency'
+            opt = 'optimizeplus' if opt == 'nq' else 'OptimizeTransparency'
             write_gif(self, filename, fps=fps, program=program,
-                      opt=opt1, fuzz=fuzz, verbose=verbose, loop=loop,
+                      opt=opt, fuzz=fuzz, verbose=verbose, loop=loop,
                       dispose=dispose, colors=colors,
                       logger=logger)
 
@@ -496,11 +468,11 @@ class VideoClip(Clip):
         >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-        left = None if (ta == 0) else self.subclip(0, ta)
+        left = self.subclip(0, ta) if ta else None
         center = self.subclip(ta, tb).fx(fx, **kwargs)
-        right = None if (tb is None) else self.subclip(t_start=tb)
+        right = self.subclip(t_start=tb) if tb else None
 
-        clips = [c for c in [left, center, right] if c is not None]
+        clips = [c for c in (left, center, right) if c]
 
         # beurk, have to find other solution
         from moviepy.video.compositing.concatenate import concatenate_videoclips
@@ -514,8 +486,7 @@ class VideoClip(Clip):
         Modifies the images of a clip by replacing the frame
         `get_frame(t)` by another frame,  `image_func(get_frame(t))`
         """
-        if apply_to is None:
-            apply_to = []
+        apply_to = apply_to or []
         return self.fl(lambda gf, t: image_func(gf(t)), apply_to)
 
     # --------------------------------------------------------------
@@ -546,7 +517,7 @@ class VideoClip(Clip):
         """
         hf, wf = framesize = picture.shape[:2]
 
-        if self.ismask and picture.max() != 0:
+        if self.ismask and picture.max():
             return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
 
         ct = t - self.start  # clip time
@@ -554,15 +525,14 @@ class VideoClip(Clip):
         # GET IMAGE AND MASK IF ANY
 
         img = self.get_frame(ct)
-        mask = (None if (self.mask is None) else
-                self.mask.get_frame(ct))
-        if mask is not None:
-            if (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1]):
-                img = self.fill_array(img, mask.shape)
+        mask = self.mask.get_frame(ct) if self.mask else None                
+        
+        if mask is not None and ((img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])):
+            img = self.fill_array(img, mask.shape)
+
         hi, wi = img.shape[:2]
 
         # SET POSITION
-
         pos = self.pos(ct)
 
         # preprocess short writings of the position
@@ -688,7 +658,7 @@ class VideoClip(Clip):
 
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip"""
-        assert ( (mask is None) or mask.ismask )
+        assert mask is None or mask.ismask
         self.mask = mask
 
     @add_mask_if_none
@@ -969,11 +939,10 @@ class ImageClip(VideoClip):
         self.img = arr
 
         for attr in apply_to:
-            if hasattr(self, attr):
-                a = getattr(self, attr)
-                if a is not None:
-                    new_a = a.fl_image(image_func)
-                    setattr(self, attr, new_a)
+            a = getattr(self, attr, None)
+            if a is not None:
+                new_a = a.fl_image(image_func)
+                setattr(self, attr, new_a)
 
     @outplace
     def fl_time(self, time_func, apply_to=None,
@@ -987,13 +956,12 @@ class ImageClip(VideoClip):
         masks or their audios). The result is still an ImageClip.
         """
         if apply_to is None:
-                apply_to = ['mask', 'audio']
+            apply_to = ['mask', 'audio']
         for attr in apply_to:
-            if hasattr(self, attr):
-                a = getattr(self, attr)
-                if a is not None:
-                    new_a = a.fl_time(time_func)
-                    setattr(self, attr, new_a)
+            a = getattr(self, attr, None)
+            if a is not None:
+                new_a = a.fl_time(time_func)
+                setattr(self, attr, new_a)
 
 
 # ##

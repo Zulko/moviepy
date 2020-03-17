@@ -4,7 +4,6 @@ import re
 
 import numpy as np
 
-from moviepy.decorators import convert_to_seconds
 from moviepy.tools import cvsecs
 from moviepy.video.VideoClip import TextClip, VideoClip
 
@@ -39,7 +38,7 @@ class SubtitlesClip(VideoClip):
         
         VideoClip.__init__(self, has_constant_size=False)
 
-        if isinstance( subtitles, str):
+        if isinstance(subtitles, str):
             subtitles = file_to_subtitles(subtitles)
 
         #subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
@@ -62,10 +61,10 @@ class SubtitlesClip(VideoClip):
             false. """
             sub =[((ta,tb),txt) for ((ta,tb),txt) in self.textclips.keys()
                    if (ta<=t<tb)]
-            if sub == []:
+            if not sub:
                 sub = [((ta,tb),txt) for ((ta,tb),txt) in self.subtitles if
                        (ta<=t<tb)]
-                if sub == []:
+                if not sub:
                     return False
             sub = sub[0]
             if sub not in self.textclips.keys():
@@ -84,8 +83,8 @@ class SubtitlesClip(VideoClip):
                     else np.array([[0]]))
         
         self.make_frame = make_frame
-        hasmask = (self.make_textclip('T').mask is not None)
-        self.mask = (VideoClip(make_mask_frame, ismask=True) if hasmask else None)
+        hasmask = bool(self.make_textclip('T').mask)
+        self.mask = VideoClip(make_mask_frame, ismask=True) if hasmask else None
 
     def in_subclip(self, t_start= None, t_end= None):
         """ Returns a sequence of [(t1,t2), txt] covering all the given subclip
@@ -108,7 +107,7 @@ class SubtitlesClip(VideoClip):
 
 
     def __iter__(self):
-        return self.subtitles.__iter__()
+        return iter(self.subtitles)
     
 
 
@@ -121,10 +120,11 @@ class SubtitlesClip(VideoClip):
 
         def to_srt(sub_element):
             (ta, tb), txt = sub_element
-            fta, ftb = map(time_to_string, (ta, tb))
+            fta = cvsecs(ta)
+            ftb = cvsecs(tb)
             return "%s - %s\n%s"%(fta, ftb, txt)
         
-        return "\n\n".join(map(to_srt, self.subtitles))
+        return "\n\n".join(to_srt(s) for s in self.subtitles)
     
 
 
@@ -147,20 +147,17 @@ def file_to_subtitles(filename):
 
     Only works for '.srt' format for the moment.
     """
-
-    with open(filename,'r') as f:
-        lines = f.readlines()
-
     times_texts = []
-    current_times , current_text = None, ""
-    
-    for line in lines:
-        times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
-        if times != []:
-            current_times = list(map(cvsecs, times))
-        elif line.strip() == '':
-            times_texts.append((current_times, current_text.strip('\n')))
-            current_times, current_text = None, ""
-        elif current_times is not None:
-            current_text = current_text + line
+    current_times = None
+    current_text = ""
+    with open(filename,'r') as f:
+        for line in f:
+            times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
+            if times:
+                current_times = [cvsecs(t) for t in times]
+            elif line.strip() == '':
+                times_texts.append((current_times, current_text.strip('\n')))
+                current_times, current_text = None, ""
+            elif current_times:
+                current_text += line
     return times_texts

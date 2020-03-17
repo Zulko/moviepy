@@ -91,7 +91,7 @@
 
 - New version of imageio with imageio\_ffmpeg for python 3.4+ [\#907](https://github.com/Zulko/moviepy/pull/907) ([Zulko](https://github.com/Zulko))
 - fix typo that introduces audio regression [\#894](https://github.com/Zulko/moviepy/pull/894) ([chrox](https://github.com/chrox))
-- fixing the git remote syntax in documentions [\#887](https://github.com/Zulko/moviepy/pull/887) ([ishandutta2007](https://github.com/ishandutta2007))
+- fixing the git remote syntax in documentations [\#887](https://github.com/Zulko/moviepy/pull/887) ([ishandutta2007](https://github.com/ishandutta2007))
 - modified max duration error for better understanding [\#875](https://github.com/Zulko/moviepy/pull/875) ([kapilkd13](https://github.com/kapilkd13))
 - Fixed typo in docstring for VideoClip class [\#871](https://github.com/Zulko/moviepy/pull/871) ([Armcollector](https://github.com/Armcollector))
 - Fix a small typing error [\#845](https://github.com/Zulko/moviepy/pull/845) ([yuvallanger](https://github.com/yuvallanger))

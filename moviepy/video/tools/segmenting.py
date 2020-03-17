@@ -15,19 +15,22 @@ def findObjects(clip,rem_thr=500, preview=False):
     """
     
     image = clip.get_frame(0)
-    if clip.mask is None:
+    if not clip.mask:
         clip = clip.add_mask()
         
     mask = clip.mask.get_frame(0)
     labelled, num_features = ndi.measurements.label(image[:,:,0])
     
     #find the objects
-    slices = ndi.find_objects(labelled)
-    # cool trick to remove letter holes (in o,e,a, etc.)
-    slices = [e for e in slices if  mask[e[0],e[1]].mean() >0.2]
-    # remove very small slices
-    slices = [e for e in slices if  image[e[0],e[1]].size > rem_thr]
-    # Sort the slices from left to right
+    slices = []
+    for e in ndi.find_objects(labelled):
+        if mask[e[0],e[1]].mean() <= 0.2:
+            # remove letter holes (in o,e,a, etc.)
+            continue
+        if image[e[0],e[1]].size <= rem_thr:
+            # remove very small slices
+            continue
+        slices.append(e)
     islices = sorted(enumerate(slices), key = lambda s : s[1][1].start)
     
     letters = []

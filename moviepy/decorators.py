@@ -27,7 +27,7 @@ def apply_to_mask(f, clip, *a, **k):
         the clip created with f """
         
     newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'mask') and (newclip.mask is not None):
+    if getattr(newclip, 'mask', None):
         newclip.mask = f(newclip.mask, *a, **k)
     return newclip
 
@@ -39,7 +39,7 @@ def apply_to_audio(f, clip, *a, **k):
         the clip created with f """
         
     newclip = f(clip, *a, **k)
-    if hasattr(newclip, 'audio') and (newclip.audio is not None):
+    if getattr(newclip, 'audio', None):
         newclip.audio = f(newclip.audio, *a, **k)
     return newclip
 
@@ -112,14 +112,12 @@ def use_clip_fps_by_default(f, clip, *a, **k):
     def fun(fps):
         if fps is not None:
             return fps
-        else:
-            if hasattr(clip, 'fps') and clip.fps is not None:
-                return clip.fps
-            else:
-                raise AttributeError("No 'fps' (frames per second) attribute specified"
+        elif getattr(clip, 'fps', None):
+            return clip.fps
+        raise AttributeError("No 'fps' (frames per second) attribute specified"
                 " for function %s and the clip has no 'fps' attribute. Either"
                 " provide e.g. fps=24 in the arguments of the function, or define"
-                " the clip's fps with `clip.fps=24`"%f.__name__)
+                " the clip's fps with `clip.fps=24`" % f.__name__)
 
 
     if hasattr(f, "func_code"):
