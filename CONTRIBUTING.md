@@ -2,9 +2,13 @@
 
 ## Keeping/Improving code quality
  
-- Respect PEP8 standards!
+- Respect PEP8 conventions!
 - Just the right amount of comments. Try to write auto-documented code (with very explicit variable names).
 - If you introduce a new functionality or fix a subtle bug, document it in the docstring/code.
+- Moviepy's team adopted [black](https://github.com/psf/black) to autoformat the code. This is  enforced for any pull request. 
+  
+> Tip: use `black -t py36 .` to autoformat your code, or set black as a plugin of your editor. 
+
 
 ## Using Github
 
