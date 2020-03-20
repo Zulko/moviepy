@@ -4,10 +4,7 @@ import subprocess as sp
 from .config_defaults import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 
 if os.name == 'nt':
-    try:
-        import winreg as wr # py3k
-    except ImportError:
-        import _winreg as wr # py2k
+    import winreg as wr
 
 
 def try_cmd(cmd):
