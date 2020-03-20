@@ -56,38 +56,24 @@ except ImportError:
 # The next loop transforms many effects into VideoClip methods so that
 # they can be called with myclip.resize(width=500) instead of
 # myclip.fx( vfx.resize, width= 500)
-for method in [
-          "afx.audio_fadein",
-          "afx.audio_fadeout",
-          "afx.audio_normalize",
-          "afx.volumex",
-          "transfx.crossfadein",
-          "transfx.crossfadeout",
-          "vfx.crop",
-          "vfx.fadein",
-          "vfx.fadeout",
-          "vfx.invert_colors",
-          "vfx.loop",
-          "vfx.margin",
-          "vfx.mask_and",
-          "vfx.mask_or",
-          "vfx.resize",
-          "vfx.rotate",
-          "vfx.speedx"
-          ]:
+for method_name in vfx.__all__:
+    exec("VideoClip.%s = vfx.%s" % (method_name, method_name))
 
-    exec("VideoClip.%s = %s" % (method.split('.')[1], method))
+for method_name in afx.__all__:
+    exec("AudioClip.%s = afx.%s" % (method_name, method_name))
+    if method_name != "audio_loop":
+        exec("VideoClip.%s = afx.%s" % (method_name, method_name))
 
-
-for method in ["afx.audio_fadein",
-               "afx.audio_fadeout",
-               "afx.audio_loop",
-               "afx.audio_normalize",
-               "afx.volumex"
-              ]:
-              
-    exec("AudioClip.%s = %s" % (method.split('.')[1], method))
-
+print(vfx.__all__)
+print(afx.__all__)
+# These transitions effects are all contained in one file so there is no way to automatically
+# generate a list of them
+for method_name in ["crossfadein",
+                    "crossfadeout",
+                    "slide_in",
+                    "slide_out",
+                    "make_loopable"]:
+    exec("VideoClip.%s = transfx.%s" % (method_name, method_name))
 
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
@@ -108,7 +94,6 @@ except ImportError:
     def show(self, *args, **kwargs):
         """NOT AVAILABLE : clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
-
 
 VideoClip.preview = preview
 VideoClip.show = show

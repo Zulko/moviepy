@@ -117,7 +117,7 @@ def slide_out(clip, duration, side):
 @requires_duration
 def make_loopable(clip, cross_duration):
     """ Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``cross`` is the duration in seconds
+    it can be looped indefinitely. ``cross_duration`` is the duration in seconds
     of the fade-in.  """
     d = clip.duration
     clip2 = clip.fx(crossfadein, cross_duration).set_start(d - cross_duration)
