@@ -9,28 +9,6 @@ python:
   - 3.7
   - 3.8
 
-jobs:
-  include:
-    - python: 2.7
-      dist: trusty
-      before_install:
-        - sudo add-apt-repository -y ppa:kirillshkrogalev/ffmpeg-next
-        - sudo apt-get -y -qq update
-        - sudo apt-get install -y -qq ffmpeg
-
-        # Ensure PIP is up-to-date to avoid warnings.
-        - python -m pip install --upgrade pip
-        # Ensure setuptools is up-to-date to avoid environment_markers bug.
-        - pip install --upgrade setuptools
-        # The default pytest that is installed is too old on some platforms, leading to version conflicts
-        # pytest-cov contains plugin support for checking code coverage
-        - pip install --upgrade pytest-cov
-        - pip install flake8
-
-        # modify ImageMagick policy file so that Textclips work correctly.
-        # `| sudo tee` replaces `>` so that it can have root permissions
-        - cat /etc/ImageMagick/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick/policy.xml
-
 
 before_install:
   - sudo apt-get -y -qq update

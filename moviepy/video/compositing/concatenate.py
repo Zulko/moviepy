@@ -1,15 +1,11 @@
 import numpy as np
+from functools import reduce
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.tools import deprecated_version_of
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.on_color import on_color
 from moviepy.video.VideoClip import ColorClip, VideoClip
-
-try:               # Python 2
-   reduce
-except NameError:  # Python 3
-   from functools import reduce
 
 
 def concatenate_videoclips(clips, method="chain", transition=None,

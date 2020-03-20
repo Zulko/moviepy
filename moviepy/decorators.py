@@ -76,10 +76,7 @@ def preprocess_args(fun,varnames):
     """ Applies fun to variables in varnames before launching the function """
     
     def wrapper(f, *a, **kw):
-        if hasattr(f, "func_code"):
-            func_code = f.func_code # Python 2
-        else:
-            func_code = f.__code__ # Python 3
+        func_code = f.__code__
             
         names = func_code.co_varnames
         new_a = [fun(arg) if (name in varnames) else arg
@@ -120,10 +117,7 @@ def use_clip_fps_by_default(f, clip, *a, **k):
                 " the clip's fps with `clip.fps=24`" % f.__name__)
 
 
-    if hasattr(f, "func_code"):
-        func_code = f.func_code # Python 2
-    else:
-        func_code = f.__code__ # Python 3
+    func_code = f.__code__
         
     names = func_code.co_varnames[1:]
     

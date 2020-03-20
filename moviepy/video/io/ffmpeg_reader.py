@@ -13,7 +13,6 @@ import warnings
 
 import numpy as np
 
-from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
@@ -96,7 +95,7 @@ class FFMPEG_VideoReader:
         popen_params = {"bufsize": self.bufsize,
                         "stdout": sp.PIPE,
                         "stderr": sp.PIPE,
-                        "stdin": DEVNULL}
+                        "stdin": sp.DEVNULL}
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
@@ -249,7 +248,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
     popen_params = {"bufsize": 10**5,
                     "stdout": sp.PIPE,
                     "stderr": sp.PIPE,
-                    "stdin": DEVNULL}
+                    "stdin": sp.DEVNULL}
 
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000

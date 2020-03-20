@@ -3,7 +3,6 @@ import subprocess as sp
 
 import proglog
 
-from moviepy.compat import DEVNULL
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration
 
@@ -59,7 +58,7 @@ class FFMPEG_AudioWriter:
                + (ffmpeg_params if ffmpeg_params else [])
                + [filename])
 
-        popen_params = {"stdout": DEVNULL,
+        popen_params = {"stdout": sp.DEVNULL,
                         "stderr": logfile,
                         "stdin": sp.PIPE}
 

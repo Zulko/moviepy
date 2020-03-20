@@ -9,7 +9,6 @@ import subprocess as sp
 import numpy as np
 from proglog import proglog
 
-from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
 
 
@@ -117,7 +116,7 @@ class FFMPEG_VideoWriter:
             filename
         ])
 
-        popen_params = {"stdout": DEVNULL,
+        popen_params = {"stdout": sp.DEVNULL,
                         "stderr": logfile,
                         "stdin": sp.PIPE}
 
@@ -132,10 +131,7 @@ class FFMPEG_VideoWriter:
     def write_frame(self, img_array):
         """ Writes one frame in the file."""
         try:
-            if PY3:
-               self.proc.stdin.write(img_array.tobytes())
-            else:
-               self.proc.stdin.write(img_array.tostring())
+            self.proc.stdin.write(img_array.tobytes())
         except IOError as err:
             _, ffmpeg_error = self.proc.communicate()
             error = (str(err) + ("\n\nMoviePy error: FFMPEG encountered "
@@ -250,7 +246,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
     else:
         log_file = sp.PIPE
 
-    popen_params = {"stdout": DEVNULL,
+    popen_params = {"stdout": sp.DEVNULL,
                     "stderr": log_file,
                     "stdin": sp.PIPE}
 
