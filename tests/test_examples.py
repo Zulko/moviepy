@@ -13,7 +13,6 @@ from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 
 @pytest.mark.skipif(not matplotlib, reason="no mpl") 
-@pytest.mark.skipif(PYTHON_VERSION in ('2.7', '3.3'), reason="version")
 @pytest.mark.skipif(PYTHON_VERSION == '3.5' and TRAVIS, reason="travis py35")
 def test_matplotlib():
     #for now, python 3.5 installs a version of matplotlib that complains

@@ -4,7 +4,6 @@ import warnings
 
 import numpy as np
 
-from moviepy.compat import DEVNULL, PY3
 from moviepy.config import get_setting
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
@@ -88,7 +87,7 @@ class FFMPEG_AudioReader:
         popen_params = {"bufsize": self.buffersize,
                         "stdout": sp.PIPE,
                         "stderr": sp.PIPE,
-                        "stdin": DEVNULL}
+                        "stdin": sp.DEVNULL}
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000

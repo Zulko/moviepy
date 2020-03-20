@@ -170,8 +170,8 @@ def test_issue_359():
 
 # TODO: Debug matplotlib failures following successful travis builds.
 # def test_issue_368():
-#     # Matplotlib only supported in python >= 3.4 and Travis/3.5 fails.
-#     if PYTHON_VERSION in ('2.7', '3.3') or (PYTHON_VERSION == '3.5' and TRAVIS):
+#     # Travis/3.5 fails.
+#     if PYTHON_VERSION == '3.5' and TRAVIS:
 #        return
 #
 #     import numpy as np

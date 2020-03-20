@@ -1,7 +1,6 @@
 import os
 import subprocess as sp
 
-from .compat import DEVNULL
 from .config_defaults import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 
 if os.name == 'nt':
@@ -16,7 +15,7 @@ def try_cmd(cmd):
         popen_params = {
             "stdout": sp.PIPE,
             "stderr": sp.PIPE,
-            "stdin": DEVNULL
+            "stdin": sp.DEVNULL
         }
 
         # This was added so that no extra unwanted window opens on windows

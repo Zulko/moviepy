@@ -14,13 +14,12 @@ import proglog
 from imageio import imread, imsave
 
 from ..Clip import Clip
-from ..compat import DEVNULL, string_types
 from ..config import get_setting
 from ..decorators import (add_mask_if_none, apply_to_mask,
                           convert_masks_to_RGB, convert_to_seconds, outplace,
                           requires_duration, use_clip_fps_by_default)
 from ..tools import (deprecated_version_of, extensions_dict, find_extension,
-                     is_string, subprocess_call)
+                     subprocess_call)
 from .io.ffmpeg_writer import ffmpeg_write_video
 from .io.gif_writers import (write_gif, write_gif_with_image_io,
                              write_gif_with_tempfiles)
@@ -275,7 +274,7 @@ class VideoClip(Clip):
         elif audio_codec == 'raw32':
             audio_codec = 'pcm_s32le'
 
-        audiofile = audio if is_string(audio) else None
+        audiofile = audio if isinstance(audio, str) else None
         make_audio = ((audiofile is None) and (audio == True) and
                       (self.audio is not None))
 
@@ -885,7 +884,7 @@ class ImageClip(VideoClip):
                  fromalpha=False, duration=None):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, string_types):
+        if isinstance(img, str):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
@@ -1162,8 +1161,8 @@ class TextClip(ImageClip):
         ``TextClip`` given (can be ``font``, ``color``, etc...) """
 
         popen_params = {"stdout": sp.PIPE,
-                        "stderr": DEVNULL,
-                        "stdin": DEVNULL}
+                        "stderr": sp.DEVNULL,
+                        "stdin": sp.DEVNULL}
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000

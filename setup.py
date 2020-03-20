@@ -63,22 +63,20 @@ exec(open('moviepy/version.py').read()) # loads __version__
 # Define the requirements for specific execution needs.
 requires = [
     'decorator>=4.0.2,<5.0',
-    "imageio>=2.5,<3.0; python_version>='3.4'",
-    "imageio>=2.0,<2.5; python_version<'3.4'",
-    "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
+    "imageio>=2.5,<3.0",
+    "imageio_ffmpeg>=0.2.0",
     'tqdm>=4.11.2,<5.0',
-    "numpy>=1.17.3; python_version!='2.7'",
-    "numpy; python_version>='2.7'",
+    "numpy>=1.17.3",
     'requests>=2.8.1,<3.0',
     'proglog<=1.0.0'
     ]
 
 optional_reqs = [
-        "opencv-python>=3.0,<4.0; python_version!='2.7'",
-        "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
-        "scikit-learn; python_version>='3.4'",
-        "scipy>=0.19.0,<1.5; python_version!='3.3'",
-        "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
+        "opencv-python>=3.0,<4.0",
+        "scikit-image>=0.13.0,<1.0",
+        "scikit-learn",
+        "scipy>=0.19.0,<1.5",
+        "matplotlib>=2.0.0,<3.0",
         "youtube_dl"
         ]
 
@@ -121,11 +119,12 @@ setup(
         'Natural Language :: English',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+
         'Topic :: Multimedia',
         'Topic :: Multimedia :: Sound/Audio',
         'Topic :: Multimedia :: Sound/Audio :: Analysis',

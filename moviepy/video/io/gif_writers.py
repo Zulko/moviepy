@@ -4,7 +4,6 @@ import subprocess as sp
 import numpy as np
 import proglog
 
-from moviepy.compat import DEVNULL
 from moviepy.config import get_setting
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import subprocess_call
@@ -165,16 +164,16 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
             '-pix_fmt', ('rgba' if withmask else 'rgb24'),
             '-i', '-']
 
-    popen_params = {"stdout": DEVNULL,
-                    "stderr": DEVNULL,
-                    "stdin": DEVNULL}
+    popen_params = {"stdout": sp.DEVNULL,
+                    "stderr": sp.DEVNULL,
+                    "stdin": sp.DEVNULL}
 
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
 
     if program == "ffmpeg":
         popen_params["stdin"] = sp.PIPE
-        popen_params["stdout"] = DEVNULL
+        popen_params["stdout"] = sp.DEVNULL
 
         proc1 = sp.Popen(cmd1+[ '-pix_fmt', ('rgba' if withmask else 'rgb24'),
                                 '-r', "%.02f"%fps, filename], **popen_params)
@@ -194,7 +193,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
 
         if (opt in [False, None]):
             popen_params["stdin"] = proc1.stdout
-            popen_params["stdout"] = DEVNULL
+            popen_params["stdout"] = sp.DEVNULL
             proc2 = sp.Popen(cmd2+[filename], **popen_params)
 
         else:
@@ -210,7 +209,7 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
                    filename]
 
             popen_params["stdin"] = proc2.stdout
-            popen_params["stdout"] = DEVNULL
+            popen_params["stdout"] = sp.DEVNULL
             proc3 = sp.Popen(cmd3, **popen_params)
 
     # We send all the frames to the first process

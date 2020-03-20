@@ -42,18 +42,6 @@ def test_cvsecs(given, expected):
     assert tools.cvsecs(given) == expected
 
 
-@pytest.mark.parametrize("given, expected", [
-    ("hello straight string", True),
-    (r'hello raw string', True),
-    (42, False),
-    (True, False),
-    (b'hello bytes', sys.version_info[0] < 3),
-])
-def test_is_string(given, expected):
-    """Test the is_string function in tools."""
-    assert tools.is_string(given) == expected
-
-
 def test_sys_write_flush():
     """Test for sys_write-flush function. Check that stdout has no content after flushing."""
     tools.sys_write_flush("hello world")

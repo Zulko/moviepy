@@ -8,8 +8,6 @@ import warnings
 
 import proglog
 
-from .compat import DEVNULL
-
 
 
 def sys_write_flush(s):
@@ -36,9 +34,9 @@ def subprocess_call(cmd, logger='bar', errorprint=True):
     logger = proglog.default_bar_logger(logger)
     logger(message='Moviepy - Running:\n>>> "+ " ".join(cmd)')
 
-    popen_params = {"stdout": DEVNULL,
+    popen_params = {"stdout": sp.DEVNULL,
                     "stderr": sp.PIPE,
-                    "stdin": DEVNULL}
+                    "stdin": sp.DEVNULL}
 
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
@@ -56,14 +54,6 @@ def subprocess_call(cmd, logger='bar', errorprint=True):
         logger(message='Moviepy - Command successful')
 
     del proc
-
-def is_string(obj):
-    """ Returns true if s is string or string-like object,
-    compatible with Python 2 and Python 3."""
-    try:
-        return isinstance(obj, basestring)
-    except NameError:
-        return isinstance(obj, str)
 
 
 def cvsecs(time):
@@ -91,7 +81,7 @@ def cvsecs(time):
     """
     factors = (1, 60, 3600)
     
-    if is_string(time):     
+    if isinstance(time, str):
         time = [float(f.replace(',', '.')) for f in time.split(':')]
 
     if not isinstance(time, (tuple, list)):
