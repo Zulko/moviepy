@@ -64,8 +64,6 @@ for method_name in afx.__all__:
     if method_name != "audio_loop":
         exec("VideoClip.%s = afx.%s" % (method_name, method_name))
 
-print(vfx.__all__)
-print(afx.__all__)
 # These transitions effects are all contained in one file so there is no way to automatically
 # generate a list of them
 for method_name in ["crossfadein",
@@ -74,6 +72,7 @@ for method_name in ["crossfadein",
                     "slide_out",
                     "make_loopable"]:
     exec("VideoClip.%s = transfx.%s" % (method_name, method_name))
+
 
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
