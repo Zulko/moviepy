@@ -14,6 +14,17 @@ It also starts a PyGame session (if PyGame is installed) and enables
 clip.preview().
 """
 
+__all__ = [
+    "VideoFileClip",
+    "ImageSequenceClip",
+    "download_webfile",
+    "VideoClip", "ImageClip", "ColorClip", "TextClip",
+    "CompositeVideoClip", "concatenate_videoclips",
+    "AudioClip", "CompositeAudioClip", "concatenate_audioclips",
+    "AudioFileClip", "vfx", "afx", "transfx", "videotools", 
+    "ffmpeg_tools", "ipython_display", "cvsecs"
+]
+
 # Note that these imports could have been performed in the __init__.py
 # file, but this would make the loading of moviepy slower.
 
@@ -31,7 +42,7 @@ from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from .video.compositing.concatenate import concatenate_videoclips, concatenate # concatenate=deprecated
+from .video.compositing.concatenate import concatenate_videoclips
 
 from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
 from .audio.io.AudioFileClip import AudioFileClip
@@ -51,6 +62,7 @@ from .tools import cvsecs
 
 try:
     from .video.io.sliders import sliders
+    __all__.append("sliders")
 except ImportError:
     pass
 
