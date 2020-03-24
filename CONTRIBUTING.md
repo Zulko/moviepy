@@ -30,6 +30,7 @@
 - To make a change
   - Create a new local branch: `git checkout -b branchname`
   - Make any changes in it
+  - Make sure that your code still conforms to the formatting standard: `black -t py36 .`
   - Run the test suite over it to expose any problems: `python3 setup.py test`
   - Push the local branch to your fork on github: `git push -u origin branchname`
   - Go to github.com/yourname/moviepy and it will display 'Recently pushed branches' giving you the option to make a Pull Request to the main repo
