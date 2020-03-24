@@ -5,6 +5,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 #  CompositeVideoClip
 
+
 class CompositeVideoClip(VideoClip):
 
     """ 
@@ -45,26 +46,24 @@ class CompositeVideoClip(VideoClip):
 
     """
 
-    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False,
-                 ismask=False):
+    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False, ismask=False):
 
         if size is None:
             size = clips[0].size
 
-        
         if use_bgclip and (clips[0].mask is None):
             transparent = False
         else:
-            transparent = (bg_color is None)
-        
+            transparent = bg_color is None
+
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
 
-        fpss = [c.fps for c in clips if getattr(c, 'fps', None)]
+        fpss = [c.fps for c in clips if getattr(c, "fps", None)]
         self.fps = max(fpss) if fpss else None
 
         VideoClip.__init__(self)
-        
+
         self.size = size
         self.ismask = ismask
         self.clips = clips
@@ -79,7 +78,6 @@ class CompositeVideoClip(VideoClip):
             self.bg = ColorClip(size, color=self.bg_color)
             self.created_bg = True
 
-        
         # compute duration
         ends = [c.end for c in self.clips]
         if None not in ends:
@@ -94,13 +92,17 @@ class CompositeVideoClip(VideoClip):
 
         # compute mask if necessary
         if transparent:
-            maskclips = [(c.mask if (c.mask is not None) else
-                          c.add_mask().mask).set_position(c.pos)
-                          .set_end(c.end).set_start(c.start, change_end=False)
-                          for c in self.clips]
+            maskclips = [
+                (c.mask if (c.mask is not None) else c.add_mask().mask)
+                .set_position(c.pos)
+                .set_end(c.end)
+                .set_start(c.start, change_end=False)
+                for c in self.clips
+            ]
 
-            self.mask = CompositeVideoClip(maskclips,self.size, ismask=True,
-                                               bg_color=0.0)
+            self.mask = CompositeVideoClip(
+                maskclips, self.size, ismask=True, bg_color=0.0
+            )
 
         def make_frame(t):
             """ The clips playing at time `t` are blitted over one
@@ -108,7 +110,7 @@ class CompositeVideoClip(VideoClip):
 
             f = self.bg.get_frame(t)
             for c in self.playing_clips(t):
-                    f = c.blit_on(f, t)
+                f = c.blit_on(f, t)
             return f
 
         self.make_frame = make_frame
@@ -129,9 +131,7 @@ class CompositeVideoClip(VideoClip):
             self.audio = None
 
 
-
-def clips_array(array, rows_widths=None, cols_widths=None,
-                bg_color = None):
+def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
 
     """
 
@@ -148,29 +148,28 @@ def clips_array(array, rows_widths=None, cols_widths=None,
        regions to be transparent (will be slower).
 
     """
-    
+
     array = np.array(array)
     sizes_array = np.array([[c.size for c in line] for line in array])
-    
+
     # find row width and col_widths automatically if not provided
     if rows_widths is None:
-        rows_widths = sizes_array[:,:,1].max(axis=1)
+        rows_widths = sizes_array[:, :, 1].max(axis=1)
     if cols_widths is None:
-        cols_widths = sizes_array[:,:,0].max(axis=0)
-    
-    xx = np.cumsum([0]+list(cols_widths)) 
-    yy = np.cumsum([0]+list(rows_widths))
-    
+        cols_widths = sizes_array[:, :, 0].max(axis=0)
+
+    xx = np.cumsum([0] + list(cols_widths))
+    yy = np.cumsum([0] + list(rows_widths))
+
     for j, (x, cw) in enumerate(zip(xx[:-1], cols_widths)):
         for i, (y, rw) in enumerate(zip(yy[:-1], rows_widths)):
             clip = array[i, j]
             w, h = clip.size
             if (w < cw) or (h < rw):
-                clip = (CompositeVideoClip([clip.set_position('center')],
-                                          size = (cw,rw),
-                                          bg_color = bg_color).
-                                     set_duration(clip.duration))
-                
+                clip = CompositeVideoClip(
+                    [clip.set_position("center")], size=(cw, rw), bg_color=bg_color
+                ).set_duration(clip.duration)
+
             array[i, j] = clip.set_position((x, y))
-                 
+
     return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)

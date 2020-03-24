@@ -10,9 +10,14 @@ import numpy as np
 import proglog
 from tqdm import tqdm
 
-from moviepy.decorators import (apply_to_audio, apply_to_mask,
-                                convert_to_seconds, outplace,
-                                requires_duration, use_clip_fps_by_default)
+from moviepy.decorators import (
+    apply_to_audio,
+    apply_to_mask,
+    convert_to_seconds,
+    outplace,
+    requires_duration,
+    use_clip_fps_by_default,
+)
 
 
 class Clip:
@@ -38,12 +43,12 @@ class Clip:
        this case their duration will be ``None``.
 
      """
-   
+
     # prefix for all temporary video and audio files.
-    # You can overwrite it with 
+    # You can overwrite it with
     # >>> Clip._TEMP_FILES_PREFIX = "temp_"
 
-    _TEMP_FILES_PREFIX = 'TEMP_MPY_'
+    _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
 
@@ -67,14 +72,14 @@ class Clip:
         """
 
         newclip = copy(self)
-        if hasattr(self, 'audio'):
+        if hasattr(self, "audio"):
             newclip.audio = copy(self.audio)
-        if hasattr(self, 'mask'):
+        if hasattr(self, "mask"):
             newclip.mask = copy(self.mask)
-            
+
         return newclip
 
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     def get_frame(self, t):
         """
         Gets a numpy array representing the RGB picture of the clip at time t
@@ -132,7 +137,7 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        #mf = copy(self.make_frame)
+        # mf = copy(self.make_frame)
         newclip = self.set_make_frame(lambda t: fun(self.get_frame, t))
 
         if not keep_duration:
@@ -143,8 +148,8 @@ class Clip:
             apply_to = [apply_to]
 
         for attr in apply_to:
-            a = getattr(newclip, attr, None) 
-            if a is not None:    
+            a = getattr(newclip, attr, None)
+            if a is not None:
                 new_a = a.fl(fun, keep_duration=keep_duration)
                 setattr(newclip, attr, new_a)
 
@@ -184,8 +189,9 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        return self.fl(lambda gf, t: gf(t_func(t)), apply_to,
-                       keep_duration=keep_duration)
+        return self.fl(
+            lambda gf, t: gf(t_func(t)), apply_to, keep_duration=keep_duration
+        )
 
     def fx(self, func, *args, **kwargs):
         """
@@ -211,11 +217,9 @@ class Clip:
 
         return func(self, *args, **kwargs)
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
     def set_start(self, t, change_end=True):
         """
@@ -242,11 +246,9 @@ class Clip:
         elif self.end is not None:
             self.duration = self.end - self.start
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
     def set_end(self, t):
         """
@@ -257,18 +259,17 @@ class Clip:
         of the returned clip.
         """
         self.end = t
-        if self.end is None: return
+        if self.end is None:
+            return
         if self.start is None:
             if self.duration is not None:
                 self.start = max(0, t - newclip.duration)
         else:
             self.duration = self.end - self.start
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
     def set_duration(self, t, change_end=True):
         """
@@ -287,10 +288,8 @@ class Clip:
             self.end = None if (t is None) else (self.start + t)
         else:
             if self.duration is None:
-                raise Exception("Cannot change clip start when new"
-                                "duration is None")
+                raise Exception("Cannot change clip start when new" "duration is None")
             self.start = self.end - t
-
 
     @outplace
     def set_make_frame(self, make_frame):
@@ -306,7 +305,6 @@ class Clip:
         write_videofile, iterframe, etc. """
         self.fps = fps
 
-
     @outplace
     def set_ismask(self, ismask):
         """ Says wheter the clip is a mask or not (ismask is a boolean)"""
@@ -317,7 +315,7 @@ class Clip:
         """ Sets wheter the clip should keep the last frame read in memory """
         self.memoize = memoize
 
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     def is_playing(self, t):
         """
 
@@ -342,16 +340,14 @@ class Clip:
             # If we arrive here, a part of t falls in the clip
             result = 1 * (t >= self.start)
             if self.end is not None:
-                result *= (t <= self.end)
+                result *= t <= self.end
             return result
 
         else:
 
-            return((t >= self.start) and
-                   ((self.end is None) or (t < self.end)))
+            return (t >= self.start) and ((self.end is None) or (t < self.end))
 
-
-    @convert_to_seconds(['t_start', 't_end'])
+    @convert_to_seconds(["t_start", "t_end"])
     @apply_to_mask
     @apply_to_audio
     def subclip(self, t_start=0, t_end=None):
@@ -379,12 +375,14 @@ class Clip:
         if t_start < 0:
             # Make this more Python-like, a negative value means to move
             # backward from the end of the clip
-            t_start = self.duration + t_start   # Remember t_start is negative
+            t_start = self.duration + t_start  # Remember t_start is negative
 
         if (self.duration is not None) and (t_start > self.duration):
-            raise ValueError("t_start (%.02f) " % t_start +
-                             "should be smaller than the clip's " +
-                             "duration (%.02f)." % self.duration)
+            raise ValueError(
+                "t_start (%.02f) " % t_start
+                + "should be smaller than the clip's "
+                + "duration (%.02f)." % self.duration
+            )
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
 
@@ -396,8 +394,11 @@ class Clip:
 
             if self.duration is None:
 
-                print("Error: subclip with negative times (here %s)" % (str((t_start, t_end)))
-                      + " can only be extracted from clips with a ``duration``")
+                print(
+                    "Error: subclip with negative times (here %s)"
+                    % (str((t_start, t_end)))
+                    + " can only be extracted from clips with a ``duration``"
+                )
 
             else:
 
@@ -410,10 +411,9 @@ class Clip:
 
         return newclip
 
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['ta', 'tb'])
+    @convert_to_seconds(["ta", "tb"])
     def cutout(self, ta, tb):
         """
         Returns a clip playing the content of the current clip but
@@ -428,7 +428,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta)*(tb - ta)
+        fl = lambda t: t + (t >= ta) * (tb - ta)
         newclip = self.fl_time(fl)
 
         if self.duration is not None:
@@ -441,8 +441,7 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times = False, logger=None,
-                    dtype=None):
+    def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
         """ Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN np.array,
@@ -468,7 +467,7 @@ class Clip:
                      for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
-        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0/fps)):
+        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0 / fps)):
             frame = self.get_frame(t)
             if (dtype is not None) and (frame.dtype != dtype):
                 frame = frame.astype(dtype)

@@ -34,7 +34,8 @@ def test_failure_to_release_file():
 
     # Get the name of a temporary file we can use.
     local_video_filename = join(
-        TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time()))
+        TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
+    )
 
     # Repeat this so we can see that the problems escalate:
     for i in range(5):
@@ -64,9 +65,9 @@ def test_failure_to_release_file():
         except IOError:
             print(
                 "On Windows, this succeeds the first few times around the loop"
-                " but eventually fails.")
-            print("Need to shut down the process now. No more tests in"
-                  "this file.")
+                " but eventually fails."
+            )
+            print("Need to shut down the process now. No more tests in" "this file.")
             return
 
         try:

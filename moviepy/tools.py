@@ -9,11 +9,10 @@ import warnings
 import proglog
 
 
-
 def sys_write_flush(s):
     """ Writes and flushes without delay a text in the console """
-    # Reason for not using `print` is that in some consoles "print" 
-    # commands get delayed, while stdout.flush are instantaneous, 
+    # Reason for not using `print` is that in some consoles "print"
+    # commands get delayed, while stdout.flush are instantaneous,
     # so this method is better at providing feedback.
     # See https://github.com/Zulko/moviepy/pull/485
     sys.stdout.write(s)
@@ -26,7 +25,7 @@ def verbose_print(verbose, s):
         sys_write_flush(s)
 
 
-def subprocess_call(cmd, logger='bar', errorprint=True):
+def subprocess_call(cmd, logger="bar", errorprint=True):
     """ Executes the given subprocess command.
     
     Set logger to None or a custom Proglog logger to avoid printings.
@@ -34,24 +33,22 @@ def subprocess_call(cmd, logger='bar', errorprint=True):
     logger = proglog.default_bar_logger(logger)
     logger(message='Moviepy - Running:\n>>> "+ " ".join(cmd)')
 
-    popen_params = {"stdout": sp.DEVNULL,
-                    "stderr": sp.PIPE,
-                    "stdin": sp.DEVNULL}
+    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
 
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
 
     proc = sp.Popen(cmd, **popen_params)
 
-    out, err = proc.communicate() # proc.wait()
+    out, err = proc.communicate()  # proc.wait()
     proc.stderr.close()
 
     if proc.returncode:
         if errorprint:
-            logger(message='Moviepy - Command returned an error')
-        raise IOError(err.decode('utf8'))
+            logger(message="Moviepy - Command returned an error")
+        raise IOError(err.decode("utf8"))
     else:
-        logger(message='Moviepy - Command successful')
+        logger(message="Moviepy - Command successful")
 
     del proc
 
@@ -80,9 +77,9 @@ def cvsecs(time):
     33.5
     """
     factors = (1, 60, 3600)
-    
+
     if isinstance(time, str):
-        time = [float(f.replace(',', '.')) for f in time.split(':')]
+        time = [float(f.replace(",", ".")) for f in time.split(":")]
 
     if not isinstance(time, (tuple, list)):
         return time
@@ -116,15 +113,19 @@ def deprecated_version_of(f, oldname, newname=None):
     >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
 
-    if newname is None: newname = f.__name__
+    if newname is None:
+        newname = f.__name__
 
-    warning= ("The function ``%s`` is deprecated and is kept temporarily "
-              "for backwards compatibility.\nPlease use the new name, "
-              "``%s``, instead.")%(oldname, newname)
+    warning = (
+        "The function ``%s`` is deprecated and is kept temporarily "
+        "for backwards compatibility.\nPlease use the new name, "
+        "``%s``, instead."
+    ) % (oldname, newname)
 
     def fdepr(*a, **kw):
         warnings.warn("MoviePy: " + warning, PendingDeprecationWarning)
         return f(*a, **kw)
+
     fdepr.__doc__ = warning
 
     return fdepr
@@ -135,20 +136,20 @@ def deprecated_version_of(f, oldname, newname=None):
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
-extensions_dict = { "mp4":  {'type':'video', 'codec':['libx264','libmpeg4', 'aac']},
-                    'ogv':  {'type':'video', 'codec':['libtheora']},
-                    'webm': {'type':'video', 'codec':['libvpx']},
-                    'avi':  {'type':'video'},
-                    'mov':  {'type':'video'},
-
-                    'ogg':  {'type':'audio', 'codec':['libvorbis']},
-                    'mp3':  {'type':'audio', 'codec':['libmp3lame']},
-                    'wav':  {'type':'audio', 'codec':['pcm_s16le', 'pcm_s24le', 'pcm_s32le']},
-                    'm4a':  {'type':'audio', 'codec':['libfdk_aac']}
-                  }
+extensions_dict = {
+    "mp4": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
+    "ogv": {"type": "video", "codec": ["libtheora"]},
+    "webm": {"type": "video", "codec": ["libvpx"]},
+    "avi": {"type": "video"},
+    "mov": {"type": "video"},
+    "ogg": {"type": "audio", "codec": ["libvorbis"]},
+    "mp3": {"type": "audio", "codec": ["libmp3lame"]},
+    "wav": {"type": "audio", "codec": ["pcm_s16le", "pcm_s24le", "pcm_s32le"]},
+    "m4a": {"type": "audio", "codec": ["libfdk_aac"]},
+}
 
 for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
-    extensions_dict[ext] = {'type':'image'}
+    extensions_dict[ext] = {"type": "image"}
 
 
 def find_extension(codec):
@@ -156,8 +157,8 @@ def find_extension(codec):
         # codec is already the extension
         return codec
 
-    for ext,infos in extensions_dict.items():
-        if codec in infos.get('codec', []):
+    for ext, infos in extensions_dict.items():
+        if codec in infos.get("codec", []):
             return ext
     raise ValueError(
         "The audio_codec you chose is unknown by MoviePy. "

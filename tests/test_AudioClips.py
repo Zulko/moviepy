@@ -6,16 +6,20 @@ import sys
 import pytest
 from numpy import pi, sin
 
-from moviepy.audio.AudioClip import (AudioClip, CompositeAudioClip,
-                                     concatenate_audioclips)
+from moviepy.audio.AudioClip import (
+    AudioClip,
+    CompositeAudioClip,
+    concatenate_audioclips,
+)
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 from .test_helper import TMP_DIR
 
 skip_if_windows = pytest.mark.skipif(
     sys.platform.startswith("win"),
-    reason="Temporarily skipping on windows because otherwise test suite fails with Invalid Handle Error"
+    reason="Temporarily skipping on windows because otherwise test suite fails with Invalid Handle Error",
 )
+
 
 @skip_if_windows
 def test_audio_coreader():
@@ -24,10 +28,12 @@ def test_audio_coreader():
     sound2 = AudioFileClip("media/crunching.mp3")
     sound2.write_audiofile(os.path.join(TMP_DIR, "coreader.mp3"))
 
+
 def test_audioclip():
     make_frame = lambda t: [sin(440 * 2 * pi * t)]
     clip = AudioClip(make_frame, duration=2, fps=22050)
     clip.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"))
+
 
 def test_audioclip_concat():
     make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
@@ -60,7 +66,9 @@ def test_audioclip_with_file_concat():
     # Fails with strange error
     # "ValueError: operands could not be broadcast together with
     # shapes (1993,2) (1993,1993)1
-    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concat_clip_with_file_audio.mp3"))
+    concat_clip.write_audiofile(
+        os.path.join(TMP_DIR, "concat_clip_with_file_audio.mp3")
+    )
 
 
 def test_audiofileclip_concat():

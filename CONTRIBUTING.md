@@ -2,9 +2,13 @@
 
 ## Keeping/Improving code quality
  
-- Respect PEP8 standards!
+- Respect PEP8 conventions!
 - Just the right amount of comments. Try to write auto-documented code (with very explicit variable names).
 - If you introduce a new functionality or fix a subtle bug, document it in the docstring/code.
+- Moviepy's team adopted [black](https://github.com/psf/black) to autoformat the code. This is enforced for any pull request. 
+  
+> Tip: use `black -t py36 .` to autoformat your code, or set black as a plugin of your editor. 
+
 
 ## Using Github
 
@@ -26,6 +30,7 @@
 - To make a change
   - Create a new local branch: `git checkout -b branchname`
   - Make any changes in it
+  - Make sure that your code still conforms to the formatting standard: `black -t py36 .`
   - Run the test suite over it to expose any problems: `python3 setup.py test`
   - Push the local branch to your fork on github: `git push -u origin branchname`
   - Go to github.com/yourname/moviepy and it will display 'Recently pushed branches' giving you the option to make a Pull Request to the main repo
