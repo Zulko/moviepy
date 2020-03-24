@@ -10,6 +10,9 @@ MoviePy
 .. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
     :target: https://travis-ci.org/Zulko/moviepy
     :alt: Build status on travis-ci
+.. image:: https://ci.appveyor.com/api/projects/status/github/zulko/moviepy?svg=true
+    :target: https://ci.appveyor.com/project/Zulko/moviepy
+    :alt: Build status on appveyor
 .. image:: https://coveralls.io/repos/github/Zulko/moviepy/badge.svg?branch=master
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
