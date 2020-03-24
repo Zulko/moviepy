@@ -20,7 +20,7 @@ def loop(self, n=None, duration=None):
     """
     result = self.fl_time(lambda t: t % self.duration)
     if n:
-        duration = n*self.duration
+        duration = n * self.duration
     if duration:
         result = result.set_duration(duration)
     return result

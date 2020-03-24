@@ -4,10 +4,6 @@ environment:
   global:
     IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
   matrix:
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_ARCH: "64"
-      ARCH: x64
-
     - PYTHON: "C:\\Python36-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
