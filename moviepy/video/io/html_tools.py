@@ -156,6 +156,7 @@ def html_embed(clip, filetype=None, maxduration=60, rd_kwargs=None,
     return result
 
 
+
 def ipython_display(clip, filetype=None, maxduration=60, t=None, fps=None,
                     rd_kwargs=None, center=True, **html_kwargs):
     """

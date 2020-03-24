@@ -6,7 +6,7 @@ MoviePy by simply typing:
 
 In particular it will load many effects from the video.fx and audio.fx
 folders and turn them into VideoClip methods, so that instead of
->>> clip.fx( vfx.resize, 2 ) # or equivalently vfx.resize(clip, 2)
+>>> clip.fx( vfx.resize, 2 ) or equivalently vfx.resize(clip, 2)
 we can write
 >>> clip.resize(2)
 
@@ -18,7 +18,8 @@ clip.preview().
 # file, but this would make the loading of moviepy slower.
 
 import os
-import sys
+import inspect
+import itertools
 
 
 # Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
@@ -56,24 +57,19 @@ except ImportError:
 # The next loop transforms many effects into VideoClip methods so that
 # they can be called with myclip.resize(width=500) instead of
 # myclip.fx( vfx.resize, width= 500)
-for method_name in vfx.__all__:
-    exec("VideoClip.%s = vfx.%s" % (method_name, method_name))
+audio_fxs = inspect.getmembers(afx, inspect.isfunction)
+video_fxs = itertools.chain(
+    inspect.getmembers(vfx, inspect.isfunction), 
+    inspect.getmembers(transfx, inspect.isfunction),
+    audio_fxs
+)
+for name, function in video_fxs:
+    setattr(VideoClip, name, function)
 
-for method_name in afx.__all__:
-    exec("AudioClip.%s = afx.%s" % (method_name, method_name))
-    if method_name != "audio_loop":
-        exec("VideoClip.%s = afx.%s" % (method_name, method_name))
-
-# These transitions effects are all contained in one file so there is no way to automatically
-# generate a list of them
-for method_name in ["crossfadein",
-                    "crossfadeout",
-                    "slide_in",
-                    "slide_out",
-                    "make_loopable"]:
-    exec("VideoClip.%s = transfx.%s" % (method_name, method_name))
-
-
+for name, function in audio_fxs:
+    setattr(AudioClip, name, function)
+    
+    
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
