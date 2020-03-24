@@ -16,81 +16,175 @@ from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 def test_issue_145():
     video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
     with pytest.raises(Exception):
-        concatenate_videoclips([video], method='composite')
+        concatenate_videoclips([video], method="composite")
 
 
 def test_issue_190():
-    #from PIL import Image
-    #Image.new('L', (800,600), 'white').save(os.path.join(TMP_DIR, "issue_190.png"))
+    # from PIL import Image
+    # Image.new('L', (800,600), 'white').save(os.path.join(TMP_DIR, "issue_190.png"))
 
-    #from imageio import imread
-    #image = imread(os.path.join(TMP_DIR, "issue_190.png"))
+    # from imageio import imread
+    # image = imread(os.path.join(TMP_DIR, "issue_190.png"))
 
-    #clip = ImageSequenceClip([image, image], fps=1)
-    #clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
+    # clip = ImageSequenceClip([image, image], fps=1)
+    # clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
     pass
 
 
 def test_issue_285():
 
-    clip_1, clip_2, clip_3 = ImageClip('media/python_logo.png', duration=10), \
-        ImageClip('media/python_logo.png', duration=10), \
-        ImageClip('media/python_logo.png', duration=10)
+    clip_1, clip_2, clip_3 = (
+        ImageClip("media/python_logo.png", duration=10),
+        ImageClip("media/python_logo.png", duration=10),
+        ImageClip("media/python_logo.png", duration=10),
+    )
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
     close_all_clips(locals())
 
 
 def test_issue_334():
-   # NOTE: this is horrible. Any simpler version ?
+    # NOTE: this is horrible. Any simpler version ?
     last_move = None
     last_move1 = None
 
-    lis = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47),
-           (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55),
-           (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127),
-           (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127),
-           (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63),
-           (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63),
-           (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151),
-           (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1),
-           (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48),
-           (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48),
-           (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48),
-           (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48),
-           (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48),
-           (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48),
-           (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104),
-           (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80),
-           (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80),
-           (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104),
-           (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104),
-           (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104),
-           (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48),
-           (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
+    lis = [
+        (0.0, 113, 167, 47),
+        (0.32, 138, 159, 47),
+        (0.44, 152, 144, 47),
+        (0.48, 193, 148, 47),
+        (0.6, 193, 148, 47),
+        (0.76, 205, 138, 55),
+        (0.88, 204, 121, 63),
+        (0.92, 190, 31, 127),
+        (1.2, 183, 59, 127),
+        (1.4, 137, 22, 127),
+        (1.52, 137, 22, 127),
+        (1.72, 129, 67, 127),
+        (1.88, 123, 69, 127),
+        (2.04, 131, 123, 63),
+        (2.24, 130, 148, 63),
+        (2.48, 130, 148, 63),
+        (2.8, 138, 180, 63),
+        (3.0, 138, 180, 63),
+        (3.2, 146, 192, 63),
+        (3.28, 105, 91, 151),
+        (3.44, 105, 91, 151),
+        (3.72, 11, 48, 151),
+        (3.96, 5, 78, 151),
+        (4.32, 4, 134, 1),
+        (4.6, 149, 184, 48),
+        (4.8, 145, 188, 48),
+        (5.0, 154, 217, 48),
+        (5.08, 163, 199, 48),
+        (5.2, 163, 199, 48),
+        (5.32, 164, 187, 48),
+        (5.48, 163, 200, 48),
+        (5.76, 163, 200, 48),
+        (5.96, 173, 199, 48),
+        (6.0, 133, 172, 48),
+        (6.04, 128, 165, 48),
+        (6.28, 128, 165, 48),
+        (6.4, 129, 180, 48),
+        (6.52, 133, 166, 48),
+        (6.64, 133, 166, 48),
+        (6.88, 144, 183, 48),
+        (7.0, 153, 174, 48),
+        (7.16, 153, 174, 48),
+        (7.24, 153, 174, 48),
+        (7.28, 253, 65, 104),
+        (7.64, 253, 65, 104),
+        (7.8, 279, 116, 80),
+        (8.0, 290, 105, 80),
+        (8.24, 288, 124, 80),
+        (8.44, 243, 102, 80),
+        (8.56, 243, 102, 80),
+        (8.8, 202, 107, 80),
+        (8.84, 164, 27, 104),
+        (9.0, 164, 27, 104),
+        (9.12, 121, 9, 104),
+        (9.28, 77, 33, 104),
+        (9.32, 52, 23, 104),
+        (9.48, 52, 23, 104),
+        (9.64, 33, 46, 104),
+        (9.8, 93, 49, 104),
+        (9.92, 93, 49, 104),
+        (10.16, 173, 19, 104),
+        (10.2, 226, 173, 48),
+        (10.36, 226, 173, 48),
+        (10.48, 211, 172, 48),
+        (10.64, 208, 162, 48),
+        (10.92, 220, 171, 48),
+    ]
 
-    lis1 = [(0.0, 113, 167, 47), (0.32, 138, 159, 47), (0.44, 152, 144, 47),
-            (0.48, 193, 148, 47), (0.6, 193, 148, 47), (0.76, 205, 138, 55),
-            (0.88, 204, 121, 63), (0.92, 190, 31, 127), (1.2, 183, 59, 127),
-            (1.4, 137, 22, 127), (1.52, 137, 22, 127), (1.72, 129, 67, 127),
-            (1.88, 123, 69, 127), (2.04, 131, 123, 63), (2.24, 130, 148, 63),
-            (2.48, 130, 148, 63), (2.8, 138, 180, 63), (3.0, 138, 180, 63),
-            (3.2, 146, 192, 63), (3.28, 105, 91, 151), (3.44, 105, 91, 151),
-            (3.72, 11, 48, 151), (3.96, 5, 78, 151), (4.32, 4, 134, 1),
-            (4.6, 149, 184, 48), (4.8, 145, 188, 48), (5.0, 154, 217, 48),
-            (5.08, 163, 199, 48), (5.2, 163, 199, 48), (5.32, 164, 187, 48),
-            (5.48, 163, 200, 48), (5.76, 163, 200, 48), (5.96, 173, 199, 48),
-            (6.0, 133, 172, 48), (6.04, 128, 165, 48), (6.28, 128, 165, 48),
-            (6.4, 129, 180, 48), (6.52, 133, 166, 48), (6.64, 133, 166, 48),
-            (6.88, 144, 183, 48), (7.0, 153, 174, 48), (7.16, 153, 174, 48),
-            (7.24, 153, 174, 48), (7.28, 253, 65, 104), (7.64, 253, 65, 104),
-            (7.8, 279, 116, 80), (8.0, 290, 105, 80), (8.24, 288, 124, 80),
-            (8.44, 243, 102, 80), (8.56, 243, 102, 80), (8.8, 202, 107, 80),
-            (8.84, 164, 27, 104), (9.0, 164, 27, 104), (9.12, 121, 9, 104),
-            (9.28, 77, 33, 104), (9.32, 52, 23, 104), (9.48, 52, 23, 104),
-            (9.64, 33, 46, 104), (9.8, 93, 49, 104), (9.92, 93, 49, 104),
-            (10.16, 173, 19, 104), (10.2, 226, 173, 48), (10.36, 226, 173, 48),
-            (10.48, 211, 172, 48), (10.64, 208, 162, 48), (10.92, 220, 171, 48)]
+    lis1 = [
+        (0.0, 113, 167, 47),
+        (0.32, 138, 159, 47),
+        (0.44, 152, 144, 47),
+        (0.48, 193, 148, 47),
+        (0.6, 193, 148, 47),
+        (0.76, 205, 138, 55),
+        (0.88, 204, 121, 63),
+        (0.92, 190, 31, 127),
+        (1.2, 183, 59, 127),
+        (1.4, 137, 22, 127),
+        (1.52, 137, 22, 127),
+        (1.72, 129, 67, 127),
+        (1.88, 123, 69, 127),
+        (2.04, 131, 123, 63),
+        (2.24, 130, 148, 63),
+        (2.48, 130, 148, 63),
+        (2.8, 138, 180, 63),
+        (3.0, 138, 180, 63),
+        (3.2, 146, 192, 63),
+        (3.28, 105, 91, 151),
+        (3.44, 105, 91, 151),
+        (3.72, 11, 48, 151),
+        (3.96, 5, 78, 151),
+        (4.32, 4, 134, 1),
+        (4.6, 149, 184, 48),
+        (4.8, 145, 188, 48),
+        (5.0, 154, 217, 48),
+        (5.08, 163, 199, 48),
+        (5.2, 163, 199, 48),
+        (5.32, 164, 187, 48),
+        (5.48, 163, 200, 48),
+        (5.76, 163, 200, 48),
+        (5.96, 173, 199, 48),
+        (6.0, 133, 172, 48),
+        (6.04, 128, 165, 48),
+        (6.28, 128, 165, 48),
+        (6.4, 129, 180, 48),
+        (6.52, 133, 166, 48),
+        (6.64, 133, 166, 48),
+        (6.88, 144, 183, 48),
+        (7.0, 153, 174, 48),
+        (7.16, 153, 174, 48),
+        (7.24, 153, 174, 48),
+        (7.28, 253, 65, 104),
+        (7.64, 253, 65, 104),
+        (7.8, 279, 116, 80),
+        (8.0, 290, 105, 80),
+        (8.24, 288, 124, 80),
+        (8.44, 243, 102, 80),
+        (8.56, 243, 102, 80),
+        (8.8, 202, 107, 80),
+        (8.84, 164, 27, 104),
+        (9.0, 164, 27, 104),
+        (9.12, 121, 9, 104),
+        (9.28, 77, 33, 104),
+        (9.32, 52, 23, 104),
+        (9.48, 52, 23, 104),
+        (9.64, 33, 46, 104),
+        (9.8, 93, 49, 104),
+        (9.92, 93, 49, 104),
+        (10.16, 173, 19, 104),
+        (10.2, 226, 173, 48),
+        (10.36, 226, 173, 48),
+        (10.48, 211, 172, 48),
+        (10.64, 208, 162, 48),
+        (10.92, 220, 171, 48),
+    ]
 
     def posi(t):
         global last_move
@@ -129,19 +223,16 @@ def test_issue_334():
 
     avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
     avatar.audio = None
-    maskclip = ImageClip("media/afterimage.png",
-                         ismask=True, transparent=True)
+    maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
     avatar.set_mask(maskclip)  # must set maskclip here..
     concatenated = concatenate_videoclips([avatar] * 3)
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
     # TODO: Setting mask here does not work:
     # .set_mask(maskclip).resize(size)])
-    final = CompositeVideoClip(
-        [tt, concatenated.set_position(posi).resize(size)])
+    final = CompositeVideoClip([tt, concatenated.set_position(posi).resize(size)])
     final.duration = tt.duration
-    final.write_videofile(
-       os.path.join(TMP_DIR, 'issue_334.mp4'), fps=10)
+    final.write_videofile(os.path.join(TMP_DIR, "issue_334.mp4"), fps=10)
 
 
 def test_issue_354():
@@ -156,7 +247,7 @@ def test_issue_354():
         #                           stroke_width=2, method='caption',
         #                           size=(1280, 720), fontsize=60,
         #                           align='South-East')
-        #caption.duration = clip.duration
+        # caption.duration = clip.duration
 
         fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
         CompositeVideoClip([clip, fadecaption]).close()
@@ -165,8 +256,8 @@ def test_issue_354():
 def test_issue_359():
     with ColorClip((800, 600), color=(255, 0, 0)).set_duration(5) as video:
         video.fps = 30
-        video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"),
-                        tempfiles=True)
+        video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
+
 
 # TODO: Debug matplotlib failures following successful travis builds.
 # def test_issue_368():
@@ -243,14 +334,14 @@ def test_issue_416():
 
 def test_issue_417():
     # failed in python2
-    cad = u'media/python_logo.png'
+    cad = "media/python_logo.png"
     myclip = ImageClip(cad).fx(resize, newsize=[1280, 660])
     CompositeVideoClip([myclip], size=(1280, 720))
-    #final.set_duration(7).write_videofile("test.mp4", fps=30)
+    # final.set_duration(7).write_videofile("test.mp4", fps=30)
 
 
 def test_issue_467():
-    cad = 'media/python_logo.png'
+    cad = "media/python_logo.png"
     clip = ImageClip(cad)
 
     # caused an error, NameError: global name 'copy' is not defined
@@ -258,27 +349,28 @@ def test_issue_467():
 
 
 def test_issue_470():
-    audio_clip = AudioFileClip('media/crunching.mp3')
+    audio_clip = AudioFileClip("media/crunching.mp3")
 
     # t_end is out of bounds
     subclip = audio_clip.subclip(t_start=6, t_end=9)
 
     with pytest.raises(IOError):
-        subclip.write_audiofile(os.path.join(
-            TMP_DIR, 'issue_470.wav'), write_logfile=True)
+        subclip.write_audiofile(
+            os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True
+        )
 
     # but this one should work..
     subclip = audio_clip.subclip(t_start=6, t_end=8)
-    subclip.write_audiofile(os.path.join(
-        TMP_DIR, 'issue_470.wav'), write_logfile=True)
+    subclip.write_audiofile(os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True)
 
 
 def test_issue_246():
     def test_audio_reader():
-        video = VideoFileClip('media/video_with_failing_audio.mp4')
+        video = VideoFileClip("media/video_with_failing_audio.mp4")
         subclip = video.subclip(270)
-        subclip.write_audiofile(os.path.join(TMP_DIR, 'issue_246.wav'),
-                                write_logfile=True)
+        subclip.write_audiofile(
+            os.path.join(TMP_DIR, "issue_246.wav"), write_logfile=True
+        )
 
 
 def test_issue_547():
@@ -301,7 +393,7 @@ def test_issue_636():
 
 
 def test_issue_655():
-    video_file = 'media/fire2.mp4'
+    video_file = "media/fire2.mp4"
     for subclip in [(0, 2), (1, 2), (2, 3)]:
         with VideoFileClip(video_file) as v:
             with v.subclip(1, 2) as s:
@@ -310,5 +402,5 @@ def test_issue_655():
     assert True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()

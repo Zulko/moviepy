@@ -19,8 +19,7 @@ def test_clips_array():
     video = clips_array([[red, green, blue]])
 
     with pytest.raises(ValueError):  # duration not set
-        video.resize(width=480).write_videofile(
-            join(TMP_DIR, "test_clips_array.mp4"))
+        video.resize(width=480).write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
     close_all_clips(locals())
 
 

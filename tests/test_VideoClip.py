@@ -20,8 +20,10 @@ def test_check_codec():
     try:
         clip.write_videofile(location)
     except ValueError as e:
-        assert "MoviePy couldn't find the codec associated with the filename." \
-               " Provide the 'codec' parameter in write_videofile." in str(e)
+        assert (
+            "MoviePy couldn't find the codec associated with the filename."
+            " Provide the 'codec' parameter in write_videofile." in str(e)
+        )
     close_all_clips(locals())
 
 
@@ -35,8 +37,7 @@ def test_save_frame():
 
 def test_write_image_sequence():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
-    locations = clip.write_images_sequence(
-            os.path.join(TMP_DIR, "frame%02d.png"))
+    locations = clip.write_images_sequence(os.path.join(TMP_DIR, "frame%02d.png"))
     for location in locations:
         assert os.path.isfile(location)
     close_all_clips(locals())
@@ -72,7 +73,7 @@ def test_write_gif_ImageMagick():
     clip.write_gif(location, program="ImageMagick")
     close_all_clips(locals())
     # Fails for some reason
-    #assert os.path.isfile(location)
+    # assert os.path.isfile(location)
 
 
 def test_write_gif_ImageMagick_tmpfiles():

@@ -15,9 +15,9 @@ from .test_helper import TMP_DIR
 
 def test_setup():
     """Test VideoFileClip setup."""
-    red = ColorClip((256,200), color=(255,0,0))
-    green = ColorClip((256,200), color=(0,255,0))
-    blue = ColorClip((256,200), color=(0,0,255))
+    red = ColorClip((256, 200), color=(255, 0, 0))
+    green = ColorClip((256, 200), color=(0, 255, 0))
+    blue = ColorClip((256, 200), color=(0, 0, 255))
 
     red.fps = green.fps = blue.fps = 10
     with clips_array([[red, green, blue]]).set_duration(5) as video:
@@ -28,13 +28,14 @@ def test_setup():
     clip = VideoFileClip(os.path.join(TMP_DIR, "test.mp4"))
     assert clip.duration == 5
     assert clip.fps == 10
-    assert clip.size == [256*3, 200]
+    assert clip.size == [256 * 3, 200]
     close_all_clips(locals())
+
 
 def test_ffmpeg_resizing():
     """Test FFmpeg resizing, to include downscaling."""
-    video_file = 'media/big_buck_bunny_432_433.webm'
-    target_resolutions = [(128, 128), (128, None),(None, 128), (None, 256)]
+    video_file = "media/big_buck_bunny_432_433.webm"
+    target_resolutions = [(128, 128), (128, None), (None, 128), (None, 256)]
     for target_resolution in target_resolutions:
         video = VideoFileClip(video_file, target_resolution=target_resolution)
         frame = video.get_frame(0)
@@ -44,5 +45,5 @@ def test_ffmpeg_resizing():
         video.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()

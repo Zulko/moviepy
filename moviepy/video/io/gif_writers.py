@@ -10,6 +10,7 @@ from moviepy.tools import subprocess_call
 
 try:
     import imageio
+
     IMAGEIO_FOUND = True
 except ImportError:
     IMAGEIO_FOUND = False
@@ -17,9 +18,19 @@ except ImportError:
 
 @requires_duration
 @use_clip_fps_by_default
-def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
-       opt="OptimizeTransparency", fuzz=1, verbose=True,
-       loop=0, dispose=True, colors=None, logger='bar'):
+def write_gif_with_tempfiles(
+    clip,
+    filename,
+    fps=None,
+    program="ImageMagick",
+    opt="OptimizeTransparency",
+    fuzz=1,
+    verbose=True,
+    loop=0,
+    dispose=True,
+    colors=None,
+    logger="bar",
+):
     """ Write the VideoClip to a GIF file.
 
 
@@ -31,57 +42,77 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
     """
     logger = proglog.default_bar_logger(logger)
     fileName, ext = os.path.splitext(filename)
-    tt = np.arange(0,clip.duration, 1.0/fps)
+    tt = np.arange(0, clip.duration, 1.0 / fps)
 
     tempfiles = []
-    
-    logger(message='MoviePy - Building file %s\n' % filename)
-    logger(message='MoviePy - - Generating GIF frames')
 
-    
+    logger(message="MoviePy - Building file %s\n" % filename)
+    logger(message="MoviePy - - Generating GIF frames")
+
     for i, t in logger.iter_bar(t=list(enumerate(tt))):
 
-        name = "%s_GIFTEMP%04d.png"%(fileName, i+1)
+        name = "%s_GIFTEMP%04d.png" % (fileName, i + 1)
         tempfiles.append(name)
         clip.save_frame(name, t, withmask=True)
 
-    delay = int(100.0/fps)
+    delay = int(100.0 / fps)
 
     if program == "ImageMagick":
-        logger(message='MoviePy - - Optimizing GIF with ImageMagick...')
-        cmd = [get_setting("IMAGEMAGICK_BINARY"),
-              '-delay' , '%d'%delay,
-              "-dispose" ,"%d"%(2 if dispose else 1),
-              "-loop" , "%d"%loop,
-              "%s_GIFTEMP*.png"%fileName,
-              "-coalesce",
-              "-fuzz", "%02d"%fuzz + "%",
-              "-layers", "%s"%opt,
-              ]+(["-colors", "%d"%colors] if colors is not None else [])+[
-              filename]
+        logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
+        cmd = (
+            [
+                get_setting("IMAGEMAGICK_BINARY"),
+                "-delay",
+                "%d" % delay,
+                "-dispose",
+                "%d" % (2 if dispose else 1),
+                "-loop",
+                "%d" % loop,
+                "%s_GIFTEMP*.png" % fileName,
+                "-coalesce",
+                "-fuzz",
+                "%02d" % fuzz + "%",
+                "-layers",
+                "%s" % opt,
+            ]
+            + (["-colors", "%d" % colors] if colors is not None else [])
+            + [filename]
+        )
 
     elif program == "ffmpeg":
 
-        cmd = [get_setting("FFMPEG_BINARY"), '-y',
-               '-f', 'image2', '-r',str(fps),
-               '-i', fileName+'_GIFTEMP%04d.png',
-               '-r',str(fps),
-               filename]
+        cmd = [
+            get_setting("FFMPEG_BINARY"),
+            "-y",
+            "-f",
+            "image2",
+            "-r",
+            str(fps),
+            "-i",
+            fileName + "_GIFTEMP%04d.png",
+            "-r",
+            str(fps),
+            filename,
+        ]
 
     try:
         subprocess_call(cmd, logger=logger)
-        logger(message='MoviePy - GIF ready: %s.' % filename)
+        logger(message="MoviePy - GIF ready: %s." % filename)
 
-    except (IOError,OSError) as err:
+    except (IOError, OSError) as err:
 
-        error = ("MoviePy Error: creation of %s failed because "
-          "of the following error:\n\n%s.\n\n."%(filename, str(err)))
+        error = (
+            "MoviePy Error: creation of %s failed because "
+            "of the following error:\n\n%s.\n\n." % (filename, str(err))
+        )
 
         if program == "ImageMagick":
-            error = error + ("This error can be due to the fact that "
+            error = error + (
+                "This error can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file config_defaults.py." )
+                "path to the ImageMagick binary in file config_defaults.py."
+            )
 
         raise IOError(error)
 
@@ -89,12 +120,22 @@ def write_gif_with_tempfiles(clip, filename, fps=None, program= 'ImageMagick',
         os.remove(f)
 
 
-
 @requires_duration
 @use_clip_fps_by_default
-def write_gif(clip, filename, fps=None, program= 'ImageMagick',
-           opt="OptimizeTransparency", fuzz=1, verbose=True, withmask=True,
-           loop=0, dispose=True, colors=None, logger='bar'):
+def write_gif(
+    clip,
+    filename,
+    fps=None,
+    program="ImageMagick",
+    opt="OptimizeTransparency",
+    fuzz=1,
+    verbose=True,
+    withmask=True,
+    loop=0,
+    dispose=True,
+    colors=None,
+    logger="bar",
+):
     """ Write the VideoClip to a GIF file, without temporary files.
 
     Converts a VideoClip into an animated GIF using ImageMagick
@@ -152,21 +193,31 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
     # frames -ffmpeg-> bmp frames -ImagMag-> gif -ImagMag-> better gif
     #
 
-    delay= 100.0/fps
+    delay = 100.0 / fps
     logger = proglog.default_bar_logger(logger)
     if clip.mask is None:
         withmask = False
 
-    cmd1 = [get_setting("FFMPEG_BINARY"), '-y', '-loglevel', 'error',
-            '-f', 'rawvideo',
-            '-vcodec','rawvideo', '-r', "%.02f"%fps,
-            '-s', "%dx%d"%(clip.w, clip.h),
-            '-pix_fmt', ('rgba' if withmask else 'rgb24'),
-            '-i', '-']
+    cmd1 = [
+        get_setting("FFMPEG_BINARY"),
+        "-y",
+        "-loglevel",
+        "error",
+        "-f",
+        "rawvideo",
+        "-vcodec",
+        "rawvideo",
+        "-r",
+        "%.02f" % fps,
+        "-s",
+        "%dx%d" % (clip.w, clip.h),
+        "-pix_fmt",
+        ("rgba" if withmask else "rgb24"),
+        "-i",
+        "-",
+    ]
 
-    popen_params = {"stdout": sp.DEVNULL,
-                    "stderr": sp.DEVNULL,
-                    "stdin": sp.DEVNULL}
+    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
 
     if os.name == "nt":
         popen_params["creationflags"] = 0x08000000
@@ -175,79 +226,111 @@ def write_gif(clip, filename, fps=None, program= 'ImageMagick',
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = sp.DEVNULL
 
-        proc1 = sp.Popen(cmd1+[ '-pix_fmt', ('rgba' if withmask else 'rgb24'),
-                                '-r', "%.02f"%fps, filename], **popen_params)
+        proc1 = sp.Popen(
+            cmd1
+            + [
+                "-pix_fmt",
+                ("rgba" if withmask else "rgb24"),
+                "-r",
+                "%.02f" % fps,
+                filename,
+            ],
+            **popen_params,
+        )
     else:
 
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = sp.PIPE
 
-        proc1 = sp.Popen(cmd1+ ['-f', 'image2pipe', '-vcodec', 'bmp', '-'],
-                         **popen_params)
+        proc1 = sp.Popen(
+            cmd1 + ["-f", "image2pipe", "-vcodec", "bmp", "-"], **popen_params
+        )
 
-    if program == 'ImageMagick':
+    if program == "ImageMagick":
 
-        cmd2 = [get_setting("IMAGEMAGICK_BINARY"), '-delay', "%.02f"%(delay),
-                "-dispose" ,"%d"%(2 if dispose else 1),
-                '-loop', '%d'%loop, '-', '-coalesce']
+        cmd2 = [
+            get_setting("IMAGEMAGICK_BINARY"),
+            "-delay",
+            "%.02f" % (delay),
+            "-dispose",
+            "%d" % (2 if dispose else 1),
+            "-loop",
+            "%d" % loop,
+            "-",
+            "-coalesce",
+        ]
 
-        if (opt in [False, None]):
+        if opt in [False, None]:
             popen_params["stdin"] = proc1.stdout
             popen_params["stdout"] = sp.DEVNULL
-            proc2 = sp.Popen(cmd2+[filename], **popen_params)
+            proc2 = sp.Popen(cmd2 + [filename], **popen_params)
 
         else:
             popen_params["stdin"] = proc1.stdout
             popen_params["stdout"] = sp.PIPE
-            proc2 = sp.Popen(cmd2+['gif:-'], **popen_params)
+            proc2 = sp.Popen(cmd2 + ["gif:-"], **popen_params)
 
         if opt:
 
-            cmd3 = [get_setting("IMAGEMAGICK_BINARY"), '-',
-                    '-fuzz', '%d'%fuzz+'%', '-layers', opt
-                   ]+(["-colors", "%d"%colors] if colors is not None else [])+[
-                   filename]
+            cmd3 = (
+                [
+                    get_setting("IMAGEMAGICK_BINARY"),
+                    "-",
+                    "-fuzz",
+                    "%d" % fuzz + "%",
+                    "-layers",
+                    opt,
+                ]
+                + (["-colors", "%d" % colors] if colors is not None else [])
+                + [filename]
+            )
 
             popen_params["stdin"] = proc2.stdout
             popen_params["stdout"] = sp.DEVNULL
             proc3 = sp.Popen(cmd3, **popen_params)
 
     # We send all the frames to the first process
-    logger(message='MoviePy - Building file  %s' % filename)
-    logger(message='MoviePy - - Generating GIF frames.')
+    logger(message="MoviePy - Building file  %s" % filename)
+    logger(message="MoviePy - - Generating GIF frames.")
     try:
-        for t,frame in clip.iter_frames(fps=fps, logger=logger,
-                                        with_times=True,  dtype="uint8"):
+        for t, frame in clip.iter_frames(
+            fps=fps, logger=logger, with_times=True, dtype="uint8"
+        ):
             if withmask:
                 mask = 255 * clip.mask.get_frame(t)
-                frame = np.dstack([frame, mask]).astype('uint8')
+                frame = np.dstack([frame, mask]).astype("uint8")
             proc1.stdin.write(frame.tostring())
 
     except IOError as err:
 
-        error = ("[MoviePy] Error: creation of %s failed because "
-          "of the following error:\n\n%s.\n\n."%(filename, str(err)))
+        error = (
+            "[MoviePy] Error: creation of %s failed because "
+            "of the following error:\n\n%s.\n\n." % (filename, str(err))
+        )
 
         if program == "ImageMagick":
-            error = error + ("This can be due to the fact that "
+            error = error + (
+                "This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file config_defaults.py." )
+                "path to the ImageMagick binary in file config_defaults.py."
+            )
 
         raise IOError(error)
-    if program == 'ImageMagick':
-        logger(message='MoviePy - - Optimizing GIF with ImageMagick.')
+    if program == "ImageMagick":
+        logger(message="MoviePy - - Optimizing GIF with ImageMagick.")
     proc1.stdin.close()
     proc1.wait()
-    if program == 'ImageMagick':
+    if program == "ImageMagick":
         proc2.wait()
         if opt:
             proc3.wait()
-    logger(message='MoviePy - - File ready: %s.' % filename)
+    logger(message="MoviePy - - File ready: %s." % filename)
 
 
-def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
-                            colors=None, verbose=True, logger='bar'):
+def write_gif_with_image_io(
+    clip, filename, fps=None, opt=0, loop=0, colors=None, verbose=True, logger="bar"
+):
     """
     Writes the gif with the Python library ImageIO (calls FreeImage).
 
@@ -262,23 +345,21 @@ def write_gif_with_image_io(clip, filename, fps=None, opt=0, loop=0,
     logger = proglog.default_bar_logger(logger)
 
     if not IMAGEIO_FOUND:
-        raise ImportError("Writing a gif with imageio requires ImageIO installed,"
-                         " with e.g. 'pip install imageio'")
+        raise ImportError(
+            "Writing a gif with imageio requires ImageIO installed,"
+            " with e.g. 'pip install imageio'"
+        )
 
     if fps is None:
         fps = clip.fps
 
-    quantizer = 0 if opt != 0 else 'nq'
+    quantizer = 0 if opt != 0 else "nq"
 
     writer = imageio.save(
-        filename,
-        duration=1.0/fps,
-        quantizer=quantizer,
-        palettesize=colors,
-        loop=loop
-        )
-    logger(message='MoviePy - Building file %s with imageio.' % filename)
+        filename, duration=1.0 / fps, quantizer=quantizer, palettesize=colors, loop=loop
+    )
+    logger(message="MoviePy - Building file %s with imageio." % filename)
 
-    for frame in clip.iter_frames(fps=fps, logger=logger, dtype='uint8'):
+    for frame in clip.iter_frames(fps=fps, logger=logger, dtype="uint8"):
 
         writer.append_data(frame)

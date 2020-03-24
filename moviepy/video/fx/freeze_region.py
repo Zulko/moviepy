@@ -4,7 +4,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from .crop import crop
 
 
-#@apply_to_mask
+# @apply_to_mask
 def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
     """ Freezes one region of the clip while the rest remains animated.
     
@@ -31,27 +31,25 @@ def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
       indicate the freezed region in the final picture.
 
     """
-    
+
     if region is not None:
 
         x1, y1, x2, y2 = region
-        freeze = (clip.fx(crop, *region)
-                      .to_ImageClip(t=t)
-                      .set_duration(clip.duration)
-                      .set_position((x1,y1)))
+        freeze = (
+            clip.fx(crop, *region)
+            .to_ImageClip(t=t)
+            .set_duration(clip.duration)
+            .set_position((x1, y1))
+        )
         return CompositeVideoClip([clip, freeze])
-    
+
     elif outside_region is not None:
-        
+
         x1, y1, x2, y2 = outside_region
-        animated_region = (clip.fx(crop, *outside_region)
-                               .set_position((x1,y1)))
-        freeze = (clip.to_ImageClip(t=t)
-                      .set_duration(clip.duration))
+        animated_region = clip.fx(crop, *outside_region).set_position((x1, y1))
+        freeze = clip.to_ImageClip(t=t).set_duration(clip.duration)
         return CompositeVideoClip([freeze, animated_region])
-    
+
     elif mask is not None:
-        freeze = (clip.to_ImageClip(t=t)
-                      .set_duration(clip.duration)
-                      .set_mask(mask))
+        freeze = clip.to_ImageClip(t=t).set_duration(clip.duration).set_mask(mask)
         return CompositeVideoClip([clip, freeze])
