@@ -8,4 +8,4 @@ import warnings
 
 from .. import *
 
-warnings.warn(f"MoviePy: {__doc__}", PendingDeprecationWarning)
+warnings.warn(f"MoviePy: {__doc__}", UserWarning)
