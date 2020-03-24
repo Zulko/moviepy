@@ -1,16 +1,11 @@
 """
-Loads all the fx !
-Usage:
-import moviepy.audio.fx.all as afx
-audio_clip = afx.volume_x(some_clip, .5)
+moviepy.audio.fx.all is deprecated. 
+
+Use the right fx method directly from the clip instance
+or import the function from moviepy.audio.fx instead. 
 """
+import warnings
 
-import pkgutil
+from .. import *
 
-import moviepy.audio.fx as fx
-
-__all__ = [name for _, name, _ in pkgutil.iter_modules(
-    fx.__path__) if name != "all"]
-
-for name in __all__:
-    exec("from ..%s import %s" % (name, name))
+warnings.warn(f"MoviePy: {__doc__}", PendingDeprecationWarning)
