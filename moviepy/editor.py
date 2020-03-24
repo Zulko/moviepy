@@ -22,7 +22,7 @@ import sys
 
 
 # Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "1"
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
@@ -30,7 +30,10 @@ from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from .video.compositing.concatenate import concatenate_videoclips, concatenate # concatenate=deprecated
+from .video.compositing.concatenate import (
+    concatenate_videoclips,
+    concatenate,
+)  # concatenate=deprecated
 
 from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
 from .audio.io.AudioFileClip import AudioFileClip
@@ -57,42 +60,43 @@ except ImportError:
 # they can be called with myclip.resize(width=500) instead of
 # myclip.fx( vfx.resize, width= 500)
 for method in [
-          "afx.audio_fadein",
-          "afx.audio_fadeout",
-          "afx.audio_normalize",
-          "afx.volumex",
-          "transfx.crossfadein",
-          "transfx.crossfadeout",
-          "vfx.crop",
-          "vfx.fadein",
-          "vfx.fadeout",
-          "vfx.invert_colors",
-          "vfx.loop",
-          "vfx.margin",
-          "vfx.mask_and",
-          "vfx.mask_or",
-          "vfx.resize",
-          "vfx.rotate",
-          "vfx.speedx"
-          ]:
+    "afx.audio_fadein",
+    "afx.audio_fadeout",
+    "afx.audio_normalize",
+    "afx.volumex",
+    "transfx.crossfadein",
+    "transfx.crossfadeout",
+    "vfx.crop",
+    "vfx.fadein",
+    "vfx.fadeout",
+    "vfx.invert_colors",
+    "vfx.loop",
+    "vfx.margin",
+    "vfx.mask_and",
+    "vfx.mask_or",
+    "vfx.resize",
+    "vfx.rotate",
+    "vfx.speedx",
+]:
 
-    exec("VideoClip.%s = %s" % (method.split('.')[1], method))
+    exec("VideoClip.%s = %s" % (method.split(".")[1], method))
 
 
-for method in ["afx.audio_fadein",
-               "afx.audio_fadeout",
-               "afx.audio_loop",
-               "afx.audio_normalize",
-               "afx.volumex"
-              ]:
-              
-    exec("AudioClip.%s = %s" % (method.split('.')[1], method))
+for method in [
+    "afx.audio_fadein",
+    "afx.audio_fadeout",
+    "afx.audio_loop",
+    "afx.audio_normalize",
+    "afx.volumex",
+]:
+
+    exec("AudioClip.%s = %s" % (method.split(".")[1], method))
 
 
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
-#-----------------------------------------------------------------
+# -----------------------------------------------------------------
 # Previews: try to import pygame, else make methods which raise
 # exceptions saying to install PyGame
 
@@ -101,6 +105,7 @@ AudioClip.ipython_display = ipython_display
 try:
     from moviepy.video.io.preview import show, preview
 except ImportError:
+
     def preview(self, *args, **kwargs):
         """NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
@@ -116,8 +121,10 @@ VideoClip.show = show
 try:
     from moviepy.audio.io.preview import preview
 except ImportError:
+
     def preview(self, *args, **kwargs):
         """ NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
+
 
 AudioClip.preview = preview

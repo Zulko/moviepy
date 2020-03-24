@@ -15,20 +15,20 @@ def mask_color(clip, color=None, thr=0, s=1):
     parametrized by s
     """
     if color is None:
-        color = [0,0,0]
+        color = [0, 0, 0]
 
     color = np.array(color)
 
     def hill(x):
         if thr:
-            return x**s / (thr**s + x**s)
+            return x ** s / (thr ** s + x ** s)
         else:
-            return 1.0 * (x != 0) 
-    
-    def flim(im): 
-        return hill(np.sqrt(((im-color)**2).sum(axis=2)))
-    
+            return 1.0 * (x != 0)
+
+    def flim(im):
+        return hill(np.sqrt(((im - color) ** 2).sum(axis=2)))
+
     mask = clip.fl_image(flim)
-    mask.ismask= True
+    mask.ismask = True
     newclip = clip.set_mask(mask)
     return newclip

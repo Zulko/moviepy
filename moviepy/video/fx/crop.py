@@ -1,4 +1,14 @@
-def crop(clip, x1=None, y1=None, x2=None, y2=None, width=None, height=None, x_center=None, y_center=None):
+def crop(
+    clip,
+    x1=None,
+    y1=None,
+    x2=None,
+    y2=None,
+    width=None,
+    height=None,
+    x_center=None,
+    y_center=None,
+):
     """
     Returns a new clip in which just a rectangular subregion of the
     original clip is conserved. x1,y1 indicates the top left corner and
@@ -50,4 +60,6 @@ def crop(clip, x1=None, y1=None, x2=None, y2=None, width=None, height=None, x_ce
     x2 = x2 or clip.size[0]
     y2 = y2 or clip.size[1]
 
-    return clip.fl_image(lambda pic: pic[int(y1) : int(y2), int(x1) : int(x2)], apply_to=["mask"])
+    return clip.fl_image(
+        lambda pic: pic[int(y1) : int(y2), int(x1) : int(x2)], apply_to=["mask"]
+    )
