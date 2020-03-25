@@ -27,18 +27,28 @@ def test_subtitles():
     myvideo = concatenate_videoclips([red, green, blue])
     assert myvideo.duration == 30
 
-    generator = lambda txt: TextClip(txt, font=FONT,
-                                     size=(800, 600), fontsize=24,
-                                     method='caption', align='South',
-                                     color='white')
+    generator = lambda txt: TextClip(
+        txt,
+        font=FONT,
+        size=(800, 600),
+        fontsize=24,
+        method="caption",
+        align="South",
+        color="white",
+    )
 
     subtitles = SubtitlesClip("media/subtitles1.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
     final.write_videofile(os.path.join(TMP_DIR, "subtitles1.mp4"), fps=30)
 
-    data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
-            ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
-            ([20.0, 24.0], 'Blue'), ([25.0, 29.0], 'More Blue!')]
+    data = [
+        ([0.0, 4.0], "Red!"),
+        ([5.0, 9.0], "More Red!"),
+        ([10.0, 14.0], "Green!"),
+        ([15.0, 19.0], "More Green!"),
+        ([20.0, 24.0], "Blue"),
+        ([25.0, 29.0], "More Blue!"),
+    ]
 
     assert subtitles.subtitles == data
 
@@ -48,11 +58,17 @@ def test_subtitles():
 
 
 def test_file_to_subtitles():
-    data = [([0.0, 4.0], 'Red!'), ([5.0, 9.0], 'More Red!'),
-            ([10.0, 14.0], 'Green!'), ([15.0, 19.0], 'More Green!'),
-            ([20.0, 24.0], 'Blue'), ([25.0, 29.0], 'More Blue!')]
+    data = [
+        ([0.0, 4.0], "Red!"),
+        ([5.0, 9.0], "More Red!"),
+        ([10.0, 14.0], "Green!"),
+        ([15.0, 19.0], "More Green!"),
+        ([20.0, 24.0], "Blue"),
+        ([25.0, 29.0], "More Blue!"),
+    ]
 
     assert data == file_to_subtitles("media/subtitles1.srt")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     pytest.main()

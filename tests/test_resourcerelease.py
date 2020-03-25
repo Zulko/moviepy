@@ -32,8 +32,7 @@ def test_release_of_file_via_close():
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = join(
-            TMP_DIR,
-            "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
         )
 
         clip = clips_array([[red, green, blue]]).set_duration(0.5)
