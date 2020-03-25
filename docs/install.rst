@@ -11,9 +11,9 @@ Installation
 
     (sudo) pip install moviepy
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail, is this case type this before installing: ::
+If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type this before installing: ::
 
-    (sudo) pip install ez_setup
+    (sudo) pip install setuptools
 
 **Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
 
@@ -21,21 +21,23 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
 MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
-MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the FFMPEG_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
+MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the '
+`FFMPEG_BINARY` environment variable.
 
 
 Other optional but useful dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ImageMagick_ is not strictly required, only if you want to write texts. It can also be used as a backend for GIFs but you can do GIFs with MoviePy without ImageMagick.
+You can install ``moviepy`` with all dependencies via:
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
+.. code:: bash
 
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
+    $ (sudo) pip install moviepy[optional]
 
-You can also set the IMAGEMAGICK_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
-If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
+ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
+
+Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables.
 
 PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
@@ -46,7 +48,56 @@ For advanced image processing you will need one or several of these packages. Fo
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV 2.4.6`_ or more recent (provides the package ``cv2``) or more recent may be needed for some advanced image manipulation.
 
-If you are on linux, these packages will likely be in your repos.
+If you are on Linux, these packages will likely be in your repos.
+
+
+Custom paths to external tools
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There is a couple of environment variables used by Moviepy, that allows 
+to configure custom paths to the external tools. 
+
+To setup any of these variables, the easier way is do it in python before 
+import objects from Moviepy. For example:
+
+.. code-block:: python
+
+	import os
+	os.environ["FFMPEG_BINARY"] = "my/custom/ffmpeg"
+
+	from moviepy.editor import VideoFileClip
+
+Alternatively, if you installed the optional dependencies, could create 
+a `.env` file in your working directory that will be automatically read. 
+
+Available variables are the follow:
+
+
+``FFMPEG_BINARY``
+    Normally you can leave this one to its default ('ffmpeg-imageio') at which
+    case image-io will download the right ffmpeg binary (at first use) and then always use that binary.
+    
+    The second option is ``auto-detect``. In this case ffmpeg will be whatever
+    binary is found on the computer generally ``ffmpeg`` (on linux) or ``'ffmpeg.exe`` (on windows).
+    Third option: If you want to use a binary at a special location on you disk, enter it like that:
+
+    FFMPEG_BINARY = r"path/to/ffmpeg" # on linux
+    FFMPEG_BINARY = r"path\to\ffmpeg.exe" # on windows
+
+    Warning: the 'r' before the path is important, especially on Windows.
+
+
+``IMAGEMAGICK_BINARY``
+
+	The default is `auto-detect`. 
+    For linux users, `convert` should be fine.
+    For Windows users, you must specify the path to the ImageMagick
+    'magick' binary. For instance::
+
+    	IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
+
+    Note: If you are using a legacy version, the executable could be ``convert.exe`` instead.  
+
 
 .. _`Numpy`: https://www.scipy.org/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator

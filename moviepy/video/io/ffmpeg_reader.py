@@ -13,7 +13,7 @@ import warnings
 
 import numpy as np
 
-from moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
+from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
 logging.captureWarnings(True)
@@ -91,7 +91,7 @@ class FFMPEG_VideoReader:
             i_arg = ["-i", self.filename]
 
         cmd = (
-            [get_setting("FFMPEG_BINARY")]
+            [FFMPEG_BINARY]
             + i_arg
             + [
                 "-loglevel",
@@ -262,7 +262,7 @@ def ffmpeg_parse_infos(
 
     # open the file in a pipe, provoke an error, read output
     is_GIF = filename.endswith(".gif")
-    cmd = [get_setting("FFMPEG_BINARY"), "-i", filename]
+    cmd = [FFMPEG_BINARY, "-i", filename]
     if is_GIF:
         cmd += ["-f", "null", "/dev/null"]
 

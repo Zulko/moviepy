@@ -68,7 +68,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above
 
 .. code:: bash
 
-    $ (sudo) pip install ez_setup
+    $ (sudo) pip install setuptools
 
 
 Optional but useful dependencies
@@ -82,11 +82,7 @@ You can install ``moviepy`` with all dependencies via:
 
 ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this:
-
-.. code:: python
-
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables. (see the doc).
 
 PyGame_ is needed for video and sound previews (not relevant if you intend to work with MoviePy on a server but essential for advanced video editing by hand).
 
@@ -97,20 +93,6 @@ For advanced image processing, you will need one or several of the following pac
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV 2.4.6`_ or a more recent version (one that provides the package ``cv2``) may be needed for some advanced image manipulation.
 - `Matplotlib`_
-
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, (except for windows users and Ubuntu 16.04LTS users).
-
-For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called ``magick``. It should look like this:
-
-.. code:: python
-
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
-
-If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
-
-For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
-
-PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
@@ -197,6 +179,7 @@ Maintainers
 - `@overdrivr`_
 - `@keikoro`_
 - `@ryanfox`_
+- `@mgaitan`_
 
 
 .. MoviePy links
@@ -235,3 +218,4 @@ Maintainers
 .. _`@overdrivr`: https://github.com/overdrivr
 .. _`@keikoro`: https://github.com/keikoro
 .. _`@ryanfox`: https://github.com/ryanfox
+.. _`@mgaitan: https://github.com/mgaitan

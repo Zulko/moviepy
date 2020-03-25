@@ -1,10 +1,8 @@
 """ Misc. bindings to ffmpeg and ImageMagick."""
 
 import os
-import subprocess as sp
-import sys
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import subprocess_call
 
 
@@ -15,7 +13,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
     """
     s = "%" + "%02d" % digits + "d.png"
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-f",
         "image2",
@@ -42,7 +40,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-ss",
         "%0.2f" % t1,

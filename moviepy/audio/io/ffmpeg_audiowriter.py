@@ -3,7 +3,7 @@ import subprocess as sp
 
 import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 
 
@@ -54,7 +54,7 @@ class FFMPEG_AudioWriter:
 
         cmd = (
             [
-                get_setting("FFMPEG_BINARY"),
+                FFMPEG_BINARY,
                 "-y",
                 "-loglevel",
                 "error" if logfile == sp.PIPE else "info",

@@ -4,7 +4,7 @@ import subprocess as sp
 import numpy as np
 import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import subprocess_call
 
@@ -61,7 +61,7 @@ def write_gif_with_tempfiles(
         logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
         cmd = (
             [
-                get_setting("IMAGEMAGICK_BINARY"),
+                IMAGEMAGICK_BINARY,
                 "-delay",
                 "%d" % delay,
                 "-dispose",
@@ -82,7 +82,7 @@ def write_gif_with_tempfiles(
     elif program == "ffmpeg":
 
         cmd = [
-            get_setting("FFMPEG_BINARY"),
+            FFMPEG_BINARY,
             "-y",
             "-f",
             "image2",
@@ -107,11 +107,11 @@ def write_gif_with_tempfiles(
         )
 
         if program == "ImageMagick":
-            error = error + (
+            error += (
                 "This error can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file config_defaults.py."
+                "path to the ImageMagick binary. Check the documentation."
             )
 
         raise IOError(error)
@@ -199,7 +199,7 @@ def write_gif(
         withmask = False
 
     cmd1 = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-loglevel",
         "error",
@@ -249,7 +249,7 @@ def write_gif(
     if program == "ImageMagick":
 
         cmd2 = [
-            get_setting("IMAGEMAGICK_BINARY"),
+            IMAGEMAGICK_BINARY,
             "-delay",
             "%.02f" % (delay),
             "-dispose",
@@ -273,14 +273,7 @@ def write_gif(
         if opt:
 
             cmd3 = (
-                [
-                    get_setting("IMAGEMAGICK_BINARY"),
-                    "-",
-                    "-fuzz",
-                    "%d" % fuzz + "%",
-                    "-layers",
-                    opt,
-                ]
+                [IMAGEMAGICK_BINARY, "-", "-fuzz", "%d" % fuzz + "%", "-layers", opt,]
                 + (["-colors", "%d" % colors] if colors is not None else [])
                 + [filename]
             )
@@ -309,11 +302,11 @@ def write_gif(
         )
 
         if program == "ImageMagick":
-            error = error + (
+            error += (
                 "This can be due to the fact that "
                 "ImageMagick is not installed on your computer, or "
                 "(for Windows users) that you didn't specify the "
-                "path to the ImageMagick binary in file config_defaults.py."
+                "path to the ImageMagick binary. Check the documentation."
             )
 
         raise IOError(error)

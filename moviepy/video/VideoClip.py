@@ -14,7 +14,7 @@ import proglog
 from imageio import imread, imsave
 
 from ..Clip import Clip
-from ..config import get_setting
+from ..config import IMAGEMAGICK_BINARY
 from ..decorators import (
     add_mask_if_none,
     apply_to_mask,
@@ -1205,7 +1205,7 @@ class TextClip(ImageClip):
             )
 
         cmd = [
-            get_setting("IMAGEMAGICK_BINARY"),
+            IMAGEMAGICK_BINARY,
             "-background",
             bg_color,
             "-fill",
@@ -1244,15 +1244,13 @@ class TextClip(ImageClip):
         try:
             subprocess_call(cmd, logger=None)
         except (IOError, OSError) as err:
-            error = "MoviePy Error: creation of %s failed because of the " "following error:\n\n%s.\n\n." % (
-                filename,
-                str(err),
-            ) + (
+            error = (
+                f"MoviePy Error: creation of {filename} failed because of the"
+                "following error:\n\n{err}.\n\n."
                 "This error can be due to the fact that ImageMagick "
                 "is not installed on your computer, or (for Windows "
                 "users) that you didn't specify the path to the "
-                "ImageMagick binary in file conf.py, or that the path "
-                "you specified is incorrect"
+                "ImageMagick binary. Check the documentation."
             )
             raise IOError(error)
 
@@ -1277,9 +1275,7 @@ class TextClip(ImageClip):
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
-        process = sp.Popen(
-            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg], **popen_params
-        )
+        process = sp.Popen([IMAGEMAGICK_BINARY, "-list", arg], **popen_params)
         result = process.communicate()[0]
         lines = result.splitlines()
 
