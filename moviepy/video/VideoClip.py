@@ -81,17 +81,11 @@ class VideoClip(Clip):
       See variable ``pos``.
 
     """
-<<<<<<< HEAD
-    def __init__(self, make_frame=None, ismask=False, duration=None,
-                 has_constant_size=True):
-        super().__init__()
-=======
 
     def __init__(
         self, make_frame=None, ismask=False, duration=None, has_constant_size=True
     ):
-        Clip.__init__(self)
->>>>>>> zulko/v2
+        super().__init__()
         self.mask = None
         self.audio = None
         self.pos = lambda t: (0, 0)

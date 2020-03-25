@@ -18,11 +18,23 @@ __all__ = [
     "VideoFileClip",
     "ImageSequenceClip",
     "download_webfile",
-    "VideoClip", "ImageClip", "ColorClip", "TextClip",
-    "CompositeVideoClip", "concatenate_videoclips",
-    "AudioClip", "CompositeAudioClip", "concatenate_audioclips",
-    "AudioFileClip", "vfx", "afx", "transfx", "videotools", 
-    "ffmpeg_tools", "ipython_display", "cvsecs"
+    "VideoClip",
+    "ImageClip",
+    "ColorClip",
+    "TextClip",
+    "CompositeVideoClip",
+    "concatenate_videoclips",
+    "AudioClip",
+    "CompositeAudioClip",
+    "concatenate_audioclips",
+    "AudioFileClip",
+    "vfx",
+    "afx",
+    "transfx",
+    "videotools",
+    "ffmpeg_tools",
+    "ipython_display",
+    "cvsecs",
 ]
 
 # Note that these imports could have been performed in the __init__.py
@@ -45,7 +57,7 @@ from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_arra
 from .video.compositing.concatenate import (
     concatenate_videoclips,
     concatenate,
-)  
+)
 from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
 from .audio.io.AudioFileClip import AudioFileClip
 
@@ -64,6 +76,7 @@ from .tools import cvsecs
 
 try:
     from .video.io.sliders import sliders
+
     __all__.append("sliders")
 except ImportError:
     pass
@@ -73,17 +86,17 @@ except ImportError:
 # myclip.fx( vfx.resize, width= 500)
 audio_fxs = inspect.getmembers(afx, inspect.isfunction)
 video_fxs = itertools.chain(
-    inspect.getmembers(vfx, inspect.isfunction), 
+    inspect.getmembers(vfx, inspect.isfunction),
     inspect.getmembers(transfx, inspect.isfunction),
-    audio_fxs
+    audio_fxs,
 )
 for name, function in video_fxs:
     setattr(VideoClip, name, function)
 
 for name, function in audio_fxs:
     setattr(AudioClip, name, function)
-    
-    
+
+
 # adds easy ipython integration
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
@@ -105,14 +118,17 @@ except ImportError:
         """NOT AVAILABLE : clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
 
+
 VideoClip.preview = preview
 VideoClip.show = show
 
 try:
     from moviepy.audio.io.preview import preview
 except ImportError:
+
     def preview(self, *args, **kwargs):
         """ NOT AVAILABLE : clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
+
 
 AudioClip.preview = preview
