@@ -20,7 +20,7 @@ def audio_loop(clip, nloops=None, duration=None):
     try:
         clip = clip.audio
     except AttributeError:
-        # assume it's a an audioclip
+        # assume it's already an audioclip
         pass
 
     if duration is not None:
