@@ -78,7 +78,7 @@ requires = [
 ]
 
 optional_reqs = [
-    "dotenv>=0.10.0",
+    "python-dotenv>=0.10.0",
     "opencv-python>=3.0,<4.0",
     "scikit-image>=0.13.0,<1.0",
     "scikit-learn",
