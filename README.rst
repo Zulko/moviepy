@@ -195,6 +195,7 @@ Maintainers
 
 - Zulko_ (owner)
 - `@tburrows13`_
+- `@mgaitan`_
 - `@earney`_
 - `@mbeacom`_
 - `@overdrivr`_
@@ -232,6 +233,7 @@ Maintainers
 
 .. People
 .. _Zulko: https://github.com/Zulko
+.. _`@mgaitan`: https://github.com/mgaitan
 .. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
 .. _`@mbeacom`: https://github.com/mbeacom
