@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.Clip &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.Clip &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -165,16 +165,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="p">(</span><span class="n">apply_to_mask</span><span class="p">,</span>
-                                <span class="n">apply_to_audio</span><span class="p">,</span>
-                                <span class="n">requires_duration</span><span class="p">,</span>
-                                <span class="n">outplace</span><span class="p">,</span>
-                                <span class="n">convert_to_seconds</span><span class="p">,</span>
-                                <span class="n">use_clip_fps_by_default</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="p">(</span><span class="n">apply_to_audio</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="p">,</span>
+                                <span class="n">convert_to_seconds</span><span class="p">,</span> <span class="n">outplace</span><span class="p">,</span>
+                                <span class="n">requires_duration</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Clip"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip">[docs]</a><span class="k">class</span> <span class="nc">Clip</span><span class="p">:</span>
@@ -305,11 +303,10 @@
             <span class="n">apply_to</span> <span class="o">=</span> <span class="p">[</span><span class="n">apply_to</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">apply_to</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">new_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span><span class="p">)</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">new_a</span><span class="p">)</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
+            <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
+                <span class="n">new_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">new_a</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">newclip</span></div>
 
@@ -662,7 +659,6 @@
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
-
 </pre></div>
 
            </div>

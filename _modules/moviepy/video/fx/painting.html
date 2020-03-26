@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.fx.painting &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.video.fx.painting &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -173,6 +173,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+
 <span class="k">def</span> <span class="nf">to_painting</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">saturation</span> <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span><span class="n">black</span> <span class="o">=</span> <span class="mf">0.006</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; transforms any photo into some kind of painting &quot;&quot;&quot;</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="n">sobel</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
@@ -200,7 +201,6 @@
     
     <span class="n">painting</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
 <span class="c1">#----------------------------------------------------------------------- </span>
-
 </pre></div>
 
            </div>

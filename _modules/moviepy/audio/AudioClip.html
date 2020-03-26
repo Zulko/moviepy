@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.audio.AudioClip &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.audio.AudioClip &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -159,14 +159,15 @@
             
   <h1>Source code for moviepy.audio.AudioClip</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
 <span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
+<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
 <span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
 <span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">deprecated_version_of</span><span class="p">,</span> <span class="n">extensions_dict</span>
-
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 
 <div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
@@ -477,12 +478,8 @@
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">CompositeAudioClip</span><span class="p">(</span><span class="n">newclips</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-    <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span>
-
+    <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span> <span class="k">if</span> <span class="n">fpss</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 

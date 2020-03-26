@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.decorators &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.decorators &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -163,8 +163,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">decorator</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
 
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
 
 
 <div class="viewcode-block" id="outplace"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.outplace">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
@@ -187,7 +187,7 @@
 <span class="sd">        the clip created with f &quot;&quot;&quot;</span>
         
     <span class="n">newclip</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">mask</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span></div>
 
@@ -199,7 +199,7 @@
 <span class="sd">        the clip created with f &quot;&quot;&quot;</span>
         
     <span class="n">newclip</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
         <span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="o">.</span><span class="n">audio</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span></div>
 
@@ -272,14 +272,12 @@
     <span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">fps</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">fps</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">clip</span><span class="o">.</span><span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fps</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;No &#39;fps&#39; (frames per second) attribute specified&quot;</span>
+        <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fps</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;No &#39;fps&#39; (frames per second) attribute specified&quot;</span>
                 <span class="s2">&quot; for function </span><span class="si">%s</span><span class="s2"> and the clip has no &#39;fps&#39; attribute. Either&quot;</span>
                 <span class="s2">&quot; provide e.g. fps=24 in the arguments of the function, or define&quot;</span>
-                <span class="s2">&quot; the clip&#39;s fps with `clip.fps=24`&quot;</span><span class="o">%</span><span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="s2">&quot; the clip&#39;s fps with `clip.fps=24`&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 
 
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;func_code&quot;</span><span class="p">):</span>

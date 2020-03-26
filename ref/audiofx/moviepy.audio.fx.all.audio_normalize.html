@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.audio.fx.all.audio_normalize &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.audio.fx.all.audio_normalize &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -189,8 +189,14 @@
 <dl class="function">
 <dt id="moviepy.audio.fx.all.audio_normalize">
 <code class="sig-prename descclassname">moviepy.audio.fx.all.</code><code class="sig-name descname">audio_normalize</code><span class="sig-paren">(</span><em class="sig-param">clip</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/audio/fx/audio_normalize.html#audio_normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#moviepy.audio.fx.all.audio_normalize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an audio (or video) clip whose volume is normalized
-to 0db.</p>
+<dd><p>Return a clip whose volume is normalized to 0db.</p>
+<p>Return an audio (or video) clip whose audio volume is normalized
+so that the maximum volume is at 0db, the maximum achievable volume.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">videoclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">afx</span><span class="o">.</span><span class="n">audio_normalize</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.audio.fx.audio_normalize &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.audio.fx.audio_normalize &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -159,12 +159,25 @@
             
   <h1>Source code for moviepy.audio.fx.audio_normalize</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">audio_video_fx</span>
+
 <span class="kn">from</span> <span class="nn">.volumex</span> <span class="kn">import</span> <span class="n">volumex</span>
+
 
 <div class="viewcode-block" id="audio_normalize"><a class="viewcode-back" href="../../../../ref/audiofx/moviepy.audio.fx.all.audio_normalize.html#moviepy.audio.fx.all.audio_normalize">[docs]</a><span class="nd">@audio_video_fx</span>
 <span class="k">def</span> <span class="nf">audio_normalize</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Return an audio (or video) clip whose volume is normalized</span>
-<span class="sd">        to 0db.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Return a clip whose volume is normalized to 0db.</span>
+
+<span class="sd">    Return an audio (or video) clip whose audio volume is normalized</span>
+<span class="sd">    so that the maximum volume is at 0db, the maximum achievable volume.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    ========</span>
+
+<span class="sd">    &gt;&gt;&gt; from moviepy.editor import *</span>
+<span class="sd">    &gt;&gt;&gt; videoclip = VideoFileClip(&#39;myvideo.mp4&#39;).fx(afx.audio_normalize)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="n">mv</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">max_volume</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">volumex</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">mv</span><span class="p">)</span></div>

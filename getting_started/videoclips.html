@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Creating and exporting video clips &mdash; MoviePy 1.0.1 documentation</title>
+  <title>Creating and exporting video clips &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -276,8 +276,8 @@ In this section we see how to create clips, (for instance from video or audio fi
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">myclip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Amiri-Bold&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The font can be any font installed on your computer, but ImageMagick will have specific names for it. For instance the <em>normal</em> Amiri font will be called <code class="docutils literal notranslate"><span class="pre">Amiri-Regular</span></code> while the Impact font will be called <code class="docutils literal notranslate"><span class="pre">Impact-Normal</span></code>. To get a list of the possible fonts, type <code class="docutils literal notranslate"><span class="pre">TextClip.list('fonts')</span></code>. To find all the font names related to a given font, use for instance</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TextClip</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Amiri&#39;</span><span class="p">,</span> <span class="s1">&#39;fonts&#39;</span><span class="p">)</span> <span class="c1"># Returns all font names containing Amiri</span>
+<p>The font can be any font installed on your computer, but ImageMagick will have specific names for it. For instance the <em>normal</em> Amiri font will be called <code class="docutils literal notranslate"><span class="pre">Amiri-Regular</span></code> while the Impact font will be called <code class="docutils literal notranslate"><span class="pre">Impact-Normal</span></code>. To get a list of the possible fonts, type <code class="docutils literal notranslate"><span class="pre">TextClip.list('font')</span></code>. To find all the font names related to a given font, use for instance</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TextClip</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Amiri&#39;</span><span class="p">,</span> <span class="s1">&#39;font&#39;</span><span class="p">)</span> <span class="c1"># Returns all font names containing Amiri</span>
 </pre></div>
 </div>
 <p>Note also that the use of a stroke (or contour) will not work well on small letters, so if you need a small text with a contour, it is better to generate a big text, then downsize it:</p>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.fx.crop &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.video.fx.crop &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -158,9 +158,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.crop</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="crop"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.crop.html#moviepy.video.fx.all.crop">[docs]</a><span></span><span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">width</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-         <span class="n">x_center</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="crop"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.crop.html#moviepy.video.fx.all.crop">[docs]</a><span></span><span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x_center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a new clip in which just a rectangular subregion of the</span>
 <span class="sd">    original clip is conserved. x1,y1 indicates the top left corner and</span>
@@ -190,38 +188,29 @@
 <span class="sd">    &gt;&gt;&gt; crop(x_center=300, width=400, y1=100, y2=600)</span>
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
-    
-    <span class="k">if</span> <span class="n">width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">x1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">x2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">x1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span><span class="o">+</span><span class="n">width</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">x1</span> <span class="o">=</span> <span class="n">x2</span><span class="o">-</span><span class="n">width</span>
-    
-    <span class="k">if</span> <span class="n">height</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">y2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">y1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span><span class="o">+</span><span class="n">height</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">y1</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">height</span>
-    
+
+    <span class="k">if</span> <span class="n">width</span> <span class="ow">and</span> <span class="n">x1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">width</span>
+    <span class="k">elif</span> <span class="n">width</span> <span class="ow">and</span> <span class="n">x2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">width</span>
+
+    <span class="k">if</span> <span class="n">height</span> <span class="ow">and</span> <span class="n">y1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">height</span>
+    <span class="k">elif</span> <span class="n">height</span> <span class="ow">and</span> <span class="n">y2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">y2</span> <span class="o">-</span> <span class="n">height</span>
+
     <span class="k">if</span> <span class="n">x_center</span><span class="p">:</span>
-        <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x_center</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span>
-    
+        <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x_center</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">x_center</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
+
     <span class="k">if</span> <span class="n">y_center</span><span class="p">:</span>
-        <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">y_center</span> <span class="o">-</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">y_center</span> <span class="o">+</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span>
-    
-    <span class="k">if</span> <span class="n">x1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="n">y1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">y1</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">if</span> <span class="n">x2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">x2</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">y2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">y2</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    
-    <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span>
-            <span class="k">lambda</span> <span class="n">pic</span><span class="p">:</span> <span class="n">pic</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">y1</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">y2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x1</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">x2</span><span class="p">)],</span>
-            <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">])</span></div>
+        <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">y_center</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y_center</span> <span class="o">+</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">y1</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">x2</span> <span class="ow">or</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">y2</span> <span class="ow">or</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pic</span><span class="p">:</span> <span class="n">pic</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">y1</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">y2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x2</span><span class="p">)],</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">])</span></div>
 </pre></div>
 
            </div>

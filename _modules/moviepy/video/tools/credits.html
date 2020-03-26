@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.tools.credits &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.video.tools.credits &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -164,9 +164,9 @@
 <span class="sd">matter.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">ImageClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.fx.resize</span> <span class="kn">import</span> <span class="n">resize</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">TextClip</span>
 
 
 <div class="viewcode-block" id="credits1"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.credits.credits1">[docs]</a><span class="k">def</span> <span class="nf">credits1</span><span class="p">(</span><span class="n">creditfile</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">stroke_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
@@ -233,39 +233,37 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># PARSE THE TXT FILE</span>
-    
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">creditfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    
-    <span class="n">lines</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">lines</span><span class="p">)</span>
     <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">oneline</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.blank&#39;</span><span class="p">):</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">creditfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">)):</span>
+                <span class="c1"># exclude blank lines or comments</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.blank&#39;</span><span class="p">):</span>
+                <span class="c1"># ..blank n  </span>
                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])):</span>
                     <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">])</span>
             <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">):</span>
                 <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
                 <span class="n">oneline</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">oneline</span><span class="p">:</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+                <span class="n">oneline</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">oneline</span><span class="p">:</span>
-                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
-                    <span class="n">oneline</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
-               
-    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">texts</span><span class="p">)]</span>
+                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
+       
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">texts</span><span class="p">))</span>
     
-    <span class="c1"># MAKE TWO COLUMNS FOR THE CREDITS</span>
-    
+    <span class="c1"># MAKE TWO COLUMNS FOR THE CREDITS    </span>
     <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">stroke_color</span><span class="o">=</span><span class="n">stroke_color</span><span class="p">,</span>
                             <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                             <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">al</span><span class="p">)</span>
                    <span class="k">for</span> <span class="n">txt</span><span class="p">,</span> <span class="n">al</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;East&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="s1">&#39;West&#39;</span><span class="p">)]]</span>
 
-    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_pos</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">gap</span><span class="p">,</span> <span class="mi">0</span><span class="p">))],</span>
-                            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">right</span><span class="o">.</span><span class="n">w</span><span class="o">+</span><span class="n">gap</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="mi">0</span><span class="p">))],</span>
+                            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
                             <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     
     <span class="c1"># SCALE TO THE REQUIRED SIZE</span>

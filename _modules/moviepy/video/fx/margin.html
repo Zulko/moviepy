@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.fx.margin &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.video.fx.margin &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -159,6 +159,7 @@
             
   <h1>Source code for moviepy.video.fx.margin</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_mask</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span>
 
@@ -215,8 +216,6 @@
             <span class="n">im</span><span class="p">[</span><span class="n">top</span><span class="p">:</span><span class="n">top</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span><span class="n">left</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span> <span class="o">=</span> <span class="n">pic</span>
             <span class="k">return</span> <span class="n">im</span>
         <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fl</span><span class="p">)</span></div>
-            
-    
 </pre></div>
 
            </div>

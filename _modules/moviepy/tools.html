@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.tools &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.tools &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -161,15 +161,15 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Misc. useful functions that can be used at many places in the program.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">import</span> <span class="nn">re</span>
+
 <span class="kn">import</span> <span class="nn">proglog</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">DEVNULL</span>
+
 
 
 <span class="k">def</span> <span class="nf">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
@@ -225,38 +225,40 @@
     <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
+
 <span class="k">def</span> <span class="nf">cvsecs</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Will convert any time into seconds.</span>
-<span class="sd">    Here are the accepted formats:</span>
+    <span class="sd">&quot;&quot;&quot; Will convert any time into seconds. </span>
+<span class="sd">    </span>
+<span class="sd">    If the type of `time` is not valid, </span>
+<span class="sd">    it&#39;s returned as is. </span>
 
-<span class="sd">    &gt;&gt;&gt; cvsecs(15.4) -&gt; 15.4 # seconds</span>
-<span class="sd">    &gt;&gt;&gt; cvsecs( (1,21.5) ) -&gt; 81.5 # (min,sec)</span>
-<span class="sd">    &gt;&gt;&gt; cvsecs( (1,1,2) ) -&gt; 3662 # (hr, min, sec)</span>
-<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33.5&#39;) -&gt; 3693.5  #(hr,min,sec)</span>
-<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33.045&#39;) -&gt; 3693.045</span>
-<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33,5&#39;) #coma works too</span>
+<span class="sd">    Here are the accepted formats::</span>
+
+<span class="sd">    &gt;&gt;&gt; cvsecs(15.4)   # seconds </span>
+<span class="sd">    15.4 </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs((1, 21.5))   # (min,sec) </span>
+<span class="sd">    81.5 </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs((1, 1, 2))   # (hr, min, sec)  </span>
+<span class="sd">    3662  </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33.045&#39;) </span>
+<span class="sd">    3693.045</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33,5&#39;)    # coma works too</span>
+<span class="sd">    3693.5</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;1:33,5&#39;)    # only minutes and secs</span>
+<span class="sd">    99.5</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;33.5&#39;)      # only secs</span>
+<span class="sd">    33.5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>     
+        <span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)]</span>
 
-    <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;,&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">time</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;.&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">time</span><span class="p">):</span>
-            <span class="n">time</span> <span class="o">=</span> <span class="n">time</span> <span class="o">+</span> <span class="s1">&#39;.0&#39;</span>
-        <span class="n">expr</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\d+):(\d+):(\d+)[,|.](\d+)&quot;</span>
-        <span class="n">finds</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">time</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">nums</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span> <span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">finds</span><span class="p">)</span> <span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span> <span class="mi">3600</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">finds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="o">+</span> <span class="mi">60</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">finds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">finds</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                <span class="o">+</span> <span class="n">nums</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="nb">len</span><span class="p">(</span><span class="n">finds</span><span class="p">[</span><span class="mi">3</span><span class="p">])))</span>
-
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">hr</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">sec</span> <span class="o">=</span> <span class="n">time</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">time</span><span class="p">)</span><span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">hr</span><span class="p">,</span> <span class="n">mn</span><span class="p">,</span> <span class="n">sec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="mi">3600</span><span class="o">*</span><span class="n">hr</span> <span class="o">+</span> <span class="mi">60</span><span class="o">*</span><span class="n">mn</span> <span class="o">+</span> <span class="n">sec</span>
-
-    <span class="k">else</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
         <span class="k">return</span> <span class="n">time</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="n">part</span> <span class="k">for</span> <span class="n">mult</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span>
+
 
 <span class="k">def</span> <span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Indicates that a function is deprecated and has a new name.</span>
@@ -318,11 +320,21 @@
 <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="s2">&quot;bmp&quot;</span><span class="p">,</span> <span class="s2">&quot;tiff&quot;</span><span class="p">]:</span>
     <span class="n">extensions_dict</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;image&#39;</span><span class="p">}</span>
 
+
 <span class="k">def</span> <span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">extensions_dict</span><span class="p">:</span>
+        <span class="c1"># codec is already the extension</span>
+        <span class="k">return</span> <span class="n">codec</span>
+
     <span class="k">for</span> <span class="n">ext</span><span class="p">,</span><span class="n">infos</span> <span class="ow">in</span> <span class="n">extensions_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;codec&#39;</span> <span class="ow">in</span> <span class="n">infos</span><span class="p">)</span> <span class="ow">and</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">infos</span><span class="p">[</span><span class="s1">&#39;codec&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;codec&#39;</span><span class="p">,</span> <span class="p">[]):</span>
             <span class="k">return</span> <span class="n">ext</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="s2">&quot;The audio_codec you chose is unknown by MoviePy. &quot;</span>
+        <span class="s2">&quot;You should report this. In the meantime, you can &quot;</span>
+        <span class="s2">&quot;specify a temp_audiofile with the right extension &quot;</span>
+        <span class="s2">&quot;in write_videofile.&quot;</span>
+    <span class="p">)</span>
 </pre></div>
 
            </div>

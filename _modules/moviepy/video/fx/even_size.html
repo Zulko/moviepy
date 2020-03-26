@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.fx.even_size &mdash; MoviePy 1.0.1 documentation</title>
+  <title>moviepy.video.fx.even_size &mdash; MoviePy 1.0.2 documentation</title>
   
 
   
@@ -158,31 +158,28 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.even_size</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_mask</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_mask</span>
 
 <div class="viewcode-block" id="even_size"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.even_size.html#moviepy.video.fx.all.even_size">[docs]</a><span class="nd">@apply_to_mask</span>
 <span class="k">def</span> <span class="nf">even_size</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Crops the clip to make dimensions even.</span>
-
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    Crops the clip to make dimensions even.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">w</span><span class="p">,</span><span class="n">h</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="o">%</span><span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">h</span><span class="o">%</span><span class="mi">2</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">w_even</span> <span class="o">=</span> <span class="n">w</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">h_even</span> <span class="o">=</span> <span class="n">h</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">w_even</span> <span class="ow">and</span> <span class="n">h_even</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">clip</span>
     
-    <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">h</span><span class="o">%</span><span class="mi">2</span><span class="o">!=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">w_even</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">h_even</span><span class="p">:</span>
         <span class="n">fl_image</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span> <span class="p">:</span> <span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">w</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="n">w_even</span><span class="p">:</span>
         <span class="n">fl_image</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span> <span class="p">:</span> <span class="n">a</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">fl_image</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">a</span> <span class="p">:</span> <span class="n">a</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,:,:]</span>
 
     <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">fl_image</span><span class="p">(</span><span class="n">fl_image</span><span class="p">)</span></div>
-
-
 </pre></div>
 
            </div>
