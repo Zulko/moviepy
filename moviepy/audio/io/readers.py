@@ -133,10 +133,7 @@ class FFMPEG_AudioReader:
         result = (1.0 * result / 2 ** (8 * self.nbytes - 1)).reshape(
             (int(len(result) / self.nchannels), self.nchannels)
         )
-        pad = np.zeros(
-            (chunksize - len(result), self.nchannels),
-            dtype=result.dtype,
-        )
+        pad = np.zeros((chunksize - len(result), self.nchannels), dtype=result.dtype)
         result = np.concatenate([result, pad])
         # self.proc.stdout.flush()
         self.pos = self.pos + chunksize

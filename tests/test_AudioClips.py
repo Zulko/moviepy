@@ -36,6 +36,7 @@ def test_audioclip():
     clip = AudioClip(make_frame, duration=2, fps=22050)
     clip.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"))
 
+
 def test_audioclip_io():
     # Generate a random audio clip of 4.989 seconds at 44100 Hz,
     # and save it to a file.
@@ -49,8 +50,9 @@ def test_audioclip_io():
     # to the original signal.
     clip = AudioFileClip(os.path.join(TMP_DIR, "random.wav"))
     output_array = clip.to_soundarray()
-    assert np.abs(output_array[:len(input_array)] - input_array).max() < 4e-5
-    assert (output_array[len(input_array):] == 0).all()
+    assert np.abs(output_array[: len(input_array)] - input_array).max() < 4e-5
+    assert (output_array[len(input_array) :] == 0).all()
+
 
 def test_audioclip_concat():
     make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
