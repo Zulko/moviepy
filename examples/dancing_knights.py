@@ -36,52 +36,71 @@ from moviepy.video.tools.cuts import find_video_period
 if not os.path.exists("knights.mp4"):
     os.system("youtube-dl zvCvOC2VwDc -o knights.mp4")
     os.system("youtube-dl lkY3Ek9VPtg -o frontier.mp4")
-#==========
+# ==========
 
 
 # LOAD, EDIT, ANALYZE THE AUDIO
 
 
-audio = (AudioFileClip("frontier.mp4")
-         .subclip((4,7), (4,18))
-         .audio_fadein(1)
-         .audio_fadeout(1))
+audio = (
+    AudioFileClip("frontier.mp4")
+    .subclip((4, 7), (4, 18))
+    .audio_fadein(1)
+    .audio_fadeout(1)
+)
 
 audio_period = find_audio_period(audio)
-print ('Analyzed the audio, found a period of %.02f seconds'%audio_period)
+print("Analyzed the audio, found a period of %.02f seconds" % audio_period)
 
 
 # LOAD, EDIT, ANALYZE THE VIDEO
 
 
-clip = (VideoFileClip("./knights.mp4", audio=False)
-        .subclip((1,24.15),(1,26))
-        .crop(x1=332, x2=910, y2=686))
+clip = (
+    VideoFileClip("./knights.mp4", audio=False)
+    .subclip((1, 24.15), (1, 26))
+    .crop(x1=332, x2=910, y2=686)
+)
 
-video_period = find_video_period(clip, tmin=.3)
-print ('Analyzed the video, found a period of %.02f seconds'%video_period)
+video_period = find_video_period(clip, tmin=0.3)
+print("Analyzed the video, found a period of %.02f seconds" % video_period)
 
-edited_right = (clip.subclip(0,video_period)
-                .speedx(final_duration=2*audio_period)
-                .fx(vfx.loop, duration=audio.duration)
-                .subclip(.25))
+edited_right = (
+    clip.subclip(0, video_period)
+    .speedx(final_duration=2 * audio_period)
+    .fx(vfx.loop, duration=audio.duration)
+    .subclip(0.25)
+)
 
 edited_left = edited_right.fx(vfx.mirror_x)
 
-dancing_knights = (clips_array([[edited_left, edited_right]])
-                   .fadein(1).fadeout(1).set_audio(audio).subclip(.3))
+dancing_knights = (
+    clips_array([[edited_left, edited_right]])
+    .fadein(1)
+    .fadeout(1)
+    .set_audio(audio)
+    .subclip(0.3)
+)
 
 # MAKE THE TITLE SCREEN
 
 
-txt_title = (TextClip("15th century dancing\n(hypothetical)", fontsize=70,
-               font="Century-Schoolbook-Roman", color="white")
-             .margin(top=15, opacity=0)
-             .set_position(("center","top")))
+txt_title = (
+    TextClip(
+        "15th century dancing\n(hypothetical)",
+        fontsize=70,
+        font="Century-Schoolbook-Roman",
+        color="white",
+    )
+    .margin(top=15, opacity=0)
+    .set_position(("center", "top"))
+)
 
-title = (CompositeVideoClip([dancing_knights.to_ImageClip(), txt_title])
-         .fadein(.5)
-         .set_duration(3.5))
+title = (
+    CompositeVideoClip([dancing_knights.to_ImageClip(), txt_title])
+    .fadein(0.5)
+    .set_duration(3.5)
+)
 
 
 # MAKE THE CREDITS SCREEN
@@ -103,17 +122,27 @@ Video editing © Zulko 2014
 Edited with MoviePy: http://zulko.github.io/moviepy/
 """
 
-credits = (TextClip(txt_credits, color='white',
-            font="Century-Schoolbook-Roman", fontsize=35, kerning=-2,
-            interline=-1, bg_color='black', size=title.size)
-          .set_duration(2.5)
-          .fadein(.5)
-          .fadeout(.5))
+credits = (
+    TextClip(
+        txt_credits,
+        color="white",
+        font="Century-Schoolbook-Roman",
+        fontsize=35,
+        kerning=-2,
+        interline=-1,
+        bg_color="black",
+        size=title.size,
+    )
+    .set_duration(2.5)
+    .fadein(0.5)
+    .fadeout(0.5)
+)
 
 
 # ASSEMBLE EVERYTHING, WRITE TO FILE
 
 final = concatenate_videoclips([title, dancing_knights, credits])
 
-final.write_videofile("dancing_knights.mp4", fps=clip.fps,
-                      audio_bitrate="1000k", bitrate="4000k")
+final.write_videofile(
+    "dancing_knights.mp4", fps=clip.fps, audio_bitrate="1000k", bitrate="4000k"
+)
