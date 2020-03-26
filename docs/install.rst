@@ -19,7 +19,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
     (sudo) python setup.py install
 
-MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
 MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the FFMPEG_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
@@ -49,8 +49,8 @@ For advanced image processing you will need one or several of these packages. Fo
 If you are on linux, these packages will likely be in your repos.
 
 .. _`Numpy`: https://www.scipy.org/install.html
-.. _Decorator: https://pypi.python.org/pypi/decorator
-.. _tqdm: https://pypi.python.org/pypi/tqdm
+.. _decorator: https://pypi.python.org/pypi/decorator
+.. _proglog: https://pypi.org/project/proglog/
 
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 

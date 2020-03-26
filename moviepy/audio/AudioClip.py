@@ -2,7 +2,6 @@ import os
 
 import numpy as np
 import proglog
-from tqdm import tqdm
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip

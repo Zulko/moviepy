@@ -53,7 +53,7 @@ As there are more and more people seeking support (320 open issues as of Sept. 2
 Installation
 ------------
 
-MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
 
 **Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
 
@@ -225,7 +225,7 @@ Maintainers
 .. _imageio: https://imageio.github.io/
 .. _`Scikit Image`: https://scikit-image.org/docs/stable/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
-.. _tqdm: https://github.com/noamraph/tqdm
+.. _proglog: https://github.com/Edinburgh-Genome-Foundry/Proglog
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 .. _ImageMagick: https://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
