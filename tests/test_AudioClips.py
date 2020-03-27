@@ -50,7 +50,7 @@ def test_audioclip_io():
     # to the original signal.
     clip = AudioFileClip(os.path.join(TMP_DIR, "random.wav"))
     output_array = clip.to_soundarray()
-    assert_array_almost_equal(output_array[:len(input_array)], input_array, decimal=4) 
+    assert_array_almost_equal(output_array[: len(input_array)], input_array, decimal=4)
     assert (output_array[len(input_array) :] == 0).all()
 
 
