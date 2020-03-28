@@ -125,7 +125,7 @@ Running `build_docs` has additional dependencies that require installation.
 
 .. code:: bash
 
-    $ (sudo) pip install moviepy[docs]
+    $ (sudo) pip install moviepy[doc]
 
 The documentation can be generated and viewed via:
 
