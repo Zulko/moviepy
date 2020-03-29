@@ -215,7 +215,6 @@ def ffmpeg_write_video(
     withmask=False,
     write_logfile=False,
     audiofile=None,
-    verbose=True,
     threads=None,
     ffmpeg_params=None,
     logger="bar",
