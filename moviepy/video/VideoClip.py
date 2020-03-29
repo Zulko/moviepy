@@ -25,7 +25,6 @@ from ..decorators import (
     use_clip_fps_by_default,
 )
 from ..tools import (
-    deprecated_version_of,
     extensions_dict,
     find_extension,
     subprocess_call,
@@ -1034,21 +1033,6 @@ class ImageClip(VideoClip):
             if a is not None:
                 new_a = a.fl_time(time_func)
                 setattr(self, attr, new_a)
-
-
-# ##
-#
-# The old functions to_videofile, to_gif, to_images sequences have been
-# replaced by the more explicite write_videofile, write_gif, etc.
-
-VideoClip.set_pos = deprecated_version_of(VideoClip.set_position, "set_pos")
-VideoClip.to_videofile = deprecated_version_of(
-    VideoClip.write_videofile, "to_videofile"
-)
-VideoClip.to_gif = deprecated_version_of(VideoClip.write_gif, "to_gif")
-VideoClip.to_images_sequence = deprecated_version_of(
-    VideoClip.write_images_sequence, "to_images_sequence"
-)
 
 
 class ColorClip(ImageClip):
