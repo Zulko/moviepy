@@ -1,5 +1,6 @@
 def crop(
     clip,
+    *,
     x1=None,
     y1=None,
     x2=None,
@@ -29,8 +30,7 @@ def crop(
     
     Crop a rectangle centered in x,y=(300,400), width=50, height=150 :
     
-    >>> crop(clip,  x_center=300 , y_center=400,
-                        width=50, height=150)
+    >>> crop(clip, x_center=300, y_center=400, width=50, height=150)
     
     Any combination of the above should work, like for this rectangle
     centered in x=300, with explicit y-boundaries:
@@ -40,19 +40,26 @@ def crop(
     """
 
     if width and x1 is not None:
+        assert not x2, "If width and x1 is given, x2 should be None" 
         x2 = x1 + width
     elif width and x2 is not None:
+        assert not x1, "If width and x2 is given, x1 should be None"
         x1 = x2 - width
-
     if height and y1 is not None:
+        assert not y2, "If height and y1 is given, y2 should be None"
         y2 = y1 + height
     elif height and y2 is not None:
+        assert not y1, "If height and y2 is given, y1 should be None"
         y1 = y2 - height
 
     if x_center:
+        assert width, "If x_center is given, width should be given"
+        assert not x1 and not x2, "If x_center is given, x1 and x2 should be None"
         x1, x2 = x_center - width / 2, x_center + width / 2
 
     if y_center:
+        assert height, "If y_center is given, height should be given"
+        assert not y1 and not y2, "If y_center is given, y1 and y2 should be None"  
         y1, y2 = y_center - height / 2, y_center + height / 2
 
     x1 = x1 or 0
@@ -60,6 +67,7 @@ def crop(
     x2 = x2 or clip.size[0]
     y2 = y2 or clip.size[1]
 
-    return clip.fl_image(
-        lambda pic: pic[int(y1) : int(y2), int(x1) : int(x2)], apply_to=["mask"]
-    )
+    def crop_frame(frame):
+        return frame[int(y1) : int(y2), int(x1) : int(x2)]
+
+    return clip.fl_image(crop_frame, apply_to=["mask"])
