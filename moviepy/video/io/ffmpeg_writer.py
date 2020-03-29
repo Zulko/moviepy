@@ -241,9 +241,6 @@ def ffmpeg_write_video(
         threads=threads,
         ffmpeg_params=ffmpeg_params,
     ) as writer:
-
-        nframes = int(clip.duration * fps)
-
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
