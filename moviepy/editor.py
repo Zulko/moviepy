@@ -30,9 +30,7 @@ from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
 from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from .video.compositing.concatenate import (
-    concatenate_videoclips,
-)
+from .video.compositing.concatenate import concatenate_videoclips
 
 from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
 from .audio.io.AudioFileClip import AudioFileClip
