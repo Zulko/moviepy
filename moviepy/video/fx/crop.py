@@ -40,7 +40,7 @@ def crop(
     """
 
     if width and x1 is not None:
-        assert not x2, "If width and x1 is given, x2 should be None" 
+        assert not x2, "If width and x1 is given, x2 should be None"
         x2 = x1 + width
     elif width and x2 is not None:
         assert not x1, "If width and x2 is given, x1 should be None"
@@ -59,7 +59,7 @@ def crop(
 
     if y_center:
         assert height, "If y_center is given, height should be given"
-        assert not y1 and not y2, "If y_center is given, y1 and y2 should be None"  
+        assert not y1 and not y2, "If y_center is given, y1 and y2 should be None"
         y1, y2 = y_center - height / 2, y_center + height / 2
 
     x1 = x1 or 0
