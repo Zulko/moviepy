@@ -169,7 +169,6 @@ class AudioClip(Clip):
         bitrate=None,
         ffmpeg_params=None,
         write_logfile=False,
-        verbose=True,
         logger="bar",
     ):
         """ Writes an audio file from the AudioClip.
@@ -206,10 +205,7 @@ class AudioClip(Clip):
         write_logfile
           If true, produces a detailed logfile named filename + '.log'
           when writing the file
-
-        verbose
-          Boolean indicating whether to print infomation
-          
+  
         logger
           Either 'bar' or None or any Proglog logger
 

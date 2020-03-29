@@ -261,9 +261,6 @@ class VideoClip(Clip):
         logger
           Either "bar" for progress bar or None or any Proglog logger.
 
-        verbose (deprecated, kept for compatibility)
-          Formerly used for toggling messages on/off. Use logger=None now.
-
         Examples
         ========
 
@@ -322,7 +319,6 @@ class VideoClip(Clip):
                 audio_codec,
                 bitrate=audio_bitrate,
                 write_logfile=write_logfile,
-                verbose=verbose,
                 logger=logger,
             )
 
@@ -335,7 +331,6 @@ class VideoClip(Clip):
             preset=preset,
             write_logfile=write_logfile,
             audiofile=audiofile,
-            verbose=verbose,
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
