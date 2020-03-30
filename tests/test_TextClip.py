@@ -9,8 +9,22 @@ from moviepy.video.VideoClip import TextClip
 from .test_helper import FONT
 
 
-def test_fontlist():
-    TextClip.list("font")
+def test_list():
+    fonts = TextClip.list("font")
+    assert isinstance(fonts, list)
+    assert isinstance(fonts[0], str)
+
+    colors = TextClip.list("color")
+    assert isinstance(colors, list)
+    assert isinstance(colors[0], str)
+    assert "blue" in colors
+
+
+def test_search():
+    blues = TextClip.search("blue", "color")
+    assert isinstance(blues, list)
+    assert isinstance(blues[0], str)
+    assert "blue" in blues
 
 
 def test_duration():
@@ -43,4 +57,6 @@ def test_if_textclip_crashes_in_label_mode():
 
 
 if __name__ == "__main__":
-    pytest.main()
+    # pytest.main()
+    test_list()
+    test_search()

@@ -1269,8 +1269,8 @@ class TextClip(ImageClip):
 
     @staticmethod
     def list(arg):
-        """Returns the list of all valid entries for the argument of
-        ``TextClip`` given (can be ``font``, ``color``, etc...) """
+        """Returns a list of all valid entries for the ``font`` or ``color`` argument of
+        ``TextClip``"""
 
         popen_params = {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
 
@@ -1280,15 +1280,15 @@ class TextClip(ImageClip):
         process = sp.Popen(
             [get_setting("IMAGEMAGICK_BINARY"), "-list", arg], **popen_params
         )
-        result = process.communicate()[0]
+        result = process.communicate()[0].decode()
         lines = result.splitlines()
 
         if arg == "font":
-            return [l.decode("UTF-8")[8:] for l in lines if l.startswith(b"  Font:")]
+            return [l[8:] for l in lines if l.startswith("  Font:")]
         elif arg == "color":
-            return [l.split(b" ")[0] for l in lines[2:]]
+            return [l.split(" ")[0] for l in lines[5:]]
         else:
-            raise Exception("Moviepy:Error! Argument must equal " "'font' or 'color'")
+            raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
 
     @staticmethod
     def search(string, arg):
@@ -1296,7 +1296,7 @@ class TextClip(ImageClip):
            argument ``arg`` of ``TextClip``, for instance
 
            >>> # Find all the available fonts which contain "Courier"
-           >>> print ( TextClip.search('Courier', 'font') )
+           >>> print(TextClip.search('Courier', 'font'))
 
         """
         string = string.lower()
