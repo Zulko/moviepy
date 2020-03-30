@@ -44,14 +44,14 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
         if len(im1.shape) == 3:
             mask = np.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
-        new_im2[yp1:yp2, xp1:xp2] = (1.0 * mask * blitted + (1.0 - mask) * blit_region)
-    
-    return new_im2.astype('uint8') if (not ismask) else new_im2
+        new_im2[yp1:yp2, xp1:xp2] = 1.0 * mask * blitted + (1.0 - mask) * blit_region
+
+    return new_im2.astype("uint8") if (not ismask) else new_im2
 
 
-
-def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
-                   shape='linear', offset = 0):
+def color_gradient(
+    size, p1, p2=None, vector=None, r=None, col1=0, col2=1.0, shape="linear", offset=0
+):
     """Draw a linear, bilinear, or radial gradient.
     
     The result is a picture of size ``size``, whose color varies
@@ -114,70 +114,73 @@ def color_gradient(size,p1,p2=None,vector=None, r=None, col1=0,col2=1.0,
     >>> grad = color_gradient(blabla).astype('uint8')
     
     """
-    
+
     # np-arrayize and change x,y coordinates to y,x
-    w,h = size
-    
-    col1 = np.array(col1).astype(float) 
-    col2 = np.array(col2).astype(float) 
-    
-    if shape == 'bilinear':
+    w, h = size
+
+    col1 = np.array(col1).astype(float)
+    col2 = np.array(col2).astype(float)
+
+    if shape == "bilinear":
         if vector is None:
             vector = np.array(p2) - np.array(p1)
-        
-        m1, m2 = [ color_gradient(size, p1, vector=v, col1 = 1.0, col2 = 0,
-                                 shape = 'linear', offset= offset)
-                            for v in [vector,-vector]]
-                            
+
+        m1, m2 = [
+            color_gradient(
+                size, p1, vector=v, col1=1.0, col2=0, shape="linear", offset=offset
+            )
+            for v in [vector, -vector]
+        ]
+
         arr = np.maximum(m1, m2)
         if col1.size > 1:
-            arr = np.dstack(3*[arr])
-        return arr*col1 + (1-arr)*col2
-        
-    
+            arr = np.dstack(3 * [arr])
+        return arr * col1 + (1 - arr) * col2
+
     p1 = np.array(p1[::-1]).astype(float)
-    
+
     if vector is None and p2:
         p2 = np.array(p2[::-1])
-        vector = p2-p1
+        vector = p2 - p1
     else:
         vector = np.array(vector[::-1])
         p2 = p1 + vector
-    
-    if vector:    
+
+    if vector:
         norm = np.linalg.norm(vector)
-    
-    M = np.dstack(np.meshgrid(range(w),range(h))[::-1]).astype(float)
-    
-    if shape == 'linear':
-        
-        n_vec = vector/norm**2 # norm 1/norm(vector)
-        
-        p1 = p1 + offset*vector
-        arr = (M- p1).dot(n_vec)/(1-offset)
-        arr = np.minimum(1,np.maximum(0,arr))
+
+    M = np.dstack(np.meshgrid(range(w), range(h))[::-1]).astype(float)
+
+    if shape == "linear":
+
+        n_vec = vector / norm ** 2  # norm 1/norm(vector)
+
+        p1 = p1 + offset * vector
+        arr = (M - p1).dot(n_vec) / (1 - offset)
+        arr = np.minimum(1, np.maximum(0, arr))
         if col1.size > 1:
-            arr = np.dstack(3*[arr])
-        return arr*col1 + (1-arr)*col2
-    
-    elif shape == 'radial':
+            arr = np.dstack(3 * [arr])
+        return arr * col1 + (1 - arr) * col2
+
+    elif shape == "radial":
         if r is None:
-           r = norm
+            r = norm
 
         if r == 0:
-            arr = np.ones((h,w))
+            arr = np.ones((h, w))
         else:
             arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * r
-            arr = arr / ((1-offset)*r)
+            arr = arr / ((1 - offset) * r)
             arr = np.minimum(1.0, np.maximum(0, arr))
-                
-        if col1.size > 1:
-            arr = np.dstack(3*[arr])
-        return (1-arr)*col1 + arr*col2
-                
 
-def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
-                             col1=0,col2=1.0, grad_width=0):
+        if col1.size > 1:
+            arr = np.dstack(3 * [arr])
+        return (1 - arr) * col1 + arr * col2
+
+
+def color_split(
+    size, x=None, y=None, p1=None, p2=None, vector=None, col1=0, col2=1.0, grad_width=0
+):
     """Make an image splitted in 2 colored regions.
     
     Returns an array of size ``size`` divided in two regions called 1 and
@@ -223,39 +226,41 @@ def color_split(size,x=None,y=None,p1=None,p2=None,vector=None,
     >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
             
     """
-    
-    if grad_width or ( (x is None) and (y is None)):
+
+    if grad_width or ((x is None) and (y is None)):
         if p2 is not None:
-            vector = (np.array(p2) - np.array(p1))
+            vector = np.array(p2) - np.array(p1)
         elif x is not None:
-            vector = np.array([0,-1.0])
+            vector = np.array([0, -1.0])
             p1 = np.array([x, 0])
         elif y is not None:
             vector = np.array([1.0, 0.0])
-            p1 = np.array([0,y])
+            p1 = np.array([0, y])
 
-        x,y = vector
-        vector = np.array([y,-x]).astype('float')
+        x, y = vector
+        vector = np.array([y, -x]).astype("float")
         norm = np.linalg.norm(vector)
         vector = max(0.1, grad_width) * vector / norm
-        return color_gradient(size,p1,vector=vector,
-                              col1 = col1, col2 = col2, shape='linear')
+        return color_gradient(
+            size, p1, vector=vector, col1=col1, col2=col2, shape="linear"
+        )
     else:
         w, h = size
         shape = (h, w) if np.isscalar(col1) else (h, w, len(col1))
         arr = np.zeros(shape)
         if x:
-            arr[:,:x] = col1
-            arr[:,x:] = col2
+            arr[:, :x] = col1
+            arr[:, x:] = col2
         elif y:
             arr[:y] = col1
             arr[y:] = col2
         return arr
-     
+
     # if we are here, it means we didn't exit with a proper 'return'
-    print( "Arguments in color_split not understood !" )
+    print("Arguments in color_split not understood !")
     raise
-        
+
+
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     """ Draw an image with a circle.
     
@@ -264,6 +269,13 @@ def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     with a radius ``radius`` but slightly blurred on the border by ``blur``
     pixels
     """
-    offset = 1.0*(radius-blur)/radius if radius else 0              
-    return color_gradient(screensize,p1=center,r=radius, col1=col1,
-                          col2=col2, shape='radial', offset=offset)
+    offset = 1.0 * (radius - blur) / radius if radius else 0
+    return color_gradient(
+        screensize,
+        p1=center,
+        r=radius,
+        col1=col1,
+        col2=col2,
+        shape="radial",
+        offset=offset,
+    )

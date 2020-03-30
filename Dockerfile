@@ -13,7 +13,7 @@ RUN apt-get install -y locales && \
 ENV LC_ALL C.UTF-8
 
 # do we need all of these, maybe remove some of them?
-RUN pip install imageio numpy scipy matplotlib pandas sympy nose decorator tqdm pillow pytest requests
+RUN pip install imageio numpy scipy matplotlib pandas sympy nose decorator proglog pillow pytest requests
 
 # install scikit-image after the other deps, it doesn't cause errors this way.
 RUN pip install scikit-image sklearn

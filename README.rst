@@ -10,6 +10,9 @@ MoviePy
 .. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
     :target: https://travis-ci.org/Zulko/moviepy
     :alt: Build status on travis-ci
+.. image:: https://ci.appveyor.com/api/projects/status/github/zulko/moviepy?svg=true
+    :target: https://ci.appveyor.com/project/Zulko/moviepy
+    :alt: Build status on appveyor
 .. image:: https://coveralls.io/repos/github/Zulko/moviepy/badge.svg?branch=master
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
@@ -50,7 +53,7 @@ As there are more and more people seeking support (320 open issues as of Sept. 2
 Installation
 ------------
 
-MoviePy depends on the Python modules Numpy_, imageio_, Decorator_, and tqdm_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
 
 **Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
 
@@ -122,7 +125,7 @@ Running `build_docs` has additional dependencies that require installation.
 
 .. code:: bash
 
-    $ (sudo) pip install moviepy[docs]
+    $ (sudo) pip install moviepy[doc]
 
 The documentation can be generated and viewed via:
 
@@ -192,6 +195,7 @@ Maintainers
 
 - Zulko_ (owner)
 - `@tburrows13`_
+- `@mgaitan`_
 - `@earney`_
 - `@mbeacom`_
 - `@overdrivr`_
@@ -221,7 +225,7 @@ Maintainers
 .. _imageio: https://imageio.github.io/
 .. _`Scikit Image`: https://scikit-image.org/docs/stable/install.html
 .. _Decorator: https://pypi.python.org/pypi/decorator
-.. _tqdm: https://github.com/noamraph/tqdm
+.. _proglog: https://github.com/Edinburgh-Genome-Foundry/Proglog
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 .. _ImageMagick: https://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
@@ -229,6 +233,7 @@ Maintainers
 
 .. People
 .. _Zulko: https://github.com/Zulko
+.. _`@mgaitan`: https://github.com/mgaitan
 .. _`@tburrows13`: https://github.com/tburrows13
 .. _`@earney`: https://github.com/earney
 .. _`@mbeacom`: https://github.com/mbeacom
