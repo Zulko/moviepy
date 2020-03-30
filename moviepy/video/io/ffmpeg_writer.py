@@ -146,8 +146,9 @@ class FFMPEG_VideoWriter:
             error = str(err) + (
                 "\n\nMoviePy error: FFMPEG encountered "
                 "the following error while writing file %s:"
-                "\n\n %s" % (self.filename, str(ffmpeg_error)))
-              
+                "\n\n %s" % (self.filename, str(ffmpeg_error))
+            )
+
             if b"Unknown encoder" in ffmpeg_error:
 
                 error = error + (
