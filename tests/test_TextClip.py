@@ -57,6 +57,4 @@ def test_if_textclip_crashes_in_label_mode():
 
 
 if __name__ == "__main__":
-    # pytest.main()
-    test_list()
-    test_search()
+    pytest.main()
