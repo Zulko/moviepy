@@ -69,11 +69,13 @@ for method_name in afx.__all__:
 
 # These transitions effects are all contained in one file so there is no way to automatically
 # generate a list of them
-for method_name in ["crossfadein",
-                    "crossfadeout",
-                    "slide_in",
-                    "slide_out",
-                    "make_loopable"]:
+for method_name in [
+    "crossfadein",
+    "crossfadeout",
+    "slide_in",
+    "slide_out",
+    "make_loopable",
+]:
     exec("VideoClip.%s = transfx.%s" % (method_name, method_name))
 
 
@@ -97,6 +99,7 @@ except ImportError:
     def show(self, *args, **kwargs):
         """NOT AVAILABLE : clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
+
 
 VideoClip.preview = preview
 VideoClip.show = show
