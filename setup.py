@@ -59,7 +59,7 @@ if "build_docs" in sys.argv:
     except ImportError:
         raise ImportError(
             "Running the documenation builds has additional"
-            " dependencies. Please run (pip install moviepy[docs])"
+            " dependencies. Please run (pip install moviepy[doc])"
         )
 
     cmdclass["build_docs"] = BuildDoc
