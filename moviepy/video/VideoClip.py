@@ -161,6 +161,7 @@ class VideoClip(Clip):
         threads=None,
         ffmpeg_params=None,
         logger="bar",
+        with_mask=False,
     ):
         """Write the clip to a videofile.
 
@@ -264,12 +265,24 @@ class VideoClip(Clip):
         verbose (deprecated, kept for compatibility)
           Formerly used for toggling messages on/off. Use logger=None now.
 
+        with_mask
+          If video has alpha channel, and you want to keep it after processing, this parameter must be True
+          You can use any FFMPEG encoding format that supports alpha channels.
+          Examples are 'png、qtrle' for '.mov'
+          Note: 'png' encoding maybe takes long time, but the resulting video is small,
+                'qtrle' is the opposite
+
         Examples
         ========
 
         >>> from moviepy.editor import VideoFileClip
         >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
+        >>> clip.close()
+
+        #save alpha channel
+        >>> clip = VideoFileClip("myvideo.mov", has_mask=True).subclip(100,120)
+        >>> clip.write_videofile("my_new_video.mov", codec='png', with_mask=True)
         >>> clip.close()
 
         """
@@ -339,6 +352,7 @@ class VideoClip(Clip):
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
+            with_mask=with_mask,
         )
 
         if remove_temp and make_audio:
@@ -721,13 +735,25 @@ class VideoClip(Clip):
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
-    def set_audio(self, audioclip):
-        """Attach an AudioClip to the VideoClip.
-
-        Returns a copy of the VideoClip instance, with the `audio`
+    def set_audio(self, audioclip, start_time=0, keep_original=False):
+        """
+        Attach an AudioClip to the VideoClip.
+        :param audioclip: new audioclip
+        :param start_time: some case audio not start at 0s
+        :param keep_original: composite AudioClip
+        :return: Returns a copy of the VideoClip instance, with the `audio`
         attribute set to ``audio``, which must be an AudioClip instance.
         """
-        self.audio = audioclip
+        if start_time > 0:
+            from moviepy.editor import concatenate_audioclips
+            dummy = audioclip.audio_loop(duration=start_time).volumex(0).subclip(0, start_time)
+            audioclip = concatenate_audioclips([dummy, audioclip])
+
+        if self.audio is not None and keep_original:
+            from moviepy.editor import CompositeAudioClip
+            self.audio = CompositeAudioClip([self.audio, audioclip])
+        else:
+            self.audio = audioclip
 
     @outplace
     def set_mask(self, mask):
