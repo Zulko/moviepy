@@ -6,6 +6,10 @@ The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachang
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+
+
 ### Important Announcements
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
 
