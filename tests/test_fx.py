@@ -28,14 +28,21 @@ from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-from tests.test_helper import TMP_DIR, bitmap_to_clip, clip_to_frame_list, clip_frames_equal
+from tests.test_helper import (
+    TMP_DIR,
+    bitmap_to_clip,
+    clip_to_frame_list,
+    clip_frames_equal,
+)
 
 
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
 
+
 def test_accel_decel():
     pass
+
 
 def test_blackwhite():
     clip = get_test_video()
@@ -52,10 +59,7 @@ def test_blackwhite():
 
 
 def test_colorx():
-    color_dict = {"H": (0, 0, 200),
-                  "L": (0, 0, 50),
-                  "B": (0, 0, 255),
-                  "O": (0, 0, 0)}
+    color_dict = {"H": (0, 0, 200), "L": (0, 0, 50), "B": (0, 0, 255), "O": (0, 0, 0)}
     clip = bitmap_to_clip([["LLO", "BLO"]], color_dict=color_dict)
 
     clipfx = colorx(clip, 4)
@@ -85,8 +89,10 @@ def test_crop():
     clip6.write_videofile(os.path.join(TMP_DIR, "crop6.webm"))
     close_all_clips(locals())
 
+
 def test_even_size():
     pass
+
 
 def test_fadein():
     clip = get_test_video()
@@ -105,16 +111,17 @@ def test_fadeout():
 def test_freeze():
     pass
 
+
 def test_freeze_region():
     pass
+
 
 def test_gamma_corr():
     pass
 
+
 def test_headblur():
     pass
-
-
 
 
 def test_invert_colors():
@@ -168,16 +175,16 @@ def test_margin():
     # 1 pixel black margin
     clip2 = margin(clip, mar=1)
     target = [
-        ["OOOOO", "ORRRO", "ORRRO", "OOOOO", ],
-        ["OOOOO", "ORRBO", "ORRBO", "OOOOO", ],
+        ["OOOOO", "ORRRO", "ORRRO", "OOOOO",],
+        ["OOOOO", "ORRBO", "ORRBO", "OOOOO",],
     ]
     assert clip_frames_equal(bitmap_to_clip(target), clip2)
 
     # 1 pixel green margin
     clip3 = margin(clip, mar=1, color=(0, 255, 0))
     target = [
-        ["GGGGG", "GRRRG", "GRRRG", "GGGGG", ],
-        ["GGGGG", "GRRBG", "GRRBG", "GGGGG", ],
+        ["GGGGG", "GRRRG", "GRRRG", "GGGGG",],
+        ["GGGGG", "GRRBG", "GRRBG", "GGGGG",],
     ]
     assert clip_frames_equal(bitmap_to_clip(target), clip3)
 
