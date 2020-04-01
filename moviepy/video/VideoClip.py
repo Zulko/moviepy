@@ -34,6 +34,10 @@ from .io.ffmpeg_writer import ffmpeg_write_video
 from .io.gif_writers import write_gif, write_gif_with_image_io, write_gif_with_tempfiles
 from .tools.drawing import blit
 
+from moviepy.audio.fx.audio_loop import audio_loop
+from moviepy.audio.fx.volumex import volumex
+from moviepy.audio.AudioClip import concatenate_audioclips, CompositeAudioClip
+
 
 class VideoClip(Clip):
     """Base class for video clips.
@@ -735,7 +739,7 @@ class VideoClip(Clip):
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
-    def set_audio(self, audioclip, start_time=0, keep_original=False):
+    def set_audio(self, audioclip, start_time=0, keep_original=True):
         """
         Attach an AudioClip to the VideoClip.
         :param audioclip: new audioclip
@@ -745,12 +749,11 @@ class VideoClip(Clip):
         attribute set to ``audio``, which must be an AudioClip instance.
         """
         if start_time > 0:
-            from moviepy.editor import concatenate_audioclips
-            dummy = audioclip.audio_loop(duration=start_time).volumex(0).subclip(0, start_time)
+            dummy = audio_loop(audioclip, duration=start_time)
+            dummy = volumex(dummy, 0)
             audioclip = concatenate_audioclips([dummy, audioclip])
 
         if self.audio is not None and keep_original:
-            from moviepy.editor import CompositeAudioClip
             self.audio = CompositeAudioClip([self.audio, audioclip])
         else:
             self.audio = audioclip
