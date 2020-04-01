@@ -34,10 +34,6 @@ from .io.ffmpeg_writer import ffmpeg_write_video
 from .io.gif_writers import write_gif, write_gif_with_image_io, write_gif_with_tempfiles
 from .tools.drawing import blit
 
-from moviepy.audio.fx.audio_loop import audio_loop
-from moviepy.audio.fx.volumex import volumex
-from moviepy.audio.AudioClip import concatenate_audioclips, CompositeAudioClip
-
 
 class VideoClip(Clip):
     """Base class for video clips.
@@ -286,7 +282,11 @@ class VideoClip(Clip):
 
         #save alpha channel
         >>> clip = VideoFileClip("myvideo.mov", has_mask=True).subclip(100,120)
-        >>> clip.write_videofile("my_new_video.mov", codec='png', with_mask=True)
+        >>> clip.write_videofile("my_new_video.mov", codec='png', with_mask=True) # is ok
+        >>> clip.write_videofile("my_new_video.mov", codec='qtrle', with_mask=True) # is ok
+        >>> clip.write_videofile("my_new_video.mp4", codec='png', with_mask=True) # is also ok, because 'png' supports '.mp4'
+        >>> clip.write_videofile("my_new_video.mp4", codec='qtrle', with_mask=True) # is fail, FFMPEG will throw an exception: "codec not currently supported in container", because 'qtrle' not support '.mp4'
+        >>> clip.write_videofile("my_new_video.mp4", codec='libx264', with_mask=True) # is bad, because 'libx264' not support alpha channel, video will lose the alpha channel
         >>> clip.close()
 
         """
@@ -739,7 +739,7 @@ class VideoClip(Clip):
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
-    def set_audio(self, audioclip, start_time=0, keep_original=False):
+    def set_audio(self, audioclip):
         """
         Attach an AudioClip to the VideoClip.
         :param audioclip: new audioclip
@@ -748,15 +748,7 @@ class VideoClip(Clip):
         :return: Returns a copy of the VideoClip instance, with the `audio`
         attribute set to ``audio``, which must be an AudioClip instance.
         """
-        if start_time > 0:
-            dummy = audio_loop(audioclip, duration=start_time)
-            dummy = volumex(dummy, 0)
-            audioclip = concatenate_audioclips([dummy, audioclip])
-
-        if self.audio is not None and keep_original:
-            self.audio = CompositeAudioClip([self.audio, audioclip])
-        else:
-            self.audio = audioclip
+        self.audio = audioclip
 
     @outplace
     def set_mask(self, mask):
