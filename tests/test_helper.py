@@ -34,6 +34,7 @@ def bitmap_to_frame_list(bitmap_frames, color_dict=None):
       "RGGGR"]]
     """
     # "O" represents black
+    # "X", "Y", "Z" are arbitrary colours
     if color_dict is None:
         color_dict = {
             "R": (255, 0, 0),
@@ -41,6 +42,9 @@ def bitmap_to_frame_list(bitmap_frames, color_dict=None):
             "B": (0, 0, 255),
             "O": (0, 0, 0),
             "W": (255, 255, 255),
+            "X": (89, 225, 62),
+            "Y": (113, 157, 108),
+            "Z": (215, 182, 143),
         }
 
     output_array = []
@@ -62,7 +66,7 @@ def bitmap_to_clip(bitmap_frames, color_dict=None):
     """
     frame_list = bitmap_to_frame_list(bitmap_frames, color_dict=color_dict)
     make_frame = lambda t: frame_list[t]
-    return VideoClip(make_frame=make_frame, duration=len(frame_list)).set_fps(1)
+    return VideoClip(make_frame=make_frame, duration=len(frame_list) - 1).set_fps(1)
 
 
 def clip_to_frame_list(clip):
@@ -80,16 +84,12 @@ def clip_frames_equal(clip1, clip2):
     frames1 = clip_to_frame_list(clip1)
     frames2 = clip_to_frame_list(clip2)
     if len(frames1) != len(frames2):
-        print(len(frames1))
-        print(len(frames2))
+        print(f"Number of frames not equal: {len(frames1)} != {len(frames2)}")
         return False
 
     for i in range(len(frames1)):
         if not np.array_equal(frames1[i], frames2[i]):
-            print(i)
-            print(frames1[i])
-            print("----------")
-            print(frames2[i])
+            print(f"Frame {print(i)} is different: {frames1[i]} != {frames2[i]}")
             return False
 
     return True

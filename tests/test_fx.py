@@ -14,6 +14,7 @@ from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+from moviepy.video.fx.freeze import freeze
 from moviepy.video.fx.invert_colors import invert_colors
 from moviepy.video.fx.loop import loop
 from moviepy.video.fx.lum_contrast import lum_contrast
@@ -109,7 +110,23 @@ def test_fadeout():
 
 
 def test_freeze():
-    pass
+    clip = bitmap_to_clip([["R"], ["G"], ["B"]])  # 3 separate frames
+
+    clip1 = freeze(clip, t=1, freeze_duration=1)
+    target1 = bitmap_to_clip([["R"], ["G"], ["G"], ["B"]])
+    assert clip_frames_equal(clip1, target1)
+
+    clip2 = freeze(clip, t="end", freeze_duration=1)
+    target2 = bitmap_to_clip([["R"], ["G"], ["B"], ["B"]])
+    assert clip_frames_equal(clip2, target2)
+
+    clip3 = freeze(clip, t=1, total_duration=3)
+    target3 = bitmap_to_clip([["R"], ["G"], ["G"], ["B"]])
+    assert clip_frames_equal(clip3, target3)
+
+    clip4 = freeze(clip, t="end", total_duration=3, padding_end=1)
+    target4 = bitmap_to_clip([["R"], ["G"], ["G"], ["G"]])
+    assert clip_frames_equal(clip4, target4)
 
 
 def test_freeze_region():
@@ -202,6 +219,7 @@ def test_mask_or():
 
 
 def test_mirror_x():
+    clip = bitmap_to_clip([[""]])
     clip = get_test_video()
     clip1 = mirror_x(clip)
     clip1.write_videofile(os.path.join(TMP_DIR, "mirror_x1.webm"))
@@ -321,4 +339,4 @@ def test_normalize():
 
 
 if __name__ == "__main__":
-    pytest.main(args=["test_fx.py"])
+    pytest.main(args=["test_fx.py", "-v"])
