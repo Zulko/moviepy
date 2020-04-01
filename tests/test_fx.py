@@ -36,6 +36,8 @@ from tests.test_helper import TMP_DIR
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
 
+def test_accel_decel():
+    pass
 
 def test_accel_decel():
     pass
@@ -113,6 +115,8 @@ def test_even_size():
 
     pass
 
+def test_even_size():
+    pass
 
 def test_fadein():
     clip = get_test_video()
@@ -382,4 +386,4 @@ def test_normalize():
 
 
 if __name__ == "__main__":
-    pytest.main(args=["test_fx.py", "-v"])
+    pytest.main()

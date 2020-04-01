@@ -19,6 +19,14 @@ def test_aspect_ratio():
     assert clip.aspect_ratio == 1.5
 
 
+def test_aspect_ratio():
+    def make_frame(t):
+        return array([[0, 0, 0], [0, 0, 0]])
+
+    clip = VideoClip(make_frame=make_frame)
+    assert clip.aspect_ratio == 1.5
+
+
 def test_check_codec():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "not_a_video.mas")
