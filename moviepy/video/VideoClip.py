@@ -289,6 +289,7 @@ class VideoClip(Clip):
         >>> clip.write_videofile("my_new_video.mp4", codec='libx264', with_mask=True) # is bad, because 'libx264' not support alpha channel, video will lose the alpha channel
         >>> clip.close()
 
+
         """
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
