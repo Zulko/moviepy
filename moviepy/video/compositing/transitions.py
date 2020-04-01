@@ -59,7 +59,8 @@ def slide_in(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_in, 1, 'left')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx(transfx.slide_in, duration=1, side='left')])
                         for clip in clips]
     >>> final_clip = concatenate( slided_clips, padding=-1)
 
@@ -100,7 +101,8 @@ def slide_out(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_out, 1, 'bottom')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx(transfx.slide_out, duration=1, side='left')])
                         for clip in clips]
     >>> final_clip = concatenate( slided_clips, padding=-1)
 
@@ -109,10 +111,10 @@ def slide_out(clip, duration, side):
     w, h = clip.size
     ts = clip.duration - duration  # start time of the effect.
     pos_dict = {
-        "left": lambda t: (min(0, w * (1 - (t - ts) / duration)), "center"),
-        "right": lambda t: (max(0, w * ((t - ts) / duration - 1)), "center"),
-        "top": lambda t: ("center", min(0, h * (1 - (t - ts) / duration))),
-        "bottom": lambda t: ("center", max(0, h * ((t - ts) / duration - 1))),
+        "left": lambda t: (min(0, w * (-(t - ts) / duration)), "center"),
+        "right": lambda t: (max(0, w * ((t - ts) / duration)), "center"),
+        "top": lambda t: ("center", min(0, h * (-(t - ts) / duration))),
+        "bottom": lambda t: ("center", max(0, h * ((t - ts) / duration))),
     }
 
     return clip.set_position(pos_dict[side])
