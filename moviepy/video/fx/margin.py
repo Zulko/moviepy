@@ -46,6 +46,7 @@ def margin(
         return clip.fl_image(lambda pic: im)
 
     else:
+
         def fl(gf, t):
             pic = gf(t)
             h, w = pic.shape[:2]

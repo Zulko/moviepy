@@ -36,8 +36,6 @@ from tests.test_helper import TMP_DIR
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
 
-def test_accel_decel():
-    pass
 
 def test_accel_decel():
     pass
@@ -115,8 +113,10 @@ def test_even_size():
 
     pass
 
+
 def test_even_size():
     pass
+
 
 def test_fadein():
     clip = get_test_video()
@@ -150,6 +150,7 @@ def test_freeze():
     clip4 = freeze(clip, t="end", total_duration=4, padding_end=1)
     target4 = BitmapClip([["R"], ["G"], ["G"], ["B"]]).set_fps(1)
     assert clip4 == target4
+
 
 
 def test_freeze_region():
