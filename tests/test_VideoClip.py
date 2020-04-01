@@ -2,7 +2,7 @@ import os
 import sys
 
 import pytest
-from numpy import pi, sin
+from numpy import pi, sin, array
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -12,6 +12,14 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
 
 from .test_helper import TMP_DIR
+
+
+def test_aspect_ratio():
+    def make_frame(t):
+        return array([[0, 0, 0], [0, 0, 0]])
+
+    clip = VideoClip(make_frame=make_frame)
+    assert clip.aspect_ratio == 1.5
 
 
 def test_check_codec():

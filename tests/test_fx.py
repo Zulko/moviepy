@@ -28,12 +28,14 @@ from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, bitmap_to_clip, clip_to_frame_list, clip_frames_equal
 
 
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
 
+def test_accel_decel():
+    pass
 
 def test_blackwhite():
     clip = get_test_video()
@@ -50,10 +52,15 @@ def test_blackwhite():
 
 
 def test_colorx():
-    clip = get_test_video()
-    clip1 = colorx(clip, 2)
-    clip1.write_videofile(os.path.join(TMP_DIR, "colorx1.webm"))
-    close_all_clips(locals())
+    color_dict = {"H": (0, 0, 200),
+                  "L": (0, 0, 50),
+                  "B": (0, 0, 255),
+                  "O": (0, 0, 0)}
+    clip = bitmap_to_clip([["LLO", "BLO"]], color_dict=color_dict)
+
+    clipfx = colorx(clip, 4)
+    target = bitmap_to_clip([["HHO", "BHO"]], color_dict=color_dict)
+    assert clip_frames_equal(target, clipfx)
 
 
 def test_crop():
@@ -78,6 +85,8 @@ def test_crop():
     clip6.write_videofile(os.path.join(TMP_DIR, "crop6.webm"))
     close_all_clips(locals())
 
+def test_even_size():
+    pass
 
 def test_fadein():
     clip = get_test_video()
@@ -91,6 +100,21 @@ def test_fadeout():
     clip1 = fadeout(clip, 0.5)
     clip1.write_videofile(os.path.join(TMP_DIR, "fadeout1.webm"))
     close_all_clips(locals())
+
+
+def test_freeze():
+    pass
+
+def test_freeze_region():
+    pass
+
+def test_gamma_corr():
+    pass
+
+def test_headblur():
+    pass
+
+
 
 
 def test_invert_colors():
@@ -135,16 +159,27 @@ def test_make_loopable():
 
 
 def test_margin():
-    clip = get_test_video()
-    clip1 = margin(clip)  # does the default values change anything?
-    clip1.write_videofile(os.path.join(TMP_DIR, "margin1.webm"))
+    clip = bitmap_to_clip([["RRR", "RRR"], ["RRB", "RRB"]])
 
-    clip2 = margin(clip, mar=100)  # all margins are 100px
-    clip2.write_videofile(os.path.join(TMP_DIR, "margin2.webm"))
+    # Make sure that the default values leave clip unchanged
+    clip1 = margin(clip)
+    assert clip_frames_equal(clip, clip1)
 
-    clip3 = margin(clip, mar=100, color=(255, 0, 0))  # red margin
-    clip3.write_videofile(os.path.join(TMP_DIR, "margin3.webm"))
-    close_all_clips(locals())
+    # 1 pixel black margin
+    clip2 = margin(clip, mar=1)
+    target = [
+        ["OOOOO", "ORRRO", "ORRRO", "OOOOO", ],
+        ["OOOOO", "ORRBO", "ORRBO", "OOOOO", ],
+    ]
+    assert clip_frames_equal(bitmap_to_clip(target), clip2)
+
+    # 1 pixel green margin
+    clip3 = margin(clip, mar=1, color=(0, 255, 0))
+    target = [
+        ["GGGGG", "GRRRG", "GRRRG", "GGGGG", ],
+        ["GGGGG", "GRRBG", "GRRBG", "GGGGG", ],
+    ]
+    assert clip_frames_equal(bitmap_to_clip(target), clip3)
 
 
 def test_mask_and():
@@ -279,4 +314,4 @@ def test_normalize():
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main(args=["test_fx.py"])

@@ -41,13 +41,11 @@ def margin(
         return bg
 
     if isinstance(clip, ImageClip):
-
         im = make_bg(clip.w, clip.h)
         im[top : top + clip.h, left : left + clip.w] = clip.img
         return clip.fl_image(lambda pic: im)
 
     else:
-
         def fl(gf, t):
             pic = gf(t)
             h, w = pic.shape[:2]
