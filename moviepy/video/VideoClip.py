@@ -739,7 +739,7 @@ class VideoClip(Clip):
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
-    def set_audio(self, audioclip, start_time=0, keep_original=True):
+    def set_audio(self, audioclip, start_time=0, keep_original=False):
         """
         Attach an AudioClip to the VideoClip.
         :param audioclip: new audioclip
