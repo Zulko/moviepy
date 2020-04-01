@@ -183,7 +183,6 @@ Maintainers
 - `@overdrivr`_
 - `@keikoro`_
 - `@ryanfox`_
-- `@mgaitan`_
 
 
 .. MoviePy links
@@ -223,4 +222,3 @@ Maintainers
 .. _`@overdrivr`: https://github.com/overdrivr
 .. _`@keikoro`: https://github.com/keikoro
 .. _`@ryanfox`: https://github.com/ryanfox
-.. _`@mgaitan: https://github.com/mgaitan
