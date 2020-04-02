@@ -268,7 +268,7 @@ class VideoClip(Clip):
         with_mask
           If video has alpha channel, and you want to keep it after processing, this parameter must be True
           You can use any FFMPEG encoding format that supports alpha channels.
-          Examples are 'png、qtrle' for '.mov'
+          Examples are 'png/qtrle' for '.mov'
           Note: 'png' encoding maybe takes long time, but the resulting video is small,
                 'qtrle' is the opposite
 
@@ -288,7 +288,6 @@ class VideoClip(Clip):
         >>> clip.write_videofile("my_new_video.mp4", codec='qtrle', with_mask=True) # is fail, FFMPEG will throw an exception: "codec not currently supported in container", because 'qtrle' not support '.mp4'
         >>> clip.write_videofile("my_new_video.mp4", codec='libx264', with_mask=True) # is bad, because 'libx264' not support alpha channel, video will lose the alpha channel
         >>> clip.close()
-
 
         """
         name, ext = os.path.splitext(os.path.basename(filename))
