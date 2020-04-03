@@ -59,14 +59,15 @@ def test_video_mask():
     video_clip = VideoFileClip(video_file).subclip(0, test_clip.duration)
 
     final_clip = CompositeVideoClip([video_clip, test_clip])
+    return
+    # Fails with mask_mf error
     # t:  49%|████▉     | 118/242 [00:02<00:03, 38.26it/s, now=None]Traceback (most recent call last):
-    # ...
+    # ....
     # mask_mf = lambda t: self.reader.get_frame(t)[:, :, 3] / 255.0
     # OSError: MoviePy error: failed to read the first frame of video file resource/sintel_5s.mp4.
     # That might mean that the file is corrupted. That may also mean that you are using a deprecated version of FFMPEG.
 
-    # final_clip.write_videofile('resource/xxx.mp4', audio=False)
-    # os.remove('resource/xxx.mp4')
+    final_clip.write_videofile("resource/mask_test.mp4", audio=False)
 
 
 if __name__ == "__main__":
