@@ -29,8 +29,8 @@ def apply_to_mask(f, clip, *a, **k):
         the clip created with f """
 
     newclip = f(clip, *a, **k)
-    if getattr(newclip, "mask", None):
-        newclip.mask = f(newclip.mask, *a, **k)
+    if getattr(clip, "mask", None):
+        newclip.mask = f(clip.mask, *a, **k)
     return newclip
 
 

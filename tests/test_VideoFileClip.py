@@ -6,8 +6,9 @@ import sys
 import pytest
 
 from moviepy.utils import close_all_clips
-from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.compositing.CompositeVideoClip import clips_array, CompositeVideoClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.fx.loop import loop
 from moviepy.video.VideoClip import ColorClip
 
 from .test_helper import TMP_DIR
@@ -43,6 +44,29 @@ def test_ffmpeg_resizing():
             if target is not None:
                 assert target == observed
         video.close()
+
+
+def test_video_mask():
+    """
+    Test clip mask attributes operate
+    """
+    test_file = "resource/sintel_5s.mp4"
+    test_clip = VideoFileClip(test_file, has_mask=True)
+
+    test_clip = loop(test_clip, duration=test_clip.duration * 2)
+
+    video_file = "resource/sintel_with_15_chapters.mp4"
+    video_clip = VideoFileClip(video_file).subclip(0, test_clip.duration)
+
+    final_clip = CompositeVideoClip([video_clip, test_clip])
+    # t:  49%|████▉     | 118/242 [00:02<00:03, 38.26it/s, now=None]Traceback (most recent call last):
+    # ...
+    # mask_mf = lambda t: self.reader.get_frame(t)[:, :, 3] / 255.0
+    # OSError: MoviePy error: failed to read the first frame of video file resource/sintel_5s.mp4.
+    # That might mean that the file is corrupted. That may also mean that you are using a deprecated version of FFMPEG.
+
+    # final_clip.write_videofile('resource/xxx.mp4', audio=False)
+    # os.remove('resource/xxx.mp4')
 
 
 if __name__ == "__main__":
