@@ -156,7 +156,6 @@ class VideoClip(Clip):
         rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
-        verbose=True,
         threads=None,
         ffmpeg_params=None,
         logger="bar",
@@ -344,7 +343,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(
-        self, nameformat, fps=None, verbose=True, withmask=True, logger="bar"
+        self, nameformat, fps=None, withmask=True, logger="bar"
     ):
         """ Writes the videoclip to a sequence of image files.
 
@@ -364,9 +363,6 @@ class VideoClip(Clip):
 
         withmask
           will save the clip's mask (if any) as an alpha canal (PNGs only).
-
-        verbose
-          Boolean indicating whether to print information.
 
         logger
           Either 'bar' (progress bar) or None or any Proglog logger.
@@ -408,7 +404,6 @@ class VideoClip(Clip):
         program="imageio",
         opt="nq",
         fuzz=1,
-        verbose=True,
         loop=0,
         dispose=False,
         colors=None,
@@ -475,7 +470,6 @@ class VideoClip(Clip):
                 fps=fps,
                 opt=opt,
                 loop=loop,
-                verbose=verbose,
                 colors=colors,
                 logger=logger,
             )
@@ -490,7 +484,6 @@ class VideoClip(Clip):
                 program=program,
                 opt=opt,
                 fuzz=fuzz,
-                verbose=verbose,
                 loop=loop,
                 dispose=dispose,
                 colors=colors,
@@ -507,7 +500,6 @@ class VideoClip(Clip):
                 program=program,
                 opt=opt,
                 fuzz=fuzz,
-                verbose=verbose,
                 loop=loop,
                 dispose=dispose,
                 colors=colors,
