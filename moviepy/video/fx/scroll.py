@@ -1,8 +1,23 @@
 def scroll(
-    clip, h=None, w=None, x_speed=0, y_speed=0, x_start=0, y_start=0, apply_to="mask"
+    clip, w=None, h=None, x_speed=0, y_speed=0, x_start=0, y_start=0, apply_to="mask"
 ):
-    """ Scrolls horizontally or vertically a clip, e.g. to make end
-        credits """
+    """
+    Scrolls horizontally or vertically a clip, e.g. to make end credits
+
+    Parameters
+    -----------
+
+    w, h
+      The width and height of the final clip. Default to clip.w and clip.h
+
+    x_speed, y_speed
+
+    x_start, y_start
+
+
+    apply_to
+
+    """
     if h is None:
         h = clip.h
     if w is None:

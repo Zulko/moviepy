@@ -94,6 +94,7 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
+            # print(t)
             return self.make_frame(t)
 
     def fl(self, fun, apply_to=None, keep_duration=True):
@@ -489,6 +490,26 @@ class Clip:
         #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
         pass
+
+    def __eq__(self, other):
+        if not isinstance(other, Clip):
+            return NotImplemented
+
+        length1 = self.duration * self.fps
+        length2 = other.duration * other.fps
+        if length1 != length2:
+            # print(f"Number of frames not equal: {length1} != {length2}")
+            return False
+        # print(length1, self.duration, self.fps)
+        for i, (frame1, frame2) in enumerate(
+            zip(self.iter_frames(), other.iter_frames())
+        ):
+            # print(i, frame1, frame2)
+            if not np.array_equal(frame1, frame2):
+                # print(f"\nFrame index {i} is different: \n{frame1}\n != \n{frame2}")
+                return False
+
+        return True
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 

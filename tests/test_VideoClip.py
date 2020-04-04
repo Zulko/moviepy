@@ -9,13 +9,13 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip
+from moviepy.video.VideoClip import ColorClip, BitmapClip
 
-from tests.test_helper import TMP_DIR, bitmap_to_clip
+from tests.test_helper import TMP_DIR
 
 
 def test_aspect_ratio():
-    clip = bitmap_to_clip([["XXX", "YYY"]])
+    clip = BitmapClip([["AAA", "BBB"]])
     assert clip.aspect_ratio == 1.5
 
 

@@ -1271,3 +1271,92 @@ class TextClip(ImageClip):
         string = string.lower()
         names_list = TextClip.list(arg)
         return [name for name in names_list if string in name.lower()]
+
+
+class BitmapClip(VideoClip):
+    def __init__(self, bitmap_frames, *, color_dict=None, ismask=False):
+        """
+        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+
+        Parameters
+        -----------
+
+        bitmap_frames
+          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
+          Each color represents an (r, g, b) tuple.
+          Example input (2 frames, 5x3 pixel size):
+          [["RRRRR",
+            "RRBRR",
+            "RRBRR"],
+           ["RGGGR",
+            "RGGGR",
+            "RGGGR"]]
+
+        color_dict
+          A dictionary that can be used to set specific (r, g, b) values for certain letters in ``bitmap_frames``
+          eg ``{"A": (50, 150, 150)}``
+          Defaults to
+
+          ::
+          {
+            "R": (255, 0, 0),
+            "G": (0, 255, 0),
+            "B": (0, 0, 255),
+            "O": (0, 0, 0),  # 0 represents black
+            "W": (255, 255, 255),
+            "X": (89, 225, 62),  # X, Y, Z are arbitrary colors
+            "Y": (113, 157, 108),
+            "Z": (215, 182, 143),
+          }
+
+        ismask
+          `True` if the clip is going to be used as a mask.
+
+        """
+        if color_dict is None:
+            color_dict = {
+                "R": (255, 0, 0),
+                "G": (0, 255, 0),
+                "B": (0, 0, 255),
+                "O": (0, 0, 0),
+                "W": (255, 255, 255),
+                "A": (89, 225, 62),
+                "C": (113, 157, 108),
+                "D": (215, 182, 143),
+                "E": (57, 26, 252),
+            }
+
+        frame_list = []
+        for input_frame in bitmap_frames:
+            output_frame = []
+            for row in input_frame:
+                output_frame.append([color_dict[color] for color in row])
+            frame_list.append(np.array(output_frame))
+
+        frame_array = np.array(frame_list)
+        VideoClip.__init__(
+            self, make_frame=lambda t: frame_array[int(t)], ismask=ismask
+        )
+
+        self.total_frames = len(frame_array)
+        self.fps = None
+
+    def set_duration(self, t, change_end=True):
+        """
+        If clip fps has not already been set, it will also be set based on the new duration and
+        total number of frames
+        """
+        if self.fps is None:
+            self.fps = int(self.total_frames - 1 / t - 1)
+        return Clip.set_duration(self, t, change_end=change_end)
+
+    def set_fps(self, fps):
+        """
+        If clip duration has not already been set, it will also be set based on the new fps and
+        total number of frames
+        """
+        total_duration = self.total_frames / fps
+        if self.duration is None or self.duration > total_duration:
+            self.duration = total_duration
+
+        return Clip.set_fps(self, fps)
