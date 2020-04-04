@@ -268,8 +268,8 @@ class VideoClip(Clip):
         with_mask
           If video has alpha channel, and you want to keep it after processing, this parameter must be True
           You can use any FFMPEG encoding format that supports alpha channels.
-          Examples are 'png/qtrle' for '.mov', 'png' for '.mp4', 'vp8/vp9' for '.webm'
-          Note: 'png' encoding maybe takes long time, but the resulting video is small,
+          Examples are 'png/qtrle' for '.mov', 'png' for '.mp4', 'vp8/vp9' for '.webm', 'vp6a' for '.flv/.f4v'
+          Tips: 'png' encoding maybe takes long time, but the resulting video is small for '.mov' format,
                 'qtrle' is the opposite
 
         Examples
