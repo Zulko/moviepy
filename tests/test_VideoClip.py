@@ -1,16 +1,11 @@
 import os
-import sys
 
 import pytest
-from numpy import pi, sin
+import numpy as np
 
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.speedx import speedx
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, VideoClip
-
+from moviepy.editor import VideoFileClip, ImageClip, ColorClip, AudioClip, AudioFileClip
 from .test_helper import TMP_DIR
 
 
@@ -117,7 +112,7 @@ def test_oncolor():
 
 def test_setaudio():
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
+    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
     audio = AudioClip(make_frame_440, duration=0.5)
     audio.fps = 44100
     clip = clip.set_audio(audio)
@@ -161,6 +156,27 @@ def test_withoutaudio():
     new_clip = clip.without_audio()
     assert new_clip.audio is None
     close_all_clips(locals())
+
+
+def test_add():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1] + clip[2:3.2]
+    assert new_clip.duration == 2.2
+    assert np.array_equal(new_clip[1.1], clip[2.1])
+
+
+def test_mul():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1] * 2.5
+    assert new_clip.duration == 2.5
+    assert np.array_equal(new_clip[1.1], clip[0.1])
+
+
+def test_and():
+    clip = VideoFileClip("media/fire2.mp4")
+    maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
+    clip_with_mask = clip & maskclip
+    assert clip_with_mask.mask is maskclip
 
 
 if __name__ == "__main__":

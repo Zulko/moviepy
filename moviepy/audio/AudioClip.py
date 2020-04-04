@@ -245,6 +245,11 @@ class AudioClip(Clip):
             logger=logger,
         )
 
+    def __add__(self, other):
+        if isinstance(other, AudioClip):
+            return concatenate_audioclips([self, other])
+        return super(AudioClip, self).__add__(other)
+
 
 # The to_audiofile method is replaced by the more explicit write_audiofile.
 AudioClip.to_audiofile = deprecated_version_of(

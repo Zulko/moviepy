@@ -5,6 +5,9 @@ and AudioClip.
 """
 
 from copy import copy
+from functools import reduce
+from operator import add
+from numbers import Real
 
 import numpy as np
 import proglog
@@ -20,7 +23,6 @@ from moviepy.decorators import (
 
 
 class Clip:
-
     """
 
      Base class of all clips (VideoClips and AudioClips).
@@ -69,8 +71,10 @@ class Clip:
         there is an outplace transformation of the clip (clip.resize,
         clip.subclip, etc.)
         """
+        return copy(self)
 
-        newclip = copy(self)
+    def __copy__(self):
+        newclip = copy(super(Clip, self))
         if hasattr(self, "audio"):
             newclip.audio = copy(self.audio)
         if hasattr(self, "mask"):
@@ -179,10 +183,10 @@ class Clip:
         --------
 
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> newclip = clip.fl_time(lambda: 2*t, apply_to=['mask', 'audio'])
+        >>> newclip = clip.fl_time(lambda t: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
-        >>> newclip = clip.fl_time(lambda: 3-t)
+        >>> newclip = clip.fl_time(lambda t: 3-t)
 
         """
         if apply_to is None:
@@ -213,7 +217,6 @@ class Clip:
         >>> resize( volumex( mirrorx( clip ), 0.5), 0.3)
 
         """
-
         return func(self, *args, **kwargs)
 
     @apply_to_mask
@@ -225,7 +228,6 @@ class Clip:
         Returns a copy of the clip, with the ``start`` attribute set
         to ``t``, which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
-
 
         If ``change_end=True`` and the clip has a ``duration`` attribute,
         the ``end`` atrribute of the clip will be updated to
@@ -317,13 +319,13 @@ class Clip:
     @convert_to_seconds(["t"])
     def is_playing(self, t):
         """
-
         If t is a time, returns true if t is between the start and
         the end of the clip. t can be expressed in seconds (15.35),
-        in (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
+        in (min, sec), in (hour, min, sec), or as a string: "01:03:05.35".
+        
         If t is a numpy array, returns False if none of the t is in
-        theclip, else returns a vector [b_1, b_2, b_3...] where b_i
-        is true iff tti is in the clip.
+        the clip, else returns a vector [b_1, b_2, b_3...] where b_i
+        is true if tti is in the clip.
         """
 
         if isinstance(t, np.ndarray):
@@ -355,8 +357,13 @@ class Clip:
         between times ``t_start`` and ``t_end``, which can be expressed
         in seconds (15.35), in (min, sec), in (hour, min, sec), or as a
         string: '01:03:05.35'.
+
+        It's equivalent to slice the clip as a sequence, like 
+        ``clip[t_start:t_end]``
+    
         If ``t_end`` is not provided, it is assumed to be the duration
         of the clip (potentially infinite).
+        
         If ``t_end`` is a negative value, it is reset to
         ``clip.duration + t_end. ``. For instance: ::
 
@@ -490,10 +497,103 @@ class Clip:
         #    * Therefore, should NOT be called by __del__().
         pass
 
-    # Support the Context Manager protocol, to ensure that resources are cleaned up.
+    # helper private methods
+    def __unsupported(self, other, operator):
+        self_type = type(self).__name__
+        other_type = type(other).__name__
+        message = "unsupported operand type(s) for {}: '{}' and '{}'"
+        raise TypeError(message.format(operator, self_type, other_type))
+
+    @staticmethod
+    def __apply_to(clip):
+        apply_to = []
+        if getattr(clip, "mask", None):
+            apply_to.append("mask")
+        if getattr(clip, "audio", None):
+            apply_to.append("audio")
+        return apply_to
 
     def __enter__(self):
+        """
+        Support the Context Manager protocol, 
+        to ensure that resources are cleaned up.
+        """
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
+
+    def __getitem__(self, key):
+        """
+        Support extended slice and index operations over 
+        a clip object. 
+        
+        Simple slicing is implemented via :meth:`subclip`. 
+        So, ``clip[t_start:t_end]`` is equivalent to  
+        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not 
+        given, default to ``0``, if ``t_end`` is not given, 
+        default to ``self.duration``.   
+        
+        The slice object optionally support a third argument as 
+        a ``speed`` coefficient (that could be negative), 
+        ``clip[t_start:t_end:speed]``. 
+
+        For example ``clip[::-1]`` returns a reversed (a time_mirror fx)
+        the video and ``clip[:5:2]`` returns the segment from 0 to 5s
+        accelerated to 2x (ie. resulted duration would be 2.5s)  
+    
+        In addition, a tuple of slices is supported, resulting in the concatenation
+        of each segment. For example ``clip[(:1, 2:)]`` return a clip
+        with the segment from 1 to 2s removed.  
+
+        If ``key`` is not a slice or tuple, we assume it's a time 
+        value (expressed in any format supported by :func:`cvsec`)
+        and return the frame at that time, passing the key 
+        to :meth:`get_frame`. 
+        """
+        if isinstance(key, slice):
+            # support for [start:end:speed] slicing. If speed is negative
+            # a time mirror is applied.
+            clip = self.subclip(key.start or 0, key.stop or self.duration)
+
+            if key.step:
+                # change speed of the subclip
+                apply_to = self.__apply_to(clip)
+                factor = abs(key.step)
+                if factor != 1:
+                    # change speed
+                    clip = clip.fl_time(
+                        lambda t: factor * t, apply_to=apply_to, keep_duration=True
+                    )
+                    clip = clip.set_duration(1.0 * clip.duration / factor)
+                if key.step < 0:
+                    # time mirror
+                    clip = clip.fl_time(
+                        lambda t: clip.duration - t,
+                        keep_duration=True,
+                        apply_to=apply_to,
+                    )
+            return clip
+        elif isinstance(key, tuple):
+            # get a concatenation of subclips
+            return reduce(add, (self[k] for k in key))
+        else:
+            return self.get_frame(key)
+
+    def __del__(self):
+        self.close()
+
+    def __add__(self, other):
+        # concatenate. implemented in specialized classes
+        self.__unsupported(other, "+")
+
+    def __mul__(self, n):
+        # loop n times
+        if not isinstance(n, Real):
+            self.__unsupported(n, "*")
+
+        apply_to = self.__apply_to(self)
+        clip = self.fl_time(
+            lambda t: t % self.duration, apply_to=apply_to, keep_duration=True
+        )
+        return clip.set_duration(clip.duration * n)
