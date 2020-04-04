@@ -64,8 +64,8 @@ from .audio.io.AudioFileClip import AudioFileClip
 
 # FX
 
-import moviepy.video.fx.all as vfx
-import moviepy.audio.fx.all as afx
+import moviepy.video.fx as vfx
+import moviepy.audio.fx as afx
 import moviepy.video.compositing.transitions as transfx
 
 # Tools
