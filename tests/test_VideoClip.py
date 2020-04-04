@@ -9,7 +9,6 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip
 from moviepy.video.VideoClip import ColorClip, BitmapClip
 
 from tests.test_helper import TMP_DIR

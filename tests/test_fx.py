@@ -152,7 +152,6 @@ def test_freeze():
     assert clip4 == target4
 
 
-
 def test_freeze_region():
     pass
 
