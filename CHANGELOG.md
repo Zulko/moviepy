@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed <!-- for any bug fixes -->
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
+- `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
+- `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
