@@ -1,5 +1,31 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+
+
+### Important Announcements
+- Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+
+### Added <!-- for new features -->
+
+### Changed <!-- for changes in existing functionality -->
+
+### Deprecated <!-- for soon-to-be removed features -->
+
+### Removed <!-- for now removed features -->
+- Support removed for Python versions 2.7, 3.4 & 3.5
+
+### Fixed <!-- for any bug fixes -->
+- When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
+
+
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.1...v1.0.2)
@@ -8,8 +34,8 @@ Note that this is likely to be the last release before v2.0, which will drop sup
 
 **Notable bug fixes:**
 
-- Fixed bug that meant that some VideoFileClips were created without audio [\#968]
-- Fixed bug so now the `slide_out` effect works [\#795]
+- Fixed bug that meant that some VideoFileClips were created without audio [\#968](https://github.com/Zulko/moviepy/pull/968)
+- Fixed bug so now the `slide_out` effect works [\#795](https://github.com/Zulko/moviepy/pull/795)
 
 
 **Fixed bugs:**
