@@ -58,8 +58,8 @@ if "build_docs" in sys.argv:
         from sphinx.setup_command import BuildDoc
     except ImportError:
         raise ImportError(
-            "Running the documenation builds has additional"
-            " dependencies. Please run (pip install moviepy[docs])"
+            "Running the documentation builds has additional"
+            " dependencies. Please run (pip install moviepy[doc])"
         )
 
     cmdclass["build_docs"] = BuildDoc
