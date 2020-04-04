@@ -2,8 +2,12 @@ import os
 import sys
 
 import pytest
+
+from moviepy.audio.fx.audio_normalize import audio_normalize
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blackwhite import blackwhite
+
 # from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
@@ -21,11 +25,10 @@ from moviepy.video.fx.rotate import rotate
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
-from moviepy.audio.fx.audio_normalize import audio_normalize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from .test_helper import TMP_DIR
+
 
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
@@ -36,6 +39,7 @@ def test_blackwhite():
     clip1 = blackwhite(clip)
     clip1.write_videofile(os.path.join(TMP_DIR, "blackwhite1.webm"))
     close_all_clips(locals())
+
 
 # This currently fails with a with_mask error!
 # def test_blink():
@@ -49,6 +53,7 @@ def test_colorx():
     clip1 = colorx(clip, 2)
     clip1.write_videofile(os.path.join(TMP_DIR, "colorx1.webm"))
     close_all_clips(locals())
+
 
 def test_crop():
     clip = get_test_video()
@@ -71,6 +76,7 @@ def test_crop():
     clip6 = crop(clip, x_center=300, width=400, y1=100, y2=600)
     clip6.write_videofile(os.path.join(TMP_DIR, "crop6.webm"))
     close_all_clips(locals())
+
 
 def test_fadein():
     clip = get_test_video()
@@ -189,7 +195,7 @@ def test_resize():
 
     # I get a general stream error when playing this video.
     # clip4=clip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-    #clip4.write_videofile(os.path.join(TMP_DIR, "resize4.webm"))
+    # clip4.write_videofile(os.path.join(TMP_DIR, "resize4.webm"))
 
 
 def test_rotate():
@@ -256,11 +262,11 @@ def test_time_symmetrize():
 
 
 def test_normalize():
-    clip = AudioFileClip('media/crunching.mp3')
+    clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
     close_all_clips(locals())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main()

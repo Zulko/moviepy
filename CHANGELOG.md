@@ -1,7 +1,216 @@
-# Change Log
+# Changelog
 
-## [v2.3.5](https://github.com/Zulko/moviepy/tree/v2.3.5) (2018-05-31)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.4...v2.3.5)
+All notable changes to this project will be documented in this file.
+
+The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+
+
+### Important Announcements
+- Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+
+### Added <!-- for new features -->
+
+### Changed <!-- for changes in existing functionality -->
+
+### Deprecated <!-- for soon-to-be removed features -->
+
+### Removed <!-- for now removed features -->
+- Support removed for Python versions 2.7, 3.4 & 3.5
+
+### Fixed <!-- for any bug fixes -->
+- When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
+
+
+## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.1...v1.0.2)
+
+Note that this is likely to be the last release before v2.0, which will drop support for Python versions 2.7, 3.4 & 3.5 and will introduce other backwards-incompatible changes.
+
+**Notable bug fixes:**
+
+- Fixed bug that meant that some VideoFileClips were created without audio [\#968](https://github.com/Zulko/moviepy/pull/968)
+- Fixed bug so now the `slide_out` effect works [\#795](https://github.com/Zulko/moviepy/pull/795)
+
+
+**Fixed bugs:**
+
+- Fixed potential crash trying to call the logger string as a function [\#1082](https://github.com/Zulko/moviepy/pull/1082) ([tburrows13](https://github.com/tburrows13))
+- Get ffmpeg to use all audio streams [\#1008](https://github.com/Zulko/moviepy/pull/1008) ([vmaliaev](https://github.com/vmaliaev))
+- Reorder FFMPEG\_VideoWriter command arguments [\#968](https://github.com/Zulko/moviepy/pull/968) ([ThePhonon](https://github.com/ThePhonon))
+- Test that the temporary audio file exists [\#958](https://github.com/Zulko/moviepy/pull/958) ([ybenitezf](https://github.com/ybenitezf))
+- Fix slide out [\#795](https://github.com/Zulko/moviepy/pull/795) ([knezi](https://github.com/knezi))
+- Correct the error message to new filename. [\#1057](https://github.com/Zulko/moviepy/pull/1057) ([jwg4](https://github.com/jwg4))
+
+**Merged pull requests:**
+
+- Remove timer in stdout flushing test [\#1091](https://github.com/Zulko/moviepy/pull/1091) ([tburrows13](https://github.com/tburrows13))
+- Update github issue and PR templates [\#1087](https://github.com/Zulko/moviepy/pull/1087) ([tburrows13](https://github.com/tburrows13))
+- Clean up imports [\#1084](https://github.com/Zulko/moviepy/pull/1084) ([tburrows13](https://github.com/tburrows13))
+- refactor Pythonic sake [\#1077](https://github.com/Zulko/moviepy/pull/1077) ([mgaitan](https://github.com/mgaitan))
+- Upgrade pip by calling via python \(in appveyor\). [\#1067](https://github.com/Zulko/moviepy/pull/1067) ([jwg4](https://github.com/jwg4))
+- Improve afx.audio\_normalize documentation [\#1046](https://github.com/Zulko/moviepy/pull/1046) ([dspinellis](https://github.com/dspinellis))
+- Add Travis support for Python 3.7 and 3.8 [\#1018](https://github.com/Zulko/moviepy/pull/1018) ([tburrows13](https://github.com/tburrows13))
+- Hide pygame support prompt [\#1017](https://github.com/Zulko/moviepy/pull/1017) ([tburrows13](https://github.com/tburrows13))
+
+**Closed issues:**
+
+- ImageSequenceClip   write\_videofile [\#1098](https://github.com/Zulko/moviepy/issues/1098)
+- Formatting code with Black [\#1097](https://github.com/Zulko/moviepy/issues/1097)
+- Make effects be callable classes [\#1096](https://github.com/Zulko/moviepy/issues/1096)
+- URGENT - Documentation is inaccessible [\#1086](https://github.com/Zulko/moviepy/issues/1086)
+- Drop support for python \< 3.6 [\#1081](https://github.com/Zulko/moviepy/issues/1081)
+- TextClip filenotfounderror winerror2 [\#1080](https://github.com/Zulko/moviepy/issues/1080)
+- unable to create video from images [\#1074](https://github.com/Zulko/moviepy/issues/1074)
+- Crash on loading the video, windows 10 [\#1071](https://github.com/Zulko/moviepy/issues/1071)
+- Audio Issue while concatenate\_videoclips'ing ImageClip and VideoFileClip \(contains audio already\) [\#1064](https://github.com/Zulko/moviepy/issues/1064)
+- AttributeError: 'NoneType' object has no attribute 'stdout' [\#1054](https://github.com/Zulko/moviepy/issues/1054)
+- Overlay a video on top of an image with Moviepy [\#1053](https://github.com/Zulko/moviepy/issues/1053)
+- get\_frame fails if not an early frame [\#1052](https://github.com/Zulko/moviepy/issues/1052)
+- from google.colab import drive drive.mount\('/content/drive'\)  import cv2 import numpy as np from skimage import morphology from IPython import display import PIL  image = cv2.imread\('/content/drive/My Drive/CAR3/11.JPG',cv2.IMREAD\_COLOR\)  from google.colab.patches import cv2\_imshow  \#image = cv2.resize\(image,\(384,192\)\)  cv2\_imshow\(image\) [\#1051](https://github.com/Zulko/moviepy/issues/1051)
+- Segmentation fault \(core dumped\) [\#1048](https://github.com/Zulko/moviepy/issues/1048)
+- zip over two iter\_frames functions doesn't render proper result [\#1047](https://github.com/Zulko/moviepy/issues/1047)
+- CompositeVideoClip\(\[xxx\]\).rotate\(90\)  ValueError: axes don't match array [\#1042](https://github.com/Zulko/moviepy/issues/1042)
+- to\_soundarray Index error [\#1034](https://github.com/Zulko/moviepy/issues/1034)
+- write\_videofile does not add audio [\#1032](https://github.com/Zulko/moviepy/issues/1032)
+- moviepy.video.io.VideoFileClip.VideoFileClip.set\_audio does not set audio [\#1030](https://github.com/Zulko/moviepy/issues/1030)
+- loop for concatenate\_videoclips [\#1027](https://github.com/Zulko/moviepy/issues/1027)
+- How to resize ImageClip? [\#1004](https://github.com/Zulko/moviepy/issues/1004)
+- Pygame pollutes stdio with spammy message [\#985](https://github.com/Zulko/moviepy/issues/985)
+- Issue with ffmpeg version [\#934](https://github.com/Zulko/moviepy/issues/934)
+- No release notes for 1.0.0? [\#917](https://github.com/Zulko/moviepy/issues/917)
+- Imageio's new use of imageio-ffmpeg [\#908](https://github.com/Zulko/moviepy/issues/908)
+- `ModuleNotFound: No module named 'imageio\_ffmpeg'`, or imageio v2.5.0 is breaking ffmpeg detection in config [\#906](https://github.com/Zulko/moviepy/issues/906)
+- CompositeVideoClip has no audio [\#876](https://github.com/Zulko/moviepy/issues/876)
+- Handling of the ffmpeg dependency [\#859](https://github.com/Zulko/moviepy/issues/859)
+- 'ffmpeg-linux64-v3.3.1' was not found on your computer; downloading it now. [\#839](https://github.com/Zulko/moviepy/issues/839)
+- Typo in variable name in transitions.py\(t\_s instead of ts\) [\#692](https://github.com/Zulko/moviepy/issues/692)
+- version 0.2.3.2 TypeError: must be str, not bytes [\#650](https://github.com/Zulko/moviepy/issues/650)
+- AWS Lambda - Moviepy Error -  [\#638](https://github.com/Zulko/moviepy/issues/638)
+- Adding conda-forge package [\#616](https://github.com/Zulko/moviepy/issues/616)
+- Several YouTube examples in Gallery page are unable to load. [\#600](https://github.com/Zulko/moviepy/issues/600)
+- ffmpeg not installed on Mac [\#595](https://github.com/Zulko/moviepy/issues/595)
+- FFMPEG not downloaded [\#493](https://github.com/Zulko/moviepy/issues/493)
+- Fix documentation [\#482](https://github.com/Zulko/moviepy/issues/482)
+- Moviepy is producing garbled videos [\#356](https://github.com/Zulko/moviepy/issues/356)
+- Help with contributing to the documentation? [\#327](https://github.com/Zulko/moviepy/issues/327)
+- audio custom filter documentation? [\#267](https://github.com/Zulko/moviepy/issues/267)
+- Mistake in doc,  clips.html part. [\#136](https://github.com/Zulko/moviepy/issues/136)
+
+
+## [v1.0.1](https://github.com/zulko/moviepy/tree/v1.0.1) (2019-10-01)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.0...v1.0.1)
+
+**Implemented enhancements:**
+
+- Thoughts on re-routing tqdm progress bar for external use? [\#412](https://github.com/Zulko/moviepy/issues/412)
+- Progress bar [\#128](https://github.com/Zulko/moviepy/issues/128)
+
+**Fixed bugs:**
+
+- More resilient Windows CI regarding fetching ImageMagick binaries [\#941](https://github.com/Zulko/moviepy/pull/941) ([Overdrivr](https://github.com/Overdrivr))
+- \[docker\] drop the not needed download and symlink of ffmpeg [\#916](https://github.com/Zulko/moviepy/pull/916) ([das7pad](https://github.com/das7pad))
+
+**Closed issues:**
+
+- website video examples broken videos [\#1019](https://github.com/Zulko/moviepy/issues/1019)
+- Audio glitches when using concatenate\_videoclips. [\#1005](https://github.com/Zulko/moviepy/issues/1005)
+- txt\_clip = TextClip\(filename='learn.srt'\) --bug:TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType [\#984](https://github.com/Zulko/moviepy/issues/984)
+- txt\_clip = TextClip\(filename='learn.srt'\) --bug:TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType [\#983](https://github.com/Zulko/moviepy/issues/983)
+- txt\_clip = TextClip\(filename='learn.srt'\)path should be string, bytes, os.PathLike or integer, not NoneType [\#982](https://github.com/Zulko/moviepy/issues/982)
+- write\_videofile writes blank black when writing grayscale [\#973](https://github.com/Zulko/moviepy/issues/973)
+- i dont understand this question [\#967](https://github.com/Zulko/moviepy/issues/967)
+- Thank you guys! [\#957](https://github.com/Zulko/moviepy/issues/957)
+- Saving an opencv stream [\#953](https://github.com/Zulko/moviepy/issues/953)
+- Issue with reader not being defined [\#950](https://github.com/Zulko/moviepy/issues/950)
+- On Windows, ImageMagick needs to be installed with Utility mode for the convert.exe file to exist [\#937](https://github.com/Zulko/moviepy/issues/937)
+- extract subtitles [\#932](https://github.com/Zulko/moviepy/issues/932)
+- ffmpeg\_parse\_infos silently hangs on Windows when MP4 file contains enough metadata [\#926](https://github.com/Zulko/moviepy/issues/926)
+- crop missing from moviepy.video.fx.all [\#914](https://github.com/Zulko/moviepy/issues/914)
+- Segmentation Error on VPS [\#912](https://github.com/Zulko/moviepy/issues/912)
+- Error when installing with imageio [\#911](https://github.com/Zulko/moviepy/issues/911)
+- Backwards compatibility [\#889](https://github.com/Zulko/moviepy/issues/889)
+- frozen seconds in beginning of subclip using ffmpeg\_extract\_subclip\(\) [\#847](https://github.com/Zulko/moviepy/issues/847)
+- \[Errno 3\] No such process : on Windows Sub Linux \(ubuntu 16.x\) [\#765](https://github.com/Zulko/moviepy/issues/765)
+- Progress bar newline error in Jupyter [\#740](https://github.com/Zulko/moviepy/issues/740)
+- Refer to magick on https://zulko.github.io/moviepy/install.html [\#689](https://github.com/Zulko/moviepy/issues/689)
+- Configure Appveyor support [\#628](https://github.com/Zulko/moviepy/issues/628)
+- tqdm progress bar write\_videofile send to iterator [\#568](https://github.com/Zulko/moviepy/issues/568)
+- ffmpeg\_extract\_subclip returns black frames [\#508](https://github.com/Zulko/moviepy/issues/508)
+- Windows: specifying path to ImageMagick in config\_defaults.py [\#378](https://github.com/Zulko/moviepy/issues/378)
+- AttributeError: 'NoneType' object has no attribute 'start' [\#191](https://github.com/Zulko/moviepy/issues/191)
+- ImageMagick write gif success but no file found  [\#113](https://github.com/Zulko/moviepy/issues/113)
+
+**Merged pull requests:**
+
+- Create v1.0.1 [\#1023](https://github.com/Zulko/moviepy/pull/1023) ([tburrows13](https://github.com/tburrows13))
+- Update maintainer list in the README [\#1022](https://github.com/Zulko/moviepy/pull/1022) ([tburrows13](https://github.com/tburrows13))
+- fixed small error in 'Clip' documentation [\#1002](https://github.com/Zulko/moviepy/pull/1002) ([thomasmatt88](https://github.com/thomasmatt88))
+- Specify Coverage version explicitly. [\#987](https://github.com/Zulko/moviepy/pull/987) ([Julian-O](https://github.com/Julian-O))
+- Updating Docs for ImageMagick Installing Guide [\#980](https://github.com/Zulko/moviepy/pull/980) ([ABODFTW](https://github.com/ABODFTW))
+- Several ImageMagick related bug fixes [\#972](https://github.com/Zulko/moviepy/pull/972) ([KiLLAAA](https://github.com/KiLLAAA))
+- Auto-detect image magick latest 6.9.X-Y version [\#936](https://github.com/Zulko/moviepy/pull/936) ([Overdrivr](https://github.com/Overdrivr))
+- Windows-based testing [\#931](https://github.com/Zulko/moviepy/pull/931) ([Overdrivr](https://github.com/Overdrivr))
+- Fix formatting in logger [\#929](https://github.com/Zulko/moviepy/pull/929) ([tnoff](https://github.com/tnoff))
+- Fix for \#926 [\#927](https://github.com/Zulko/moviepy/pull/927) ([Overdrivr](https://github.com/Overdrivr))
+- Invalid video URL in docs/getting\_started/compositing [\#921](https://github.com/Zulko/moviepy/pull/921) ([gepcel](https://github.com/gepcel))
+- Do not install tests in site-packages [\#880](https://github.com/Zulko/moviepy/pull/880) ([cgohlke](https://github.com/cgohlke))
+- FIX changed order of specifications -ss befor -i for ffmpeg\_extract\_subclip\(\) [\#848](https://github.com/Zulko/moviepy/pull/848) ([grszkthfr](https://github.com/grszkthfr))
+
+## [v1.0.0](https://github.com/zulko/moviepy/tree/v1.0.0) (2019-02-17)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.3.5...v1.0.0)
+
+**Closed issues:**
+
+- Can't overlay gizeh animation onto video with transparency/mask [\#898](https://github.com/Zulko/moviepy/issues/898)
+- \[0.2.4.0\] Garbled audio when exporting mp3 from mp4? [\#891](https://github.com/Zulko/moviepy/issues/891)
+- Error with VideoFileClip\(filePath\) [\#868](https://github.com/Zulko/moviepy/issues/868)
+- I am trying to run this code [\#867](https://github.com/Zulko/moviepy/issues/867)
+- Out of memory exception [\#862](https://github.com/Zulko/moviepy/issues/862)
+- simple problem on the first step: importing moviepy.editor [\#852](https://github.com/Zulko/moviepy/issues/852)
+- MoviePy insert multiple images in a video [\#840](https://github.com/Zulko/moviepy/issues/840)
+- Videogrep can't works with Moviepy in Windows [\#834](https://github.com/Zulko/moviepy/issues/834)
+- File "\<stdin\>", line 1 error [\#832](https://github.com/Zulko/moviepy/issues/832)
+- ImageMagick error - Ubuntu 16.04  [\#831](https://github.com/Zulko/moviepy/issues/831)
+- Combining thousands of small clips into one file [\#827](https://github.com/Zulko/moviepy/issues/827)
+- TypeError: 'ImageClip' object is not iterable [\#824](https://github.com/Zulko/moviepy/issues/824)
+- OSError: \[WinError 6\] The handle is invalid... concatenating clips [\#823](https://github.com/Zulko/moviepy/issues/823)
+- How to add audio tracks. not to replace it. [\#822](https://github.com/Zulko/moviepy/issues/822)
+- Missing 'ffmpeg-win32-v3.2.4.exe' [\#821](https://github.com/Zulko/moviepy/issues/821)
+- No sound with an audio clip add to an video in quicktime [\#820](https://github.com/Zulko/moviepy/issues/820)
+- Pip fails when trying to install [\#812](https://github.com/Zulko/moviepy/issues/812)
+- PermissionError after trying to delete a file after it's purpose is done [\#810](https://github.com/Zulko/moviepy/issues/810)
+- video clip from URI [\#780](https://github.com/Zulko/moviepy/issues/780)
+- Fails on FreeBSD [\#756](https://github.com/Zulko/moviepy/issues/756)
+- inconsistent behaviour of clip.get\_frame\(\) [\#751](https://github.com/Zulko/moviepy/issues/751)
+- Error with write\_videofile [\#727](https://github.com/Zulko/moviepy/issues/727)
+- Trying to use moviepy on lambda, but has problem with ffmpeg [\#642](https://github.com/Zulko/moviepy/issues/642)
+- Unexpected Behavior With negative t\_start in Subclip [\#341](https://github.com/Zulko/moviepy/issues/341)
+- Could not find a format to read the specified file in mode 'i'  [\#219](https://github.com/Zulko/moviepy/issues/219)
+- WindowsError\[5\] and AttributeError Exception [\#170](https://github.com/Zulko/moviepy/issues/170)
+- Can't make VideoFileClip 'utf8' [\#169](https://github.com/Zulko/moviepy/issues/169)
+- Rendered output missing first frame [\#155](https://github.com/Zulko/moviepy/issues/155)
+- Incorrect output when concatenate\_videoclips two quicktime videos [\#144](https://github.com/Zulko/moviepy/issues/144)
+- a bytes object is recognised as a string [\#120](https://github.com/Zulko/moviepy/issues/120)
+
+**Merged pull requests:**
+
+- New version of imageio with imageio\_ffmpeg for python 3.4+ [\#907](https://github.com/Zulko/moviepy/pull/907) ([Zulko](https://github.com/Zulko))
+- fix typo that introduces audio regression [\#894](https://github.com/Zulko/moviepy/pull/894) ([chrox](https://github.com/chrox))
+- modified max duration error for better understanding [\#875](https://github.com/Zulko/moviepy/pull/875) ([kapilkd13](https://github.com/kapilkd13))
+- Fixed typo in docstring for VideoClip class [\#871](https://github.com/Zulko/moviepy/pull/871) ([Armcollector](https://github.com/Armcollector))
+- Fix a small typing error [\#845](https://github.com/Zulko/moviepy/pull/845) ([yuvallanger](https://github.com/yuvallanger))
+
+## [v0.2.3.5](https://github.com/zulko/moviepy/tree/v0.2.3.5) (2018-05-31)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.3.4...v0.2.3.5)
 
 **Fixed bugs:**
 
@@ -21,11 +230,13 @@
 
 **Merged pull requests:**
 
+- fixing the git remote syntax in documentions [\#887](https://github.com/Zulko/moviepy/pull/887) ([ishandutta2007](https://github.com/ishandutta2007))
 - Progress bar optional for GIF creation [\#799](https://github.com/Zulko/moviepy/pull/799) ([mdfirman](https://github.com/mdfirman))
 - Added contributing guide and issue template [\#792](https://github.com/Zulko/moviepy/pull/792) ([tburrows13](https://github.com/tburrows13))
 
-## [v0.2.3.4](https://github.com/Zulko/moviepy/tree/v0.2.3.4) (2018-04-22)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.3...v0.2.3.4)
+## [v0.2.3.4](https://github.com/zulko/moviepy/tree/v0.2.3.4) (2018-04-22)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.3.3...v0.2.3.4)
 
 **Closed issues:**
 
@@ -40,8 +251,9 @@
 - Added `fullscreen` parameter to `preview\(\)` [\#773](https://github.com/Zulko/moviepy/pull/773) ([tburrows13](https://github.com/tburrows13))
 - add pcm\_s24le codec [\#769](https://github.com/Zulko/moviepy/pull/769) ([lsde](https://github.com/lsde))
 
-## [v0.2.3.3](https://github.com/Zulko/moviepy/tree/v0.2.3.3) (2018-04-17)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.2...v0.2.3.3)
+## [v0.2.3.3](https://github.com/zulko/moviepy/tree/v0.2.3.3) (2018-04-17)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.3.2...v0.2.3.3)
 
 **Implemented enhancements:**
 
@@ -154,8 +366,9 @@
 - Update docs [\#548](https://github.com/Zulko/moviepy/pull/548) ([tburrows13](https://github.com/tburrows13))
 - add tests for most fx functions [\#545](https://github.com/Zulko/moviepy/pull/545) ([earney](https://github.com/earney))
 
-## [v0.2.3.2](https://github.com/Zulko/moviepy/tree/v0.2.3.2) (2017-04-13)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.3.1...v0.2.3.2)
+## [v0.2.3.2](https://github.com/zulko/moviepy/tree/v0.2.3.2) (2017-04-13)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.3.1...v0.2.3.2)
 
 **Implemented enhancements:**
 
@@ -189,8 +402,9 @@
 - Add progress\_bar option to write\_images\_sequence [\#300](https://github.com/Zulko/moviepy/pull/300) ([achalddave](https://github.com/achalddave))
 - write\_videofile preset choices doc [\#282](https://github.com/Zulko/moviepy/pull/282) ([gcandal](https://github.com/gcandal))
 
-## [v0.2.3.1](https://github.com/Zulko/moviepy/tree/v0.2.3.1) (2017-04-05)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.2.13...v0.2.3.1)
+## [v0.2.3.1](https://github.com/zulko/moviepy/tree/v0.2.3.1) (2017-04-05)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.2.13...v0.2.3.1)
 
 **Implemented enhancements:**
 
@@ -313,16 +527,16 @@
 - Fix class name in AudioClip doc strings [\#488](https://github.com/Zulko/moviepy/pull/488) ([withpower](https://github.com/withpower))
 - convert POpen stderr.read to communicate [\#487](https://github.com/Zulko/moviepy/pull/487) ([earney](https://github.com/earney))
 - add tests for find\_video\_period [\#486](https://github.com/Zulko/moviepy/pull/486) ([earney](https://github.com/earney))
-- refer to MoviePy as library \(was: module\) [\#484](https://github.com/Zulko/moviepy/pull/484) ([kerstin](https://github.com/kerstin))
-- include requirements file for docs [\#483](https://github.com/Zulko/moviepy/pull/483) ([kerstin](https://github.com/kerstin))
+- refer to MoviePy as library \(was: module\) [\#484](https://github.com/Zulko/moviepy/pull/484) ([keikoro](https://github.com/keikoro))
+- include requirements file for docs [\#483](https://github.com/Zulko/moviepy/pull/483) ([keikoro](https://github.com/keikoro))
 - add test for issue 354; duration not set [\#478](https://github.com/Zulko/moviepy/pull/478) ([earney](https://github.com/earney))
 - Issue 470, reading past audio file EOF [\#476](https://github.com/Zulko/moviepy/pull/476) ([earney](https://github.com/earney))
 - Issue 285,  error adding durations \(int and None\). [\#472](https://github.com/Zulko/moviepy/pull/472) ([earney](https://github.com/earney))
 - Issue 359,  fix default opt argument to work with imageio and ImageMagick [\#471](https://github.com/Zulko/moviepy/pull/471) ([earney](https://github.com/earney))
 - Add tests for TextClip [\#469](https://github.com/Zulko/moviepy/pull/469) ([earney](https://github.com/earney))
 - Issue 467;  fix  Nameerror with copy function.  Added issue to tests.. [\#468](https://github.com/Zulko/moviepy/pull/468) ([earney](https://github.com/earney))
-- Small improvements to docs pages, docs usage [\#463](https://github.com/Zulko/moviepy/pull/463) ([kerstin](https://github.com/kerstin))
-- Fix mixed content [\#462](https://github.com/Zulko/moviepy/pull/462) ([kerstin](https://github.com/kerstin))
+- Small improvements to docs pages, docs usage [\#463](https://github.com/Zulko/moviepy/pull/463) ([keikoro](https://github.com/keikoro))
+- Fix mixed content [\#462](https://github.com/Zulko/moviepy/pull/462) ([keikoro](https://github.com/keikoro))
 - fix Issue 368..  ValueError: Invalid value for quantizer: 'wu' [\#460](https://github.com/Zulko/moviepy/pull/460) ([earney](https://github.com/earney))
 - add testing to verify the width,height \(size\) are correct. [\#459](https://github.com/Zulko/moviepy/pull/459) ([earney](https://github.com/earney))
 - Adds `progress\_bar` option to `write\_audiofile\(\)` to complement \#380  [\#458](https://github.com/Zulko/moviepy/pull/458) ([tburrows13](https://github.com/tburrows13))
@@ -333,7 +547,7 @@
 - add test for tools [\#450](https://github.com/Zulko/moviepy/pull/450) ([earney](https://github.com/earney))
 - fix issue 448; AudioFileClip 90k tbr error [\#449](https://github.com/Zulko/moviepy/pull/449) ([earney](https://github.com/earney))
 - add testing with travis-ci [\#447](https://github.com/Zulko/moviepy/pull/447) ([earney](https://github.com/earney))
-- fix YouTube embeds in docs [\#446](https://github.com/Zulko/moviepy/pull/446) ([kerstin](https://github.com/kerstin))
+- fix YouTube embeds in docs [\#446](https://github.com/Zulko/moviepy/pull/446) ([keikoro](https://github.com/keikoro))
 - Move PR test to test\_PR.py file [\#444](https://github.com/Zulko/moviepy/pull/444) ([earney](https://github.com/earney))
 - Test issue 407 \(video has a valid fps after concatenate function\) [\#443](https://github.com/Zulko/moviepy/pull/443) ([earney](https://github.com/earney))
 - add test for PR306. [\#440](https://github.com/Zulko/moviepy/pull/440) ([earney](https://github.com/earney))
@@ -344,7 +558,7 @@
 - test for issue \#145 [\#431](https://github.com/Zulko/moviepy/pull/431) ([earney](https://github.com/earney))
 - fix PR \#413 . \(issue \#357\) [\#429](https://github.com/Zulko/moviepy/pull/429) ([earney](https://github.com/earney))
 - fix issue 145.  raise Exception when concatenate method != chain or c… [\#428](https://github.com/Zulko/moviepy/pull/428) ([earney](https://github.com/earney))
-- Readme improvements [\#425](https://github.com/Zulko/moviepy/pull/425) ([kerstin](https://github.com/kerstin))
+- Readme improvements [\#425](https://github.com/Zulko/moviepy/pull/425) ([keikoro](https://github.com/keikoro))
 - `Colorclip` changed `col`\>`color` [\#424](https://github.com/Zulko/moviepy/pull/424) ([tburrows13](https://github.com/tburrows13))
 - Revert "small recipe \(mirroring a video\)" [\#414](https://github.com/Zulko/moviepy/pull/414) ([Zulko](https://github.com/Zulko))
 - fixes \#357.  confusing error about coreader, when media file does not exist [\#413](https://github.com/Zulko/moviepy/pull/413) ([earney](https://github.com/earney))
@@ -368,8 +582,9 @@
 - Fixed missing list [\#211](https://github.com/Zulko/moviepy/pull/211) ([LunarLanding](https://github.com/LunarLanding))
 - Fixed copy-paste typo [\#197](https://github.com/Zulko/moviepy/pull/197) ([temerick](https://github.com/temerick))
 
-## [v0.2.2.13](https://github.com/Zulko/moviepy/tree/v0.2.2.13) (2017-02-15)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.2.12...v0.2.2.13)
+## [v0.2.2.13](https://github.com/zulko/moviepy/tree/v0.2.2.13) (2017-02-15)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.2.12...v0.2.2.13)
 
 **Implemented enhancements:**
 
@@ -391,8 +606,9 @@
 - ensures int arguments to np.reshape; closes \#383 [\#384](https://github.com/Zulko/moviepy/pull/384) ([tyarkoni](https://github.com/tyarkoni))
 - on\_color function docstring has wrong parameter [\#244](https://github.com/Zulko/moviepy/pull/244) ([cblument](https://github.com/cblument))
 
-## [v0.2.2.12](https://github.com/Zulko/moviepy/tree/v0.2.2.12) (2017-01-30)
-[Full Changelog](https://github.com/Zulko/moviepy/compare/v0.2.2...v0.2.2.12)
+## [v0.2.2.12](https://github.com/zulko/moviepy/tree/v0.2.2.12) (2017-01-30)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v0.2.2...v0.2.2.12)
 
 **Implemented enhancements:**
 
@@ -477,8 +693,12 @@
 - Minor grammatical and spelling changes [\#115](https://github.com/Zulko/moviepy/pull/115) ([grimley517](https://github.com/grimley517))
 - typo fix [\#108](https://github.com/Zulko/moviepy/pull/108) ([stonebig](https://github.com/stonebig))
 - additional safe check in close\_proc [\#100](https://github.com/Zulko/moviepy/pull/100) ([Eloar](https://github.com/Eloar))
+- Allows user to pass additional parameters to ffmpeg when writing audio clips [\#94](https://github.com/Zulko/moviepy/pull/94) ([jdelman](https://github.com/jdelman))
 
-## [v0.2.2](https://github.com/Zulko/moviepy/tree/v0.2.2) (2014-12-11)
+## [v0.2.2](https://github.com/zulko/moviepy/tree/v0.2.2) (2014-12-11)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/98a2e81757f221bd12216b5dd4cf8ce340d3164c...v0.2.2)
+
 **Closed issues:**
 
 - Incorrect size being sent to ffmpeg [\#102](https://github.com/Zulko/moviepy/issues/102)
@@ -541,7 +761,6 @@
 **Merged pull requests:**
 
 - - changed none to None due to NameError [\#95](https://github.com/Zulko/moviepy/pull/95) ([Eloar](https://github.com/Eloar))
-- Allows user to pass additional parameters to ffmpeg when writing audio clips [\#94](https://github.com/Zulko/moviepy/pull/94) ([jdelman](https://github.com/jdelman))
 - Fix a typo in a ValueError message [\#91](https://github.com/Zulko/moviepy/pull/91) ([naglis](https://github.com/naglis))
 - Changed all "== None" and "!= None" [\#89](https://github.com/Zulko/moviepy/pull/89) ([diegocortassa](https://github.com/diegocortassa))
 - 'Crop' fix [\#81](https://github.com/Zulko/moviepy/pull/81) ([ccarlo](https://github.com/ccarlo))
@@ -565,4 +784,4 @@
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
