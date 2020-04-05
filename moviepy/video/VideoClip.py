@@ -1245,8 +1245,8 @@ class TextClip(ImageClip):
             subprocess_call(cmd, logger=None)
         except (IOError, OSError) as err:
             error = (
-                f"MoviePy Error: creation of {filename} failed because of the"
-                "following error:\n\n{err}.\n\n."
+                "MoviePy Error: creation of {filename} failed because of the"
+                f"following error:\n\n{err}.\n\n."
                 "This error can be due to the fact that ImageMagick "
                 "is not installed on your computer, or (for Windows "
                 "users) that you didn't specify the path to the "

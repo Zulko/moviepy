@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
 
 ### Added <!-- for new features -->
+- Autodetect ImageMagick executable on Windows [#1109]
+- Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 
 ### Changed <!-- for changes in existing functionality -->
 
@@ -21,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed <!-- for now removed features -->
 - Support removed for Python versions 2.7, 3.4 & 3.5
+- Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [#1109]
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions
 
 ### Fixed <!-- for any bug fixes -->
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]

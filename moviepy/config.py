@@ -74,20 +74,20 @@ else:
     if not success:
         raise IOError(
             f"{err} - The path specified for the ImageMagick binary might "
-            "be wrong: {IMAGEMAGICK_BINARY}"
+            f"be wrong: {IMAGEMAGICK_BINARY}"
         )
 
 
 def check():
     if try_cmd([FFMPEG_BINARY])[0]:
-        print("MoviePy : ffmpeg successfully found.")
+        print("MoviePy: ffmpeg successfully found.")
     else:
-        print(f"MoviePy : can't find or access ffmpeg ({FFMPEG_BINARY})")
+        print(f"MoviePy: can't find or access ffmpeg. ({FFMPEG_BINARY})")
 
     if try_cmd([IMAGEMAGICK_BINARY])[0]:
-        print("MoviePy : ImageMagick successfully found.")
+        print("MoviePy: ImageMagick successfully found.")
     else:
-        print(f"MoviePy : can't find or access ImageMagick. ({IMAGEMAGICK_BINARY})")
+        print(f"MoviePy: can't find or access ImageMagick. ({IMAGEMAGICK_BINARY})")
 
 
 if __name__ == "__main__":
