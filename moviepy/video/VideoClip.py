@@ -342,9 +342,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
-    def write_images_sequence(
-        self, nameformat, fps=None, withmask=True, logger="bar"
-    ):
+    def write_images_sequence(self, nameformat, fps=None, withmask=True, logger="bar"):
         """ Writes the videoclip to a sequence of image files.
 
         Parameters
