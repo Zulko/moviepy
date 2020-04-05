@@ -31,7 +31,11 @@ from moviepy.tools import (
     subprocess_call,
 )
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
-from moviepy.video.io.gif_writers import write_gif, write_gif_with_image_io, write_gif_with_tempfiles
+from moviepy.video.io.gif_writers import (
+    write_gif,
+    write_gif_with_image_io,
+    write_gif_with_tempfiles,
+)
 from moviepy.video.tools.drawing import blit
 
 
@@ -1278,7 +1282,9 @@ class TextClip(ImageClip):
             popen_params["creationflags"] = 0x08000000
 
         process = sp.Popen(
-            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg], encoding="utf-8", **popen_params
+            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg],
+            encoding="utf-8",
+            **popen_params,
         )
         result = process.communicate()[0]
         lines = result.splitlines()
@@ -1306,8 +1312,3 @@ class TextClip(ImageClip):
         string = string.lower()
         names_list = TextClip.list(arg)
         return [name for name in names_list if string in name.lower()]
-
-
-if __name__ == '__main__':
-    print(TextClip.list("font"))
-    print(TextClip.list("color"))
