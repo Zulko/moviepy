@@ -271,7 +271,7 @@ class Clip:
     @apply_to_audio
     @convert_to_seconds(["t"])
     @outplace
-    def set_duration(self, t, change_end=True):
+    def set_duration(self, duration, change_end=True):
         """
         Returns a copy of the clip, with the  ``duration`` attribute
         set to ``t``, which can be expressed in seconds (15.35), in (min, sec),
@@ -282,14 +282,14 @@ class Clip:
         be modified in function of the duration and the preset end
         of the clip.
         """
-        self.duration = t
+        self.duration = duration
 
         if change_end:
-            self.end = None if (t is None) else (self.start + t)
+            self.end = None if (duration is None) else (self.start + duration)
         else:
             if self.duration is None:
                 raise Exception("Cannot change clip start when new" "duration is None")
-            self.start = self.end - t
+            self.start = self.end - duration
 
     @outplace
     def set_make_frame(self, make_frame):

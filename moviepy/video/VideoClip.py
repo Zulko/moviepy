@@ -1341,14 +1341,15 @@ class BitmapClip(VideoClip):
         self.total_frames = len(frame_array)
         self.fps = None
 
-    def set_duration(self, t, change_end=True):
+    def set_duration(self, duration, change_end=True):
         """
         If clip fps has not already been set, it will also be set based on the new duration and
         total number of frames
         """
+        # TODO implement decorators from Clip.set_duration
         if self.fps is None:
-            self.fps = int(self.total_frames - 1 / t - 1)
-        return Clip.set_duration(self, t, change_end=change_end)
+            self.fps = int(self.total_frames / duration)
+        return Clip.set_duration(self, duration=duration, change_end=change_end)
 
     def set_fps(self, fps):
         """
