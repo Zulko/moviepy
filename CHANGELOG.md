@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Important Announcements
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+- If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
 
 ### Added <!-- for new features -->
 - Autodetect ImageMagick executable on Windows [#1109]
