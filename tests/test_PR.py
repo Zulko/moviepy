@@ -19,7 +19,6 @@ from .test_helper import FONT, TMP_DIR
 
 
 def test_PR_306():
-
     assert TextClip.list("font") != []
     assert TextClip.list("color") != []
 
@@ -165,7 +164,18 @@ def test_PR_1137_subtitles():
     """
     Test support for path-like objects as arguments for SubtitlesClip.
     """
-    SubtitlesClip(Path("media/subtitles1.srt")).close()
+
+    def make_textclip(txt):
+        return TextClip(
+            txt,
+            font=FONT,
+            fontsize=24,
+            color="white",
+            stroke_color="black",
+            stroke_width=0.5,
+        )
+
+    SubtitlesClip(Path("media/subtitles1.srt"), make_textclip=make_textclip).close()
 
 
 if __name__ == "__main__":
