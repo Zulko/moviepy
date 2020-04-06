@@ -23,6 +23,7 @@ from moviepy.decorators import (
     outplace,
     requires_duration,
     use_clip_fps_by_default,
+    convert_path_to_string,
 )
 from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
