@@ -4,6 +4,7 @@ import re
 
 import numpy as np
 
+from moviepy.decorators import convert_path_to_string
 from moviepy.tools import cvsecs
 from moviepy.video.VideoClip import TextClip, VideoClip
 
@@ -19,7 +20,7 @@ class SubtitlesClip(VideoClip):
     ==========
 
     subtitles
-      Either the name of a file, or a list
+      Either the name of a file as a string or path-like object, or a list
 
     Examples
     =========
@@ -38,7 +39,8 @@ class SubtitlesClip(VideoClip):
 
         VideoClip.__init__(self, has_constant_size=False)
 
-        if isinstance(subtitles, str):
+        if not isinstance(subtitles, list):
+            # `subtitles` is a string or path-like object
             subtitles = file_to_subtitles(subtitles)
 
         # subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
@@ -144,6 +146,7 @@ class SubtitlesClip(VideoClip):
             f.write(str(self))
 
 
+@convert_path_to_string("filename")
 def file_to_subtitles(filename):
     """ Converts a srt file into subtitles.
 

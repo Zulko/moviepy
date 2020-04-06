@@ -1,6 +1,7 @@
 """
 all decorators used in moviepy go there
 """
+import os
 
 import decorator
 
@@ -81,7 +82,8 @@ def preprocess_args(fun, varnames):
 
         names = func_code.co_varnames
         new_a = [
-            fun(arg) if (name in varnames) else arg for (arg, name) in zip(a, names)
+            fun(arg) if (name in varnames) and (arg is not None) else arg
+            for (arg, name) in zip(a, names)
         ]
         new_kw = {k: fun(v) if k in varnames else v for (k, v) in kw.items()}
         return f(*new_a, **new_kw)
@@ -90,8 +92,13 @@ def preprocess_args(fun, varnames):
 
 
 def convert_to_seconds(varnames):
-    "Converts the specified variables to seconds"
+    """Converts the specified variables to seconds"""
     return preprocess_args(cvsecs, varnames)
+
+
+def convert_path_to_string(varnames):
+    """Converts the specified variables to a path string"""
+    return preprocess_args(os.fspath, varnames)
 
 
 @decorator.decorator
