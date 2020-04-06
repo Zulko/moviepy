@@ -20,7 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated <!-- for soon-to-be removed features -->
 
 ### Removed <!-- for now removed features -->
-- Support removed for Python versions 2.7, 3.4 & 3.5
+- Support for Python versions 2.7, 3.4 & 3.5
+- All previously deprecated methods and parameters:
+    - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
+    - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
+    - `VideoClip.to_images_sequence()` -> use `VideoClip.write_images_sequence()`
+    - `concatenate()` -> use `concatenate_videoclips()`
+    - `verbose` parameter in `AudioClip.write_audiofile()`, `ffmpeg_audiowriter()`, `VideoFileClip()`, `VideoClip.write_videofile()`, `VideoClip.write_images_sequence()`, `ffmpeg_write_video()`, `write_gif()`, `write_gif_with_tempfiles()`, `write_gif_with_image_io()` -> Instead of `verbose=False`, use `logger=None`
+    - `verbose_print()` -> no replacement
+    - `col` parameter in `ColorClip()` -> use `color`
 
 ### Fixed <!-- for any bug fixes -->
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
