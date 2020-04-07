@@ -139,6 +139,10 @@ Kapwing
 
 `Kapwing <https://www.kapwing.com/>`_ is an online video meme generator. Content creators use Kapwing to add text around their videos, which results in higher engagement / views on social media sites like Facebook. Kapwing's creation process is powered by MoviePy! MoviePy is used to add the text, borders, and attribution directly to the uploaded videos.
 
+.. raw:: html
+
+        <video src="https://cdn.kapwing.com/video_5e681ac49187d40016ee123e_579130.mp4?" controls style="max-width:70%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;"></video>
+
 
 Rinconcam
 ----------
@@ -154,7 +158,7 @@ MoviePy is used to add transitions, titles and music to the videos.
 
 
 Videogrep
-~~~~~~~~~~
+----------
 
 Videogrep is a python script written by Sam Lavigne, that goes through the subtitle tracks of movies and makes supercuts based on what it finds. For instance, here is an automatic supercut of every time the White House press secretary tells us what he can tell us:
 
