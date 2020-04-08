@@ -6,6 +6,7 @@ import pytest
 from moviepy.audio.fx.audio_normalize import audio_normalize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
+from moviepy.video.VideoClip import ColorClip
 from moviepy.video.fx.blackwhite import blackwhite
 
 # from moviepy.video.fx.blink import blink
@@ -216,6 +217,15 @@ def test_rotate():
     clip4 = rotate(clip, 360)  # rotate 90 degrees
     assert clip4.size == tuple(clip.size)
     clip4.write_videofile(os.path.join(TMP_DIR, "rotate4.webm"))
+
+    clip5 = rotate(clip, 50)
+    clip5.write_videofile(os.path.join(TMP_DIR, "rotate5.webm"))
+
+    # Test rotate with color clip
+    clip = ColorClip([600, 400], [150, 250, 100]).set_duration(1).set_fps(5)
+    clip = rotate(clip, 20)
+    clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
+
     close_all_clips(locals())
 
 

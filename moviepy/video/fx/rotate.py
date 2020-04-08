@@ -78,6 +78,7 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
                 "pip install pillow"
             )
         else:
+            im = im.astype("uint8")
             return pil_rotater(im, a, resample=resample, expand=expand)
 
     return clip.fl(fl, apply_to=["mask"])
