@@ -26,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support removed for Python versions 2.7, 3.4 & 3.5
 - Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [#1109]
 - Removed ``config.get_setting()`` and ``config.change_settings()`` functions
+- All previously deprecated methods and parameters [#1115]:
+    - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
+    - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
+    - `VideoClip.to_images_sequence()` -> use `VideoClip.write_images_sequence()`
+    - `concatenate()` -> use `concatenate_videoclips()`
+    - `verbose` parameter in `AudioClip.write_audiofile()`, `ffmpeg_audiowriter()`, `VideoFileClip()`, `VideoClip.write_videofile()`, `VideoClip.write_images_sequence()`, `ffmpeg_write_video()`, `write_gif()`, `write_gif_with_tempfiles()`, `write_gif_with_image_io()` -> Instead of `verbose=False`, use `logger=None`
+    - `verbose_print()` -> no replacement
+    - `col` parameter in `ColorClip()` -> use `color`
 
 ### Fixed <!-- for any bug fixes -->
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
