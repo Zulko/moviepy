@@ -238,7 +238,7 @@ class FFMPEG_AudioReader:
         if self.buffer is not None:
             current_f_end = self.buffer_startframe + self.buffersize
             if new_bufferstart < current_f_end < new_bufferstart + self.buffersize:
-                # We already have one bit of what must be read
+                # We already have part of what must be read
                 conserved = current_f_end - new_bufferstart
                 chunksize = self.buffersize - conserved
                 array = self.read_chunk(chunksize)
