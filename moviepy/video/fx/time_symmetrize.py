@@ -14,4 +14,4 @@ def time_symmetrize(clip):
     This effect is automatically applied to the clip's mask and audio
     if they exist.
     """
-    return concatenate_videoclips([clip, clip.fx( time_mirror )])
+    return concatenate_videoclips([clip, clip.fx(time_mirror)])

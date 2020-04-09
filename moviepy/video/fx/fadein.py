@@ -11,15 +11,15 @@ def fadein(clip, duration, initial_color=None):
     """
 
     if initial_color is None:
-        initial_color = 0 if clip.ismask else [0,0,0]
-    
+        initial_color = 0 if clip.ismask else [0, 0, 0]
+
     initial_color = np.array(initial_color)
-    
+
     def fl(gf, t):
-        if t>=duration:
+        if t >= duration:
             return gf(t)
         else:
-            fading = (1.0*t/duration) 
-            return fading*gf(t) + (1-fading)*initial_color
+            fading = 1.0 * t / duration
+            return fading * gf(t) + (1 - fading) * initial_color
 
     return clip.fl(fl)
