@@ -21,7 +21,7 @@ def find_video_period(clip, fps=None, tmin=0.3):
 
 class FramesMatch:
     """
-    
+
     Parameters
     -----------
 
@@ -119,7 +119,7 @@ class FramesMatches(list):
 
         Examples
         ---------
-        
+
         We find all matching frames in a given video and turn the best match with
         a duration of 1.5s or more into a GIF:
 
@@ -135,16 +135,16 @@ class FramesMatches(list):
 
         clip
           A MoviePy video clip, possibly transformed/resized
-        
+
         dist_thr
           Distance above which a match is rejected
-        
+
         max_d
           Maximal duration (in seconds) between two matching frames
-        
+
         fps
           Frames per second (default will be clip.fps)
-        
+
         """
 
         N_pixels = clip.w * clip.h * 3
@@ -278,49 +278,49 @@ class FramesMatches(list):
     def write_gifs(self, clip, gif_dir):
         for (start, end, _, _) in self:
             name = "%s/%08d_%08d.gif" % (gif_dir, 100 * start, 100 * end)
-            clip.subclip(start, end).write_gif(name, verbose=False)
+            clip.subclip(start, end).write_gif(name)
 
 
 @use_clip_fps_by_default
 def detect_scenes(clip=None, luminosities=None, thr=10, logger="bar", fps=None):
     """ Detects scenes of a clip based on luminosity changes.
-    
+
     Note that for large clip this may take some time
-    
+
     Returns
     --------
     cuts, luminosities
       cuts is a series of cuts [(0,t1), (t1,t2),...(...,tf)]
       luminosities are the luminosities computed for each
       frame of the clip.
-    
+
     Parameters
     -----------
-    
+
     clip
       A video clip. Can be None if a list of luminosities is
       provided instead. If provided, the luminosity of each
       frame of the clip will be computed. If the clip has no
       'fps' attribute, you must provide it.
-    
+
     luminosities
       A list of luminosities, e.g. returned by detect_scenes
       in a previous run.
-    
+
     thr
       Determines a threshold above which the 'luminosity jumps'
       will be considered as scene changes. A scene change is defined
       as a change between 2 consecutive frames that is larger than
       (avg * thr) where avg is the average of the absolute changes
       between consecutive frames.
-      
+
     progress_bar
       We all love progress bars ! Here is one for you, in option.
-      
+
     fps
       Must be provided if you provide no clip or a clip without
       fps attribute.
-    
+
 
     """
     if luminosities is None:

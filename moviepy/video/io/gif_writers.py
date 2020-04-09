@@ -25,7 +25,6 @@ def write_gif_with_tempfiles(
     program="ImageMagick",
     opt="OptimizeTransparency",
     fuzz=1,
-    verbose=True,
     loop=0,
     dispose=True,
     colors=None,
@@ -129,7 +128,6 @@ def write_gif(
     program="ImageMagick",
     opt="OptimizeTransparency",
     fuzz=1,
-    verbose=True,
     withmask=True,
     loop=0,
     dispose=True,
@@ -329,7 +327,7 @@ def write_gif(
 
 
 def write_gif_with_image_io(
-    clip, filename, fps=None, opt=0, loop=0, colors=None, verbose=True, logger="bar"
+    clip, filename, fps=None, opt=0, loop=0, colors=None, logger="bar"
 ):
     """
     Writes the gif with the Python library ImageIO (calls FreeImage).

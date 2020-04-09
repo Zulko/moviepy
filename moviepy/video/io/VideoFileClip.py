@@ -61,17 +61,17 @@ class VideoFileClip(VideoClip):
 
     fps:
       Frames per second in the original file.
-    
-    
+
+
     Read docs for Clip() and VideoClip() for other, more generic, attributes.
-    
+
     Lifetime
     --------
-    
+
     Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
     close() afterwards, or the subresources will not be cleaned up until the process ends.
-    
-    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  
+
+    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
 
     """
 
@@ -85,7 +85,6 @@ class VideoFileClip(VideoClip):
         resize_algorithm="bicubic",
         audio_fps=44100,
         audio_nbytes=2,
-        verbose=False,
         fps_source="tbr",
     ):
 

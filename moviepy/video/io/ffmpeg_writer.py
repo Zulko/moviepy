@@ -220,7 +220,6 @@ def ffmpeg_write_video(
     withmask=False,
     write_logfile=False,
     audiofile=None,
-    verbose=True,
     threads=None,
     ffmpeg_params=None,
     logger="bar",
@@ -247,9 +246,6 @@ def ffmpeg_write_video(
         threads=threads,
         ffmpeg_params=ffmpeg_params,
     ) as writer:
-
-        nframes = int(clip.duration * fps)
-
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):

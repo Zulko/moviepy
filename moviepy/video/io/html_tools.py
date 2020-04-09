@@ -52,7 +52,7 @@ def html_embed(
     clip, filetype=None, maxduration=60, rd_kwargs=None, center=True, **html_kwargs
 ):
     """ Returns HTML5 code embedding the clip
-    
+
     clip
       Either a file name, or a clip to preview.
       Either an image, a sound or a video. Clips will actually be
@@ -62,10 +62,10 @@ def html_embed(
     filetype
       One of 'video','image','audio'. If None is given, it is determined
       based on the extension of ``filename``, but this can bug.
-    
+
     rd_kwargs
       keyword arguments for the rendering, like {'fps':15, 'bitrate':'50k'}
-    
+
 
     **html_kwargs
       Allow you to give some options, like width=260, autoplay=True,
@@ -102,12 +102,12 @@ def html_embed(
             clip.save_frame(**kwargs)
         elif isinstance(clip, VideoClip):
             filename = TEMP_PREFIX + ".mp4"
-            kwargs = {"filename": filename, "verbose": False, "preset": "ultrafast"}
+            kwargs = {"filename": filename, "preset": "ultrafast"}
             kwargs.update(rd_kwargs)
             clip.write_videofile(**kwargs)
         elif isinstance(clip, AudioClip):
             filename = TEMP_PREFIX + ".mp3"
-            kwargs = {"filename": filename, "verbose": False}
+            kwargs = {"filename": filename}
             kwargs.update(rd_kwargs)
             clip.write_audiofile(**kwargs)
         else:
@@ -206,11 +206,11 @@ def ipython_display(
 
     fps
       Enables to specify an fps, as required for clips whose fps is unknown.
-    
+
     **kwargs:
       Allow you to give some options, like width=260, etc. When editing
       looping gifs, a good choice is loop=1, autoplay=1.
-    
+
     Remarks: If your browser doesn't support HTML5, this should warn you.
     If nothing is displayed, maybe your file or filename is wrong.
     Important: The media will be physically embedded in the notebook.
