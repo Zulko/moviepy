@@ -12,6 +12,7 @@ from moviepy.video.fx.blackwhite import blackwhite
 # from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
+from moviepy.video.fx.even_size import even_size
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 from moviepy.video.fx.freeze import freeze
@@ -95,6 +96,21 @@ def test_crop():
 
 
 def test_even_size():
+    clip1 = BitmapClip([["ABC", "BCD"]]).set_fps(1)  # Width odd
+    clip1even = even_size(clip1)
+    target1 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    assert clip1even == target1
+
+    clip2 = BitmapClip([["AB", "BC", "CD"]]).set_fps(1)  # Height odd
+    clip2even = even_size(clip2)
+    target2 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    assert clip2even == target2
+
+    clip3 = BitmapClip([["ABC", "BCD", "CDE"]]).set_fps(1)  # Width and height odd
+    clip3even = even_size(clip3)
+    target3 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    assert clip3even == target3
+
     pass
 
 
@@ -159,17 +175,15 @@ def test_invert_colors():
 
 
 def test_loop():
-    # these do not work..  what am I doing wrong??
-    return
-
     clip = get_test_video()
-    clip1 = clip.loop()  # infinite looping
+    clip1 = loop(clip).set_duration(10)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    clip2 = clip.loop(duration=10)  # loop for 10 seconds
+    return  # Still buggy
+    clip2 = loop(clip, duration=10)  # loop for 10 seconds
     clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
-    clip3 = clip.loop(n=3)  # loop 3 times
+    clip3 = loop(clip, n=3)  # loop 3 times
     clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
     close_all_clips(objects=locals())
 
@@ -326,22 +340,38 @@ def test_supersample():
 
 
 def test_time_mirror():
-    # TODO update to BitmapClip
-    clip = get_test_video()
+    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]]).set_fps(1)
 
     clip1 = time_mirror(clip)
-    assert clip1.duration == clip.duration
-    clip1.write_videofile(os.path.join(TMP_DIR, "time_mirror1.webm"))
-    close_all_clips(locals())
+    target1 = BitmapClip([["CC", "CC"], ["BB", "BB"], ["AA", "AA"]]).set_fps(1)
+    assert clip1 == target1
+
+    clip2 = BitmapClip(
+        [["AA", "AA"], ["BB", "BB"], ["CC", "CC"], ["DD", "DD"]]
+    ).set_fps(1)
+
+    clip3 = time_mirror(clip2)
+    target3 = BitmapClip(
+        [["DD", "DD"], ["CC", "CC"], ["BB", "BB"], ["AA", "AA"]]
+    ).set_fps(1)
+    assert clip3 == target3
 
 
 def test_time_symmetrize():
-    # TODO update to BitmapClip
-    clip = get_test_video()
+    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]]).set_fps(1)
 
     clip1 = time_symmetrize(clip)
-    clip1.write_videofile(os.path.join(TMP_DIR, "time_symmetrize1.webm"))
-    close_all_clips(locals())
+    target1 = BitmapClip(
+        [
+            ["AA", "AA"],
+            ["BB", "BB"],
+            ["CC", "CC"],
+            ["CC", "CC"],
+            ["BB", "BB"],
+            ["AA", "AA"],
+        ]
+    ).set_fps(1)
+    assert clip1 == target1
 
 
 def test_normalize():

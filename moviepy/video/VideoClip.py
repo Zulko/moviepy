@@ -1299,22 +1299,25 @@ class BitmapClip(VideoClip):
 
           ::
           {
-            "R": (255, 0, 0),
-            "G": (0, 255, 0),
-            "B": (0, 0, 255),
-            "O": (0, 0, 0),  # 0 represents black
-            "W": (255, 255, 255),
-            "X": (89, 225, 62),  # X, Y, Z are arbitrary colors
-            "Y": (113, 157, 108),
-            "Z": (215, 182, 143),
+                "R": (255, 0, 0),
+                "G": (0, 255, 0),
+                "B": (0, 0, 255),
+                "O": (0, 0, 0),  # "O" represents black
+                "W": (255, 255, 255),
+                "A": (89, 225, 62),
+                "C": (113, 157, 108),
+                "D": (215, 182, 143),
+                "E": (57, 26, 252),
           }
 
         ismask
           `True` if the clip is going to be used as a mask.
 
         """
-        if color_dict is None:
-            color_dict = {
+        if color_dict:
+            self.color_dict = color_dict
+        else:
+            self.color_dict = {
                 "R": (255, 0, 0),
                 "G": (0, 255, 0),
                 "B": (0, 0, 255),
@@ -1330,7 +1333,7 @@ class BitmapClip(VideoClip):
         for input_frame in bitmap_frames:
             output_frame = []
             for row in input_frame:
-                output_frame.append([color_dict[color] for color in row])
+                output_frame.append([self.color_dict[color] for color in row])
             frame_list.append(np.array(output_frame))
 
         frame_array = np.array(frame_list)
@@ -1361,3 +1364,20 @@ class BitmapClip(VideoClip):
             self.duration = total_duration
 
         return Clip.set_fps(self, fps)
+
+    def to_bitmap(self):
+        """
+        Returns a valid Bitmap list that represents each frame of the clip, using the clip's color_dict
+        """
+        bitmap = []
+        for frame in self.iter_frames():
+            bitmap.append([])
+            for line in frame:
+                bitmap[-1].append("")
+                for pixel in line:
+                    letter = list(self.color_dict.keys())[
+                        list(self.color_dict.values()).index(tuple(pixel))
+                    ]
+                    bitmap[-1][-1] += letter
+
+        return bitmap
