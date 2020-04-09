@@ -3,7 +3,6 @@
 import re
 
 import numpy as np
-import io
 
 from moviepy.tools import cvsecs
 from moviepy.video.VideoClip import TextClip, VideoClip
@@ -158,13 +157,10 @@ def file_to_subtitles(filename, encoding=None):
     Only works for '.srt' format for the moment.
     """
 
-    with io.open(filename, "r", encoding=encoding) as f:
-        lines = f.readlines()
-
     times_texts = []
     current_times = None
     current_text = ""
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding=encoding) as f:
         for line in f:
             times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
             if times:
