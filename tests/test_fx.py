@@ -111,27 +111,6 @@ def test_even_size():
     target3 = BitmapClip([["AB", "BC"]]).set_fps(1)
     assert clip3even == target3
 
-    pass
-
-
-def test_even_size():
-    clip1 = BitmapClip([["ABC", "BCD"]]).set_fps(1)  # Width odd
-    clip1even = even_size(clip1)
-    target1 = BitmapClip([["AB", "BC"]]).set_fps(1)
-    assert clip1even == target1
-
-    clip2 = BitmapClip([["AB", "BC", "CD"]]).set_fps(1)  # Height odd
-    clip2even = even_size(clip2)
-    target2 = BitmapClip([["AB", "BC"]]).set_fps(1)
-    assert clip2even == target2
-
-    clip3 = BitmapClip([["ABC", "BCD", "CDE"]]).set_fps(1)  # Width and height odd
-    clip3even = even_size(clip3)
-    target3 = BitmapClip([["AB", "BC"]]).set_fps(1)
-    assert clip3even == target3
-
-    pass
-
 
 def test_fadein():
     clip = get_test_video()
