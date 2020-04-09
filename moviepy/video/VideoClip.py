@@ -25,7 +25,6 @@ from ..decorators import (
     use_clip_fps_by_default,
 )
 from ..tools import (
-    deprecated_version_of,
     extensions_dict,
     find_extension,
     subprocess_call,
@@ -157,7 +156,6 @@ class VideoClip(Clip):
         rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
-        verbose=True,
         threads=None,
         ffmpeg_params=None,
         logger="bar",
@@ -261,9 +259,6 @@ class VideoClip(Clip):
         logger
           Either "bar" for progress bar or None or any Proglog logger.
 
-        verbose (deprecated, kept for compatibility)
-          Formerly used for toggling messages on/off. Use logger=None now.
-
         Examples
         ========
 
@@ -322,7 +317,6 @@ class VideoClip(Clip):
                 audio_codec,
                 bitrate=audio_bitrate,
                 write_logfile=write_logfile,
-                verbose=verbose,
                 logger=logger,
             )
 
@@ -335,7 +329,6 @@ class VideoClip(Clip):
             preset=preset,
             write_logfile=write_logfile,
             audiofile=audiofile,
-            verbose=verbose,
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
@@ -349,9 +342,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
-    def write_images_sequence(
-        self, nameformat, fps=None, verbose=True, withmask=True, logger="bar"
-    ):
+    def write_images_sequence(self, nameformat, fps=None, withmask=True, logger="bar"):
         """ Writes the videoclip to a sequence of image files.
 
         Parameters
@@ -370,9 +361,6 @@ class VideoClip(Clip):
 
         withmask
           will save the clip's mask (if any) as an alpha canal (PNGs only).
-
-        verbose
-          Boolean indicating whether to print information.
 
         logger
           Either 'bar' (progress bar) or None or any Proglog logger.
@@ -414,7 +402,6 @@ class VideoClip(Clip):
         program="imageio",
         opt="nq",
         fuzz=1,
-        verbose=True,
         loop=0,
         dispose=False,
         colors=None,
@@ -481,7 +468,6 @@ class VideoClip(Clip):
                 fps=fps,
                 opt=opt,
                 loop=loop,
-                verbose=verbose,
                 colors=colors,
                 logger=logger,
             )
@@ -496,7 +482,6 @@ class VideoClip(Clip):
                 program=program,
                 opt=opt,
                 fuzz=fuzz,
-                verbose=verbose,
                 loop=loop,
                 dispose=dispose,
                 colors=colors,
@@ -513,7 +498,6 @@ class VideoClip(Clip):
                 program=program,
                 opt=opt,
                 fuzz=fuzz,
-                verbose=verbose,
                 loop=loop,
                 dispose=dispose,
                 colors=colors,
@@ -1041,21 +1025,6 @@ class ImageClip(VideoClip):
                 setattr(self, attr, new_a)
 
 
-# ##
-#
-# The old functions to_videofile, to_gif, to_images sequences have been
-# replaced by the more explicite write_videofile, write_gif, etc.
-
-VideoClip.set_pos = deprecated_version_of(VideoClip.set_position, "set_pos")
-VideoClip.to_videofile = deprecated_version_of(
-    VideoClip.write_videofile, "to_videofile"
-)
-VideoClip.to_gif = deprecated_version_of(VideoClip.write_gif, "to_gif")
-VideoClip.to_images_sequence = deprecated_version_of(
-    VideoClip.write_images_sequence, "to_images_sequence"
-)
-
-
 class ColorClip(ImageClip):
     """An ImageClip showing just one color.
 
@@ -1073,29 +1042,13 @@ class ColorClip(ImageClip):
     ismask
       Set to true if the clip will be used as a mask.
 
-    col
-      Has been deprecated. Do not use.
     """
 
-    def __init__(self, size, color=None, ismask=False, duration=None, col=None):
-        if col is not None:
-            warnings.warn(
-                "The `ColorClip` parameter `col` has been deprecated."
-                " Please use `color` instead.",
-                DeprecationWarning,
-            )
-            if color is not None:
-                warnings.warn(
-                    "The arguments `color` and `col` have both been "
-                    "passed to `ColorClip` so `col` has been ignored.",
-                    UserWarning,
-                )
-            else:
-                color = col
+    def __init__(self, size, color=None, ismask=False, duration=None):
         w, h = size
         shape = (h, w) if np.isscalar(color) else (h, w, len(color))
-        ImageClip.__init__(
-            self, np.tile(color, w * h).reshape(shape), ismask=ismask, duration=duration
+        super().__init__(
+            np.tile(color, w * h).reshape(shape), ismask=ismask, duration=duration
         )
 
 

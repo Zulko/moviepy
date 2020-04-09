@@ -61,39 +61,6 @@ def test_PR_373():
         assert result[0].yy[i] == result1[0].yy[i]
 
 
-def test_PR_424():
-    """Ensure deprecation and user warnings are triggered."""
-    import warnings
-
-    warnings.simplefilter("always")  # Alert us of deprecation warnings.
-
-    # Recommended use
-    ColorClip([1000, 600], color=(60, 60, 60), duration=10).close()
-
-    with pytest.warns(DeprecationWarning):
-        # Uses `col` so should work the same as above, but give warning.
-        ColorClip([1000, 600], col=(60, 60, 60), duration=10).close()
-
-    # Catch all warnings as record.
-    with pytest.warns(None) as record:
-        # Should give 2 warnings and use `color`, not `col`
-        ColorClip([1000, 600], color=(60, 60, 60), duration=10, col=(2, 2, 2)).close()
-
-    message1 = (
-        "The `ColorClip` parameter `col` has been deprecated. "
-        + "Please use `color` instead."
-    )
-    message2 = (
-        "The arguments `color` and `col` have both been passed to "
-        + "`ColorClip` so `col` has been ignored."
-    )
-
-    # Assert that two warnings popped and validate the message text.
-    assert len(record) == 2
-    assert str(record[0].message) == message1
-    assert str(record[1].message) == message2
-
-
 def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=2)
     clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"), logger=None, fps=30)
