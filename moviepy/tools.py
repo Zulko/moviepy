@@ -19,15 +19,9 @@ def sys_write_flush(s):
     sys.stdout.flush()
 
 
-def verbose_print(verbose, s):
-    """ Only prints s (with sys_write_flush) if verbose is True."""
-    if verbose:
-        sys_write_flush(s)
-
-
 def subprocess_call(cmd, logger="bar", errorprint=True):
     """ Executes the given subprocess command.
-    
+
     Set logger to None or a custom Proglog logger to avoid printings.
     """
     logger = proglog.default_bar_logger(logger)
@@ -54,20 +48,20 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
 
 
 def cvsecs(time):
-    """ Will convert any time into seconds. 
-    
-    If the type of `time` is not valid, 
-    it's returned as is. 
+    """ Will convert any time into seconds.
+
+    If the type of `time` is not valid,
+    it's returned as is.
 
     Here are the accepted formats::
 
-    >>> cvsecs(15.4)   # seconds 
-    15.4 
-    >>> cvsecs((1, 21.5))   # (min,sec) 
-    81.5 
-    >>> cvsecs((1, 1, 2))   # (hr, min, sec)  
-    3662  
-    >>> cvsecs('01:01:33.045') 
+    >>> cvsecs(15.4)   # seconds
+    15.4
+    >>> cvsecs((1, 21.5))   # (min,sec)
+    81.5
+    >>> cvsecs((1, 1, 2))   # (hr, min, sec)
+    3662
+    >>> cvsecs('01:01:33.045')
     3693.045
     >>> cvsecs('01:01:33,5')    # coma works too
     3693.5

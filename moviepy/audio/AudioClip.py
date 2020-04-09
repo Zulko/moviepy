@@ -6,7 +6,7 @@ import proglog
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip
 from moviepy.decorators import requires_duration
-from moviepy.tools import deprecated_version_of, extensions_dict
+from moviepy.tools import extensions_dict
 
 
 class AudioClip(Clip):
@@ -169,7 +169,6 @@ class AudioClip(Clip):
         bitrate=None,
         ffmpeg_params=None,
         write_logfile=False,
-        verbose=True,
         logger="bar",
     ):
         """ Writes an audio file from the AudioClip.
@@ -206,10 +205,7 @@ class AudioClip(Clip):
         write_logfile
           If true, produces a detailed logfile named filename + '.log'
           when writing the file
-
-        verbose
-          Boolean indicating whether to print infomation
-          
+  
         logger
           Either 'bar' or None or any Proglog logger
 
@@ -240,17 +236,9 @@ class AudioClip(Clip):
             codec=codec,
             bitrate=bitrate,
             write_logfile=write_logfile,
-            verbose=verbose,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
         )
-
-
-# The to_audiofile method is replaced by the more explicit write_audiofile.
-AudioClip.to_audiofile = deprecated_version_of(
-    AudioClip.write_audiofile, "to_audiofile"
-)
-###
 
 
 class AudioArrayClip(AudioClip):

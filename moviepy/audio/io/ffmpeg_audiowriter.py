@@ -176,15 +176,12 @@ def ffmpeg_audiowrite(
     codec="libvorbis",
     bitrate=None,
     write_logfile=False,
-    verbose=True,
     ffmpeg_params=None,
     logger="bar",
 ):
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
-
-    NOTE: verbose is deprecated.
     """
 
     if write_logfile:
