@@ -245,9 +245,14 @@ def write_gif(
         )
 
     if program == "ImageMagick":
+        imagemagick_binary = get_setting("IMAGEMAGICK_BINARY")
+        if imagemagick_binary == "unset":
+            raise Exception("ImageMagick is not installed on your computer, or"
+                            " (for Windows users) that you didn't specify the "
+                            "path to the ImageMagick binary in file conf.py.")
 
         cmd2 = [
-            get_setting("IMAGEMAGICK_BINARY"),
+            imagemagick_binary,
             "-delay",
             "%.02f" % (delay),
             "-dispose",
@@ -272,7 +277,7 @@ def write_gif(
 
             cmd3 = (
                 [
-                    get_setting("IMAGEMAGICK_BINARY"),
+                    imagemagick_binary,
                     "-",
                     "-fuzz",
                     "%d" % fuzz + "%",

@@ -1157,8 +1157,14 @@ class TextClip(ImageClip):
                 "" if size[1] is None else str(size[1]),
             )
 
+        imagemagick_binary = get_setting("IMAGEMAGICK_BINARY")
+        if imagemagick_binary == "unset":
+            raise Exception("ImageMagick is not installed on your computer, or"
+                            " (for Windows users) that you didn't specify the "
+                            "path to the ImageMagick binary in file conf.py.")
+
         cmd = [
-            get_setting("IMAGEMAGICK_BINARY"),
+            imagemagick_binary,
             "-background",
             bg_color,
             "-fill",
