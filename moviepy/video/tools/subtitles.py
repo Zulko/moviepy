@@ -22,7 +22,8 @@ class SubtitlesClip(VideoClip):
     subtitles
       Either the name of a file, or a list
     encoding
-      Optional, specifies srt file encoding in case it is needed
+      Optional, specifies srt file encoding.
+      Any standard Python encoding is allowed (listed at https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     =========
@@ -39,10 +40,10 @@ class SubtitlesClip(VideoClip):
     """
 
     def __init__(self, subtitles, make_textclip=None, encoding=None):
-        
+
         VideoClip.__init__(self, has_constant_size=False)
 
-        if isinstance( subtitles, str):
+        if isinstance(subtitles, str):
             subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
         # subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
@@ -157,7 +158,7 @@ def file_to_subtitles(filename, encoding=None):
     Only works for '.srt' format for the moment.
     """
 
-    with io.open(filename,'r',encoding=encoding) as f:
+    with io.open(filename, "r", encoding=encoding) as f:
         lines = f.readlines()
 
     times_texts = []

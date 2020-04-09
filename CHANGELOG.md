@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
 
 ### Added <!-- for new features -->
+- Optional `encoding` parameter in `SubtitlesClip` [#1043]
 
 ### Changed <!-- for changes in existing functionality -->
 
