@@ -7,17 +7,23 @@ Download and Installation
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal::
+**Method with pip:** if you have ``pip`` installed, just type this in a terminal
 
-    (sudo) pip install moviepy
+.. code:: bash
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type this before installing ::
+    $ (sudo) pip install moviepy
 
-    (sudo) pip install setuptools
+If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type this before installing:
 
-**Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type ::
+.. code:: bash
 
-    (sudo) python setup.py install
+    $ (sudo) pip install setuptools
+
+**Method by hand:** download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type
+
+.. code:: bash
+
+    $ (sudo) python setup.py install
 
 MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 3.6+ ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
@@ -35,11 +41,11 @@ You can install ``moviepy`` with all dependencies via:
     $ (sudo) pip install moviepy[optional]
 
 
-ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
+ImageMagick_ is not strictly required, but needed if you want to use TextClips_. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
 Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables.
 
-PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
+PyGame_ is needed for video and sound previews (useless you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
 For advanced image processing you will need one or several of these packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
 
@@ -58,48 +64,46 @@ For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, ImageMagick
 Custom paths to external tools
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is a couple of environment variables used by Moviepy, that allows
+There are a couple of environment variables used by MoviePy that allow you
 to configure custom paths to the external tools.
 
-To setup any of these variables, the easier way is do it in python before
-import objects from Moviepy. For example:
+To setup any of these variables, the easiest way is to do it in Python before importing objects from MoviePy. For example:
 
 .. code-block:: python
 
-	import os
-	os.environ["FFMPEG_BINARY"] = "my/custom/ffmpeg"
+    import os
+    os.environ["FFMPEG_BINARY"] = "my/custom/ffmpeg"
 
-	from moviepy.editor import VideoFileClip
 
-Alternatively, if you installed the optional dependencies, could create
-a `.env` file in your working directory that will be automatically read.
+Alternatively, after installing the optional dependencies, you can create
+a ``.env`` file in your working directory that will be automatically read.
 
-Available variables are the follow:
-
+There are 2 available environment variables:
 
 ``FFMPEG_BINARY``
-    Normally you can leave this one to its default ('ffmpeg-imageio') at which
-    case image-io will download the right ffmpeg binary (at first use) and then always use that binary.
+    Normally you can leave this one to its default ('ffmpeg-imageio') in which
+    case imageio will download the right ffmpeg binary (on first use) and then always use that binary.
 
     The second option is ``auto-detect``. In this case ffmpeg will be whatever
-    binary is found on the computer generally ``ffmpeg`` (on linux) or ``'ffmpeg.exe`` (on windows).
-    Third option: If you want to use a binary at a special location on you disk, enter it like that:
+    binary is found on the computer: generally ``ffmpeg`` (on Linux/macOS) or ``ffmpeg.exe`` (on Windows).
 
-    FFMPEG_BINARY = r"path/to/ffmpeg" # on linux
-    FFMPEG_BINARY = r"path\to\ffmpeg.exe" # on windows
+    Lastly, if you want to use a binary at a special location on your disk, enter it like this::
+
+        FFMPEG_BINARY = r"path/to/ffmpeg" # on linux
+        FFMPEG_BINARY = r"path\to\ffmpeg.exe" # on windows
 
     Warning: the 'r' before the path is important, especially on Windows.
 
 ``IMAGEMAGICK_BINARY``
+    The default is `auto-detect`.
+    For Linux users, `convert` should be fine.
 
-	The default is `auto-detect`.
-    For linux users, `convert` should be fine.
     For Windows users, you must specify the path to the ImageMagick
     'magick' binary. For instance::
 
-    	IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
+        IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
 
-    Note: If you are using a legacy version, the executable could be ``convert.exe`` instead.
+    Note: If you are using a legacy version of ImageMagick, the executable could be ``convert.exe`` instead.
 
 
 .. _`Numpy`: https://www.scipy.org/install.html
@@ -108,6 +112,7 @@ Available variables are the follow:
 
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 
+.. _TextClips: https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html#textclip
 
 .. _imageMagick: https://www.imagemagick.org/script/index.php
 .. _Pygame: https://www.pygame.org/download.shtml
