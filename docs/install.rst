@@ -106,6 +106,17 @@ There are 2 available environment variables:
     Note: If you are using a legacy version of ImageMagick, the executable could be ``convert.exe`` instead.
 
 
+To test if everything is fine, in a Python console run:
+
+.. code-block:: python
+
+    >>> from moviepy.config import check
+    >>> check()
+    MoviePy: ffmpeg successfully found.
+    MoviePy: ImageMagick successfully found.
+
+
+
 .. _`Numpy`: https://www.scipy.org/install.html
 .. _decorator: https://pypi.python.org/pypi/decorator
 .. _proglog: https://pypi.org/project/proglog/
