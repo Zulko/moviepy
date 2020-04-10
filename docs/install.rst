@@ -7,11 +7,11 @@ Download and Installation
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal (it will install ez_setup if you don't already have it) ::
+**Method with pip:** if you have ``pip`` installed, just type this in a terminal::
 
     (sudo) pip install moviepy
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type this before installing: ::
+If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type this before installing ::
 
     (sudo) pip install setuptools
 
@@ -19,9 +19,9 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
     (sudo) python setup.py install
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 3.6+ ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
 
-MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the '
+MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the
 `FFMPEG_BINARY` environment variable.
 
 
@@ -50,14 +50,18 @@ For advanced image processing you will need one or several of these packages. Fo
 
 If you are on Linux, these packages will likely be in your repos.
 
+For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, ImageMagick may not be detected by moviepy. This bug can be fixed. Modify the file ``/etc/ImageMagick-6/policy.xml`` commenting out the statement::
+
+    <!-- <policy domain="path" rights="none" pattern="@*" /> -->
+
 
 Custom paths to external tools
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is a couple of environment variables used by Moviepy, that allows 
-to configure custom paths to the external tools. 
+There is a couple of environment variables used by Moviepy, that allows
+to configure custom paths to the external tools.
 
-To setup any of these variables, the easier way is do it in python before 
+To setup any of these variables, the easier way is do it in python before
 import objects from Moviepy. For example:
 
 .. code-block:: python
@@ -67,8 +71,8 @@ import objects from Moviepy. For example:
 
 	from moviepy.editor import VideoFileClip
 
-Alternatively, if you installed the optional dependencies, could create 
-a `.env` file in your working directory that will be automatically read. 
+Alternatively, if you installed the optional dependencies, could create
+a `.env` file in your working directory that will be automatically read.
 
 Available variables are the follow:
 
@@ -76,7 +80,7 @@ Available variables are the follow:
 ``FFMPEG_BINARY``
     Normally you can leave this one to its default ('ffmpeg-imageio') at which
     case image-io will download the right ffmpeg binary (at first use) and then always use that binary.
-    
+
     The second option is ``auto-detect``. In this case ffmpeg will be whatever
     binary is found on the computer generally ``ffmpeg`` (on linux) or ``'ffmpeg.exe`` (on windows).
     Third option: If you want to use a binary at a special location on you disk, enter it like that:
@@ -86,17 +90,16 @@ Available variables are the follow:
 
     Warning: the 'r' before the path is important, especially on Windows.
 
-
 ``IMAGEMAGICK_BINARY``
 
-	The default is `auto-detect`. 
+	The default is `auto-detect`.
     For linux users, `convert` should be fine.
     For Windows users, you must specify the path to the ImageMagick
     'magick' binary. For instance::
 
     	IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
 
-    Note: If you are using a legacy version, the executable could be ``convert.exe`` instead.  
+    Note: If you are using a legacy version, the executable could be ``convert.exe`` instead.
 
 
 .. _`Numpy`: https://www.scipy.org/install.html
