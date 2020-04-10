@@ -1,15 +1,17 @@
 import os
+from pathlib import Path
 import subprocess as sp
+
 
 if os.name == "nt":
     import winreg as wr
 
 try:
     from dotenv import load_dotenv, find_dotenv
-
-    load_dotenv(find_dotenv())
+    DOTENV = find_dotenv()
+    load_dotenv(DOTENV)
 except ImportError:
-    pass
+    DOTENV = None
 
 FFMPEG_BINARY = os.getenv("FFMPEG_BINARY", "ffmpeg-imageio")
 IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
@@ -80,14 +82,18 @@ else:
 
 def check():
     if try_cmd([FFMPEG_BINARY])[0]:
-        print("MoviePy: ffmpeg successfully found.")
+        print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
     else:
-        print(f"MoviePy: can't find or access ffmpeg. ({FFMPEG_BINARY})")
+        print(f"MoviePy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
 
     if try_cmd([IMAGEMAGICK_BINARY])[0]:
-        print("MoviePy: ImageMagick successfully found.")
+        print(f"MoviePy: ImageMagick successfully found in '{IMAGEMAGICK_BINARY}'.")
     else:
-        print(f"MoviePy: can't find or access ImageMagick. ({IMAGEMAGICK_BINARY})")
+        print(f"MoviePy: can't find or access ImageMagick in '{IMAGEMAGICK_BINARY}'.")
+
+    if DOTENV:
+        print(f"\n.env file content at {DOTENV}:\n")
+        print(Path(DOTENV).read_text())
 
 
 if __name__ == "__main__":

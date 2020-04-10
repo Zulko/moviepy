@@ -72,11 +72,17 @@ To setup any of these variables, the easiest way is to do it in Python before im
 .. code-block:: python
 
     import os
-    os.environ["FFMPEG_BINARY"] = "my/custom/ffmpeg"
+    os.environ["FFMPEG_BINARY"] = "/path/to/custom/ffmpeg"
 
 
 Alternatively, after installing the optional dependencies, you can create
 a ``.env`` file in your working directory that will be automatically read.
+For example
+
+.. code-block:: ini
+
+    FFMPEG_BINARY=/path/to/custom/ffmpeg
+
 
 There are 2 available environment variables:
 
@@ -84,24 +90,21 @@ There are 2 available environment variables:
     Normally you can leave this one to its default ('ffmpeg-imageio') in which
     case imageio will download the right ffmpeg binary (on first use) and then always use that binary.
 
-    The second option is ``auto-detect``. In this case ffmpeg will be whatever
+    The second option is ``"auto-detect"``. In this case ffmpeg will be whatever
     binary is found on the computer: generally ``ffmpeg`` (on Linux/macOS) or ``ffmpeg.exe`` (on Windows).
 
-    Lastly, if you want to use a binary at a special location on your disk, enter it like this::
+    Lastly, if you want to use a binary at a special location on your disk, set the
 
-        FFMPEG_BINARY = r"path/to/ffmpeg" # on linux
-        FFMPEG_BINARY = r"path\to\ffmpeg.exe" # on windows
-
-    Warning: the 'r' before the path is important, especially on Windows.
 
 ``IMAGEMAGICK_BINARY``
-    The default is `auto-detect`.
-    For Linux users, `convert` should be fine.
+
+    The default is ``"auto-detect"``.
+    For Linux users, ``"convert"`` should be fine.
 
     For Windows users, you must specify the path to the ImageMagick
     'magick' binary. For instance::
 
-        IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
+        os.environ["IMAGEMAGICK_BINARY"] = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
 
     Note: If you are using a legacy version of ImageMagick, the executable could be ``convert.exe`` instead.
 
@@ -112,10 +115,6 @@ To test if everything is fine, in a Python console run:
 
     >>> from moviepy.config import check
     >>> check()
-    MoviePy: ffmpeg successfully found.
-    MoviePy: ImageMagick successfully found.
-
-
 
 .. _`Numpy`: https://www.scipy.org/install.html
 .. _decorator: https://pypi.python.org/pypi/decorator
