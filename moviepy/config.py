@@ -8,6 +8,7 @@ if os.name == "nt":
 
 try:
     from dotenv import load_dotenv, find_dotenv
+
     DOTENV = find_dotenv()
     load_dotenv(DOTENV)
 except ImportError:
