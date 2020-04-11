@@ -13,9 +13,9 @@ import numpy as np
 import proglog
 from imageio import imread, imsave
 
-from ..Clip import Clip
-from ..config import get_setting
-from ..decorators import (
+from moviepy.Clip import Clip
+from moviepy.config import get_setting
+from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
@@ -24,14 +24,18 @@ from ..decorators import (
     requires_duration,
     use_clip_fps_by_default,
 )
-from ..tools import (
+from moviepy.tools import (
     extensions_dict,
     find_extension,
     subprocess_call,
 )
-from .io.ffmpeg_writer import ffmpeg_write_video
-from .io.gif_writers import write_gif, write_gif_with_image_io, write_gif_with_tempfiles
-from .tools.drawing import blit
+from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
+from moviepy.video.io.gif_writers import (
+    write_gif,
+    write_gif_with_image_io,
+    write_gif_with_tempfiles,
+)
+from moviepy.video.tools.drawing import blit
 
 
 class VideoClip(Clip):
@@ -1231,14 +1235,20 @@ class TextClip(ImageClip):
             popen_params["creationflags"] = 0x08000000
 
         process = sp.Popen(
-            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg], **popen_params
+            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg],
+            encoding="utf-8",
+            **popen_params,
         )
-        result = process.communicate()[0].decode()
+        result = process.communicate()[0]
         lines = result.splitlines()
 
         if arg == "font":
+            # Slice removes first 8 characters: "  Font: "
             return [l[8:] for l in lines if l.startswith("  Font:")]
         elif arg == "color":
+            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split on space and take
+            # the first item to get the color name.
+            # The first 5 lines are header information, not colors, so ignore
             return [l.split(" ")[0] for l in lines[5:]]
         else:
             raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
