@@ -4,10 +4,6 @@ environment:
   global:
     IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
   matrix:
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_ARCH: "64"
-      ARCH: x64
-
     - PYTHON: "C:\\Python36-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
@@ -32,7 +28,7 @@ install:
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - pip install --upgrade pip --user
+  - python -m pip install --upgrade pip --user
   - pip install pipenv
 
   # Find latest image magick version by parsing website

@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """Compositing tests for use with pytest."""
-from os.path import join
 import sys
+from os.path import join
+
 import pytest
+
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
+
 from .test_helper import TMP_DIR
 
 
@@ -16,8 +19,7 @@ def test_clips_array():
     video = clips_array([[red, green, blue]])
 
     with pytest.raises(ValueError):  # duration not set
-        video.resize(width=480).write_videofile(
-            join(TMP_DIR, "test_clips_array.mp4"))
+        video.resize(width=480).write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
     close_all_clips(locals())
 
 

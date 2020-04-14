@@ -1,7 +1,8 @@
-from moviepy.decorators import (apply_to_mask, apply_to_audio,
-                                 requires_duration)
+from moviepy.decorators import apply_to_audio, apply_to_mask, requires_duration
 from moviepy.video.compositing.concatenate import concatenate_videoclips
+
 from .time_mirror import time_mirror
+
 
 @requires_duration
 @apply_to_mask
@@ -13,4 +14,4 @@ def time_symmetrize(clip):
     This effect is automatically applied to the clip's mask and audio
     if they exist.
     """
-    return concatenate_videoclips([clip, clip.fx( time_mirror )])
+    return concatenate_videoclips([clip, clip.fx(time_mirror)])
