@@ -140,7 +140,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
-    @convert_path_to_string("filename")
+    @convert_path_to_string(["filename", "temp_audiofile_path"])
     def write_videofile(
         self,
         filename,
@@ -155,6 +155,7 @@ class VideoClip(Clip):
         audio_bitrate=None,
         audio_bufsize=2000,
         temp_audiofile=None,
+        temp_audiofile_path="",
         rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
@@ -217,12 +218,16 @@ class VideoClip(Clip):
           If ``audio`` is the name of an audio file, this audio file
           will be incorporated as a soundtrack in the movie.
 
-        audiofps
+        audio_fps
           frame rate to use when generating the sound.
 
         temp_audiofile
           the name of the temporary audiofile to be generated and
           incorporated in the the movie, if any.
+
+        temp_audiofile_path
+          the location that the temporary audiofile is placed, as a
+          string or path-like object. Defaults to the current working directory.
 
         audio_codec
           Which audio codec should be used. Examples are 'libmp3lame'
@@ -305,7 +310,7 @@ class VideoClip(Clip):
             audiofile = temp_audiofile
         elif make_audio:
             audio_ext = find_extension(audio_codec)
-            audiofile = name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext
+            audiofile = os.path.join(temp_audiofile_path, name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext)
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)

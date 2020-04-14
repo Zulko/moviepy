@@ -76,7 +76,6 @@ def audio_video_fx(f, clip, *a, **k):
 
 def preprocess_args(fun, varnames):
     """ Applies fun to variables in varnames before launching the function """
-
     def wrapper(f, *a, **kw):
         func_code = f.__code__
 
