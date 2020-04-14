@@ -140,7 +140,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
-    @convert_path_to_string(["filename", "temp_audiofile_path"])
+    @convert_path_to_string(["filename", "temp_audiofile", "temp_audiofile_path"])
     def write_videofile(
         self,
         filename,
@@ -222,8 +222,8 @@ class VideoClip(Clip):
           frame rate to use when generating the sound.
 
         temp_audiofile
-          the name of the temporary audiofile to be generated and
-          incorporated in the the movie, if any.
+          the name of the temporary audiofile, as a string or path-like object, to be created and
+          then used to write the complete video, if any.
 
         temp_audiofile_path
           the location that the temporary audiofile is placed, as a
@@ -310,7 +310,10 @@ class VideoClip(Clip):
             audiofile = temp_audiofile
         elif make_audio:
             audio_ext = find_extension(audio_codec)
-            audiofile = os.path.join(temp_audiofile_path, name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext)
+            audiofile = os.path.join(
+                temp_audiofile_path,
+                name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext,
+            )
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)

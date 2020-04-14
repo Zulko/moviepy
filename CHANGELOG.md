@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Autodetect ImageMagick executable on Windows [#1109]
 - Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
+- New `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created
 
 ### Changed <!-- for changes in existing functionality -->
 
