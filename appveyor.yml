@@ -1,0 +1,81 @@
+image: Visual Studio 2017
+
+environment:
+  global:
+    IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
+  matrix:
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_ARCH: "64"
+      ARCH: x64
+
+    - PYTHON: "C:\\Python37-x64"
+      PYTHON_ARCH: "64"
+      ARCH: x64
+
+install:
+  # If there is a newer build queued for the same PR, cancel this one.
+  # The AppVeyor 'rollout builds' option is supposed to serve the same
+  # purpose but it is problematic because it tends to cancel builds pushed
+  # directly to master instead of just PR builds (or the converse).
+  # credits: JuliaLang developers.
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+
+  # Prepend desired Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
+  - python -m pip install --upgrade pip --user
+  - pip install pipenv
+
+  # Find latest image magick version by parsing website
+
+  - python find_latest_imagemagick_version.py > temp.txt
+  - set /p IMAGE_MAGICK_VERSION=<temp.txt
+
+  - echo %IMAGE_MAGICK_VERSION%
+  # Download ImageMagick installer (which also installs ffmpeg.)
+  # From http://ftp.fifi.org/ImageMagick/binaries/
+  # Might need to be updated from time to time
+  # Versions >=7.0 have problems - executables changed names.
+  # Assume 64-bit. Need to change to x86 for 32-bit.
+  - curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
+
+  # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
+  - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
+
+  # Inspect contents and set env vars
+  - dir "%IMAGE_MAGICK_INSTALL_DIR%"
+  - set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
+  - echo %IMAGEMAGICK_BINARY%
+  - set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
+  - echo %FMPEG_BINARY%
+
+build_script:
+  # Install all dependencies, including dev dependencies
+  - pipenv install --dev
+  # Build the compiled extension
+  #- "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
+
+test_script:
+  - pipenv run pytest
+
+# TODO: Support the post-test generation of binaries - Pending a version number that is supported (e.g. 0.3.0)
+#
+# after_test:
+#
+# # If tests are successful, create binary packages for the project.
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_wheel"
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_wininst"
+# - "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py bdist_msi"
+# - ps: "ls dist"
+#
+# artifacts:
+#   # Archive the generated packages in the ci.appveyor.com build report.
+#   - path: dist\*
+#
+# on_success:
+#   - TODO: upload the content of dist/*.whl to a public wheelhouse

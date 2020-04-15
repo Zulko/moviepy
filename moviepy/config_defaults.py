@@ -42,13 +42,13 @@ FFMPEG_BINARY
 IMAGEMAGICK_BINARY
     For linux users, 'convert' should be fine.
     For Windows users, you must specify the path to the ImageMagick
-    'convert' binary. For instance:
+    'magick' binary. For instance:
 
-    IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\convert.exe"
+    IMAGEMAGICK_BINARY = r"C:\Program Files\ImageMagick-6.8.8-Q16\magick.exe"
 
 """
 
 import os
 
-FFMPEG_BINARY = os.getenv('FFMPEG_BINARY', 'ffmpeg-imageio')
-IMAGEMAGICK_BINARY = os.getenv('IMAGEMAGICK_BINARY', 'auto-detect')
+FFMPEG_BINARY = os.getenv("FFMPEG_BINARY", "ffmpeg-imageio")
+IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")

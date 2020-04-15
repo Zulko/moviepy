@@ -19,7 +19,8 @@ You can either import a single function like this: ::
 Or import everything: ::
     
     import moviepy.audio.fx.all as afx
-    newaudio = (audioclip.afx( vfx.volumex, 0.5)
+    newaudio = (audioclip.afx( vfx.normalize)
+                         .afx( vfx.volumex, 0.5)
                          .afx( vfx.audio_fadein, 1.0)
                          .afx( vfx.audio_fadeout, 1.0))
 
@@ -41,4 +42,5 @@ the module ``audio.fx`` is loaded as ``afx`` and you can use ``afx.volumex``, et
     audio_fadein
     audio_fadeout
     audio_loop
+    audio_normalize
     volumex
