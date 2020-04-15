@@ -65,6 +65,6 @@ If you are on linux, these packages will likely be in your repos.
 
 .. _Github: https://github.com/Zulko/moviepy
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _`OpenCV 2.4.6`: https://github.com/skvark/opencv-python
 
 

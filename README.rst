@@ -219,7 +219,7 @@ Maintainers
 .. Software, Tools, Libraries
 .. _Pillow: https://pillow.readthedocs.org/en/latest/
 .. _Scipy: https://www.scipy.org/
-.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _`OpenCV 2.4.6`: https://github.com/skvark/opencv-python
 .. _Pygame: https://www.pygame.org/download.shtml
 .. _Numpy: https://www.scipy.org/install.html
 .. _imageio: https://imageio.github.io/
