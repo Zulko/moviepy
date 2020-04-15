@@ -1060,8 +1060,8 @@ class ColorClip(ImageClip):
         else:
             if color is None:
                 color = (0, 0, 0)
-            elif hasattr(color, "__getitem__"):
-                raise Exception("Color has to be an RGB tuple")
+            elif not hasattr(color, "__getitem__"):
+                raise Exception("Color has to contain RGB of the clip")
             shape = (h, w, len(color))
 
         super().__init__(
