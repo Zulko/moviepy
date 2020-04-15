@@ -1232,7 +1232,9 @@ class TextClip(ImageClip):
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
-        process = sp.Popen([IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params)
+        process = sp.Popen(
+            [IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params
+        )
         result = process.communicate()[0]
         lines = result.splitlines()
 
