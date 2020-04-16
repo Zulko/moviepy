@@ -65,10 +65,10 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                     encoding="utf-8",
                 ).split("\n")[0]
             except:
-                IMAGEMAGICK_BINARY = 'unset'
+                IMAGEMAGICK_BINARY = "unset"
                 
-    elif try_cmd(['convert'])[0]:
-        IMAGEMAGICK_BINARY = 'convert'
+    elif try_cmd(["convert"])[0]:
+        IMAGEMAGICK_BINARY = "convert"
 
     else:
         IMAGEMAGICK_BINARY = "unset"
