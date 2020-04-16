@@ -66,7 +66,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                 ).split("\n")[0]
             except:
                 IMAGEMAGICK_BINARY = "unset"
-                
+
     elif try_cmd(["convert"])[0]:
         IMAGEMAGICK_BINARY = "convert"
 
