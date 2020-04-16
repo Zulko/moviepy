@@ -52,22 +52,18 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             key.Close()
         except:
             try:
-                imagemagick_path = (
-                    sp.check_output(
-                        'dir /B /O-N "C:\Program Files\ImageMagick-*"',
-                        shell=True,
-                        encoding="utf-8"
-                    ).split("\n")[0]
-                )
-                IMAGEMAGICK_BINARY = (
-                    sp.check_output(
-                        'dir /B /S   "C:\Program Files\{}\*convert.exe"'.format(
-                            imagemagick_path
-                        ),
-                        shell=True,
-                        encoding="utf-8"
-                    ).split("\n")[0]
-                )
+                imagemagick_path = sp.check_output(
+                    'dir /B /O-N "C:\Program Files\ImageMagick-*"',
+                    shell=True,
+                    encoding="utf-8",
+                ).split("\n")[0]
+                IMAGEMAGICK_BINARY = sp.check_output(
+                    'dir /B /S   "C:\Program Files\{}\*convert.exe"'.format(
+                        imagemagick_path
+                    ),
+                    shell=True,
+                    encoding="utf-8",
+                ).split("\n")[0]
             except:
                 IMAGEMAGICK_BINARY = 'unset'
                 
