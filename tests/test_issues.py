@@ -329,7 +329,7 @@ def test_issue_416():
     # ColorClip has no fps attribute.
     green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
     video1 = concatenate_videoclips([green])
-    assert video1.fps == None
+    assert video1.fps is None
 
 
 def test_issue_417():
