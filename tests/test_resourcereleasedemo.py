@@ -7,7 +7,6 @@
     
     Note: Platform dependent test. Will only fail on Windows > NT. """
 
-import subprocess as sp
 import time
 from os import remove
 from os.path import join

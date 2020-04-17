@@ -8,7 +8,6 @@ from numpy import pi, sin
 
 from moviepy.audio.AudioClip import (
     AudioClip,
-    CompositeAudioClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
