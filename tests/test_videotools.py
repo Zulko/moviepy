@@ -42,7 +42,7 @@ def test_credits():
     assert os.path.isfile(vid_location)
 
 
-def test_detect_scenes__red_green():
+def test_detect_scenes():
     """
     Test that a cut is detected between concatenated red and green clips
     """
@@ -50,6 +50,6 @@ def test_detect_scenes__red_green():
     green = ColorClip((640, 480), color=(0, 200, 0)).set_duration(1)
     video = concatenate_videoclips([red, green])
 
-    cuts, luminosities = detect_scenes(video, fps=10, progress_bar=False)
+    cuts, luminosities = detect_scenes(video, fps=10, logger=None)
 
     assert len(cuts) == 2
