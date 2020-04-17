@@ -40,7 +40,12 @@ before_script:
   # W291: trailing whitespace
   # W293: blank line contains whitespace
   # W503: line break before binary operator
-  - flake8 . --count --ignore=E203,E302,E402,W291,W293,W503 --max-complexity=10 --max-line-length=127 --statistics --exit-zero
+  - flake8 moviepy --ignore=E203,E302,E402,W291,W293,W503 --max-complexity=10 --max-line-length=127 --statistics --count --exit-zero
+  # Check examples and tests with slightly relaxed rules to allow 'star' imports
+  # F403 'from moviepy.editor import *' used; unable to detect undefined names
+  # F405 'name' may be undefined, or defined from star imports: moviepy.editor
+  - flake8 . --ignore=E203,E302,E402,W291,W293,W503,F403,F405 --exclude moviepy/ --max-complexity=10 --max-line-length=127 --statistics --count  --exit-zero
+
 
 script:
   - pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
