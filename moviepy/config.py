@@ -50,21 +50,19 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current")
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\convert.exe"
             key.Close()
-        except:
+        except Exception:
             try:
                 imagemagick_path = sp.check_output(
-                    'dir /B /O-N "C:\Program Files\ImageMagick-*"',
+                    r'dir /B /O-N "C:\Program Files\ImageMagick-*"',
                     shell=True,
                     encoding="utf-8",
                 ).split("\n")[0]
                 IMAGEMAGICK_BINARY = sp.check_output(
-                    'dir /B /S   "C:\Program Files\{}\*convert.exe"'.format(
-                        imagemagick_path
-                    ),
+                    rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
                     shell=True,
                     encoding="utf-8",
                 ).split("\n")[0]
-            except:
+            except Exception:
                 IMAGEMAGICK_BINARY = "unset"
 
     elif try_cmd(["convert"])[0]:
