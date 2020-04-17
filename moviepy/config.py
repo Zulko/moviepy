@@ -50,7 +50,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current")
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\convert.exe"
             key.Close()
-        except:
+        except Exception:
             IMAGEMAGICK_BINARY = "unset"
     elif try_cmd(["convert"])[0]:
         IMAGEMAGICK_BINARY = "convert"

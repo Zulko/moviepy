@@ -7,7 +7,6 @@ main subclasses:
 import os
 import subprocess as sp
 import tempfile
-import warnings
 
 import numpy as np
 import proglog
@@ -299,7 +298,7 @@ class VideoClip(Clip):
 
         audiofile = audio if isinstance(audio, str) else None
         make_audio = (
-            (audiofile is None) and (audio == True) and (self.audio is not None)
+            (audiofile is None) and (audio is True) and (self.audio is not None)
         )
 
         if make_audio and temp_audiofile:
@@ -639,7 +638,10 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
+
+            def make_frame(t):
+                return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -795,8 +797,11 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            f = lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
-            newclip = self.fl_image(f)
+
+            def fl(pic):
+                return np.dstack(3 * [255 * pic]).astype("uint8")
+
+            newclip = self.fl_image(fl)
             newclip.ismask = False
             return newclip
         else:
@@ -848,7 +853,10 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
-        make_frame = lambda t: self.data_to_frame(self.data[int(self.fps * t)])
+
+        def make_frame(t):
+            return self.data_to_frame(self.data[int(self.fps * t)])
+
         VideoClip.__init__(
             self,
             make_frame,

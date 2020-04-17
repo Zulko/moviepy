@@ -310,7 +310,7 @@ def ffmpeg_parse_infos(
             line = [l for l in lines if keyword in l][index]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
-        except:
+        except Exception:
             raise IOError(
                 (
                     "MoviePy error: failed to read the duration of file %s.\n"
@@ -320,7 +320,7 @@ def ffmpeg_parse_infos(
             )
 
     # get the output line that speaks about video
-    lines_video = [l for l in lines if " Video: " in l and re.search("\d+x\d+", l)]
+    lines_video = [l for l in lines if " Video: " in l and re.search(r"\d+x\d+", l)]
 
     result["video_found"] = lines_video != []
 
@@ -332,7 +332,7 @@ def ffmpeg_parse_infos(
             match = re.search(" [0-9]*x[0-9]*(,| )", line)
             s = list(map(int, line[match.start() : match.end() - 1].split("x")))
             result["video_size"] = s
-        except:
+        except Exception:
             raise IOError(
                 (
                     "MoviePy error: failed to read video dimensions in file %s.\n"
@@ -368,13 +368,13 @@ def ffmpeg_parse_infos(
         if fps_source == "tbr":
             try:
                 result["video_fps"] = get_tbr()
-            except:
+            except Exception:
                 result["video_fps"] = get_fps()
 
         elif fps_source == "fps":
             try:
                 result["video_fps"] = get_fps()
-            except:
+            except Exception:
                 result["video_fps"] = get_tbr()
 
         # It is known that a fps of 24 is often written as 24000/1001
@@ -398,17 +398,17 @@ def ffmpeg_parse_infos(
         # get the video rotation info.
         try:
             rotation_lines = [
-                l for l in lines if "rotate          :" in l and re.search("\d+$", l)
+                l for l in lines if "rotate          :" in l and re.search(r"\d+$", l)
             ]
             if len(rotation_lines):
                 rotation_line = rotation_lines[0]
-                match = re.search("\d+$", rotation_line)
+                match = re.search(r"\d+$", rotation_line)
                 result["video_rotation"] = int(
                     rotation_line[match.start() : match.end()]
                 )
             else:
                 result["video_rotation"] = 0
-        except:
+        except Exception:
             raise IOError(
                 (
                     "MoviePy error: failed to read video rotation in file %s.\n"
@@ -429,7 +429,7 @@ def ffmpeg_parse_infos(
                 match.start() + 1 : match.end() - 3
             ]  # Removes the 'hz' from the end
             result["audio_fps"] = int(hz_string)
-        except:
+        except Exception:
             result["audio_fps"] = "unknown"
 
     return result

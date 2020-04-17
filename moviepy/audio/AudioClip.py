@@ -288,7 +288,6 @@ class AudioArrayClip(AudioClip):
 
 
 class CompositeAudioClip(AudioClip):
-
     """ Clip made by composing several AudioClips.
     
     An audio clip made by putting together several audio clips.
