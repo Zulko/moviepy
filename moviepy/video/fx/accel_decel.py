@@ -43,4 +43,6 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
     if new_duration is None:
         new_duration = clip.duration
 
-    return clip.fl_time(lambda t: f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)).set_duration(new_duration)
+    return clip.fl_time(
+        lambda t: f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)
+    ).set_duration(new_duration)
