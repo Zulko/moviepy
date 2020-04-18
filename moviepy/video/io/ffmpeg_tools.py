@@ -127,6 +127,7 @@ def ffmpeg_resize(video, output, size):
     subprocess_call(cmd)
 
 
+@convert_path_to_string(("filename", "output", "output_dir"))
 def ffmpeg_stabilize_video(filename, output=None, output_dir="", overwrite_file=False):
     """
     Stabilizes ``filename`` and write the result to ``output``.
@@ -152,8 +153,8 @@ def ffmpeg_stabilize_video(filename, output=None, output_dir="", overwrite_file=
     if not output:
         without_dir = os.path.basename(filename)
         name, ext = os.path.splitext(without_dir)
-
         output = f"{name}_stabilized{ext}"
+
     output = os.path.join(output_dir, output)
     cmd = [get_setting("FFMPEG_BINARY"), "-i", filename, "-vf", "deshake", output]
     if overwrite_file:
