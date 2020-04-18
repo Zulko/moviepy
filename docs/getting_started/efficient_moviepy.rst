@@ -9,10 +9,10 @@ The best way to start with MoviePy is to use it with the IPython Notebook: it ma
 
 .. _should_i_use_moviepy_editor:
 
-Should I use ``moviepy.editor`` ?
+Should I use ``moviepy.editor``?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most examples in this documentation use the submodule ``moviepy.editor``, but this submodule is not adapted to all needs so should *you* use it ? Short answer: if you use MoviePy to edit videos *by hand*, use it, but if you use MoviePy inside a larger library or program or webserver, it is better to avoid it and just load the functions that you need.
+Most examples in this documentation use the submodule ``moviepy.editor``, but this submodule is not adapted to all needs so should *you* use it? Short answer: if you use MoviePy to edit videos *by hand*, use it, but if you use MoviePy inside a larger library or program or webserver, it is better to avoid it and just load the functions that you need.
 
 The module ``moviepy.editor`` can be loaded using one of the three following methods: ::
 
