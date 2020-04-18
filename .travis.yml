@@ -27,6 +27,7 @@ before_install:
 
 install:
   - pip install .[test]
+  - pip install .[optional]
 
 before_script:
   # stop the build if there are Python syntax errors or undefined names
