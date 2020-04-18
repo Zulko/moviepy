@@ -2,21 +2,23 @@
 """Pull request tests meant to be run with pytest."""
 import os
 import sys
+from pathlib import Path
 
 import pytest
 
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
+from moviepy.video.tools.subtitles import SubtitlesClip
 
 from .test_helper import FONT, TMP_DIR
 
 
 def test_PR_306():
-
     assert TextClip.list("font") != []
     assert TextClip.list("color") != []
 
@@ -98,6 +100,49 @@ def test_PR_610():
     clip2.fps = 25
     composite = CompositeVideoClip([clip1, clip2])
     assert composite.fps == 25
+
+
+def test_PR_1137_video():
+    """
+    Test support for path-like objects as arguments for VideoFileClip.
+    """
+    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")) as video:
+        video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
+        assert isinstance(video.filename, str)
+
+
+def test_PR_1137_audio():
+    """
+    Test support for path-like objects as arguments for AudioFileClip.
+    """
+    with AudioFileClip(Path("media/crunching.mp3")) as audio:
+        audio.write_audiofile(Path(TMP_DIR) / "pathlike.mp3")
+        assert isinstance(audio.filename, str)
+
+
+def test_PR_1137_image():
+    """
+    Test support for path-like objects as arguments for ImageClip.
+    """
+    ImageClip(Path("media/vacation_2017.jpg")).close()
+
+
+def test_PR_1137_subtitles():
+    """
+    Test support for path-like objects as arguments for SubtitlesClip.
+    """
+
+    def make_textclip(txt):
+        return TextClip(
+            txt,
+            font=FONT,
+            fontsize=24,
+            color="white",
+            stroke_color="black",
+            stroke_width=0.5,
+        )
+
+    SubtitlesClip(Path("media/subtitles1.srt"), make_textclip=make_textclip).close()
 
 
 if __name__ == "__main__":

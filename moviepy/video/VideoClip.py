@@ -23,6 +23,7 @@ from moviepy.decorators import (
     outplace,
     requires_duration,
     use_clip_fps_by_default,
+    convert_path_to_string,
 )
 from moviepy.tools import (
     extensions_dict,
@@ -143,6 +144,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
+    @convert_path_to_string("filename")
     def write_videofile(
         self,
         filename,
@@ -170,7 +172,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file to write in.
+          Name of the video file to write in, as a string or a path-like object.
           The extension must correspond to the "codec" used (see below),
           or simply be '.avi' (which will work with any codec).
 
@@ -399,6 +401,7 @@ class VideoClip(Clip):
 
     @requires_duration
     @convert_masks_to_RGB
+    @convert_path_to_string("filename")
     def write_gif(
         self,
         filename,
@@ -421,7 +424,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the resulting gif file.
+          Name of the resulting gif file, as a string or a path-like object.
 
         fps
           Number of frames per second (see note below). If it
@@ -930,8 +933,8 @@ class ImageClip(VideoClip):
     -----------
 
     img
-      Any picture file (png, tiff, jpeg, etc.) or any array representing
-      an RGB image (for instance a frame from a VideoClip).
+      Any picture file (png, tiff, jpeg, etc.) as a string or a path-like object,
+      or any array representing an RGB image (for instance a frame from a VideoClip).
 
     ismask
       Set this parameter to `True` if the clip is a mask.
@@ -953,7 +956,8 @@ class ImageClip(VideoClip):
     ):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
+        if not isinstance(img, np.ndarray):
+            # img is a string or path-like object, so read it in from disk
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
@@ -1070,7 +1074,8 @@ class TextClip(ImageClip):
       ``filename``.
 
     filename
-      The name of a file in which there is the text to write.
+      The name of a file in which there is the text to write,
+      as a string or a path-like object.
       Can be provided instead of argument ``txt``
 
     size
@@ -1120,6 +1125,7 @@ class TextClip(ImageClip):
 
     """
 
+    @convert_path_to_string("filename")
     def __init__(
         self,
         txt=None,
