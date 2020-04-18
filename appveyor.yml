@@ -56,7 +56,7 @@ install:
 
 build_script:
   # Install all dependencies, including dev dependencies
-  - pipenv install --dev
+  - pipenv install --dev --optional
   # Build the compiled extension
   #- "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
 
