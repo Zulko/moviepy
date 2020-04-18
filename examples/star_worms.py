@@ -115,7 +115,7 @@ final.set_duration(8).write_videofile("starworms.avi", fps=5)
 
   We will now code the video tutorial for this video.
   When you think about it, it is a code for a video explaining how to
-  make another video using some code (this is so meta !).
+  make another video using some code (this is so meta!).
   This code uses the variables of the previous code (it should be placed
   after that previous code to work).
 

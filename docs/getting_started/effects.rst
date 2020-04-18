@@ -13,7 +13,7 @@ All these effects have in common that they are **not inplace**: they do NOT modi
 
     my_clip = VideoFileClip("some_file.mp4")
     my_clip.set_start(t=5) # does nothing, changes are lost
-    my_new_clip = my_clip.set_start(t=5) # good !
+    my_new_clip = my_clip.set_start(t=5) # good!
 
 Also, when you write ``clip.resize(width=640)``, it does not immediately applies the effect to all the frames of the clip, but only to the first frame: all the other frames will be resized only when required (that is, when you will write the whole clip to a file of when you will preview it). Said otherwise, creating a new clip is neither time nor memory hungry, all the computations happen during the final rendering.  
 
@@ -47,7 +47,7 @@ but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: 
                    .fx( effect_2, args2)
                    .fx( effect_3, args3))
 
-Much better ! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy.editor import *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
+Much better! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy.editor import *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
     from moviepy.editor import *
     clip = (VideoFileClip("myvideo.avi")

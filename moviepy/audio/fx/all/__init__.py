@@ -1,5 +1,5 @@
 """
-Loads all the fx !
+Loads all the fx!
 Usage:
 import moviepy.audio.fx.all as afx
 audio_clip = afx.volume_x(some_clip, .5)
