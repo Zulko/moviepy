@@ -2,8 +2,10 @@
 try:
     from blend_modes import blend_modes
 except ImportError as ex:
-    msg = 'Using BlendedCompositeVideoClip requires the "blend_modes" package.' +\
-        ' Please install with "pip install blend_modes" and try again.'
+    msg = (
+        'Using BlendedCompositeVideoClip requires the "blend_modes" package.'
+        + ' Please install with "pip install blend_modes" and try again.'
+    )
     raise ImportError(msg)
 
 import types
@@ -78,10 +80,21 @@ class BlendedCompositeVideoClip(CompositeVideoClip):
 
     """
 
-    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False,
-                 ismask=False, clips_blending=None):
+    def __init__(
+        self,
+        clips,
+        size=None,
+        bg_color=None,
+        use_bgclip=False,
+        ismask=False,
+        clips_blending=None,
+    ):
         CompositeVideoClip.__init__(
-            self, clips, size=size, bg_color=bg_color, use_bgclip=use_bgclip,
+            self,
+            clips,
+            size=size,
+            bg_color=bg_color,
+            use_bgclip=use_bgclip,
             ismask=ismask,
         )
 
@@ -98,6 +111,7 @@ class BlendedCompositeVideoClip(CompositeVideoClip):
             for (c, blend_kwargs) in self.playing_clips(t):
                 f = c.blended_blit_on(f, t, **blend_kwargs)
             return f
+
         self.make_frame = make_frame
         return
 
@@ -114,10 +128,7 @@ class BlendedCompositeVideoClip(CompositeVideoClip):
         n_clips = len(self.clips)
         if len(clips_blending) != n_clips:
             clips_blending = [
-                {
-                    'blend_mode': 'normal',
-                    'blend_opacity': 1.0,
-                    'blend_weight': 1.0,
-                } for i in range(n_clips)
+                {"blend_mode": "normal", "blend_opacity": 1.0, "blend_weight": 1.0,}
+                for i in range(n_clips)
             ]
         return clips_blending
