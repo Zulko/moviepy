@@ -797,11 +797,7 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-
-            def fl(pic):
-                return np.dstack(3 * [255 * pic]).astype("uint8")
-
-            newclip = self.fl_image(fl)
+            newclip = self.fl_image(lambda pic: np.dstack(3 * [255 * pic]).astype("uint8"))
             newclip.ismask = False
             return newclip
         else:
