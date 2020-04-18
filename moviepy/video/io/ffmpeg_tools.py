@@ -121,18 +121,19 @@ def ffmpeg_resize(video, output, size):
     subprocess_call(cmd)
 
 
-def ffmpeg_stabilized_video(filename, output=None):
+def ffmpeg_stabilize_video(filename, output=None):
     """
-    Makes a new video file, from the given one
-    which is more stable
+    Stabilizes ``filename`` and write the result to ``output``.
 
     Parameters
     -----------
 
     filename
-    The name of the shaky video
+      The name of the shaky video
+
     output
-    The name of new stabilized video
+      The name of new stabilized video
+      Optional: defaults to appending '_stabilized' to the input file name
     """
 
     name, ext = os.path.splitext(filename)
