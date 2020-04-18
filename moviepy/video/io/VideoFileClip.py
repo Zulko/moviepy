@@ -2,6 +2,7 @@ import os
 
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.Clip import Clip
+from moviepy.decorators import convert_path_to_string
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader
 from moviepy.video.VideoClip import VideoClip
 
@@ -22,8 +23,9 @@ class VideoFileClip(VideoClip):
     ------------
 
     filename:
-      The name of the video file. It can have any extension supported
-      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.
+      The name of the video file, as a string or a path-like object.
+      It can have any extension supported by ffmpeg:
+      .ogv, .mp4, .mpeg, .avi, .mov etc.
 
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
@@ -75,6 +77,7 @@ class VideoFileClip(VideoClip):
 
     """
 
+    @convert_path_to_string("filename")
     def __init__(
         self,
         filename,
@@ -108,7 +111,7 @@ class VideoFileClip(VideoClip):
         self.size = self.reader.size
         self.rotation = self.reader.rotation
 
-        self.filename = self.reader.filename
+        self.filename = filename
 
         if has_mask:
 
