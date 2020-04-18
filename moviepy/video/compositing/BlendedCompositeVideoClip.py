@@ -1,15 +1,7 @@
-# Ensure that blend_modes is available, otherwise this cannot be used
-try:
-    from blend_modes import blend_modes
-except ImportError as ex:
-    msg = (
-        'Using BlendedCompositeVideoClip requires the "blend_modes" package.'
-        + ' Please install with "pip install blend_modes" and try again.'
-    )
-    raise ImportError(msg)
-
 import types
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
+# Will fail if package 'blend_modes' not found
 from moviepy.video.tools.blending import blended_blit_on
 
 

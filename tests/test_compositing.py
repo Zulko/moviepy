@@ -8,7 +8,7 @@ import pytest
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, FONT
 
 
 def test_clips_array():
@@ -64,3 +64,7 @@ def test_blended_composite_video_clip():
     )
     comp.write_videofile(join(TMP_DIR, "test_blended_composition.mp4"))
     return
+
+
+if __name__ == "__main__":
+    test_blended_composite_video_clip()

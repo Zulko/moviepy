@@ -2,7 +2,7 @@ import numpy as np
 
 # Ensure that blend_modes is available, otherwise this cannot be used
 try:
-    from blend_modes import blend_modes
+    import blend_modes
 except ImportError as ex:
     msg = (
         'Using blending requires the "blend_modes" package.'
