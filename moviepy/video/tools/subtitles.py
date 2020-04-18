@@ -21,6 +21,10 @@ class SubtitlesClip(VideoClip):
 
     subtitles
       Either the name of a file as a string or path-like object, or a list
+      
+    encoding
+      Optional, specifies srt file encoding.
+      Any standard Python encoding is allowed (listed at https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     =========
@@ -29,19 +33,20 @@ class SubtitlesClip(VideoClip):
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
     >>> generator = lambda txt: TextClip(txt, font='Georgia-Regular', fontsize=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)
+    >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.write_videofile("final.mp4", fps=myvideo.fps)
     
     """
 
-    def __init__(self, subtitles, make_textclip=None):
+    def __init__(self, subtitles, make_textclip=None, encoding=None):
 
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):
             # `subtitles` is a string or path-like object
-            subtitles = file_to_subtitles(subtitles)
+            subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
         # subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
         self.subtitles = subtitles
@@ -147,7 +152,7 @@ class SubtitlesClip(VideoClip):
 
 
 @convert_path_to_string("filename")
-def file_to_subtitles(filename):
+def file_to_subtitles(filename, encoding=None):
     """ Converts a srt file into subtitles.
 
     The returned list is of the form ``[((ta,tb),'some text'),...]``
@@ -155,10 +160,11 @@ def file_to_subtitles(filename):
 
     Only works for '.srt' format for the moment.
     """
+
     times_texts = []
     current_times = None
     current_text = ""
-    with open(filename, "r") as f:
+    with open(filename, "r", encoding=encoding) as f:
         for line in f:
             times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
             if times:
