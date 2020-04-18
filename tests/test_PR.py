@@ -4,46 +4,49 @@ import os
 import sys
 
 import pytest
+
+from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
+from .test_helper import FONT, TMP_DIR
 
-sys.path.append("tests")
-from test_helper import TMP_DIR, FONT
-
-
-
-def test_download_media(capsys):
-    """Test downloading."""
-    import download_media
-    with capsys.disabled():
-       download_media.download()
 
 def test_PR_306():
 
-    assert TextClip.list('font') != []
-    assert TextClip.list('color') != []
+    assert TextClip.list("font") != []
+    assert TextClip.list("color") != []
 
-    with pytest.raises(Exception, message="Expecting Exception"):
-         TextClip.list('blah')
+    with pytest.raises(Exception):
+        TextClip.list("blah")
+    close_all_clips(locals())
+
 
 def test_PR_339():
     # In caption mode.
-    TextClip(txt='foo', color='white', font=FONT, size=(640, 480),
-             method='caption', align='center', fontsize=25).close()
+    TextClip(
+        txt="foo",
+        color="white",
+        font=FONT,
+        size=(640, 480),
+        method="caption",
+        align="center",
+        fontsize=25,
+    ).close()
 
     # In label mode.
-    TextClip(txt='foo', font=FONT, method='label').close()
+    TextClip(txt="foo", font=FONT, method="label").close()
+
 
 def test_PR_373():
     result = Trajectory.load_list("media/traj.txt")
 
     Trajectory.save_list(result, os.path.join(TMP_DIR, "traj1.txt"))
 
-    result1 = Trajectory.load_list(os.path.join(TMP_DIR,"traj1.txt"))
+    result1 = Trajectory.load_list(os.path.join(TMP_DIR, "traj1.txt"))
 
     assert len(result[0].tt) == len(result1[0].tt)
     for i in range(len(result[0].tt)):
@@ -57,51 +60,25 @@ def test_PR_373():
     for i in range(len(result[0].yy)):
         assert result[0].yy[i] == result1[0].yy[i]
 
-def test_PR_424():
-    """Ensure deprecation and user warnings are triggered."""
-    import warnings
-    warnings.simplefilter('always') # Alert us of deprecation warnings.
-
-    # Recommended use
-    ColorClip([1000, 600], color=(60, 60, 60), duration=10).close()
-
-    with pytest.warns(DeprecationWarning):
-        # Uses `col` so should work the same as above, but give warning.
-        ColorClip([1000, 600], col=(60, 60, 60), duration=10).close()
-
-    # Catch all warnings as record.
-    with pytest.warns(None) as record:
-        # Should give 2 warnings and use `color`, not `col`
-        ColorClip([1000, 600], color=(60, 60, 60), duration=10, col=(2,2,2)).close()
-
-    message1 = 'The `ColorClip` parameter `col` has been deprecated. ' + \
-               'Please use `color` instead.'
-    message2 = 'The arguments `color` and `col` have both been passed to ' + \
-               '`ColorClip` so `col` has been ignored.'
-
-    # Assert that two warnings popped and validate the message text.
-    assert len(record) == 2
-    assert str(record[0].message) == message1
-    assert str(record[1].message) == message2
 
 def test_PR_458():
-    clip = ColorClip([1000, 600], color=(60, 60, 60), duration=10)
-    clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"),
-                         progress_bar=False, fps=30)
+    clip = ColorClip([1000, 600], color=(60, 60, 60), duration=2)
+    clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"), logger=None, fps=30)
     clip.close()
+
 
 def test_PR_515():
     # Won't actually work until video is in download_media
-    with VideoFileClip("media/fire2.mp4", fps_source='tbr') as clip:
+    with VideoFileClip("media/fire2.mp4", fps_source="tbr") as clip:
         assert clip.fps == 90000
-    with VideoFileClip("media/fire2.mp4", fps_source='fps') as clip:
+    with VideoFileClip("media/fire2.mp4", fps_source="fps") as clip:
         assert clip.fps == 10.51
 
 
 def test_PR_528():
     with ImageClip("media/vacation_2017.jpg") as clip:
         new_clip = scroll(clip, w=1000, x_speed=50)
-        new_clip = new_clip.set_duration(20)
+        new_clip = new_clip.set_duration(1)
         new_clip.fps = 24
         new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
 
@@ -120,9 +97,8 @@ def test_PR_610():
     clip1.fps = 24
     clip2.fps = 25
     composite = CompositeVideoClip([clip1, clip2])
-
     assert composite.fps == 25
 
 
-if __name__ == '__main__':
-   pytest.main()
+if __name__ == "__main__":
+    pytest.main()
