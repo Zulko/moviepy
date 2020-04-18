@@ -43,7 +43,7 @@ def test_clips_array_duration():
 
 def test_blended_composite_video_clip():
     bg = VideoFileClip("media/video_for_blend_modes.mp4").set_duration(1.0)
-    text_kwargs = {"font": "Helvetica", "fontsize": 96, "color": "#bbbb11"}
+    text_kwargs = {"font": FONT, "fontsize": 96, "color": "#bbbb11"}
     t1 = (
         TextClip("SOFT BLEND", **text_kwargs)
         .set_duration(1.0)
