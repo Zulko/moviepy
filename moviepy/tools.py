@@ -25,7 +25,7 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
     Set logger to None or a custom Proglog logger to avoid printings.
     """
     logger = proglog.default_bar_logger(logger)
-    logger(message="Moviepy - Running:\n>>> "+ " ".join(cmd))
+    logger(message="Moviepy - Running:\n>>> " + " ".join(cmd))
 
     popen_params = {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
 
