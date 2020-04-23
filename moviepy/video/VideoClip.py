@@ -584,16 +584,16 @@ class VideoClip(Clip):
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
-        img = self.get_frame(ct).astype('uint8')
+        img = self.get_frame(ct).astype("uint8")
         im_img = Image.fromarray(img)
 
         if self.mask is not None:
             mask = self.mask.get_frame(ct)
-            im_mask = Image.fromarray(255 * mask).convert('L')
+            im_mask = Image.fromarray(255 * mask).convert("L")
 
             if im_img.size != im_mask.size:
                 bg_size = map(max, im_img.size, im_mask.size)
-                im_img_bg = Image.new(tuple(bg_size), 'RGB', [0, 0, 0])
+                im_img_bg = Image.new(tuple(bg_size), "RGB", [0, 0, 0])
                 im_img = im_img_bg.paste(im_img, (0, 0))
                 im_img = im_img_bg
 
@@ -647,8 +647,10 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            def make_frame(t): return np.ones(
-                self.get_frame(t).shape[:2], dtype=float)
+
+            def make_frame(t):
+                return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -787,8 +789,7 @@ class VideoClip(Clip):
         which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
         """
-        newclip = ImageClip(self.get_frame(
-            t), ismask=self.ismask, duration=duration)
+        newclip = ImageClip(self.get_frame(t), ismask=self.ismask, duration=duration)
         if with_mask and self.mask is not None:
             newclip.mask = self.mask.to_ImageClip(t)
         return newclip
@@ -805,7 +806,10 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            def f(pic): return np.dstack(3 * [255 * pic]).astype("uint8")
+
+            def f(pic):
+                return np.dstack(3 * [255 * pic]).astype("uint8")
+
             newclip = self.fl_image(f)
             newclip.ismask = False
             return newclip
@@ -858,8 +862,10 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
-        def make_frame(t): return self.data_to_frame(
-            self.data[int(self.fps * t)])
+
+        def make_frame(t):
+            return self.data_to_frame(self.data[int(self.fps * t)])
+
         VideoClip.__init__(
             self,
             make_frame,
@@ -976,8 +982,7 @@ class ImageClip(VideoClip):
                 elif ismask:
                     img = 1.0 * img[:, :, 0] / 255
                 elif transparent:
-                    self.mask = ImageClip(
-                        1.0 * img[:, :, 3] / 255, ismask=True)
+                    self.mask = ImageClip(1.0 * img[:, :, 3] / 255, ismask=True)
                     img = img[:, :, :3]
             elif ismask:
                 img = 1.0 * img[:, :, 0] / 255
@@ -998,8 +1003,7 @@ class ImageClip(VideoClip):
             apply_to = []
         # When we use fl on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
-        newclip = VideoClip.fl(self, fl, apply_to=apply_to,
-                               keep_duration=keep_duration)
+        newclip = VideoClip.fl(self, fl, apply_to=apply_to, keep_duration=keep_duration)
         newclip.__class__ = VideoClip
         return newclip
 
@@ -1192,8 +1196,7 @@ class TextClip(ImageClip):
         if kerning is not None:
             cmd += ["-kerning", "%0.1f" % kerning]
         if stroke_color is not None:
-            cmd += ["-stroke", stroke_color,
-                    "-strokewidth", "%.01f" % stroke_width]
+            cmd += ["-stroke", stroke_color, "-strokewidth", "%.01f" % stroke_width]
         if size is not None:
             cmd += ["-size", "%sx%s" % (size[0], size[1])]
         if align is not None:
@@ -1246,8 +1249,7 @@ class TextClip(ImageClip):
         """Returns a list of all valid entries for the ``font`` or ``color`` argument of
         ``TextClip``"""
 
-        popen_params = {"stdout": sp.PIPE,
-                        "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
+        popen_params = {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
@@ -1269,8 +1271,7 @@ class TextClip(ImageClip):
             # The first 5 lines are header information, not colors, so ignore
             return [l.split(" ")[0] for l in lines[5:]]
         else:
-            raise Exception(
-                "Moviepy Error: Argument must equal 'font' or 'color'")
+            raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
 
     @staticmethod
     def search(string, arg):
