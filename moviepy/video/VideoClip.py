@@ -593,7 +593,7 @@ class VideoClip(Clip):
 
             if im_img.size != im_mask.size:
                 bg_size = map(max, im_img.size, im_mask.size)
-                im_img_bg = Image.new(tuple(bg_size), "RGB", [0, 0, 0])
+                im_img_bg = Image.new("RGB", tuple(bg_size), [0, 0, 0])
                 im_img = im_img_bg.paste(im_img, (0, 0))
                 im_img = im_img_bg
 
