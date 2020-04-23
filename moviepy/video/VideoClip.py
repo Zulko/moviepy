@@ -530,9 +530,11 @@ class VideoClip(Clip):
         >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-        left = self.subclip(0, ta) if ta else None
+        left = None if (ta == 0) else self.subclip(0, ta)
         center = self.subclip(ta, tb).fx(fx, **kwargs)
-        clips = [c for c in (left, center, right) if c]
+        right = None if (tb is None) else self.subclip(t_start=tb)
+
+        clips = [c for c in [left, center, right] if c is not None]
 
         # beurk, have to find other solution
         from moviepy.video.compositing.concatenate import concatenate_videoclips
