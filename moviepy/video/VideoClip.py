@@ -584,21 +584,21 @@ class VideoClip(Clip):
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
-
         img = self.get_frame(ct).astype('uint8')
         im_img = Image.fromarray(img)
 
         if self.mask is not None:
             mask = self.mask.get_frame(ct)
             im_mask = Image.fromarray(255 * mask).convert('L')
+
+            if im_img.size != im_mask.size:
+                bg_size = map(max, im_img.size, im_mask.size)
+                im_img_bg = Image.new(tuple(bg_size), 'RGB', [0, 0, 0])
+                im_img = im_img_bg.paste(im_img, (0, 0))
+                im_img = im_img_bg
+
         else:
             im_mask = None
-
-        # ? I'm not so sure about the function of this code, need information
-        # if mask is not None and (
-        #     (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])
-        # ):
-        #     img = self.fill_array(img, mask.shape)
 
         hi, wi = im_img.size
         # SET POSITION
