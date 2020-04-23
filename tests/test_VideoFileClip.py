@@ -6,8 +6,9 @@ import sys
 import pytest
 
 from moviepy.utils import close_all_clips
-from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.compositing.CompositeVideoClip import clips_array, CompositeVideoClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.fx.loop import loop
 from moviepy.video.VideoClip import ColorClip
 
 from .test_helper import TMP_DIR
@@ -43,6 +44,24 @@ def test_ffmpeg_resizing():
             if target is not None:
                 assert target == observed
         video.close()
+
+
+def test_video_mask():
+    """Test clip mask attributes operate."""
+    cur_dir = os.path.dirname(os.path.abspath(__file__)) + "/"
+    test_file = cur_dir + "/resource/sintel_with_15_chapters.mp4"
+
+    test_clip = VideoFileClip(test_file, has_mask=True).subclip(0, 5)
+    test_clip = loop(test_clip, duration=test_clip.duration * 2)
+
+    video_clip = VideoFileClip(test_file).subclip(0, 10)
+
+    final_clip = CompositeVideoClip([video_clip, test_clip])
+    final_clip.write_videofile(cur_dir + "resource/mask_test.mp4", audio=False)
+
+    assert os.path.exists(cur_dir + "resource/mask_test.mp4")
+
+    close_all_clips(locals())
 
 
 if __name__ == "__main__":
