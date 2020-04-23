@@ -2,17 +2,17 @@ import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
-
+from PIL import Image
 #  CompositeVideoClip
 
 
 class CompositeVideoClip(VideoClip):
 
     """ 
-    
+
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
-    
+
     Parameters
     ----------
 
@@ -23,11 +23,11 @@ class CompositeVideoClip(VideoClip):
       A list of videoclips. Each clip of the list will
       be displayed below the clips appearing after it in the list.
       For each clip:
-       
+
       - The attribute ``pos`` determines where the clip is placed.
           See ``VideoClip.set_pos``
       - The mask of the clip determines which parts are visible.
-        
+
       Finally, if all the clips in the list have their ``duration``
       attribute set, then the duration of the composite video clip
       is computed automatically
@@ -41,7 +41,7 @@ class CompositeVideoClip(VideoClip):
       'background' on which all other clips are blitted. That first clip must
       have the same size as the final clip. If it has no transparency, the final
       clip will have no mask. 
-    
+
     The clip with the highest FPS will be the FPS of the composite clip.
 
     """
@@ -105,13 +105,18 @@ class CompositeVideoClip(VideoClip):
             )
 
         def make_frame(t):
-            """ The clips playing at time `t` are blitted over one
-                another. """
+            f = self.bg.get_frame(t).astype('uint8')
+            im = Image.fromarray(f)
 
-            f = self.bg.get_frame(t)
+            if self.bg.mask is not None:
+                f_mask = self.bg.mask.get_frame(t).astype('uint8')
+                im_mask = Image.fromarray(255 * f_mask).convert('L')
+                im = im.putalpha(im_mask)
+
             for c in self.playing_clips(t):
-                f = c.blit_on(f, t)
-            return f
+                im = c.blit_on(im, t)
+
+            return np.array(im)
 
         self.make_frame = make_frame
 
@@ -132,7 +137,6 @@ class CompositeVideoClip(VideoClip):
 
 
 def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
-
     """
 
     rows_widths
@@ -142,7 +146,7 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
       widths of the different colums in pixels. If None, is set automatically.
 
     cols_widths
-    
+
     bg_color
        Fill color for the masked and unfilled regions. Set to None for these
        regions to be transparent (will be slower).

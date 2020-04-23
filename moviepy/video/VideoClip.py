@@ -37,7 +37,7 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
-
+from PIL import Image
 
 class VideoClip(Clip):
     """Base class for video clips.
@@ -576,25 +576,32 @@ class VideoClip(Clip):
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-        hf, wf = framesize = picture.shape[:2]
-
-        if self.ismask and picture.max():
-            return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
+        hf, wf = picture.size
+        
+        # ? I'm not so sure about the function of this code, need information
+        # if self.ismask and picture.max():
+        #     return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
 
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
 
         img = self.get_frame(ct)
-        mask = self.mask.get_frame(ct) if self.mask else None
+        im_img = Image.fromarray(img)
+        
+        if self.mask is not None:
+            mask = self.mask.get_frame(ct)
+            im_mask = Image.fromarray(255 * mask).convert('L')
+        else:
+            im_mask = None
+        
+        # ? I'm not so sure about the function of this code, need information
+        # if mask is not None and (
+        #     (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])
+        # ):
+        #     img = self.fill_array(img, mask.shape)
 
-        if mask is not None and (
-            (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])
-        ):
-            img = self.fill_array(img, mask.shape)
-
-        hi, wi = img.shape[:2]
-
+        hi, wi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
 
@@ -625,8 +632,7 @@ class VideoClip(Clip):
             pos[1] = D[pos[1]]
 
         pos = map(int, pos)
-
-        return blit(img, picture, pos, mask=mask, ismask=self.ismask)
+        return blit(im_img, picture, pos, mask=im_mask, ismask=self.ismask)
 
     def add_mask(self):
         """Add a mask VideoClip to the VideoClip.
