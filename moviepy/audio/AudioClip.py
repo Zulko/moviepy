@@ -5,7 +5,7 @@ import proglog
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip
-from moviepy.decorators import requires_duration
+from moviepy.decorators import requires_duration, convert_path_to_string
 from moviepy.tools import extensions_dict
 
 
@@ -159,6 +159,7 @@ class AudioClip(Clip):
         return maxi
 
     @requires_duration
+    @convert_path_to_string("filename")
     def write_audiofile(
         self,
         filename,
@@ -178,11 +179,11 @@ class AudioClip(Clip):
         -----------
 
         filename
-          Name of the output file
+          Name of the output file, as a string or a path-like object.
 
         fps
           Frames per second. If not set, it will try default to self.fps if
-          already set, otherwise it will default to 44100
+          already set, otherwise it will default to 44100.
 
         nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
