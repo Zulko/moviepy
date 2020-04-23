@@ -29,7 +29,6 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
   - python -m pip install --upgrade pip --user
-  - pip install pipenv
 
   # Find latest image magick version by parsing website
 
@@ -56,13 +55,13 @@ install:
 
 build_script:
   # Install all dependencies, including dev dependencies
-  - pipenv install --dev
-  - pipenv install --optional
+  - pip install .[test]
+  - pip install .[optional]
   # Build the compiled extension
   #- "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
 
 test_script:
-  - pipenv run pytest
+  - pytest tests/ --doctest-modules -v
 
 # TODO: Support the post-test generation of binaries - Pending a version number that is supported (e.g. 0.3.0)
 #
