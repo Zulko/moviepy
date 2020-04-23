@@ -585,7 +585,7 @@ class VideoClip(Clip):
 
         # GET IMAGE AND MASK IF ANY
 
-        img = self.get_frame(ct)
+        img = self.get_frame(ct).astype('uint8')
         im_img = Image.fromarray(img)
 
         if self.mask is not None:
