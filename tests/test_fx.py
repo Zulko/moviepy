@@ -16,6 +16,7 @@ from moviepy.video.fx.even_size import even_size
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 from moviepy.video.fx.freeze import freeze
+from moviepy.video.fx.freeze_region import freeze_region
 from moviepy.video.fx.invert_colors import invert_colors
 from moviepy.video.fx.loop import loop
 from moviepy.video.fx.lum_contrast import lum_contrast
@@ -67,31 +68,31 @@ def test_colorx():
 
 def test_crop():
     # x: 0 -> 4, y: 0 -> 3 inclusive
-    clip = BitmapClip([["ABCDE", "BCDEA", "CDEAB", "DEABC"]]).set_fps(1)
+    clip = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]]).set_fps(1)
 
     clip1 = crop(clip)
-    target1 = BitmapClip([["ABCDE", "BCDEA", "CDEAB", "DEABC"]]).set_fps(1)
+    target1 = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]]).set_fps(1)
     assert clip1 == target1
 
     clip2 = crop(clip, x1=1, y1=1, x2=3, y2=3)
-    target2 = BitmapClip([["CD", "DE"]]).set_fps(1)
+    target2 = BitmapClip([["DC", "DE"]]).set_fps(1)
     assert clip2 == target2
 
     clip3 = crop(clip, y1=2)
-    target3 = BitmapClip([["CDEAB", "DEABC"]]).set_fps(1)
+    target3 = BitmapClip([["CDEAB", "BAEDC"]]).set_fps(1)
     assert clip3 == target3
 
     clip4 = crop(clip, x1=2, width=2)
-    target4 = BitmapClip([["CD", "DE", "EA", "AB"]]).set_fps(1)
+    target4 = BitmapClip([["CD", "CB", "EA", "ED"]]).set_fps(1)
     assert clip4 == target4
 
     # TODO x_center=1 does not perform correctly
     clip5 = crop(clip, x_center=2, y_center=2, width=3, height=3)
-    target5 = BitmapClip([["ABC", "BCD", "CDE"]]).set_fps(1)
+    target5 = BitmapClip([["ABC", "EDC", "CDE"]]).set_fps(1)
     assert clip5 == target5
 
     clip6 = crop(clip, x_center=2, width=2, y1=1, y2=2)
-    target6 = BitmapClip([["CD"]]).set_fps(1)
+    target6 = BitmapClip([["DC"]]).set_fps(1)
     assert clip6 == target6
 
 
@@ -147,6 +148,18 @@ def test_freeze():
 
 
 def test_freeze_region():
+    clip = BitmapClip([["AAB", "CCC"], ["BBR", "DDD"], ["CCC", "ABC"]]).set_fps(1)
+
+    # Test region
+    clip1 = freeze_region(clip, t=1, region=(2, 0, 3, 1))
+    target1 = BitmapClip([["AAR", "CCC"], ["BBR", "DDD"], ["CCR", "ABC"]]).set_fps(1)
+    assert clip1 == target1
+
+    # Test outside_region
+    clip2 = freeze_region(clip, t=1, outside_region=(2, 0, 3, 1))
+    target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]]).set_fps(1)
+    assert clip2 == target2
+
     pass
 
 
@@ -174,10 +187,10 @@ def test_invert_colors():
 
 def test_loop():
     clip = get_test_video()
-    clip1 = loop(clip).set_duration(10)  # infinite looping
+    clip1 = loop(clip).set_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    return  # Still buggy
+    return  # Still buggy. TODO fix
     clip2 = loop(clip, duration=10)  # loop for 10 seconds
     clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
@@ -257,7 +270,7 @@ def test_painting():
 
 
 def test_resize():
-    # TODO update to BitmapClip
+    # TODO update to use BitmapClip
     clip = get_test_video()
 
     clip1 = resize(clip, (460, 720))  # New resolution: (460,720)
@@ -279,58 +292,93 @@ def test_resize():
     # clip4.write_videofile(os.path.join(TMP_DIR, "resize4.webm"))
 
 
-def test_rotate():
-    # TODO update to BitmapClip
-    clip = get_test_video()
+@pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
+def test_rotate(angle_offset):
+    # Run several times to ensure that adding 360 to rotation angles has no effect
+    clip = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]).set_fps(1)
 
-    clip1 = rotate(clip, 90)  # rotate 90 degrees
-    assert clip1.size == (clip.size[1], clip.size[0])
-    clip1.write_videofile(os.path.join(TMP_DIR, "rotate1.webm"))
+    clip1 = rotate(clip, 0 + angle_offset)
+    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]).set_fps(
+        1
+    )
+    assert clip1 == target1
 
-    clip2 = rotate(clip, 180)  # rotate 90 degrees
-    assert clip2.size == tuple(clip.size)
-    clip2.write_videofile(os.path.join(TMP_DIR, "rotate2.webm"))
+    clip2 = rotate(clip, 90 + angle_offset)
+    target2 = BitmapClip(
+        [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]]
+    ).set_fps(1)
+    assert clip2 == target2, clip2.to_bitmap()
 
-    clip3 = rotate(clip, 270)  # rotate 90 degrees
-    assert clip3.size == (clip.size[1], clip.size[0])
-    clip3.write_videofile(os.path.join(TMP_DIR, "rotate3.webm"))
+    clip3 = rotate(clip, 180 + angle_offset)
+    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]]).set_fps(
+        1
+    )
+    assert clip3 == target3
 
-    clip4 = rotate(clip, 360)  # rotate 90 degrees
-    assert clip4.size == tuple(clip.size)
-    clip4.write_videofile(os.path.join(TMP_DIR, "rotate4.webm"))
+    clip4 = rotate(clip, 270 + angle_offset)
+    target4 = BitmapClip(
+        [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]]
+    ).set_fps(1)
+    assert clip4 == target4
 
-    clip5 = rotate(clip, 50)
-    clip5.write_videofile(os.path.join(TMP_DIR, "rotate5.webm"))
 
+def test_rotate_nonstandard_angles():
     # Test rotate with color clip
     clip = ColorClip([600, 400], [150, 250, 100]).set_duration(1).set_fps(5)
     clip = rotate(clip, 20)
     clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
 
-    close_all_clips(locals())
-
 
 def test_scroll():
-    # clip = bitmap_to_clip([[""]])
     pass
 
 
 def test_speedx():
-    # TODO update to BitmapClip
-    clip = get_test_video()
+    clip = BitmapClip([["A"], ["B"], ["C"], ["D"]]).set_fps(1)
 
-    clip1 = speedx(clip, factor=0.5)  # 1/2 speed
-    assert clip1.duration == 2
-    clip1.write_videofile(os.path.join(TMP_DIR, "speedx1.webm"))
+    clip1 = speedx(clip, 0.5)  # 1/2x speed
+    target1 = BitmapClip(
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]]
+    ).set_fps(1)
+    assert clip1 == target1
 
-    clip2 = speedx(clip, final_duration=2)  # 1/2 speed
-    assert clip2.duration == 2
-    clip2.write_videofile(os.path.join(TMP_DIR, "speedx2.webm"))
+    clip2 = speedx(clip, final_duration=8)  # 1/2x speed
+    target2 = BitmapClip(
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]]
+    ).set_fps(1)
+    assert clip2 == target2
 
-    clip2 = speedx(clip, final_duration=3)  # 1/3 speed
-    assert clip2.duration == 3
-    clip2.write_videofile(os.path.join(TMP_DIR, "speedx3.webm"))
-    close_all_clips(locals())
+    clip3 = speedx(clip, final_duration=12)  # 1/2x speed
+    target3 = BitmapClip(
+        [
+            ["A"],
+            ["A"],
+            ["A"],
+            ["B"],
+            ["B"],
+            ["B"],
+            ["C"],
+            ["C"],
+            ["C"],
+            ["D"],
+            ["D"],
+            ["D"],
+        ]
+    ).set_fps(1)
+    assert clip3 == target3
+
+    clip4 = speedx(clip, 2)  # 2x speed
+    target4 = BitmapClip([["A"], ["C"]]).set_fps(1)
+    assert clip4 == target4
+
+    clip5 = speedx(clip, final_duration=2)  # 2x speed
+    target5 = BitmapClip([["A"], ["C"]]).set_fps(1)
+    assert clip5 == target5
+
+    clip6 = speedx(clip, 4)  # 4x speed
+    target6 = BitmapClip([["A"]]).set_fps(1)
+    assert clip6 == target6, f"{clip6.duration} {target6.duration} {clip6.fps} {target6.fps}"
+
 
 
 def test_supersample():
