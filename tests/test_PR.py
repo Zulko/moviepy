@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Pull request tests meant to be run with pytest."""
 import os
+from pathlib import Path
 
 import pytest
 
