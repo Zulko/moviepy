@@ -1293,21 +1293,22 @@ class BitmapClip(VideoClip):
             "RGGGR"]]
 
         color_dict
-          A dictionary that can be used to set specific (r, g, b) values for certain letters in ``bitmap_frames``
-          eg ``{"A": (50, 150, 150)}``
-          Defaults to
+          A dictionary that can be used to set specific (r, g, b) values that correspond
+          to the letters used in ``bitmap_frames``.
+          eg ``{"A": (50, 150, 150)}``.
 
+          Defaults to
           ::
           {
-                "R": (255, 0, 0),
-                "G": (0, 255, 0),
-                "B": (0, 0, 255),
-                "O": (0, 0, 0),  # "O" represents black
-                "W": (255, 255, 255),
-                "A": (89, 225, 62),
-                "C": (113, 157, 108),
-                "D": (215, 182, 143),
-                "E": (57, 26, 252),
+            "R": (255, 0, 0),
+            "G": (0, 255, 0),
+            "B": (0, 0, 255),
+            "O": (0, 0, 0),  # "O" represents black
+            "W": (255, 255, 255),
+            "A": (89, 225, 62),  # "A", "C", "D" and "E" represent arbitrary colors
+            "C": (113, 157, 108),
+            "D": (215, 182, 143),
+            "E": (57, 26, 252),
           }
 
         ismask
@@ -1344,6 +1345,7 @@ class BitmapClip(VideoClip):
         self.total_frames = len(frame_array)
         self.fps = None
 
+    @convert_to_seconds(["duration"])
     def set_duration(self, duration, change_end=True):
         """
         If clip fps has not already been set, it will also be set based on the new duration and
@@ -1351,8 +1353,13 @@ class BitmapClip(VideoClip):
         """
         # TODO implement decorators from Clip.set_duration
         if self.fps is None:
-            self.fps = int(self.total_frames / duration)
-        return Clip.set_duration(self, duration=duration, change_end=change_end)
+            return (
+                super()
+                .set_duration(duration=duration, change_end=change_end)
+                .set_fps(int(self.total_frames / duration))
+            )
+
+        return super().set_duration(duration=duration, change_end=change_end)
 
     def set_fps(self, fps):
         """
@@ -1361,22 +1368,24 @@ class BitmapClip(VideoClip):
         """
         total_duration = self.total_frames / fps
         if self.duration is None or self.duration > total_duration:
-            self.duration = total_duration
+            return super().set_fps(fps).set_duration(total_duration)
+        return super().set_fps(fps)
 
-        return Clip.set_fps(self, fps)
+    def to_bitmap(self, color_dict=None):
+        """
+        Returns a valid Bitmap list that represents each frame of the clip.
+        If `color_dict` is not specified, then it will use clip's `color_dict`
+        """
+        color_dict = color_dict or self.color_dict
 
-    def to_bitmap(self):
-        """
-        Returns a valid Bitmap list that represents each frame of the clip, using the clip's color_dict
-        """
         bitmap = []
         for frame in self.iter_frames():
             bitmap.append([])
             for line in frame:
                 bitmap[-1].append("")
                 for pixel in line:
-                    letter = list(self.color_dict.keys())[
-                        list(self.color_dict.values()).index(tuple(pixel))
+                    letter = list(color_dict.keys())[
+                        list(color_dict.values()).index(tuple(pixel))
                     ]
                     bitmap[-1][-1] += letter
 
