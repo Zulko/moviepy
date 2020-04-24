@@ -377,8 +377,9 @@ def test_speedx():
 
     clip6 = speedx(clip, 4)  # 4x speed
     target6 = BitmapClip([["A"]]).set_fps(1)
-    assert clip6 == target6, f"{clip6.duration} {target6.duration} {clip6.fps} {target6.fps}"
-
+    assert (
+        clip6 == target6
+    ), f"{clip6.duration} {target6.duration} {clip6.fps} {target6.fps}"
 
 
 def test_supersample():
