@@ -15,7 +15,7 @@ All these effects have in common that they are **not inplace**: they do NOT modi
     my_clip.set_start(t=5) # does nothing, changes are lost
     my_new_clip = my_clip.set_start(t=5) # good!
 
-Also, when you write ``clip.resize(width=640)``, it does not immediately applies the effect to all the frames of the clip, but only to the first frame: all the other frames will be resized only when required (that is, when you will write the whole clip to a file of when you will preview it). Said otherwise, creating a new clip is neither time nor memory hungry, all the computations happen during the final rendering.  
+Also, when you write ``clip.resize(width=640)``, it does not immediately apply the effect to all the frames of the clip, but only to the first frame: all the other frames will be resized only when required (that is, when you will write the whole clip to a file of when you will preview it). Said otherwise, creating a new clip is neither time nor memory hungry, all the computations happen during the final rendering.  
 
 Time representations in MoviePy
 ---------------------------------
