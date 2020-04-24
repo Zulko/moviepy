@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added <!-- for new features -->
 - BitmapClip allows creating of custom frames using strings of letters
-- Clips can now be tested for equality with other clips using `==`. This checks whether every frame of the two clips are identical.
+- Clips can now be tested for equality with other clips using `==`. This checks whether every frame of the two clips are identical
 - Support for path-like objects as an option wherever filenames are passed in as arguments
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 
