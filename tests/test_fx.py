@@ -9,7 +9,6 @@ from moviepy.utils import close_all_clips
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 from moviepy.video.fx.blackwhite import blackwhite
 
-# from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.even_size import even_size
@@ -43,7 +42,7 @@ def test_accel_decel():
 
 
 def test_blackwhite():
-    # TODO update to BitmapClip
+    # TODO update to use BitmapClip
     clip = get_test_video()
     clip1 = blackwhite(clip)
     clip1.write_videofile(os.path.join(TMP_DIR, "blackwhite1.webm"))

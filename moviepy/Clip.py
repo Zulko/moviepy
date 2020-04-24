@@ -498,15 +498,11 @@ class Clip:
         length1 = self.duration * self.fps
         length2 = other.duration * other.fps
         if length1 != length2:
-            # print(f"Number of frames not equal: {length1} != {length2}")
             return False
-        # print(length1, self.duration, self.fps)
         for i, (frame1, frame2) in enumerate(
             zip(self.iter_frames(), other.iter_frames())
         ):
-            # print(i, frame1, frame2)
             if not np.array_equal(frame1, frame2):
-                # print(f"\nFrame index {i} is different: \n{frame1}\n != \n{frame2}")
                 return False
 
         return True

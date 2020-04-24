@@ -1312,7 +1312,7 @@ class BitmapClip(VideoClip):
           }
 
         ismask
-          `True` if the clip is going to be used as a mask.
+          Set to `True` if the clip is going to be used as a mask.
 
         """
         if color_dict:
@@ -1351,7 +1351,6 @@ class BitmapClip(VideoClip):
         If clip fps has not already been set, it will also be set based on the new duration and
         total number of frames
         """
-        # TODO implement decorators from Clip.set_duration
         if self.fps is None:
             return (
                 super()
