@@ -60,7 +60,7 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         def angle(t):
             return a
 
-    transpo = [1, 0] if clip.ismask else [1, 0, 2]
+    transpo = [1, 0] if clip.is_mask else [1, 0, 2]
 
     def fl(gf, t):
 
@@ -85,4 +85,4 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         else:
             return pil_rotater(im, a, resample=resample, expand=expand)
 
-    return clip.fl(fl, apply_to=["mask"])
+    return clip.with_filter(fl, apply_to=["mask"])

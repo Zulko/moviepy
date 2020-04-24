@@ -220,7 +220,7 @@ def test_rotate():
     clip5.write_videofile(os.path.join(TMP_DIR, "rotate5.webm"))
 
     # Test rotate with color clip
-    clip = ColorClip([600, 400], [150, 250, 100]).set_duration(1).set_fps(5)
+    clip = ColorClip([600, 400], [150, 250, 100]).with_duration(1).with_fps(5)
     clip = rotate(clip, 20)
     clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
 

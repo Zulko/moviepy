@@ -31,7 +31,7 @@ class SubtitlesClip(VideoClip):
     
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
-    >>> generator = lambda txt: TextClip(txt, font='Georgia-Regular', fontsize=24, color='white')
+    >>> generator = lambda text: TextClip(text, font='Georgia-Regular', fontsize=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)
     >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
     >>> myvideo = VideoFileClip("myvideo.avi")
@@ -48,7 +48,7 @@ class SubtitlesClip(VideoClip):
             # `subtitles` is a string or path-like object
             subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
-        # subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]
+        # subtitles = [(map(cvsecs, times),text) for times, text in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
 
@@ -74,14 +74,14 @@ class SubtitlesClip(VideoClip):
             to generate it yet. If there is no subtitle to show at t, return
             false. """
             sub = [
-                ((ta, tb), txt)
-                for ((ta, tb), txt) in self.textclips.keys()
+                ((ta, tb), text)
+                for ((ta, tb), text) in self.textclips.keys()
                 if (ta <= t < tb)
             ]
             if not sub:
                 sub = [
-                    ((ta, tb), txt)
-                    for ((ta, tb), txt) in self.subtitles
+                    ((ta, tb), text)
+                    for ((ta, tb), text) in self.subtitles
                     if (ta <= t < tb)
                 ]
                 if not sub:
@@ -102,22 +102,22 @@ class SubtitlesClip(VideoClip):
 
         self.make_frame = make_frame
         hasmask = bool(self.make_textclip("T").mask)
-        self.mask = VideoClip(make_mask_frame, ismask=True) if hasmask else None
+        self.mask = VideoClip(make_mask_frame, is_mask=True) if hasmask else None
 
-    def in_subclip(self, t_start=None, t_end=None):
-        """ Returns a sequence of [(t1,t2), txt] covering all the given subclip
-        from t_start to t_end. The first and last times will be cropped so as
-        to be exactly t_start and t_end if possible. """
+    def in_subclip(self, start_time=None, end_time=None):
+        """ Returns a sequence of [(t1,t2), text] covering all the given subclip
+        from start_time to end_time. The first and last times will be cropped so as
+        to be exactly start_time and end_time if possible. """
 
         def is_in_subclip(t1, t2):
             try:
-                return (t_start <= t1 < t_end) or (t_start < t2 <= t_end)
+                return (start_time <= t1 < end_time) or (start_time < t2 <= end_time)
             except Exception:
                 return False
 
         def try_cropping(t1, t2):
             try:
-                return (max(t1, t_start), min(t2, t_end))
+                return (max(t1, start_time), min(t2, end_time))
             except Exception:
                 return (t1, t2)
 
@@ -135,15 +135,14 @@ class SubtitlesClip(VideoClip):
 
     def __str__(self):
         def to_srt(sub_element):
-            (ta, tb), txt = sub_element
+            (ta, tb), text = sub_element
             fta = cvsecs(ta)
             ftb = cvsecs(tb)
-            return "%s - %s\n%s" % (fta, ftb, txt)
+            return "%s - %s\n%s" % (fta, ftb, text)
 
         return "\n\n".join(to_srt(s) for s in self.subtitles)
 
     def match_expr(self, expr):
-
         return SubtitlesClip(
             [e for e in self.subtitles if re.findall(expr, e[1]) != []]
         )
@@ -157,7 +156,7 @@ class SubtitlesClip(VideoClip):
 def file_to_subtitles(filename, encoding=None):
     """ Converts a srt file into subtitles.
 
-    The returned list is of the form ``[((ta,tb),'some text'),...]``
+    The returned list is of the form ``[((start_time,end_time),'some text'),...]``
     and can be fed to SubtitlesClip.
 
     Only works for '.srt' format for the moment.

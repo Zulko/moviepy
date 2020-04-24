@@ -25,7 +25,7 @@ class FFMPEG_VideoReader:
         filename,
         print_infos=False,
         bufsize=None,
-        pix_fmt="rgb24",
+        pixel_format="rgb24",
         check_duration=True,
         target_resolution=None,
         resize_algo="bicubic",
@@ -40,9 +40,6 @@ class FFMPEG_VideoReader:
         self.rotation = infos["video_rotation"]
 
         if target_resolution:
-            # revert the order, as ffmpeg used (width, height)
-            target_resolution = target_resolution[1], target_resolution[0]
-
             if None in target_resolution:
                 ratio = 1
                 for idx, target in enumerate(target_resolution):
@@ -59,8 +56,8 @@ class FFMPEG_VideoReader:
 
         self.infos = infos
 
-        self.pix_fmt = pix_fmt
-        self.depth = 4 if pix_fmt == "rgba" else 3
+        self.pixel_format = pixel_format
+        self.depth = 4 if pixel_format == "rgba" else 3
 
         if bufsize is None:
             w, h = self.size
@@ -70,18 +67,18 @@ class FFMPEG_VideoReader:
         self.initialize()
 
         self.pos = 1
-        self.lastread = self.read_frame()
+        self.last_read = self.read_frame()
 
-    def initialize(self, starttime=0):
+    def initialize(self, start_time=0):
         """Opens the file, creates the pipe. """
 
         self.close()  # if any
 
-        if starttime != 0:
-            offset = min(1, starttime)
+        if start_time != 0:
+            offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.06f" % (starttime - offset),
+                "%.06f" % (start_time - offset),
                 "-i",
                 self.filename,
                 "-ss",
@@ -103,7 +100,7 @@ class FFMPEG_VideoReader:
                 "-sws_flags",
                 self.resize_algo,
                 "-pix_fmt",
-                self.pix_fmt,
+                self.pixel_format,
                 "-vcodec",
                 "rawvideo",
                 "-",
@@ -145,7 +142,7 @@ class FFMPEG_VideoReader:
                 UserWarning,
             )
 
-            if not hasattr(self, "lastread"):
+            if not hasattr(self, "last_read"):
                 raise IOError(
                     (
                         "MoviePy error: failed to read the first frame of "
@@ -158,7 +155,7 @@ class FFMPEG_VideoReader:
                     % (self.filename)
                 )
 
-            result = self.lastread
+            result = self.last_read
 
         else:
             if hasattr(np, "frombuffer"):
@@ -166,7 +163,7 @@ class FFMPEG_VideoReader:
             else:
                 result = np.fromstring(s, dtype="uint8")
             result.shape = (h, w, len(s) // (w * h))  # reshape((h, w, len(s)//(w*h)))
-            self.lastread = result
+            self.last_read = result
 
         return result
 
@@ -192,10 +189,10 @@ class FFMPEG_VideoReader:
         if not self.proc:
             self.initialize(t)
             self.pos = pos
-            self.lastread = self.read_frame()
+            self.last_read = self.read_frame()
 
         if pos == self.pos:
-            return self.lastread
+            return self.last_read
         elif (pos < self.pos) or (pos > self.pos + 100):
             self.initialize(t)
             self.pos = pos
@@ -212,8 +209,8 @@ class FFMPEG_VideoReader:
             self.proc.stderr.close()
             self.proc.wait()
             self.proc = None
-        if hasattr(self, "lastread"):
-            del self.lastread
+        if hasattr(self, "last_read"):
+            del self.last_read
 
     def __del__(self):
         self.close()
@@ -239,9 +236,9 @@ def ffmpeg_read_image(filename, with_mask=True):
       this layer as the mask of the returned ImageClip
 
     """
-    pix_fmt = "rgba" if with_mask else "rgb24"
-    reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
-    im = reader.lastread
+    pixel_format = "rgba" if with_mask else "rgb24"
+    reader = FFMPEG_VideoReader(filename, pixel_format=pixel_format, check_duration=False)
+    im = reader.last_read
     del reader
     return im
 
@@ -261,9 +258,9 @@ def ffmpeg_parse_infos(
     """
 
     # open the file in a pipe, provoke an error, read output
-    is_GIF = filename.endswith(".gif")
+    is_gif = filename.endswith(".gif")
     cmd = [FFMPEG_BINARY, "-i", filename]
-    if is_GIF:
+    if is_gif:
         cmd += ["-f", "null", "/dev/null"]
 
     popen_params = {
@@ -304,10 +301,10 @@ def ffmpeg_parse_infos(
 
     if check_duration:
         try:
-            keyword = "frame=" if is_GIF else "Duration: "
+            keyword = "frame=" if is_gif else "Duration: "
             # for large GIFS the "full" duration is presented as the last element in the list.
-            index = -1 if is_GIF else 0
-            line = [l for l in lines if keyword in l][index]
+            index = -1 if is_gif else 0
+            line = [line for line in lines if keyword in line][index]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
         except Exception:
@@ -320,7 +317,7 @@ def ffmpeg_parse_infos(
             )
 
     # get the output line that speaks about video
-    lines_video = [l for l in lines if " Video: " in l and re.search(r"\d+x\d+", l)]
+    lines_video = [line for line in lines if " Video: " in line and re.search(r"\d+x\d+", line)]
 
     result["video_found"] = lines_video != []
 
@@ -330,8 +327,8 @@ def ffmpeg_parse_infos(
 
             # get the size, of the form 460x320 (w x h)
             match = re.search(" [0-9]*x[0-9]*(,| )", line)
-            s = list(map(int, line[match.start() : match.end() - 1].split("x")))
-            result["video_size"] = s
+            size = list(map(int, line[match.start() : match.end() - 1].split("x")))
+            result["video_size"] = size
         except Exception:
             raise IOError(
                 (
@@ -398,7 +395,7 @@ def ffmpeg_parse_infos(
         # get the video rotation info.
         try:
             rotation_lines = [
-                l for l in lines if "rotate          :" in l and re.search(r"\d+$", l)
+                line for line in lines if "rotate          :" in line and re.search(r"\d+$", line)
             ]
             if len(rotation_lines):
                 rotation_line = rotation_lines[0]

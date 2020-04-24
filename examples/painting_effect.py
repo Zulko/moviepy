@@ -23,7 +23,7 @@ txt = TextClip("Audrey", font="Amiri-regular", fontsize=35)
 painting_txt = (
     CompositeVideoClip([painting, txt.set_pos((10, 180))])
     .add_mask()
-    .set_duration(3)
+    .with_duration(3)
     .crossfadein(0.5)
     .crossfadeout(0.5)
 )
@@ -35,7 +35,7 @@ painting_fading = CompositeVideoClip([im_freeze, painting_txt])
 # FINAL CLIP AND RENDERING
 
 final_clip = concatenate_videoclips(
-    [clip_before, painting_fading.set_duration(3), clip_after]
+    [clip_before, painting_fading.with_duration(3), clip_after]
 )
 
 final_clip.write_videofile(

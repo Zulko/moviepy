@@ -46,7 +46,7 @@ class CompositeVideoClip(VideoClip):
 
     """
 
-    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False, ismask=False):
+    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False, is_mask=False):
 
         if size is None:
             size = clips[0].size
@@ -57,7 +57,7 @@ class CompositeVideoClip(VideoClip):
             transparent = bg_color is None
 
         if bg_color is None:
-            bg_color = 0.0 if ismask else (0, 0, 0)
+            bg_color = 0.0 if is_mask else (0, 0, 0)
 
         fpss = [c.fps for c in clips if getattr(c, "fps", None)]
         self.fps = max(fpss) if fpss else None
@@ -65,7 +65,7 @@ class CompositeVideoClip(VideoClip):
         VideoClip.__init__(self)
 
         self.size = size
-        self.ismask = ismask
+        self.ismask = is_mask
         self.clips = clips
         self.bg_color = bg_color
 
@@ -94,14 +94,14 @@ class CompositeVideoClip(VideoClip):
         if transparent:
             maskclips = [
                 (c.mask if (c.mask is not None) else c.add_mask().mask)
-                .set_position(c.pos)
-                .set_end(c.end)
-                .set_start(c.start, change_end=False)
+                .with_position(c.pos)
+                .with_end(c.end)
+                .with_start(c.start, change_end=False)
                 for c in self.clips
             ]
 
             self.mask = CompositeVideoClip(
-                maskclips, self.size, ismask=True, bg_color=0.0
+                maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
         def make_frame(t):
@@ -167,9 +167,9 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
             w, h = clip.size
             if (w < cw) or (h < rw):
                 clip = CompositeVideoClip(
-                    [clip.set_position("center")], size=(cw, rw), bg_color=bg_color
-                ).set_duration(clip.duration)
+                    [clip.with_position("center")], size=(cw, rw), bg_color=bg_color
+                ).with_duration(clip.duration)
 
-            array[i, j] = clip.set_position((x, y))
+            array[i, j] = clip.with_position((x, y))
 
     return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)

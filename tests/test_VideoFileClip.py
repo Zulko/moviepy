@@ -19,7 +19,7 @@ def test_setup():
     blue = ColorClip((256, 200), color=(0, 0, 255))
 
     red.fps = green.fps = blue.fps = 10
-    with clips_array([[red, green, blue]]).set_duration(5) as video:
+    with clips_array([[red, green, blue]]).with_duration(5) as video:
         video.write_videofile(os.path.join(TMP_DIR, "test.mp4"))
 
     assert os.path.exists(os.path.join(TMP_DIR, "test.mp4"))

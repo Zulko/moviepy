@@ -14,14 +14,14 @@ def audio_loop(audioclip, nloops=None, duration=None):
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
     >>> audio = afx.audio_loop( music, duration=videoclip.duration)
-    >>> videoclip.set_audio(audio)
+    >>> videoclip.with_audio(audio)
 
     """
 
     if duration is not None:
 
         nloops = int(duration / audioclip.duration) + 1
-        return concatenate_audioclips(nloops * [audioclip]).set_duration(duration)
+        return concatenate_audioclips(nloops * [audioclip]).with_duration(duration)
 
     else:
 

@@ -27,4 +27,4 @@ def even_size(clip):
         def fl_image(a):
             return a[:-1, :, :]
 
-    return clip.fl_image(fl_image)
+    return clip.with_image_filter(fl_image)

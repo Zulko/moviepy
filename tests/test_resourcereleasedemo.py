@@ -45,7 +45,7 @@ def test_failure_to_release_file():
         blue = ColorClip((256, 200), color=(0, 0, 255))
 
         red.fps = green.fps = blue.fps = 30
-        video = clips_array([[red, green, blue]]).set_duration(1)
+        video = clips_array([[red, green, blue]]).with_duration(1)
 
         try:
             video.write_videofile(local_video_filename)

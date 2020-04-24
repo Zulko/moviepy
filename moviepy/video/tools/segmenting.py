@@ -42,7 +42,7 @@ def findObjects(clip, rem_thr=500, preview=False):
         labletter = labelled[sy, sx]
         maskletter = (labletter == (ind + 1)) * mask[sy, sx]
         letter = ImageClip(image[sy, sx])
-        letter.mask = ImageClip(maskletter, ismask=True)
+        letter.mask = ImageClip(maskletter, is_mask=True)
         letter.screenpos = np.array((sx.start, sy.start))
         letters.append(letter)
 

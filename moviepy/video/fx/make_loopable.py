@@ -8,5 +8,5 @@ def make_loopable(clip, cross):
     it can be looped indefinitely. ``cross`` is the duration in seconds
     of the fade-in.  """
     d = clip.duration
-    clip2 = clip.fx(transfx.crossfadein, cross).set_start(d - cross)
+    clip2 = clip.fx(transfx.crossfadein, cross).with_start(d - cross)
     return CompositeVideoClip([clip, clip2]).subclip(cross, d)

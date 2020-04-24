@@ -45,7 +45,7 @@ def headblur(clip, fx, fy, r_zone, r_blur=None):
         im[y1:y2, x1:x2] = mask * blurred + (1 - mask) * orig
         return im
 
-    return clip.fl(fl)
+    return clip.with_filter(fl)
 
 
 # ------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------

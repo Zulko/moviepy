@@ -45,7 +45,7 @@ txt = TextClip(
 
 # Concatenate the Chaplin clip with the text clip, add audio
 
-final = concatenate_videoclips([clip_blurred, txt.set_duration(3)]).set_audio(
+final = concatenate_videoclips([clip_blurred, txt.with_duration(3)]).with_audio(
     clip.audio
 )
 

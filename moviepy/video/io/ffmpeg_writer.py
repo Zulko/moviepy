@@ -58,7 +58,7 @@ class FFMPEG_VideoWriter:
       Only relevant for codecs which accept a bitrate. "5000k" offers
       nice results in general.
 
-    withmask
+    with_mask
       Boolean. Set to ``True`` if there is a mask in the video to be
       encoded.
 
@@ -73,7 +73,7 @@ class FFMPEG_VideoWriter:
         audiofile=None,
         preset="medium",
         bitrate=None,
-        withmask=False,
+        with_mask=False,
         logfile=None,
         threads=None,
         ffmpeg_params=None,
@@ -99,7 +99,7 @@ class FFMPEG_VideoWriter:
             "-s",
             "%dx%d" % (size[0], size[1]),
             "-pix_fmt",
-            "rgba" if withmask else "rgb24",
+            "rgba" if with_mask else "rgb24",
             "-r",
             "%.02f" % fps,
             "-an",
@@ -215,7 +215,7 @@ def ffmpeg_write_video(
     codec="libx264",
     bitrate=None,
     preset="medium",
-    withmask=False,
+    with_mask=False,
     write_logfile=False,
     audiofile=None,
     threads=None,
@@ -247,7 +247,7 @@ def ffmpeg_write_video(
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
-            if withmask:
+            if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 if mask.dtype != "uint8":
                     mask = mask.astype("uint8")

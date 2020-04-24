@@ -11,7 +11,7 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
     
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided. If ``im1`` and ``im2`` are mask pictures
-    (2D float arrays) then ``ismask`` must be ``True``.
+    (2D float arrays) then ``is_mask`` must be ``True``.
     """
     if pos is None:
         pos = [0, 0]

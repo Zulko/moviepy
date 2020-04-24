@@ -5,15 +5,15 @@ Clips transformations and effects
 
 There are several categories of clip modifications in MoviePy:
 
-- The very common methods to change the attributes of a clip: ``clip.set_duration``, ``clip.set_audio``, ``clip.set_mask``, ``clip.set_start`` etc.
+- The very common methods to change the attributes of a clip: ``clip.with_duration``, ``clip.with_audio``, ``clip.with_mask``, ``clip.with_start`` etc.
 - The already-implemented effects. Core effects like ``clip.subclip(t1, t2)`` (keep only the cut between t1 and t2), which are very important, are implemented as class methods. More advanced and less common effects like ``loop`` (makes the clip play in a loop) or ``time_mirror`` (makes the clip play backwards) are placed in the special modules ``moviepy.video.fx`` and ``moviepy.audio.fx`` and are applied with the ``clip.fx`` method, for instance ``clip.fx(time_mirror)`` (makes the clip play backwards), ``clip.fx(black_white)`` (turns the clip black and white), etc.
 - The effects that you can create yourself. using 
 
 All these effects have in common that they are **not inplace**: they do NOT modify the original clip, instead they create a new clip that is a version of the former with the changes applied. For instance: ::
 
     my_clip = VideoFileClip("some_file.mp4")
-    my_clip.set_start(t=5) # does nothing, changes are lost
-    my_new_clip = my_clip.set_start(t=5) # good!
+    my_clip.with_start(t=5) # does nothing, changes are lost
+    my_new_clip = my_clip.with_start(t=5) # good!
 
 Also, when you write ``clip.resize(width=640)``, it does not immediately apply the effect to all the frames of the clip, but only to the first frame: all the other frames will be resized only when required (that is, when you will write the whole clip to a file of when you will preview it). Said otherwise, creating a new clip is neither time nor memory hungry, all the computations happen during the final rendering.  
 
@@ -65,7 +65,7 @@ clip.fl
 """"""""
 
 
-You can modify a clip as you want using custom *filters* with ``clip.fl_time``, ``clip.fl_image``, and more generally with ``clip.fl``.
+You can modify a clip as you want using custom *filters* with ``clip.fl_time``, ``clip.with_image_filter``, and more generally with ``clip.fl``.
 
 You can change the timeline of the clip with ``clip.fl_time`` like this: ::
     
@@ -74,12 +74,12 @@ You can change the timeline of the clip with ``clip.fl_time`` like this: ::
      
 Now the clip ``modifiedClip1`` plays the same as ``my_clip``, only three times faster, while ``modifiedClip2`` will play ``my_clip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).
 
-You can also modify the display of a clip with ``clip.fl_image``. The following takes a clip and inverts the green and blue channels of the frames: ::
+You can also modify the display of a clip with ``clip.with_image_filter``. The following takes a clip and inverts the green and blue channels of the frames: ::
     
     def invert_green_blue(image):
         return image[:,:,[0,2,1]]
     
-    modifiedClip = my_clip.fl_image( invert_green_blue )
+    modifiedClip = my_clip.with_image_filter( invert_green_blue )
     
 Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method ``clip.fl(filter)``. The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function ``g(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
     
@@ -96,6 +96,6 @@ Finally, you may want to process the clip by taking into account both the time a
 
 This will scroll down the clip, with a constant height of 360 pixels.
 
-When programming a new effect, whenever it is possible, prefer using ``fl_time`` and ``fl_image`` instead of ``fl`` if possible when implementing new effects. The reason is that, when these effects are applied to 
+When programming a new effect, whenever it is possible, prefer using ``fl_time`` and ``with_image_filter`` instead of ``fl`` if possible when implementing new effects. The reason is that, when these effects are applied to
 ImageClips, MoviePy will recognize that these methods do not need to be applied to each frame, which will 
 result in faster renderings.

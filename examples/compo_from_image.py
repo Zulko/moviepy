@@ -24,7 +24,7 @@ clips = [
 
 # fit each clip into its region
 comp_clips = [
-    c.resize(r.size).set_mask(r.mask).set_pos(r.screenpos)
+    c.resize(r.size).with_mask(r.mask).set_pos(r.screenpos)
     for c, r in zip(clips, regions)
 ]
 

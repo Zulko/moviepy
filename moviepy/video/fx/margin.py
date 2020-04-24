@@ -24,7 +24,7 @@ def margin(
     
     """
 
-    if (opacity != 1.0) and (clip.mask is None) and not (clip.ismask):
+    if (opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
         clip = clip.add_mask()
 
     if mar is not None:
@@ -44,7 +44,7 @@ def margin(
 
         im = make_bg(clip.w, clip.h)
         im[top : top + clip.h, left : left + clip.w] = clip.img
-        return clip.fl_image(lambda pic: im)
+        return clip.with_image_filter(lambda pic: im)
 
     else:
 

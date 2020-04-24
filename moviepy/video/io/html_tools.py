@@ -97,7 +97,7 @@ def html_embed(
         TEMP_PREFIX = "__temp__"
         if isinstance(clip, ImageClip):
             filename = TEMP_PREFIX + ".png"
-            kwargs = {"filename": filename, "withmask": True}
+            kwargs = {"filename": filename, "with_mask": True}
             kwargs.update(rd_kwargs)
             clip.save_frame(**kwargs)
         elif isinstance(clip, VideoClip):

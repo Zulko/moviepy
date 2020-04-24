@@ -78,7 +78,7 @@ dancing_knights = (
     clips_array([[edited_left, edited_right]])
     .fadein(1)
     .fadeout(1)
-    .set_audio(audio)
+    .with_audio(audio)
     .subclip(0.3)
 )
 
@@ -93,13 +93,13 @@ txt_title = (
         color="white",
     )
     .margin(top=15, opacity=0)
-    .set_position(("center", "top"))
+    .with_position(("center", "top"))
 )
 
 title = (
     CompositeVideoClip([dancing_knights.to_ImageClip(), txt_title])
     .fadein(0.5)
-    .set_duration(3.5)
+    .with_duration(3.5)
 )
 
 
@@ -133,7 +133,7 @@ credits = (
         bg_color="black",
         size=title.size,
     )
-    .set_duration(2.5)
+    .with_duration(2.5)
     .fadein(0.5)
     .fadeout(0.5)
 )

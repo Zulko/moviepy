@@ -11,7 +11,7 @@ from tests.test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 
 def test_issue_145():
-    video = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
+    video = ColorClip((800, 600), color=(255, 0, 0)).with_duration(5)
     with pytest.raises(Exception):
         concatenate_videoclips([video], method="composite")
 
@@ -220,14 +220,14 @@ def test_issue_334():
 
     avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
     avatar.audio = None
-    maskclip = ImageClip("media/afterimage.png", ismask=True, transparent=True)
-    avatar.set_mask(maskclip)  # must set maskclip here..
+    maskclip = ImageClip("media/afterimage.png", is_mask=True, transparent=True)
+    avatar.with_mask(maskclip)  # must set maskclip here..
     concatenated = concatenate_videoclips([avatar] * 3)
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
     # TODO: Setting mask here does not work:
-    # .set_mask(maskclip).resize(size)])
-    final = CompositeVideoClip([tt, concatenated.set_position(posi).resize(size)])
+    # .with_mask(maskclip).resize(size)])
+    final = CompositeVideoClip([tt, concatenated.with_position(posi).resize(size)])
     final.duration = tt.duration
     final.write_videofile(os.path.join(TMP_DIR, "issue_334.mp4"), fps=10)
 
@@ -251,7 +251,7 @@ def test_issue_354():
 
 
 def test_issue_359():
-    with ColorClip((800, 600), color=(255, 0, 0)).set_duration(5) as video:
+    with ColorClip((800, 600), color=(255, 0, 0)).with_duration(5) as video:
         video.fps = 30
         video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
 
@@ -296,7 +296,7 @@ def test_issue_359():
 
 
 def test_issue_407():
-    red = ColorClip((800, 600), color=(255, 0, 0)).set_duration(5)
+    red = ColorClip((800, 600), color=(255, 0, 0)).with_duration(5)
     red.fps = 30
 
     assert red.fps == 30
@@ -305,8 +305,8 @@ def test_issue_407():
     assert red.size == (800, 600)
 
     # ColorClip has no fps attribute.
-    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
-    blue = ColorClip((640, 480), color=(0, 0, 255)).set_duration(2)
+    green = ColorClip((640, 480), color=(0, 255, 0)).with_duration(2)
+    blue = ColorClip((640, 480), color=(0, 0, 255)).with_duration(2)
 
     assert green.w == blue.w == 640
     assert green.h == blue.h == 480
@@ -324,7 +324,7 @@ def test_issue_407():
 
 def test_issue_416():
     # ColorClip has no fps attribute.
-    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
+    green = ColorClip((640, 480), color=(0, 255, 0)).with_duration(2)
     video1 = concatenate_videoclips([green])
     assert video1.fps is None
 
@@ -334,7 +334,7 @@ def test_issue_417():
     cad = "media/python_logo.png"
     myclip = ImageClip(cad).fx(resize, newsize=[1280, 660])
     CompositeVideoClip([myclip], size=(1280, 720))
-    # final.set_duration(7).write_videofile("test.mp4", fps=30)
+    # final.with_duration(7).write_videofile("test.mp4", fps=30)
 
 
 def test_issue_467():
@@ -348,8 +348,8 @@ def test_issue_467():
 def test_issue_470():
     audio_clip = AudioFileClip("media/crunching.mp3")
 
-    # t_end is out of bounds
-    subclip = audio_clip.subclip(t_start=6, t_end=9)
+    # end_time is out of bounds
+    subclip = audio_clip.subclip(start_time=6, end_time=9)
 
     with pytest.raises(IOError):
         subclip.write_audiofile(
@@ -357,7 +357,7 @@ def test_issue_470():
         )
 
     # but this one should work..
-    subclip = audio_clip.subclip(t_start=6, t_end=8)
+    subclip = audio_clip.subclip(start_time=6, end_time=8)
     subclip.write_audiofile(os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True)
 
 
@@ -371,9 +371,9 @@ def test_issue_246():
 
 
 def test_issue_547():
-    red = ColorClip((640, 480), color=(255, 0, 0)).set_duration(1)
-    green = ColorClip((640, 480), color=(0, 255, 0)).set_duration(2)
-    blue = ColorClip((640, 480), color=(0, 0, 255)).set_duration(3)
+    red = ColorClip((640, 480), color=(255, 0, 0)).with_duration(1)
+    green = ColorClip((640, 480), color=(0, 255, 0)).with_duration(2)
+    blue = ColorClip((640, 480), color=(0, 0, 255)).with_duration(3)
 
     video = concatenate_videoclips([red, green, blue], method="compose")
     assert video.duration == 6

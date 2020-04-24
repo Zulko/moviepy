@@ -122,7 +122,7 @@ def credits1(
     ]
 
     cc = CompositeVideoClip(
-        [left, right.set_position((left.w + gap, 0))],
+        [left, right.with_position((left.w + gap, 0))],
         size=(left.w + right.w + gap, right.h),
         bg_color=None,
     )
@@ -134,6 +134,6 @@ def credits1(
     # TRANSFORM THE WHOLE CREDIT CLIP INTO AN ImageCLip
 
     imclip = ImageClip(scaled.get_frame(0))
-    amask = ImageClip(scaled.mask.get_frame(0), ismask=True)
+    amask = ImageClip(scaled.mask.get_frame(0), is_mask=True)
 
-    return imclip.set_mask(amask)
+    return imclip.with_mask(amask)

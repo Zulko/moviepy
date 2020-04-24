@@ -10,4 +10,4 @@ def supersample(clip, d, nframes):
         avg = np.mean(1.0 * np.array([gf(t_) for t_ in tt], dtype="uint16"), axis=0)
         return avg.astype("uint8")
 
-    return clip.fl(fl)
+    return clip.with_filter(fl)

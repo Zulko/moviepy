@@ -131,7 +131,7 @@ def test_setaudio():
     make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
     audio = AudioClip(make_frame_440, duration=0.5)
     audio.fps = 44100
-    clip = clip.set_audio(audio)
+    clip = clip.with_audio(audio)
     location = os.path.join(TMP_DIR, "setaudio.mp4")
     clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
@@ -141,7 +141,7 @@ def test_setaudio():
 def test_setaudio_with_audiofile():
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
     audio = AudioFileClip("media/crunching.mp3").subclip(0, 0.5)
-    clip = clip.set_audio(audio)
+    clip = clip.with_audio(audio)
     location = os.path.join(TMP_DIR, "setaudiofile.mp4")
     clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
@@ -150,7 +150,7 @@ def test_setaudio_with_audiofile():
 
 def test_setopacity():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
-    clip = clip.set_opacity(0.5)
+    clip = clip.with_opacity(0.5)
     clip = clip.on_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)
     location = os.path.join(TMP_DIR, "setopacity.mp4")
     clip.write_videofile(location)

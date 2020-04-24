@@ -341,9 +341,9 @@ def concatenate_audioclips(clips):
     """
     durations = [c.duration for c in clips]
     tt = np.cumsum([0] + durations)  # start times, and end time.
-    newclips = [c.set_start(t) for c, t in zip(clips, tt)]
+    newclips = [c.with_start(t) for c, t in zip(clips, tt)]
 
-    result = CompositeAudioClip(newclips).set_duration(tt[-1])
+    result = CompositeAudioClip(newclips).with_duration(tt[-1])
 
     fpss = [c.fps for c in clips if getattr(c, "fps", None)]
     result.fps = max(fpss) if fpss else None

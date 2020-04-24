@@ -36,7 +36,7 @@ class VideoFileClip(VideoClip):
       wish to read the audio.
 
     target_resolution:
-      Set to (desired_height, desired_width) to have ffmpeg resize the frames
+      Set to (desired_width, desired_height) to have ffmpeg resize the frames
       before returning them. This is much faster than streaming in high-res
       and then resizing. If either dimension is None, the frames are resized
       by keeping the existing aspect ratio.
@@ -91,10 +91,10 @@ class VideoFileClip(VideoClip):
         VideoClip.__init__(self)
 
         # Make a reader
-        pix_fmt = "rgba" if has_mask else "rgb24"
+        pixel_format = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(
             filename,
-            pix_fmt=pix_fmt,
+            pixel_format=pixel_format,
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,
             fps_source=fps_source,
@@ -114,10 +114,10 @@ class VideoFileClip(VideoClip):
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
 
-            def mask_mf(t):
+            def mask_make_frame(t):
                 return self.reader.get_frame(t)[:, :, 3] / 255.0
 
-            self.mask = VideoClip(ismask=True, make_frame=mask_mf).set_duration(
+            self.mask = VideoClip(is_mask=True, make_frame=mask_make_frame).with_duration(
                 self.duration
             )
             self.mask.fps = self.fps

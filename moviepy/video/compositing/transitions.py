@@ -73,7 +73,7 @@ def slide_in(clip, duration, side):
         "bottom": lambda t: ("center", max(0, h * (1 - t / duration))),
     }
 
-    return clip.set_position(pos_dict[side])
+    return clip.with_position(pos_dict[side])
 
 
 @requires_duration
@@ -117,7 +117,7 @@ def slide_out(clip, duration, side):
         "bottom": lambda t: ("center", max(0, h * ((t - ts) / duration))),
     }
 
-    return clip.set_position(pos_dict[side])
+    return clip.with_position(pos_dict[side])
 
 
 @requires_duration
@@ -126,5 +126,5 @@ def make_loopable(clip, cross_duration):
     it can be looped indefinitely. ``cross`` is the duration in seconds
     of the fade-in.  """
     d = clip.duration
-    clip2 = clip.fx(crossfadein, cross_duration).set_start(d - cross_duration)
+    clip2 = clip.fx(crossfadein, cross_duration).with_start(d - cross_duration)
     return CompositeVideoClip([clip, clip2]).subclip(cross_duration, d)
