@@ -11,8 +11,8 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
-from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 from moviepy.video.tools.subtitles import SubtitlesClip
+from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 
 from .test_helper import FONT, TMP_DIR
 

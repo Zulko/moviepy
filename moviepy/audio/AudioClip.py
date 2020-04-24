@@ -5,7 +5,7 @@ import proglog
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip
-from moviepy.decorators import requires_duration, convert_path_to_string
+from moviepy.decorators import convert_path_to_string, requires_duration
 from moviepy.tools import extensions_dict
 
 

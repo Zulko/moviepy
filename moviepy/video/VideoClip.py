@@ -18,17 +18,13 @@ from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
+    convert_path_to_string,
     convert_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
-    convert_path_to_string,
 )
-from moviepy.tools import (
-    extensions_dict,
-    find_extension,
-    subprocess_call,
-)
+from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
     write_gif,

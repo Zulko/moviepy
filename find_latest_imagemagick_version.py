@@ -1,5 +1,5 @@
-from urllib import request
 import re
+from urllib import request
 
 url = "https://legacy.imagemagick.org/script/index.php"
 
