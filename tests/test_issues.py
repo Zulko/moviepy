@@ -7,7 +7,7 @@ from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
 
-from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+from tests.test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 
 def test_issue_145():

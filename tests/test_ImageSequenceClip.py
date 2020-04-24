@@ -6,7 +6,7 @@ import pytest
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_1():

@@ -7,7 +7,7 @@ import pytest
 from moviepy.video.io.bindings import mplfig_to_npimage
 from moviepy.video.VideoClip import VideoClip
 
-from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+from tests.test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 try:
     import matplotlib

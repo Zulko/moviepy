@@ -7,7 +7,7 @@ from moviepy.video.tools.credits import credits1
 from moviepy.video.tools.cuts import detect_scenes
 from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import FONT, TMP_DIR
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_credits():

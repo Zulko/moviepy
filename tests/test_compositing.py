@@ -7,7 +7,7 @@ import pytest
 from moviepy.editor import *
 from moviepy.utils import close_all_clips
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_clips_array():

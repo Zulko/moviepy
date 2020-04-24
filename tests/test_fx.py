@@ -26,7 +26,7 @@ from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def get_test_video():
