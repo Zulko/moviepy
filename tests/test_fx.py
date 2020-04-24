@@ -1,15 +1,12 @@
 import os
-import sys
 
 import pytest
 
 from moviepy.audio.fx.audio_normalize import audio_normalize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
-from moviepy.video.VideoClip import ColorClip
 from moviepy.video.fx.blackwhite import blackwhite
-
-# from moviepy.video.fx.blink import blink
+from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.fadein import fadein
@@ -27,8 +24,9 @@ from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def get_test_video():

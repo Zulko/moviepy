@@ -1,12 +1,10 @@
-import sys
-
 import pytest
 
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
 
-from .test_helper import FONT
+from tests.test_helper import FONT
 
 
 def test_list():

@@ -1,4 +1,4 @@
-"""
+r"""
 Configuration of MoviePy
 
 

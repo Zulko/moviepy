@@ -53,14 +53,16 @@ class SubtitlesClip(VideoClip):
         self.textclips = dict()
 
         if make_textclip is None:
-            make_textclip = lambda txt: TextClip(
-                txt,
-                font="Georgia-Bold",
-                fontsize=24,
-                color="white",
-                stroke_color="black",
-                stroke_width=0.5,
-            )
+
+            def make_textclip(txt):
+                return TextClip(
+                    txt,
+                    font="Georgia-Bold",
+                    fontsize=24,
+                    color="white",
+                    stroke_color="black",
+                    stroke_width=0.5,
+                )
 
         self.make_textclip = make_textclip
         self.start = 0
@@ -110,13 +112,13 @@ class SubtitlesClip(VideoClip):
         def is_in_subclip(t1, t2):
             try:
                 return (t_start <= t1 < t_end) or (t_start < t2 <= t_end)
-            except:
+            except Exception:
                 return False
 
         def try_cropping(t1, t2):
             try:
                 return (max(t1, t_start), min(t2, t_end))
-            except:
+            except Exception:
                 return (t1, t2)
 
         return [

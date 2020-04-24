@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
 import os
-import sys
 
 import pytest
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_1():

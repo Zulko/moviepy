@@ -12,7 +12,9 @@ from moviepy.decorators import use_clip_fps_by_default
 def find_video_period(clip, fps=None, tmin=0.3):
     """ Finds the period of a video based on frames correlation """
 
-    frame = lambda t: clip.get_frame(t).flatten()
+    def frame(t):
+        return clip.get_frame(t).flatten()
+
     tt = np.arange(tmin, clip.duration, 1.0 / fps)[1:]
     ref = frame(0)
     corrs = [np.corrcoef(ref, frame(t))[0, 1] for t in tt]
@@ -148,7 +150,10 @@ class FramesMatches(list):
         """
 
         N_pixels = clip.w * clip.h * 3
-        dot_product = lambda F1, F2: (F1 * F2).sum() / N_pixels
+
+        def dot_product(F1, F2):
+            return (F1 * F2).sum() / N_pixels
+
         F = {}  # will store the frames and their mutual distances
 
         def distance(t1, t2):

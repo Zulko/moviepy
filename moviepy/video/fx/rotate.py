@@ -56,7 +56,9 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
     if not hasattr(angle, "__call__"):
         # if angle is a constant, convert to a constant function
         a = +angle
-        angle = lambda t: a
+
+        def angle(t):
+            return a
 
     transpo = [1, 0] if clip.ismask else [1, 0, 2]
 

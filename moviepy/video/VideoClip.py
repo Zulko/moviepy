@@ -7,7 +7,6 @@ main subclasses:
 import os
 import subprocess as sp
 import tempfile
-import warnings
 
 import numpy as np
 import proglog
@@ -19,17 +18,13 @@ from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
+    convert_path_to_string,
     convert_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
-    convert_path_to_string,
 )
-from moviepy.tools import (
-    extensions_dict,
-    find_extension,
-    subprocess_call,
-)
+from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
     write_gif,
@@ -301,7 +296,7 @@ class VideoClip(Clip):
 
         audiofile = audio if isinstance(audio, str) else None
         make_audio = (
-            (audiofile is None) and (audio == True) and (self.audio is not None)
+            (audiofile is None) and (audio is True) and (self.audio is not None)
         )
 
         if make_audio and temp_audiofile:
@@ -642,7 +637,10 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
+
+            def make_frame(t):
+                return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -798,8 +796,9 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            f = lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
-            newclip = self.fl_image(f)
+            newclip = self.fl_image(
+                lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
+            )
             newclip.ismask = False
             return newclip
         else:
@@ -851,7 +850,10 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
-        make_frame = lambda t: self.data_to_frame(self.data[int(self.fps * t)])
+
+        def make_frame(t):
+            return self.data_to_frame(self.data[int(self.fps * t)])
+
         VideoClip.__init__(
             self,
             make_frame,

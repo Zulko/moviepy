@@ -1,7 +1,4 @@
-import os
-
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.Clip import Clip
 from moviepy.decorators import convert_path_to_string
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader
 from moviepy.video.VideoClip import VideoClip
@@ -116,7 +113,10 @@ class VideoFileClip(VideoClip):
         if has_mask:
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
-            mask_mf = lambda t: self.reader.get_frame(t)[:, :, 3] / 255.0
+
+            def mask_mf(t):
+                return self.reader.get_frame(t)[:, :, 3] / 255.0
+
             self.mask = VideoClip(ismask=True, make_frame=mask_mf).set_duration(
                 self.duration
             )

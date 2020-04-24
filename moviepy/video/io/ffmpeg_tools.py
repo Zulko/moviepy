@@ -1,8 +1,6 @@
 """ Misc. bindings to ffmpeg and ImageMagick."""
 
 import os
-import subprocess as sp
-import sys
 
 from moviepy.config import get_setting
 from moviepy.decorators import convert_path_to_string
