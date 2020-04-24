@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 
 ### Changed <!-- for changes in existing functionality -->
+- `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
