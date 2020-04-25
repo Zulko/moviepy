@@ -130,9 +130,9 @@ The fundamental difference between masks and standard clips is that standard cli
 
 When you create or load a clip that you will use as a mask you need to declare it: ::
 
-    maskclip = VideoClip(makeframe, duration=4, ismask=True)
-    maskclip = ImageClip("my_mask.jpeg", ismask=True)
-    maskclip = VideoFileClip("myvideo.mp4", ismask=True)
+    maskclip = VideoClip(makeframe, duration=4, is_mask=True)
+    maskclip = ImageClip("my_mask.jpeg", is_mask=True)
+    maskclip = VideoFileClip("myvideo.mp4", is_mask=True)
 
 In the case of video and image files, if these are not already black and white they will be converted automatically.
 
@@ -197,4 +197,4 @@ You can write a frame to an image file with ::
     myclip.save_frame("frame.png") # by default the first frame is extracted
     myclip.save_frame("frame.jpeg", t='01:00:00') # frame at time t=1h
 
-If the clip has a mask it will be exported as the alpha layer of the image unless you specify ``withmask=False``.
+If the clip has a mask it will be exported as the alpha layer of the image unless you specify ``with_mask=False``.

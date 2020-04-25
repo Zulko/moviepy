@@ -115,7 +115,7 @@ class Clip:
         apply_to
           Can be either ``'mask'``, or ``'audio'``, or
           ``['mask','audio']``.
-          Specifies if the filter ``fl`` should also be applied to the
+          Specifies if the filter should also be applied to the
           audio or the mask of the clip, if any.
 
         keep_duration
@@ -129,8 +129,8 @@ class Clip:
         content scrolls from the top to the bottom of the frames of
         ``clip``.
 
-        >>> fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]
-        >>> newclip = clip.with_filter(fl, apply_to='mask')
+        >>> filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]
+        >>> newclip = clip.with_filter(filter, apply_to='mask')
 
         """
         if apply_to is None:

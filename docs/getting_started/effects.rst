@@ -61,16 +61,16 @@ For convenience, when you use ``moviepy.editor``, frequently used methods such a
 Methods to create custom effects
 ----------------------------------
 
-clip.fl
+clip.with_filter
 """"""""
 
 
-You can modify a clip as you want using custom *filters* with ``clip.fl_time``, ``clip.with_image_filter``, and more generally with ``clip.fl``.
+You can modify a clip as you want using custom *filters* with ``clip.with_time_filter``, ``clip.with_image_filter``, and more generally with ``clip.with_filter``.
 
-You can change the timeline of the clip with ``clip.fl_time`` like this: ::
+You can change the timeline of the clip with ``clip.with_time_filter`` like this: ::
     
-    modifiedClip1 = my_clip.fl_time(lambda t: 3*t)
-    modifiedClip2 = my_clip.fl_time(lambda t: 1+sin(t))
+    modifiedClip1 = my_clip.with_time_filter(lambda t: 3*t)
+    modifiedClip2 = my_clip.with_time_filter(lambda t: 1+sin(t))
      
 Now the clip ``modifiedClip1`` plays the same as ``my_clip``, only three times faster, while ``modifiedClip2`` will play ``my_clip`` by oscillating between the times t=0s and t=2s. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).
 
@@ -81,7 +81,7 @@ You can also modify the display of a clip with ``clip.with_image_filter``. The f
     
     modifiedClip = my_clip.with_image_filter( invert_green_blue )
     
-Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method ``clip.fl(filter)``. The filter must be a function which takes two arguments and returns a picture. the fist argument is a ``get_frame`` method (i.e. a function ``g(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
+Finally, you may want to process the clip by taking into account both the time and the frame picture. This is possible with the method ``clip.with_filter(filter)``. The filter must be a function which takes two arguments and returns a picture. The first argument is a ``get_frame`` method (i.e. a function ``gf(t)`` which given a time returns the clip's frame at that time), and the second argument is the time.  ::
     
     def scroll(get_frame, t):
         """
@@ -92,10 +92,10 @@ Finally, you may want to process the clip by taking into account both the time a
         frame_region = frame[int(t):int(t)+360,:]
         return frame_region
     
-    modifiedClip = my_clip.fl( scroll )
+    modifiedClip = my_clip.with_filter( scroll )
 
 This will scroll down the clip, with a constant height of 360 pixels.
 
-When programming a new effect, whenever it is possible, prefer using ``fl_time`` and ``with_image_filter`` instead of ``fl`` if possible when implementing new effects. The reason is that, when these effects are applied to
+When programming a new effect, whenever it is possible, prefer using ``with_time_filter`` and ``with_image_filter`` instead of ``with_filter`` when implementing new effects. The reason is that, when these effects are applied to
 ImageClips, MoviePy will recognize that these methods do not need to be applied to each frame, which will 
 result in faster renderings.

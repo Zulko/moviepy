@@ -32,7 +32,7 @@ def margin(
 
     def make_bg(w, h):
         new_w, new_h = w + left + right, h + top + bottom
-        if clip.ismask:
+        if clip.is_mask:
             shape = (new_h, new_w)
             bg = np.tile(opacity, (new_h, new_w)).astype(float).reshape(shape)
         else:

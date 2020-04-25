@@ -630,7 +630,7 @@ class VideoClip(Clip):
 
         pos = map(int, pos)
 
-        return blit(img, picture, pos, mask=mask, ismask=self.is_mask)
+        return blit(img, picture, pos, mask=mask, is_mask=self.is_mask)
 
     def add_mask(self):
         """Add a mask VideoClip to the VideoClip.

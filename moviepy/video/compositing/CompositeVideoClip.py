@@ -65,7 +65,7 @@ class CompositeVideoClip(VideoClip):
         VideoClip.__init__(self)
 
         self.size = size
-        self.ismask = is_mask
+        self.is_mask = is_mask
         self.clips = clips
         self.bg_color = bg_color
 

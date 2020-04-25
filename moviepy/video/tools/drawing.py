@@ -6,7 +6,7 @@ methods that are difficult to do with the existing Python libraries.
 import numpy as np
 
 
-def blit(im1, im2, pos=None, mask=None, ismask=False):
+def blit(im1, im2, pos=None, mask=None, is_mask=False):
     """ Blit an image over another.
     
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
@@ -46,7 +46,7 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
         blit_region = new_im2[yp1:yp2, xp1:xp2]
         new_im2[yp1:yp2, xp1:xp2] = 1.0 * mask * blitted + (1.0 - mask) * blit_region
 
-    return new_im2.astype("uint8") if (not ismask) else new_im2
+    return new_im2.astype("uint8") if (not is_mask) else new_im2
 
 
 def color_gradient(

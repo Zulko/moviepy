@@ -72,7 +72,7 @@ moving_txt.mask = moving_txt.mask.with_image_filter(fl)
 # WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)
 
 
-def trapzWarp(pic, cx, cy, ismask=False):
+def trapzWarp(pic, cx, cy, is_mask=False):
     """ Complicated function (will be latex packaged as a fx) """
     Y, X = pic.shape[:2]
     src = np.array([[0, 0], [X, 0], [X, Y], [0, Y]])
@@ -80,11 +80,11 @@ def trapzWarp(pic, cx, cy, ismask=False):
     tform = tf.ProjectiveTransform()
     tform.estimate(src, dst)
     im = tf.warp(pic, tform.inverse, output_shape=(Y, X))
-    return im if ismask else (im * 255).astype("uint8")
+    return im if is_mask else (im * 255).astype("uint8")
 
 
 fl_im = lambda pic: trapzWarp(pic, 0.2, 0.3)
-fl_mask = lambda pic: trapzWarp(pic, 0.2, 0.3, ismask=True)
+fl_mask = lambda pic: trapzWarp(pic, 0.2, 0.3, is_mask=True)
 warped_txt = moving_txt.with_image_filter(fl_im)
 warped_txt.mask = warped_txt.mask.with_image_filter(fl_mask)
 
