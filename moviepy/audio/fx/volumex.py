@@ -16,4 +16,4 @@ def volumex(clip, factor):
     >>> newclip = clip.fx( volumex, 0.5) # half audio, use with fx
     >>> newclip = clip.volumex(2) # only if you used "moviepy.editor"
     """
-    return clip.with_filter(lambda gf, t: factor * gf(t), keep_duration=True)
+    return clip.with_filter(lambda get_frame, t: factor * get_frame(t), keep_duration=True)

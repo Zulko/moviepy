@@ -14,17 +14,17 @@ def even_size(clip):
 
     if not w_even and not h_even:
 
-        def fl_image(a):
+        def image_filter(a):
             return a[:-1, :-1, :]
 
     elif w_even:
 
-        def fl_image(a):
+        def image_filter(a):
             return a[:, :-1, :]
 
     else:
 
-        def fl_image(a):
+        def image_filter(a):
             return a[:-1, :, :]
 
-    return clip.with_image_filter(fl_image)
+    return clip.with_image_filter(image_filter)

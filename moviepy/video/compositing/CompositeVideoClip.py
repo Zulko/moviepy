@@ -158,11 +158,11 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
     if cols_widths is None:
         cols_widths = sizes_array[:, :, 0].max(axis=0)
 
-    xx = np.cumsum([0] + list(cols_widths))
-    yy = np.cumsum([0] + list(rows_widths))
+    xs = np.cumsum([0] + list(cols_widths))
+    ys = np.cumsum([0] + list(rows_widths))
 
-    for j, (x, cw) in enumerate(zip(xx[:-1], cols_widths)):
-        for i, (y, rw) in enumerate(zip(yy[:-1], rows_widths)):
+    for j, (x, cw) in enumerate(zip(xs[:-1], cols_widths)):
+        for i, (y, rw) in enumerate(zip(ys[:-1], rows_widths)):
             clip = array[i, j]
             w, h = clip.size
             if (w < cw) or (h < rw):
@@ -172,4 +172,4 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
 
             array[i, j] = clip.with_position((x, y))
 
-    return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)
+    return CompositeVideoClip(array.flatten(), size=(xs[-1], ys[-1]), bg_color=bg_color)

@@ -45,7 +45,7 @@ class FFMPEG_AudioReader:
         self.filename = filename
         self.nbytes = nbytes
         self.fps = fps
-        self.f = "s%dle" % (8 * nbytes)
+        self.format = "s%dle" % (8 * nbytes)
         self.acodec = "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(filename)
@@ -90,7 +90,7 @@ class FFMPEG_AudioReader:
                 "-loglevel",
                 "error",
                 "-f",
-                self.f,
+                self.format,
                 "-acodec",
                 self.acodec,
                 "-ar",
@@ -116,20 +116,19 @@ class FFMPEG_AudioReader:
         self.pos = np.round(self.fps * starttime)
 
     def skip_chunk(self, chunksize):
-        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
-        L = self.nchannels * chunksize * self.nbytes
-        s = self.proc.stdout.read(L)
-        dt = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
+        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        data_type = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
         if hasattr(np, "frombuffer"):
-            result = np.frombuffer(s, dtype=dt)
+            result = np.frombuffer(s, dtype=data_type)
         else:
-            result = np.fromstring(s, dtype=dt)
+            result = np.fromstring(s, dtype=data_type)
         result = (1.0 * result / 2 ** (8 * self.nbytes - 1)).reshape(
             (int(len(result) / self.nchannels), self.nchannels)
         )
@@ -224,14 +223,14 @@ class FFMPEG_AudioReader:
             # read the frame in the buffer
             return self.buffer[ind - self.buffer_startframe]
 
-    def buffer_around(self, framenumber):
+    def buffer_around(self, frame_number):
         """
-        Fills the buffer with frames, centered on ``framenumber``
+        Fills the buffer with frames, centered on ``frame_number``
         if possible
         """
 
         # start-frame for the buffer
-        new_bufferstart = max(0, framenumber - self.buffersize // 2)
+        new_bufferstart = max(0, frame_number - self.buffersize // 2)
 
         if self.buffer is not None:
             current_f_end = self.buffer_startframe + self.buffersize

@@ -18,5 +18,5 @@ def audio_normalize(clip):
 
     """
 
-    mv = clip.max_volume()
-    return volumex(clip, 1 / mv)
+    max_volume = clip.max_volume()
+    return volumex(clip, 1 / max_volume)

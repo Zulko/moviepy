@@ -148,7 +148,7 @@ class FFMPEG_AudioWriter:
             self.proc.stdin = None
             if self.proc.stderr is not None:
                 self.proc.stderr.close()
-                self.proc.stdee = None
+                self.proc.stderr = None
             # If this causes deadlocks, consider terminating instead.
             self.proc.wait()
             self.proc = None

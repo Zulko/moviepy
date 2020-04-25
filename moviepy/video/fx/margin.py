@@ -6,12 +6,12 @@ from moviepy.video.VideoClip import ImageClip
 
 @apply_to_mask
 def margin(
-    clip, mar=None, left=0, right=0, top=0, bottom=0, color=(0, 0, 0), opacity=1.0
+    clip, margin_size=None, left=0, right=0, top=0, bottom=0, color=(0, 0, 0), opacity=1.0
 ):
     """
     Draws an external margin all around the frame.
     
-    :param mar: if not ``None``, then the new clip has a margin of
+    :param margin_size: if not ``None``, then the new clip has a margin_size of
         size ``mar`` in pixels on the left, right, top, and bottom.
         
     :param left, right, top, bottom: width of the margin in pixel
@@ -27,8 +27,8 @@ def margin(
     if (opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
         clip = clip.add_mask()
 
-    if mar is not None:
-        left = right = top = bottom = mar
+    if margin_size is not None:
+        left = right = top = bottom = margin_size
 
     def make_bg(w, h):
         new_w, new_h = w + left + right, h + top + bottom
@@ -48,11 +48,11 @@ def margin(
 
     else:
 
-        def fl(gf, t):
+        def filter(gf, t):
             pic = gf(t)
             h, w = pic.shape[:2]
             im = make_bg(w, h)
             im[top : top + h, left : left + w] = pic
             return im
 
-        return clip.fl(fl)
+        return clip.with_filter(filter)

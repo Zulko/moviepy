@@ -6,4 +6,4 @@ def colorx(clip, factor):
         to decrease or increase the clip's brightness (is that the
         reight word ?)
     """
-    return clip.with_image_filter(lambda pic: np.minimum(255, (factor * pic)).astype("uint8"))
+    return clip.with_image_filter(lambda frame: np.minimum(255, (factor * frame)).astype("uint8"))
