@@ -13,14 +13,13 @@ the appropriate options to ``use_setuptools()``.
 
 This file can also be run as a script to install or upgrade setuptools.
 """
+import optparse
 import os
 import shutil
-import sys
-import tempfile
-import tarfile
-import optparse
 import subprocess
-
+import sys
+import tarfile
+import tempfile
 from distutils import log
 
 try:
@@ -206,15 +205,7 @@ def _extractall(self, path=".", members=None):
         self.extract(tarinfo, path)
 
     # Reverse sort directories.
-    if sys.version_info < (2, 4):
-
-        def sorter(dir1, dir2):
-            return cmp(dir1.name, dir2.name)
-
-        directories.sort(sorter)
-        directories.reverse()
-    else:
-        directories.sort(key=operator.attrgetter("name"), reverse=True)
+    directories.sort(key=operator.attrgetter("name"), reverse=True)
 
     # Set correct owner, mtime and filemode on directories.
     for tarinfo in directories:

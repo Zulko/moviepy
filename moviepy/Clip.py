@@ -427,8 +427,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta) * (tb - ta)
-        newclip = self.fl_time(fl)
+        newclip = self.fl_time(lambda t: t + (t >= ta) * (tb - ta))
 
         if self.duration is not None:
 

@@ -162,8 +162,6 @@ class FFMPEG_AudioReader:
             self.proc = None
 
     def get_frame(self, tt):
-
-        buffersize = self.buffersize
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases

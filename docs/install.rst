@@ -131,6 +131,6 @@ To test if FFmpeg and ImageMagick are found by MoviePy, in a Python console run:
 
 .. _Github: https://github.com/Zulko/moviepy
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _`OpenCV`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _`OpenCV`: https://github.com/skvark/opencv-python
 
 

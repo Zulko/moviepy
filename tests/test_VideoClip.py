@@ -1,5 +1,4 @@
 import os
-import sys
 
 import pytest
 from numpy import pi, sin
@@ -11,7 +10,7 @@ from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_check_codec():

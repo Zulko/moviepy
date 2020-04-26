@@ -108,9 +108,7 @@ class FFMPEG_VideoWriter:
         ]
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
-        cmd.extend(
-            ["-vcodec", codec, "-preset", preset,]
-        )
+        cmd.extend(["-vcodec", codec, "-preset", preset])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
         if bitrate is not None:
