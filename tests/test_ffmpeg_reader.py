@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """FFmpeg reader tests meant to be run with pytest."""
-import sys
-
 import pytest
 
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos

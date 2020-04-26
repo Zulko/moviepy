@@ -7,31 +7,31 @@ main subclasses:
 import os
 import subprocess as sp
 import tempfile
-import warnings
 
 import numpy as np
 import proglog
 from imageio import imread, imsave
 
-from ..Clip import Clip
-from ..config import get_setting
-from ..decorators import (
+from moviepy.Clip import Clip
+from moviepy.config import get_setting
+from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
+    convert_path_to_string,
     convert_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
 )
-from ..tools import (
-    extensions_dict,
-    find_extension,
-    subprocess_call,
+from moviepy.tools import extensions_dict, find_extension, subprocess_call
+from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
+from moviepy.video.io.gif_writers import (
+    write_gif,
+    write_gif_with_image_io,
+    write_gif_with_tempfiles,
 )
-from .io.ffmpeg_writer import ffmpeg_write_video
-from .io.gif_writers import write_gif, write_gif_with_image_io, write_gif_with_tempfiles
-from .tools.drawing import blit
+from moviepy.video.tools.drawing import blit
 
 
 class VideoClip(Clip):
@@ -139,6 +139,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
+    @convert_path_to_string("filename")
     def write_videofile(
         self,
         filename,
@@ -166,7 +167,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file to write in.
+          Name of the video file to write in, as a string or a path-like object.
           The extension must correspond to the "codec" used (see below),
           or simply be '.avi' (which will work with any codec).
 
@@ -295,7 +296,7 @@ class VideoClip(Clip):
 
         audiofile = audio if isinstance(audio, str) else None
         make_audio = (
-            (audiofile is None) and (audio == True) and (self.audio is not None)
+            (audiofile is None) and (audio is True) and (self.audio is not None)
         )
 
         if make_audio and temp_audiofile:
@@ -395,6 +396,7 @@ class VideoClip(Clip):
 
     @requires_duration
     @convert_masks_to_RGB
+    @convert_path_to_string("filename")
     def write_gif(
         self,
         filename,
@@ -417,7 +419,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the resulting gif file.
+          Name of the resulting gif file, as a string or a path-like object.
 
         fps
           Number of frames per second (see note below). If it
@@ -635,7 +637,10 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
+
+            def make_frame(t):
+                return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -791,8 +796,9 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            f = lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
-            newclip = self.fl_image(f)
+            newclip = self.fl_image(
+                lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
+            )
             newclip.ismask = False
             return newclip
         else:
@@ -844,7 +850,10 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
-        make_frame = lambda t: self.data_to_frame(self.data[int(self.fps * t)])
+
+        def make_frame(t):
+            return self.data_to_frame(self.data[int(self.fps * t)])
+
         VideoClip.__init__(
             self,
             make_frame,
@@ -926,8 +935,8 @@ class ImageClip(VideoClip):
     -----------
 
     img
-      Any picture file (png, tiff, jpeg, etc.) or any array representing
-      an RGB image (for instance a frame from a VideoClip).
+      Any picture file (png, tiff, jpeg, etc.) as a string or a path-like object,
+      or any array representing an RGB image (for instance a frame from a VideoClip).
 
     ismask
       Set this parameter to `True` if the clip is a mask.
@@ -949,7 +958,8 @@ class ImageClip(VideoClip):
     ):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
+        if not isinstance(img, np.ndarray):
+            # img is a string or path-like object, so read it in from disk
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
@@ -1066,7 +1076,8 @@ class TextClip(ImageClip):
       ``filename``.
 
     filename
-      The name of a file in which there is the text to write.
+      The name of a file in which there is the text to write,
+      as a string or a path-like object.
       Can be provided instead of argument ``txt``
 
     size
@@ -1116,6 +1127,7 @@ class TextClip(ImageClip):
 
     """
 
+    @convert_path_to_string("filename")
     def __init__(
         self,
         txt=None,
@@ -1231,14 +1243,20 @@ class TextClip(ImageClip):
             popen_params["creationflags"] = 0x08000000
 
         process = sp.Popen(
-            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg], **popen_params
+            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg],
+            encoding="utf-8",
+            **popen_params,
         )
-        result = process.communicate()[0].decode()
+        result = process.communicate()[0]
         lines = result.splitlines()
 
         if arg == "font":
+            # Slice removes first 8 characters: "  Font: "
             return [l[8:] for l in lines if l.startswith("  Font:")]
         elif arg == "color":
+            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split on space and take
+            # the first item to get the color name.
+            # The first 5 lines are header information, not colors, so ignore
             return [l.split(" ")[0] for l in lines[5:]]
         else:
             raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")

@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, Slider
+from matplotlib.widgets import Slider
 
 
 def sliders(f, sliders_properties, wait_for_validation=False):
@@ -55,7 +55,7 @@ def sliders(f, sliders_properties, wait_for_validation=False):
             print(res)
 
     def on_key_press(event):
-        if event.key is "enter":
+        if event.key == "enter":
             on_changed(event)
 
     figure.canvas.mpl_connect("key_press_event", on_key_press)

@@ -80,23 +80,23 @@ def preview(
     than normal, but it cannot avoid the clip to be played slower
     than normal if the computations are complex. In this case, try
     reducing the ``fps``.
-    
+
     Parameters
     ------------
-    
+
     fps
       Number of frames per seconds in the displayed video.
-        
+
     audio
       ``True`` (default) if you want the clip's audio be played during
       the preview.
-        
+
     audio_fps
       The frames per second to use when generating the audio sound.
-      
+
     fullscreen
       ``True`` if you want the preview to be displayed fullscreen.
-      
+
     """
     if fullscreen:
         flags = pg.FULLSCREEN

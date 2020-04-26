@@ -8,8 +8,11 @@ try:
     PIL_FOUND = True
 
     def pil_rotater(pic, angle, resample, expand):
+        # Ensures that pic is of the correct type
         return np.array(
-            Image.fromarray(pic).rotate(angle, expand=expand, resample=resample)
+            Image.fromarray(np.array(pic).astype(np.uint8)).rotate(
+                angle, expand=expand, resample=resample
+            )
         )
 
 
@@ -53,7 +56,9 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
     if not hasattr(angle, "__call__"):
         # if angle is a constant, convert to a constant function
         a = +angle
-        angle = lambda t: a
+
+        def angle(t):
+            return a
 
     transpo = [1, 0] if clip.ismask else [1, 0, 2]
 

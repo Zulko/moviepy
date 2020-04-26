@@ -19,7 +19,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed the command above 
 
     (sudo) python setup.py install
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback !
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work  on Windows/Mac/Linux, with Python 2.7+ and 3 ; if you have trouble installing MoviePy or one of its dependencies, please provide feedback!
 
 MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the FFMPEG_BINARY environment variable See ``moviepy/config_defaults.py`` for details.
 
@@ -29,7 +29,7 @@ Other optional but useful dependencies
 
 ImageMagick_ is not strictly required, only if you want to write texts. It can also be used as a backend for GIFs but you can do GIFs with MoviePy without ImageMagick.
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows !**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
+Once you have installed it, ImageMagick will be automatically detected by MoviePy, **except on Windows!**. Windows user, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called `magick`. It should look like this ::
 
     IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
 
@@ -65,6 +65,6 @@ If you are on linux, these packages will likely be in your repos.
 
 .. _Github: https://github.com/Zulko/moviepy
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _`OpenCV 2.4.6`: https://github.com/skvark/opencv-python
 
 

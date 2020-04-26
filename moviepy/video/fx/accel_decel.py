@@ -1,4 +1,4 @@
-def f_accel_decel(t, old_d, new_d, abruptness=1, soonness=1.0):
+def f_accel_decel(t, old_d, new_d, abruptness=1.0, soonness=1.0):
     """
     abruptness
       negative abruptness (>-1): speed up down up
@@ -13,8 +13,12 @@ def f_accel_decel(t, old_d, new_d, abruptness=1, soonness=1.0):
     a = 1.0 + abruptness
 
     def _f(t):
-        f1 = lambda t: (0.5) ** (1 - a) * (t ** a)
-        f2 = lambda t: (1 - f1(1 - t))
+        def f1(t):
+            return (0.5) ** (1 - a) * (t ** a)
+
+        def f2(t):
+            return 1 - f1(1 - t)
+
         return (t < 0.5) * f1(t) + (t >= 0.5) * f2(t)
 
     return old_d * _f((t / new_d) ** soonness)
@@ -39,6 +43,6 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
     if new_duration is None:
         new_duration = clip.duration
 
-    fl = lambda t: f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)
-
-    return clip.fl_time(fl).set_duration(new_duration)
+    return clip.fl_time(
+        lambda t: f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)
+    ).set_duration(new_duration)
