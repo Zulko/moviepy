@@ -169,7 +169,7 @@ MoviePy has default codec names for the most common file extensions. If you want
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
 
     # Make a video showing a flower for 5 seconds
-    my_clip = Image("flower.jpeg") # has infinite duration
+    my_clip = ImageClip("flower.jpeg") # has infinite duration
     my_clip.write_videofile("flower.mp4") # Will fail! NO DURATION!
     my_clip.set_duration(5).write_videofile("flower.mp4") # works!
 
