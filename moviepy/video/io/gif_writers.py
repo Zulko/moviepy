@@ -246,9 +246,11 @@ def write_gif(
 
     if program == "ImageMagick":
         if IMAGEMAGICK_BINARY == "unset":
-            raise Exception("ImageMagick is not installed on your computer, or"
-                            " (for Windows users) that you didn't specify the "
-                            "path to the ImageMagick binary in file conf.py.")
+            raise Exception(
+                "ImageMagick is not installed on your computer, or"
+                " (for Windows users) that you didn't specify the "
+                "path to the ImageMagick binary in file conf.py."
+            )
 
         cmd2 = [
             IMAGEMAGICK_BINARY,
