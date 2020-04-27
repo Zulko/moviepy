@@ -9,7 +9,7 @@ import subprocess as sp
 import numpy as np
 from proglog import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 
 
 class FFMPEG_VideoWriter:
@@ -88,7 +88,7 @@ class FFMPEG_VideoWriter:
 
         # order is important
         cmd = [
-            get_setting("FFMPEG_BINARY"),
+            FFMPEG_BINARY,
             "-y",
             "-loglevel",
             "error" if logfile == sp.PIPE else "info",
@@ -268,7 +268,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
         image = image.astype("uint8")
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-s",
         "%dx%d" % (image.shape[:2][::-1]),
