@@ -103,7 +103,7 @@ There are many ways to specify the position: ::
     # clip2 is at 40% of the width, 70% of the height of the screen:
     clip2.set_position((0.4,0.7), relative=True)
 
-    # clip2's position is horizontally centered, and moving down !
+    # clip2's position is horizontally centered, and moving down!
     clip2.set_position(lambda t: ('center', 50+t) )
 
 When indicating the position keep in mind that the ``y`` coordinate has its zero at the top of the picture:
