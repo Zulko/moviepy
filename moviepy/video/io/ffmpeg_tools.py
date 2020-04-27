@@ -76,7 +76,7 @@ def ffmpeg_merge_video_audio(
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         audio,
@@ -96,7 +96,7 @@ def ffmpeg_merge_video_audio(
 def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         inputfile,
@@ -114,7 +114,7 @@ def ffmpeg_resize(video, output, size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-i",
         video,
         "-vf",
