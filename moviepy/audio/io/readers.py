@@ -23,7 +23,7 @@ class FFMPEG_AudioReader:
 
     buffersize
       The size of the buffer to use. Should be bigger than the buffer
-      used by ``to_audiofile``
+      used by ``write_audiofile``
 
     print_infos
       Print the ffmpeg infos on the file being read (for debugging)
