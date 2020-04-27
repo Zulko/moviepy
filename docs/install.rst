@@ -50,7 +50,7 @@ PyGame_ is needed for video and sound previews (useless you intend to work with 
 For advanced image processing you will need one or several of these packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
 
 - The Python Imaging Library (PIL) or, better, its branch Pillow_ .
-- Scipy_ for tracking, segmenting, etc., and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
+- Scipy_ is needed for tracking, segmenting, etc., and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV`_ (provides the package ``cv2``) may be needed for some advanced image manipulation.
 
