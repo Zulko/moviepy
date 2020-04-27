@@ -34,7 +34,7 @@ clip_blurred = clip.fx(vfx.headblur, fx, fy, 25)
 # Generate the text, put in on a grey background
 
 txt = TextClip(
-    "Hey you ! \n You're blurry!",
+    "Hey you! \n You're blurry!",
     color="grey70",
     size=clip.size,
     bg_color="grey20",

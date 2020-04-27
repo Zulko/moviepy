@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """Video file clip tests meant to be run with pytest."""
 import os
-import sys
 
+from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.credits import credits1
+from moviepy.video.tools.cuts import detect_scenes
+from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import TMP_DIR, FONT
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_credits():
@@ -38,3 +40,16 @@ def test_credits():
     image = image.set_duration(3)
     image.write_videofile(vid_location, fps=24)
     assert os.path.isfile(vid_location)
+
+
+def test_detect_scenes():
+    """
+    Test that a cut is detected between concatenated red and green clips
+    """
+    red = ColorClip((640, 480), color=(255, 0, 0)).set_duration(1)
+    green = ColorClip((640, 480), color=(0, 200, 0)).set_duration(1)
+    video = concatenate_videoclips([red, green])
+
+    cuts, luminosities = detect_scenes(video, fps=10, logger=None)
+
+    assert len(cuts) == 2

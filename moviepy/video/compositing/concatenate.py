@@ -1,5 +1,6 @@
-import numpy as np
 from functools import reduce
+
+import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
@@ -59,8 +60,8 @@ def concatenate_videoclips(
     """
 
     if transition is not None:
-        l = [[v, transition] for v in clips[:-1]]
-        clips = reduce(lambda x, y: x + y, l) + [clips[-1]]
+        clip_transition_pairs = [[v, transition] for v in clips[:-1]]
+        clips = reduce(lambda x, y: x + y, clip_transition_pairs) + [clips[-1]]
         transition = None
 
     tt = np.cumsum([0] + [c.duration for c in clips])

@@ -12,15 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Important Announcements
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+- If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
 
 ### Added <!-- for new features -->
+- Support for path-like objects as an option wherever filenames are passed in as arguments
+- Autodetect ImageMagick executable on Windows [#1109]
+- Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
+- Optional `encoding` parameter in `SubtitlesClip` [#1043]
 
 ### Changed <!-- for changes in existing functionality -->
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
 ### Removed <!-- for now removed features -->
-- Support for Python versions 2.7, 3.4 & 3.5
+- Support removed for Python versions 2.7, 3.4 & 3.5
+- Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [#1109]
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions [#1109]
 - All previously deprecated methods and parameters [#1115]:
     - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
     - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
@@ -34,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
 - `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
 - `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
+- Using `rotate()` with a `ColorClip` no longer crashes [#1139]
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
