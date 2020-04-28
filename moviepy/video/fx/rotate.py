@@ -76,7 +76,7 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
             return np.transpose(im, axes=transpo)[::-1]
         elif (a == 270) and expand:
             return np.transpose(im, axes=transpo)[:, ::-1]
-        elif (a in [180]) and expand:
+        elif (a == 180) and expand:
             return im[::-1, ::-1]
         elif not PIL_FOUND:
             raise ValueError(
