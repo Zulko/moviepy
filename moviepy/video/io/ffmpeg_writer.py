@@ -140,7 +140,7 @@ class FFMPEG_VideoWriter:
                 ffmpeg_error = ffmpeg_error.decode()
             else:
                 # The error was redirected to a logfile with `write_logfile=True`, so read the
-                # error from the file instead
+                # error from that file instead
                 self.logfile.seek(0)
                 ffmpeg_error = self.logfile.read()
 
