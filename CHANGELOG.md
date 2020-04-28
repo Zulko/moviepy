@@ -15,10 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
 
 ### Added <!-- for new features -->
-- Support for path-like objects as an option wherever filenames are passed in as arguments
+- Support for path-like objects as an option wherever filenames are passed in as arguments [#1137]
 - Autodetect ImageMagick executable on Windows [#1109]
 - Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
+- Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
 
 ### Changed <!-- for changes in existing functionality -->
 

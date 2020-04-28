@@ -37,6 +37,18 @@ def test_errors_with_redirected_logs():
     close_all_clips(locals())
 
 
+def test_write_videofiles_with_temp_audiofile_path():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "temp_audiofile_path.webm")
+    temp_location = "temp_audiofile"
+    if not os.path.exists(temp_location):
+        os.mkdir(temp_location)
+    clip.write_videofile(location, temp_audiofile_path=temp_location, remove_temp=False)
+    assert os.path.isfile(location)
+    contents_of_temp_dir = os.listdir(temp_location)
+    assert any(file.startswith("temp_audiofile_path") for file in contents_of_temp_dir)
+
+
 def test_save_frame():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "save_frame.png")
@@ -163,4 +175,5 @@ def test_withoutaudio():
 
 
 if __name__ == "__main__":
-    pytest.main()
+    # pytest.main()
+    test_write_videofiles_with_temp_audiofile_path()
