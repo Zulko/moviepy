@@ -191,5 +191,4 @@ def test_withoutaudio():
 
 
 if __name__ == "__main__":
-    #pytest.main()
-    test_write_frame_errors_with_redirected_logs()
+    pytest.main()
