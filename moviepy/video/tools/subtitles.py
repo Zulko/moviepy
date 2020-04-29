@@ -117,9 +117,9 @@ class SubtitlesClip(VideoClip):
 
         def try_cropping(t1, t2):
             try:
-                return (max(t1, start_time), min(t2, end_time))
+                return max(t1, start_time), min(t2, end_time)
             except Exception:
-                return (t1, t2)
+                return t1, t2
 
         return [
             (try_cropping(t1, t2), txt)
@@ -140,7 +140,7 @@ class SubtitlesClip(VideoClip):
             formatted_end_time = convert_to_seconds(end_time)
             return "%s - %s\n%s" % (formatted_start_time, formatted_end_time, text)
 
-        return "\n\n".join(to_srt(s) for s in self.subtitles)
+        return "\n\n".join(to_srt(sub) for sub in self.subtitles)
 
     def match_expr(self, expr):
         return SubtitlesClip(
