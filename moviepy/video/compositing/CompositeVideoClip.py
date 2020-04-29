@@ -61,7 +61,7 @@ class CompositeVideoClip(VideoClip):
         if bg_color is None:
             bg_color = 0.0 if is_mask else (0, 0, 0)
 
-        fpss = [c.fps for c in clips if getattr(c, "fps", None)]
+        fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
         self.fps = max(fpss) if fpss else None
 
         VideoClip.__init__(self)
@@ -81,7 +81,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = True
 
         # compute duration
-        ends = [c.end for c in self.clips]
+        ends = [clip.end for clip in self.clips]
         if None not in ends:
             duration = max(ends)
             self.duration = duration
@@ -95,11 +95,11 @@ class CompositeVideoClip(VideoClip):
         # compute mask if necessary
         if transparent:
             maskclips = [
-                (c.mask if (c.mask is not None) else c.add_mask().mask)
-                .with_position(c.pos)
-                .with_end(c.end)
-                .with_start(c.start, change_end=False)
-                for c in self.clips
+                (clip.mask if (clip.mask is not None) else clip.add_mask().mask)
+                .with_position(clip.pos)
+                .with_end(clip.end)
+                .with_start(clip.start, change_end=False)
+                for clip in self.clips
             ]
 
             self.mask = CompositeVideoClip(
@@ -110,17 +110,17 @@ class CompositeVideoClip(VideoClip):
             """ The clips playing at time `t` are blitted over one
                 another. """
 
-            f = self.bg.get_frame(t)
-            for c in self.playing_clips(t):
-                f = c.blit_on(f, t)
-            return f
+            frame = self.bg.get_frame(t)
+            for clip in self.playing_clips(t):
+                frame = clip.blit_on(frame, t)
+            return frame
 
         self.make_frame = make_frame
 
     def playing_clips(self, t=0):
         """ Returns a list of the clips in the composite clips that are
             actually playing at the given time `t`. """
-        return [c for c in self.clips if c.is_playing(t)]
+        return [clip for clip in self.clips if clip.is_playing(t)]
 
     def close(self):
         if self.created_bg and self.bg:
@@ -152,7 +152,7 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
     """
 
     array = np.array(array)
-    sizes_array = np.array([[c.size for c in line] for line in array])
+    sizes_array = np.array([[clip.size for clip in line] for line in array])
 
     # find row width and col_widths automatically if not provided
     if rows_widths is None:

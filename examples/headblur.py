@@ -22,8 +22,8 @@ clip = VideoFileClip("../../videos/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
 # IF THE MANUAL TRACKING HAS BEEN PREVIOUSLY DONE,
 # LOAD THE TRACKING DATA AND CONVERT IT TO FUNCTIONS x(t),fy(t)
 
-with open("../../chaplin_txy.dat", "r") as f:
-    fx, fy = to_fxfy(pickle.load(f))
+with open("../../chaplin_txy.dat", "r") as file:
+    fx, fy = to_fxfy(pickle.load(file))
 
 
 # BLUR CHAPLIN'S HEAD IN THE CLIP

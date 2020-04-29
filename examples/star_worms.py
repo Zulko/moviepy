@@ -62,7 +62,7 @@ moving_txt = clip_txt.with_filter(fl, apply_to=["mask"])
 # ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK
 
 grad = color_gradient(
-    moving_txt.size, p1=(0, 2 * h / 3), p2=(0, h / 4), col1=0.0, col2=1.0
+    moving_txt.size, p1=(0, 2 * h / 3), p2=(0, h / 4), color_1=0.0, color_2=1.0
 )
 gradmask = ImageClip(grad, is_mask=True)
 fl = lambda pic: np.minimum(pic, gradmask.img)

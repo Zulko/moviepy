@@ -46,7 +46,7 @@ class FFMPEG_AudioReader:
         self.nbytes = nbytes
         self.fps = fps
         self.format = "s%dle" % (8 * nbytes)
-        self.acodec = "pcm_s%dle" % (8 * nbytes)
+        self.codec = "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(filename)
         self.duration = infos["duration"]
@@ -92,7 +92,7 @@ class FFMPEG_AudioReader:
                 "-f",
                 self.format,
                 "-acodec",
-                self.acodec,
+                self.codec,
                 "-ar",
                 "%d" % self.fps,
                 "-ac",

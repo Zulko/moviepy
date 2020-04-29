@@ -79,10 +79,10 @@ def concatenate_videoclips(
             i = max([i for i, e in enumerate(timings) if e <= t])
             return clips[i].get_frame(t - timings[i])
 
-        def get_mask(c):
-            mask = c.mask or ColorClip([1, 1], color=1, is_mask=True)
+        def get_mask(clip):
+            mask = clip.mask or ColorClip([1, 1], color=1, is_mask=True)
             if mask.duration is None:
-                mask.duration = c.duration
+                mask.duration = clip.duration
             return mask
 
         result = VideoClip(is_mask=is_mask, make_frame=make_frame)
@@ -111,10 +111,10 @@ def concatenate_videoclips(
     result.start_times = timings[:-1]
     result.start, result.duration, result.end = 0, timings[-1], timings[-1]
 
-    audio_t = [(c.audio, t) for c, t in zip(clips, timings) if c.audio is not None]
+    audio_t = [(clip.audio, t) for clip, t in zip(clips, timings) if clip.audio is not None]
     if audio_t:
         result.audio = CompositeAudioClip([a.with_start(t) for a, t in audio_t])
 
-    fpss = [c.fps for c in clips if getattr(c, "fps", None) is not None]
+    fpss = [clip.fps for clip in clips if getattr(clip, "fps", None) is not None]
     result.fps = max(fpss) if fpss else None
     return result

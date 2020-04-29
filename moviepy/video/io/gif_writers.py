@@ -115,8 +115,8 @@ def write_gif_with_tempfiles(
 
         raise IOError(error)
 
-    for f in tempfiles:
-        os.remove(f)
+    for file in tempfiles:
+        os.remove(file)
 
 
 @requires_duration

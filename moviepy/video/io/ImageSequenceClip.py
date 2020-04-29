@@ -69,7 +69,7 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [imread(f) for f in sequence]
+                    sequence = [imread(file) for file in sequence]
                     fromfiles = False
                 else:
                     fromfiles = True
@@ -79,7 +79,7 @@ class ImageSequenceClip(VideoClip):
         else:
             # sequence is a folder name, make it a list of files:
             fromfiles = True
-            sequence = sorted([os.path.join(sequence, f) for f in os.listdir(sequence)])
+            sequence = sorted([os.path.join(sequence, file) for file in os.listdir(sequence)])
 
         # check that all the images are of the same size
         if isinstance(sequence[0], str):

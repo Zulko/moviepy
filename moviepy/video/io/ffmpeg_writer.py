@@ -138,8 +138,8 @@ class FFMPEG_VideoWriter:
             logs = self.logfile.name
             _, ffmpeg_error = self.proc.communicate()
             if not ffmpeg_error:
-                with open(logs, "rb") as f:
-                    ffmpeg_error = f.read()
+                with open(logs, "rb") as file:
+                    ffmpeg_error = file.read()
 
             error = str(err) + (
                 "\n\nMoviePy error: FFMPEG encountered "

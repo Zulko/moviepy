@@ -20,7 +20,12 @@ W, H = main_clip.size
 # MAKE THE LEFT CLIP : cut, crop, add a mask
 
 mask = color_split(
-    (2 * W / 3, H), p1=(W / 3, H), p2=(2 * W / 3, 0), col1=1, col2=0, grad_width=2
+    (2 * W / 3, H),
+    p1=(W / 3, H),
+    p2=(2 * W / 3, 0),
+    color_1=1,
+    color_2=0,
+    gradient_width=2,
 )
 
 mask_clip = ImageClip(mask, is_mask=True)
@@ -36,7 +41,7 @@ clip_left = (
 # MAKE THE RIGHT CLIP : cut, crop, add a mask
 
 mask = color_split(
-    (2 * W / 3, H), p1=(2, H), p2=(W / 3 + 2, 0), col1=0, col2=1, grad_width=2
+    (2 * W / 3, H), p1=(2, H), p2=(W / 3 + 2, 0), color_1=0, color_2=1, gradient_width=2
 )
 
 mask_clip = ImageClip(mask, is_mask=True)

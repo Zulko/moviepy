@@ -1,7 +1,7 @@
 import numpy as np
 
 from moviepy.editor import *
-from moviepy.video.tools.segmenting import findObjects
+from moviepy.video.tools.segmenting import find_objects
 
 # WE CREATE THE TEXT THAT IS GOING TO MOVE, WE CENTER IT.
 
@@ -50,9 +50,9 @@ def vortexout(screenpos, i, nletters):
     )
 
 
-# WE USE THE PLUGIN findObjects TO LOCATE AND SEPARATE EACH LETTER
+# WE USE THE PLUGIN find_objects TO LOCATE AND SEPARATE EACH LETTER
 
-letters = findObjects(cvc)  # a list of ImageClips
+letters = find_objects(cvc)  # a list of ImageClips
 
 
 # WE ANIMATE THE LETTERS

@@ -180,7 +180,9 @@ class FramesMatches(list):
                         "min": abs(frame_dict[t2]["|F|"] - F_norm),
                         "max": frame_dict[t2]["|F|"] + F_norm,
                     }
-                    frame_dict[t2][t]["rejected"] = frame_dict[t2][t]["min"] > distance_threshold
+                    frame_dict[t2][t]["rejected"] = (
+                        frame_dict[t2][t]["min"] > distance_threshold
+                    )
 
             t_F = sorted(frame_dict.keys())
 
@@ -266,7 +268,9 @@ class FramesMatches(list):
                 continue  # No GIF can be made starting at this time
 
             poor_matches = {
-                end for (end, min_distance, max_distance) in ends_distances if min_distance > nomatch_threshold
+                end
+                for (end, min_distance, max_distance) in ends_distances
+                if min_distance > nomatch_threshold
             }
             short_matches = {end for end in ends if (end - start) <= 0.6}
 
@@ -274,7 +278,9 @@ class FramesMatches(list):
                 continue
 
             end = max(end for (end, min_distance, max_distance) in great_long_matches)
-            end, min_distance, max_distance = next(e for e in great_long_matches if e[0] == end)
+            end, min_distance, max_distance = next(
+                e for e in great_long_matches if e[0] == end
+            )
 
             result.append(FramesMatch(start, end, min_distance, max_distance))
             min_start = start + time_distance
@@ -288,7 +294,9 @@ class FramesMatches(list):
 
 
 @use_clip_fps_by_default
-def detect_scenes(clip=None, luminosities=None, luminosity_threshold=10, logger="bar", fps=None):
+def detect_scenes(
+    clip=None, luminosities=None, luminosity_threshold=10, logger="bar", fps=None
+):
     """ Detects scenes of a clip based on luminosity changes.
 
     Note that for large clip this may take some time
@@ -341,7 +349,9 @@ def detect_scenes(clip=None, luminosities=None, luminosity_threshold=10, logger=
         end = len(luminosities) * (1.0 / fps)
     luminosity_diffs = abs(np.diff(luminosities))
     avg = luminosity_diffs.mean()
-    luminosity_jumps = 1 + np.array(np.nonzero(luminosity_diffs > luminosity_threshold * avg))[0]
+    luminosity_jumps = (
+        1 + np.array(np.nonzero(luminosity_diffs > luminosity_threshold * avg))[0]
+    )
     timings = [0] + list((1.0 / fps) * luminosity_jumps) + [end]
     cuts = [(t1, t2) for t1, t2 in zip(timings, timings[1:])]
     return cuts, luminosities

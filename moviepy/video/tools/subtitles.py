@@ -74,15 +74,15 @@ class SubtitlesClip(VideoClip):
             to generate it yet. If there is no subtitle to show at t, return
             false. """
             sub = [
-                ((ta, tb), text)
-                for ((ta, tb), text) in self.textclips.keys()
-                if (ta <= t < tb)
+                ((text_start, text_end), text)
+                for ((text_start, text_end), text) in self.textclips.keys()
+                if (text_start <= t < text_end)
             ]
             if not sub:
                 sub = [
-                    ((ta, tb), text)
-                    for ((ta, tb), text) in self.subtitles
-                    if (ta <= t < tb)
+                    ((text_start, text_end), text)
+                    for ((text_start, text_end), text) in self.subtitles
+                    if (text_start <= t < text_end)
                 ]
                 if not sub:
                     return False
@@ -135,21 +135,21 @@ class SubtitlesClip(VideoClip):
 
     def __str__(self):
         def to_srt(sub_element):
-            (ta, tb), text = sub_element
-            fta = convert_to_seconds(ta)
-            ftb = convert_to_seconds(tb)
-            return "%s - %s\n%s" % (fta, ftb, text)
+            (start_time, end_time), text = sub_element
+            formatted_start_time = convert_to_seconds(start_time)
+            formatted_end_time = convert_to_seconds(end_time)
+            return "%s - %s\n%s" % (formatted_start_time, formatted_end_time, text)
 
         return "\n\n".join(to_srt(s) for s in self.subtitles)
 
     def match_expr(self, expr):
         return SubtitlesClip(
-            [e for e in self.subtitles if re.findall(expr, e[1]) != []]
+            [sub for sub in self.subtitles if re.findall(expr, sub[1]) != []]
         )
 
     def write_srt(self, filename):
-        with open(filename, "w+") as f:
-            f.write(str(self))
+        with open(filename, "w+") as file:
+            file.write(str(self))
 
 
 @convert_path_to_string("filename")
@@ -165,8 +165,8 @@ def file_to_subtitles(filename, encoding=None):
     times_texts = []
     current_times = None
     current_text = ""
-    with open(filename, "r", encoding=encoding) as f:
-        for line in f:
+    with open(filename, "r", encoding=encoding) as file:
+        for line in file:
             times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
             if times:
                 current_times = [convert_to_seconds(t) for t in times]
