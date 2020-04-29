@@ -91,7 +91,7 @@ def preprocess_args(fun, varnames):
     return decorator.decorator(wrapper)
 
 
-def convert_to_seconds(varnames):
+def convert_parameter_to_seconds(varnames):
     """Converts the specified variables to seconds"""
     return preprocess_args(convert_to_seconds, varnames)
 

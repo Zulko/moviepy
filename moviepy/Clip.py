@@ -12,7 +12,7 @@ import proglog
 from moviepy.decorators import (
     apply_to_audio,
     apply_to_mask,
-    convert_to_seconds,
+    convert_parameter_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
@@ -78,7 +78,7 @@ class Clip:
 
         return new_clip
 
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):
         """
         Gets a numpy array representing the RGB picture of the clip at time t
@@ -222,7 +222,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     @outplace
     def with_start(self, t, change_end=True):
         """
@@ -251,7 +251,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     @outplace
     def with_end(self, t):
         """
@@ -272,7 +272,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     @outplace
     def with_duration(self, t, change_end=True):
         """
@@ -318,7 +318,7 @@ class Clip:
         """ Sets wheter the clip should keep the last frame read in memory """
         self.memoize = memoize
 
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     def is_playing(self, t):
         """
         If t is a time, returns true if t is between the start and
@@ -349,7 +349,7 @@ class Clip:
 
             return (t >= self.start) and ((self.end is None) or (t < self.end))
 
-    @convert_to_seconds(["start_time", "end_time"])
+    @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
     def subclip(self, start_time=0, end_time=None):
@@ -415,7 +415,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(["start_time", "end_time"])
+    @convert_parameter_to_seconds(["start_time", "end_time"])
     def cutout(self, start_time, end_time):
         """
         Returns a clip playing the content of the current clip but

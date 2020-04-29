@@ -19,7 +19,7 @@ from moviepy.decorators import (
     apply_to_mask,
     convert_masks_to_RGB,
     convert_path_to_string,
-    convert_to_seconds,
+    convert_parameter_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
@@ -114,7 +114,7 @@ class VideoClip(Clip):
     # ===============================================================
     # EXPORT OPERATIONS
 
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     @convert_masks_to_RGB
     def save_frame(self, filename, t=0, with_mask=True):
         """ Save a clip's frame to an image file.
@@ -783,7 +783,7 @@ class VideoClip(Clip):
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
 
-    @convert_to_seconds(["t"])
+    @convert_parameter_to_seconds(["t"])
     def to_ImageClip(self, t=0, with_mask=True, duration=None):
         """
         Returns an ImageClip made out of the clip's frame at time ``t``,

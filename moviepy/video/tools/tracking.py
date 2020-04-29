@@ -10,7 +10,7 @@ of the tracking time interval).
 
 import numpy as np
 
-from moviepy.decorators import convert_to_seconds, use_clip_fps_by_default
+from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
 
 from ..io.preview import imdisplay
 from .interpolators import Trajectory
@@ -30,7 +30,7 @@ except Exception:
 # MANUAL TRACKING
 
 
-@convert_to_seconds(["t1", "t2"])
+@convert_parameter_to_seconds(["t1", "t2"])
 @use_clip_fps_by_default
 def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None):
     """
