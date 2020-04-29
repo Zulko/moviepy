@@ -31,7 +31,7 @@ def test_duration():
     assert clip.duration == 5
     clip.close()
 
-    clip2 = clip.fx(blink, d_on=1, d_off=1)
+    clip2 = clip.fx(blink, duration_on=1, duration_off=1)
     clip2 = clip2.with_duration(5)
     assert clip2.duration == 5
     close_all_clips(locals())

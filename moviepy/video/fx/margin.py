@@ -19,7 +19,7 @@ def margin(
     Draws an external margin all around the frame.
     
     :param margin_size: if not ``None``, then the new clip has a margin_size of
-        size ``mar`` in pixels on the left, right, top, and bottom.
+        size ``margin_size`` in pixels on the left, right, top, and bottom.
         
     :param left, right, top, bottom: width of the margin in pixel
         in these directions.

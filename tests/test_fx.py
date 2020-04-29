@@ -137,10 +137,10 @@ def test_margin():
     clip1 = margin(clip)  # does the default values change anything?
     clip1.write_videofile(os.path.join(TMP_DIR, "margin1.webm"))
 
-    clip2 = margin(clip, mar=100)  # all margins are 100px
+    clip2 = margin(clip, margin_size=100)  # all margins are 100px
     clip2.write_videofile(os.path.join(TMP_DIR, "margin2.webm"))
 
-    clip3 = margin(clip, mar=100, color=(255, 0, 0))  # red margin
+    clip3 = margin(clip, margin_size=100, color=(255, 0, 0))  # red margin
     clip3.write_videofile(os.path.join(TMP_DIR, "margin3.webm"))
     close_all_clips(locals())
 

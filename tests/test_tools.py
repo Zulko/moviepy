@@ -42,13 +42,5 @@ def test_cvsecs(given, expected):
     assert tools.convert_to_seconds(given) == expected
 
 
-def test_sys_write_flush():
-    """Test for sys_write-flush function. Check that stdout has no content after flushing."""
-    tools.sys_write_flush("hello world")
-
-    file = sys.stdout.read()
-    assert file == b""
-
-
 if __name__ == "__main__":
     pytest.main()

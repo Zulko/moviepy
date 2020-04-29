@@ -342,7 +342,7 @@ def test_issue_467():
     clip = ImageClip(cad)
 
     # caused an error, NameError: global name 'copy' is not defined
-    clip = clip.fx(blink, d_on=1, d_off=1)
+    clip = clip.fx(blink, duration_on=1, duration_off=1)
 
 
 def test_issue_470():

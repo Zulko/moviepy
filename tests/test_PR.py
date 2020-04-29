@@ -49,9 +49,9 @@ def test_PR_373():
 
     result1 = Trajectory.load_list(os.path.join(TMP_DIR, "traj1.txt"))
 
-    assert len(result[0].timings) == len(result1[0].timings)
-    for i in range(len(result[0].timings)):
-        assert result[0].timings[i] == result1[0].timings[i]
+    assert len(result[0].tt) == len(result1[0].tt)
+    for i in range(len(result[0].tt)):
+        assert result[0].tt[i] == result1[0].tt[i]
 
     assert len(result[0].xx) == len(result1[0].xx)
     for i in range(len(result[0].xx)):
