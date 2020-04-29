@@ -111,7 +111,9 @@ def concatenate_videoclips(
     result.start_times = timings[:-1]
     result.start, result.duration, result.end = 0, timings[-1], timings[-1]
 
-    audio_t = [(clip.audio, t) for clip, t in zip(clips, timings) if clip.audio is not None]
+    audio_t = [
+        (clip.audio, t) for clip, t in zip(clips, timings) if clip.audio is not None
+    ]
     if audio_t:
         result.audio = CompositeAudioClip([a.with_start(t) for a, t in audio_t])
 

@@ -79,7 +79,9 @@ class ImageSequenceClip(VideoClip):
         else:
             # sequence is a folder name, make it a list of files:
             fromfiles = True
-            sequence = sorted([os.path.join(sequence, file) for file in os.listdir(sequence)])
+            sequence = sorted(
+                [os.path.join(sequence, file) for file in os.listdir(sequence)]
+            )
 
         # check that all the images are of the same size
         if isinstance(sequence[0], str):
