@@ -127,7 +127,7 @@ class FFMPEG_AudioWriter:
                     "'libmp3lame' for mp3, 'libvorbis' for ogg..."
                 )
 
-            elif "encoder setup failed" in ffmpeg_error:
+            elif "bitrate not specified" in ffmpeg_error:
                 error += (
                     "\n\nThe audio export failed, possily because the "
                     "bitrate you specified was too high or too low for "
