@@ -50,7 +50,7 @@ def blit(im1, im2, pos=None, mask=None, is_mask=False):
 
 
 def color_gradient(
-    size, p1, p2=None, vector=None, r=None, col1=0, col2=1.0, shape="linear", offset=0
+    size, p1, p2=None, vector=None, radius=None, col1=0.0, col2=1.0, shape="linear", offset=0
 ):
     """Draw a linear, bilinear, or radial gradient.
     
@@ -86,7 +86,7 @@ def color_gradient(
         'linear', 'bilinear', or 'circular'.
         In a linear gradient the color varies in one direction,
         from point ``p1`` to point ``p2``.
-        In a bilinear gradient it also varies symetrically form ``p1``
+        In a bilinear gradient it also varies symetrically from ``p1``
         in the other direction.
         In a circular gradient it goes from ``col1`` to ``col2`` in all
         directions.
@@ -127,7 +127,7 @@ def color_gradient(
 
         m1, m2 = [
             color_gradient(
-                size, p1, vector=v, col1=1.0, col2=0, shape="linear", offset=offset
+                size, p1, vector=v, col1=1.0, col2=0.0, shape="linear", offset=offset
             )
             for v in [vector, -vector]
         ]
@@ -163,14 +163,14 @@ def color_gradient(
         return arr * col1 + (1 - arr) * col2
 
     elif shape == "radial":
-        if r is None:
-            r = norm
+        if radius is None:
+            radius = norm
 
-        if r == 0:
+        if radius == 0:
             arr = np.ones((h, w))
         else:
-            arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * r
-            arr = arr / ((1 - offset) * r)
+            arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * radius
+            arr = arr / ((1 - offset) * radius)
             arr = np.minimum(1.0, np.maximum(0, arr))
 
         if col1.size > 1:
@@ -273,7 +273,7 @@ def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
     return color_gradient(
         screensize,
         p1=center,
-        r=radius,
+        radius=radius,
         col1=col1,
         col2=col2,
         shape="radial",

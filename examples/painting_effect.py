@@ -18,7 +18,7 @@ clip_after = charade.coreader().subclip(tfreeze, tfreeze + 2)
 im_freeze = charade.to_ImageClip(tfreeze)
 painting = charade.fx(vfx.painting, saturation=1.6, black=0.006).to_ImageClip(tfreeze)
 
-txt = TextClip("Audrey", font="Amiri-regular", fontsize=35)
+txt = TextClip("Audrey", font="Amiri-regular", font_size=35)
 
 painting_txt = (
     CompositeVideoClip([painting, txt.set_pos((10, 180))])

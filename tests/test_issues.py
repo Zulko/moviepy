@@ -242,7 +242,7 @@ def test_issue_354():
         # caption = editor.TextClip("test text", font="Liberation-Sans-Bold",
         #                           color='white', stroke_color='gray',
         #                           stroke_width=2, method='caption',
-        #                           size=(1280, 720), fontsize=60,
+        #                           size=(1280, 720), font_size=60,
         #                           align='South-East')
         # caption.duration = clip.duration
 
@@ -277,7 +277,7 @@ def test_issue_359():
 #     def make_frame(t):
 #         ax.clear()
 #         ax.axis('off')
-#         ax.set_title("SVC classification", fontsize=16)
+#         ax.set_title("SVC classification", font_size=16)
 #
 #         classifier = svm.SVC(gamma=2, C=1)
 #         # the varying weights make the points appear one after the other

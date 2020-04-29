@@ -19,7 +19,7 @@ clip.mask.get_frame = lambda t: circle(
 
 
 the_end = TextClip(
-    "The End", font="Amiri-bold", color="white", fontsize=70
+    "The End", font="Amiri-bold", color="white", font_size=70
 ).with_duration(clip.duration)
 
 final = CompositeVideoClip([the_end.set_pos("center"), clip], size=clip.size)

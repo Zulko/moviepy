@@ -1148,7 +1148,7 @@ class TextClip(ImageClip):
         size=None,
         color="black",
         bg_color="transparent",
-        fontsize=None,
+        font_size=None,
         font="Courier",
         stroke_color=None,
         stroke_width=1,
@@ -1192,8 +1192,8 @@ class TextClip(ImageClip):
             font,
         ]
 
-        if fontsize is not None:
-            cmd += ["-pointsize", "%d" % fontsize]
+        if font_size is not None:
+            cmd += ["-pointsize", "%d" % font_size]
         if kerning is not None:
             cmd += ["-kerning", "%0.1f" % kerning]
         if stroke_color is not None:

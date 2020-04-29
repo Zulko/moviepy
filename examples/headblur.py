@@ -39,7 +39,7 @@ txt = TextClip(
     size=clip.size,
     bg_color="grey20",
     font="Century-Schoolbook-Italic",
-    fontsize=40,
+    font_size=40,
 )
 
 

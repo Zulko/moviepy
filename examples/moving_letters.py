@@ -7,9 +7,9 @@ from moviepy.video.tools.segmenting import findObjects
 
 screensize = (720, 460)
 txtClip = TextClip(
-    "Cool effect", color="white", font="Amiri-Bold", kerning=5, fontsize=100
+    "Cool effect", color="white", font="Amiri-Bold", kerning=5, font_size=100
 )
-cvc = CompositeVideoClip([txtClip.set_pos("center")], size=screensize)
+cvc = CompositeVideoClip([txtClip.with_position("center")], size=screensize)
 
 # THE NEXT FOUR FUNCTIONS DEFINE FOUR WAYS OF MOVING THE LETTERS
 

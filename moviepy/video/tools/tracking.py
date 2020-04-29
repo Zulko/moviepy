@@ -48,7 +48,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
 
     t1,t2:
       times during which to track (defaults are start and
-      end of the clip). t1 and t2 can be expressed in seconds
+      end of the clip). start_time and t2 can be expressed in seconds
       like 15.35, in (min, sec), in (hour, min, sec), or as a
       string: '01:03:05.35'.
     fps:
@@ -67,7 +67,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     >>> from moviepy.video.tools.tracking import manual_tracking
     >>> clip = VideoFileClip("myvideo.mp4")
     >>> # manually indicate 3 trajectories, save them to a file
-    >>> trajectories = manual_tracking(clip, t1=5, t2=7, fps=5,
+    >>> trajectories = manual_tracking(clip, start_time=5, t2=7, fps=5,
                                        nobjects=3, savefile="track.text")
     >>> # ...
     >>> # LATER, IN ANOTHER SCRIPT, RECOVER THESE TRAJECTORIES

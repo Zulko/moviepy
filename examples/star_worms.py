@@ -48,7 +48,7 @@ txt = 10 * "\n" + txt + 10 * "\n"
 
 
 clip_txt = TextClip(
-    txt, color="white", align="West", fontsize=25, font="Xolonium-Bold", method="label"
+    txt, color="white", align="West", font_size=25, font="Xolonium-Bold", method="label"
 )
 
 
@@ -125,7 +125,7 @@ final.with_duration(8).write_videofile("starworms.avi", fps=5)
 def annotate(clip, txt, txt_color="white", bg_color=(0, 0, 255)):
     """ Writes a text at the bottom of the clip. """
 
-    txtclip = TextClip(txt, fontsize=20, font="Ubuntu-bold", color=txt_color)
+    txtclip = TextClip(txt, font_size=20, font="Ubuntu-bold", color=txt_color)
 
     txtclip = txtclip.on_color(
         (clip.w, txtclip.h + 6), color=(0, 0, 255), pos=(6, "center")

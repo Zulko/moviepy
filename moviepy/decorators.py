@@ -85,7 +85,10 @@ def preprocess_args(fun, varnames):
             fun(arg) if (name in varnames) and (arg is not None) else arg
             for (arg, name) in zip(args, names)
         ]
-        new_kwargs = {kwarg: fun(value) if kwarg in varnames else value for (kwarg, value) in kwargs.items()}
+        new_kwargs = {
+            kwarg: fun(value) if kwarg in varnames else value
+            for (kwarg, value) in kwargs.items()
+        }
         return func(*new_args, **new_kwargs)
 
     return decorator.decorator(wrapper)
@@ -129,7 +132,12 @@ def use_clip_fps_by_default(func, clip, *args, **kwargs):
 
     names = func_code.co_varnames[1:]
 
-    new_args = [find_fps(arg) if (name == "fps") else arg for (arg, name) in zip(args, names)]
-    new_kwargs = {kwarg: find_fps(value) if kwarg == "fps" else value for (kwarg, value) in kwargs.items()}
+    new_args = [
+        find_fps(arg) if (name == "fps") else arg for (arg, name) in zip(args, names)
+    ]
+    new_kwargs = {
+        kwarg: find_fps(value) if kwarg == "fps" else value
+        for (kwarg, value) in kwargs.items()
+    }
 
     return func(clip, *new_args, **new_kwargs)

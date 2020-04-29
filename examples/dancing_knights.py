@@ -88,7 +88,7 @@ dancing_knights = (
 txt_title = (
     TextClip(
         "15th century dancing\n(hypothetical)",
-        fontsize=70,
+        font_size=70,
         font="Century-Schoolbook-Roman",
         color="white",
     )
@@ -127,7 +127,7 @@ credits = (
         txt_credits,
         color="white",
         font="Century-Schoolbook-Roman",
-        fontsize=35,
+        font_size=35,
         kerning=-2,
         interline=-1,
         bg_color="black",

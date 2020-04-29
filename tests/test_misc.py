@@ -30,7 +30,7 @@ def test_subtitles():
         txt,
         font=FONT,
         size=(800, 600),
-        fontsize=24,
+        font_size=24,
         method="caption",
         align="South",
         color="white",

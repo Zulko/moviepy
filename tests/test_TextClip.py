@@ -45,7 +45,7 @@ def test_if_textclip_crashes_in_caption_mode():
         size=(640, 480),
         method="caption",
         align="center",
-        fontsize=25,
+        font_size=25,
         font=FONT,
     ).close()
 

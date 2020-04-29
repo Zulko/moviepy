@@ -35,7 +35,7 @@ def test_PR_339():
         size=(640, 480),
         method="caption",
         align="center",
-        fontsize=25,
+        font_size=25,
     ).close()
 
     # In label mode.
@@ -135,7 +135,7 @@ def test_PR_1137_subtitles():
         return TextClip(
             txt,
             font=FONT,
-            fontsize=24,
+            font_size=24,
             color="white",
             stroke_color="black",
             stroke_width=0.5,
