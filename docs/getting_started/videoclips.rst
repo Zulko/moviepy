@@ -166,7 +166,7 @@ To write a clip as a video file, use ::
 MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
 
 
-Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.with_duration``: ::
+Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *args priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.with_duration``: ::
 
     # Make a video showing a flower for 5 seconds
     my_clip = ImageClip("flower.jpeg") # has infinite duration

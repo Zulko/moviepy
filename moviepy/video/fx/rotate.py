@@ -26,7 +26,7 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
     If the angle is not one of 90, 180, -90, -180 (degrees) there will be
     black borders. You can make them transparent with
 
-    >>> newclip = clip.add_mask().rotate(72)
+    >>> new_clip = clip.add_mask().rotate(72)
 
     Parameters
     ===========

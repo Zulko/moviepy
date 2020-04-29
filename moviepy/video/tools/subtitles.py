@@ -5,7 +5,7 @@ import re
 import numpy as np
 
 from moviepy.decorators import convert_path_to_string
-from moviepy.tools import cvsecs
+from moviepy.tools import convert_to_seconds
 from moviepy.video.VideoClip import TextClip, VideoClip
 
 
@@ -48,7 +48,7 @@ class SubtitlesClip(VideoClip):
             # `subtitles` is a string or path-like object
             subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
-        # subtitles = [(map(cvsecs, times),text) for times, text in subtitles]
+        # subtitles = [(map(convert_to_seconds, times),text) for times, text in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
 
@@ -136,8 +136,8 @@ class SubtitlesClip(VideoClip):
     def __str__(self):
         def to_srt(sub_element):
             (ta, tb), text = sub_element
-            fta = cvsecs(ta)
-            ftb = cvsecs(tb)
+            fta = convert_to_seconds(ta)
+            ftb = convert_to_seconds(tb)
             return "%s - %s\n%s" % (fta, ftb, text)
 
         return "\n\n".join(to_srt(s) for s in self.subtitles)
@@ -169,7 +169,7 @@ def file_to_subtitles(filename, encoding=None):
         for line in f:
             times = re.findall("([0-9]*:[0-9]*:[0-9]*,[0-9]*)", line)
             if times:
-                current_times = [cvsecs(t) for t in times]
+                current_times = [convert_to_seconds(t) for t in times]
             elif line.strip() == "":
                 times_texts.append((current_times, current_text.strip("\n")))
                 current_times, current_text = None, ""

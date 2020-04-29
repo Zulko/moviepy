@@ -7,11 +7,11 @@ def blink(clip, duration_on, duration_off):
     seconds and disappear ``duration_off`` seconds. Will only work in
     composite clips.
     """
-    newclip = copy.copy(clip)
-    if newclip.mask is None:
-        newclip = newclip.with_mask()
+    new_clip = copy.copy(clip)
+    if new_clip.mask is None:
+        new_clip = new_clip.with_mask()
     duration = duration_on + duration_off
-    newclip.mask = newclip.mask.with_filter(
+    new_clip.mask = new_clip.mask.with_filter(
         lambda get_frame, t: get_frame(t) * ((t % duration) < duration_on)
     )
-    return newclip
+    return new_clip

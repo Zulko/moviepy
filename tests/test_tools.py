@@ -38,8 +38,8 @@ def test_find_extensions_not_found():
     ],
 )
 def test_cvsecs(given, expected):
-    """Test the cvsecs funtion outputs correct times as per the docstring."""
-    assert tools.cvsecs(given) == expected
+    """Test the convert_to_seconds funtion outputs correct times as per the docstring."""
+    assert tools.convert_to_seconds(given) == expected
 
 
 def test_sys_write_flush():

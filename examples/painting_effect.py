@@ -5,7 +5,7 @@ from moviepy.editor import *
 # WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
 
 charade = VideoFileClip("../../videos/charade.mp4")
-tfreeze = cvsecs(19.21)  # Time of the freeze, 19'21
+tfreeze = convert_to_seconds(19.21)  # Time of the freeze, 19'21
 
 # when using several subclips of a same clip, it can be faster
 # to create 'coreaders' of the clip (=other entrance points).

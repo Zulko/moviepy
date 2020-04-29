@@ -30,5 +30,5 @@ def mask_color(clip, color=None, threshold=0, stiffness=1):
 
     mask = clip.with_image_filter(flim)
     mask.is_mask = True
-    newclip = clip.with_mask(mask)
-    return newclip
+    new_clip = clip.with_mask(mask)
+    return new_clip

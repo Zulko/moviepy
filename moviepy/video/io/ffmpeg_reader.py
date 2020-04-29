@@ -14,7 +14,7 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import cvsecs
+from moviepy.tools import convert_to_seconds
 
 logging.captureWarnings(True)
 
@@ -308,7 +308,7 @@ def ffmpeg_parse_infos(
             index = -1 if is_gif else 0
             line = [line for line in lines if keyword in line][index]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
-            result["duration"] = cvsecs(match)
+            result["duration"] = convert_to_seconds(match)
         except Exception:
             raise IOError(
                 (

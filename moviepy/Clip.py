@@ -70,13 +70,13 @@ class Clip:
         clip.subclip, etc.)
         """
 
-        newclip = copy(self)
+        new_clip = copy(self)
         if hasattr(self, "audio"):
-            newclip.audio = copy(self.audio)
+            new_clip.audio = copy(self.audio)
         if hasattr(self, "mask"):
-            newclip.mask = copy(self.mask)
+            new_clip.mask = copy(self.mask)
 
-        return newclip
+        return new_clip
 
     @convert_to_seconds(["t"])
     def get_frame(self, t):
@@ -125,36 +125,36 @@ class Clip:
         Examples
         --------
 
-        In the following ``newclip`` a 100 pixels-high clip whose video
+        In the following ``new_clip`` a 100 pixels-high clip whose video
         content scrolls from the top to the bottom of the frames of
         ``clip``.
 
         >>> filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]
-        >>> newclip = clip.with_filter(filter, apply_to='mask')
+        >>> new_clip = clip.with_filter(filter, apply_to='mask')
 
         """
         if apply_to is None:
             apply_to = []
 
         # mf = copy(self.make_frame)
-        newclip = self.with_make_frame(lambda t: func(self.get_frame, t))
+        new_clip = self.with_make_frame(lambda t: func(self.get_frame, t))
 
         if not keep_duration:
-            newclip.duration = None
-            newclip.end = None
+            new_clip.duration = None
+            new_clip.end = None
 
         if isinstance(apply_to, str):
             apply_to = [apply_to]
 
         for attribute in apply_to:
-            attribute_value = getattr(newclip, attribute, None)
+            attribute_value = getattr(new_clip, attribute, None)
             if attribute_value is not None:
                 new_attribute_value = attribute_value.with_filter(
                     func, keep_duration=keep_duration
                 )
-                setattr(newclip, attribute, new_attribute_value)
+                setattr(new_clip, attribute, new_attribute_value)
 
-        return newclip
+        return new_clip
 
     def with_time_filter(self, time_func, apply_to=None, keep_duration=False):
         """
@@ -181,10 +181,10 @@ class Clip:
         --------
 
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> newclip = clip.with_time_filter(lambda: 2*t, apply_to=['mask', 'audio'])
+        >>> new_clip = clip.with_time_filter(lambda: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
-        >>> newclip = clip.with_time_filter(lambda: 3-t)
+        >>> new_clip = clip.with_time_filter(lambda: 3-t)
 
         """
         if apply_to is None:
@@ -202,11 +202,11 @@ class Clip:
         Returns the result of ``func(self, *args, **kwargs)``.
         for instance
 
-        >>> newclip = clip.fx(resize, 0.2, method='bilinear')
+        >>> new_clip = clip.fx(resize, 0.2, method='bilinear')
 
         is equivalent to
 
-        >>> newclip = resize(clip, 0.2, method='bilinear')
+        >>> new_clip = resize(clip, 0.2, method='bilinear')
 
         The motivation of fx is to keep the name of the effect near its
         parameters, when the effects are chained:
@@ -364,7 +364,7 @@ class Clip:
         ``clip.duration + end_time. ``. For instance: ::
 
             >>> # cut the last two seconds of the clip:
-            >>> newclip = clip.subclip(0,-2)
+            >>> new_clip = clip.subclip(0,-2)
 
         If ``end_time`` is provided or if the clip has a duration attribute,
         the duration of the returned clip is set automatically.
@@ -386,7 +386,7 @@ class Clip:
                 + "duration (%.02f)." % self.duration
             )
 
-        newclip = self.with_time_filter(lambda t: t + start_time, apply_to=[])
+        new_clip = self.with_time_filter(lambda t: t + start_time, apply_to=[])
 
         if (end_time is None) and (self.duration is not None):
 
@@ -408,10 +408,10 @@ class Clip:
 
         if end_time is not None:
 
-            newclip.duration = end_time - start_time
-            newclip.end = newclip.start + newclip.duration
+            new_clip.duration = end_time - start_time
+            new_clip.end = new_clip.start + new_clip.duration
 
-        return newclip
+        return new_clip
 
     @apply_to_mask
     @apply_to_audio
@@ -430,17 +430,17 @@ class Clip:
         if they exist.
         """
 
-        newclip = self.with_time_filter(
+        new_clip = self.with_time_filter(
             lambda t: t + (t >= start_time) * (end_time - start_time)
         )
 
         if self.duration is not None:
 
-            return newclip.set_duration(self.duration - (end_time - start_time))
+            return new_clip.set_duration(self.duration - (end_time - start_time))
 
         else:
 
-            return newclip
+            return new_clip
 
     @requires_duration
     @use_clip_fps_by_default

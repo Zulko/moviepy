@@ -18,9 +18,9 @@ def crossfadein(clip, duration):
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
-    newclip = clip.copy()
-    newclip.mask = clip.mask.fx(fadein, duration)
-    return newclip
+    new_clip = clip.copy()
+    new_clip.mask = clip.mask.fx(fadein, duration)
+    return new_clip
 
 
 @requires_duration
@@ -30,9 +30,9 @@ def crossfadeout(clip, duration):
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
-    newclip = clip.copy()
-    newclip.mask = clip.mask.fx(fadeout, duration)
-    return newclip
+    new_clip = clip.copy()
+    new_clip.mask = clip.mask.fx(fadeout, duration)
+    return new_clip
 
 
 def slide_in(clip, duration, side):

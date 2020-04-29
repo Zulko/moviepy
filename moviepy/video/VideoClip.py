@@ -531,8 +531,8 @@ class VideoClip(Clip):
         ---------
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
-        >>> # be played twice slower in ``newclip``
-        >>> newclip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
+        >>> # be played twice slower in ``new_clip``
+        >>> new_clip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
         left = self.subclip(0, start_time) if start_time else None
@@ -790,28 +790,28 @@ class VideoClip(Clip):
         which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
         """
-        newclip = ImageClip(self.get_frame(t), is_mask=self.is_mask, duration=duration)
+        new_clip = ImageClip(self.get_frame(t), is_mask=self.is_mask, duration=duration)
         if with_mask and self.mask is not None:
-            newclip.mask = self.mask.to_ImageClip(t)
-        return newclip
+            new_clip.mask = self.mask.to_ImageClip(t)
+        return new_clip
 
     def to_mask(self, canal=0):
         """Return a mask a video clip made from the clip."""
         if self.is_mask:
             return self
         else:
-            newclip = self.with_image_filter(lambda pic: 1.0 * pic[:, :, canal] / 255)
-            newclip.is_mask = True
-            return newclip
+            new_clip = self.with_image_filter(lambda pic: 1.0 * pic[:, :, canal] / 255)
+            new_clip.is_mask = True
+            return new_clip
 
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.is_mask:
-            newclip = self.with_image_filter(
+            new_clip = self.with_image_filter(
                 lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
             )
-            newclip.is_mask = False
-            return newclip
+            new_clip.is_mask = False
+            return new_clip
         else:
             return self
 
@@ -828,13 +828,13 @@ class VideoClip(Clip):
         self.audio = None
 
     @outplace
-    def afx(self, fun, *a, **k):
+    def afx(self, fun, *args, **kwargs):
         """Transform the clip's audio.
 
         Return a new clip whose audio has been transformed by ``fun``.
 
         """
-        self.audio = self.audio.fx(fun, *a, **k)
+        self.audio = self.audio.fx(fun, *args, **kwargs)
 
 
 class DataVideoClip(VideoClip):
@@ -1002,11 +1002,11 @@ class ImageClip(VideoClip):
             apply_to = []
         # When we use with_filter on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
-        newclip = VideoClip.with_filter(
+        new_clip = VideoClip.with_filter(
             self, func, apply_to=apply_to, keep_duration=keep_duration
         )
-        newclip.__class__ = VideoClip
-        return newclip
+        new_clip.__class__ = VideoClip
+        return new_clip
 
     @outplace
     def with_image_filter(self, image_func, apply_to=None):

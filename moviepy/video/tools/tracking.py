@@ -32,7 +32,7 @@ except Exception:
 
 @convert_to_seconds(["t1", "t2"])
 @use_clip_fps_by_default
-def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None):
+def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None):
     """
     Allows manual tracking of an object(s) in the video clip between
     times `t1` and `t2`. This displays the clip frame by frame
@@ -54,7 +54,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     fps:
       Number of frames per second to freeze on. If None, the clip's
       fps attribute is used instead.
-    nobjects:
+    n_objects:
       Number of objects to click on each frame.
     savefile:
       If provided, the result is saved to a file, which makes
@@ -92,7 +92,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     def gatherClicks(t):
 
         imdisplay(clip.get_frame(t), screen)
-        objects_to_click = nobjects
+        objects_to_click = n_objects
         clicks = []
         while objects_to_click:
 
@@ -123,7 +123,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
 
     tt, xylist = zip(*txy_list)
     result = []
-    for i in range(nobjects):
+    for i in range(n_objects):
         xys = [e[i] for e in xylist]
         xx, yy = zip(*xys)
         result.append(Trajectory(tt, xx, yy))
