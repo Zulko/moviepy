@@ -36,7 +36,7 @@ def painting(clip, saturation=1.4, black=0.006):
 if not painting_possible:
     doc = painting.__doc__
 
-    def painting(clip, newsize=None, height=None, width=None):
+    def painting(clip, saturation=None, black=None):
         raise IOError("fx painting needs scikit-image or scipy")
 
     painting.__doc__ = doc

@@ -46,7 +46,9 @@ class CompositeVideoClip(VideoClip):
 
     """
 
-    def __init__(self, clips, size=None, bg_color=None, use_bgclip=False, is_mask=False):
+    def __init__(
+        self, clips, size=None, bg_color=None, use_bgclip=False, is_mask=False
+    ):
 
         if size is None:
             size = clips[0].size

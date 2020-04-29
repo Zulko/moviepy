@@ -16,5 +16,5 @@ def find_audio_period(clip, min_time=0.1, max_time=2, time_resolution=0.01):
     v = v - v.mean()
     corrs = np.correlate(v, v, mode="full")[-len(v) :]
     corrs[: int(min_time / chunk_duration)] = 0
-    corrs[int(max_time / chunk_duration):] = 0
+    corrs[int(max_time / chunk_duration) :] = 0
     return chunk_duration * np.argmax(corrs)

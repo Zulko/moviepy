@@ -352,7 +352,9 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
-    def write_images_sequence(self, name_format, fps=None, with_mask=True, logger="bar"):
+    def write_images_sequence(
+        self, name_format, fps=None, with_mask=True, logger="bar"
+    ):
         """ Writes the videoclip to a sequence of image files.
 
         Parameters
@@ -1000,7 +1002,9 @@ class ImageClip(VideoClip):
             apply_to = []
         # When we use with_filter on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
-        newclip = VideoClip.with_filter(self, func, apply_to=apply_to, keep_duration=keep_duration)
+        newclip = VideoClip.with_filter(
+            self, func, apply_to=apply_to, keep_duration=keep_duration
+        )
         newclip.__class__ = VideoClip
         return newclip
 

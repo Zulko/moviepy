@@ -10,7 +10,9 @@ pg.display.set_caption("MoviePy")
 
 
 @requires_duration
-def preview(clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None):
+def preview(
+    clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None
+):
     """
     Plays the sound clip with pygame.
 

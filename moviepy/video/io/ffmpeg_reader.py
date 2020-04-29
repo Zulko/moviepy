@@ -237,7 +237,9 @@ def ffmpeg_read_image(filename, with_mask=True):
 
     """
     pixel_format = "rgba" if with_mask else "rgb24"
-    reader = FFMPEG_VideoReader(filename, pixel_format=pixel_format, check_duration=False)
+    reader = FFMPEG_VideoReader(
+        filename, pixel_format=pixel_format, check_duration=False
+    )
     im = reader.last_read
     del reader
     return im
@@ -317,7 +319,9 @@ def ffmpeg_parse_infos(
             )
 
     # get the output line that speaks about video
-    lines_video = [line for line in lines if " Video: " in line and re.search(r"\d+x\d+", line)]
+    lines_video = [
+        line for line in lines if " Video: " in line and re.search(r"\d+x\d+", line)
+    ]
 
     result["video_found"] = lines_video != []
 
@@ -395,7 +399,9 @@ def ffmpeg_parse_infos(
         # get the video rotation info.
         try:
             rotation_lines = [
-                line for line in lines if "rotate          :" in line and re.search(r"\d+$", line)
+                line
+                for line in lines
+                if "rotate          :" in line and re.search(r"\d+$", line)
             ]
             if len(rotation_lines):
                 rotation_line = rotation_lines[0]

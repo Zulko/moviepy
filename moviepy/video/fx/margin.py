@@ -6,7 +6,14 @@ from moviepy.video.VideoClip import ImageClip
 
 @apply_to_mask
 def margin(
-    clip, margin_size=None, left=0, right=0, top=0, bottom=0, color=(0, 0, 0), opacity=1.0
+    clip,
+    margin_size=None,
+    left=0,
+    right=0,
+    top=0,
+    bottom=0,
+    color=(0, 0, 0),
+    opacity=1.0,
 ):
     """
     Draws an external margin all around the frame.

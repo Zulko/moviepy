@@ -8,7 +8,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 
 def concatenate_videoclips(
-        clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
+    clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
 ):
     """ Concatenates several video clips
 
@@ -92,7 +92,10 @@ def concatenate_videoclips(
             result.clips = clips
     elif method == "compose":
         result = CompositeVideoClip(
-            [clip.with_start(t).with_position("center") for (clip, t) in zip(clips, timings)],
+            [
+                clip.with_start(t).with_position("center")
+                for (clip, t) in zip(clips, timings)
+            ],
             size=(w, h),
             bg_color=bg_color,
             is_mask=is_mask,

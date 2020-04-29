@@ -149,7 +149,9 @@ class Clip:
         for attribute in apply_to:
             attribute_value = getattr(newclip, attribute, None)
             if attribute_value is not None:
-                new_attribute_value = attribute_value.with_filter(func, keep_duration=keep_duration)
+                new_attribute_value = attribute_value.with_filter(
+                    func, keep_duration=keep_duration
+                )
                 setattr(newclip, attribute, new_attribute_value)
 
         return newclip
@@ -189,7 +191,9 @@ class Clip:
             apply_to = []
 
         return self.with_filter(
-            lambda get_frame, t: get_frame(time_func(t)), apply_to, keep_duration=keep_duration
+            lambda get_frame, t: get_frame(time_func(t)),
+            apply_to,
+            keep_duration=keep_duration,
         )
 
     def fx(self, func, *args, **kwargs):
@@ -426,7 +430,9 @@ class Clip:
         if they exist.
         """
 
-        newclip = self.with_time_filter(lambda t: t + (t >= start_time) * (end_time - start_time))
+        newclip = self.with_time_filter(
+            lambda t: t + (t >= start_time) * (end_time - start_time)
+        )
 
         if self.duration is not None:
 

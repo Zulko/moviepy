@@ -11,5 +11,7 @@ def blink(clip, duration_on, duration_off):
     if newclip.mask is None:
         newclip = newclip.with_mask()
     duration = duration_on + duration_off
-    newclip.mask = newclip.mask.with_filter(lambda get_frame, t: get_frame(t) * ((t % duration) < duration_on))
+    newclip.mask = newclip.mask.with_filter(
+        lambda get_frame, t: get_frame(t) * ((t % duration) < duration_on)
+    )
     return newclip

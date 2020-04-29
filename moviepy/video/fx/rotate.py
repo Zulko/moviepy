@@ -53,28 +53,29 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         "bicubic": Image.BICUBIC,
     }[resample]
 
-    if not hasattr(angle, "__call__"):
-        # if angle is a constant, convert to a constant function
-        a = +angle
+    if hasattr(angle, "__call__"):
+        # angle is a function
+        get_angle = angle
+    else:
+        # angle is a constant so convert to a constant function
+        def get_angle(t):
+            return angle
 
-        def angle(t):
-            return a
+    transpose = [1, 0] if clip.is_mask else [1, 0, 2]
 
-    transpo = [1, 0] if clip.is_mask else [1, 0, 2]
+    def filter(get_frame, t):
 
-    def fl(gf, t):
-
-        a = angle(t)
-        im = gf(t)
+        angle = get_angle(t)
+        im = get_frame(t)
 
         if unit == "rad":
-            a = 360.0 * a / (2 * np.pi)
+            angle = 360.0 * angle / (2 * np.pi)
 
-        if (a == 90) and expand:
-            return np.transpose(im, axes=transpo)[::-1]
-        elif (a == -90) and expand:
-            return np.transpose(im, axes=transpo)[:, ::-1]
-        elif (a in [180, -180]) and expand:
+        if (angle == 90) and expand:
+            return np.transpose(im, axes=transpose)[::-1]
+        elif (angle == -90) and expand:
+            return np.transpose(im, axes=transpose)[:, ::-1]
+        elif (angle in [180, -180]) and expand:
             return im[::-1, ::-1]
         elif not PIL_FOUND:
             raise ValueError(
@@ -83,6 +84,6 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
                 "pip install pillow"
             )
         else:
-            return pil_rotater(im, a, resample=resample, expand=expand)
+            return pil_rotater(im, angle, resample=resample, expand=expand)
 
-    return clip.with_filter(fl, apply_to=["mask"])
+    return clip.with_filter(filter, apply_to=["mask"])

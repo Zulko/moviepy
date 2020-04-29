@@ -332,7 +332,7 @@ def test_issue_416():
 def test_issue_417():
     # failed in python2
     cad = "media/python_logo.png"
-    myclip = ImageClip(cad).fx(resize, newsize=[1280, 660])
+    myclip = ImageClip(cad).fx(resize, new_size=[1280, 660])
     CompositeVideoClip([myclip], size=(1280, 720))
     # final.with_duration(7).write_videofile("test.mp4", fps=30)
 
