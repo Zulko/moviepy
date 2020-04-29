@@ -9,7 +9,7 @@ import subprocess as sp
 import numpy as np
 from proglog import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 
 
 class FFMPEG_VideoWriter:
@@ -88,7 +88,7 @@ class FFMPEG_VideoWriter:
 
         # order is important
         cmd = [
-            get_setting("FFMPEG_BINARY"),
+            FFMPEG_BINARY,
             "-y",
             "-loglevel",
             "error" if logfile == sp.PIPE else "info",
@@ -108,9 +108,7 @@ class FFMPEG_VideoWriter:
         ]
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
-        cmd.extend(
-            ["-vcodec", codec, "-preset", preset,]
-        )
+        cmd.extend(["-vcodec", codec, "-preset", preset])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
         if bitrate is not None:
@@ -270,7 +268,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
         image = image.astype("uint8")
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-s",
         "%dx%d" % (image.shape[:2][::-1]),

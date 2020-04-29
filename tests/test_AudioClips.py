@@ -6,14 +6,10 @@ import sys
 import pytest
 from numpy import pi, sin
 
-from moviepy.audio.AudioClip import (
-    AudioClip,
-    CompositeAudioClip,
-    concatenate_audioclips,
-)
+from moviepy.audio.AudioClip import AudioClip, concatenate_audioclips
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 skip_if_windows = pytest.mark.skipif(
     sys.platform.startswith("win"),

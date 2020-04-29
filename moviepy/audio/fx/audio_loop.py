@@ -9,7 +9,7 @@ def audio_loop(audioclip, nloops=None, duration=None):
 
     Examples
     ========
-    
+
     >>> from moviepy.editor import *
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
