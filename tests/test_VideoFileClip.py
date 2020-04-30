@@ -49,7 +49,7 @@ def test_shallow_copy():
     video_file = 'media/big_buck_bunny_0_30.webm'
     video = VideoFileClip(video_file)
     video_copy = video.set_start(1)
-    del(video_copy)
+    del video_copy
     # The clip object buffers 200000 frames, around 5 seconds ahead.
     # When recentering the buffer, if the new buffer is more than 1000000 frames, around 25s
     # ahead of the end of the current buffer, the reader will reinitialize and fix self.proc
