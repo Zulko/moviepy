@@ -9,7 +9,7 @@ import subprocess as sp
 import numpy as np
 from proglog import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 
 
 class FFMPEG_VideoWriter:
@@ -81,14 +81,14 @@ class FFMPEG_VideoWriter:
 
         if logfile is None:
             logfile = sp.PIPE
-
+        self.logfile = logfile
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
 
         # order is important
         cmd = [
-            get_setting("FFMPEG_BINARY"),
+            FFMPEG_BINARY,
             "-y",
             "-loglevel",
             "error" if logfile == sp.PIPE else "info",
@@ -108,9 +108,7 @@ class FFMPEG_VideoWriter:
         ]
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
-        cmd.extend(
-            ["-vcodec", codec, "-preset", preset,]
-        )
+        cmd.extend(["-vcodec", codec, "-preset", preset])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
         if bitrate is not None:
@@ -137,7 +135,12 @@ class FFMPEG_VideoWriter:
         try:
             self.proc.stdin.write(img_array.tobytes())
         except IOError as err:
+            logs = self.logfile.name
             _, ffmpeg_error = self.proc.communicate()
+            if not ffmpeg_error:
+                with open(logs, "rb") as f:
+                    ffmpeg_error = f.read()
+
             error = str(err) + (
                 "\n\nMoviePy error: FFMPEG encountered "
                 "the following error while writing file %s:"
@@ -215,7 +218,6 @@ def ffmpeg_write_video(
     withmask=False,
     write_logfile=False,
     audiofile=None,
-    verbose=True,
     threads=None,
     ffmpeg_params=None,
     logger="bar",
@@ -242,9 +244,6 @@ def ffmpeg_write_video(
         threads=threads,
         ffmpeg_params=ffmpeg_params,
     ) as writer:
-
-        nframes = int(clip.duration * fps)
-
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
@@ -269,7 +268,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
         image = image.astype("uint8")
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-s",
         "%dx%d" % (image.shape[:2][::-1]),

@@ -1,5 +1,50 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+
+
+### Important Announcements
+- Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+- If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
+
+### Added <!-- for new features -->
+- Support for path-like objects as an option wherever filenames are passed in as arguments [#1137]
+- Autodetect ImageMagick executable on Windows [#1109]
+- Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
+- Optional `encoding` parameter in `SubtitlesClip` [#1043]
+- Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
+
+### Changed <!-- for changes in existing functionality -->
+
+### Deprecated <!-- for soon-to-be removed features -->
+
+### Removed <!-- for now removed features -->
+- Support removed for Python versions 2.7, 3.4 & 3.5
+- Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [#1109]
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions [#1109]
+- All previously deprecated methods and parameters [#1115]:
+    - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
+    - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
+    - `VideoClip.to_images_sequence()` -> use `VideoClip.write_images_sequence()`
+    - `concatenate()` -> use `concatenate_videoclips()`
+    - `verbose` parameter in `AudioClip.write_audiofile()`, `ffmpeg_audiowriter()`, `VideoFileClip()`, `VideoClip.write_videofile()`, `VideoClip.write_images_sequence()`, `ffmpeg_write_video()`, `write_gif()`, `write_gif_with_tempfiles()`, `write_gif_with_image_io()` -> Instead of `verbose=False`, use `logger=None`
+    - `verbose_print()` -> no replacement
+    - `col` parameter in `ColorClip()` -> use `color`
+
+### Fixed <!-- for any bug fixes -->
+- When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
+- `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
+- `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
+- Using `rotate()` with a `ColorClip` no longer crashes [#1139]
+
+
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.1...v1.0.2)
@@ -8,8 +53,8 @@ Note that this is likely to be the last release before v2.0, which will drop sup
 
 **Notable bug fixes:**
 
-- Fixed bug that meant that some VideoFileClips were created without audio [\#968]
-- Fixed bug so now the `slide_out` effect works [\#795]
+- Fixed bug that meant that some VideoFileClips were created without audio [\#968](https://github.com/Zulko/moviepy/pull/968)
+- Fixed bug so now the `slide_out` effect works [\#795](https://github.com/Zulko/moviepy/pull/795)
 
 
 **Fixed bugs:**

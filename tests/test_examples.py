@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 import os
 
-import pytest
 import numpy as np
+import pytest
+
+from moviepy.video.io.bindings import mplfig_to_npimage
+from moviepy.video.VideoClip import VideoClip
+
+from tests.test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 try:
     import matplotlib
 except ImportError:
     matplotlib = None
-from moviepy.video.io.bindings import mplfig_to_npimage
-from moviepy.video.VideoClip import VideoClip
-from .test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
 
 
 @pytest.mark.skipif(not matplotlib, reason="no mpl")

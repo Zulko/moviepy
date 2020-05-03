@@ -1,16 +1,28 @@
-import sys
-
 import pytest
 
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
 
-from .test_helper import FONT
+from tests.test_helper import FONT
 
 
-def test_fontlist():
-    TextClip.list("font")
+def test_list():
+    fonts = TextClip.list("font")
+    assert isinstance(fonts, list)
+    assert isinstance(fonts[0], str)
+
+    colors = TextClip.list("color")
+    assert isinstance(colors, list)
+    assert isinstance(colors[0], str)
+    assert "blue" in colors
+
+
+def test_search():
+    blues = TextClip.search("blue", "color")
+    assert isinstance(blues, list)
+    assert isinstance(blues[0], str)
+    assert "blue" in blues
 
 
 def test_duration():

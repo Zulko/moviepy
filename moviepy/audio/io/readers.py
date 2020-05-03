@@ -4,7 +4,7 @@ import warnings
 
 import numpy as np
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
@@ -23,7 +23,7 @@ class FFMPEG_AudioReader:
 
     buffersize
       The size of the buffer to use. Should be bigger than the buffer
-      used by ``to_audiofile``
+      used by ``write_audiofile``
 
     print_infos
       Print the ffmpeg infos on the file being read (for debugging)
@@ -84,7 +84,7 @@ class FFMPEG_AudioReader:
             i_arg = ["-i", self.filename, "-vn"]
 
         cmd = (
-            [get_setting("FFMPEG_BINARY")]
+            [FFMPEG_BINARY]
             + i_arg
             + [
                 "-loglevel",
@@ -164,8 +164,6 @@ class FFMPEG_AudioReader:
             self.proc = None
 
     def get_frame(self, tt):
-
-        buffersize = self.buffersize
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases

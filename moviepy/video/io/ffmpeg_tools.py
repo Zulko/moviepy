@@ -1,13 +1,13 @@
 """ Misc. bindings to ffmpeg and ImageMagick."""
 
 import os
-import subprocess as sp
-import sys
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
+from moviepy.decorators import convert_path_to_string
 from moviepy.tools import subprocess_call
 
 
+@convert_path_to_string("filename")
 def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
     """
     Writes a movie out of the frames (picture files) in a folder.
@@ -15,7 +15,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
     """
     s = "%" + "%02d" % digits + "d.png"
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-f",
         "image2",
@@ -33,6 +33,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
     subprocess_call(cmd)
 
 
+@convert_path_to_string(("filename", "targetname"))
 def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
     """ Makes a new video file playing video file ``filename`` between
         the times ``t1`` and ``t2``. """
@@ -42,7 +43,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-ss",
         "%0.2f" % t1,
@@ -62,6 +63,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
     subprocess_call(cmd)
 
 
+@convert_path_to_string(("video", "audio", "output"))
 def ffmpeg_merge_video_audio(
     video,
     audio,
@@ -74,7 +76,7 @@ def ffmpeg_merge_video_audio(
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         audio,
@@ -90,10 +92,11 @@ def ffmpeg_merge_video_audio(
     subprocess_call(cmd, logger=logger)
 
 
+@convert_path_to_string(("inputfile", "output"))
 def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         inputfile,
@@ -106,11 +109,12 @@ def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
     subprocess_call(cmd)
 
 
+@convert_path_to_string(("video", "output"))
 def ffmpeg_resize(video, output, size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-i",
         video,
         "-vf",

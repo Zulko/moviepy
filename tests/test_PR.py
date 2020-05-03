@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 """Pull request tests meant to be run with pytest."""
 import os
-import sys
+from pathlib import Path
 
 import pytest
 
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
+from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 
-from .test_helper import FONT, TMP_DIR
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_PR_306():
-
     assert TextClip.list("font") != []
     assert TextClip.list("color") != []
 
@@ -61,39 +62,6 @@ def test_PR_373():
         assert result[0].yy[i] == result1[0].yy[i]
 
 
-def test_PR_424():
-    """Ensure deprecation and user warnings are triggered."""
-    import warnings
-
-    warnings.simplefilter("always")  # Alert us of deprecation warnings.
-
-    # Recommended use
-    ColorClip([1000, 600], color=(60, 60, 60), duration=10).close()
-
-    with pytest.warns(DeprecationWarning):
-        # Uses `col` so should work the same as above, but give warning.
-        ColorClip([1000, 600], col=(60, 60, 60), duration=10).close()
-
-    # Catch all warnings as record.
-    with pytest.warns(None) as record:
-        # Should give 2 warnings and use `color`, not `col`
-        ColorClip([1000, 600], color=(60, 60, 60), duration=10, col=(2, 2, 2)).close()
-
-    message1 = (
-        "The `ColorClip` parameter `col` has been deprecated. "
-        + "Please use `color` instead."
-    )
-    message2 = (
-        "The arguments `color` and `col` have both been passed to "
-        + "`ColorClip` so `col` has been ignored."
-    )
-
-    # Assert that two warnings popped and validate the message text.
-    assert len(record) == 2
-    assert str(record[0].message) == message1
-    assert str(record[1].message) == message2
-
-
 def test_PR_458():
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=2)
     clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"), logger=None, fps=30)
@@ -131,6 +99,49 @@ def test_PR_610():
     clip2.fps = 25
     composite = CompositeVideoClip([clip1, clip2])
     assert composite.fps == 25
+
+
+def test_PR_1137_video():
+    """
+    Test support for path-like objects as arguments for VideoFileClip.
+    """
+    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")) as video:
+        video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
+        assert isinstance(video.filename, str)
+
+
+def test_PR_1137_audio():
+    """
+    Test support for path-like objects as arguments for AudioFileClip.
+    """
+    with AudioFileClip(Path("media/crunching.mp3")) as audio:
+        audio.write_audiofile(Path(TMP_DIR) / "pathlike.mp3")
+        assert isinstance(audio.filename, str)
+
+
+def test_PR_1137_image():
+    """
+    Test support for path-like objects as arguments for ImageClip.
+    """
+    ImageClip(Path("media/vacation_2017.jpg")).close()
+
+
+def test_PR_1137_subtitles():
+    """
+    Test support for path-like objects as arguments for SubtitlesClip.
+    """
+
+    def make_textclip(txt):
+        return TextClip(
+            txt,
+            font=FONT,
+            fontsize=24,
+            color="white",
+            stroke_color="black",
+            stroke_width=0.5,
+        )
+
+    SubtitlesClip(Path("media/subtitles1.srt"), make_textclip=make_textclip).close()
 
 
 if __name__ == "__main__":

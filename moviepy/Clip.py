@@ -262,7 +262,7 @@ class Clip:
             return
         if self.start is None:
             if self.duration is not None:
-                self.start = max(0, t - newclip.duration)
+                self.start = max(0, t - self.duration)
         else:
             self.duration = self.end - self.start
 
@@ -427,8 +427,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta) * (tb - ta)
-        newclip = self.fl_time(fl)
+        newclip = self.fl_time(lambda t: t + (t >= ta) * (tb - ta))
 
         if self.duration is not None:
 

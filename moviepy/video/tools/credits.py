@@ -3,12 +3,13 @@ This module contains different functions to make end and opening
 credits, even though it is difficult to fill everyone needs in this
 matter.
 """
-
+from moviepy.decorators import convert_path_to_string
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.resize import resize
 from moviepy.video.VideoClip import ImageClip, TextClip
 
 
+@convert_path_to_string("creditfile")
 def credits1(
     creditfile,
     width,
@@ -26,7 +27,8 @@ def credits1(
     -----------
     
     creditfile
-      A text file whose content must be as follows: ::
+      A string or path like object pointing to a text file
+      whose content must be as follows: ::
         
         # This is a comment
         # The next line says : leave 4 blank lines

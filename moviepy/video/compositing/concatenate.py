@@ -1,10 +1,9 @@
-import numpy as np
 from functools import reduce
 
+import numpy as np
+
 from moviepy.audio.AudioClip import CompositeAudioClip
-from moviepy.tools import deprecated_version_of
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.compositing.on_color import on_color
 from moviepy.video.VideoClip import ColorClip, VideoClip
 
 
@@ -61,8 +60,8 @@ def concatenate_videoclips(
     """
 
     if transition is not None:
-        l = [[v, transition] for v in clips[:-1]]
-        clips = reduce(lambda x, y: x + y, l) + [clips[-1]]
+        clip_transition_pairs = [[v, transition] for v in clips[:-1]]
+        clips = reduce(lambda x, y: x + y, clip_transition_pairs) + [clips[-1]]
         transition = None
 
     tt = np.cumsum([0] + [c.duration for c in clips])
@@ -116,6 +115,3 @@ def concatenate_videoclips(
     fpss = [c.fps for c in clips if getattr(c, "fps", None) is not None]
     result.fps = max(fpss) if fpss else None
     return result
-
-
-concatenate = deprecated_version_of(concatenate_videoclips, oldname="concatenate")

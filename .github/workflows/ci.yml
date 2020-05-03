@@ -11,4 +11,4 @@ jobs:
       - name: Black Code Formatter
         uses: lgeiger/black-action@v1.0.1    
         with:
-          args: "--check --target-version py36 $GITHUB_WORKSPACE"
+          args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
