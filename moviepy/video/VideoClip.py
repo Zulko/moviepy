@@ -80,6 +80,11 @@ class VideoClip(Clip):
     relative_pos
       See variable ``pos``.
 
+    layer
+      Indicates which clip is rendered on top when two clips overlap in
+      a CompositeVideoClip. The highest number is rendered on top.
+      Default is 0.
+
     """
 
     def __init__(
@@ -90,6 +95,7 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
+        self.layer = 0
         if make_frame:
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
@@ -777,6 +783,14 @@ class VideoClip(Clip):
             self.pos = pos
         else:
             self.pos = lambda t: pos
+
+    @apply_to_mask
+    @outplace
+    def set_layer(self, layer):
+        """Set the clip's layer in compositions.
+
+        Note: Only has effect when the clip is used in a CompositeVideoClip."""
+        self.layer = layer
 
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
