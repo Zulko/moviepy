@@ -1,16 +1,21 @@
 import os
 
 import pytest
-from numpy import pi, sin
+from numpy import pi, sin, array
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, VideoClip
+from moviepy.video.VideoClip import ColorClip, BitmapClip
 
 from tests.test_helper import TMP_DIR
+
+
+def test_aspect_ratio():
+    clip = BitmapClip([["AAA", "BBB"]])
+    assert clip.aspect_ratio == 1.5
 
 
 def test_check_codec():

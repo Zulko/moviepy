@@ -1278,3 +1278,124 @@ class TextClip(ImageClip):
         string = string.lower()
         names_list = TextClip.list(arg)
         return [name for name in names_list if string in name.lower()]
+
+
+class BitmapClip(VideoClip):
+    def __init__(self, bitmap_frames, *, color_dict=None, ismask=False):
+        """
+        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+
+        Parameters
+        -----------
+
+        bitmap_frames
+          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
+          Each color represents an (r, g, b) tuple.
+          Example input (2 frames, 5x3 pixel size):
+          [["RRRRR",
+            "RRBRR",
+            "RRBRR"],
+           ["RGGGR",
+            "RGGGR",
+            "RGGGR"]]
+
+        color_dict
+          A dictionary that can be used to set specific (r, g, b) values that correspond
+          to the letters used in ``bitmap_frames``.
+          eg ``{"A": (50, 150, 150)}``.
+
+          Defaults to
+          ::
+          {
+            "R": (255, 0, 0),
+            "G": (0, 255, 0),
+            "B": (0, 0, 255),
+            "O": (0, 0, 0),  # "O" represents black
+            "W": (255, 255, 255),
+            "A": (89, 225, 62),  # "A", "C", "D" and "E" represent arbitrary colors
+            "C": (113, 157, 108),
+            "D": (215, 182, 143),
+            "E": (57, 26, 252),
+          }
+
+        ismask
+          Set to ``True`` if the clip is going to be used as a mask.
+
+        """
+        if color_dict:
+            self.color_dict = color_dict
+        else:
+            self.color_dict = {
+                "R": (255, 0, 0),
+                "G": (0, 255, 0),
+                "B": (0, 0, 255),
+                "O": (0, 0, 0),
+                "W": (255, 255, 255),
+                "A": (89, 225, 62),
+                "C": (113, 157, 108),
+                "D": (215, 182, 143),
+                "E": (57, 26, 252),
+            }
+
+        frame_list = []
+        for input_frame in bitmap_frames:
+            output_frame = []
+            for row in input_frame:
+                output_frame.append([self.color_dict[color] for color in row])
+            frame_list.append(np.array(output_frame))
+
+        frame_array = np.array(frame_list)
+        VideoClip.__init__(
+            self, make_frame=lambda t: frame_array[int(t)], ismask=ismask
+        )
+
+        self.total_frames = len(frame_array)
+        self.fps = None
+
+    @convert_to_seconds(["duration"])
+    def set_duration(self, duration, change_end=True):
+        """
+        Sets the ``duration`` attribute of the clip.
+        Additionally, if the clip's ``fps`` attribute has not already been set, it will 
+        be set based on the new duration and the total number of frames.
+        """
+        if self.fps is None:
+            return (
+                super()
+                .set_duration(duration=duration, change_end=change_end)
+                .set_fps(int(self.total_frames / duration))
+            )
+
+        return super().set_duration(duration=duration, change_end=change_end)
+
+    def set_fps(self, fps):
+        """
+        Sets the ``fps`` attribute of the clip.
+        Additionally, if the clip's ``duration`` attribute has not already been set, it will 
+        be set based on the new fps and the total number of frames.
+        """
+        total_duration = self.total_frames / fps
+        if self.duration is None or self.duration > total_duration:
+            return super().set_fps(fps).set_duration(total_duration)
+        return super().set_fps(fps)
+
+    def to_bitmap(self, color_dict=None):
+        """
+        Returns a valid bitmap list that represents each frame of the clip.
+        If `color_dict` is not specified, then it will use the same `color_dict`
+        that was used to create the clip.
+        """
+        color_dict = color_dict or self.color_dict
+
+        bitmap = []
+        for frame in self.iter_frames():
+            bitmap.append([])
+            for line in frame:
+                bitmap[-1].append("")
+                for pixel in line:
+                    letter = list(color_dict.keys())[
+                        list(color_dict.values()).index(tuple(pixel))
+                    ]
+                    bitmap[-1][-1] += letter
+
+        return bitmap

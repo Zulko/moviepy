@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
 
 ### Added <!-- for new features -->
+- BitmapClip allows creating of custom frames using strings of letters
+- Clips can now be tested for equality with other clips using `==`. This checks whether every frame of the two clips are identical
 - Support for path-like objects as an option wherever filenames are passed in as arguments [#1137]
 - Autodetect ImageMagick executable on Windows [#1109]
 - Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
 
 ### Changed <!-- for changes in existing functionality -->
+- `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
@@ -42,6 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
 - `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
 - `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
+- `vfx.even_size` previously created clips with odd sizes [#1124]
+- `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [#1124]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
 
 
