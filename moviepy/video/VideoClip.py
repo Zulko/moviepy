@@ -1326,7 +1326,7 @@ class BitmapClip(VideoClip):
             "B": (0, 0, 255),
             "O": (0, 0, 0),  # "O" represents black
             "W": (255, 255, 255),
-            "A": (89, 225, 62),  # "A", "C", "D" and "E" represent arbitrary colors
+            "A": (89, 225, 62),  # "A", "C", "D", "E", "F" represent arbitrary colors
             "C": (113, 157, 108),
             "D": (215, 182, 143),
             "E": (57, 26, 252),
@@ -1349,6 +1349,7 @@ class BitmapClip(VideoClip):
                 "C": (113, 157, 108),
                 "D": (215, 182, 143),
                 "E": (57, 26, 252),
+                "F": (225, 135, 33),
             }
 
         frame_list = []

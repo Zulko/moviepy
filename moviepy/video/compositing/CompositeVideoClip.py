@@ -83,7 +83,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = True
 
         # order self.clips by layer
-        self.clips = sorted(self.clips, key=lambda clip: clip.key)
+        self.clips = sorted(self.clips, key=lambda clip: clip.layer)
 
         # compute duration
         ends = [c.end for c in self.clips]
@@ -104,6 +104,7 @@ class CompositeVideoClip(VideoClip):
                 .set_position(c.pos)
                 .set_end(c.end)
                 .set_start(c.start, change_end=False)
+                .set_layer(c.layer)
                 for c in self.clips
             ]
 
