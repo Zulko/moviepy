@@ -1319,7 +1319,7 @@ class BitmapClip(VideoClip):
           }
 
         ismask
-          Set to `True` if the clip is going to be used as a mask.
+          Set to ``True`` if the clip is going to be used as a mask.
 
         """
         if color_dict:
@@ -1355,8 +1355,9 @@ class BitmapClip(VideoClip):
     @convert_to_seconds(["duration"])
     def set_duration(self, duration, change_end=True):
         """
-        If clip fps has not already been set, it will also be set based on the new duration and
-        total number of frames
+        Sets the ``duration`` attribute of the clip.
+        Additionally, if the clip's ``fps`` attribute has not already been set, it will 
+        be set based on the new duration and the total number of frames.
         """
         if self.fps is None:
             return (
@@ -1369,8 +1370,9 @@ class BitmapClip(VideoClip):
 
     def set_fps(self, fps):
         """
-        If clip duration has not already been set, it will also be set based on the new fps and
-        total number of frames
+        Sets the ``fps`` attribute of the clip.
+        Additionally, if the clip's ``duration`` attribute has not already been set, it will 
+        be set based on the new fps and the total number of frames.
         """
         total_duration = self.total_frames / fps
         if self.duration is None or self.duration > total_duration:
@@ -1379,8 +1381,9 @@ class BitmapClip(VideoClip):
 
     def to_bitmap(self, color_dict=None):
         """
-        Returns a valid Bitmap list that represents each frame of the clip.
-        If `color_dict` is not specified, then it will use clip's `color_dict`
+        Returns a valid bitmap list that represents each frame of the clip.
+        If `color_dict` is not specified, then it will use the same `color_dict`
+        that was used to create the clip.
         """
         color_dict = color_dict or self.color_dict
 
