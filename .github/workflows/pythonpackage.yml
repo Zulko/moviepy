@@ -72,4 +72,4 @@ jobs:
         flake8 . --ignore=E203,E302,E402,W291,W293,W503,F403,F405 --exclude moviepy/ --max-complexity=10 --max-line-length=127 --statistics --count  --exit-zero
     - name: Test with pytest
       run: |
-        pythonw -m pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+        pythonw -m pytest tests/ --doctest-modules -v
