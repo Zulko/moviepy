@@ -1,7 +1,7 @@
-FROM python:3.7-stretch
+FROM python:3
 
 # Install numpy using system package manager
-RUN apt-get -y update && apt-get -y install libav-tools imagemagick libopencv-dev python-opencv
+RUN apt-get -y update && apt-get -y install ffmpeg imagemagick libopencv-dev python-opencv
 
 # Install some special fonts we use in testing, etc..
 RUN apt-get -y install fonts-liberation
