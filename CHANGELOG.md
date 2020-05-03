@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 - Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
-- `VideoClip.set_layer` to specify the layer of the clip for use when creating a `CompositeVideoClip` [#1176]
+- `VideoClip.set_layer()` to specify the layer of the clip for use when creating a `CompositeVideoClip` [#1176]
 
 ### Changed <!-- for changes in existing functionality -->
 - `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
