@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7-stretch
 
 # Install numpy using system package manager
 RUN apt-get -y update && apt-get -y install libav-tools imagemagick libopencv-dev python-opencv
