@@ -133,6 +133,9 @@ class FFMPEG_AudioReader:
         result = (1.0 * result / 2 ** (8 * self.nbytes - 1)).reshape(
             (int(len(result) / self.nchannels), self.nchannels)
         )
+
+        # Pad the read chunk with zeros when there isn't enough audio left to read,
+        # so the buffer is always at full length.
         pad = np.zeros((chunksize - len(result), self.nchannels), dtype=result.dtype)
         result = np.concatenate([result, pad])
         # self.proc.stdout.flush()
