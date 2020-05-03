@@ -493,14 +493,15 @@ class Clip:
     def __eq__(self, other):
         if not isinstance(other, Clip):
             return NotImplemented
-
-        length1 = self.duration * self.fps
-        length2 = other.duration * other.fps
-        if length1 != length2:
+            
+        # Make sure that the total number of frames is the same
+        self_length = self.duration * self.fps
+        other_length = other.duration * other.fps
+        if self_length != other_length:
             return False
-        for i, (frame1, frame2) in enumerate(
-            zip(self.iter_frames(), other.iter_frames())
-        ):
+        
+        # Make sure that each frame is the same
+        for frame1, frame2 in zip(self.iter_frames(), other.iter_frames()):
             if not np.array_equal(frame1, frame2):
                 return False
 
