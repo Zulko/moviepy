@@ -15,7 +15,7 @@ from skimage import transform as tf
 # RESOLUTION
 
 w = 720
-h = w * 9 / 16  # 16/9 screen
+h = w * 9 // 16  # 16/9 screen
 moviesize = w, h
 
 

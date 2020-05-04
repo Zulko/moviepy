@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
 - `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
+- `AudioFileClip` would not generate audio identical to the original file [#1108]
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
