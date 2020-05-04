@@ -134,7 +134,7 @@ class FFMPEG_AudioReader:
             (int(len(result) / self.nchannels), self.nchannels)
         )
 
-        # Pad the read chunk with zeros when there isn't enough audio 
+        # Pad the read chunk with zeros when there isn't enough audio
         # left to read, so the buffer is always at full length.
         pad = np.zeros((chunksize - len(result), self.nchannels), dtype=result.dtype)
         result = np.concatenate([result, pad])
