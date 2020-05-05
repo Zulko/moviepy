@@ -18,7 +18,7 @@ class AudioClip(Clip):
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
-    trespassed wihtout problems (the program will put the
+    trespassed without problems (the program will put the
     sound back into the bounds at conversion time, without much impact). 
     
     Parameters
