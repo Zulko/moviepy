@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `vfx.even_size` previously created clips with odd sizes [#1124]
 - `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [#1124]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
+- `AudioFileClip` would not generate audio identical to the original file [#1108]
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
