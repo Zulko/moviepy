@@ -30,7 +30,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 Categories of video clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``,``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
+Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``, ``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
 
 VideoClip
 """"""""""
@@ -54,7 +54,7 @@ VideoClip
    :width: 128 px
    :align: center
 
-Note that clips make with a `make_frame` do not have an explicit frame rate, so you must provide a frame rate (``fps``, frames er second) for ``write_gif`` and ``write_videofile``, and more generally for any methods that requires iterating through the frames.
+Note that clips made with a `make_frame` do not have an explicit frame rate, so you must provide a frame rate (``fps``, frames er second) for ``write_gif`` and ``write_videofile``, and more generally for any methods that requires iterating through the frames.
 
 VideoFileClip
 """""""""""""""
