@@ -7,7 +7,7 @@ try:
     headblur_possible = True
     if cv2.__version__ >= "3.0.0":
         cv2.CV_AA = cv2.LINE_AA
-except:
+except Exception:
     headblur_possible = False
 # -----------------------------------------------------------------------
 

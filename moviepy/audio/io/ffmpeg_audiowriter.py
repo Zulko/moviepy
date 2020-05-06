@@ -3,7 +3,7 @@ import subprocess as sp
 
 import proglog
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 
 
@@ -54,7 +54,7 @@ class FFMPEG_AudioWriter:
 
         cmd = (
             [
-                get_setting("FFMPEG_BINARY"),
+                FFMPEG_BINARY,
                 "-y",
                 "-loglevel",
                 "error" if logfile == sp.PIPE else "info",
@@ -110,9 +110,9 @@ class FFMPEG_AudioWriter:
                     "\n\nThe audio export failed because FFMPEG didn't "
                     "find the specified codec for audio encoding (%s). "
                     "Please install this codec or change the codec when "
-                    "calling to_videofile or to_audiofile. For instance "
+                    "calling write_videofile or write_audiofile. For instance "
                     "for mp3:\n"
-                    "   >>> to_videofile('myvid.mp4', audio_codec='libmp3lame')"
+                    "   >>> write_videofile('myvid.mp4', audio_codec='libmp3lame')"
                 ) % (self.codec)
 
             elif b"incorrect codec parameters ?" in ffmpeg_error:
@@ -121,7 +121,7 @@ class FFMPEG_AudioWriter:
                     "\n\nThe audio export failed, possibly because the "
                     "codec specified for the video (%s) is not compatible"
                     " with the given extension (%s). Please specify a "
-                    "valid 'codec' argument in to_videofile. This would "
+                    "valid 'codec' argument in write_videofile. This would "
                     "be 'libmp3lame' for mp3, 'libvorbis' for ogg..."
                 ) % (self.codec, self.ext)
 

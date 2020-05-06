@@ -2,12 +2,12 @@
 """Video file clip tests meant to be run with pytest."""
 import os
 
-from moviepy.video.VideoClip import ColorClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.credits import credits1
 from moviepy.video.tools.cuts import detect_scenes
+from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import TMP_DIR, FONT
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_credits():

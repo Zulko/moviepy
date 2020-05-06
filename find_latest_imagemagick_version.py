@@ -1,5 +1,5 @@
-from urllib import request
 import re
+from urllib import request
 
 url = "https://legacy.imagemagick.org/script/index.php"
 
@@ -10,8 +10,8 @@ git repository
 """
 
 response = request.urlopen(url)
-html = response.read().decode("utf-8")
-r = re.compile("6\.9\.[0-9]+\-[0-9]+")
+html = response.read().decode(r"utf-8")
+r = re.compile(r"6\.9\.[0-9]+-[0-9]+")
 version = r.findall(html)
 if len(version) == 0:
     raise ValueError(

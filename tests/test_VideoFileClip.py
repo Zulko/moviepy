@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Video file clip tests meant to be run with pytest."""
 import os
-import sys
 
 import pytest
 
@@ -10,7 +9,7 @@ from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_setup():

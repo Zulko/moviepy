@@ -146,7 +146,7 @@ def html_embed(
         allowed_exts = " ".join(exts_htmltype.keys())
         try:
             ext = exts_htmltype[ext]
-        except:
+        except Exception:
             raise ValueError(
                 "This video extension cannot be displayed in the "
                 "IPython Notebook. Allowed extensions: " + allowed_exts
