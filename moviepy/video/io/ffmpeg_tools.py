@@ -126,7 +126,9 @@ def ffmpeg_resize(video, output, size):
 
 
 @convert_path_to_string(("inputfile", "outputfile", "output_dir"))
-def ffmpeg_stabilize_video(inputfile, outputfile=None, output_dir="", overwrite_file=True):
+def ffmpeg_stabilize_video(
+    inputfile, outputfile=None, output_dir="", overwrite_file=True
+):
     """
     Stabilizes ``filename`` and write the result to ``output``.
 
