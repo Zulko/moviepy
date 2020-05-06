@@ -125,18 +125,18 @@ def ffmpeg_resize(video, output, size):
     subprocess_call(cmd)
 
 
-@convert_path_to_string(("filename", "output", "output_dir"))
-def ffmpeg_stabilize_video(filename, output=None, output_dir="", overwrite_file=False):
+@convert_path_to_string(("inputfile", "outputfile", "output_dir"))
+def ffmpeg_stabilize_video(inputfile, outputfile=None, output_dir="", overwrite_file=True):
     """
     Stabilizes ``filename`` and write the result to ``output``.
 
     Parameters
     -----------
 
-    filename
+    inputfile
       The name of the shaky video
 
-    output
+    outputfile
       The name of new stabilized video
       Optional: defaults to appending '_stabilized' to the input file name
 
@@ -145,16 +145,16 @@ def ffmpeg_stabilize_video(filename, output=None, output_dir="", overwrite_file=
       Optional: defaults to the current working directory
 
     overwrite_file
-      If ``output`` already exists in ``output_dir``, then overwrite ``output``
+      If ``outputfile`` already exists in ``output_dir``, then overwrite ``outputfile``
       Optional: defaults to True
     """
-    if not output:
-        without_dir = os.path.basename(filename)
+    if not outputfile:
+        without_dir = os.path.basename(inputfile)
         name, ext = os.path.splitext(without_dir)
-        output = f"{name}_stabilized{ext}"
+        outputfile = f"{name}_stabilized{ext}"
 
-    output = os.path.join(output_dir, output)
-    cmd = [get_setting("FFMPEG_BINARY"), "-i", filename, "-vf", "deshake", output]
+    outputfile = os.path.join(output_dir, outputfile)
+    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
     if overwrite_file:
         cmd.append("-y")
     subprocess_call(cmd)
