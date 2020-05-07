@@ -75,7 +75,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = False
         else:
             self.clips = clips
-            self.bg = ColorClip(size, color=self.bg_color)
+            self.bg = ColorClip(size, color=self.bg_color, ismask=ismask)
             self.created_bg = True
 
         # compute duration

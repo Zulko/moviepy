@@ -128,6 +128,18 @@ def test_oncolor():
     location = os.path.join(TMP_DIR, "oncolor.mp4")
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
+
+    # test constructor with default arguements
+    clip = ColorClip(size=(100, 60), ismask=True)
+    clip = ColorClip(size=(100, 60), ismask=False)
+
+    # negative test
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=(255, 0, 0), ismask=True)
+
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+
     close_all_clips(locals())
 
 
