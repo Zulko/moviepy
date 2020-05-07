@@ -1,8 +1,8 @@
 from __future__ import division
 
-
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
+from moviepy.decorators import convert_path_to_string
 
 
 class AudioFileClip(AudioClip):
@@ -19,6 +19,7 @@ class AudioFileClip(AudioClip):
 
     filename
       Either a soundfile name (of any extension supported by ffmpeg)
+      as a string or a path-like object,
       or an array representing a sound. If the soundfile is not a .wav,
       it will be converted to .wav first, using the ``fps`` and
       ``bitrate`` arguments.
@@ -63,17 +64,20 @@ class AudioFileClip(AudioClip):
 
     """
 
+    @convert_path_to_string("filename")
     def __init__(self, filename, buffersize=200000, nbytes=2, fps=44100):
 
         AudioClip.__init__(self)
 
         self.filename = filename
-        self.reader = FFMPEG_AudioReader(filename, fps=fps, nbytes=nbytes,
-                                         buffersize=buffersize)
+        self.reader = FFMPEG_AudioReader(
+            filename, fps=fps, nbytes=nbytes, buffersize=buffersize
+        )
         self.fps = fps
         self.duration = self.reader.duration
         self.end = self.reader.duration
         self.buffersize = self.reader.buffersize
+        self.filename = filename
 
         self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
@@ -89,6 +93,3 @@ class AudioFileClip(AudioClip):
         if self.reader:
             self.reader.close_proc()
             self.reader = None
-
-    def __del__(self):
-        self.close()
