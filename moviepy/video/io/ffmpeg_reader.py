@@ -56,7 +56,7 @@ class FFMPEG_VideoReader:
         self.duration = infos["video_duration"]
         self.ffmpeg_duration = infos["duration"]
         self.nframes = infos["video_nframes"]
-        self.video_bitrate = infos["video_bitrate"]
+        self.bitrate = infos["video_bitrate"]
 
         self.infos = infos
 

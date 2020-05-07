@@ -28,6 +28,7 @@ def test_setup():
     assert clip.duration == 5
     assert clip.fps == 10
     assert clip.size == [256 * 3, 200]
+    assert clip.reader.bitrate == 2
     close_all_clips(locals())
 
 

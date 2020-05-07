@@ -54,6 +54,7 @@ class FFMPEG_AudioReader:
             self.duration = infos["video_duration"]
         else:
             self.duration = infos["duration"]
+        self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None
 

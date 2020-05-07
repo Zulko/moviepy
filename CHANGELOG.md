@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 - Added new `ffmpeg_stabilize_video()` function in `ffmpeg_tools`
 - Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
+- `ffmpeg_parse_infos` additionally returns `"video_bitrate"` and `"audio_bitrate"` values [#930]
+- Access to the source video's bitrate in a `VideoFileClip` or `AudioFileClip` through `videoclip.reader.bitrate` and `audioclip.reader.bitrate` [#930]
 
 ### Changed <!-- for changes in existing functionality -->
 - `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
