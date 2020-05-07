@@ -14,6 +14,7 @@ from moviepy.audio.AudioClip import (
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.utils import close_all_clips
 
 from tests.test_helper import TMP_DIR
 
@@ -33,8 +34,18 @@ def test_audio_coreader():
 
 def test_audioclip():
     make_frame = lambda t: [sin(440 * 2 * pi * t)]
-    clip = AudioClip(make_frame, duration=2, fps=22050)
-    clip.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"))
+    audio = AudioClip(make_frame, duration=2, fps=22050)
+    audio.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"), bitrate="16")
+
+    assert os.path.exists(os.path.join(TMP_DIR, "audioclip.mp3"))
+
+    clip = AudioFileClip(os.path.join(TMP_DIR, "audioclip.mp3"))
+
+    # TODO Write better tests; find out why the following fail
+    # assert clip.duration == 2
+    # assert clip.fps == 22050
+    # assert clip.reader.bitrate == 16
+    close_all_clips(locals())
 
 
 def test_audioclip_io():
