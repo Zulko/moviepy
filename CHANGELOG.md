@@ -1,5 +1,12 @@
 # Changelog
 
+## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v1.0.3)
+
+Bonus release to fix critical error when working with audio: `AttributeError: 'NoneType' object has no attribute 'stdout'` [\#1185](https://github.com/Zulko/moviepy/pull/1185)
+
+
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.1...v1.0.2)
