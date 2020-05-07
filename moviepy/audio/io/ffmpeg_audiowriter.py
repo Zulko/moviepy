@@ -1,5 +1,6 @@
 import os
 import subprocess as sp
+import warnings
 
 import proglog
 
@@ -45,42 +46,42 @@ class FFMPEG_AudioWriter:
         logfile=None,
         ffmpeg_params=None,
     ):
-
-        self.filename = filename
-        self.codec = codec
-
         if logfile is None:
             logfile = sp.PIPE
+        self.logfile = logfile
+        self.filename = filename
+        self.codec = codec
+        self.ext = self.filename.split(".")[-1]
 
-        cmd = (
-            [
-                FFMPEG_BINARY,
-                "-y",
-                "-loglevel",
-                "error" if logfile == sp.PIPE else "info",
-                "-f",
-                "s%dle" % (8 * nbytes),
-                "-acodec",
-                "pcm_s%dle" % (8 * nbytes),
-                "-ar",
-                "%d" % fps_input,
-                "-ac",
-                "%d" % nchannels,
-                "-i",
-                "-",
-            ]
-            + (
-                ["-vn"]
-                if input_video is None
-                else ["-i", input_video, "-vcodec", "copy"]
-            )
-            + ["-acodec", codec]
-            + ["-ar", "%d" % fps_input]
-            + ["-strict", "-2"]  # needed to support codec 'aac'
-            + (["-ab", bitrate] if (bitrate is not None) else [])
-            + (ffmpeg_params if ffmpeg_params else [])
-            + [filename]
-        )
+        # order is important
+        cmd = [
+            FFMPEG_BINARY,
+            "-y",
+            "-loglevel",
+            "error" if logfile == sp.PIPE else "info",
+            "-f",
+            "s%dle" % (8 * nbytes),
+            "-acodec",
+            "pcm_s%dle" % (8 * nbytes),
+            "-ar",
+            "%d" % fps_input,
+            "-ac",
+            "%d" % nchannels,
+            "-i",
+            "-",
+        ]
+        if input_video is None:
+            cmd.extend(["-vn"])
+        else:
+            cmd.extend(["-i", input_video, "-vcodec", "copy"])
+
+        cmd.extend(["-acodec", codec] + ["-ar", "%d" % fps_input])
+        cmd.extend(["-strict", "-2"])  # needed to support codec 'aac'
+        if bitrate is not None:
+            cmd.extend(["-ab", bitrate])
+        if ffmpeg_params is not None:
+            cmd.extend(ffmpeg_params)
+        cmd.extend([filename])
 
         popen_params = {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
 
@@ -91,53 +92,52 @@ class FFMPEG_AudioWriter:
 
     def write_frames(self, frames_array):
         try:
-            try:
-                self.proc.stdin.write(frames_array.tobytes())
-            except NameError:
-                self.proc.stdin.write(frames_array.tostring())
+            self.proc.stdin.write(frames_array.tobytes())
         except IOError as err:
-            ffmpeg_error = self.proc.stderr.read()
-            error = str(err) + (
-                "\n\nMoviePy error: FFMPEG encountered "
-                "the following error while writing file %s:" % self.filename
-                + "\n\n"
-                + str(ffmpeg_error)
+            _, ffmpeg_error = self.proc.communicate()
+            if ffmpeg_error is not None:
+                ffmpeg_error = ffmpeg_error.decode()
+            else:
+                # The error was redirected to a logfile with `write_logfile=True`,
+                # so read the error from that file instead
+                self.logfile.seek(0)
+                ffmpeg_error = self.logfile.read()
+
+            error = (
+                f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
+                f"writing file {self.filename}:\n\n {ffmpeg_error}"
             )
 
-            if b"Unknown encoder" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe audio export failed because FFMPEG didn't "
-                    "find the specified codec for audio encoding (%s). "
-                    "Please install this codec or change the codec when "
-                    "calling write_videofile or write_audiofile. For instance "
-                    "for mp3:\n"
+            if "Unknown encoder" in ffmpeg_error:
+                error += (
+                    "\n\nThe audio export failed because FFMPEG didn't find the "
+                    f"specified codec for audio encoding {self.codec}. "
+                    "Please install this codec or change the codec when calling "
+                    "write_videofile or write_audiofile.\nFor instance for mp3:\n"
                     "   >>> write_videofile('myvid.mp4', audio_codec='libmp3lame')"
-                ) % (self.codec)
-
-            elif b"incorrect codec parameters ?" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe audio export failed, possibly because the "
-                    "codec specified for the video (%s) is not compatible"
-                    " with the given extension (%s). Please specify a "
-                    "valid 'codec' argument in write_videofile. This would "
-                    "be 'libmp3lame' for mp3, 'libvorbis' for ogg..."
-                ) % (self.codec, self.ext)
-
-            elif b"encoder setup failed" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe audio export failed, possily because the "
-                    "bitrate you specified was two high or too low for "
-                    "the video codec."
                 )
 
-            else:
-                error = error + (
-                    "\n\nIn case it helps, make sure you are using a "
-                    "recent version of FFMPEG (the versions in the "
-                    "Ubuntu/Debian repos are deprecated)."
+            elif "incorrect codec parameters ?" in ffmpeg_error:
+                error += (
+                    "\n\nThe audio export failed, possibly because the "
+                    f"codec specified for the video {self.codec} is not compatible"
+                    f" with the given extension {self.ext}. Please specify a "
+                    "valid 'codec' argument in write_audiofile or 'audio_codoc'"
+                    "argument in write_videofile. This would be "
+                    "'libmp3lame' for mp3, 'libvorbis' for ogg..."
+                )
+
+            elif "bitrate not specified" in ffmpeg_error:
+                error += (
+                    "\n\nThe audio export failed, possily because the "
+                    "bitrate you specified was too high or too low for "
+                    "the audio codec."
+                )
+
+            elif "Invalid encoder type" in ffmpeg_error:
+                error += (
+                    "\n\nThe audio export failed because the codec "
+                    "or file extension you provided is not suitable for audio"
                 )
 
             raise IOError(error)
@@ -148,7 +148,7 @@ class FFMPEG_AudioWriter:
             self.proc.stdin = None
             if self.proc.stderr is not None:
                 self.proc.stderr.close()
-                self.proc.stdee = None
+                self.proc.stderr = None
             # If this causes deadlocks, consider terminating instead.
             self.proc.wait()
             self.proc = None
