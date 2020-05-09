@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """Compositing tests for use with pytest."""
-import sys
 from os.path import join
 
 import pytest

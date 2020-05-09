@@ -2,10 +2,10 @@
 painting_possible = True
 try:
     from skimage.filter import sobel
-except:
+except Exception:
     try:
         from scipy.ndimage.filters import sobel
-    except:
+    except Exception:
         painting_possible = False
 # -----------------------------------------------------------------------
 

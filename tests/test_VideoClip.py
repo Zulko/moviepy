@@ -1,17 +1,21 @@
 import os
-import sys
 
 import pytest
-from numpy import pi, sin
+from numpy import pi, sin, array
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, VideoClip
+from moviepy.video.VideoClip import ColorClip, BitmapClip
 
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
+
+
+def test_aspect_ratio():
+    clip = BitmapClip([["AAA", "BBB"]])
+    assert clip.aspect_ratio == 1.5
 
 
 def test_check_codec():
@@ -27,15 +31,43 @@ def test_check_codec():
     close_all_clips(locals())
 
 
-def test_errors_with_redirected_logs():
+def test_write_frame_errors():
+    """Checks error cases return helpful messages"""
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "unlogged-write.mp4")
+    with pytest.raises(IOError) as e:
+        clip.write_videofile(location, codec="nonexistent-codec")
+    assert (
+        "The video export failed because FFMPEG didn't find the specified codec for video "
+        "encoding nonexistent-codec" in str(e.value)
+    ), e.value
+    close_all_clips(locals())
+
+
+def test_write_frame_errors_with_redirected_logs():
     """Checks error cases return helpful messages even when logs redirected
     See https://github.com/Zulko/moviepy/issues/877"""
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "logged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec", write_logfile=True)
-    assert "Unknown encoder 'nonexistent-codec'" in str(e.value)
+    assert (
+        "The video export failed because FFMPEG didn't find the specified codec for video "
+        "encoding nonexistent-codec" in str(e.value)
+    )
     close_all_clips(locals())
+
+
+def test_write_videofiles_with_temp_audiofile_path():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "temp_audiofile_path.webm")
+    temp_location = "temp_audiofile"
+    if not os.path.exists(temp_location):
+        os.mkdir(temp_location)
+    clip.write_videofile(location, temp_audiofile_path=temp_location, remove_temp=False)
+    assert os.path.isfile(location)
+    contents_of_temp_dir = os.listdir(temp_location)
+    assert any(file.startswith("temp_audiofile_path") for file in contents_of_temp_dir)
 
 
 def test_save_frame():
@@ -112,6 +144,18 @@ def test_oncolor():
     location = os.path.join(TMP_DIR, "oncolor.mp4")
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
+
+    # test constructor with default arguements
+    clip = ColorClip(size=(100, 60), ismask=True)
+    clip = ColorClip(size=(100, 60), ismask=False)
+
+    # negative test
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=(255, 0, 0), ismask=True)
+
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+
     close_all_clips(locals())
 
 

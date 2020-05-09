@@ -1,0 +1,75 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Python package
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  # Uses Python Framework build because on macos matplotlib requires it
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: s-weigand/setup-conda@v1
+      with:
+        activate-conda: true
+    # TODO: fix adding the different versions  
+    # Pick the installation of Python Framework build from conda, because they do not support versioning
+    # https://anaconda.org/anaconda/python.app/files
+    #- name: Install conda python version 3.6
+    #  if: matrix.python-version == '3.6'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py36_10.tar.bz2
+    #- name: Install conda python version 3.7
+    #  if: matrix.python-version == '3.7'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py37_10.tar.bz2
+    #- name: Install conda python version 3.8
+    #  if: matrix.python-version == '3.8'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
+    - name: install pythonw
+      run: conda install python.app
+    - name: Python version
+      run: |
+        pythonw --version
+        which python
+        pythonw -m site --user-site
+        echo $PYTHONPATH
+        echo $PYTHONHOME
+    - name: Install dependencies
+      run: |
+        brew install imagemagick
+        # needed for installing matplotlib
+        brew install pkg-config
+        pythonw -m pip install -e ".[optional, test, doc]"
+        pythonw -m pip install flake8
+        pythonw -m pip install --upgrade setuptools
+        pythonw -m pip install --upgrade pytest-cov
+        
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E901,E999,F821,F822,F823,W605 --show-source --statistics
+        # Some warning codes are ignored because they conflict with black's formatting, or are
+        # incompatible with MoviePy's structure
+        # E203: whitespace before ':'
+        # E302: expected 2 blank lines, found 0
+        # E402: module level import not at top of file
+        # W291: trailing whitespace
+        # W293: blank line contains whitespace
+        # W503: line break before binary operator
+        flake8 moviepy --ignore=E203,E302,E402,W291,W293,W503 --max-complexity=10 --max-line-length=127 --statistics --count --exit-zero
+        # Check examples and tests with slightly relaxed rules to allow 'star' imports
+        # F403 'from moviepy.editor import *' used; unable to detect undefined names
+        # F405 'name' may be undefined, or defined from star imports: moviepy.editor
+        flake8 . --ignore=E203,E302,E402,W291,W293,W503,F403,F405 --exclude moviepy/ --max-complexity=10 --max-line-length=127 --statistics --count  --exit-zero
+    - name: Test with pytest
+      run: |
+        pythonw -m pytest tests/ --doctest-modules -v

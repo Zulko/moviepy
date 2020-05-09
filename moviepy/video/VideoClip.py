@@ -7,28 +7,25 @@ main subclasses:
 import os
 import subprocess as sp
 import tempfile
-import warnings
 
 import numpy as np
 import proglog
 from imageio import imread, imsave
 
 from moviepy.Clip import Clip
-from moviepy.config import get_setting
+from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
+    convert_path_to_string,
     convert_to_seconds,
     outplace,
     requires_duration,
     use_clip_fps_by_default,
+    convert_path_to_string,
 )
-from moviepy.tools import (
-    extensions_dict,
-    find_extension,
-    subprocess_call,
-)
+from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
     write_gif,
@@ -143,6 +140,7 @@ class VideoClip(Clip):
     @requires_duration
     @use_clip_fps_by_default
     @convert_masks_to_RGB
+    @convert_path_to_string(["filename", "temp_audiofile", "temp_audiofile_path"])
     def write_videofile(
         self,
         filename,
@@ -157,6 +155,7 @@ class VideoClip(Clip):
         audio_bitrate=None,
         audio_bufsize=2000,
         temp_audiofile=None,
+        temp_audiofile_path="",
         rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
@@ -170,7 +169,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the video file to write in.
+          Name of the video file to write in, as a string or a path-like object.
           The extension must correspond to the "codec" used (see below),
           or simply be '.avi' (which will work with any codec).
 
@@ -219,12 +218,16 @@ class VideoClip(Clip):
           If ``audio`` is the name of an audio file, this audio file
           will be incorporated as a soundtrack in the movie.
 
-        audiofps
+        audio_fps
           frame rate to use when generating the sound.
 
         temp_audiofile
-          the name of the temporary audiofile to be generated and
-          incorporated in the the movie, if any.
+          the name of the temporary audiofile, as a string or path-like object, to be created and
+          then used to write the complete video, if any.
+
+        temp_audiofile_path
+          the location that the temporary audiofile is placed, as a
+          string or path-like object. Defaults to the current working directory.
 
         audio_codec
           Which audio codec should be used. Examples are 'libmp3lame'
@@ -299,7 +302,7 @@ class VideoClip(Clip):
 
         audiofile = audio if isinstance(audio, str) else None
         make_audio = (
-            (audiofile is None) and (audio == True) and (self.audio is not None)
+            (audiofile is None) and (audio is True) and (self.audio is not None)
         )
 
         if make_audio and temp_audiofile:
@@ -307,7 +310,10 @@ class VideoClip(Clip):
             audiofile = temp_audiofile
         elif make_audio:
             audio_ext = find_extension(audio_codec)
-            audiofile = name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext
+            audiofile = os.path.join(
+                temp_audiofile_path,
+                name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext,
+            )
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
@@ -399,6 +405,7 @@ class VideoClip(Clip):
 
     @requires_duration
     @convert_masks_to_RGB
+    @convert_path_to_string("filename")
     def write_gif(
         self,
         filename,
@@ -421,7 +428,7 @@ class VideoClip(Clip):
         -----------
 
         filename
-          Name of the resulting gif file.
+          Name of the resulting gif file, as a string or a path-like object.
 
         fps
           Number of frames per second (see note below). If it
@@ -639,7 +646,10 @@ class VideoClip(Clip):
             mask = ColorClip(self.size, 1.0, ismask=True)
             return self.set_mask(mask.set_duration(self.duration))
         else:
-            make_frame = lambda t: np.ones(self.get_frame(t).shape[:2], dtype=float)
+
+            def make_frame(t):
+                return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
             mask = VideoClip(ismask=True, make_frame=make_frame)
             return self.set_mask(mask.set_duration(self.duration))
 
@@ -795,8 +805,9 @@ class VideoClip(Clip):
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.ismask:
-            f = lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
-            newclip = self.fl_image(f)
+            newclip = self.fl_image(
+                lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
+            )
             newclip.ismask = False
             return newclip
         else:
@@ -848,7 +859,10 @@ class DataVideoClip(VideoClip):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
-        make_frame = lambda t: self.data_to_frame(self.data[int(self.fps * t)])
+
+        def make_frame(t):
+            return self.data_to_frame(self.data[int(self.fps * t)])
+
         VideoClip.__init__(
             self,
             make_frame,
@@ -930,8 +944,8 @@ class ImageClip(VideoClip):
     -----------
 
     img
-      Any picture file (png, tiff, jpeg, etc.) or any array representing
-      an RGB image (for instance a frame from a VideoClip).
+      Any picture file (png, tiff, jpeg, etc.) as a string or a path-like object,
+      or any array representing an RGB image (for instance a frame from a VideoClip).
 
     ismask
       Set this parameter to `True` if the clip is a mask.
@@ -953,7 +967,8 @@ class ImageClip(VideoClip):
     ):
         VideoClip.__init__(self, ismask=ismask, duration=duration)
 
-        if isinstance(img, str):
+        if not isinstance(img, np.ndarray):
+            # img is a string or path-like object, so read it in from disk
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
@@ -1050,7 +1065,20 @@ class ColorClip(ImageClip):
 
     def __init__(self, size, color=None, ismask=False, duration=None):
         w, h = size
-        shape = (h, w) if np.isscalar(color) else (h, w, len(color))
+
+        if ismask:
+            shape = (h, w)
+            if color is None:
+                color = 0
+            elif not np.isscalar(color):
+                raise Exception("Color has to be a scalar when mask is true")
+        else:
+            if color is None:
+                color = (0, 0, 0)
+            elif not hasattr(color, "__getitem__"):
+                raise Exception("Color has to contain RGB of the clip")
+            shape = (h, w, len(color))
+
         super().__init__(
             np.tile(color, w * h).reshape(shape), ismask=ismask, duration=duration
         )
@@ -1070,7 +1098,8 @@ class TextClip(ImageClip):
       ``filename``.
 
     filename
-      The name of a file in which there is the text to write.
+      The name of a file in which there is the text to write,
+      as a string or a path-like object.
       Can be provided instead of argument ``txt``
 
     size
@@ -1120,6 +1149,7 @@ class TextClip(ImageClip):
 
     """
 
+    @convert_path_to_string("filename")
     def __init__(
         self,
         txt=None,
@@ -1162,7 +1192,7 @@ class TextClip(ImageClip):
             )
 
         cmd = [
-            get_setting("IMAGEMAGICK_BINARY"),
+            IMAGEMAGICK_BINARY,
             "-background",
             bg_color,
             "-fill",
@@ -1201,15 +1231,13 @@ class TextClip(ImageClip):
         try:
             subprocess_call(cmd, logger=None)
         except (IOError, OSError) as err:
-            error = "MoviePy Error: creation of %s failed because of the " "following error:\n\n%s.\n\n." % (
-                filename,
-                str(err),
-            ) + (
+            error = (
+                f"MoviePy Error: creation of {filename} failed because of the "
+                f"following error:\n\n{err}.\n\n."
                 "This error can be due to the fact that ImageMagick "
                 "is not installed on your computer, or (for Windows "
                 "users) that you didn't specify the path to the "
-                "ImageMagick binary in file conf.py, or that the path "
-                "you specified is incorrect"
+                "ImageMagick binary. Check the documentation."
             )
             raise IOError(error)
 
@@ -1235,9 +1263,7 @@ class TextClip(ImageClip):
             popen_params["creationflags"] = 0x08000000
 
         process = sp.Popen(
-            [get_setting("IMAGEMAGICK_BINARY"), "-list", arg],
-            encoding="utf-8",
-            **popen_params,
+            [IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params
         )
         result = process.communicate()[0]
         lines = result.splitlines()
@@ -1265,3 +1291,124 @@ class TextClip(ImageClip):
         string = string.lower()
         names_list = TextClip.list(arg)
         return [name for name in names_list if string in name.lower()]
+
+
+class BitmapClip(VideoClip):
+    def __init__(self, bitmap_frames, *, color_dict=None, ismask=False):
+        """
+        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+
+        Parameters
+        -----------
+
+        bitmap_frames
+          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
+          Each color represents an (r, g, b) tuple.
+          Example input (2 frames, 5x3 pixel size):
+          [["RRRRR",
+            "RRBRR",
+            "RRBRR"],
+           ["RGGGR",
+            "RGGGR",
+            "RGGGR"]]
+
+        color_dict
+          A dictionary that can be used to set specific (r, g, b) values that correspond
+          to the letters used in ``bitmap_frames``.
+          eg ``{"A": (50, 150, 150)}``.
+
+          Defaults to
+          ::
+          {
+            "R": (255, 0, 0),
+            "G": (0, 255, 0),
+            "B": (0, 0, 255),
+            "O": (0, 0, 0),  # "O" represents black
+            "W": (255, 255, 255),
+            "A": (89, 225, 62),  # "A", "C", "D" and "E" represent arbitrary colors
+            "C": (113, 157, 108),
+            "D": (215, 182, 143),
+            "E": (57, 26, 252),
+          }
+
+        ismask
+          Set to ``True`` if the clip is going to be used as a mask.
+
+        """
+        if color_dict:
+            self.color_dict = color_dict
+        else:
+            self.color_dict = {
+                "R": (255, 0, 0),
+                "G": (0, 255, 0),
+                "B": (0, 0, 255),
+                "O": (0, 0, 0),
+                "W": (255, 255, 255),
+                "A": (89, 225, 62),
+                "C": (113, 157, 108),
+                "D": (215, 182, 143),
+                "E": (57, 26, 252),
+            }
+
+        frame_list = []
+        for input_frame in bitmap_frames:
+            output_frame = []
+            for row in input_frame:
+                output_frame.append([self.color_dict[color] for color in row])
+            frame_list.append(np.array(output_frame))
+
+        frame_array = np.array(frame_list)
+        VideoClip.__init__(
+            self, make_frame=lambda t: frame_array[int(t)], ismask=ismask
+        )
+
+        self.total_frames = len(frame_array)
+        self.fps = None
+
+    @convert_to_seconds(["duration"])
+    def set_duration(self, duration, change_end=True):
+        """
+        Sets the ``duration`` attribute of the clip.
+        Additionally, if the clip's ``fps`` attribute has not already been set, it will 
+        be set based on the new duration and the total number of frames.
+        """
+        if self.fps is None:
+            return (
+                super()
+                .set_duration(duration=duration, change_end=change_end)
+                .set_fps(int(self.total_frames / duration))
+            )
+
+        return super().set_duration(duration=duration, change_end=change_end)
+
+    def set_fps(self, fps):
+        """
+        Sets the ``fps`` attribute of the clip.
+        Additionally, if the clip's ``duration`` attribute has not already been set, it will 
+        be set based on the new fps and the total number of frames.
+        """
+        total_duration = self.total_frames / fps
+        if self.duration is None or self.duration > total_duration:
+            return super().set_fps(fps).set_duration(total_duration)
+        return super().set_fps(fps)
+
+    def to_bitmap(self, color_dict=None):
+        """
+        Returns a valid bitmap list that represents each frame of the clip.
+        If `color_dict` is not specified, then it will use the same `color_dict`
+        that was used to create the clip.
+        """
+        color_dict = color_dict or self.color_dict
+
+        bitmap = []
+        for frame in self.iter_frames():
+            bitmap.append([])
+            for line in frame:
+                bitmap[-1].append("")
+                for pixel in line:
+                    letter = list(color_dict.keys())[
+                        list(color_dict.values()).index(tuple(pixel))
+                    ]
+                    bitmap[-1][-1] += letter
+
+        return bitmap

@@ -35,7 +35,7 @@ def crop(
     Any combination of the above should work, like for this rectangle
     centered in x=300, with explicit y-boundaries:
     
-    >>> crop(x_center=300, width=400, y1=100, y2=600)
+    >>> crop(clip, x_center=300, width=400, y1=100, y2=600)
     
     """
 

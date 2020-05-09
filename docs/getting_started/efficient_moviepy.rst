@@ -21,8 +21,8 @@ The module ``moviepy.editor`` can be loaded using one of the three following met
     import moviepy.editor as mpy # Clean. Then use mpy.VideoClip, etc.
     from moviepy.editor import VideoFileClip # just import what you need
 
-With any of these lines, the ``moviepy.editor`` module will actually do a lot of work behind the curtain: It will fetch all the most common classes, functions and subpackages of MoviePy, initialize a PyGame session (if PyGame is installed) to be able to preview video clips, and implement some shortcuts, like adding the ``resize`` transformation to the clips. This way you can use ``clip.resize(width=240)`` instead of the longer ``clip.fx( resize, width=240)``. In short, ``moviepy.editor`` 
-provides all you need to play around and edit your videos but it will  take time to load (circa one second). So if all you need is one or two features inside another library, it is better to import directly what you need, as follows: ::
+With any of these lines, the ``moviepy.editor`` module will actually do a lot of work behind the curtain: it will fetch all the most common classes, functions and subpackages of MoviePy, initialize a PyGame session (if PyGame is installed) to be able to preview video clips, and implement some shortcuts, like adding the ``resize`` transformation to the clips. This way you can use ``clip.resize(width=240)`` instead of the longer ``clip.fx( resize, width=240)``. In short, ``moviepy.editor`` 
+provides all you need to play around and edit your videos, but it will  take time to load (circa one second). So if all you need is one or two features inside another library, it is better to import directly what you need, as follows: ::
     
     from moviepy.video.io.VideoFileClip import VideoFileClip
     from moviepy.video.fx.resize import resize
@@ -34,13 +34,13 @@ When to close() a clip
 
 When you create some types of clip instances - e.g. ``VideoFileClip`` or ``AudioFileClip`` - MoviePy creates a subprocess and locks the file. In order to release those resources when you are finished you should call the ``close()`` method.
 
-This is more important for more complex applications and it particularly important when running on Windows. While Python's garbage collector should eventually clean it the resources for you, clsing them makes them available earlier.
+This is more important for more complex applications and is particularly important when running on Windows. While Python's garbage collector should eventually clean up the resources for you, closing them makes them available earlier.
 
 However, if you close a clip too early, methods on the clip (and any clips derived from it) become unsafe.
 
 So, the rules of thumb are:
 
-    * Call ``close()`` on any clip that you **construct** once you have finished using it, and have also finished using any clip that was derived from it.
+    * Call ``close()`` on any clip that you **construct** once you have finished using it and have also finished using any clip that was derived from it.
     * Also close any clips you create through ``AudioFileClip.coreader()``.
     * Even if you close a ``CompositeVideoClip`` instance, you still need to close the clips it was created from.
     * Otherwise, if you have a clip that was created by deriving it from from another clip (e.g. by calling ``set_mask()``), then generally you shouldn't close it. Closing the original clip will also close the copy.

@@ -19,7 +19,7 @@ try:
     import cv2
 
     autotracking_possible = True
-except:
+except Exception:
     # Note: this will be later fixed with scipy/skimage replacements
     # but for the moment OpenCV is mandatory, so...
     autotracking_possible = False
