@@ -108,12 +108,15 @@ class CompositeVideoClip(VideoClip):
         def make_frame(t):
             f = self.bg.get_frame(t).astype("uint8")
             im = Image.fromarray(f)
+
             if self.bg.mask is not None:
                 f_mask = self.bg.mask.get_frame(t).astype("uint8")
                 im_mask = Image.fromarray(255 * f_mask).convert("L")
                 im = im.putalpha(im_mask)
+
             for c in self.playing_clips(t):
                 im = c.blit_on(im, t)
+
             return np.array(im)
 
         self.make_frame = make_frame
