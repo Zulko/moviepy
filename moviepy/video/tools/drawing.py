@@ -19,23 +19,21 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
     # xp1,yp1,xp2,yp2 = blit area on im2
     # x1,y1,x2,y2 = area of im1 to blit on im2
     xp, yp = pos
-    # x1 = max(0, -xp) Do not needed, maybe.
-    # y1 = max(0, -yp)
-    h1, w1 = im1.size
-    h2, w2 = im2.size
-    xp2 = min(w2, xp + w1)
-    yp2 = min(h2, yp + h1)
-    # x2 = min(w1, w2 - xp) Do not needed, maybe.
-    # y2 = min(h1, h2 - yp)
+    # h1, w1 = im1.size
+    # h2, w2 = im2.size
+    # xp2 = min(w2, xp + w1)
+    # yp2 = min(h2, yp + h1)
     xp1 = max(0, xp)
     yp1 = max(0, yp)
 
-    if (xp1 >= xp2) or (yp1 >= yp2):
-        return im2
+    # if (xp1 >= xp2) and (yp1 >= yp2):
+    #     pass
+
     if mask is not None:
         im2.paste(im1, (xp1, yp1), mask)
     else:
         im2.paste(im1, (xp1, yp1))
+
     return im2
 
 
