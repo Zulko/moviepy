@@ -5,7 +5,7 @@ import proglog
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip
-from moviepy.decorators import requires_duration, convert_path_to_string
+from moviepy.decorators import convert_path_to_string, requires_duration
 from moviepy.tools import extensions_dict
 
 
@@ -18,7 +18,7 @@ class AudioClip(Clip):
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
-    trespassed wihtout problems (the program will put the
+    trespassed without problems (the program will put the
     sound back into the bounds at conversion time, without much impact). 
     
     Parameters
@@ -272,8 +272,8 @@ class AudioArrayClip(AudioClip):
             is a list of the form sin(t) """
 
             if isinstance(t, np.ndarray):
-                array_inds = (self.fps * t).astype(int)
-                in_array = (array_inds > 0) & (array_inds < len(self.array))
+                array_inds = np.round(self.fps * t).astype(int)
+                in_array = (array_inds >= 0) & (array_inds < len(self.array))
                 result = np.zeros((len(t), 2))
                 result[in_array] = self.array[array_inds[in_array]]
                 return result
@@ -289,7 +289,6 @@ class AudioArrayClip(AudioClip):
 
 
 class CompositeAudioClip(AudioClip):
-
     """ Clip made by composing several AudioClips.
     
     An audio clip made by putting together several audio clips.

@@ -13,14 +13,13 @@ the appropriate options to ``use_setuptools()``.
 
 This file can also be run as a script to install or upgrade setuptools.
 """
+import optparse
 import os
 import shutil
-import sys
-import tempfile
-import tarfile
-import optparse
 import subprocess
-
+import sys
+import tarfile
+import tempfile
 from distutils import log
 
 try:

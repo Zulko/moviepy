@@ -7,7 +7,6 @@
     
     Note: Platform dependent test. Will only fail on Windows > NT. """
 
-import subprocess as sp
 import time
 from os import remove
 from os.path import join
@@ -16,8 +15,7 @@ from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
 
-# from tempfile import NamedTemporaryFile
-from .test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR
 
 
 def test_release_of_file_via_close():

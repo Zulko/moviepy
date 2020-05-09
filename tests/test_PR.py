@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Pull request tests meant to be run with pytest."""
 import os
-import sys
 from pathlib import Path
 
 import pytest
@@ -12,10 +11,10 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
-from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 from moviepy.video.tools.subtitles import SubtitlesClip
+from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
 
-from .test_helper import FONT, TMP_DIR
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_PR_306():

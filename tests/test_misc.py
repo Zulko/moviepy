@@ -1,5 +1,4 @@
 import os
-import sys
 
 import pytest
 
@@ -11,7 +10,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
 
-from .test_helper import FONT, TMP_DIR
+from tests.test_helper import FONT, TMP_DIR
 
 
 def test_cuts1():
