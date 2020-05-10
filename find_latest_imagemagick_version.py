@@ -1,7 +1,7 @@
 import re
 from urllib import request
 
-url = "https://legacy.imagemagick.org/script/index.php"
+url = "https://imagemagick.org/script/index.php"
 
 """This little script parses url above to extract latest image magick version
 (major version 7.0), to feed it into CI system. Not the best way for reproducible
@@ -15,7 +15,7 @@ r = re.compile(r"7\.0\.[0-9]+-[0-9]+")
 version = r.findall(html)
 if len(version) == 0:
     raise ValueError(
-        "Could not find latest legacy 7.0.X-Y ImageMagick version from {}".format(url)
+        "Could not find latest 7.0.X-Y ImageMagick version from {}".format(url)
     )
 version = version[0]
 # Append Q16 build
