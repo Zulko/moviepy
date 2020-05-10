@@ -6,6 +6,7 @@ from numpy import pi, sin, array
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, BitmapClip
@@ -189,6 +190,35 @@ def test_setopacity():
     clip.write_videofile(location)
     assert os.path.isfile(location)
     close_all_clips(locals())
+
+
+def test_set_layer():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]]).set_fps(1).set_layer(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]]).set_fps(1).set_layer(2)
+
+    composite_clip = CompositeVideoClip([bottom_clip, top_clip])
+    reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
+
+    # Make sure that the order of clips makes no difference to the composite clip
+    assert composite_clip.subclip(0, 2) == reversed_composite_clip.subclip(0, 2)
+
+    # Make sure that only the 'top' clip is kept
+    assert top_clip.subclip(0, 2) == composite_clip.subclip(0, 2)
+
+    # Make sure that it works even when there is only one clip playing at that time
+    target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]]).set_fps(1)
+    assert composite_clip == target_clip
+
+
+def test_compositing_with_same_layers():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"]]).set_fps(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]]).set_fps(1)
+
+    composite_clip = CompositeVideoClip([bottom_clip, top_clip])
+    reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
+
+    assert composite_clip == top_clip
+    assert reversed_composite_clip == bottom_clip
 
 
 def test_toimageclip():

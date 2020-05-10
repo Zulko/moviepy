@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 - Added new `ffmpeg_stabilize_video()` function in `ffmpeg_tools`
 - Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
+- `VideoClip.set_layer()` to specify the layer of the clip for use when creating a `CompositeVideoClip` [#1176]
 - `ffmpeg_parse_infos` additionally returns `"video_bitrate"` and `"audio_bitrate"` values [#930]
 - Access to the source video's bitrate in a `VideoFileClip` or `AudioFileClip` through `videoclip.reader.bitrate` and `audioclip.reader.bitrate` [#930]
 

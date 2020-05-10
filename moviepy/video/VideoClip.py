@@ -80,6 +80,11 @@ class VideoClip(Clip):
     relative_pos
       See variable ``pos``.
 
+    layer
+      Indicates which clip is rendered on top when two clips overlap in
+      a CompositeVideoClip. The highest number is rendered on top.
+      Default is 0.
+
     """
 
     def __init__(
@@ -90,6 +95,7 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
+        self.layer = 0
         if make_frame:
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
@@ -778,6 +784,15 @@ class VideoClip(Clip):
         else:
             self.pos = lambda t: pos
 
+    @apply_to_mask
+    @outplace
+    def set_layer(self, layer):
+        """Set the clip's layer in compositions. Clips with a greater ``layer``
+        attribute will be displayed on top of others.
+
+        Note: Only has effect when the clip is used in a CompositeVideoClip."""
+        self.layer = layer
+
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
 
@@ -1325,7 +1340,7 @@ class BitmapClip(VideoClip):
             "B": (0, 0, 255),
             "O": (0, 0, 0),  # "O" represents black
             "W": (255, 255, 255),
-            "A": (89, 225, 62),  # "A", "C", "D" and "E" represent arbitrary colors
+            "A": (89, 225, 62),  # "A", "C", "D", "E", "F" represent arbitrary colors
             "C": (113, 157, 108),
             "D": (215, 182, 143),
             "E": (57, 26, 252),
@@ -1348,6 +1363,7 @@ class BitmapClip(VideoClip):
                 "C": (113, 157, 108),
                 "D": (215, 182, 143),
                 "E": (57, 26, 252),
+                "F": (225, 135, 33),
             }
 
         frame_list = []

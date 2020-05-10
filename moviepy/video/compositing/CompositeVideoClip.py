@@ -20,8 +20,14 @@ class CompositeVideoClip(VideoClip):
       The size (height x width) of the final clip.
 
     clips
-      A list of videoclips. Each clip of the list will
-      be displayed below the clips appearing after it in the list.
+      A list of videoclips.
+
+      Clips with a higher ``layer`` attribute will be dislayed
+      on top of other clips in a lower layer.
+      If two or more clips share the same ``layer``,
+      then the one appearing latest in ``clips`` will be displayed
+      on top (i.e. it has the higher layer).
+
       For each clip:
        
       - The attribute ``pos`` determines where the clip is placed.
@@ -78,6 +84,9 @@ class CompositeVideoClip(VideoClip):
             self.bg = ColorClip(size, color=self.bg_color, ismask=ismask)
             self.created_bg = True
 
+        # order self.clips by layer
+        self.clips = sorted(self.clips, key=lambda clip: clip.layer)
+
         # compute duration
         ends = [c.end for c in self.clips]
         if None not in ends:
@@ -97,6 +106,7 @@ class CompositeVideoClip(VideoClip):
                 .set_position(c.pos)
                 .set_end(c.end)
                 .set_start(c.start, change_end=False)
+                .set_layer(c.layer)
                 for c in self.clips
             ]
 
