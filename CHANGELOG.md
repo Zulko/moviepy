@@ -21,8 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Autodetect ImageMagick executable on Windows [#1109]
 - Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
+- Added new `ffmpeg_stabilize_video()` function in `ffmpeg_tools`
 - Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
 - `VideoClip.set_layer()` to specify the layer of the clip for use when creating a `CompositeVideoClip` [#1176]
+- `ffmpeg_parse_infos` additionally returns `"video_bitrate"` and `"audio_bitrate"` values [#930]
+- Access to the source video's bitrate in a `VideoFileClip` or `AudioFileClip` through `videoclip.reader.bitrate` and `audioclip.reader.bitrate` [#930]
 
 ### Changed <!-- for changes in existing functionality -->
 - `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
@@ -49,6 +52,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `vfx.even_size` previously created clips with odd sizes [#1124]
 - `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [#1124]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
+- `AudioFileClip` would not generate audio identical to the original file [#1108]
+
+
+## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v1.0.3)
+
+Bonus release to fix critical error when working with audio: `AttributeError: 'NoneType' object has no attribute 'stdout'` [\#1185](https://github.com/Zulko/moviepy/pull/1185)
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)
