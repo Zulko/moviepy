@@ -787,7 +787,8 @@ class VideoClip(Clip):
     @apply_to_mask
     @outplace
     def set_layer(self, layer):
-        """Set the clip's layer in compositions.
+        """Set the clip's layer in compositions. Clips with a greater ``layer``
+        attribute will be displayed on top of others.
 
         Note: Only has effect when the clip is used in a CompositeVideoClip."""
         self.layer = layer

@@ -22,7 +22,9 @@ class CompositeVideoClip(VideoClip):
     clips
       A list of videoclips.
 
-      If two or more clips share the same ``layer`` attribute,
+      Clips with a higher ``layer`` attribute will be dislayed
+      on top of other clips in a lower layer.
+      If two or more clips share the same ``layer``,
       then the one appearing latest in ``clips`` will be displayed
       on top (i.e. it has the higher layer).
 
