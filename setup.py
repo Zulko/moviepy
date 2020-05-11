@@ -17,7 +17,7 @@ except ImportError:
         raise ImportError(
             "MoviePy could not be installed, probably because"
             " neither setuptools nor ez_setup are installed on this computer."
-            "\nInstall ez_setup ([sudo] pip install ez_setup) and try again."
+            "\nInstall setuptools ([sudo] pip install setuptools) and try again."
         )
 
 
@@ -58,8 +58,7 @@ if "build_docs" in sys.argv:
         from sphinx.setup_command import BuildDoc
     except ImportError:
         raise ImportError(
-            "Running the documentation builds has additional"
-            " dependencies. Please run (pip install moviepy[doc])"
+            "Running the documenation builds has additional dependencies. Please run (pip install moviepy[doc])"
         )
 
     cmdclass["build_docs"] = BuildDoc
@@ -78,6 +77,7 @@ requires = [
 ]
 
 optional_reqs = [
+    "python-dotenv>=0.10.0",
     "opencv-python>=3.0,<4.0",
     "scikit-image>=0.13.0,<1.0",
     "scikit-learn",

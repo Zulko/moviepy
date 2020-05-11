@@ -94,6 +94,7 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
+            # print(t)
             return self.make_frame(t)
 
     def fl(self, fun, apply_to=None, keep_duration=True):
@@ -270,7 +271,7 @@ class Clip:
     @apply_to_audio
     @convert_to_seconds(["t"])
     @outplace
-    def set_duration(self, t, change_end=True):
+    def set_duration(self, duration, change_end=True):
         """
         Returns a copy of the clip, with the  ``duration`` attribute
         set to ``t``, which can be expressed in seconds (15.35), in (min, sec),
@@ -281,14 +282,14 @@ class Clip:
         be modified in function of the duration and the preset end
         of the clip.
         """
-        self.duration = t
+        self.duration = duration
 
         if change_end:
-            self.end = None if (t is None) else (self.start + t)
+            self.end = None if (duration is None) else (self.start + duration)
         else:
             if self.duration is None:
                 raise Exception("Cannot change clip start when new" "duration is None")
-            self.start = self.end - t
+            self.start = self.end - duration
 
     @outplace
     def set_make_frame(self, make_frame):
@@ -427,8 +428,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta) * (tb - ta)
-        newclip = self.fl_time(fl)
+        newclip = self.fl_time(lambda t: t + (t >= ta) * (tb - ta))
 
         if self.duration is not None:
 
@@ -489,6 +489,23 @@ class Clip:
         #      Closing a Clip may affect its copies.
         #    * Therefore, should NOT be called by __del__().
         pass
+
+    def __eq__(self, other):
+        if not isinstance(other, Clip):
+            return NotImplemented
+
+        # Make sure that the total number of frames is the same
+        self_length = self.duration * self.fps
+        other_length = other.duration * other.fps
+        if self_length != other_length:
+            return False
+
+        # Make sure that each frame is the same
+        for frame1, frame2 in zip(self.iter_frames(), other.iter_frames()):
+            if not np.array_equal(frame1, frame2):
+                return False
+
+        return True
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 

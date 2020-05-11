@@ -1,7 +1,7 @@
 FROM python:3
 
 # Install numpy using system package manager
-RUN apt-get -y update && apt-get -y install libav-tools imagemagick libopencv-dev python-opencv
+RUN apt-get -y update && apt-get -y install ffmpeg imagemagick
 
 # Install some special fonts we use in testing, etc..
 RUN apt-get -y install fonts-liberation
@@ -12,15 +12,9 @@ RUN apt-get install -y locales && \
 
 ENV LC_ALL C.UTF-8
 
-# do we need all of these, maybe remove some of them?
-RUN pip install imageio numpy scipy matplotlib pandas sympy nose decorator proglog pillow pytest requests
-
-# install scikit-image after the other deps, it doesn't cause errors this way.
-RUN pip install scikit-image sklearn
-
 ADD . /var/src/moviepy/
 #RUN git clone https://github.com/Zulko/moviepy.git /var/src/moviepy
-RUN cd /var/src/moviepy/ && python setup.py install
+RUN cd /var/src/moviepy/ && pip install .[optional]
 
 # modify ImageMagick policy file so that Textclips work correctly.
 RUN cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml 

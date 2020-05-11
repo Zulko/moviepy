@@ -104,7 +104,7 @@ def slide_out(clip, duration, side):
     >>> slided_clips = [CompositeVideoClip([
                             clip.fx(transfx.slide_out, duration=1, side='left')])
                         for clip in clips]
-    >>> final_clip = concatenate( slided_clips, padding=-1)
+    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
 
     """
 

@@ -16,7 +16,7 @@ def freeze(clip, t=0, freeze_duration=None, total_duration=None, padding_end=0):
     """
 
     if t == "end":
-        t = clip.duration - padding_end
+        t = clip.duration - padding_end - 1
 
     if freeze_duration is None:
         freeze_duration = total_duration - clip.duration
