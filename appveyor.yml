@@ -49,7 +49,7 @@ install:
 
   # Inspect contents and set env vars
   - dir "%IMAGE_MAGICK_INSTALL_DIR%"
-  - set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
+  - set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//magick.exe
   - echo %IMAGEMAGICK_BINARY%
   - set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
   - echo %FMPEG_BINARY%
