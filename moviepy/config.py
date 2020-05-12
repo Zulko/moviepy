@@ -70,7 +70,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                     encoding="utf-8",
                 ).split("\n")[0]
                 IMAGEMAGICK_BINARY = sp.check_output(
-                    rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
+                    rf'dir /B /S "C:\Program Files\{imagemagick_path}\*magick.exe"',
                     shell=True,
                     encoding="utf-8",
                 ).split("\n")[0]
