@@ -57,6 +57,7 @@ else:
 
 if IMAGEMAGICK_BINARY == "auto-detect":
     if os.name == "nt":
+        # Try a few different ways of finding the ImageMagick binary on Windows
         try:
             key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current")
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\magick.exe"
