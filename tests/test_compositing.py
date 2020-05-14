@@ -38,3 +38,17 @@ def test_clips_array_duration():
     video = clips_array([[red, green, blue]]).set_duration(5)
     video.write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
     close_all_clips(locals())
+
+
+def test_concatenate_self():
+    clip = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]]).set_fps(1)
+    target = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]]).set_fps(1)
+
+    concatenated = concatenate_videoclips([clip])
+
+    concatenated.write_videofile(join(TMP_DIR, "test_concatenate_self.mp4"))
+    assert concatenated == target
+
+
+if __name__ == "__main__":
+    test_concatenate_self()
