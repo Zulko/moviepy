@@ -52,7 +52,7 @@ def test_concatenate_self():
 
 def test_concatenate_floating_point():
     """
-    >>>print("{0:.20f}".format(1.12))
+    >>> print("{0:.20f}".format(1.12))
     1.12000000000000010658
 
     This test uses duration=1.12 to check that it still works when the clip duration is
