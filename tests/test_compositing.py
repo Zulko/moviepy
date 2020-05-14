@@ -52,12 +52,12 @@ def test_concatenate_self():
 
 def test_concatenate_floating_point():
     """
-    >>>print("{0:.20f}".format(2.24))
-    2.24000000000000021316
+    >>>print("{0:.20f}".format(1.12))
+    1.12000000000000010658
 
-    This test uses duration=2.24 to check that it still works when the clip duration is
+    This test uses duration=1.12 to check that it still works when the clip duration is
     represented as being bigger than it actually is. Fixed in #1195.
     """
-    vclip = ColorClip([1080, 1080], color=[255, 128, 64], duration=2.24).set_fps(50.0)
-    concat = concatenate_videoclips([vclip])
+    clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).set_fps(25.0)
+    concat = concatenate_videoclips([clip])
     concat.write_videofile("concat.mp4", preset="ultrafast")
