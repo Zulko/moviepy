@@ -470,7 +470,6 @@ class Clip:
             # int is used to ensure that floating point errors are rounded
             # down to the nearest integer
             t = frame_index / fps
-            print(frame_index, t, self.duration * fps)
 
             frame = self.get_frame(t)
             if (dtype is not None) and (frame.dtype != dtype):
