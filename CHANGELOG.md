@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [#1124]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
 - `AudioFileClip` would not generate audio identical to the original file [#1108]
-- Several issues resulting from incorrect time values due to floating point errors, for example: [#1195]
+- Several issues resulting from incorrect time values due to floating point errors [#1195], for example:
     - Blank frames at the end of clips [#210]
     - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [#646] 
 
