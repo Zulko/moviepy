@@ -27,15 +27,14 @@ User Guide
    gallery
    examples/examples
    docker
-   opencv_instructions
    FAQ
    advanced_tools/advanced_tools
    ref/ref
 
-Contribute !
+Contribute!
 --------------
 
-MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 2 or Python 3. The code is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_ .
+MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 2 or Python 3. The code is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_.
 
 .. raw:: html
 

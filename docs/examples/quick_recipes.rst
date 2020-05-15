@@ -41,8 +41,9 @@ Add a title before a video
 Art of Gif-making
 -------------------
 
-  clip.fx( vfx.time_symmetrize)
+::
 
+    clip.fx( vfx.time_symmetrize)
 
     # find a subclip
     T = clip

@@ -12,11 +12,11 @@ The following code summarizes the base clips that you can create with moviepy: :
     clip = VideoFileClip("my_video_file.mp4") # or .avi, .webm, .gif ...
     clip = ImageSequenceClip(['image_file1.jpeg', ...], fps=24)
     clip = ImageClip("my_picture.png") # or .jpeg, .tiff, ...
-    clip = TextClip("Hello !", font="Amiri-Bold", fontsize=70, color="black")
+    clip = TextClip("Hello!", font="Amiri-Bold", fontsize=70, color="black")
     clip = ColorClip(size=(460,380), color=[R,G,B])
 
     # AUDIO CLIPS
-    clip = AudioFileClip("my_audiofile.mp3") # or .ogg, .wav... or a video !
+    clip = AudioFileClip("my_audiofile.mp3") # or .ogg, .wav... or a video!
     clip = AudioArrayClip(numpy_array, fps=44100) # from a numerical array
     clip = AudioClip(make_frame, duration=3) # uses a function make_frame(t)
 
@@ -30,7 +30,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 Categories of video clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``,``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
+Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``, ``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
 
 VideoClip
 """"""""""
@@ -54,7 +54,7 @@ VideoClip
    :width: 128 px
    :align: center
 
-Note that clips make with a `make_frame` do not have an explicit frame rate, so you must provide a frame rate (``fps``, frames er second) for ``write_gif`` and ``write_videofile``, and more generally for any methods that requires iterating through the frames.
+Note that clips made with a `make_frame` do not have an explicit frame rate, so you must provide a frame rate (``fps``, frames er second) for ``write_gif`` and ``write_videofile``, and more generally for any methods that requires iterating through the frames.
 
 VideoFileClip
 """""""""""""""
@@ -109,9 +109,9 @@ Here is how you make a textclip (you won't need all these options all the time):
     myclip = TextClip("Hello", font='Amiri-Bold')
 
 
-The font can be any font installed on your computer, but ImageMagick will have specific names for it. For instance the *normal* Amiri font will be called ``Amiri-Regular`` while the Impact font will be called ``Impact-Normal``. To get a list of the possible fonts, type ``TextClip.list('fonts')``. To find all the font names related to a given font, use for instance ::
+The font can be any font installed on your computer, but ImageMagick will have specific names for it. For instance the *normal* Amiri font will be called ``Amiri-Regular`` while the Impact font will be called ``Impact-Normal``. To get a list of the possible fonts, type ``TextClip.list('font')``. To find all the font names related to a given font, use for instance ::
 
-    TextClip.search('Amiri', 'fonts') # Returns all font names containing Amiri
+    TextClip.search('Amiri', 'font') # Returns all font names containing Amiri
 
 Note also that the use of a stroke (or contour) will not work well on small letters, so if you need a small text with a contour, it is better to generate a big text, then downsize it: ::
 
@@ -169,9 +169,9 @@ MoviePy has default codec names for the most common file extensions. If you want
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
 
     # Make a video showing a flower for 5 seconds
-    my_clip = Image("flower.jpeg") # has infinite duration
-    my_clip.write_videofile("flower.mp4") # Will fail ! NO DURATION !
-    my_clip.set_duration(5).write_videofile("flower.mp4") # works !
+    my_clip = ImageClip("flower.jpeg") # has infinite duration
+    my_clip.write_videofile("flower.mp4") # Will fail! NO DURATION!
+    my_clip.set_duration(5).write_videofile("flower.mp4") # works!
 
 
 Animated GIFs
