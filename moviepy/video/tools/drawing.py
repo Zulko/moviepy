@@ -81,7 +81,7 @@ def color_gradient(
     col1, col2
         Either floats between 0 and 1 (for gradients used in masks)
         or [R,G,B] arrays (for colored gradients).
-                         
+
     shape
         'linear', 'bilinear', or 'circular'.
         In a linear gradient the color varies in one direction,
@@ -98,7 +98,7 @@ def color_gradient(
         only occur near p2 (before that everything is of color ``col1``)
         If the offset is 0.9 in a radial gradient, the gradient will
         occur in the region located between 90% and 100% of the radius,
-        this creates a blurry disc of radius d(p1,p2).  
+        this creates a blurry disc of radius d(p1,p2).
     
     Returns
     --------
@@ -106,7 +106,7 @@ def color_gradient(
     image
         An Numpy array of dimensions (W,H,ncolors) of type float
         representing the image of the gradient.
-        
+
     
     Examples
     ---------
@@ -193,7 +193,7 @@ def color_split(
     x: (int)
         If provided, the image is splitted horizontally in x, the left
         region being region 1.
-            
+
     y: (int)
         If provided, the image is splitted vertically in y, the top region
         being region 1.
@@ -207,11 +207,11 @@ def color_split(
         ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
         floats. Region 1 is then the region on the left when starting
         in position ``p1`` and going in the direction given by ``vector``.
-         
+
     gradient_width
         If not zero, the split is not sharp, but gradual over a region of
         width ``gradient_width`` (in pixels). This is preferable in many
-        situations (for instance for antialiasing). 
+        situations (for instance for antialiasing).
      
     
     Examples
@@ -224,7 +224,7 @@ def color_split(
     >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
     >>> # An image splitted along an arbitrary line (see below) 
     >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
-            
+
     """
 
     if grad_width or ((x is None) and (y is None)):

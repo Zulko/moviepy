@@ -96,6 +96,7 @@ For advanced image processing, you will need one or several of the following pac
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV 2.4.6`_ or a more recent version (one that provides the package ``cv2``) may be needed for some advanced image manipulation.
 - `Matplotlib`_
+- `Blend Modes`_ for using the BlendedCompositeVideoClip for [blend modes](https://en.wikipedia.org/wiki/Blend_modes)
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
@@ -212,6 +213,7 @@ Maintainers
 .. _ImageMagick: https://www.imagemagick.org/script/index.php
 .. _`Matplotlib`: https://matplotlib.org/
 .. _`Sphinx`: https://www.sphinx-doc.org/en/master/setuptools.html
+].. _`Blend Modes`: https://github.com/flrs/blend_modes
 
 .. People
 .. _Zulko: https://github.com/Zulko

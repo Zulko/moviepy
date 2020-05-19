@@ -16,9 +16,9 @@ except ImportError:
 
 
 @pytest.mark.skipif(not matplotlib, reason="no mpl")
-@pytest.mark.skipif(PYTHON_VERSION == "3.5" and TRAVIS, reason="travis py35")
+@pytest.mark.skipif(TRAVIS, reason="travis")
 def test_matplotlib():
-    # for now, python 3.5 installs a version of matplotlib that complains
+    # for now, python (>?)3.5 installs a version of matplotlib that complains
     # about $DISPLAY variable, so lets just ignore for now.
 
     x = np.linspace(-2, 2, 200)
