@@ -55,7 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AudioFileClip` would not generate audio identical to the original file [#1108]
 - Several issues resulting from incorrect time values due to floating point errors [#1195], for example:
     - Blank frames at the end of clips [#210]
-    - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [#646] 
+    - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [#646]
+- Applying `resize` with a non-constant `newsize` to a clip with a mask would remove the mask [#1200] 
 
 
 ## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
