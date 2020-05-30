@@ -1262,9 +1262,9 @@ class TextClip(ImageClip):
         self.stroke_color = stroke_color
 
         if remove_temp:
-            if os.path.exists(tempfilename):
+            if tempfilename is not None and os.path.exists(tempfilename):
                 os.remove(tempfilename)
-            if os.path.exists(temptxt):
+            if temptxt is not None and os.path.exists(temptxt):
                 os.remove(temptxt)
 
     @staticmethod
