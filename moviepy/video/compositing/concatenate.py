@@ -72,6 +72,7 @@ def concatenate_videoclips(
     h = max(r[1] for r in sizes)
 
     tt = np.maximum(0, tt + padding * np.arange(len(tt)))
+    tt[-1] -= padding  # Last element is the duration of the whole
 
     if method == "chain":
 
