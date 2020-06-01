@@ -140,4 +140,6 @@ jobs:
           pip install -e .[doc]
 
       - name: Coveralls
-        run: coveralls
+        run: |
+          export COVERALLS_REPO_TOKEN=w480ZQkQQ8I9wZECi8kA3m2SqqTjNis0Y
+          coveralls
