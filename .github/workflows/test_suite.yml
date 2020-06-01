@@ -4,11 +4,10 @@
 name: Run Test Suite
 
 on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches: [ master ]
+  [push, pull_request]
+  schedule:
+    # Run once a week
+    - cron:  '*/10080 * * * *'
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it
@@ -75,8 +74,6 @@ jobs:
           python --version
           which python
           python -m site --user-site
-          echo %PYTHONPATH%
-          echo %PYTHONHOME%
 
       - name: Install dependencies
         shell: cmd

@@ -1,20 +1,19 @@
 name: Code Format Check
 
 on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches: [ master ]
+  [push, pull_request]
+  schedule:
+    # Run once a week
+    - cron:  '*/10080 * * * *'
 
 
 jobs:
-  lint:
+  black:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2    
-      - name: Black Code Formatter
+      - name: Black
         uses: lgeiger/black-action@v1.0.1    
         with:
           args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
@@ -31,7 +30,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install .
           pip install flake8
-      - name: Lint with flake8
+      - name: Flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
           flake8 . --count --select=E901,E999,F821,F822,F823,W605 --show-source --statistics
