@@ -113,11 +113,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Python version
         run: |
           python --version
           which python
           python -m site --user-site
+
       - name: Install dependencies
         run: |
           python -m pip install -e ".[optional, test, doc]"
