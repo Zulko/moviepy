@@ -75,9 +75,13 @@ jobs:
     - name: Install dependencies
       run: |
         python find_latest_imagemagick_version.py > temp.txt
+        type temp.txt
+        cat temp.txt
         set /p IMAGE_MAGICK_VERSION=<temp.txt
 
         echo %IMAGE_MAGICK_VERSION%
+        echo %IMAGE_MAGICK_VERSION%
+
         # Download ImageMagick installer (which also installs ffmpeg.)
         # From http://ftp.fifi.org/ImageMagick/binaries/
         # Might need to be updated from time to time
