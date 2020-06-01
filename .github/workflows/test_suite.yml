@@ -4,10 +4,15 @@
 name: Run Test Suite
 
 on:
-  [push, pull_request]
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
   schedule:
     # Run once a week
-    - cron:  '*/10080 * * * *'
+    - cron:  '* * */7 * *'
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it

@@ -1,10 +1,6 @@
 name: Code Format Check
 
-on:
-  [push, pull_request]
-  schedule:
-    # Run once a week
-    - cron:  '*/10080 * * * *'
+on: [push, pull_request]
 
 
 jobs:
