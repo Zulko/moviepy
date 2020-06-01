@@ -34,9 +34,9 @@ jobs:
     #- name: Install conda python version 3.8
     #  if: matrix.python-version == '3.8'
     #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
-    - name: install pythonw
+    - name: Install pythonw
       run: conda install python.app
-    - name: Python version
+    - name: Python Version Info
       run: |
         pythonw --version
         which python
@@ -51,8 +51,7 @@ jobs:
         pythonw -m pip install -e ".[optional, test, doc]"
         pythonw -m pip install flake8
         pythonw -m pip install --upgrade setuptools
-        pythonw -m pip install --upgrade pytest-cov
-        
+
     - name: Test with pytest
       run: |
         pythonw -m pytest tests/ --doctest-modules -v
@@ -65,7 +64,7 @@ jobs:
         python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
-    - name: Python version
+    - name: Python Version Info
       shell: cmd
       run: |
         python --version
@@ -118,7 +117,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Python version
+      - name: Python Version Info
         run: |
           python --version
           which python
@@ -129,7 +128,6 @@ jobs:
           python -m pip install -e ".[optional, test, doc]"
           python -m pip install flake8
           python -m pip install --upgrade setuptools
-          python -m pip install --upgrade pytest-cov
           cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: Test with pytest
