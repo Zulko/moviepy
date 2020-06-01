@@ -66,39 +66,37 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Python version
+      shell: cmd
       run: |
         python --version
         which python
         python -m site --user-site
-        echo $PYTHONPATH
-        echo $PYTHONHOME
+        echo %PYTHONPATH%
+        echo %PYTHONHOME%
+
     - name: Install dependencies
+      shell: cmd
       run: |
         python find_latest_imagemagick_version.py > temp.txt
-        type temp.txt
-        cat temp.txt
         set /p IMAGE_MAGICK_VERSION=<temp.txt
 
         echo %IMAGE_MAGICK_VERSION%
-        echo $IMAGE_MAGICK_VERSION
-        echo https://imagemagick.org/download/binaries/ImageMagick-$IMAGE_MAGICK_VERSION-$ARCH-static.exe
-
         # Download ImageMagick installer (which also installs ffmpeg.)
         # From http://ftp.fifi.org/ImageMagick/binaries/
         # Might need to be updated from time to time
         # Versions >=7.0 have problems - executables changed names.
         # Assume 64-bit. Need to change to x86 for 32-bit.
-        curl https://imagemagick.org/download/binaries/ImageMagick-$IMAGE_MAGICK_VERSION-$ARCH-static.exe -o ImageMagick.exe
+        curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
 
         # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
-        ImageMagick.exe /SILENT /SP /DIR="$IMAGE_MAGICK_INSTALL_DIR"
+        ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
 
         # Inspect contents and set env vars
-        dir "$IMAGE_MAGICK_INSTALL_DIR"
-        set IMAGEMAGICK_BINARY=$IMAGE_MAGICK_INSTALL_DIR//convert.exe
-        echo $IMAGEMAGICK_BINARY
-        set FMPEG_BINARY="$IMAGE_MAGICK_INSTALL_DIR//ffmpeg.exe"
-        echo $FMPEG_BINARY
+        dir "%IMAGE_MAGICK_INSTALL_DIR%"
+        set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
+        echo %IMAGEMAGICK_BINARY%
+        set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
+        echo %FMPEG_BINARY%
 
         python -m pip install -e ".[optional, test, doc]"
         python -m pip install --upgrade setuptools
@@ -112,6 +110,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
