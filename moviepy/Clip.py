@@ -128,9 +128,9 @@ class Clip:
 
         In the following ``newclip`` a 100 pixels-high clip whose video
         content scrolls from the top to the bottom of the frames of
-        ``clip``.
+        ``clip`` at 50 pixels per second.
 
-        >>> fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]
+        >>> fl = lambda gf, t : gf(t)[int(50 * t) : int(50 * t) + 100, :]
         >>> newclip = clip.fl(fl, apply_to='mask')
 
         """
