@@ -1,6 +1,12 @@
 name: Code Format Check
 
-on: [pull_request]
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches: [ master ]
+
 
 jobs:
   lint:
