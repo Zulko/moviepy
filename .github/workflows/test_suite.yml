@@ -52,7 +52,7 @@ jobs:
         brew install imagemagick
         # needed for installing matplotlib
         brew install pkg-config
-        pythonw -m pip install -e ".[optional, test, doc]"
+        pythonw -m pip install -e ".[test]"
         pythonw -m pip install flake8
         pythonw -m pip install --upgrade setuptools
 
@@ -105,7 +105,7 @@ jobs:
           set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
           echo %FMPEG_BINARY%
 
-          python -m pip install -e ".[optional, test, doc]"
+          python -m pip install -e ".[test]"
           python -m pip install --upgrade setuptools
 
       - name: Test with pytest
