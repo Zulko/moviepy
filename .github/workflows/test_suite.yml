@@ -61,9 +61,14 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: [3.6, 3.7, 3.8]
+      fail-fast: false
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
     - name: Python Version Info
       shell: cmd
       run: |
@@ -93,7 +98,7 @@ jobs:
 
         :: Inspect contents and set env vars
         dir "%IMAGE_MAGICK_INSTALL_DIR%"
-        set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
+        set IMAGEMAGICK_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//convert.exe"
         echo %IMAGEMAGICK_BINARY%
         set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
         echo %FMPEG_BINARY%
