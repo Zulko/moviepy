@@ -81,6 +81,7 @@ jobs:
 
         echo %IMAGE_MAGICK_VERSION%
         echo $IMAGE_MAGICK_VERSION
+        echo https://imagemagick.org/download/binaries/ImageMagick-$IMAGE_MAGICK_VERSION-$ARCH-static.exe
 
         # Download ImageMagick installer (which also installs ffmpeg.)
         # From http://ftp.fifi.org/ImageMagick/binaries/
