@@ -14,6 +14,7 @@ try:
 except ImportError:
     matplotlib = None
 
+
 @pytest.mark.skipif(True)
 @pytest.mark.skipif(not matplotlib, reason="no mpl")
 @pytest.mark.skipif(PYTHON_VERSION == "3.5", reason="travis py35")
