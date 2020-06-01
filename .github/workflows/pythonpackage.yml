@@ -95,17 +95,17 @@ jobs:
         set /p IMAGE_MAGICK_VERSION=<temp.txt
 
         echo %IMAGE_MAGICK_VERSION%
-        Download ImageMagick installer (which also installs ffmpeg.)
-        From http://ftp.fifi.org/ImageMagick/binaries/
-        Might need to be updated from time to time
-        Versions >=7.0 have problems - executables changed names.
-        Assume 64-bit. Need to change to x86 for 32-bit.
+        # Download ImageMagick installer (which also installs ffmpeg.)
+        # From http://ftp.fifi.org/ImageMagick/binaries/
+        # Might need to be updated from time to time
+        # Versions >=7.0 have problems - executables changed names.
+        # Assume 64-bit. Need to change to x86 for 32-bit.
         curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
 
-        Install ImageMagick, telling InnoSetup to not open a window and change default install dir
+        # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
         ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
 
-        Inspect contents and set env vars
+        # Inspect contents and set env vars
         dir "%IMAGE_MAGICK_INSTALL_DIR%"
         set IMAGEMAGICK_BINARY=%IMAGE_MAGICK_INSTALL_DIR%//convert.exe
         echo %IMAGEMAGICK_BINARY%
@@ -113,7 +113,7 @@ jobs:
         echo %FMPEG_BINARY%
 
         python -m pip install -e ".[optional, test, doc]"
-        pythonw -m pip install --upgrade setuptools
+        python -m pip install --upgrade setuptools
 
     - name: Test with pytest
       run: |
