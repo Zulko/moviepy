@@ -80,7 +80,7 @@ jobs:
         set /p IMAGE_MAGICK_VERSION=<temp.txt
 
         echo %IMAGE_MAGICK_VERSION%
-        echo %IMAGE_MAGICK_VERSION%
+        echo $IMAGE_MAGICK_VERSION
 
         # Download ImageMagick installer (which also installs ffmpeg.)
         # From http://ftp.fifi.org/ImageMagick/binaries/
