@@ -5,7 +5,7 @@ Quick presentation
 
 This section explains when MoviePy can be used and how it works.
 
-Do I need MoviePy ?
+Do I need MoviePy?
 ~~~~~~~~~~~~~~~~~~~
 
 Here are a few reasons why you may want to edit videos in Python:
@@ -51,12 +51,12 @@ In a typical MoviePy script, you load video or audio files, modify them, put the
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
 
     # Say that you want it to appear 10s at the center of the screen
-    txt_clip = txt_clip.set_pos('center').set_duration(10)
+    txt_clip = txt_clip.set_position('center').set_duration(10)
 
     # Overlay the text clip on the first video clip
     video = CompositeVideoClip([clip, txt_clip])
 
-    # Write the result to a file (many options available !)
+    # Write the result to a file (many options available!)
     video.write_videofile("myHolidays_edited.webm")
 
 

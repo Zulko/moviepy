@@ -1,0 +1,14 @@
+name: Code Format Check
+
+on: [pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2    
+      - name: Black Code Formatter
+        uses: lgeiger/black-action@v1.0.1    
+        with:
+          args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
