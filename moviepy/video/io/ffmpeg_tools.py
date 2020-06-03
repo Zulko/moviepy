@@ -2,7 +2,7 @@
 
 import os
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import convert_path_to_string
 from moviepy.tools import subprocess_call
 
@@ -15,7 +15,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
     """
     s = "%" + "%02d" % digits + "d.png"
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-f",
         "image2",
@@ -43,7 +43,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         targetname = "%sSUB%d_%d%s" % (name, T1, T2, ext)
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-ss",
         "%0.2f" % t1,
@@ -75,7 +75,7 @@ def ffmpeg_merge_video_audio(
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         audio,
@@ -95,7 +95,7 @@ def ffmpeg_merge_video_audio(
 def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         inputfile,
@@ -113,7 +113,7 @@ def ffmpeg_resize(video, output, size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-i",
         video,
         "-vf",
@@ -121,4 +121,41 @@ def ffmpeg_resize(video, output, size):
         output,
     ]
 
+    subprocess_call(cmd)
+
+
+@convert_path_to_string(("inputfile", "outputfile", "output_dir"))
+def ffmpeg_stabilize_video(
+    inputfile, outputfile=None, output_dir="", overwrite_file=True
+):
+    """
+    Stabilizes ``filename`` and write the result to ``output``.
+
+    Parameters
+    -----------
+
+    inputfile
+      The name of the shaky video
+
+    outputfile
+      The name of new stabilized video
+      Optional: defaults to appending '_stabilized' to the input file name
+
+    output_dir
+      The directory to place the output video in
+      Optional: defaults to the current working directory
+
+    overwrite_file
+      If ``outputfile`` already exists in ``output_dir``, then overwrite ``outputfile``
+      Optional: defaults to True
+    """
+    if not outputfile:
+        without_dir = os.path.basename(inputfile)
+        name, ext = os.path.splitext(without_dir)
+        outputfile = f"{name}_stabilized{ext}"
+
+    outputfile = os.path.join(output_dir, outputfile)
+    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
+    if overwrite_file:
+        cmd.append("-y")
     subprocess_call(cmd)

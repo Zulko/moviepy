@@ -28,7 +28,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
 from .video.io.downloader import download_webfile
-from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip
+from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip, BitmapClip
 from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from .video.compositing.concatenate import concatenate_videoclips
 
