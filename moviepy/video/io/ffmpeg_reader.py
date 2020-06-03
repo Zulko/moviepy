@@ -281,6 +281,7 @@ def ffmpeg_parse_infos(
     (output, error) = proc.communicate()
     infos = error.decode("utf8")
 
+    proc.terminate()
     del proc
 
     if print_infos:
