@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
 
 ### Changed <!-- for changes in existing functionality -->
+- Removed extra `.` in the output file name of `ffmpeg_extract_subclip()` when `targetname` is not specified [#939]
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
