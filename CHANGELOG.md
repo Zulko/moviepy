@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v2.0.0.dev1)
 
-This development version introduces many bug-fixes and changes from v1.0.3. Please note that there may be large backwards-incompatible changes between dev versions!
+This development version introduces many bug-fixes and changes. Please note that there may be large backwards-incompatible changes between dev versions! 
+The online documentation has not been updated to reflect the changes in the v2.0.0 branch, so for help on how to use the new features please refer to the docstrings in the source code.
 Install with `pip install moviepy --pre --upgrade`.
 
 ### Important Announcements
@@ -33,8 +34,6 @@ Install with `pip install moviepy --pre --upgrade`.
 ### Changed <!-- for changes in existing functionality -->
 - `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
 - Removed extra `.` in the output file name of `ffmpeg_extract_subclip()` when `targetname` is not specified [#939]
-
-### Deprecated <!-- for soon-to-be removed features -->
 
 ### Removed <!-- for now removed features -->
 - Support removed for Python versions 2.7, 3.4 & 3.5
