@@ -80,7 +80,7 @@ jobs:
           which python
           python -m site --user-site
 
-      - name: Install dependencies
+      - name: Install Dependencies
         shell: cmd
         run: |
           python find_latest_imagemagick_version.py > temp.txt
@@ -109,7 +109,7 @@ jobs:
           python -m pip install --upgrade setuptools
           python -m pip install ".[test]"
 
-      - name: Test with pytest
+      - name: PyTest
         run: |
           pytest
 
@@ -132,14 +132,14 @@ jobs:
           which python
           python -m site --user-site
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade wheel
           python -m pip install --upgrade setuptools
           python -m pip install ".[test, optional, doc]"
           cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
 
-      - name: Test with pytest
+      - name: PyTest
         run: |
           pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 
