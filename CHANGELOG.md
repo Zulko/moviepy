@@ -5,14 +5,17 @@ All notable changes to this project will be documented in this file.
 The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-05-07)
 
-[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v2.0.0.dev1)
 
+This development version introduces many bug-fixes and changes from v1.0.3. Please note that there may be large backwards-incompatible changes between dev versions!
+Install with `pip install moviepy --pre --upgrade`.
 
 ### Important Announcements
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
 - If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
+- All previously deprecated methods and parameters have been removed [#1115]
 
 ### Added <!-- for new features -->
 - BitmapClip allows creating of custom frames using strings of letters
