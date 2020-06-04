@@ -5,9 +5,26 @@ All notable changes to this project will be documented in this file.
 The format from v2.0.0 onwards is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased](https://github.com/zulko/moviepy/tree/master)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...HEAD)
+
+### Important Announcements
+
+### Added <!-- for new features -->
+
+### Changed <!-- for changes in existing functionality -->
+
+### Deprecated <!-- for soon-to-be removed features -->		
+
+### Removed <!-- for now removed features -->
+
+### Fixed <!-- for any bug fixes -->
+
+
 ## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
 
-[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v2.0.0.dev1)
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.3...v2.0.0.dev1)
 
 This development version introduces many bug-fixes and changes. Please note that there may be large backwards-incompatible changes between dev versions! 
 The online documentation has not been updated to reflect the changes in the v2.0.0 branch, so for help on how to use the new features please refer to the docstrings in the source code.
