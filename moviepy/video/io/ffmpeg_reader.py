@@ -70,9 +70,6 @@ class FFMPEG_VideoReader:
         self.bufsize = bufsize
         self.initialize()
 
-        self.pos = 0  # Will be incremented by `self.read_frame()`
-        self.lastread = self.read_frame()
-
     def initialize(self, starttime=0):
         """Opens the file, creates the pipe. """
 
@@ -121,7 +118,8 @@ class FFMPEG_VideoReader:
             popen_params["creationflags"] = 0x08000000
         print(f"Running command {cmd}")
         self.proc = sp.Popen(cmd, **popen_params)
-        self.pos = self.get_frame_number(starttime)
+        self.pos = self.get_frame_number(starttime) - 1  # This will be incremented by the subsequent `read_frame`
+        self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
@@ -185,16 +183,19 @@ class FFMPEG_VideoReader:
         pos = self.get_frame_number(t)
         # Initialize proc if it is not open
         if not self.proc:
+            print(f"Proc not detected")
             self.initialize(t)
-            self.lastread = self.read_frame()
 
         if pos == self.pos:
+            print("Using lastread")
             return self.lastread
-        elif (pos < self.pos) or (pos > self.pos + 100):
+        elif (pos < self.pos) or (pos > self.pos + 2):
+            print(f"Re-initializing at time={t}, frame={pos}")
             self.initialize(t)
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
+
         result = self.read_frame()
         return result
 
