@@ -116,7 +116,7 @@ class FFMPEG_VideoReader:
         self.proc = sp.Popen(cmd, **popen_params)
 
         # This will be incremented by the subsequent `read_frame`
-        self.pos = (self.get_frame_number(starttime) - 1)
+        self.pos = self.get_frame_number(starttime) - 1
         self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
