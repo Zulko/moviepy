@@ -226,8 +226,8 @@ def ffmpeg_read_image(filename, with_mask=True):
     Wraps FFMPEG_Videoreader to read just one image.
     Returns an ImageClip.
 
-    This function is not meant to be used directly in MoviePy,
-    use ImageClip instead to make clips out of image files.
+    This function is not meant to be used directly in MoviePy.
+    Use ImageClip instead to make clips out of image files.
 
     Parameters
     -----------
@@ -263,7 +263,7 @@ def ffmpeg_parse_infos(
 
     # open the file in a pipe, provoke an error, read output
     is_GIF = filename.endswith(".gif")
-    cmd = [FFMPEG_BINARY, "-i", filename]
+    cmd = [FFMPEG_BINARY, "-i", filename, "-acodec", "copy", "-f", "null", "-"]
     if is_GIF:
         cmd += ["-f", "null", "/dev/null"]
 

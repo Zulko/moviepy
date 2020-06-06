@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added <!-- for new features -->
 
 ### Changed <!-- for changes in existing functionality -->
+- `ffmpeg_parse_infos()` and `VideoFileClip` now detect the actual duration of the decoded video instead of the duration stored in its metadata [#1063]
 
 ### Deprecated <!-- for soon-to-be removed features -->		
 
 ### Removed <!-- for now removed features -->
 
 ### Fixed <!-- for any bug fixes -->
+
 
 
 ## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
