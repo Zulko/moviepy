@@ -5,16 +5,18 @@ and AudioClip.
 """
 
 from copy import copy
-import numpy as np
 
-from moviepy.decorators import (apply_to_mask,
-                                apply_to_audio,
-                                requires_duration,
-                                outplace,
-                                convert_to_seconds,
-                                use_clip_fps_by_default)
-from tqdm import tqdm
+import numpy as np
 import proglog
+
+from moviepy.decorators import (
+    apply_to_audio,
+    apply_to_mask,
+    convert_to_seconds,
+    outplace,
+    requires_duration,
+    use_clip_fps_by_default,
+)
 
 
 class Clip:
@@ -40,12 +42,12 @@ class Clip:
        this case their duration will be ``None``.
 
      """
-   
+
     # prefix for all temporary video and audio files.
-    # You can overwrite it with 
+    # You can overwrite it with
     # >>> Clip._TEMP_FILES_PREFIX = "temp_"
 
-    _TEMP_FILES_PREFIX = 'TEMP_MPY_'
+    _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
 
@@ -69,14 +71,14 @@ class Clip:
         """
 
         newclip = copy(self)
-        if hasattr(self, 'audio'):
+        if hasattr(self, "audio"):
             newclip.audio = copy(self.audio)
-        if hasattr(self, 'mask'):
+        if hasattr(self, "mask"):
             newclip.mask = copy(self.mask)
-            
+
         return newclip
 
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     def get_frame(self, t):
         """
         Gets a numpy array representing the RGB picture of the clip at time t
@@ -92,6 +94,7 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
+            # print(t)
             return self.make_frame(t)
 
     def fl(self, fun, apply_to=None, keep_duration=True):
@@ -125,16 +128,16 @@ class Clip:
 
         In the following ``newclip`` a 100 pixels-high clip whose video
         content scrolls from the top to the bottom of the frames of
-        ``clip``.
+        ``clip`` at 50 pixels per second.
 
-        >>> fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]
+        >>> fl = lambda gf, t : gf(t)[int(50 * t) : int(50 * t) + 100, :]
         >>> newclip = clip.fl(fl, apply_to='mask')
 
         """
         if apply_to is None:
             apply_to = []
 
-        #mf = copy(self.make_frame)
+        # mf = copy(self.make_frame)
         newclip = self.set_make_frame(lambda t: fun(self.get_frame, t))
 
         if not keep_duration:
@@ -145,11 +148,10 @@ class Clip:
             apply_to = [apply_to]
 
         for attr in apply_to:
-            if hasattr(newclip, attr):
-                a = getattr(newclip, attr)
-                if a is not None:
-                    new_a = a.fl(fun, keep_duration=keep_duration)
-                    setattr(newclip, attr, new_a)
+            a = getattr(newclip, attr, None)
+            if a is not None:
+                new_a = a.fl(fun, keep_duration=keep_duration)
+                setattr(newclip, attr, new_a)
 
         return newclip
 
@@ -187,8 +189,9 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        return self.fl(lambda gf, t: gf(t_func(t)), apply_to,
-                       keep_duration=keep_duration)
+        return self.fl(
+            lambda gf, t: gf(t_func(t)), apply_to, keep_duration=keep_duration
+        )
 
     def fx(self, func, *args, **kwargs):
         """
@@ -196,29 +199,26 @@ class Clip:
         Returns the result of ``func(self, *args, **kwargs)``.
         for instance
 
-        >>> newclip = clip.fx(resize, 0.2, method='bilinear')
+        >>> newclip = clip.fx(resize, 0.2, method="bilinear")
 
         is equivalent to
 
-        >>> newclip = resize(clip, 0.2, method='bilinear')
+        >>> newclip = resize(clip, 0.2, method="bilinear")
 
         The motivation of fx is to keep the name of the effect near its
-        parameters, when the effects are chained:
+        parameters when the effects are chained:
 
         >>> from moviepy.video.fx import volumex, resize, mirrorx
-        >>> clip.fx( volumex, 0.5).fx( resize, 0.3).fx( mirrorx )
+        >>> clip.fx(volumex, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
-        >>> resize( volumex( mirrorx( clip ), 0.5), 0.3)
-
+        >>> mirrorx(resize(volumex(clip, 0.5), 0.3))
         """
 
         return func(self, *args, **kwargs)
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
     def set_start(self, t, change_end=True):
         """
@@ -245,11 +245,9 @@ class Clip:
         elif self.end is not None:
             self.duration = self.end - self.start
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
     def set_end(self, t):
         """
@@ -260,20 +258,19 @@ class Clip:
         of the returned clip.
         """
         self.end = t
-        if self.end is None: return
+        if self.end is None:
+            return
         if self.start is None:
             if self.duration is not None:
-                self.start = max(0, t - newclip.duration)
+                self.start = max(0, t - self.duration)
         else:
             self.duration = self.end - self.start
 
-
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     @outplace
-    def set_duration(self, t, change_end=True):
+    def set_duration(self, duration, change_end=True):
         """
         Returns a copy of the clip, with the  ``duration`` attribute
         set to ``t``, which can be expressed in seconds (15.35), in (min, sec),
@@ -284,16 +281,14 @@ class Clip:
         be modified in function of the duration and the preset end
         of the clip.
         """
-        self.duration = t
+        self.duration = duration
 
         if change_end:
-            self.end = None if (t is None) else (self.start + t)
+            self.end = None if (duration is None) else (self.start + duration)
         else:
             if self.duration is None:
-                raise Exception("Cannot change clip start when new"
-                                "duration is None")
-            self.start = self.end - t
-
+                raise Exception("Cannot change clip start when new" "duration is None")
+            self.start = self.end - duration
 
     @outplace
     def set_make_frame(self, make_frame):
@@ -309,7 +304,6 @@ class Clip:
         write_videofile, iterframe, etc. """
         self.fps = fps
 
-
     @outplace
     def set_ismask(self, ismask):
         """ Says wheter the clip is a mask or not (ismask is a boolean)"""
@@ -320,7 +314,7 @@ class Clip:
         """ Sets wheter the clip should keep the last frame read in memory """
         self.memoize = memoize
 
-    @convert_to_seconds(['t'])
+    @convert_to_seconds(["t"])
     def is_playing(self, t):
         """
 
@@ -345,16 +339,14 @@ class Clip:
             # If we arrive here, a part of t falls in the clip
             result = 1 * (t >= self.start)
             if self.end is not None:
-                result *= (t <= self.end)
+                result *= t <= self.end
             return result
 
         else:
 
-            return((t >= self.start) and
-                   ((self.end is None) or (t < self.end)))
+            return (t >= self.start) and ((self.end is None) or (t < self.end))
 
-
-    @convert_to_seconds(['t_start', 't_end'])
+    @convert_to_seconds(["t_start", "t_end"])
     @apply_to_mask
     @apply_to_audio
     def subclip(self, t_start=0, t_end=None):
@@ -382,12 +374,14 @@ class Clip:
         if t_start < 0:
             # Make this more Python-like, a negative value means to move
             # backward from the end of the clip
-            t_start = self.duration + t_start   # Remember t_start is negative
+            t_start = self.duration + t_start  # Remember t_start is negative
 
         if (self.duration is not None) and (t_start > self.duration):
-            raise ValueError("t_start (%.02f) " % t_start +
-                             "should be smaller than the clip's " +
-                             "duration (%.02f)." % self.duration)
+            raise ValueError(
+                "t_start (%.02f) " % t_start
+                + "should be smaller than the clip's "
+                + "duration (%.02f)." % self.duration
+            )
 
         newclip = self.fl_time(lambda t: t + t_start, apply_to=[])
 
@@ -399,8 +393,11 @@ class Clip:
 
             if self.duration is None:
 
-                print("Error: subclip with negative times (here %s)" % (str((t_start, t_end)))
-                      + " can only be extracted from clips with a ``duration``")
+                print(
+                    "Error: subclip with negative times (here %s)"
+                    % (str((t_start, t_end)))
+                    + " can only be extracted from clips with a ``duration``"
+                )
 
             else:
 
@@ -413,10 +410,9 @@ class Clip:
 
         return newclip
 
-
     @apply_to_mask
     @apply_to_audio
-    @convert_to_seconds(['ta', 'tb'])
+    @convert_to_seconds(["ta", "tb"])
     def cutout(self, ta, tb):
         """
         Returns a clip playing the content of the current clip but
@@ -431,8 +427,7 @@ class Clip:
         if they exist.
         """
 
-        fl = lambda t: t + (t >= ta)*(tb - ta)
-        newclip = self.fl_time(fl)
+        newclip = self.fl_time(lambda t: t + (t >= ta) * (tb - ta))
 
         if self.duration is not None:
 
@@ -444,8 +439,7 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times = False, logger=None,
-                    dtype=None):
+    def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
         """ Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN np.array,
@@ -471,7 +465,11 @@ class Clip:
                      for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
-        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0/fps)):
+        for frame_index in logger.iter_bar(t=np.arange(0, int(self.duration * fps))):
+            # int is used to ensure that floating point errors are rounded
+            # down to the nearest integer
+            t = frame_index / fps
+
             frame = self.get_frame(t)
             if (dtype is not None) and (frame.dtype != dtype):
                 frame = frame.astype(dtype)
@@ -495,6 +493,23 @@ class Clip:
         #    * Therefore, should NOT be called by __del__().
         pass
 
+    def __eq__(self, other):
+        if not isinstance(other, Clip):
+            return NotImplemented
+
+        # Make sure that the total number of frames is the same
+        self_length = self.duration * self.fps
+        other_length = other.duration * other.fps
+        if self_length != other_length:
+            return False
+
+        # Make sure that each frame is the same
+        for frame1, frame2 in zip(self.iter_frames(), other.iter_frames()):
+            if not np.array_equal(frame1, frame2):
+                return False
+
+        return True
+
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 
     def __enter__(self):
@@ -502,4 +517,3 @@ class Clip:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
-
