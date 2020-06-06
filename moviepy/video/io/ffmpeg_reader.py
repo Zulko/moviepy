@@ -198,10 +198,10 @@ class FFMPEG_VideoReader:
 
     def get_frame_number(self, t):
         """Helper method to return the frame number at time ``t``"""
-        # I use that horrible '+0.00001' hack because sometimes due to numerical
+        # I used this horrible '+0.00001' hack because sometimes due to numerical
         # imprecisions a 3.0 can become a 2.99999999... which makes the int()
-        # go to the previous integer. This makes the fetching more robust in the
-        # case where you get the nth frame by writing get_frame(n/fps).
+        # go to the previous integer. This makes the fetching more robust when you
+        # are getting the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001) + 1
 
     def close(self, delete_lastread=True):
