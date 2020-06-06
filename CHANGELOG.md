@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added <!-- for new features -->
 
 ### Changed <!-- for changes in existing functionality -->
+- `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader`
 
 ### Deprecated <!-- for soon-to-be removed features -->		
 
