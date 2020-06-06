@@ -16,8 +16,6 @@ import numpy as np
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
-logging.captureWarnings(True)
-
 
 class FFMPEG_VideoReader:
     def __init__(
@@ -73,7 +71,7 @@ class FFMPEG_VideoReader:
     def initialize(self, starttime=0):
         """Opens the file, creates the pipe. """
 
-        self.close()  # if any
+        self.close(delete_lastread=False)  # if any
 
         if starttime != 0:
             offset = min(1, starttime)
@@ -116,9 +114,10 @@ class FFMPEG_VideoReader:
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-        print(f"Running command {cmd}")
         self.proc = sp.Popen(cmd, **popen_params)
-        self.pos = self.get_frame_number(starttime) - 1  # This will be incremented by the subsequent `read_frame`
+        self.pos = (
+            self.get_frame_number(starttime) - 1
+        )  # This will be incremented by the subsequent `read_frame`
         self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
@@ -146,7 +145,6 @@ class FFMPEG_VideoReader:
                 + "Using the last valid frame instead.",
                 UserWarning,
             )
-
             if not hasattr(self, "lastread"):
                 raise IOError(
                     (
@@ -185,19 +183,19 @@ class FFMPEG_VideoReader:
         if not self.proc:
             print(f"Proc not detected")
             self.initialize(t)
+            return self.lastread
 
         if pos == self.pos:
-            print("Using lastread")
             return self.lastread
-        elif (pos < self.pos) or (pos > self.pos + 2):
-            print(f"Re-initializing at time={t}, frame={pos}")
+        elif (pos < self.pos) or (pos > self.pos + 100):
+            # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
+            return self.lastread
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
-
-        result = self.read_frame()
-        return result
+            result = self.read_frame()
+            return result
 
     def get_frame_number(self, t):
         """Helper method to return the frame number at time ``t``"""
@@ -207,14 +205,14 @@ class FFMPEG_VideoReader:
         # case where you get the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001) + 1
 
-    def close(self):
+    def close(self, delete_lastread=True):
         if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
             self.proc = None
-        if hasattr(self, "lastread"):
+        if delete_lastread and hasattr(self, "lastread"):
             del self.lastread
 
     def __del__(self):
