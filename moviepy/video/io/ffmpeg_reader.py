@@ -115,9 +115,9 @@ class FFMPEG_VideoReader:
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
         self.proc = sp.Popen(cmd, **popen_params)
-        self.pos = (
-            self.get_frame_number(starttime) - 1
-        )  # This will be incremented by the subsequent `read_frame`
+
+        # This will be incremented by the subsequent `read_frame`
+        self.pos = (self.get_frame_number(starttime) - 1)
         self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
