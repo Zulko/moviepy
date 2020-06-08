@@ -260,12 +260,8 @@ def ffmpeg_parse_infos(
     fetching the uncomplete frames at the end, which raises an error.
 
     """
-
-    # open the file in a pipe, provoke an error, read output
-    is_GIF = filename.endswith(".gif")
-    cmd = [FFMPEG_BINARY, "-i", filename, "-acodec", "copy", "-f", "null", "-"]
-    if is_GIF:
-        cmd += ["-f", "null", "/dev/null"]
+    # Open the file in a pipe, read output
+    cmd = [FFMPEG_BINARY, "-i", filename, "-codec", "copy", "-f", "null", "-"]
 
     popen_params = {
         "bufsize": 10 ** 5,
@@ -306,10 +302,7 @@ def ffmpeg_parse_infos(
 
     if check_duration:
         try:
-            keyword = "frame=" if is_GIF else "Duration: "
-            # for large GIFS the "full" duration is presented as the last element in the list.
-            index = -1 if is_GIF else 0
-            line = [l for l in lines if keyword in l][index]
+            line = [l for l in lines if "time=" in l][-1]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
         except Exception:
