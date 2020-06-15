@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added <!-- for new features -->
 
 ### Changed <!-- for changes in existing functionality -->
+- `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader` [#1220]
 - `ffmpeg_parse_infos()` and `VideoFileClip` now detect the actual duration of the decoded video instead of the duration stored in its metadata [#1063]
 
 ### Deprecated <!-- for soon-to-be removed features -->		
@@ -21,7 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed <!-- for now removed features -->
 
 ### Fixed <!-- for any bug fixes -->
-
+- `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
+- Warnings are no longer being supressed by MoviePy [#1191]
 
 
 ## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
