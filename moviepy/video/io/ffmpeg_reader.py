@@ -5,7 +5,6 @@ using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 
 from __future__ import division
 
-import logging
 import os
 import re
 import subprocess as sp
@@ -15,8 +14,6 @@ import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
-
-logging.captureWarnings(True)
 
 
 class FFMPEG_VideoReader:
@@ -70,13 +67,10 @@ class FFMPEG_VideoReader:
         self.bufsize = bufsize
         self.initialize()
 
-        self.pos = 1
-        self.lastread = self.read_frame()
-
     def initialize(self, starttime=0):
         """Opens the file, creates the pipe. """
 
-        self.close()  # if any
+        self.close(delete_lastread=False)  # if any
 
         if starttime != 0:
             offset = min(1, starttime)
@@ -119,14 +113,18 @@ class FFMPEG_VideoReader:
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-
         self.proc = sp.Popen(cmd, **popen_params)
+
+        # This will be incremented by the subsequent `read_frame`
+        self.pos = self.get_frame_number(starttime) - 1
+        self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames """
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth * w * h)
+
             # self.proc.stdout.flush()
         self.pos += n
 
@@ -135,8 +133,9 @@ class FFMPEG_VideoReader:
         nbytes = self.depth * w * h
 
         s = self.proc.stdout.read(nbytes)
-        if len(s) != nbytes:
+        self.pos += 1
 
+        if len(s) != nbytes:
             warnings.warn(
                 "Warning: in file %s, " % (self.filename)
                 + "%d bytes wanted but %d bytes read," % (nbytes, len(s))
@@ -145,18 +144,16 @@ class FFMPEG_VideoReader:
                 + "Using the last valid frame instead.",
                 UserWarning,
             )
-
             if not hasattr(self, "lastread"):
                 raise IOError(
                     (
                         "MoviePy error: failed to read the first frame of "
-                        "video file %s. That might mean that the file is "
+                        f"video file {self.filename}. That might mean that the file is "
                         "corrupted. That may also mean that you are using "
                         "a deprecated version of FFMPEG. On Ubuntu/Debian "
                         "for instance the version in the repos is deprecated. "
                         "Please update to a recent version from the website."
                     )
-                    % (self.filename)
                 )
 
             result = self.lastread
@@ -180,40 +177,41 @@ class FFMPEG_VideoReader:
         whenever possible, by moving between adjacent frames.
         """
 
-        # these definitely need to be rechecked sometime. Seems to work.
-
-        # I use that horrible '+0.00001' hack because sometimes due to numerical
-        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
-        # go to the previous integer. This makes the fetching more robust in the
-        # case where you get the nth frame by writing get_frame(n/fps).
-
-        pos = int(self.fps * t + 0.00001) + 1
-
+        pos = self.get_frame_number(t)
         # Initialize proc if it is not open
         if not self.proc:
+            print(f"Proc not detected")
             self.initialize(t)
-            self.pos = pos
-            self.lastread = self.read_frame()
+            return self.lastread
 
         if pos == self.pos:
             return self.lastread
         elif (pos < self.pos) or (pos > self.pos + 100):
+            # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            self.pos = pos
+            return self.lastread
         else:
+            # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
-        result = self.read_frame()
-        self.pos = pos
-        return result
+            result = self.read_frame()
+            return result
 
-    def close(self):
+    def get_frame_number(self, t):
+        """Helper method to return the frame number at time ``t``"""
+        # I used this horrible '+0.00001' hack because sometimes due to numerical
+        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
+        # go to the previous integer. This makes the fetching more robust when you
+        # are getting the nth frame by writing get_frame(n/fps).
+        return int(self.fps * t + 0.00001) + 1
+
+    def close(self, delete_lastread=True):
         if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
             self.proc = None
-        if hasattr(self, "lastread"):
+        if delete_lastread and hasattr(self, "lastread"):
             del self.lastread
 
     def __del__(self):

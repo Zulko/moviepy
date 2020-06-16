@@ -68,7 +68,7 @@ class FFMPEG_AudioReader:
     def initialize(self, starttime=0):
         """ Opens the file, creates the pipe. """
 
-        self.close_proc()  # if any
+        self.close()  # if any
 
         if starttime != 0:
             offset = min(1, starttime)
@@ -160,14 +160,6 @@ class FFMPEG_AudioReader:
         # last case standing: pos = current pos
         self.pos = pos
 
-    def close_proc(self):
-        if hasattr(self, "proc") and self.proc is not None:
-            self.proc.terminate()
-            for std in [self.proc.stdout, self.proc.stderr]:
-                std.close()
-            self.proc.wait()
-            self.proc = None
-
     def get_frame(self, tt):
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
@@ -255,6 +247,14 @@ class FFMPEG_AudioReader:
 
         self.buffer_startframe = new_bufferstart
 
+    def close(self):
+        if self.proc:
+            self.proc.terminate()
+            self.proc.stdout.close()
+            self.proc.stderr.close()
+            self.proc.wait()
+            self.proc = None
+
     def __del__(self):
         # If the garbage collector comes, make sure the subprocess is terminated.
-        self.close_proc()
+        self.close()
