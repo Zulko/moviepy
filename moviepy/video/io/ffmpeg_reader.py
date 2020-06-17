@@ -58,9 +58,9 @@ class FFMPEG_VideoReader:
         self.infos = infos
 
         self.pix_fmt = pix_fmt
-        self.depth = (
-            4 if pix_fmt[-1] == "a" else 3
-        )  # See https://github.com/Zulko/moviepy/issues/1070#issuecomment-644457274
+        self.depth = 4 if pix_fmt[-1] == "a" else 3
+        # 'a' represents 'alpha' which means that each pixel has 4 values instead of 3.
+        # See https://github.com/Zulko/moviepy/issues/1070#issuecomment-644457274
 
         if bufsize is None:
             w, h = self.size
