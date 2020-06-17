@@ -53,7 +53,7 @@ class VideoFileClip(VideoClip):
 
     pix_fmt
       Optional: Pixel format for the video to read. If is not specified
-      'rgb24' will be used as the default format unless ``withmask`` is set
+      'rgb24' will be used as the default format unless ``has_mask`` is set
       as ``True``, then 'rgba' will be used.
 
 
