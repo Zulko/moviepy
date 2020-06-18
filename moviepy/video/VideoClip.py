@@ -168,6 +168,7 @@ class VideoClip(Clip):
         threads=None,
         ffmpeg_params=None,
         logger="bar",
+        pix_fmt=None,
     ):
         """Write the clip to a videofile.
 
@@ -271,6 +272,9 @@ class VideoClip(Clip):
 
         logger
           Either "bar" for progress bar or None or any Proglog logger.
+        
+        pix_fmt
+          Pixel format for the output video file.
 
         Examples
         ========
@@ -348,6 +352,7 @@ class VideoClip(Clip):
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
+            pix_fmt=pix_fmt,
         )
 
         if remove_temp and make_audio:
@@ -424,6 +429,7 @@ class VideoClip(Clip):
         colors=None,
         tempfiles=False,
         logger="bar",
+        pix_fmt=None,
     ):
         """ Write the VideoClip to a GIF file.
 
@@ -462,6 +468,12 @@ class VideoClip(Clip):
 
         progress_bar
           If True, displays a progress bar
+
+        pix_fmt
+          Pixel format for the output gif file. If is not specified
+          'rgb24' will be used as the default format unless ``clip.mask``
+          exist, then 'rgba' will be used. This option is only going to
+          be accepted if ``program=ffmpeg`` or when ``tempfiles=True``
 
 
         Notes
@@ -503,6 +515,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
         else:
             # convert imageio opt variable to something that can be used with
@@ -519,6 +532,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
 
     # -----------------------------------------------------------------

@@ -29,6 +29,7 @@ def write_gif_with_tempfiles(
     dispose=True,
     colors=None,
     logger="bar",
+    pix_fmt=None,
 ):
     """ Write the VideoClip to a GIF file.
 
@@ -56,7 +57,13 @@ def write_gif_with_tempfiles(
 
     delay = int(100.0 / fps)
 
+    if clip.mask is None:
+        withmask = False
+
     if program == "ImageMagick":
+        if not pix_fmt:
+            pix_fmt = "RGBA" if withmask else "RGB"
+
         logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
         cmd = (
             [
@@ -73,12 +80,17 @@ def write_gif_with_tempfiles(
                 "%02d" % fuzz + "%",
                 "-layers",
                 "%s" % opt,
+                "-set",
+                "colorspace",
+                pix_fmt,
             ]
             + (["-colors", "%d" % colors] if colors is not None else [])
             + [filename]
         )
 
     elif program == "ffmpeg":
+        if not pix_fmt:
+            pix_fmt = "rgba" if withmask else "rgb24"
 
         cmd = [
             FFMPEG_BINARY,
@@ -92,6 +104,8 @@ def write_gif_with_tempfiles(
             "-r",
             str(fps),
             filename,
+            "-pix_fmt",
+            (pix_fmt),
         ]
 
     try:
@@ -133,6 +147,7 @@ def write_gif(
     dispose=True,
     colors=None,
     logger="bar",
+    pix_fmt=None,
 ):
     """ Write the VideoClip to a GIF file, without temporary files.
 
@@ -163,6 +178,12 @@ def write_gif(
       (ImageMagick only) Compresses the GIF by considering that
       the colors that are less than fuzz% different are in fact
       the same.
+
+    pix_fmt
+      Pixel format for the output gif file. If is not specified
+      'rgb24' will be used as the default format unless ``clip.mask``
+      exist, then 'rgba' will be used. This option is going to
+      be ignored if ``program=ImageMagick``.
 
 
     Notes
@@ -195,6 +216,8 @@ def write_gif(
     logger = proglog.default_bar_logger(logger)
     if clip.mask is None:
         withmask = False
+    if not pix_fmt:
+        pix_fmt = "rgba" if withmask else "rgb24"
 
     cmd1 = [
         FFMPEG_BINARY,
@@ -210,7 +233,7 @@ def write_gif(
         "-s",
         "%dx%d" % (clip.w, clip.h),
         "-pix_fmt",
-        ("rgba" if withmask else "rgb24"),
+        (pix_fmt),
         "-i",
         "-",
     ]
@@ -225,14 +248,7 @@ def write_gif(
         popen_params["stdout"] = sp.DEVNULL
 
         proc1 = sp.Popen(
-            cmd1
-            + [
-                "-pix_fmt",
-                ("rgba" if withmask else "rgb24"),
-                "-r",
-                "%.02f" % fps,
-                filename,
-            ],
+            cmd1 + ["-pix_fmt", (pix_fmt), "-r", "%.02f" % fps, filename,],
             **popen_params,
         )
     else:

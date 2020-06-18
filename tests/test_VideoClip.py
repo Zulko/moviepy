@@ -103,10 +103,26 @@ def test_write_gif_ffmpeg():
     close_all_clips(locals())
 
 
+def test_write_gif_ffmpeg_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
+    clip.write_gif(location, program="ffmpeg", pix_fmt="bgr24")
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
 def test_write_gif_ffmpeg_tmpfiles():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True)
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
+def test_write_gif_ffmpeg_tmpfiles_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
+    clip.write_gif(location, program="ffmpeg", tempfiles=True, pix_fmt="bgr24")
     assert os.path.isfile(location)
     close_all_clips(locals())
 
@@ -124,6 +140,14 @@ def test_write_gif_ImageMagick_tmpfiles():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True)
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
+def test_write_gif_ImageMagick_tmpfiles_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
+    clip.write_gif(location, program="ImageMagick", tempfiles=True, pix_fmt="SGI")
     assert os.path.isfile(location)
     close_all_clips(locals())
 

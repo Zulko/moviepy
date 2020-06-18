@@ -51,6 +51,11 @@ class VideoFileClip(VideoClip):
       can be set to 'fps', which may be helpful if importing slow-motion videos
       that get messed up otherwise.
 
+    pix_fmt
+      Optional: Pixel format for the video to read. If is not specified
+      'rgb24' will be used as the default format unless ``has_mask`` is set
+      as ``True``, then 'rgba' will be used.
+
 
     Attributes
     -----------
@@ -86,12 +91,14 @@ class VideoFileClip(VideoClip):
         audio_fps=44100,
         audio_nbytes=2,
         fps_source="tbr",
+        pix_fmt=None,
     ):
 
         VideoClip.__init__(self)
 
         # Make a reader
-        pix_fmt = "rgba" if has_mask else "rgb24"
+        if not pix_fmt:
+            pix_fmt = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(
             filename,
             pix_fmt=pix_fmt,
