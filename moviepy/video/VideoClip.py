@@ -429,6 +429,7 @@ class VideoClip(Clip):
         colors=None,
         tempfiles=False,
         logger="bar",
+        pix_fmt=None,
     ):
         """ Write the VideoClip to a GIF file.
 
@@ -467,6 +468,12 @@ class VideoClip(Clip):
 
         progress_bar
           If True, displays a progress bar
+
+        pix_fmt
+          Pixel format for the output gif file. If is not specified
+          'rgb24' will be used as the default format unless ``clip.mask``
+          exist, then 'rgba' will be used. This option is only going to
+          be accepted if ``program=ffmpeg`` 
 
 
         Notes
@@ -508,6 +515,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
         else:
             # convert imageio opt variable to something that can be used with
@@ -524,6 +532,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
 
     # -----------------------------------------------------------------
