@@ -473,7 +473,7 @@ class VideoClip(Clip):
           Pixel format for the output gif file. If is not specified
           'rgb24' will be used as the default format unless ``clip.mask``
           exist, then 'rgba' will be used. This option is only going to
-          be accepted if ``program=ffmpeg`` 
+          be accepted if ``program=ffmpeg`` or when ``tempfiles=True``
 
 
         Notes

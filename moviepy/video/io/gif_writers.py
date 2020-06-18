@@ -59,10 +59,11 @@ def write_gif_with_tempfiles(
 
     if clip.mask is None:
         withmask = False
-    if not pix_fmt:
-        pix_fmt = "rgba" if withmask else "rgb24"
 
     if program == "ImageMagick":
+        if not pix_fmt:
+            pix_fmt = "RGBA" if withmask else "RGB"
+
         logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
         cmd = (
             [
@@ -79,12 +80,17 @@ def write_gif_with_tempfiles(
                 "%02d" % fuzz + "%",
                 "-layers",
                 "%s" % opt,
+                "-set",
+                "colorspace",
+                pix_fmt,
             ]
             + (["-colors", "%d" % colors] if colors is not None else [])
             + [filename]
         )
 
     elif program == "ffmpeg":
+        if not pix_fmt:
+            pix_fmt = "rgba" if withmask else "rgb24"
 
         cmd = [
             FFMPEG_BINARY,

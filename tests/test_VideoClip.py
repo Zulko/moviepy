@@ -144,6 +144,14 @@ def test_write_gif_ImageMagick_tmpfiles():
     close_all_clips(locals())
 
 
+def test_write_gif_ImageMagick_tmpfiles_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
+    clip.write_gif(location, program="ImageMagick", tempfiles=True, pix_fmt="SGI")
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
 def test_subfx():
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
     transform = lambda c: speedx(c, 0.5)
