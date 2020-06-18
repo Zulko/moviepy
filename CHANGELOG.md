@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Important Announcements
 
 ### Added <!-- for new features -->
+- New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [#1237]
 
 ### Changed <!-- for changes in existing functionality -->
 - `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader` [#1220]
