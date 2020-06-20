@@ -43,7 +43,7 @@ if not os.path.exists("knights.mp4"):
 
 
 audio = (
-    AudioFileClip("frontier.mp4")
+    AudioFileClip("frontier.mp4.webm")
     .subclip((4, 7), (4, 18))
     .audio_fadein(1)
     .audio_fadeout(1)
@@ -59,7 +59,7 @@ print("Analyzed the audio, found a period of %.02f seconds" % audio_period)
 clip = (
     VideoFileClip("./knights.mp4", audio=False)
     .subclip((1, 24.15), (1, 26))
-    .crop(x1=332, x2=910, y2=686)
+    .crop(x1=500, x2=1350)
 )
 
 video_period = find_video_period(clip, tmin=0.3)
