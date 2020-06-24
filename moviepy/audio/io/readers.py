@@ -41,7 +41,9 @@ class FFMPEG_AudioReader:
     def __init__(
         self, filename, buffersize, print_infos=False, fps=44100, nbytes=2, nchannels=2
     ):
-
+        # TODO bring FFMPEG_AudioReader more in line with FFMPEG_VideoReader
+        # E.g. here self.pos is still 1-indexed.
+        # (or have them inherit from a shared parent class)
         self.filename = filename
         self.nbytes = nbytes
         self.fps = fps
