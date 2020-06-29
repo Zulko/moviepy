@@ -11,7 +11,6 @@ import tempfile
 import numpy as np
 import proglog
 from imageio import imread, imsave
-
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
@@ -23,7 +22,6 @@ from moviepy.decorators import (
     outplace,
     requires_duration,
     use_clip_fps_by_default,
-    convert_path_to_string,
 )
 from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
@@ -583,10 +581,6 @@ class VideoClip(Clip):
         """
         hf, wf = picture.size
 
-        # ? I'm not so sure about the function of this code, need information
-        # if self.ismask and picture.max():
-        #     return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
-
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
@@ -594,7 +588,8 @@ class VideoClip(Clip):
         im_img = Image.fromarray(img)
 
         if self.mask is not None:
-            mask = self.mask.get_frame(ct).astype("uint8")
+            mask = self.mask.get_frame(ct)
+            # .astype("uint8")
             im_mask = Image.fromarray(255 * mask).convert("L")
 
             if im_img.size != im_mask.size:
@@ -645,7 +640,7 @@ class VideoClip(Clip):
             pos[1] = D[pos[1]]
 
         pos = map(int, pos)
-        return blit(im_img, picture, pos, mask=im_mask, ismask=self.ismask)
+        return blit(im_img, picture, pos, mask=im_mask)
 
     def add_mask(self):
         """Add a mask VideoClip to the VideoClip.

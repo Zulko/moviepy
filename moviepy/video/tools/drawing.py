@@ -6,7 +6,7 @@ methods that are difficult to do with the existing Python libraries.
 import numpy as np
 
 
-def blit(im1, im2, pos=None, mask=None, ismask=False):
+def blit(im1, im2, pos=None, mask=None):
     """ Blit an image over another.
 
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
@@ -20,10 +20,10 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
     xp1 = max(0, xp)
     yp1 = max(0, yp)
 
-    if mask is not None:
-        im2.paste(im1, (xp1, yp1), mask)
-    else:
-        im2.paste(im1, (xp1, yp1))
+    # if mask is not None:
+    im2.paste(im1, (xp1, yp1), mask)
+    # else:
+    #     im2.paste(im1, (xp1, yp1))
 
     return im2
 
