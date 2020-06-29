@@ -20,11 +20,7 @@ def blit(im1, im2, pos=None, mask=None):
     xp1 = max(0, xp)
     yp1 = max(0, yp)
 
-    # if mask is not None:
     im2.paste(im1, (xp1, yp1), mask)
-    # else:
-    #     im2.paste(im1, (xp1, yp1))
-
     return im2
 
 

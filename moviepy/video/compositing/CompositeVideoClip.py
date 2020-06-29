@@ -111,7 +111,6 @@ class CompositeVideoClip(VideoClip):
 
         if self.bg.mask is not None:
             f_mask = self.bg.mask.get_frame(t)
-            # .astype("uint8")
             im_mask = Image.fromarray(255 * f_mask).convert("L")
             im = im.putalpha(im_mask)
 
