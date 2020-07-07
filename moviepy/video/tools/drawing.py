@@ -146,7 +146,7 @@ def color_gradient(
         vector = np.array(vector[::-1])
         p2 = p1 + vector
 
-    if vector is None:
+    if vector is not None:
         norm = np.linalg.norm(vector)
 
     M = np.dstack(np.meshgrid(range(w), range(h))[::-1]).astype(float)
