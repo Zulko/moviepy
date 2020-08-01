@@ -17,7 +17,7 @@ class CompositeVideoClip(VideoClip):
     ----------
 
     size
-      The size (height x width) of the final clip.
+      The size (width, height) of the final clip.
 
     clips
       A list of videoclips.
