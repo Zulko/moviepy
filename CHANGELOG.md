@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed <!-- for any bug fixes -->
 - `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
 - Warnings are no longer being supressed by MoviePy [#1191]
+- Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [#959]
 
 
 ## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
