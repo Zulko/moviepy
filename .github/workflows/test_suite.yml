@@ -1,0 +1,158 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Run Test Suite
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+    branches:
+      - '**'
+  schedule:
+    # Run once a week
+    - cron:  '* * */7 * *'
+
+jobs:
+  # Uses Python Framework build because on macos matplotlib requires it
+  macos:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: s-weigand/setup-conda@v1
+      with:
+        activate-conda: true
+    # TODO: fix adding the different versions  
+    # Pick the installation of Python Framework build from conda, because they do not support versioning
+    # https://anaconda.org/anaconda/python.app/files
+    #- name: Install conda python version 3.6
+    #  if: matrix.python-version == '3.6'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py36_10.tar.bz2
+    #- name: Install conda python version 3.7
+    #  if: matrix.python-version == '3.7'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py37_10.tar.bz2
+    #- name: Install conda python version 3.8
+    #  if: matrix.python-version == '3.8'
+    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
+    - name: Install pythonw
+      run: conda install python.app
+    - name: Python Version Info
+      run: |
+        pythonw --version
+        which python
+        pythonw -m site --user-site
+        echo $PYTHONPATH
+        echo $PYTHONHOME
+    - name: Install dependencies
+      run: |
+        brew install imagemagick
+        # needed for installing matplotlib
+        brew install pkg-config
+        python -m pip install --upgrade wheel
+        python -m pip install --upgrade setuptools
+        python -m pip install ".[test]"
+
+    - name: Test with pytest
+      run: |
+        pythonw -m pytest tests/ --doctest-modules -v
+
+
+#  TODO Re-enable when ImageMagick is fixed or removed
+#  windows:
+#    runs-on: windows-latest
+#    strategy:
+#      matrix:
+#        python-version: [3.6, 3.7, 3.8]
+#      fail-fast: false
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v2
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#      - name: Python Version Info
+#        shell: cmd
+#        run: |
+#          python --version
+#          which python
+#          python -m site --user-site
+#
+#      - name: Install Dependencies
+#        shell: cmd
+#        run: |
+#          python find_latest_imagemagick_version.py > temp.txt
+#          set /p IMAGE_MAGICK_VERSION=<temp.txt
+#
+#          echo %IMAGE_MAGICK_VERSION%
+#          echo https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe
+#          :: Download ImageMagick installer (which also installs ffmpeg.)
+#          :: From http://ftp.fifi.org/ImageMagick/binaries/
+#          :: Might need to be updated from time to time
+#          :: Versions >=7.0 have problems - executables changed names.
+#          :: Assume 64-bit. Need to change to x86 for 32-bit.
+#          curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-x64-static.exe -o ImageMagick.exe
+#
+#          :: Install ImageMagick, telling InnoSetup to not open a window and change default install dir
+#          ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
+#
+#          :: Inspect contents and set env vars
+#          dir "%IMAGE_MAGICK_INSTALL_DIR%"
+#          set IMAGEMAGICK_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//convert.exe"
+#          echo %IMAGEMAGICK_BINARY%
+#          set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
+#          echo %FMPEG_BINARY%
+#
+#          python -m pip install --upgrade wheel
+#          python -m pip install --upgrade setuptools
+#          python -m pip install ".[test]"
+#
+#      - name: PyTest
+#        run: |
+#          pytest
+
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Python Version Info
+        run: |
+          python --version
+          which python
+          python -m site --user-site
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade wheel
+          python -m pip install --upgrade setuptools
+          python -m pip install ".[test, optional, doc]"
+          cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
+
+      - name: PyTest
+        run: |
+          pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+
+      - name: Test pip installation
+        run: |
+          pip install -e .
+          pip install -e .[optional]
+          pip install -e .[test]
+          pip install -e .[doc]
+
+      - name: Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: w480ZQkQQ8I9wZECi8kA3m2SqqTjNis0Y
+        run: |
+          coveralls

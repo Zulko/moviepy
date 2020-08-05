@@ -1,19 +1,15 @@
+from functools import reduce
+
 import numpy as np
 
-try:               # Python 2
-   reduce
-except NameError:  # Python 3
-   from functools import reduce
-
-from moviepy.tools import deprecated_version_of
-from moviepy.video.VideoClip import VideoClip, ColorClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.audio.AudioClip import CompositeAudioClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.VideoClip import ColorClip, VideoClip
 
-from moviepy.video.compositing.on_color import on_color
 
-def concatenate_videoclips(clips, method="chain", transition=None,
-                           bg_color=None, ismask=False, padding = 0):
+def concatenate_videoclips(
+    clips, method="chain", transition=None, bg_color=None, ismask=False, padding=0
+):
     """ Concatenates several video clips
 
     Returns a video clip made by clip by concatenating several video clips.
@@ -64,20 +60,22 @@ def concatenate_videoclips(clips, method="chain", transition=None,
     """
 
     if transition is not None:
-        l = [[v, transition] for v in clips[:-1]]
-        clips = reduce(lambda x, y: x + y, l) + [clips[-1]]
+        clip_transition_pairs = [[v, transition] for v in clips[:-1]]
+        clips = reduce(lambda x, y: x + y, clip_transition_pairs) + [clips[-1]]
         transition = None
 
     tt = np.cumsum([0] + [c.duration for c in clips])
 
     sizes = [v.size for v in clips]
 
-    w = max([r[0] for r in sizes])
-    h = max([r[1] for r in sizes])
+    w = max(r[0] for r in sizes)
+    h = max(r[1] for r in sizes)
 
-    tt = np.maximum(0, tt + padding*np.arange(len(tt)))
+    tt = np.maximum(0, tt + padding * np.arange(len(tt)))
+    tt[-1] -= padding  # Last element is the duration of the whole
 
     if method == "chain":
+
         def make_frame(t):
             i = max([i for i, e in enumerate(tt) if e <= t])
             return clips[i].get_frame(t - tt[i])
@@ -85,41 +83,36 @@ def concatenate_videoclips(clips, method="chain", transition=None,
         def get_mask(c):
             mask = c.mask or ColorClip([1, 1], color=1, ismask=True)
             if mask.duration is None:
-               mask.duration = c.duration
+                mask.duration = c.duration
             return mask
 
-        result = VideoClip(ismask = ismask, make_frame = make_frame)
+        result = VideoClip(ismask=ismask, make_frame=make_frame)
         if any([c.mask is not None for c in clips]):
             masks = [get_mask(c) for c in clips]
-            result.mask = concatenate_videoclips(masks, method="chain",
-                                                 ismask=True)
+            result.mask = concatenate_videoclips(masks, method="chain", ismask=True)
             result.clips = clips
     elif method == "compose":
-        result = CompositeVideoClip( [c.set_start(t).set_position('center')
-                                for (c, t) in zip(clips, tt)],
-               size = (w, h), bg_color=bg_color, ismask=ismask)
+        result = CompositeVideoClip(
+            [c.set_start(t).set_position("center") for (c, t) in zip(clips, tt)],
+            size=(w, h),
+            bg_color=bg_color,
+            ismask=ismask,
+        )
     else:
-        raise Exception("Moviepy Error: The 'method' argument of "
-                        "concatenate_videoclips must be 'chain' or 'compose'")
+        raise Exception(
+            "Moviepy Error: The 'method' argument of "
+            "concatenate_videoclips must be 'chain' or 'compose'"
+        )
 
     result.tt = tt
 
     result.start_times = tt[:-1]
-    result.start, result.duration, result.end = 0, tt[-1] , tt[-1]
+    result.start, result.duration, result.end = 0, tt[-1], tt[-1]
 
-    audio_t = [(c.audio,t) for c,t in zip(clips,tt) if c.audio is not None]
-    if len(audio_t)>0:
-        result.audio = CompositeAudioClip([a.set_start(t)
-                                for a,t in audio_t])
+    audio_t = [(c.audio, t) for c, t in zip(clips, tt) if c.audio is not None]
+    if audio_t:
+        result.audio = CompositeAudioClip([a.set_start(t) for a, t in audio_t])
 
-    fpss = [c.fps for c in clips if hasattr(c,'fps') and c.fps is not None]
-    if len(fpss) == 0:
-        result.fps = None
-    else:
-        result.fps = max(fpss)
-
+    fpss = [c.fps for c in clips if getattr(c, "fps", None) is not None]
+    result.fps = max(fpss) if fpss else None
     return result
-
-
-concatenate = deprecated_version_of(concatenate_videoclips,
-                                    oldname="concatenate")

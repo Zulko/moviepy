@@ -4,10 +4,11 @@ to be used with clip.fx. There are available as transfx.crossfadein etc.
 if you load them with ``from moviepy.editor import *``
 """
 
-from moviepy.decorators import requires_duration, add_mask_if_none
-from .CompositeVideoClip import CompositeVideoClip
+from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
+
+from .CompositeVideoClip import CompositeVideoClip
 
 
 @requires_duration
@@ -58,16 +59,19 @@ def slide_in(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_in, 1, 'left')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx(transfx.slide_in, duration=1, side='left')])
                         for clip in clips]
-    >>> final_clip = concatenate( slided_clips, padding=-1)
+    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
 
     """
     w, h = clip.size
-    pos_dict = {'left': lambda t: (min(0, w*(t/duration-1)), 'center'),
-                'right': lambda t: (max(0, w*(1-t/duration)), 'center'),
-                'top': lambda t: ('center', min(0, h*(t/duration-1))),
-                'bottom': lambda t: ('center', max(0, h*(1-t/duration)))}
+    pos_dict = {
+        "left": lambda t: (min(0, w * (t / duration - 1)), "center"),
+        "right": lambda t: (max(0, w * (1 - t / duration)), "center"),
+        "top": lambda t: ("center", min(0, h * (t / duration - 1))),
+        "bottom": lambda t: ("center", max(0, h * (1 - t / duration))),
+    }
 
     return clip.set_position(pos_dict[side])
 
@@ -97,18 +101,21 @@ def slide_out(clip, duration, side):
 
     >>> from moviepy.editor import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [clip.fx( transfx.slide_out, 1, 'bottom')
+    >>> slided_clips = [CompositeVideoClip([
+                            clip.fx(transfx.slide_out, duration=1, side='left')])
                         for clip in clips]
-    >>> final_clip = concatenate( slided_clips, padding=-1)
+    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
 
     """
 
     w, h = clip.size
     ts = clip.duration - duration  # start time of the effect.
-    pos_dict = {'left': lambda t: (min(0, w*(1-(t-ts)/duration)), 'center'),
-                'right': lambda t: (max(0, w*((t-ts)/duration-1)), 'center'),
-                'top': lambda t: ('center', min(0, h*(1-(t-ts)/duration))),
-                'bottom': lambda t: ('center', max(0, h*((t-ts)/duration-1)))}
+    pos_dict = {
+        "left": lambda t: (min(0, w * (-(t - ts) / duration)), "center"),
+        "right": lambda t: (max(0, w * ((t - ts) / duration)), "center"),
+        "top": lambda t: ("center", min(0, h * (-(t - ts) / duration))),
+        "bottom": lambda t: ("center", max(0, h * ((t - ts) / duration))),
+    }
 
     return clip.set_position(pos_dict[side])
 

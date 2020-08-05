@@ -7,16 +7,15 @@
     
     Note: Platform dependent test. Will only fail on Windows > NT. """
 
+import time
 from os import remove
 from os.path import join
-import subprocess as sp
-import time
-# from tempfile import NamedTemporaryFile
-from .test_helper import TMP_DIR
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
-from moviepy.video.VideoClip import ColorClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import ColorClip
+
+from tests.test_helper import TMP_DIR
 
 
 def test_release_of_file_via_close():
@@ -31,8 +30,7 @@ def test_release_of_file_via_close():
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = join(
-            TMP_DIR,
-            "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
         )
 
         clip = clips_array([[red, green, blue]]).set_duration(0.5)
