@@ -20,6 +20,7 @@ class FFMPEG_VideoReader:
     def __init__(
         self,
         filename,
+        decode_file=True,
         print_infos=False,
         bufsize=None,
         pix_fmt="rgb24",
@@ -31,7 +32,7 @@ class FFMPEG_VideoReader:
 
         self.filename = filename
         self.proc = None
-        infos = ffmpeg_parse_infos(filename, print_infos, check_duration, fps_source)
+        infos = ffmpeg_parse_infos(filename, decode_file, print_infos, check_duration, fps_source)
         self.fps = infos["video_fps"]
         self.size = infos["video_size"]
         self.rotation = infos["video_rotation"]
@@ -262,7 +263,7 @@ def ffmpeg_read_image(filename, with_mask=True):
 
 
 def ffmpeg_parse_infos(
-    filename, print_infos=False, check_duration=True, fps_source="tbr"
+    filename, decode_file=True, print_infos=False, check_duration=True, fps_source="tbr"
 ):
     """Get file infos using ffmpeg.
 
@@ -275,7 +276,11 @@ def ffmpeg_parse_infos(
 
     """
     # Open the file in a pipe, read output
-    cmd = [FFMPEG_BINARY, "-i", filename, "-codec", "copy", "-f", "null", "-"]
+    cmd = [FFMPEG_BINARY, "-i", filename]
+    if decode_file is False:
+        cmd.extend(["-codec", "copy"])
+
+    cmd.extend(["-f", "null", "-"])
 
     popen_params = {
         "bufsize": 10 ** 5,
