@@ -301,9 +301,7 @@ def test_rotate(angle_offset):
     clip = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
 
     clip1 = rotate(clip, 0 + angle_offset)
-    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]).set_fps(
-        1
-    )
+    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
     assert clip1 == target1
 
     clip2 = rotate(clip, 90 + angle_offset)
@@ -313,9 +311,7 @@ def test_rotate(angle_offset):
     assert clip2 == target2, clip2.to_bitmap()
 
     clip3 = rotate(clip, 180 + angle_offset)
-    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]]).set_fps(
-        1
-    )
+    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]], fps=1)
     assert clip3 == target3
 
     clip4 = rotate(clip, 270 + angle_offset)
