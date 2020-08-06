@@ -15,7 +15,7 @@ from tests.test_helper import TMP_DIR
 
 
 def test_aspect_ratio():
-    clip = BitmapClip([["AAA", "BBB"]])
+    clip = BitmapClip([["AAA", "BBB"]], fps=1)
     assert clip.aspect_ratio == 1.5
 
 
