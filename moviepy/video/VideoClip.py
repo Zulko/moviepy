@@ -1323,7 +1323,10 @@ class TextClip(ImageClip):
 
 
 class BitmapClip(VideoClip):
-    def __init__(self, bitmap_frames, *, color_dict=None, ismask=False):
+    @convert_to_seconds(["duration"])
+    def __init__(
+        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, ismask=False
+    ):
         """
         Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
 
@@ -1340,6 +1343,14 @@ class BitmapClip(VideoClip):
            ["RGGGR",
             "RGGGR",
             "RGGGR"]]
+
+        fps
+          The number of frames per second to display the clip at. `duration` will calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
+
+        duration
+          The total duration of the clip. `fps` will be calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
 
         color_dict
           A dictionary that can be used to set specific (r, g, b) values that correspond
@@ -1364,6 +1375,8 @@ class BitmapClip(VideoClip):
           Set to ``True`` if the clip is going to be used as a mask.
 
         """
+        assert fps is not None or duration is not None
+
         if color_dict:
             self.color_dict = color_dict
         else:
@@ -1388,39 +1401,20 @@ class BitmapClip(VideoClip):
             frame_list.append(np.array(output_frame))
 
         frame_array = np.array(frame_list)
-        VideoClip.__init__(
-            self, make_frame=lambda t: frame_array[int(t)], ismask=ismask
-        )
-
         self.total_frames = len(frame_array)
-        self.fps = None
 
-    @convert_to_seconds(["duration"])
-    def set_duration(self, duration, change_end=True):
-        """
-        Sets the ``duration`` attribute of the clip.
-        Additionally, if the clip's ``fps`` attribute has not already been set, it will 
-        be set based on the new duration and the total number of frames.
-        """
-        if self.fps is None:
-            return (
-                super()
-                .set_duration(duration=duration, change_end=change_end)
-                .set_fps(int(self.total_frames / duration))
-            )
+        if fps is None:
+            fps = self.total_frames / duration
+        else:
+            duration = self.total_frames / fps
 
-        return super().set_duration(duration=duration, change_end=change_end)
-
-    def set_fps(self, fps):
-        """
-        Sets the ``fps`` attribute of the clip.
-        Additionally, if the clip's ``duration`` attribute has not already been set, it will 
-        be set based on the new fps and the total number of frames.
-        """
-        total_duration = self.total_frames / fps
-        if self.duration is None or self.duration > total_duration:
-            return super().set_fps(fps).set_duration(total_duration)
-        return super().set_fps(fps)
+        VideoClip.__init__(
+            self,
+            make_frame=lambda t: frame_array[int(t)],
+            ismask=ismask,
+            duration=duration,
+        )
+        self.fps = fps
 
     def to_bitmap(self, color_dict=None):
         """

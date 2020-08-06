@@ -58,57 +58,57 @@ def test_blackwhite():
 
 def test_colorx():
     color_dict = {"H": (0, 0, 200), "L": (0, 0, 50), "B": (0, 0, 255), "O": (0, 0, 0)}
-    clip = BitmapClip([["LLO", "BLO"]], color_dict=color_dict).set_fps(1)
+    clip = BitmapClip([["LLO", "BLO"]], color_dict=color_dict, fps=1)
 
     clipfx = colorx(clip, 4)
-    target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict).set_fps(1)
+    target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict, fps=1)
     assert target == clipfx
 
 
 def test_crop():
     # x: 0 -> 4, y: 0 -> 3 inclusive
-    clip = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]]).set_fps(1)
+    clip = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
 
     clip1 = crop(clip)
-    target1 = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]]).set_fps(1)
+    target1 = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
     assert clip1 == target1
 
     clip2 = crop(clip, x1=1, y1=1, x2=3, y2=3)
-    target2 = BitmapClip([["DC", "DE"]]).set_fps(1)
+    target2 = BitmapClip([["DC", "DE"]], fps=1)
     assert clip2 == target2
 
     clip3 = crop(clip, y1=2)
-    target3 = BitmapClip([["CDEAB", "BAEDC"]]).set_fps(1)
+    target3 = BitmapClip([["CDEAB", "BAEDC"]], fps=1)
     assert clip3 == target3
 
     clip4 = crop(clip, x1=2, width=2)
-    target4 = BitmapClip([["CD", "CB", "EA", "ED"]]).set_fps(1)
+    target4 = BitmapClip([["CD", "CB", "EA", "ED"]], fps=1)
     assert clip4 == target4
 
     # TODO x_center=1 does not perform correctly
     clip5 = crop(clip, x_center=2, y_center=2, width=3, height=3)
-    target5 = BitmapClip([["ABC", "EDC", "CDE"]]).set_fps(1)
+    target5 = BitmapClip([["ABC", "EDC", "CDE"]], fps=1)
     assert clip5 == target5
 
     clip6 = crop(clip, x_center=2, width=2, y1=1, y2=2)
-    target6 = BitmapClip([["DC"]]).set_fps(1)
+    target6 = BitmapClip([["DC"]], fps=1)
     assert clip6 == target6
 
 
 def test_even_size():
-    clip1 = BitmapClip([["ABC", "BCD"]]).set_fps(1)  # Width odd
+    clip1 = BitmapClip([["ABC", "BCD"]], fps=1)  # Width odd
     clip1even = even_size(clip1)
-    target1 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    target1 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip1even == target1
 
-    clip2 = BitmapClip([["AB", "BC", "CD"]]).set_fps(1)  # Height odd
+    clip2 = BitmapClip([["AB", "BC", "CD"]], fps=1)  # Height odd
     clip2even = even_size(clip2)
-    target2 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    target2 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip2even == target2
 
-    clip3 = BitmapClip([["ABC", "BCD", "CDE"]]).set_fps(1)  # Width and height odd
+    clip3 = BitmapClip([["ABC", "BCD", "CDE"]], fps=1)  # Width and height odd
     clip3even = even_size(clip3)
-    target3 = BitmapClip([["AB", "BC"]]).set_fps(1)
+    target3 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip3even == target3
 
 
@@ -127,36 +127,36 @@ def test_fadeout():
 
 
 def test_freeze():
-    clip = BitmapClip([["R"], ["G"], ["B"]]).set_fps(1)  # 3 separate frames
+    clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)  # 3 separate frames
 
     clip1 = freeze(clip, t=1, freeze_duration=1)
-    target1 = BitmapClip([["R"], ["G"], ["G"], ["B"]]).set_fps(1)
+    target1 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
     assert clip1 == target1
 
     clip2 = freeze(clip, t="end", freeze_duration=1)
-    target2 = BitmapClip([["R"], ["G"], ["B"], ["B"]]).set_fps(1)
+    target2 = BitmapClip([["R"], ["G"], ["B"], ["B"]], fps=1)
     assert clip2 == target2
 
     clip3 = freeze(clip, t=1, total_duration=4)
-    target3 = BitmapClip([["R"], ["G"], ["G"], ["B"]]).set_fps(1)
+    target3 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
     assert clip3 == target3
 
     clip4 = freeze(clip, t="end", total_duration=4, padding_end=1)
-    target4 = BitmapClip([["R"], ["G"], ["G"], ["B"]]).set_fps(1)
+    target4 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
     assert clip4 == target4
 
 
 def test_freeze_region():
-    clip = BitmapClip([["AAB", "CCC"], ["BBR", "DDD"], ["CCC", "ABC"]]).set_fps(1)
+    clip = BitmapClip([["AAB", "CCC"], ["BBR", "DDD"], ["CCC", "ABC"]], fps=1)
 
     # Test region
     clip1 = freeze_region(clip, t=1, region=(2, 0, 3, 1))
-    target1 = BitmapClip([["AAR", "CCC"], ["BBR", "DDD"], ["CCR", "ABC"]]).set_fps(1)
+    target1 = BitmapClip([["AAR", "CCC"], ["BBR", "DDD"], ["CCR", "ABC"]], fps=1)
     assert clip1 == target1
 
     # Test outside_region
     clip2 = freeze_region(clip, t=1, outside_region=(2, 0, 3, 1))
-    target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]]).set_fps(1)
+    target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]], fps=1)
     assert clip2 == target2
 
     pass
@@ -174,13 +174,15 @@ def test_invert_colors():
     clip = BitmapClip(
         [["AB", "BC"]],
         color_dict={"A": (0, 0, 0), "B": (50, 100, 150), "C": (255, 255, 255)},
-    ).set_fps(1)
+        fps=1,
+    )
 
     clip1 = invert_colors(clip)
     target1 = BitmapClip(
         [["CD", "DA"]],
         color_dict={"A": (0, 0, 0), "D": (205, 155, 105), "C": (255, 255, 255)},
-    ).set_fps(1)
+        fps=1,
+    )
     assert clip1 == target1
 
 
@@ -217,7 +219,7 @@ def test_make_loopable():
 
 
 def test_margin():
-    clip = BitmapClip([["RRR", "RRR"], ["RRB", "RRB"]]).set_fps(1)
+    clip = BitmapClip([["RRR", "RRR"], ["RRB", "RRB"]], fps=1)
 
     # Make sure that the default values leave clip unchanged
     clip1 = margin(clip)
@@ -226,15 +228,17 @@ def test_margin():
     # 1 pixel black margin
     clip2 = margin(clip, mar=1)
     target = BitmapClip(
-        [["OOOOO", "ORRRO", "ORRRO", "OOOOO",], ["OOOOO", "ORRBO", "ORRBO", "OOOOO",],]
-    ).set_fps(1)
+        [["OOOOO", "ORRRO", "ORRRO", "OOOOO",], ["OOOOO", "ORRBO", "ORRBO", "OOOOO",],],
+        fps=1,
+    )
     assert target == clip2
 
     # 1 pixel green margin
     clip3 = margin(clip, mar=1, color=(0, 255, 0))
     target = BitmapClip(
-        [["GGGGG", "GRRRG", "GRRRG", "GGGGG",], ["GGGGG", "GRRBG", "GRRBG", "GGGGG",],]
-    ).set_fps(1)
+        [["GGGGG", "GRRRG", "GRRRG", "GGGGG",], ["GGGGG", "GRRBG", "GRRBG", "GGGGG",],],
+        fps=1,
+    )
     assert target == clip3
 
 
@@ -251,16 +255,16 @@ def test_mask_or():
 
 
 def test_mirror_x():
-    clip = BitmapClip([["AB", "CD"]]).set_fps(1)
+    clip = BitmapClip([["AB", "CD"]], fps=1)
     clip1 = mirror_x(clip)
-    target = BitmapClip([["BA", "DC"]]).set_fps(1)
+    target = BitmapClip([["BA", "DC"]], fps=1)
     assert clip1 == target
 
 
 def test_mirror_y():
-    clip = BitmapClip([["AB", "CD"]]).set_fps(1)
+    clip = BitmapClip([["AB", "CD"]], fps=1)
     clip1 = mirror_y(clip)
-    target = BitmapClip([["CD", "AB"]]).set_fps(1)
+    target = BitmapClip([["CD", "AB"]], fps=1)
     assert clip1 == target
 
 
@@ -294,30 +298,26 @@ def test_resize():
 @pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
 def test_rotate(angle_offset):
     # Run several times to ensure that adding 360 to rotation angles has no effect
-    clip = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]).set_fps(1)
+    clip = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
 
     clip1 = rotate(clip, 0 + angle_offset)
-    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]).set_fps(
-        1
-    )
+    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
     assert clip1 == target1
 
     clip2 = rotate(clip, 90 + angle_offset)
     target2 = BitmapClip(
-        [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]]
-    ).set_fps(1)
+        [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]], fps=1
+    )
     assert clip2 == target2, clip2.to_bitmap()
 
     clip3 = rotate(clip, 180 + angle_offset)
-    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]]).set_fps(
-        1
-    )
+    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]], fps=1)
     assert clip3 == target3
 
     clip4 = rotate(clip, 270 + angle_offset)
     target4 = BitmapClip(
-        [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]]
-    ).set_fps(1)
+        [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]], fps=1
+    )
     assert clip4 == target4
 
 
@@ -333,18 +333,18 @@ def test_scroll():
 
 
 def test_speedx():
-    clip = BitmapClip([["A"], ["B"], ["C"], ["D"]]).set_fps(1)
+    clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
 
     clip1 = speedx(clip, 0.5)  # 1/2x speed
     target1 = BitmapClip(
-        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]]
-    ).set_fps(1)
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
+    )
     assert clip1 == target1
 
     clip2 = speedx(clip, final_duration=8)  # 1/2x speed
     target2 = BitmapClip(
-        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]]
-    ).set_fps(1)
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
+    )
     assert clip2 == target2
 
     clip3 = speedx(clip, final_duration=12)  # 1/2x speed
@@ -362,20 +362,21 @@ def test_speedx():
             ["D"],
             ["D"],
             ["D"],
-        ]
-    ).set_fps(1)
+        ],
+        fps=1,
+    )
     assert clip3 == target3
 
     clip4 = speedx(clip, 2)  # 2x speed
-    target4 = BitmapClip([["A"], ["C"]]).set_fps(1)
+    target4 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip4 == target4
 
     clip5 = speedx(clip, final_duration=2)  # 2x speed
-    target5 = BitmapClip([["A"], ["C"]]).set_fps(1)
+    target5 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip5 == target5
 
     clip6 = speedx(clip, 4)  # 4x speed
-    target6 = BitmapClip([["A"]]).set_fps(1)
+    target6 = BitmapClip([["A"]], fps=1)
     assert (
         clip6 == target6
     ), f"{clip6.duration} {target6.duration} {clip6.fps} {target6.fps}"
@@ -386,25 +387,23 @@ def test_supersample():
 
 
 def test_time_mirror():
-    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]]).set_fps(1)
+    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]], fps=1)
 
     clip1 = time_mirror(clip)
-    target1 = BitmapClip([["CC", "CC"], ["BB", "BB"], ["AA", "AA"]]).set_fps(1)
+    target1 = BitmapClip([["CC", "CC"], ["BB", "BB"], ["AA", "AA"]], fps=1)
     assert clip1 == target1
 
-    clip2 = BitmapClip(
-        [["AA", "AA"], ["BB", "BB"], ["CC", "CC"], ["DD", "DD"]]
-    ).set_fps(1)
+    clip2 = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"], ["DD", "DD"]], fps=1)
 
     clip3 = time_mirror(clip2)
     target3 = BitmapClip(
-        [["DD", "DD"], ["CC", "CC"], ["BB", "BB"], ["AA", "AA"]]
-    ).set_fps(1)
+        [["DD", "DD"], ["CC", "CC"], ["BB", "BB"], ["AA", "AA"]], fps=1
+    )
     assert clip3 == target3
 
 
 def test_time_symmetrize():
-    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]]).set_fps(1)
+    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]], fps=1)
 
     clip1 = time_symmetrize(clip)
     target1 = BitmapClip(
@@ -415,8 +414,9 @@ def test_time_symmetrize():
             ["CC", "CC"],
             ["BB", "BB"],
             ["AA", "AA"],
-        ]
-    ).set_fps(1)
+        ],
+        fps=1,
+    )
     assert clip1 == target1
 
 

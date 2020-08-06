@@ -41,8 +41,8 @@ def test_clips_array_duration():
 
 
 def test_concatenate_self():
-    clip = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]]).set_fps(1)
-    target = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]]).set_fps(1)
+    clip = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
+    target = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
 
     concatenated = concatenate_videoclips([clip])
 

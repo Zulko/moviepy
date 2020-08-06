@@ -15,7 +15,7 @@ from tests.test_helper import TMP_DIR
 
 
 def test_aspect_ratio():
-    clip = BitmapClip([["AAA", "BBB"]])
+    clip = BitmapClip([["AAA", "BBB"]], fps=1)
     assert clip.aspect_ratio == 1.5
 
 
@@ -217,8 +217,8 @@ def test_setopacity():
 
 
 def test_set_layer():
-    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]]).set_fps(1).set_layer(1)
-    top_clip = BitmapClip([["DEF"], ["EFD"]]).set_fps(1).set_layer(2)
+    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).set_layer(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).set_layer(2)
 
     composite_clip = CompositeVideoClip([bottom_clip, top_clip])
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
@@ -230,13 +230,13 @@ def test_set_layer():
     assert top_clip.subclip(0, 2) == composite_clip.subclip(0, 2)
 
     # Make sure that it works even when there is only one clip playing at that time
-    target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]]).set_fps(1)
+    target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]], fps=1)
     assert composite_clip == target_clip
 
 
 def test_compositing_with_same_layers():
-    bottom_clip = BitmapClip([["ABC"], ["BCA"]]).set_fps(1)
-    top_clip = BitmapClip([["DEF"], ["EFD"]]).set_fps(1)
+    bottom_clip = BitmapClip([["ABC"], ["BCA"]], fps=1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1)
 
     composite_clip = CompositeVideoClip([bottom_clip, top_clip])
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
