@@ -311,14 +311,24 @@ def ffmpeg_parse_infos(
     result["duration"] = None
 
     if check_duration:
-        try:
-            keyword = "frame=" if is_GIF else "Duration: "
-            # for large GIFS the "full" duration is presented as the last element in the list.
-            index = -1 if is_GIF else 0
-            line = [l for l in lines if keyword in l][index]
-            match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
-            result["duration"] = cvsecs(match)
-        except Exception:
+        # for large GIFS the "full" duration is presented as the last element in the list.
+        if is_GIF:
+            index_keywords = [(-1, "frame=")]
+        else:
+            index_keywords = [(0, "Duration: "), (-1, "frame=")]
+
+        for index, keyword in index_keywords:
+            try:
+                line = [l for l in lines if keyword in l][index]
+            except IndexError:
+                continue
+
+            match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)
+            if match:
+                result["duration"] = cvsecs(match[0])
+                break
+
+        if result["duration"] is None:
             raise IOError(
                 (
                     "MoviePy error: failed to read the duration of file %s.\n"
