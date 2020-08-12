@@ -1,7 +1,6 @@
 import os
 import subprocess as sp
 import warnings
-import psutil
 
 import numpy as np
 
@@ -250,11 +249,10 @@ class FFMPEG_AudioReader:
 
     def close(self):
         if self.proc:
-            if psutil.pid_exists(self.proc.pid):
-                self.proc.terminate()
-                self.proc.stdout.close()
-                self.proc.stderr.close()
-                self.proc.wait()
+            self.proc.terminate()
+            self.proc.stdout.close()
+            self.proc.stderr.close()
+            self.proc.wait()
             self.proc = None
 
     def __del__(self):
