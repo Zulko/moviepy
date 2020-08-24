@@ -17,4 +17,4 @@ ADD . /var/src/moviepy/
 RUN cd /var/src/moviepy/ && pip install .[optional]
 
 # modify ImageMagick policy file so that Textclips work correctly.
-RUN cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g'> /etc/ImageMagick-6/policy.xml 
+RUN sed -i 's/none/read,write/g' /etc/ImageMagick-6/policy.xml 
