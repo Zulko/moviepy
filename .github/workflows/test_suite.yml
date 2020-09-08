@@ -10,9 +10,6 @@ on:
   pull_request:
     branches:
       - '**'
-  schedule:
-    # Run once a week
-    - cron:  '* * */7 * *'
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it
