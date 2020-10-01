@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed <!-- for now removed features -->
 
 ### Fixed <!-- for any bug fixes -->
+- Fixed `ffmpeg_tools.ffmpeg_extract_subclip` creating clips with incorrect duration metadata [#1317]
 - `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
 - Warnings are no longer being supressed by MoviePy [#1191]
 - Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [#959]

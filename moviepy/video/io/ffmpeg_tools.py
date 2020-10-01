@@ -57,6 +57,7 @@ def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
         "copy",
         "-acodec",
         "copy",
+        "-copyts",
         targetname,
     ]
     subprocess_call(cmd)
