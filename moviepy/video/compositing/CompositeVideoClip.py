@@ -8,11 +8,11 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 class CompositeVideoClip(VideoClip):
 
-    """ 
-    
+    """
+
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
-    
+
     Parameters
     ----------
 
@@ -29,11 +29,11 @@ class CompositeVideoClip(VideoClip):
       on top (i.e. it has the higher layer).
 
       For each clip:
-       
+
       - The attribute ``pos`` determines where the clip is placed.
           See ``VideoClip.set_pos``
       - The mask of the clip determines which parts are visible.
-        
+
       Finally, if all the clips in the list have their ``duration``
       attribute set, then the duration of the composite video clip
       is computed automatically
@@ -46,8 +46,8 @@ class CompositeVideoClip(VideoClip):
       Set to True if the first clip in the list should be used as the
       'background' on which all other clips are blitted. That first clip must
       have the same size as the final clip. If it has no transparency, the final
-      clip will have no mask. 
-    
+      clip will have no mask.
+
     The clip with the highest FPS will be the FPS of the composite clip.
 
     """
@@ -115,8 +115,8 @@ class CompositeVideoClip(VideoClip):
             )
 
         def make_frame(t):
-            """ The clips playing at time `t` are blitted over one
-                another. """
+            """The clips playing at time `t` are blitted over one
+            another."""
 
             f = self.bg.get_frame(t)
             for c in self.playing_clips(t):
@@ -126,8 +126,8 @@ class CompositeVideoClip(VideoClip):
         self.make_frame = make_frame
 
     def playing_clips(self, t=0):
-        """ Returns a list of the clips in the composite clips that are
-            actually playing at the given time `t`. """
+        """Returns a list of the clips in the composite clips that are
+        actually playing at the given time `t`."""
         return [c for c in self.clips if c.is_playing(t)]
 
     def close(self):
@@ -152,7 +152,7 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
       widths of the different colums in pixels. If None, is set automatically.
 
     cols_widths
-    
+
     bg_color
        Fill color for the masked and unfilled regions. Set to None for these
        regions to be transparent (will be slower).

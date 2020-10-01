@@ -51,7 +51,7 @@ templates = {
 def html_embed(
     clip, filetype=None, maxduration=60, rd_kwargs=None, center=True, **html_kwargs
 ):
-    """ Returns HTML5 code embedding the clip
+    """Returns HTML5 code embedding the clip
 
     clip
       Either a file name, or a clip to preview.

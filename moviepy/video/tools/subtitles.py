@@ -10,8 +10,8 @@ from moviepy.video.VideoClip import TextClip, VideoClip
 
 
 class SubtitlesClip(VideoClip):
-    """ A Clip that serves as "subtitle track" in videos.
-    
+    """A Clip that serves as "subtitle track" in videos.
+
     One particularity of this class is that the images of the
     subtitle texts are not generated beforehand, but only if
     needed.
@@ -21,14 +21,14 @@ class SubtitlesClip(VideoClip):
 
     subtitles
       Either the name of a file as a string or path-like object, or a list
-      
+
     encoding
       Optional, specifies srt file encoding.
       Any standard Python encoding is allowed (listed at https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     =========
-    
+
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
     >>> generator = lambda txt: TextClip(txt, font='Georgia-Regular', fontsize=24, color='white')
@@ -37,7 +37,7 @@ class SubtitlesClip(VideoClip):
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.write_videofile("final.mp4", fps=myvideo.fps)
-    
+
     """
 
     def __init__(self, subtitles, make_textclip=None, encoding=None):
@@ -70,9 +70,9 @@ class SubtitlesClip(VideoClip):
         self.end = self.duration
 
         def add_textclip_if_none(t):
-            """ Will generate a textclip if it hasn't been generated asked
+            """Will generate a textclip if it hasn't been generated asked
             to generate it yet. If there is no subtitle to show at t, return
-            false. """
+            false."""
             sub = [
                 ((ta, tb), txt)
                 for ((ta, tb), txt) in self.textclips.keys()
@@ -105,9 +105,9 @@ class SubtitlesClip(VideoClip):
         self.mask = VideoClip(make_mask_frame, ismask=True) if hasmask else None
 
     def in_subclip(self, t_start=None, t_end=None):
-        """ Returns a sequence of [(t1,t2), txt] covering all the given subclip
+        """Returns a sequence of [(t1,t2), txt] covering all the given subclip
         from t_start to t_end. The first and last times will be cropped so as
-        to be exactly t_start and t_end if possible. """
+        to be exactly t_start and t_end if possible."""
 
         def is_in_subclip(t1, t2):
             try:
@@ -155,7 +155,7 @@ class SubtitlesClip(VideoClip):
 
 @convert_path_to_string("filename")
 def file_to_subtitles(filename, encoding=None):
-    """ Converts a srt file into subtitles.
+    """Converts a srt file into subtitles.
 
     The returned list is of the form ``[((ta,tb),'some text'),...]``
     and can be fed to SubtitlesClip.

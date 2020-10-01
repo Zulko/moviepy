@@ -123,7 +123,7 @@ class VideoClip(Clip):
     @convert_to_seconds(["t"])
     @convert_masks_to_RGB
     def save_frame(self, filename, t=0, withmask=True):
-        """ Save a clip's frame to an image file.
+        """Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
@@ -272,7 +272,7 @@ class VideoClip(Clip):
 
         logger
           Either "bar" for progress bar or None or any Proglog logger.
-        
+
         pix_fmt
           Pixel format for the output video file.
 
@@ -364,7 +364,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, withmask=True, logger="bar"):
-        """ Writes the videoclip to a sequence of image files.
+        """Writes the videoclip to a sequence of image files.
 
         Parameters
         -----------
@@ -431,7 +431,7 @@ class VideoClip(Clip):
         logger="bar",
         pix_fmt=None,
     ):
-        """ Write the VideoClip to a GIF file.
+        """Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
         or ffmpeg.
@@ -1311,10 +1311,10 @@ class TextClip(ImageClip):
     @staticmethod
     def search(string, arg):
         """Returns the of all valid entries which contain ``string`` for the
-           argument ``arg`` of ``TextClip``, for instance
+        argument ``arg`` of ``TextClip``, for instance
 
-           >>> # Find all the available fonts which contain "Courier"
-           >>> print(TextClip.search('Courier', 'font'))
+        >>> # Find all the available fonts which contain "Courier"
+        >>> print(TextClip.search('Courier', 'font'))
 
         """
         string = string.lower()

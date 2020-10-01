@@ -171,7 +171,7 @@ class FFMPEG_VideoReader:
         return result
 
     def get_frame(self, t):
-        """ Read a file video frame at time t.
+        """Read a file video frame at time t.
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
@@ -221,7 +221,7 @@ class FFMPEG_VideoReader:
 
 
 def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
-    """ Read an image file (PNG, BMP, JPEG...).
+    """Read an image file (PNG, BMP, JPEG...).
 
     Wraps FFMPEG_Videoreader to read just one image.
     Returns an ImageClip.

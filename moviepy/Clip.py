@@ -23,25 +23,25 @@ class Clip:
 
     """
 
-     Base class of all clips (VideoClips and AudioClips).
+    Base class of all clips (VideoClips and AudioClips).
 
 
-     Attributes
-     -----------
+    Attributes
+    -----------
 
-     start:
-       When the clip is included in a composition, time of the
-       composition at which the clip starts playing (in seconds).
+    start:
+      When the clip is included in a composition, time of the
+      composition at which the clip starts playing (in seconds).
 
-     end:
-       When the clip is included in a composition, time of the
-       composition at which the clip stops playing (in seconds).
+    end:
+      When the clip is included in a composition, time of the
+      composition at which the clip stops playing (in seconds).
 
-     duration:
-       Duration of the clip (in seconds). Some clips are infinite, in
-       this case their duration will be ``None``.
+    duration:
+      Duration of the clip (in seconds). Some clips are infinite, in
+      this case their duration will be ``None``.
 
-     """
+    """
 
     # prefix for all temporary video and audio files.
     # You can overwrite it with
@@ -60,8 +60,8 @@ class Clip:
         self.memoize_frame = None
 
     def copy(self):
-        """ Shallow copy of the clip. 
-        
+        """Shallow copy of the clip.
+
         Returns a shallow copy of the clip whose mask and audio will
         be shallow copies of the clip's mask and audio if they exist.
 
@@ -98,7 +98,7 @@ class Clip:
             return self.make_frame(t)
 
     def fl(self, fun, apply_to=None, keep_duration=True):
-        """ General processing of a clip.
+        """General processing of a clip.
 
         Returns a new Clip whose frames are a transformation
         (through function ``fun``) of the frames of the current clip.
@@ -300,8 +300,8 @@ class Clip:
 
     @outplace
     def set_fps(self, fps):
-        """ Returns a copy of the clip with a new default fps for functions like
-        write_videofile, iterframe, etc. """
+        """Returns a copy of the clip with a new default fps for functions like
+        write_videofile, iterframe, etc."""
         self.fps = fps
 
     @outplace
@@ -440,7 +440,7 @@ class Clip:
     @requires_duration
     @use_clip_fps_by_default
     def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
-        """ Iterates over all the frames of the clip.
+        """Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN np.array,
         where N=1 for mask clips and N=3 for RGB clips.
@@ -479,8 +479,8 @@ class Clip:
                 yield frame
 
     def close(self):
-        """ 
-            Release any resources that are in use.
+        """
+        Release any resources that are in use.
         """
 
         #    Implementation note for subclasses:

@@ -35,8 +35,8 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
 
 @convert_path_to_string(("filename", "targetname"))
 def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
-    """ Makes a new video file playing video file ``filename`` between
-        the times ``t1`` and ``t2``. """
+    """Makes a new video file playing video file ``filename`` between
+    the times ``t1`` and ``t2``."""
     name, ext = os.path.splitext(filename)
     if not targetname:
         T1, T2 = [int(1000 * t) for t in [t1, t2]]
@@ -72,8 +72,8 @@ def ffmpeg_merge_video_audio(
     ffmpeg_output=False,
     logger="bar",
 ):
-    """ merges video file ``video`` and audio file ``audio`` into one
-        movie file ``output``. """
+    """merges video file ``video`` and audio file ``audio`` into one
+    movie file ``output``."""
     cmd = [
         FFMPEG_BINARY,
         "-y",
@@ -110,8 +110,8 @@ def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
 
 @convert_path_to_string(("video", "output"))
 def ffmpeg_resize(video, output, size):
-    """ resizes ``video`` to new size ``size`` and write the result
-        in file ``output``. """
+    """resizes ``video`` to new size ``size`` and write the result
+    in file ``output``."""
     cmd = [
         FFMPEG_BINARY,
         "-i",

@@ -13,7 +13,7 @@ from moviepy.config import FFMPEG_BINARY
 
 
 class FFMPEG_VideoWriter:
-    """ A class for FFMPEG-based video writing.
+    """A class for FFMPEG-based video writing.
 
     A class to write videos using ffmpeg. ffmpeg will write in a large
     choice of formats.
@@ -228,7 +228,7 @@ def ffmpeg_write_video(
     logger="bar",
     pix_fmt=None,
 ):
-    """ Write the clip to a videofile. See VideoClip.write_videofile for details
+    """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
     logger = proglog.default_bar_logger(logger)
@@ -270,8 +270,8 @@ def ffmpeg_write_video(
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pix_fmt=None):
-    """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
-        ffmpeg. """
+    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
+    ffmpeg."""
 
     if image.dtype != "uint8":
         image = image.astype("uint8")

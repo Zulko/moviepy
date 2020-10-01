@@ -31,7 +31,7 @@ def write_gif_with_tempfiles(
     logger="bar",
     pix_fmt=None,
 ):
-    """ Write the VideoClip to a GIF file.
+    """Write the VideoClip to a GIF file.
 
 
     Converts a VideoClip into an animated GIF using ImageMagick
@@ -149,7 +149,7 @@ def write_gif(
     logger="bar",
     pix_fmt=None,
 ):
-    """ Write the VideoClip to a GIF file, without temporary files.
+    """Write the VideoClip to a GIF file, without temporary files.
 
     Converts a VideoClip into an animated GIF using ImageMagick
     or ffmpeg.
@@ -248,7 +248,14 @@ def write_gif(
         popen_params["stdout"] = sp.DEVNULL
 
         proc1 = sp.Popen(
-            cmd1 + ["-pix_fmt", (pix_fmt), "-r", "%.02f" % fps, filename,],
+            cmd1
+            + [
+                "-pix_fmt",
+                (pix_fmt),
+                "-r",
+                "%.02f" % fps,
+                filename,
+            ],
             **popen_params,
         )
     else:
@@ -287,7 +294,14 @@ def write_gif(
         if opt:
 
             cmd3 = (
-                [IMAGEMAGICK_BINARY, "-", "-fuzz", "%d" % fuzz + "%", "-layers", opt,]
+                [
+                    IMAGEMAGICK_BINARY,
+                    "-",
+                    "-fuzz",
+                    "%d" % fuzz + "%",
+                    "-layers",
+                    opt,
+                ]
                 + (["-colors", "%d" % colors] if colors is not None else [])
                 + [filename]
             )
