@@ -401,7 +401,8 @@ class VideoClip(Clip):
 
         """
         logger = proglog.default_bar_logger(logger)
-        logger(message="Moviepy - Writing frames %s." % nameformat)
+        # Fails on GitHub macos CI
+        # logger(message="Moviepy - Writing frames %s." % nameformat)
 
         tt = np.arange(0, self.duration, 1.0 / fps)
 
@@ -410,7 +411,7 @@ class VideoClip(Clip):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
-        logger(message="Moviepy - Done writing frames %s." % nameformat)
+        # logger(message="Moviepy - Done writing frames %s." % nameformat)
 
         return filenames
 
