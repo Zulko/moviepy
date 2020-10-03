@@ -83,6 +83,7 @@ class VideoFileClip(VideoClip):
     def __init__(
         self,
         filename,
+        decode_file=False,
         has_mask=False,
         audio=True,
         audio_buffersize=200000,
@@ -90,7 +91,7 @@ class VideoFileClip(VideoClip):
         resize_algorithm="bicubic",
         audio_fps=44100,
         audio_nbytes=2,
-        fps_source="tbr",
+        fps_source="fps",
         pix_fmt=None,
     ):
 
@@ -101,6 +102,7 @@ class VideoFileClip(VideoClip):
             pix_fmt = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(
             filename,
+            decode_file=decode_file,
             pix_fmt=pix_fmt,
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,

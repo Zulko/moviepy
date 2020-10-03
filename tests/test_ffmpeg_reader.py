@@ -28,6 +28,14 @@ def test_ffmpeg_parse_infos():
     assert d["video_bitrate"]
 
 
+def test_ffmpeg_parse_infos_duration():
+    infos = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm")
+    assert infos["video_nframes"] == 720
+
+    infos = ffmpeg_parse_infos("media/bitmap.mp4")
+    assert infos["video_nframes"] == 5
+
+
 def test_ffmpeg_parse_infos_for_i926():
     d = ffmpeg_parse_infos("tests/resource/sintel_with_15_chapters.mp4")
     assert d["audio_found"]

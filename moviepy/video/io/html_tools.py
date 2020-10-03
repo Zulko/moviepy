@@ -154,7 +154,7 @@ def html_embed(
 
     if filetype in ["audio", "video"]:
 
-        duration = ffmpeg_parse_infos(filename)["duration"]
+        duration = ffmpeg_parse_infos(filename, decode_file=True)["duration"]
         if duration > maxduration:
             raise ValueError(
                 "The duration of video %s (%.1f) exceeds the 'maxduration' "
