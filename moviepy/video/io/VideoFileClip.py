@@ -47,9 +47,9 @@ class VideoFileClip(VideoClip):
       https://ffmpeg.org/ffmpeg-scaler.html
 
     fps_source:
-      The fps value to collect from the metadata. Set by default to 'tbr', but
-      can be set to 'fps', which may be helpful if importing slow-motion videos
-      that get messed up otherwise.
+      The fps value to collect from the metadata. Set by default to 'fps', but
+      can be set to 'tbr', which may be helpful if you are finding that it is reading
+      the incorrect fps from the file.
 
     pix_fmt
       Optional: Pixel format for the video to read. If is not specified

@@ -372,8 +372,8 @@ def ffmpeg_parse_infos(
 
         # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
         # tbc, and sometimes tbc/2...
-        # Current policy: Trust tbr first, then fps unless fps_source is
-        # specified as 'fps' in which case try fps then tbr
+        # Current policy: Trust fps first, then tbr unless fps_source is
+        # specified as 'tbr' in which case try tbr then fps
 
         # If result is near from x*1000/1001 where x is 23,24,25,50,
         # replace by x*1000/1001 (very common case for the fps).
