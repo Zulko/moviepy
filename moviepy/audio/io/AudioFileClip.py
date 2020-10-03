@@ -65,7 +65,9 @@ class AudioFileClip(AudioClip):
     """
 
     @convert_path_to_string("filename")
-    def __init__(self, filename, decode_file=True, buffersize=200000, nbytes=2, fps=44100):
+    def __init__(
+        self, filename, decode_file=True, buffersize=200000, nbytes=2, fps=44100
+    ):
 
         AudioClip.__init__(self)
 

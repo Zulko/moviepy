@@ -32,7 +32,9 @@ class FFMPEG_VideoReader:
 
         self.filename = filename
         self.proc = None
-        infos = ffmpeg_parse_infos(filename, decode_file, print_infos, check_duration, fps_source)
+        infos = ffmpeg_parse_infos(
+            filename, decode_file, print_infos, check_duration, fps_source
+        )
         self.fps = infos["video_fps"]
         self.size = infos["video_size"]
         self.rotation = infos["video_rotation"]
@@ -153,7 +155,8 @@ class FFMPEG_VideoReader:
                 f"In file {self.filename}, "
                 + "%d bytes wanted but %d bytes read," % (nbytes, len(s))
                 + f"at frame index {self.pos} (out of a total {self.nframes} frames), "
-                + f"at time %.02f/%.02f sec. " % (1.0 * self.pos / self.fps, self.duration)
+                + f"at time %.02f/%.02f sec. "
+                % (1.0 * self.pos / self.fps, self.duration)
                 + "Using the last valid frame instead.",
                 UserWarning,
             )
@@ -271,7 +274,11 @@ def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
 
 
 def ffmpeg_parse_infos(
-    filename, decode_file=False, print_infos=False, check_duration=True, fps_source="fps"
+    filename,
+    decode_file=False,
+    print_infos=False,
+    check_duration=True,
+    fps_source="fps",
 ):
     """Get file infos using ffmpeg.
 
@@ -334,7 +341,9 @@ def ffmpeg_parse_infos(
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
         except Exception:
-            raise IOError(f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}")
+            raise IOError(
+                f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}"
+            )
 
     # get the output line that speaks about video
     lines_video = [l for l in lines if " Video: " in l and re.search(r"\d+x\d+", l)]
