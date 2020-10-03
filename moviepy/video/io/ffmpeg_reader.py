@@ -27,7 +27,7 @@ class FFMPEG_VideoReader:
         check_duration=True,
         target_resolution=None,
         resize_algo="bicubic",
-        fps_source="tbr",
+        fps_source="fps",
     ):
 
         self.filename = filename
@@ -263,7 +263,7 @@ def ffmpeg_read_image(filename, with_mask=True):
 
 
 def ffmpeg_parse_infos(
-    filename, decode_file=True, print_infos=False, check_duration=True, fps_source="tbr"
+    filename, decode_file=False, print_infos=False, check_duration=True, fps_source="fps"
 ):
     """Get file infos using ffmpeg.
 
@@ -277,10 +277,8 @@ def ffmpeg_parse_infos(
     """
     # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-i", filename]
-    if decode_file is False:
-        cmd.extend(["-codec", "copy"])
-
-    cmd.extend(["-f", "null", "-"])
+    if decode_file:
+        cmd.extend(["-f", "null", "-"])
 
     popen_params = {
         "bufsize": 10 ** 5,
@@ -321,17 +319,14 @@ def ffmpeg_parse_infos(
 
     if check_duration:
         try:
-            line = [l for l in lines if "time=" in l][-1]
+            if decode_file:
+                line = [l for l in lines if "time=" in l][-1]
+            else:
+                line = [l for l in lines if "Duration:" in l][-1]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
         except Exception:
-            raise IOError(
-                (
-                    "MoviePy error: failed to read the duration of file %s.\n"
-                    "Here are the file infos returned by ffmpeg:\n\n%s"
-                )
-                % (filename, infos)
-            )
+            raise IOError(f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}")
 
     # get the output line that speaks about video
     lines_video = [l for l in lines if " Video: " in l and re.search(r"\d+x\d+", l)]
@@ -403,7 +398,7 @@ def ffmpeg_parse_infos(
                 result["video_fps"] = x * coef
 
         if check_duration:
-            result["video_nframes"] = int(result["duration"] * result["video_fps"]) + 1
+            result["video_nframes"] = int(result["duration"] * result["video_fps"])
             result["video_duration"] = result["duration"]
         else:
             result["video_nframes"] = 1
