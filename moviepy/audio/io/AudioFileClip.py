@@ -73,7 +73,11 @@ class AudioFileClip(AudioClip):
 
         self.filename = filename
         self.reader = FFMPEG_AudioReader(
-            filename, decode_file=decode_file, fps=fps, nbytes=nbytes, buffersize=buffersize
+            filename,
+            decode_file=decode_file,
+            fps=fps,
+            nbytes=nbytes,
+            buffersize=buffersize,
         )
         self.fps = fps
         self.duration = self.reader.duration
