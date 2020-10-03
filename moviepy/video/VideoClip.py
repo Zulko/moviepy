@@ -123,7 +123,7 @@ class VideoClip(Clip):
     @convert_to_seconds(["t"])
     @convert_masks_to_RGB
     def save_frame(self, filename, t=0, withmask=True):
-        """ Save a clip's frame to an image file.
+        """Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
@@ -168,6 +168,7 @@ class VideoClip(Clip):
         threads=None,
         ffmpeg_params=None,
         logger="bar",
+        pix_fmt=None,
     ):
         """Write the clip to a videofile.
 
@@ -272,6 +273,9 @@ class VideoClip(Clip):
         logger
           Either "bar" for progress bar or None or any Proglog logger.
 
+        pix_fmt
+          Pixel format for the output video file.
+
         Examples
         ========
 
@@ -348,6 +352,7 @@ class VideoClip(Clip):
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
+            pix_fmt=pix_fmt,
         )
 
         if remove_temp and make_audio:
@@ -359,7 +364,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(self, nameformat, fps=None, withmask=True, logger="bar"):
-        """ Writes the videoclip to a sequence of image files.
+        """Writes the videoclip to a sequence of image files.
 
         Parameters
         -----------
@@ -396,7 +401,8 @@ class VideoClip(Clip):
 
         """
         logger = proglog.default_bar_logger(logger)
-        logger(message="Moviepy - Writing frames %s." % nameformat)
+        # Fails on GitHub macos CI
+        # logger(message="Moviepy - Writing frames %s." % nameformat)
 
         tt = np.arange(0, self.duration, 1.0 / fps)
 
@@ -405,7 +411,7 @@ class VideoClip(Clip):
             name = nameformat % i
             filenames.append(name)
             self.save_frame(name, t, withmask=withmask)
-        logger(message="Moviepy - Done writing frames %s." % nameformat)
+        # logger(message="Moviepy - Done writing frames %s." % nameformat)
 
         return filenames
 
@@ -424,8 +430,9 @@ class VideoClip(Clip):
         colors=None,
         tempfiles=False,
         logger="bar",
+        pix_fmt=None,
     ):
-        """ Write the VideoClip to a GIF file.
+        """Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
         or ffmpeg.
@@ -462,6 +469,12 @@ class VideoClip(Clip):
 
         progress_bar
           If True, displays a progress bar
+
+        pix_fmt
+          Pixel format for the output gif file. If is not specified
+          'rgb24' will be used as the default format unless ``clip.mask``
+          exist, then 'rgba' will be used. This option is only going to
+          be accepted if ``program=ffmpeg`` or when ``tempfiles=True``
 
 
         Notes
@@ -503,6 +516,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
         else:
             # convert imageio opt variable to something that can be used with
@@ -519,6 +533,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
 
     # -----------------------------------------------------------------
@@ -1297,10 +1312,10 @@ class TextClip(ImageClip):
     @staticmethod
     def search(string, arg):
         """Returns the of all valid entries which contain ``string`` for the
-           argument ``arg`` of ``TextClip``, for instance
+        argument ``arg`` of ``TextClip``, for instance
 
-           >>> # Find all the available fonts which contain "Courier"
-           >>> print(TextClip.search('Courier', 'font'))
+        >>> # Find all the available fonts which contain "Courier"
+        >>> print(TextClip.search('Courier', 'font'))
 
         """
         string = string.lower()
@@ -1309,7 +1324,10 @@ class TextClip(ImageClip):
 
 
 class BitmapClip(VideoClip):
-    def __init__(self, bitmap_frames, *, color_dict=None, ismask=False):
+    @convert_to_seconds(["duration"])
+    def __init__(
+        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, ismask=False
+    ):
         """
         Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
 
@@ -1326,6 +1344,14 @@ class BitmapClip(VideoClip):
            ["RGGGR",
             "RGGGR",
             "RGGGR"]]
+
+        fps
+          The number of frames per second to display the clip at. `duration` will calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
+
+        duration
+          The total duration of the clip. `fps` will be calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
 
         color_dict
           A dictionary that can be used to set specific (r, g, b) values that correspond
@@ -1350,6 +1376,8 @@ class BitmapClip(VideoClip):
           Set to ``True`` if the clip is going to be used as a mask.
 
         """
+        assert fps is not None or duration is not None
+
         if color_dict:
             self.color_dict = color_dict
         else:
@@ -1374,39 +1402,20 @@ class BitmapClip(VideoClip):
             frame_list.append(np.array(output_frame))
 
         frame_array = np.array(frame_list)
-        VideoClip.__init__(
-            self, make_frame=lambda t: frame_array[int(t)], ismask=ismask
-        )
-
         self.total_frames = len(frame_array)
-        self.fps = None
 
-    @convert_to_seconds(["duration"])
-    def set_duration(self, duration, change_end=True):
-        """
-        Sets the ``duration`` attribute of the clip.
-        Additionally, if the clip's ``fps`` attribute has not already been set, it will 
-        be set based on the new duration and the total number of frames.
-        """
-        if self.fps is None:
-            return (
-                super()
-                .set_duration(duration=duration, change_end=change_end)
-                .set_fps(int(self.total_frames / duration))
-            )
+        if fps is None:
+            fps = self.total_frames / duration
+        else:
+            duration = self.total_frames / fps
 
-        return super().set_duration(duration=duration, change_end=change_end)
-
-    def set_fps(self, fps):
-        """
-        Sets the ``fps`` attribute of the clip.
-        Additionally, if the clip's ``duration`` attribute has not already been set, it will 
-        be set based on the new fps and the total number of frames.
-        """
-        total_duration = self.total_frames / fps
-        if self.duration is None or self.duration > total_duration:
-            return super().set_fps(fps).set_duration(total_duration)
-        return super().set_fps(fps)
+        VideoClip.__init__(
+            self,
+            make_frame=lambda t: frame_array[int(t)],
+            ismask=ismask,
+            duration=duration,
+        )
+        self.fps = fps
 
     def to_bitmap(self, color_dict=None):
         """

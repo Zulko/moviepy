@@ -14,7 +14,7 @@ from .CompositeVideoClip import CompositeVideoClip
 @requires_duration
 @add_mask_if_none
 def crossfadein(clip, duration):
-    """ Makes the clip appear progressively, over ``duration`` seconds.
+    """Makes the clip appear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
@@ -26,7 +26,7 @@ def crossfadein(clip, duration):
 @requires_duration
 @add_mask_if_none
 def crossfadeout(clip, duration):
-    """ Makes the clip disappear progressively, over ``duration`` seconds.
+    """Makes the clip disappear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
@@ -36,7 +36,7 @@ def crossfadeout(clip, duration):
 
 
 def slide_in(clip, duration, side):
-    """ Makes the clip arrive from one side of the screen.
+    """Makes the clip arrive from one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,
     and if the clip has the same size as the whole composition.
@@ -78,7 +78,7 @@ def slide_in(clip, duration, side):
 
 @requires_duration
 def slide_out(clip, duration, side):
-    """ Makes the clip go away by one side of the screen.
+    """Makes the clip go away by one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,
     and if the clip has the same size as the whole composition.
@@ -122,9 +122,9 @@ def slide_out(clip, duration, side):
 
 @requires_duration
 def make_loopable(clip, cross_duration):
-    """ Makes the clip fade in progressively at its own end, this way
+    """Makes the clip fade in progressively at its own end, this way
     it can be looped indefinitely. ``cross`` is the duration in seconds
-    of the fade-in.  """
+    of the fade-in."""
     d = clip.duration
     clip2 = clip.fx(crossfadein, cross_duration).set_start(d - cross_duration)
     return CompositeVideoClip([clip, clip2]).subclip(cross_duration, d)

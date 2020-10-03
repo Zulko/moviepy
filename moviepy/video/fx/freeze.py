@@ -5,7 +5,7 @@ from moviepy.video.VideoClip import ImageClip
 
 @requires_duration
 def freeze(clip, t=0, freeze_duration=None, total_duration=None, padding_end=0):
-    """ Momentarily freeze the clip at time t.
+    """Momentarily freeze the clip at time t.
 
     Set `t='end'` to freeze the clip at the end (actually it will freeze on the
     frame at time clip.duration - padding_end seconds).

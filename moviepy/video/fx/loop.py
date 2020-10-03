@@ -8,7 +8,7 @@ def loop(clip, n=None, duration=None):
     """
     Returns a clip that plays the current clip in an infinite loop.
     Ideal for clips coming from gifs.
-    
+
     Parameters
     ------------
     n

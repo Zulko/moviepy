@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Important Announcements
 
 ### Added <!-- for new features -->
+- New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [#1237]
 
 ### Changed <!-- for changes in existing functionality -->
 - `ffmpeg_parse_infos()` and `VideoFileClip` now have optional `decode_file` parameter that ensures that the detected duration is correct, but may take a long time to run [#1063, #1222]
@@ -24,8 +25,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed <!-- for now removed features -->
 
 ### Fixed <!-- for any bug fixes -->
+- Fixed `ffmpeg_tools.ffmpeg_extract_subclip` creating clips with incorrect duration metadata [#1317]
 - `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
 - Warnings are no longer being supressed by MoviePy [#1191]
+- Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [#959]
 
 
 ## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)

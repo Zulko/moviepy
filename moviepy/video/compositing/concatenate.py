@@ -10,7 +10,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 def concatenate_videoclips(
     clips, method="chain", transition=None, bg_color=None, ismask=False, padding=0
 ):
-    """ Concatenates several video clips
+    """Concatenates several video clips
 
     Returns a video clip made by clip by concatenating several video clips.
     (Concatenated means that they will be played one after another).

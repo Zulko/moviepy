@@ -38,11 +38,11 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     times `t1` and `t2`. This displays the clip frame by frame
     and you must click on the object(s) in each frame. If ``t2=None``
     only the frame at ``t1`` is taken into account.
-    
+
     Returns a list [(t1,x1,y1),(t2,x2,y2) etc... ] if there is one
-    object per frame, else returns a list whose elements are of the 
+    object per frame, else returns a list whose elements are of the
     form (ti, [(xi1,yi1), (xi2,yi2), ...] )
-    
+
     Parameters
     -------------
 
@@ -62,7 +62,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
 
     Examples
     ---------
-    
+
     >>> from moviepy.editor import VideoFileClip
     >>> from moviepy.video.tools.tracking import manual_tracking
     >>> clip = VideoFileClip("myvideo.mp4")
@@ -75,7 +75,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     >>> traj1, traj2, traj3 = Trajectory.load_list('track.txt')
     >>> # If ever you only have one object being tracked, recover it with
     >>> traj, =  Trajectory.load_list('track.txt')
-    
+
     """
 
     import pygame as pg

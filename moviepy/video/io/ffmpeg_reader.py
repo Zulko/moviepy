@@ -59,7 +59,9 @@ class FFMPEG_VideoReader:
         self.infos = infos
 
         self.pix_fmt = pix_fmt
-        self.depth = 4 if pix_fmt == "rgba" else 3
+        self.depth = 4 if pix_fmt[-1] == "a" else 3
+        # 'a' represents 'alpha' which means that each pixel has 4 values instead of 3.
+        # See https://github.com/Zulko/moviepy/issues/1070#issuecomment-644457274
 
         if bufsize is None:
             w, h = self.size
@@ -183,7 +185,7 @@ class FFMPEG_VideoReader:
         return result
 
     def get_frame(self, t):
-        """ Read a file video frame at time t.
+        """Read a file video frame at time t.
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
@@ -235,8 +237,8 @@ class FFMPEG_VideoReader:
         self.close()
 
 
-def ffmpeg_read_image(filename, with_mask=True):
-    """ Read an image file (PNG, BMP, JPEG...).
+def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
+    """Read an image file (PNG, BMP, JPEG...).
 
     Wraps FFMPEG_Videoreader to read just one image.
     Returns an ImageClip.
@@ -254,8 +256,14 @@ def ffmpeg_read_image(filename, with_mask=True):
       If the image has a transparency layer, ``with_mask=true`` will save
       this layer as the mask of the returned ImageClip
 
+    pix_fmt
+      Optional: Pixel format for the image to read. If is not specified
+      'rgb24' will be used as the default format unless ``with_mask`` is set
+      as ``True``, then 'rgba' will be used.
+
     """
-    pix_fmt = "rgba" if with_mask else "rgb24"
+    if not pix_fmt:
+        pix_fmt = "rgba" if with_mask else "rgb24"
     reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
     im = reader.lastread
     del reader
@@ -292,7 +300,7 @@ def ffmpeg_parse_infos(
 
     proc = sp.Popen(cmd, **popen_params)
     (output, error) = proc.communicate()
-    infos = error.decode("utf8")
+    infos = error.decode("utf8", errors="ignore")
 
     proc.terminate()
     del proc
