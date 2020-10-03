@@ -66,14 +66,14 @@ class AudioFileClip(AudioClip):
 
     @convert_path_to_string("filename")
     def __init__(
-        self, filename, decode_file=True, buffersize=200000, nbytes=2, fps=44100
+        self, filename, decode_file=False, buffersize=200000, nbytes=2, fps=44100
     ):
 
         AudioClip.__init__(self)
 
         self.filename = filename
         self.reader = FFMPEG_AudioReader(
-            filename, decode_file=True, fps=fps, nbytes=nbytes, buffersize=buffersize
+            filename, decode_file=decode_file, fps=fps, nbytes=nbytes, buffersize=buffersize
         )
         self.fps = fps
         self.duration = self.reader.duration

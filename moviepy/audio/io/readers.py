@@ -42,7 +42,7 @@ class FFMPEG_AudioReader:
         self,
         filename,
         buffersize,
-        decode_file=True,
+        decode_file=False,
         print_infos=False,
         fps=44100,
         nbytes=2,
