@@ -6,8 +6,8 @@ methods that are difficult to do with the existing Python libraries.
 import numpy as np
 
 
-def blit(im1, im2, pos=None, mask=None):
-    """ Blit an image over another.
+def blit(im1, im2, pos=None, mask=None, ismask=False):
+    """Blit an image over another.
 
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided. If ``im1`` and ``im2`` are mask pictures
@@ -38,7 +38,7 @@ def color_gradient(
 
 
     Parameters
-    ------------      
+    ------------
 
     size
         Size (width, height) in pixels of the final picture/array.
@@ -73,7 +73,7 @@ def color_gradient(
         only occur near p2 (before that everything is of color ``col1``)
         If the offset is 0.9 in a radial gradient, the gradient will
         occur in the region located between 90% and 100% of the radius,
-        this creates a blurry disc of radius d(p1,p2).  
+        this creates a blurry disc of radius d(p1,p2).
 
     Returns
     --------
@@ -121,7 +121,7 @@ def color_gradient(
         vector = np.array(vector[::-1])
         p2 = p1 + vector
 
-    if vector:
+    if vector is not None:
         norm = np.linalg.norm(vector)
 
     M = np.dstack(np.meshgrid(range(w), range(h))[::-1]).astype(float)
@@ -186,7 +186,7 @@ def color_split(
     gradient_width
         If not zero, the split is not sharp, but gradual over a region of
         width ``gradient_width`` (in pixels). This is preferable in many
-        situations (for instance for antialiasing). 
+        situations (for instance for antialiasing).
 
 
     Examples
@@ -197,7 +197,7 @@ def color_split(
     >>> color_split(size, x=50, col1=0, col2=1)
     >>> # an image with all pixels with y<50 red, the others green
     >>> color_split(size, x=50, col1=[255,0,0], col2=[0,255,0])
-    >>> # An image splitted along an arbitrary line (see below) 
+    >>> # An image splitted along an arbitrary line (see below)
     >>> color_split(size, p1=[20,50], p2=[25,70] col1=0, col2=1)
 
     """
@@ -237,7 +237,7 @@ def color_split(
 
 
 def circle(screensize, center, radius, col1=1.0, col2=0, blur=1):
-    """ Draw an image with a circle.
+    """Draw an image with a circle.
 
     Draws a circle of color ``col1``, on a background of color ``col2``,
     on a screen of size ``screensize`` at the position ``center=(x,y)``,

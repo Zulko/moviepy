@@ -23,25 +23,25 @@ class Clip:
 
     """
 
-     Base class of all clips (VideoClips and AudioClips).
+    Base class of all clips (VideoClips and AudioClips).
 
 
-     Attributes
-     -----------
+    Attributes
+    -----------
 
-     start:
-       When the clip is included in a composition, time of the
-       composition at which the clip starts playing (in seconds).
+    start:
+      When the clip is included in a composition, time of the
+      composition at which the clip starts playing (in seconds).
 
-     end:
-       When the clip is included in a composition, time of the
-       composition at which the clip stops playing (in seconds).
+    end:
+      When the clip is included in a composition, time of the
+      composition at which the clip stops playing (in seconds).
 
-     duration:
-       Duration of the clip (in seconds). Some clips are infinite, in
-       this case their duration will be ``None``.
+    duration:
+      Duration of the clip (in seconds). Some clips are infinite, in
+      this case their duration will be ``None``.
 
-     """
+    """
 
     # prefix for all temporary video and audio files.
     # You can overwrite it with
@@ -60,8 +60,8 @@ class Clip:
         self.memoize_frame = None
 
     def copy(self):
-        """ Shallow copy of the clip. 
-        
+        """Shallow copy of the clip.
+
         Returns a shallow copy of the clip whose mask and audio will
         be shallow copies of the clip's mask and audio if they exist.
 
@@ -98,7 +98,7 @@ class Clip:
             return self.make_frame(t)
 
     def fl(self, fun, apply_to=None, keep_duration=True):
-        """ General processing of a clip.
+        """General processing of a clip.
 
         Returns a new Clip whose frames are a transformation
         (through function ``fun``) of the frames of the current clip.
@@ -128,9 +128,9 @@ class Clip:
 
         In the following ``newclip`` a 100 pixels-high clip whose video
         content scrolls from the top to the bottom of the frames of
-        ``clip``.
+        ``clip`` at 50 pixels per second.
 
-        >>> fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]
+        >>> fl = lambda gf, t : gf(t)[int(50 * t) : int(50 * t) + 100, :]
         >>> newclip = clip.fl(fl, apply_to='mask')
 
         """
@@ -199,20 +199,19 @@ class Clip:
         Returns the result of ``func(self, *args, **kwargs)``.
         for instance
 
-        >>> newclip = clip.fx(resize, 0.2, method='bilinear')
+        >>> newclip = clip.fx(resize, 0.2, method="bilinear")
 
         is equivalent to
 
-        >>> newclip = resize(clip, 0.2, method='bilinear')
+        >>> newclip = resize(clip, 0.2, method="bilinear")
 
         The motivation of fx is to keep the name of the effect near its
-        parameters, when the effects are chained:
+        parameters when the effects are chained:
 
         >>> from moviepy.video.fx import volumex, resize, mirrorx
-        >>> clip.fx( volumex, 0.5).fx( resize, 0.3).fx( mirrorx )
+        >>> clip.fx(volumex, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
-        >>> resize( volumex( mirrorx( clip ), 0.5), 0.3)
-
+        >>> mirrorx(resize(volumex(clip, 0.5), 0.3))
         """
 
         return func(self, *args, **kwargs)
@@ -301,8 +300,8 @@ class Clip:
 
     @outplace
     def set_fps(self, fps):
-        """ Returns a copy of the clip with a new default fps for functions like
-        write_videofile, iterframe, etc. """
+        """Returns a copy of the clip with a new default fps for functions like
+        write_videofile, iterframe, etc."""
         self.fps = fps
 
     @outplace
@@ -441,7 +440,7 @@ class Clip:
     @requires_duration
     @use_clip_fps_by_default
     def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
-        """ Iterates over all the frames of the clip.
+        """Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN np.array,
         where N=1 for mask clips and N=3 for RGB clips.
@@ -466,7 +465,11 @@ class Clip:
                      for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
-        for t in logger.iter_bar(t=np.arange(0, self.duration, 1.0 / fps)):
+        for frame_index in logger.iter_bar(t=np.arange(0, int(self.duration * fps))):
+            # int is used to ensure that floating point errors are rounded
+            # down to the nearest integer
+            t = frame_index / fps
+
             frame = self.get_frame(t)
             if (dtype is not None) and (frame.dtype != dtype):
                 frame = frame.astype(dtype)
@@ -476,8 +479,8 @@ class Clip:
                 yield frame
 
     def close(self):
-        """ 
-            Release any resources that are in use.
+        """
+        Release any resources that are in use.
         """
 
         #    Implementation note for subclasses:

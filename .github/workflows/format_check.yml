@@ -1,0 +1,45 @@
+name: Code Format Check
+
+on: [push, pull_request]
+
+
+jobs:
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2    
+      - name: Black
+        uses: lgeiger/black-action@v1.0.1    
+        with:
+          args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .
+          pip install flake8
+      - name: Flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E901,E999,F821,F822,F823,W605 --show-source --statistics
+          # Some warning codes are ignored because they conflict with black's formatting, or are
+          # incompatible with MoviePy's structure
+          # E203: whitespace before ':'
+          # E302: expected 2 blank lines, found 0
+          # E402: module level import not at top of file
+          # W291: trailing whitespace
+          # W293: blank line contains whitespace
+          # W503: line break before binary operator
+          flake8 moviepy --ignore=E203,E302,E402,W291,W293,W503 --max-complexity=10 --max-line-length=127 --statistics --count --exit-zero
+          # Check examples and tests with slightly relaxed rules to allow 'star' imports
+          # F403 'from moviepy.editor import *' used; unable to detect undefined names
+          # F405 'name' may be undefined, or defined from star imports: moviepy.editor
+          flake8 . --ignore=E203,E302,E402,W291,W293,W503,F403,F405 --exclude moviepy/ --max-complexity=10 --max-line-length=127 --statistics --count  --exit-zero

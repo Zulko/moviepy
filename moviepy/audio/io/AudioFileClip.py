@@ -65,13 +65,19 @@ class AudioFileClip(AudioClip):
     """
 
     @convert_path_to_string("filename")
-    def __init__(self, filename, buffersize=200000, nbytes=2, fps=44100):
+    def __init__(
+        self, filename, decode_file=False, buffersize=200000, nbytes=2, fps=44100
+    ):
 
         AudioClip.__init__(self)
 
         self.filename = filename
         self.reader = FFMPEG_AudioReader(
-            filename, fps=fps, nbytes=nbytes, buffersize=buffersize
+            filename,
+            decode_file=decode_file,
+            fps=fps,
+            nbytes=nbytes,
+            buffersize=buffersize,
         )
         self.fps = fps
         self.duration = self.reader.duration
@@ -83,13 +89,13 @@ class AudioFileClip(AudioClip):
         self.nchannels = self.reader.nchannels
 
     def coreader(self):
-        """ Returns a copy of the AudioFileClip, i.e. a new entrance point
-            to the audio file. Use copy when you have different clips
-            watching the audio file at different times. """
+        """Returns a copy of the AudioFileClip, i.e. a new entrance point
+        to the audio file. Use copy when you have different clips
+        watching the audio file at different times."""
         return AudioFileClip(self.filename, self.buffersize)
 
     def close(self):
         """ Close the internal reader. """
         if self.reader:
-            self.reader.close_proc()
+            self.reader.close()
             self.reader = None

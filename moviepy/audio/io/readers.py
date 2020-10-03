@@ -39,16 +39,25 @@ class FFMPEG_AudioReader:
     """
 
     def __init__(
-        self, filename, buffersize, print_infos=False, fps=44100, nbytes=2, nchannels=2
+        self,
+        filename,
+        buffersize,
+        decode_file=False,
+        print_infos=False,
+        fps=44100,
+        nbytes=2,
+        nchannels=2,
     ):
-
+        # TODO bring FFMPEG_AudioReader more in line with FFMPEG_VideoReader
+        # E.g. here self.pos is still 1-indexed.
+        # (or have them inherit from a shared parent class)
         self.filename = filename
         self.nbytes = nbytes
         self.fps = fps
         self.f = "s%dle" % (8 * nbytes)
         self.acodec = "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
-        infos = ffmpeg_parse_infos(filename)
+        infos = ffmpeg_parse_infos(filename, decode_file=decode_file)
         self.duration = infos["duration"]
         if "video_duration" in infos:
             self.duration = infos["video_duration"]
@@ -68,7 +77,7 @@ class FFMPEG_AudioReader:
     def initialize(self, starttime=0):
         """ Opens the file, creates the pipe. """
 
-        self.close_proc()  # if any
+        self.close()  # if any
 
         if starttime != 0:
             offset = min(1, starttime)
@@ -160,14 +169,6 @@ class FFMPEG_AudioReader:
         # last case standing: pos = current pos
         self.pos = pos
 
-    def close_proc(self):
-        if hasattr(self, "proc") and self.proc is not None:
-            self.proc.terminate()
-            for std in [self.proc.stdout, self.proc.stderr]:
-                std.close()
-            self.proc.wait()
-            self.proc = None
-
     def get_frame(self, tt):
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
@@ -255,6 +256,14 @@ class FFMPEG_AudioReader:
 
         self.buffer_startframe = new_bufferstart
 
+    def close(self):
+        if self.proc:
+            self.proc.terminate()
+            self.proc.stdout.close()
+            self.proc.stderr.close()
+            self.proc.wait()
+            self.proc = None
+
     def __del__(self):
         # If the garbage collector comes, make sure the subprocess is terminated.
-        self.close_proc()
+        self.close()

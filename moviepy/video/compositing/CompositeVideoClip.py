@@ -9,8 +9,7 @@ from PIL import Image
 
 class CompositeVideoClip(VideoClip):
 
-    """ 
-
+    """
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
 
@@ -18,11 +17,17 @@ class CompositeVideoClip(VideoClip):
     ----------
 
     size
-      The size (height x width) of the final clip.
+      The size (width, height) of the final clip.
 
     clips
-      A list of videoclips. Each clip of the list will
-      be displayed below the clips appearing after it in the list.
+      A list of videoclips.
+
+      Clips with a higher ``layer`` attribute will be dislayed
+      on top of other clips in a lower layer.
+      If two or more clips share the same ``layer``,
+      then the one appearing latest in ``clips`` will be displayed
+      on top (i.e. it has the higher layer).
+
       For each clip:
 
       - The attribute ``pos`` determines where the clip is placed.
@@ -41,7 +46,7 @@ class CompositeVideoClip(VideoClip):
       Set to True if the first clip in the list should be used as the
       'background' on which all other clips are blitted. That first clip must
       have the same size as the final clip. If it has no transparency, the final
-      clip will have no mask. 
+      clip will have no mask.
 
     The clip with the highest FPS will be the FPS of the composite clip.
 
@@ -79,6 +84,9 @@ class CompositeVideoClip(VideoClip):
             self.bg = ColorClip(size, color=self.bg_color, ismask=ismask)
             self.created_bg = True
 
+        # order self.clips by layer
+        self.clips = sorted(self.clips, key=lambda clip: clip.layer)
+
         # compute duration
         ends = [c.end for c in self.clips]
         if None not in ends:
@@ -98,6 +106,7 @@ class CompositeVideoClip(VideoClip):
                 .set_position(c.pos)
                 .set_end(c.end)
                 .set_start(c.start, change_end=False)
+                .set_layer(c.layer)
                 for c in self.clips
             ]
 
@@ -106,6 +115,8 @@ class CompositeVideoClip(VideoClip):
             )
 
     def make_frame(self, t):
+        """The clips playing at time `t` are blitted over one another."""
+
         f = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(f)
 
@@ -120,8 +131,8 @@ class CompositeVideoClip(VideoClip):
         return np.array(im)
 
     def playing_clips(self, t=0):
-        """ Returns a list of the clips in the composite clips that are
-            actually playing at the given time `t`. """
+        """Returns a list of the clips in the composite clips that are
+        actually playing at the given time `t`."""
         return [c for c in self.clips if c.is_playing(t)]
 
     def close(self):

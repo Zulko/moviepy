@@ -19,9 +19,7 @@ def test_clip_generation():
         ]
     )
 
-    clip = BitmapClip(bitmap)
-    clip.duration = len(bitmap)
-    clip.fps = 1
+    clip = BitmapClip(bitmap, fps=1)
     frame_array = np.array(list(clip.iter_frames()))
 
     # Check that frame_list == expected_frame_list
@@ -31,25 +29,21 @@ def test_clip_generation():
     assert not np.array_equal(frame_array, unexpected_frame_array)
 
 
-def test_set_fps():
+def test_setting_fps():
     bitmap = [["R"], ["R"], ["B"], ["B"], ["G"], ["G"]]
-    clip = BitmapClip(bitmap)
+    clip = BitmapClip(bitmap, fps=1)
 
-    fps_clip = clip.set_fps(1)
-    assert fps_clip.fps == 1
-    assert fps_clip.duration == 6
+    assert clip.fps == 1
+    assert clip.duration == 6
 
 
-def test_set_duration():
+def test_setting_duration():
     bitmap = [["R"], ["R"], ["B"], ["B"], ["G"], ["G"]]
-    clip = BitmapClip(bitmap)
+    clip = BitmapClip(bitmap, duration=6)
 
-    duration_clip = clip.set_duration(len(bitmap))
-    assert duration_clip.fps == 1
-    assert duration_clip.duration == 6
+    assert clip.fps == 1
+    assert clip.duration == 6
 
 
 if __name__ == "__main__":
-    test_clip_generation()
-    test_set_fps()
-    test_set_duration()
+    pytest.main()

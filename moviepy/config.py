@@ -57,14 +57,29 @@ else:
 
 if IMAGEMAGICK_BINARY == "auto-detect":
     if os.name == "nt":
+        # Try a few different ways of finding the ImageMagick binary on Windows
         try:
             key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current")
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\magick.exe"
             key.Close()
         except Exception:
-            IMAGEMAGICK_BINARY = "unset"
+            try:
+                imagemagick_path = sp.check_output(
+                    r'dir /B /O-N "C:\Program Files\ImageMagick-*"',
+                    shell=True,
+                    encoding="utf-8",
+                ).split("\n")[0]
+                IMAGEMAGICK_BINARY = sp.check_output(
+                    rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
+                    shell=True,
+                    encoding="utf-8",
+                ).split("\n")[0]
+            except Exception:
+                IMAGEMAGICK_BINARY = "unset"
+
     elif try_cmd(["convert"])[0]:
         IMAGEMAGICK_BINARY = "convert"
+
     else:
         IMAGEMAGICK_BINARY = "unset"
 else:

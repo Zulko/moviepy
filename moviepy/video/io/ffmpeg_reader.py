@@ -5,7 +5,6 @@ using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 
 from __future__ import division
 
-import logging
 import os
 import re
 import subprocess as sp
@@ -16,25 +15,26 @@ import numpy as np
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import cvsecs
 
-logging.captureWarnings(True)
-
 
 class FFMPEG_VideoReader:
     def __init__(
         self,
         filename,
+        decode_file=True,
         print_infos=False,
         bufsize=None,
         pix_fmt="rgb24",
         check_duration=True,
         target_resolution=None,
         resize_algo="bicubic",
-        fps_source="tbr",
+        fps_source="fps",
     ):
 
         self.filename = filename
         self.proc = None
-        infos = ffmpeg_parse_infos(filename, print_infos, check_duration, fps_source)
+        infos = ffmpeg_parse_infos(
+            filename, decode_file, print_infos, check_duration, fps_source
+        )
         self.fps = infos["video_fps"]
         self.size = infos["video_size"]
         self.rotation = infos["video_rotation"]
@@ -61,7 +61,9 @@ class FFMPEG_VideoReader:
         self.infos = infos
 
         self.pix_fmt = pix_fmt
-        self.depth = 4 if pix_fmt == "rgba" else 3
+        self.depth = 4 if pix_fmt[-1] == "a" else 3
+        # 'a' represents 'alpha' which means that each pixel has 4 values instead of 3.
+        # See https://github.com/Zulko/moviepy/issues/1070#issuecomment-644457274
 
         if bufsize is None:
             w, h = self.size
@@ -70,13 +72,14 @@ class FFMPEG_VideoReader:
         self.bufsize = bufsize
         self.initialize()
 
-        self.pos = 1
-        self.lastread = self.read_frame()
-
     def initialize(self, starttime=0):
-        """Opens the file, creates the pipe. """
+        """
+        Opens the file, creates the pipe.
+        Sets self.pos to the appropriate value (1 if starttime == 0 because
+        it pre-reads the first frame)
+        """
 
-        self.close()  # if any
+        self.close(delete_lastread=False)  # if any
 
         if starttime != 0:
             offset = min(1, starttime)
@@ -119,44 +122,54 @@ class FFMPEG_VideoReader:
 
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
-
         self.proc = sp.Popen(cmd, **popen_params)
 
+        # self.pos represents the (0-indexed) index of the frame that is next in line
+        # to be read by self.read_frame().
+        # Eg when self.pos is 1, the 2nd frame will be read next.
+        self.pos = self.get_frame_number(starttime)
+        self.lastread = self.read_frame()
+
     def skip_frames(self, n=1):
-        """Reads and throws away n frames """
+        """Reads and throws away n frames"""
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth * w * h)
+
             # self.proc.stdout.flush()
         self.pos += n
 
     def read_frame(self):
+        """
+        Reads the next frame from the file.
+        Note that upon (re)initialization, the first frame will already have been read
+        and stored in ``self.lastread``.
+        """
         w, h = self.size
         nbytes = self.depth * w * h
 
         s = self.proc.stdout.read(nbytes)
-        if len(s) != nbytes:
 
+        if len(s) != nbytes:
             warnings.warn(
-                "Warning: in file %s, " % (self.filename)
+                f"In file {self.filename}, "
                 + "%d bytes wanted but %d bytes read," % (nbytes, len(s))
-                + "at frame %d/%d, at time %.02f/%.02f sec. "
-                % (self.pos, self.nframes, 1.0 * self.pos / self.fps, self.duration)
+                + f"at frame index {self.pos} (out of a total {self.nframes} frames), "
+                + f"at time %.02f/%.02f sec. "
+                % (1.0 * self.pos / self.fps, self.duration)
                 + "Using the last valid frame instead.",
                 UserWarning,
             )
-
             if not hasattr(self, "lastread"):
                 raise IOError(
                     (
                         "MoviePy error: failed to read the first frame of "
-                        "video file %s. That might mean that the file is "
+                        f"video file {self.filename}. That might mean that the file is "
                         "corrupted. That may also mean that you are using "
                         "a deprecated version of FFMPEG. On Ubuntu/Debian "
                         "for instance the version in the repos is deprecated. "
                         "Please update to a recent version from the website."
                     )
-                    % (self.filename)
                 )
 
             result = self.lastread
@@ -169,10 +182,13 @@ class FFMPEG_VideoReader:
             result.shape = (h, w, len(s) // (w * h))  # reshape((h, w, len(s)//(w*h)))
             self.lastread = result
 
+        # We have to do this down here because `self.pos` is used in the warning above
+        self.pos += 1
+
         return result
 
     def get_frame(self, t):
-        """ Read a file video frame at time t.
+        """Read a file video frame at time t.
 
         Note for coders: getting an arbitrary frame in the video with
         ffmpeg can be painfully slow if some decoding has to be done.
@@ -180,54 +196,58 @@ class FFMPEG_VideoReader:
         whenever possible, by moving between adjacent frames.
         """
 
-        # these definitely need to be rechecked sometime. Seems to work.
-
-        # I use that horrible '+0.00001' hack because sometimes due to numerical
-        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
-        # go to the previous integer. This makes the fetching more robust in the
-        # case where you get the nth frame by writing get_frame(n/fps).
-
-        pos = int(self.fps * t + 0.00001) + 1
+        # + 1 so that it represents the frame position that it will be
+        # after the frame is read. This makes the later comparisions easier.
+        pos = self.get_frame_number(t) + 1
 
         # Initialize proc if it is not open
         if not self.proc:
+            print(f"Proc not detected")
             self.initialize(t)
-            self.pos = pos
-            self.lastread = self.read_frame()
+            return self.lastread
 
         if pos == self.pos:
             return self.lastread
         elif (pos < self.pos) or (pos > self.pos + 100):
+            # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            self.pos = pos
+            return self.lastread
         else:
+            # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
-        result = self.read_frame()
-        self.pos = pos
-        return result
+            result = self.read_frame()
+            return result
 
-    def close(self):
+    def get_frame_number(self, t):
+        """Helper method to return the frame number at time ``t``"""
+        # I used this horrible '+0.00001' hack because sometimes due to numerical
+        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
+        # go to the previous integer. This makes the fetching more robust when you
+        # are getting the nth frame by writing get_frame(n/fps).
+        return int(self.fps * t + 0.00001)
+
+    def close(self, delete_lastread=True):
         if self.proc:
             self.proc.terminate()
             self.proc.stdout.close()
             self.proc.stderr.close()
             self.proc.wait()
             self.proc = None
-        if hasattr(self, "lastread"):
+        if delete_lastread and hasattr(self, "lastread"):
             del self.lastread
 
     def __del__(self):
         self.close()
 
 
-def ffmpeg_read_image(filename, with_mask=True):
-    """ Read an image file (PNG, BMP, JPEG...).
+def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
+    """Read an image file (PNG, BMP, JPEG...).
 
     Wraps FFMPEG_Videoreader to read just one image.
     Returns an ImageClip.
 
-    This function is not meant to be used directly in MoviePy,
-    use ImageClip instead to make clips out of image files.
+    This function is not meant to be used directly in MoviePy.
+    Use ImageClip instead to make clips out of image files.
 
     Parameters
     -----------
@@ -239,8 +259,14 @@ def ffmpeg_read_image(filename, with_mask=True):
       If the image has a transparency layer, ``with_mask=true`` will save
       this layer as the mask of the returned ImageClip
 
+    pix_fmt
+      Optional: Pixel format for the image to read. If is not specified
+      'rgb24' will be used as the default format unless ``with_mask`` is set
+      as ``True``, then 'rgba' will be used.
+
     """
-    pix_fmt = "rgba" if with_mask else "rgb24"
+    if not pix_fmt:
+        pix_fmt = "rgba" if with_mask else "rgb24"
     reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
     im = reader.lastread
     del reader
@@ -248,7 +274,11 @@ def ffmpeg_read_image(filename, with_mask=True):
 
 
 def ffmpeg_parse_infos(
-    filename, print_infos=False, check_duration=True, fps_source="tbr"
+    filename,
+    decode_file=False,
+    print_infos=False,
+    check_duration=True,
+    fps_source="fps",
 ):
     """Get file infos using ffmpeg.
 
@@ -260,12 +290,10 @@ def ffmpeg_parse_infos(
     fetching the uncomplete frames at the end, which raises an error.
 
     """
-
-    # open the file in a pipe, provoke an error, read output
-    is_GIF = filename.endswith(".gif")
+    # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-i", filename]
-    if is_GIF:
-        cmd += ["-f", "null", "/dev/null"]
+    if decode_file:
+        cmd.extend(["-f", "null", "-"])
 
     popen_params = {
         "bufsize": 10 ** 5,
@@ -279,8 +307,9 @@ def ffmpeg_parse_infos(
 
     proc = sp.Popen(cmd, **popen_params)
     (output, error) = proc.communicate()
-    infos = error.decode("utf8")
+    infos = error.decode("utf8", errors="ignore")
 
+    proc.terminate()
     del proc
 
     if print_infos:
@@ -305,19 +334,15 @@ def ffmpeg_parse_infos(
 
     if check_duration:
         try:
-            keyword = "frame=" if is_GIF else "Duration: "
-            # for large GIFS the "full" duration is presented as the last element in the list.
-            index = -1 if is_GIF else 0
-            line = [l for l in lines if keyword in l][index]
+            if decode_file:
+                line = [l for l in lines if "time=" in l][-1]
+            else:
+                line = [l for l in lines if "Duration:" in l][-1]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = cvsecs(match)
         except Exception:
             raise IOError(
-                (
-                    "MoviePy error: failed to read the duration of file %s.\n"
-                    "Here are the file infos returned by ffmpeg:\n\n%s"
-                )
-                % (filename, infos)
+                f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}"
             )
 
     # get the output line that speaks about video
@@ -347,8 +372,8 @@ def ffmpeg_parse_infos(
 
         # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
         # tbc, and sometimes tbc/2...
-        # Current policy: Trust tbr first, then fps unless fps_source is
-        # specified as 'fps' in which case try fps then tbr
+        # Current policy: Trust fps first, then tbr unless fps_source is
+        # specified as 'tbr' in which case try tbr then fps
 
         # If result is near from x*1000/1001 where x is 23,24,25,50,
         # replace by x*1000/1001 (very common case for the fps).
@@ -390,7 +415,7 @@ def ffmpeg_parse_infos(
                 result["video_fps"] = x * coef
 
         if check_duration:
-            result["video_nframes"] = int(result["duration"] * result["video_fps"]) + 1
+            result["video_nframes"] = int(result["duration"] * result["video_fps"])
             result["video_duration"] = result["duration"]
         else:
             result["video_nframes"] = 1
