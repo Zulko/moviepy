@@ -10,18 +10,18 @@ def margin(
 ):
     """
     Draws an external margin all around the frame.
-    
+
     :param mar: if not ``None``, then the new clip has a margin of
         size ``mar`` in pixels on the left, right, top, and bottom.
-        
+
     :param left, right, top, bottom: width of the margin in pixel
         in these directions.
-        
+
     :param color: color of the margin.
-    
+
     :param mask_margin: value of the mask on the margin. Setting
         this value to 0 yields transparent margins.
-    
+
     """
 
     if (opacity != 1.0) and (clip.mask is None) and not (clip.ismask):
@@ -41,7 +41,6 @@ def margin(
         return bg
 
     if isinstance(clip, ImageClip):
-
         im = make_bg(clip.w, clip.h)
         im[top : top + clip.h, left : left + clip.w] = clip.img
         return clip.fl_image(lambda pic: im)

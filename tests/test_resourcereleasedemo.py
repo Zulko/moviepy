@@ -22,13 +22,13 @@ from tests.test_helper import TMP_DIR
 
 
 def test_failure_to_release_file():
-    """ This isn't really a test, because it is expected to fail.
-        It demonstrates that there *is* a problem with not releasing resources when running on 
-        Windows.
+    """This isn't really a test, because it is expected to fail.
+    It demonstrates that there *is* a problem with not releasing resources when running on
+    Windows.
 
-        The real issue was that, as of movepy 0.2.3.2, there was no way around it.
+    The real issue was that, as of movepy 0.2.3.2, there was no way around it.
 
-        See test_resourcerelease.py to see how the close() methods provide a solution.
+    See test_resourcerelease.py to see how the close() methods provide a solution.
     """
 
     # Get the name of a temporary file we can use.

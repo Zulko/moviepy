@@ -6,8 +6,8 @@ from .crop import crop
 
 # @apply_to_mask
 def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
-    """ Freezes one region of the clip while the rest remains animated.
-    
+    """Freezes one region of the clip while the rest remains animated.
+
     You can choose one of three methods by providing either `region`,
     `outside_region`, or `mask`.
 

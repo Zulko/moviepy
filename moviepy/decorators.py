@@ -26,8 +26,8 @@ def convert_masks_to_RGB(f, clip, *a, **k):
 
 @decorator.decorator
 def apply_to_mask(f, clip, *a, **k):
-    """ This decorator will apply the same function f to the mask of
-        the clip created with f """
+    """This decorator will apply the same function f to the mask of
+    the clip created with f"""
 
     newclip = f(clip, *a, **k)
     if getattr(newclip, "mask", None):
@@ -37,8 +37,8 @@ def apply_to_mask(f, clip, *a, **k):
 
 @decorator.decorator
 def apply_to_audio(f, clip, *a, **k):
-    """ This decorator will apply the function f to the audio of
-        the clip created with f """
+    """This decorator will apply the function f to the audio of
+    the clip created with f"""
 
     newclip = f(clip, *a, **k)
     if getattr(newclip, "audio", None):
@@ -58,8 +58,8 @@ def requires_duration(f, clip, *a, **k):
 
 @decorator.decorator
 def audio_video_fx(f, clip, *a, **k):
-    """ Use an audio function on a video/audio clip
-    
+    """Use an audio function on a video/audio clip
+
     This decorator tells that the function f (audioclip -> audioclip)
     can be also used on a video clip, at which case it returns a
     videoclip with unmodified video and modified audio.

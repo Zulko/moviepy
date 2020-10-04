@@ -56,34 +56,34 @@ except ImportError:
 
 
 def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
-    """ 
+    """
     Returns a video clip that is a resized version of the clip.
-    
+
     Parameters
     ------------
-    
+
     newsize:
-      Can be either 
+      Can be either
         - ``(width,height)`` in pixels or a float representing
         - A scaling factor, like 0.5
         - A function of time returning one of these.
-            
+
     width:
       width of the new clip in pixel. The height is then computed so
-      that the width/height ratio is conserved. 
-            
+      that the width/height ratio is conserved.
+
     height:
       height of the new clip in pixel. The width is then computed so
       that the width/height ratio is conserved.
-    
+
     Examples
     ----------
-             
+
     >>> myClip.resize( (460,720) ) # New resolution: (460,720)
     >>> myClip.resize(0.6) # width and heigth multiplied by 0.6
     >>> myClip.resize(width=800) # height computed automatically.
     >>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-    
+
     """
 
     w, h = clip.size
@@ -98,6 +98,7 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
                 return ns
 
         if hasattr(newsize, "__call__"):
+            # The resizing is a function of time
 
             def newsize2(t):
                 return trans_newsize(newsize(t))
@@ -114,12 +115,15 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
                 def fun(gf, t):
                     return resizer(gf(t).astype("uint8"), newsize2(t))
 
-            return clip.fl(
+            newclip = clip.fl(
                 fun, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
             )
+            if apply_to_mask and clip.mask is not None:
+                newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+
+            return newclip
 
         else:
-
             newsize = trans_newsize(newsize)
 
     elif height is not None:
@@ -132,7 +136,6 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
             return resize(clip, fun)
 
         else:
-
             newsize = [w * height / h, height]
 
     elif width is not None:
@@ -144,7 +147,8 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
 
             return resize(clip, fun)
 
-        newsize = [width, h * width / w]
+        else:
+            newsize = [width, h * width / w]
 
     # From here, the resizing is constant (not a function of time), size=newsize
 

@@ -25,31 +25,31 @@ def credits1(
 
     Parameters
     -----------
-    
+
     creditfile
       A string or path like object pointing to a text file
       whose content must be as follows: ::
-        
+
         # This is a comment
         # The next line says : leave 4 blank lines
         .blank 4
-        
+
         ..Executive Story Editor
         MARCEL DURAND
-        
+
         ..Associate Producers
         MARTIN MARCEL
         DIDIER MARTIN
-        
+
         ..Music Supervisor
         JEAN DIDIER
-    
+
     width
       Total width of the credits text in pixels
-      
+
     gap
       Horizontal gap in pixels between the jobs and the names
-    
+
     color
       Color of the text. See ``TextClip.list('color')``
       for a list of acceptable names.
@@ -67,11 +67,11 @@ def credits1(
 
     stroke_width
       Width of the stroke, in pixels. Can be a float, like 1.5.
-    
-        
+
+
     Returns
     ---------
-    
+
     image
       An ImageClip instance that looks like this and can be scrolled
       to make some credits:
@@ -80,7 +80,7 @@ def credits1(
              Associate Producers    MARTIN MARCEL
                                     DIDIER MARTIN
                 Music Supervisor    JEAN DIDIER
-              
+
     """
 
     # PARSE THE TXT FILE

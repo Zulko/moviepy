@@ -24,17 +24,17 @@ def imdisplay(imarray, screen=None):
 def show(clip, t=0, with_mask=True, interactive=False):
     """
     Splashes the frame of clip corresponding to time ``t``.
-    
+
     Parameters
     ------------
-    
+
     t
       Time in seconds of the frame to display.
-    
+
     with_mask
       ``False`` if the clip has a mask but you want to see the clip
       without the mask.
-    
+
     """
 
     if isinstance(t, tuple):
@@ -74,7 +74,7 @@ def preview(
     audio_nbytes=2,
     fullscreen=False,
 ):
-    """ 
+    """
     Displays the clip in a window, at the given frames per second
     (of movie) rate. It will avoid that the clip be played faster
     than normal, but it cannot avoid the clip to be played slower

@@ -7,22 +7,64 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
-[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...HEAD)
 
+### Important Announcements
+
+### Added <!-- for new features -->
+- New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [#1237]
+
+### Changed <!-- for changes in existing functionality -->
+- `ffmpeg_parse_infos()` and `VideoFileClip` now have optional `decode_file` parameter that ensures that the detected duration is correct, but may take a long time to run [#1063, #1222]
+- `ffmpeg_parse_infos()` and `VideoFileClip` now use `fps` metadata instead of `tbr` to detect a video's fps value [#1222]
+- `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader` [#1220]
+- `ffmpeg_parse_infos()` and `VideoFileClip` now detect the actual duration of the decoded video instead of the duration stored in its metadata [#1063]
+
+### Deprecated <!-- for soon-to-be removed features -->		
+
+### Removed <!-- for now removed features -->
+
+### Fixed <!-- for any bug fixes -->
+- Fixed `ffmpeg_tools.ffmpeg_extract_subclip` creating clips with incorrect duration metadata [#1317]
+- `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
+- Warnings are no longer being supressed by MoviePy [#1191]
+- Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [#959]
+
+
+## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.3...v2.0.0.dev1)
+
+This development version introduces many bug-fixes and changes. Please note that there may be large backwards-incompatible changes between dev versions! 
+The online documentation has not been updated to reflect the changes in the v2.0.0 branch, so for help on how to use the new features please refer to the docstrings in the source code.
+Install with `pip install moviepy --pre --upgrade`.
 
 ### Important Announcements
 - Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
+- If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [#1109]
+- All previously deprecated methods and parameters have been removed [#1115]
 
 ### Added <!-- for new features -->
-- Support for path-like objects as an option wherever filenames are passed in as arguments
+- BitmapClip allows creating of custom frames using strings of letters
+- Clips can now be tested for equality with other clips using `==`. This checks whether every frame of the two clips are identical
+- Support for path-like objects as an option wherever filenames are passed in as arguments [#1137]
+- Autodetect ImageMagick executable on Windows [#1109]
+- Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [#1109]
 - Optional `encoding` parameter in `SubtitlesClip` [#1043]
+- Added new `ffmpeg_stabilize_video()` function in `ffmpeg_tools`
+- Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [#1144]
+- `VideoClip.set_layer()` to specify the layer of the clip for use when creating a `CompositeVideoClip` [#1176]
+- `ffmpeg_parse_infos` additionally returns `"video_bitrate"` and `"audio_bitrate"` values [#930]
+- Access to the source video's bitrate in a `VideoFileClip` or `AudioFileClip` through `videoclip.reader.bitrate` and `audioclip.reader.bitrate` [#930]
 
 ### Changed <!-- for changes in existing functionality -->
-
-### Deprecated <!-- for soon-to-be removed features -->
+- `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
+- Removed extra `.` in the output file name of `ffmpeg_extract_subclip()` when `targetname` is not specified [#939]
 
 ### Removed <!-- for now removed features -->
-- Support for Python versions 2.7, 3.4 & 3.5
+- Support removed for Python versions 2.7, 3.4 & 3.5
+- Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [#1109]
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions [#1109]
 - All previously deprecated methods and parameters [#1115]:
     - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
     - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
@@ -36,7 +78,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
 - `TextClip.list("color")` now returns a list of bytes, not strings [#1119]
 - `TextClip.search("colorname", "color")` does not crash with a TypeError [#1119]
+- `vfx.even_size` previously created clips with odd sizes [#1124]
+- `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [#1124]
 - Using `rotate()` with a `ColorClip` no longer crashes [#1139]
+- `AudioFileClip` would not generate audio identical to the original file [#1108]
+- Fixed `TypeError` when using `filename` instead of `txt` parameter in `TextClip` [#1201]
+- Several issues resulting from incorrect time values due to floating point errors [#1195], for example:
+    - Blank frames at the end of clips [#210]
+    - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [#646]
+- Applying `resize` with a non-constant `newsize` to a clip with a mask would remove the mask [#1200] 
+- Using `color_gradient()` would crash with `ValueError: The truth value of an array with more than one element is ambiguous` [#1212]
+
+## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v1.0.3)
+
+Bonus release to fix critical error when working with audio: `AttributeError: 'NoneType' object has no attribute 'stdout'` [\#1185](https://github.com/Zulko/moviepy/pull/1185)
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)

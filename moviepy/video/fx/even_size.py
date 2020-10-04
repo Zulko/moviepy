@@ -3,7 +3,7 @@ from moviepy.decorators import apply_to_mask
 
 @apply_to_mask
 def even_size(clip):
-    """ 
+    """
     Crops the clip to make dimensions even.
     """
     w, h = clip.size
@@ -17,7 +17,7 @@ def even_size(clip):
         def fl_image(a):
             return a[:-1, :-1, :]
 
-    elif w_even:
+    elif h_even:
 
         def fl_image(a):
             return a[:, :-1, :]

@@ -20,7 +20,7 @@ def sys_write_flush(s):
 
 
 def subprocess_call(cmd, logger="bar", errorprint=True):
-    """ Executes the given subprocess command.
+    """Executes the given subprocess command.
 
     Set logger to None or a custom Proglog logger to avoid printings.
     """
@@ -48,7 +48,7 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
 
 
 def cvsecs(time):
-    """ Will convert any time into seconds.
+    """Will convert any time into seconds.
 
     If the type of `time` is not valid,
     it's returned as is.
@@ -82,7 +82,7 @@ def cvsecs(time):
 
 
 def deprecated_version_of(f, oldname, newname=None):
-    """ Indicates that a function is deprecated and has a new name.
+    """Indicates that a function is deprecated and has a new name.
 
     `f` is the new function, `oldname` the name of the deprecated
     function, `newname` the name of `f`, which can be automatically
