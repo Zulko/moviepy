@@ -306,7 +306,8 @@ class Clip:
         halved in this mode, the duration will be doubled."""
 
         if change_duration:
-            newclip = self.speedx(fps / self.fps)
+            from moviepy.video.fx.speedx import speedx
+            newclip = speedx(self, fps / self.fps)
         else:
             newclip = self.copy()
 
