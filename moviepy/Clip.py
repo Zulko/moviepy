@@ -307,6 +307,7 @@ class Clip:
 
         if change_duration:
             from moviepy.video.fx.speedx import speedx
+
             newclip = speedx(self, fps / self.fps)
         else:
             newclip = self.copy()

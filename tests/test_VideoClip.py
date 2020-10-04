@@ -260,9 +260,10 @@ def test_withoutaudio():
     assert new_clip.audio is None
     close_all_clips(locals())
 
+
 def test_setfps_withoutchangeduration():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
-    # The sum is unique for each frame, so we can use it as a frame-ID 
+    # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
 
@@ -272,9 +273,10 @@ def test_setfps_withoutchangeduration():
     assert clip2.duration == clip.duration
     close_all_clips(locals())
 
+
 def test_setfps_withchangeduration():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
-    # The sum is unique for each frame, so we can use it as a frame-ID 
+    # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
 
@@ -283,6 +285,7 @@ def test_setfps_withchangeduration():
     assert clip2_sums == clip_sums
     assert clip2.duration == clip.duration / 2
     close_all_clips(locals())
+
 
 if __name__ == "__main__":
     pytest.main()
