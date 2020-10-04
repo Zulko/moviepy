@@ -298,11 +298,22 @@ class Clip:
         """
         self.make_frame = make_frame
 
-    @outplace
-    def set_fps(self, fps):
+    def set_fps(self, fps, change_duration=False):
         """Returns a copy of the clip with a new default fps for functions like
-        write_videofile, iterframe, etc."""
-        self.fps = fps
+        write_videofile, iterframe, etc.
+        If ``change_duration=True``, then the video speed will change to match the
+        new fps (conserving all frames 1:1). For example, if the fps is
+        halved in this mode, the duration will be doubled."""
+
+        if change_duration:
+            from moviepy.video.fx.speedx import speedx
+
+            newclip = speedx(self, fps / self.fps)
+        else:
+            newclip = self.copy()
+
+        newclip.fps = fps
+        return newclip
 
     @outplace
     def set_ismask(self, ismask):

@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added <!-- for new features -->
 - New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [#1237]
+- New `change_duration` parameter in `Clip.set_fps()` that allows changing the video speed to match the new fps [#1329]
 
 ### Changed <!-- for changes in existing functionality -->
 - `ffmpeg_parse_infos()` and `VideoFileClip` now have optional `decode_file` parameter that ensures that the detected duration is correct, but may take a long time to run [#1063, #1222]
