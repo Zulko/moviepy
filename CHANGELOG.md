@@ -7,9 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
-[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...HEAD)
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev2...HEAD)
 
 ### Important Announcements
+
+### Added <!-- for new features -->
+
+### Changed <!-- for changes in existing functionality -->
+
+### Deprecated <!-- for soon-to-be removed features -->		
+
+### Removed <!-- for now removed features -->
+
+### Fixed <!-- for any bug fixes -->
+
+
+## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...v2.0.0.dev2)
+
+There are still no major breaking changes compared to v1.0.3. Expect them to come in the next dev update.
+Any new changes made to the master branch will now be instantly reflected at https://moviepy.readthedocs.io, which is where documentation for all versions will be in the future. [#1328]
+Install with `pip install moviepy --pre --upgrade`.
 
 ### Added <!-- for new features -->
 - New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [#1237]
@@ -19,16 +38,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ffmpeg_parse_infos()` and `VideoFileClip` now have optional `decode_file` parameter that ensures that the detected duration is correct, but may take a long time to run [#1063, #1222]
 - `ffmpeg_parse_infos()` and `VideoFileClip` now use `fps` metadata instead of `tbr` to detect a video's fps value [#1222]
 - `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader` [#1220]
-- `ffmpeg_parse_infos()` and `VideoFileClip` now detect the actual duration of the decoded video instead of the duration stored in its metadata [#1063]
-
-### Deprecated <!-- for soon-to-be removed features -->		
-
-### Removed <!-- for now removed features -->
 
 ### Fixed <!-- for any bug fixes -->
 - Fixed `ffmpeg_tools.ffmpeg_extract_subclip` creating clips with incorrect duration metadata [#1317]
 - `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [#1220]
-- Warnings are no longer being supressed by MoviePy [#1191]
+- Fixed warnings being suppressed [#1191]
 - Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [#959]
 
 
@@ -89,6 +103,7 @@ Install with `pip install moviepy --pre --upgrade`.
     - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [#646]
 - Applying `resize` with a non-constant `newsize` to a clip with a mask would remove the mask [#1200] 
 - Using `color_gradient()` would crash with `ValueError: The truth value of an array with more than one element is ambiguous` [#1212]
+
 
 ## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
 
