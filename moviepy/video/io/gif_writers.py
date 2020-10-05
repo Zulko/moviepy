@@ -29,7 +29,7 @@ def write_gif_with_tempfiles(
     dispose=True,
     colors=None,
     logger="bar",
-    pix_fmt=None,
+    pixel_format=None,
 ):
     """Write the VideoClip to a GIF file.
 
@@ -58,11 +58,11 @@ def write_gif_with_tempfiles(
     delay = int(100.0 / fps)
 
     if clip.mask is None:
-        withmask = False
+        with_mask = False
 
     if program == "ImageMagick":
-        if not pix_fmt:
-            pix_fmt = "RGBA" if withmask else "RGB"
+        if not pixel_format:
+            pixel_format = "RGBA" if with_mask else "RGB"
 
         logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
         cmd = (
@@ -82,15 +82,15 @@ def write_gif_with_tempfiles(
                 "%s" % opt,
                 "-set",
                 "colorspace",
-                pix_fmt,
+                pixel_format,
             ]
             + (["-colors", "%d" % colors] if colors is not None else [])
             + [filename]
         )
 
     elif program == "ffmpeg":
-        if not pix_fmt:
-            pix_fmt = "rgba" if withmask else "rgb24"
+        if not pixel_format:
+            pixel_format = "rgba" if with_mask else "rgb24"
 
         cmd = [
             FFMPEG_BINARY,
@@ -105,7 +105,7 @@ def write_gif_with_tempfiles(
             str(fps),
             filename,
             "-pix_fmt",
-            (pix_fmt),
+            (pixel_format),
         ]
 
     try:
@@ -147,7 +147,7 @@ def write_gif(
     dispose=True,
     colors=None,
     logger="bar",
-    pix_fmt=None,
+    pixel_format=None,
 ):
     """Write the VideoClip to a GIF file, without temporary files.
 
@@ -179,7 +179,7 @@ def write_gif(
       the colors that are less than fuzz% different are in fact
       the same.
 
-    pix_fmt
+    pixel_format
       Pixel format for the output gif file. If is not specified
       'rgb24' will be used as the default format unless ``clip.mask``
       exist, then 'rgba' will be used. This option is going to
@@ -216,8 +216,8 @@ def write_gif(
     logger = proglog.default_bar_logger(logger)
     if clip.mask is None:
         with_mask = False
-    if not pix_fmt:
-        pix_fmt = "rgba" if with_mask else "rgb24"
+    if not pixel_format:
+        pixel_format = "rgba" if with_mask else "rgb24"
 
     cmd1 = [
         FFMPEG_BINARY,
@@ -233,7 +233,7 @@ def write_gif(
         "-s",
         "%dx%d" % (clip.w, clip.h),
         "-pix_fmt",
-        (pix_fmt),
+        (pixel_format),
         "-i",
         "-",
     ]
@@ -251,7 +251,7 @@ def write_gif(
             cmd1
             + [
                 "-pix_fmt",
-                (pix_fmt),
+                (pixel_format),
                 "-r",
                 "%.02f" % fps,
                 filename,

@@ -237,7 +237,7 @@ class FFMPEG_VideoReader:
         self.close()
 
 
-def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
+def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
     """Read an image file (PNG, BMP, JPEG...).
 
     Wraps FFMPEG_Videoreader to read just one image.
@@ -256,7 +256,7 @@ def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
       If the image has a transparency layer, ``with_mask=true`` will save
       this layer as the mask of the returned ImageClip
 
-    pix_fmt
+    pixel_format
       Optional: Pixel format for the image to read. If is not specified
       'rgb24' will be used as the default format unless ``with_mask`` is set
       as ``True``, then 'rgba' will be used.
@@ -264,7 +264,9 @@ def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
     """
     if not pixel_format:
         pixel_format = "rgba" if with_mask else "rgb24"
-    reader = FFMPEG_VideoReader(filename, pixel_format=pixel_format, check_duration=False)
+    reader = FFMPEG_VideoReader(
+        filename, pixel_format=pixel_format, check_duration=False
+    )
     im = reader.last_read
     del reader
     return im

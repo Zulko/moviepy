@@ -121,10 +121,11 @@ def slide_out(clip, duration, side):
 
 
 @requires_duration
-def make_loopable(clip, cross_duration):
+def make_loopable(clip, overlap_duration):
     """Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``overlap_time`` is the duration in seconds
+    it can be looped indefinitely. ``overlap_duration`` is the duration in seconds
     of the fade-in."""
-    d = clip.duration
-    clip2 = clip.fx(crossfadein, cross_duration).with_start(d - cross_duration)
-    return CompositeVideoClip([clip, clip2]).subclip(cross_duration, d)
+    clip2 = clip.fx(crossfadein, overlap_duration).with_start(
+        clip.duration - overlap_duration
+    )
+    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)

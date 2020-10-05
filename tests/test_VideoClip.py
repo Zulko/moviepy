@@ -103,10 +103,10 @@ def test_write_gif_ffmpeg():
     close_all_clips(locals())
 
 
-def test_write_gif_ffmpeg_pix_fmt():
+def test_write_gif_ffmpeg_pixel_format():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
     location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
-    clip.write_gif(location, program="ffmpeg", pix_fmt="bgr24")
+    clip.write_gif(location, program="ffmpeg", pixel_format="bgr24")
     assert os.path.isfile(location)
     close_all_clips(locals())
 
@@ -119,10 +119,10 @@ def test_write_gif_ffmpeg_tmpfiles():
     close_all_clips(locals())
 
 
-def test_write_gif_ffmpeg_tmpfiles_pix_fmt():
+def test_write_gif_ffmpeg_tmpfiles_pixel_format():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ffmpeg", tempfiles=True, pix_fmt="bgr24")
+    clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
     assert os.path.isfile(location)
     close_all_clips(locals())
 
@@ -144,10 +144,10 @@ def test_write_gif_ImageMagick_tmpfiles():
     close_all_clips(locals())
 
 
-def test_write_gif_ImageMagick_tmpfiles_pix_fmt():
+def test_write_gif_ImageMagick_tmpfiles_pixel_format():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ImageMagick", tempfiles=True, pix_fmt="SGI")
+    clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
     assert os.path.isfile(location)
     close_all_clips(locals())
 
@@ -171,15 +171,15 @@ def test_oncolor():
     assert os.path.isfile(location)
 
     # test constructor with default arguements
-    clip = ColorClip(size=(100, 60), ismask=True)
-    clip = ColorClip(size=(100, 60), ismask=False)
+    clip = ColorClip(size=(100, 60), is_mask=True)
+    clip = ColorClip(size=(100, 60), is_mask=False)
 
     # negative test
     with pytest.raises(Exception):
-        clip = ColorClip(size=(100, 60), color=(255, 0, 0), ismask=True)
+        clip = ColorClip(size=(100, 60), color=(255, 0, 0), is_mask=True)
 
     with pytest.raises(Exception):
-        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+        clip = ColorClip(size=(100, 60), color=0.4, is_mask=False)
 
     close_all_clips(locals())
 
@@ -216,9 +216,9 @@ def test_setopacity():
     close_all_clips(locals())
 
 
-def test_set_layer():
-    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).set_layer(1)
-    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).set_layer(2)
+def test_with_layer():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).with_layer(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).with_layer(2)
 
     composite_clip = CompositeVideoClip([bottom_clip, top_clip])
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])

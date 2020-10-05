@@ -168,7 +168,7 @@ class VideoClip(Clip):
         threads=None,
         ffmpeg_params=None,
         logger="bar",
-        pix_fmt=None,
+        pixel_format=None,
     ):
         """Write the clip to a videofile.
 
@@ -273,7 +273,7 @@ class VideoClip(Clip):
         logger
           Either "bar" for progress bar or None or any Proglog logger.
 
-        pix_fmt
+        pixel_format
           Pixel format for the output video file.
 
         Examples
@@ -352,7 +352,7 @@ class VideoClip(Clip):
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
-            pix_fmt=pix_fmt,
+            pixel_format=pixel_format,
         )
 
         if remove_temp and make_audio:
@@ -432,7 +432,7 @@ class VideoClip(Clip):
         colors=None,
         tempfiles=False,
         logger="bar",
-        pix_fmt=None,
+        pixel_format=None,
     ):
         """Write the VideoClip to a GIF file.
 
@@ -472,7 +472,7 @@ class VideoClip(Clip):
         progress_bar
           If True, displays a progress bar
 
-        pix_fmt
+        pixel_format
           Pixel format for the output gif file. If is not specified
           'rgb24' will be used as the default format unless ``clip.mask``
           exist, then 'rgba' will be used. This option is only going to
@@ -518,7 +518,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
-                pix_fmt=pix_fmt,
+                pixel_format=pixel_format,
             )
         else:
             # convert imageio opt variable to something that can be used with
@@ -535,7 +535,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
-                pix_fmt=pix_fmt,
+                pixel_format=pixel_format,
             )
 
     # -----------------------------------------------------------------
@@ -803,7 +803,7 @@ class VideoClip(Clip):
 
     @apply_to_mask
     @outplace
-    def set_layer(self, layer):
+    def with_layer(self, layer):
         """Set the clip's layer in compositions. Clips with a greater ``layer``
         attribute will be displayed on top of others.
 
@@ -1100,7 +1100,7 @@ class ColorClip(ImageClip):
     def __init__(self, size, color=None, is_mask=False, duration=None):
         w, h = size
 
-        if ismask:
+        if is_mask:
             shape = (h, w)
             if color is None:
                 color = 0
@@ -1328,9 +1328,9 @@ class TextClip(ImageClip):
 
 
 class BitmapClip(VideoClip):
-    @convert_to_seconds(["duration"])
+    @convert_parameter_to_seconds(["duration"])
     def __init__(
-        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, ismask=False
+        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
     ):
         """
         Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
@@ -1376,7 +1376,7 @@ class BitmapClip(VideoClip):
             "E": (57, 26, 252),
           }
 
-        ismask
+        is_mask
           Set to ``True`` if the clip is going to be used as a mask.
 
         """
@@ -1416,7 +1416,7 @@ class BitmapClip(VideoClip):
         VideoClip.__init__(
             self,
             make_frame=lambda t: frame_array[int(t)],
-            ismask=ismask,
+            is_mask=is_mask,
             duration=duration,
         )
         self.fps = fps

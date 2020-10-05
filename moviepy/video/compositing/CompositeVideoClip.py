@@ -83,7 +83,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = False
         else:
             self.clips = clips
-            self.bg = ColorClip(size, color=self.bg_color, ismask=ismask)
+            self.bg = ColorClip(size, color=self.bg_color, is_mask=is_mask)
             self.created_bg = True
 
         # order self.clips by layer
@@ -108,7 +108,7 @@ class CompositeVideoClip(VideoClip):
                 .with_position(clip.pos)
                 .with_end(clip.end)
                 .with_start(clip.start, change_end=False)
-                .set_layer(c.layer)
+                .with_layer(clip.layer)
                 for clip in self.clips
             ]
 
