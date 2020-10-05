@@ -58,6 +58,6 @@ def test_concatenate_floating_point():
     This test uses duration=1.12 to check that it still works when the clip duration is
     represented as being bigger than it actually is. Fixed in #1195.
     """
-    clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).set_fps(25.0)
+    clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).with_fps(25.0)
     concat = concatenate_videoclips([clip])
     concat.write_videofile("concat.mp4", preset="ultrafast")

@@ -447,7 +447,7 @@ class Clip:
 
         if self.duration is not None:
 
-            return new_clip.set_duration(self.duration - (end_time - start_time))
+            return new_clip.with_duration(self.duration - (end_time - start_time))
 
         else:
 

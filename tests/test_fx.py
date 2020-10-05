@@ -188,7 +188,7 @@ def test_invert_colors():
 
 def test_loop():
     clip = get_test_video()
-    clip1 = loop(clip).set_duration(3)  # infinite looping
+    clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
     return  # Still buggy. TODO fix

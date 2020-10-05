@@ -267,7 +267,7 @@ def test_setfps_withoutchangeduration():
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
 
-    clip2 = clip.set_fps(48)
+    clip2 = clip.with_fps(48)
     clip2_sums = [f.sum() for f in clip2.iter_frames()]
     assert clip2_sums[::2] == clip_sums
     assert clip2.duration == clip.duration
@@ -280,7 +280,7 @@ def test_setfps_withchangeduration():
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
 
-    clip2 = clip.set_fps(48, change_duration=True)
+    clip2 = clip.with_fps(48, change_duration=True)
     clip2_sums = [f.sum() for f in clip2.iter_frames()]
     assert clip2_sums == clip_sums
     assert clip2.duration == clip.duration / 2

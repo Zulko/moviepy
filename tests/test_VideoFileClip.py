@@ -51,7 +51,7 @@ def test_shallow_copy():
     does not corrupt the original clip."""
     video_file = "media/big_buck_bunny_0_30.webm"
     video = VideoFileClip(video_file)
-    video_copy = video.set_start(1)
+    video_copy = video.with_start(1)
     del video_copy
     # The clip object buffers 200000 frames, around 5 seconds ahead.
     # When recentering the buffer, if the new buffer is more than 1000000 frames,
