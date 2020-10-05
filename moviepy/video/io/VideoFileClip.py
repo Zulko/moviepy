@@ -145,6 +145,12 @@ class VideoFileClip(VideoClip):
                 nbytes=audio_nbytes,
             )
 
+    def coreader(self):
+        """Returns a copy of the VideoFileClip, i.e. a new entrance point
+        to the video file. Use copy when you have different clips
+        watching the video file at different times."""
+        return VideoFileClip(self.filename, audio_buffersize=self.audio.buffersize)
+
     def close(self):
         """ Close the internal reader. """
         if self.reader:
