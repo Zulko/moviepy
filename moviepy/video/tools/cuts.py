@@ -103,7 +103,7 @@ class FramesMatches(list):
 
     @staticmethod
     def load(filename):
-        """ Loads a FramesMatches object from a file.
+        """Loads a FramesMatches object from a file.
         >>> matching_frames = FramesMatches.load("somefile")
         """
         arr = np.loadtxt(filename)
@@ -112,7 +112,7 @@ class FramesMatches(list):
 
     @staticmethod
     def from_clip(clip, distance_threshold, max_duration, fps=None):
-        """ Finds all the frames tht look alike in a clip, for instance to make a
+        """Finds all the frames tht look alike in a clip, for instance to make a
         looping gif.
 
         This teturns a  FramesMatches object of the all pairs of frames with
@@ -297,7 +297,7 @@ class FramesMatches(list):
 def detect_scenes(
     clip=None, luminosities=None, luminosity_threshold=10, logger="bar", fps=None
 ):
-    """ Detects scenes of a clip based on luminosity changes.
+    """Detects scenes of a clip based on luminosity changes.
 
     Note that for large clip this may take some time
 

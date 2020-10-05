@@ -10,37 +10,37 @@ from moviepy.tools import extensions_dict
 
 
 class AudioClip(Clip):
-    """ Base class for audio clips.
-    
+    """Base class for audio clips.
+
     See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.
-    
+
     An AudioClip is a Clip with a ``make_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
-    trespassed wihtout problems (the program will put the
-    sound back into the bounds at conversion time, without much impact). 
-    
+    trespassed without problems (the program will put the
+    sound back into the bounds at conversion time, without much impact).
+
     Parameters
     -----------
-    
+
     make_frame
       A function `t-> frame at time t`. The frame does not mean much
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
-        
+
     nchannels
       Number of channels (one or two for mono or stereo).
-    
+
     Examples
     ---------
-    
+
     >>> # Plays the note A (a sine wave of frequency 440HZ)
     >>> import numpy as np
     >>> make_frame = lambda t: 2*[ np.sin(440 * 2 * np.pi * t) ]
     >>> clip = AudioClip(make_frame, duration=5)
     >>> clip.preview()
-                     
+
     """
 
     def __init__(self, make_frame=None, duration=None, fps=None):
@@ -70,8 +70,7 @@ class AudioClip(Clip):
         nbytes=2,
         logger=None,
     ):
-        """ Iterator that returns the whole sound array of the clip by chunks
-        """
+        """Iterator that returns the whole sound array of the clip by chunks"""
         if fps is None:
             fps = self.fps
         logger = proglog.default_bar_logger(logger)
@@ -99,18 +98,18 @@ class AudioClip(Clip):
         """
         Transforms the sound into an array that can be played by pygame
         or written in a wav file. See ``AudioClip.preview``.
-        
+
         Parameters
         ------------
-        
+
         fps
           Frame rate of the sound for the conversion.
           44100 for top quality.
-        
+
         nbytes
           Number of bytes to encode the sound: 1 for 8bit sound,
           2 for 16bit, 4 for 32bit sound.
-          
+
         """
         if fps is None:
             fps = self.fps
@@ -170,7 +169,7 @@ class AudioClip(Clip):
         write_logfile=False,
         logger="bar",
     ):
-        """ Writes an audio file from the AudioClip.
+        """Writes an audio file from the AudioClip.
 
 
         Parameters
@@ -204,7 +203,7 @@ class AudioClip(Clip):
         write_logfile
           If true, produces a detailed logfile named filename + '.log'
           when writing the file
-  
+
         logger
           Either 'bar' or None or any Proglog logger
 
@@ -242,20 +241,20 @@ class AudioClip(Clip):
 
 class AudioArrayClip(AudioClip):
     """
-    
+
     An audio clip made from a sound array.
-    
+
     Parameters
     -----------
-    
+
     array
       A Numpy array representing the sound, of size Nx1 for mono,
       Nx2 for stereo.
-       
+
     fps
       Frames per second : speed at which the sound is supposed to be
       played.
-    
+
     """
 
     def __init__(self, array, fps):
@@ -266,12 +265,12 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
 
         def make_frame(t):
-            """ complicated, but must be able to handle the case where t
-            is a list of the form sin(t) """
+            """complicated, but must be able to handle the case where t
+            is a list of the form sin(t)"""
 
             if isinstance(t, np.ndarray):
-                array_inds = (self.fps * t).astype(int)
-                in_array = (array_inds > 0) & (array_inds < len(self.array))
+                array_inds = np.round(self.fps * t).astype(int)
+                in_array = (array_inds >= 0) & (array_inds < len(self.array))
                 result = np.zeros((len(t), 2))
                 result[in_array] = self.array[array_inds[in_array]]
                 return result
@@ -287,18 +286,18 @@ class AudioArrayClip(AudioClip):
 
 
 class CompositeAudioClip(AudioClip):
-    """ Clip made by composing several AudioClips.
-    
+    """Clip made by composing several AudioClips.
+
     An audio clip made by putting together several audio clips.
-    
+
     Parameters
     ------------
-    
+
     clips
       List of audio clips, which may start playing at different times or
       together. If all have their ``duration`` attribute set, the
       duration of the composite clip is computed automatically.
-    
+
     """
 
     def __init__(self, clips):

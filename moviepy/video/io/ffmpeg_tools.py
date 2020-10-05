@@ -11,12 +11,12 @@ from moviepy.tools import subprocess_call
 def ffmpeg_extract_subclip(
     inputfile, start_time, end_time, outputfile=None, logger="bar"
 ):
-    """ Makes a new video file playing video file ``inputfile`` between
-        the times ``start_time`` and ``end_time``. """
+    """Makes a new video file playing video file ``inputfile`` between
+    the times ``start_time`` and ``end_time``."""
     name, ext = os.path.splitext(inputfile)
     if not outputfile:
         T1, T2 = [int(1000 * t) for t in [start_time, end_time]]
-        outputfile = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
+        outputfile = "%sSUB%d_%d%s" % (name, T1, T2, ext)
 
     cmd = [
         FFMPEG_BINARY,
@@ -33,9 +33,9 @@ def ffmpeg_extract_subclip(
         "copy",
         "-acodec",
         "copy",
+        "-copyts",
         outputfile,
     ]
-
     subprocess_call(cmd, logger=logger)
 
 
@@ -48,8 +48,8 @@ def ffmpeg_merge_video_audio(
     audio_codec="copy",
     logger="bar",
 ):
-    """ Merges video file ``videofile`` and audio file ``audiofile`` into one
-        movie file ``outputfile``. """
+    """Merges video file ``videofile`` and audio file ``audiofile`` into one
+    movie file ``outputfile``."""
     cmd = [
         FFMPEG_BINARY,
         "-y",
@@ -86,8 +86,8 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
 
 @convert_path_to_string(("inputfile", "outputfile"))
 def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
-    """ resizes ``inputfile`` to new size ``size`` and write the result
-        in file ``outputfile``. """
+    """resizes ``inputfile`` to new size ``size`` and write the result
+    in file ``outputfile``."""
     cmd = [
         FFMPEG_BINARY,
         "-i",
@@ -98,3 +98,40 @@ def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
     ]
 
     subprocess_call(cmd, logger=logger)
+
+
+@convert_path_to_string(("inputfile", "outputfile", "output_dir"))
+def ffmpeg_stabilize_video(
+    inputfile, outputfile=None, output_dir="", overwrite_file=True
+):
+    """
+    Stabilizes ``filename`` and write the result to ``output``.
+
+    Parameters
+    -----------
+
+    inputfile
+      The name of the shaky video
+
+    outputfile
+      The name of new stabilized video
+      Optional: defaults to appending '_stabilized' to the input file name
+
+    output_dir
+      The directory to place the output video in
+      Optional: defaults to the current working directory
+
+    overwrite_file
+      If ``outputfile`` already exists in ``output_dir``, then overwrite ``outputfile``
+      Optional: defaults to True
+    """
+    if not outputfile:
+        without_dir = os.path.basename(inputfile)
+        name, ext = os.path.splitext(without_dir)
+        outputfile = f"{name}_stabilized{ext}"
+
+    outputfile = os.path.join(output_dir, outputfile)
+    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
+    if overwrite_file:
+        cmd.append("-y")
+    subprocess_call(cmd)

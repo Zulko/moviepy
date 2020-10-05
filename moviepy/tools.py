@@ -10,7 +10,7 @@ import proglog
 
 
 def subprocess_call(cmd, logger="bar"):
-    """ Executes the given subprocess command.
+    """Executes the given subprocess command.
 
     Set logger to None or a custom Proglog logger to avoid printings.
     """
@@ -37,7 +37,7 @@ def subprocess_call(cmd, logger="bar"):
 
 
 def convert_to_seconds(time):
-    """ Will convert any time into seconds.
+    """Will convert any time into seconds.
 
     If the type of `time` is not valid,
     it's returned as is.
@@ -71,7 +71,7 @@ def convert_to_seconds(time):
 
 
 def deprecated_version_of(func, old_name):
-    """ Indicates that a function is deprecated and has a new name.
+    """Indicates that a function is deprecated and has a new name.
 
     `func` is the new function and `old_name` is the name of the deprecated
     function.

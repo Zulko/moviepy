@@ -8,9 +8,9 @@ from ..VideoClip import VideoClip
 
 class ImageSequenceClip(VideoClip):
     """
-    
+
     A VideoClip made from a series of images.
-    
+
 
     Parameters
     -----------
@@ -20,7 +20,7 @@ class ImageSequenceClip(VideoClip):
       - The name of a folder (containing only pictures). The pictures
         will be considered in alphanumerical order.
       - A list of names of image files. In this case you can choose to
-        load the pictures in memory pictures 
+        load the pictures in memory pictures
       - A list of Numpy arrays representing images. In this last case,
         masks are not supported currently.
 
@@ -40,10 +40,10 @@ class ImageSequenceClip(VideoClip):
     Notes
     ------
 
-    If your sequence is made of image files, the only image kept in 
+    If your sequence is made of image files, the only image kept in
 
 
-    
+
     """
 
     def __init__(

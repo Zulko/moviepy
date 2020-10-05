@@ -1,16 +1,22 @@
 import os
 
 import pytest
-from numpy import pi, sin
+from numpy import pi, sin, array
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, VideoClip
+from moviepy.video.VideoClip import ColorClip, BitmapClip
 
 from tests.test_helper import TMP_DIR
+
+
+def test_aspect_ratio():
+    clip = BitmapClip([["AAA", "BBB"]], fps=1)
+    assert clip.aspect_ratio == 1.5
 
 
 def test_check_codec():
@@ -26,14 +32,30 @@ def test_check_codec():
     close_all_clips(locals())
 
 
-def test_errors_with_redirected_logs():
+def test_write_frame_errors():
+    """Checks error cases return helpful messages"""
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    location = os.path.join(TMP_DIR, "unlogged-write.mp4")
+    with pytest.raises(IOError) as e:
+        clip.write_videofile(location, codec="nonexistent-codec")
+    assert (
+        "The video export failed because FFMPEG didn't find the specified codec for video "
+        "encoding nonexistent-codec" in str(e.value)
+    ), e.value
+    close_all_clips(locals())
+
+
+def test_write_frame_errors_with_redirected_logs():
     """Checks error cases return helpful messages even when logs redirected
     See https://github.com/Zulko/moviepy/issues/877"""
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "logged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec", write_logfile=True)
-    assert "Unknown encoder 'nonexistent-codec'" in str(e.value)
+    assert (
+        "The video export failed because FFMPEG didn't find the specified codec for video "
+        "encoding nonexistent-codec" in str(e.value)
+    )
     close_all_clips(locals())
 
 
@@ -81,10 +103,26 @@ def test_write_gif_ffmpeg():
     close_all_clips(locals())
 
 
+def test_write_gif_ffmpeg_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
+    clip.write_gif(location, program="ffmpeg", pix_fmt="bgr24")
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
 def test_write_gif_ffmpeg_tmpfiles():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True)
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
+def test_write_gif_ffmpeg_tmpfiles_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
+    clip.write_gif(location, program="ffmpeg", tempfiles=True, pix_fmt="bgr24")
     assert os.path.isfile(location)
     close_all_clips(locals())
 
@@ -106,6 +144,14 @@ def test_write_gif_ImageMagick_tmpfiles():
     close_all_clips(locals())
 
 
+def test_write_gif_ImageMagick_tmpfiles_pix_fmt():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
+    clip.write_gif(location, program="ImageMagick", tempfiles=True, pix_fmt="SGI")
+    assert os.path.isfile(location)
+    close_all_clips(locals())
+
+
 def test_subfx():
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
     transform = lambda c: speedx(c, 0.5)
@@ -123,6 +169,18 @@ def test_oncolor():
     location = os.path.join(TMP_DIR, "oncolor.mp4")
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
+
+    # test constructor with default arguements
+    clip = ColorClip(size=(100, 60), ismask=True)
+    clip = ColorClip(size=(100, 60), ismask=False)
+
+    # negative test
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=(255, 0, 0), ismask=True)
+
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+
     close_all_clips(locals())
 
 
@@ -158,6 +216,35 @@ def test_setopacity():
     close_all_clips(locals())
 
 
+def test_set_layer():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).set_layer(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).set_layer(2)
+
+    composite_clip = CompositeVideoClip([bottom_clip, top_clip])
+    reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
+
+    # Make sure that the order of clips makes no difference to the composite clip
+    assert composite_clip.subclip(0, 2) == reversed_composite_clip.subclip(0, 2)
+
+    # Make sure that only the 'top' clip is kept
+    assert top_clip.subclip(0, 2) == composite_clip.subclip(0, 2)
+
+    # Make sure that it works even when there is only one clip playing at that time
+    target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]], fps=1)
+    assert composite_clip == target_clip
+
+
+def test_compositing_with_same_layers():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"]], fps=1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1)
+
+    composite_clip = CompositeVideoClip([bottom_clip, top_clip])
+    reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
+
+    assert composite_clip == top_clip
+    assert reversed_composite_clip == bottom_clip
+
+
 def test_toimageclip():
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
     clip = clip.to_ImageClip(t=0.1, duration=0.4)
@@ -174,6 +261,31 @@ def test_withoutaudio():
     close_all_clips(locals())
 
 
+def test_setfps_withoutchangeduration():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    # The sum is unique for each frame, so we can use it as a frame-ID
+    # to check which frames are being preserved
+    clip_sums = [f.sum() for f in clip.iter_frames()]
+
+    clip2 = clip.set_fps(48)
+    clip2_sums = [f.sum() for f in clip2.iter_frames()]
+    assert clip2_sums[::2] == clip_sums
+    assert clip2.duration == clip.duration
+    close_all_clips(locals())
+
+
+def test_setfps_withchangeduration():
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    # The sum is unique for each frame, so we can use it as a frame-ID
+    # to check which frames are being preserved
+    clip_sums = [f.sum() for f in clip.iter_frames()]
+
+    clip2 = clip.set_fps(48, change_duration=True)
+    clip2_sums = [f.sum() for f in clip2.iter_frames()]
+    assert clip2_sums == clip_sums
+    assert clip2.duration == clip.duration / 2
+    close_all_clips(locals())
+
+
 if __name__ == "__main__":
-    # pytest.main()
-    test_write_videofiles_with_temp_audiofile_path()
+    pytest.main()

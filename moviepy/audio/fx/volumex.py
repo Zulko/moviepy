@@ -3,7 +3,7 @@ from moviepy.decorators import audio_video_fx
 
 @audio_video_fx
 def volumex(clip, factor):
-    """ Returns a clip with audio volume multiplied by the
+    """Returns a clip with audio volume multiplied by the
     value `factor`. Can be applied to both audio and video clips.
 
     This effect is loaded as a clip method when you use moviepy.editor,

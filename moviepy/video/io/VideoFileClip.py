@@ -47,9 +47,14 @@ class VideoFileClip(VideoClip):
       https://ffmpeg.org/ffmpeg-scaler.html
 
     fps_source:
-      The fps value to collect from the metadata. Set by default to 'tbr', but
-      can be set to 'fps', which may be helpful if importing slow-motion videos
-      that get messed up otherwise.
+      The fps value to collect from the metadata. Set by default to 'fps', but
+      can be set to 'tbr', which may be helpful if you are finding that it is reading
+      the incorrect fps from the file.
+
+    pix_fmt
+      Optional: Pixel format for the video to read. If is not specified
+      'rgb24' will be used as the default format unless ``has_mask`` is set
+      as ``True``, then 'rgba' will be used.
 
 
     Attributes
@@ -78,6 +83,7 @@ class VideoFileClip(VideoClip):
     def __init__(
         self,
         filename,
+        decode_file=False,
         has_mask=False,
         audio=True,
         audio_buffersize=200000,
@@ -85,16 +91,19 @@ class VideoFileClip(VideoClip):
         resize_algorithm="bicubic",
         audio_fps=44100,
         audio_nbytes=2,
-        fps_source="tbr",
+        fps_source="fps",
+        pix_fmt=None,
     ):
 
         VideoClip.__init__(self)
 
         # Make a reader
-        pixel_format = "rgba" if has_mask else "rgb24"
+        if not pix_fmt:
+            pix_fmt = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(
             filename,
-            pixel_format=pixel_format,
+            decode_file=decode_file,
+            pix_fmt=pix_fmt,
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,
             fps_source=fps_source,

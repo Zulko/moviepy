@@ -80,6 +80,11 @@ class VideoClip(Clip):
     relative_pos
       See variable ``pos``.
 
+    layer
+      Indicates which clip is rendered on top when two clips overlap in
+      a CompositeVideoClip. The highest number is rendered on top.
+      Default is 0.
+
     """
 
     def __init__(
@@ -90,6 +95,7 @@ class VideoClip(Clip):
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
+        self.layer = 0
         if make_frame:
             self.make_frame = make_frame
             self.size = self.get_frame(0).shape[:2][::-1]
@@ -117,7 +123,7 @@ class VideoClip(Clip):
     @convert_parameter_to_seconds(["t"])
     @convert_masks_to_RGB
     def save_frame(self, filename, t=0, with_mask=True):
-        """ Save a clip's frame to an image file.
+        """Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in
         'filename'. ``t`` can be expressed in seconds (15.35), in
@@ -162,6 +168,7 @@ class VideoClip(Clip):
         threads=None,
         ffmpeg_params=None,
         logger="bar",
+        pix_fmt=None,
     ):
         """Write the clip to a videofile.
 
@@ -266,6 +273,9 @@ class VideoClip(Clip):
         logger
           Either "bar" for progress bar or None or any Proglog logger.
 
+        pix_fmt
+          Pixel format for the output video file.
+
         Examples
         ========
 
@@ -342,6 +352,7 @@ class VideoClip(Clip):
             threads=threads,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
+            pix_fmt=pix_fmt,
         )
 
         if remove_temp and make_audio:
@@ -355,7 +366,7 @@ class VideoClip(Clip):
     def write_images_sequence(
         self, name_format, fps=None, with_mask=True, logger="bar"
     ):
-        """ Writes the videoclip to a sequence of image files.
+        """Writes the videoclip to a sequence of image files.
 
         Parameters
         -----------
@@ -392,7 +403,8 @@ class VideoClip(Clip):
 
         """
         logger = proglog.default_bar_logger(logger)
-        logger(message="Moviepy - Writing frames %s." % name_format)
+        # Fails on GitHub macos CI
+        # logger(message="Moviepy - Writing frames %s." % name_format)
 
         timings = np.arange(0, self.duration, 1.0 / fps)
 
@@ -401,7 +413,7 @@ class VideoClip(Clip):
             name = name_format % i
             filenames.append(name)
             self.save_frame(name, t, with_mask=with_mask)
-        logger(message="Moviepy - Done writing frames %s." % name_format)
+        # logger(message="Moviepy - Done writing frames %s." % name_format)
 
         return filenames
 
@@ -420,8 +432,9 @@ class VideoClip(Clip):
         colors=None,
         tempfiles=False,
         logger="bar",
+        pix_fmt=None,
     ):
-        """ Write the VideoClip to a GIF file.
+        """Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
         or ffmpeg.
@@ -458,6 +471,12 @@ class VideoClip(Clip):
 
         progress_bar
           If True, displays a progress bar
+
+        pix_fmt
+          Pixel format for the output gif file. If is not specified
+          'rgb24' will be used as the default format unless ``clip.mask``
+          exist, then 'rgba' will be used. This option is only going to
+          be accepted if ``program=ffmpeg`` or when ``tempfiles=True``
 
 
         Notes
@@ -499,6 +518,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
         else:
             # convert imageio opt variable to something that can be used with
@@ -515,6 +535,7 @@ class VideoClip(Clip):
                 dispose=dispose,
                 colors=colors,
                 logger=logger,
+                pix_fmt=pix_fmt,
             )
 
     # -----------------------------------------------------------------
@@ -779,6 +800,15 @@ class VideoClip(Clip):
             self.pos = pos
         else:
             self.pos = lambda t: pos
+
+    @apply_to_mask
+    @outplace
+    def set_layer(self, layer):
+        """Set the clip's layer in compositions. Clips with a greater ``layer``
+        attribute will be displayed on top of others.
+
+        Note: Only has effect when the clip is used in a CompositeVideoClip."""
+        self.layer = layer
 
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
@@ -1069,7 +1099,20 @@ class ColorClip(ImageClip):
 
     def __init__(self, size, color=None, is_mask=False, duration=None):
         w, h = size
-        shape = (h, w) if np.isscalar(color) else (h, w, len(color))
+
+        if ismask:
+            shape = (h, w)
+            if color is None:
+                color = 0
+            elif not np.isscalar(color):
+                raise Exception("Color has to be a scalar when mask is true")
+        else:
+            if color is None:
+                color = (0, 0, 0)
+            elif not hasattr(color, "__getitem__"):
+                raise Exception("Color has to contain RGB of the clip")
+            shape = (h, w, len(color))
+
         super().__init__(
             np.tile(color, w * h).reshape(shape), is_mask=is_mask, duration=duration
         )
@@ -1238,9 +1281,9 @@ class TextClip(ImageClip):
         self.stroke_color = stroke_color
 
         if remove_temp:
-            if os.path.exists(tempfilename):
+            if tempfilename is not None and os.path.exists(tempfilename):
                 os.remove(tempfilename)
-            if os.path.exists(temptxt):
+            if temptxt is not None and os.path.exists(temptxt):
                 os.remove(temptxt)
 
     @staticmethod
@@ -1273,12 +1316,128 @@ class TextClip(ImageClip):
     @staticmethod
     def search(string, arg):
         """Returns the of all valid entries which contain ``string`` for the
-           argument ``arg`` of ``TextClip``, for instance
+        argument ``arg`` of ``TextClip``, for instance
 
-           >>> # Find all the available fonts which contain "Courier"
-           >>> print(TextClip.search('Courier', 'font'))
+        >>> # Find all the available fonts which contain "Courier"
+        >>> print(TextClip.search('Courier', 'font'))
 
         """
         string = string.lower()
         names_list = TextClip.list(arg)
         return [name for name in names_list if string in name.lower()]
+
+
+class BitmapClip(VideoClip):
+    @convert_to_seconds(["duration"])
+    def __init__(
+        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, ismask=False
+    ):
+        """
+        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+
+        Parameters
+        -----------
+
+        bitmap_frames
+          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
+          Each color represents an (r, g, b) tuple.
+          Example input (2 frames, 5x3 pixel size):
+          [["RRRRR",
+            "RRBRR",
+            "RRBRR"],
+           ["RGGGR",
+            "RGGGR",
+            "RGGGR"]]
+
+        fps
+          The number of frames per second to display the clip at. `duration` will calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
+
+        duration
+          The total duration of the clip. `fps` will be calculated from the total number of frames.
+          If both `fps` and `duration` are set, `duration` will be ignored.
+
+        color_dict
+          A dictionary that can be used to set specific (r, g, b) values that correspond
+          to the letters used in ``bitmap_frames``.
+          eg ``{"A": (50, 150, 150)}``.
+
+          Defaults to
+          ::
+          {
+            "R": (255, 0, 0),
+            "G": (0, 255, 0),
+            "B": (0, 0, 255),
+            "O": (0, 0, 0),  # "O" represents black
+            "W": (255, 255, 255),
+            "A": (89, 225, 62),  # "A", "C", "D", "E", "F" represent arbitrary colors
+            "C": (113, 157, 108),
+            "D": (215, 182, 143),
+            "E": (57, 26, 252),
+          }
+
+        ismask
+          Set to ``True`` if the clip is going to be used as a mask.
+
+        """
+        assert fps is not None or duration is not None
+
+        if color_dict:
+            self.color_dict = color_dict
+        else:
+            self.color_dict = {
+                "R": (255, 0, 0),
+                "G": (0, 255, 0),
+                "B": (0, 0, 255),
+                "O": (0, 0, 0),
+                "W": (255, 255, 255),
+                "A": (89, 225, 62),
+                "C": (113, 157, 108),
+                "D": (215, 182, 143),
+                "E": (57, 26, 252),
+                "F": (225, 135, 33),
+            }
+
+        frame_list = []
+        for input_frame in bitmap_frames:
+            output_frame = []
+            for row in input_frame:
+                output_frame.append([self.color_dict[color] for color in row])
+            frame_list.append(np.array(output_frame))
+
+        frame_array = np.array(frame_list)
+        self.total_frames = len(frame_array)
+
+        if fps is None:
+            fps = self.total_frames / duration
+        else:
+            duration = self.total_frames / fps
+
+        VideoClip.__init__(
+            self,
+            make_frame=lambda t: frame_array[int(t)],
+            ismask=ismask,
+            duration=duration,
+        )
+        self.fps = fps
+
+    def to_bitmap(self, color_dict=None):
+        """
+        Returns a valid bitmap list that represents each frame of the clip.
+        If `color_dict` is not specified, then it will use the same `color_dict`
+        that was used to create the clip.
+        """
+        color_dict = color_dict or self.color_dict
+
+        bitmap = []
+        for frame in self.iter_frames():
+            bitmap.append([])
+            for line in frame:
+                bitmap[-1].append("")
+                for pixel in line:
+                    letter = list(color_dict.keys())[
+                        list(color_dict.values()).index(tuple(pixel))
+                    ]
+                    bitmap[-1][-1] += letter
+
+        return bitmap

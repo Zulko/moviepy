@@ -2,12 +2,12 @@ import numpy as np
 
 
 def mask_color(clip, color=None, threshold=0, stiffness=1):
-    """ Returns a new clip with a mask for transparency where the original
+    """Returns a new clip with a mask for transparency where the original
     clip is of the given color.
 
     You can also have a "progressive" mask by specifying a non-null distance
     threshold ``threshold``. In this case, if the distance between a pixel and the given
-    color is d, the transparency will be 
+    color is d, the transparency will be
 
     d**stiffness / (threshold**stiffness + d**stiffness)
 

@@ -2,7 +2,7 @@ from ..AudioClip import concatenate_audioclips
 
 
 def audio_loop(audioclip, n_loops=None, duration=None):
-    """ Loops over an audio clip.
+    """Loops over an audio clip.
 
     Returns an audio clip that plays the given clip either
     `n_loops` times, or during `duration` seconds.

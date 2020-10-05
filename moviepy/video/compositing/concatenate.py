@@ -10,7 +10,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 def concatenate_videoclips(
     clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
 ):
-    """ Concatenates several video clips
+    """Concatenates several video clips
 
     Returns a video clip made by clip by concatenating several video clips.
     (Concatenated means that they will be played one after another).
@@ -72,6 +72,7 @@ def concatenate_videoclips(
     h = max(size[1] for size in sizes)
 
     timings = np.maximum(0, timings + padding * np.arange(len(timings)))
+    timings[-1] -= padding  # Last element is the duration of the whole
 
     if method == "chain":
 

@@ -13,7 +13,7 @@ from moviepy.config import FFMPEG_BINARY
 
 
 class FFMPEG_VideoWriter:
-    """ A class for FFMPEG-based video writing.
+    """A class for FFMPEG-based video writing.
 
     A class to write videos using ffmpeg. ffmpeg will write in a large
     choice of formats.
@@ -62,6 +62,11 @@ class FFMPEG_VideoWriter:
       Boolean. Set to ``True`` if there is a mask in the video to be
       encoded.
 
+    pix_fmt
+      Optional: Pixel format for the output video file. If is not specified
+      'rgb24' will be used as the default format unless ``withmask`` is set
+      as ``True``, then 'rgba' will be used.
+
     """
 
     def __init__(
@@ -77,14 +82,16 @@ class FFMPEG_VideoWriter:
         logfile=None,
         threads=None,
         ffmpeg_params=None,
+        pix_fmt=None,
     ):
-
         if logfile is None:
             logfile = sp.PIPE
         self.logfile = logfile
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
+        if not pix_fmt:
+            pix_fmt = "rgba" if with_mask else "rgb24"
 
         # order is important
         cmd = [
@@ -99,7 +106,7 @@ class FFMPEG_VideoWriter:
             "-s",
             "%dx%d" % (size[0], size[1]),
             "-pix_fmt",
-            "rgba" if with_mask else "rgb24",
+            pix_fmt,
             "-r",
             "%.02f" % fps,
             "-an",
@@ -135,57 +142,55 @@ class FFMPEG_VideoWriter:
         try:
             self.proc.stdin.write(img_array.tobytes())
         except IOError as err:
-            logs = self.logfile.name
             _, ffmpeg_error = self.proc.communicate()
-            if not ffmpeg_error:
-                with open(logs, "rb") as file:
-                    ffmpeg_error = file.read()
+            if ffmpeg_error is not None:
+                ffmpeg_error = ffmpeg_error.decode()
+            else:
+                # The error was redirected to a logfile with `write_logfile=True`,
+                # so read the error from that file instead
+                self.logfile.seek(0)
+                ffmpeg_error = self.logfile.read()
 
-            error = str(err) + (
-                "\n\nMoviePy error: FFMPEG encountered "
-                "the following error while writing file %s:"
-                "\n\n %s" % (self.filename, str(ffmpeg_error))
+            error = (
+                f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
+                f"writing file {self.filename}:\n\n {ffmpeg_error}"
             )
 
-            if b"Unknown encoder" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe video export "
-                    "failed because FFMPEG didn't find the specified "
-                    "codec for video encoding (%s). Please install "
-                    "this codec or change the codec when calling "
-                    "write_videofile. For instance:\n"
+            if "Unknown encoder" in ffmpeg_error:
+                error += (
+                    "\n\nThe video export failed because FFMPEG didn't find the "
+                    f"specified codec for video encoding {self.codec}. "
+                    "Please install this codec or change the codec when calling "
+                    "write_videofile.\nFor instance:\n"
                     "  >>> clip.write_videofile('myvid.webm', codec='libvpx')"
-                ) % (self.codec)
-
-            elif b"incorrect codec parameters ?" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe video export "
-                    "failed, possibly because the codec specified for "
-                    "the video (%s) is not compatible with the given "
-                    "extension (%s). Please specify a valid 'codec' "
-                    "argument in write_videofile. This would be 'libx264' "
-                    "or 'mpeg4' for mp4, 'libtheora' for ogv, 'libvpx for webm. "
-                    "Another possible reason is that the audio codec was not "
-                    "compatible with the video codec. For instance the video "
-                    "extensions 'ogv' and 'webm' only allow 'libvorbis' (default) as a"
-                    "video codec."
-                ) % (self.codec, self.ext)
-
-            elif b"encoder setup failed" in ffmpeg_error:
-
-                error = error + (
-                    "\n\nThe video export "
-                    "failed, possibly because the bitrate you specified "
-                    "was too high or too low for the video codec."
                 )
 
-            elif b"Invalid encoder type" in ffmpeg_error:
+            elif "incorrect codec parameters ?" in ffmpeg_error:
+                error += (
+                    "\n\nThe video export failed, possibly because the codec "
+                    f"specified for the video {self.codec} is not compatible with "
+                    f"the given extension {self.ext}.\n"
+                    "Please specify a valid 'codec' argument in write_videofile.\n"
+                    "This would be 'libx264' or 'mpeg4' for mp4, "
+                    "'libtheora' for ogv, 'libvpx for webm.\n"
+                    "Another possible reason is that the audio codec was not "
+                    "compatible with the video codec. For instance, the video "
+                    "extensions 'ogv' and 'webm' only allow 'libvorbis' (default) as a"
+                    "video codec."
+                )
 
-                error = error + (
+            elif "bitrate not specified" in ffmpeg_error:
+
+                error += (
+                    "\n\nThe video export failed, possibly because the bitrate "
+                    "specified was too high or too low for the video codec."
+                )
+
+            elif "Invalid encoder type" in ffmpeg_error:
+
+                error += (
                     "\n\nThe video export failed because the codec "
-                    "or file extension you provided is not a video"
+                    "or file extension you provided is not suitable for video"
                 )
 
             raise IOError(error)
@@ -197,7 +202,7 @@ class FFMPEG_VideoWriter:
                 self.proc.stderr.close()
             self.proc.wait()
 
-        self.proc = None
+            self.proc = None
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 
@@ -221,8 +226,9 @@ def ffmpeg_write_video(
     threads=None,
     ffmpeg_params=None,
     logger="bar",
+    pix_fmt=None,
 ):
-    """ Write the clip to a videofile. See VideoClip.write_videofile for details
+    """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
     logger = proglog.default_bar_logger(logger)
@@ -232,6 +238,8 @@ def ffmpeg_write_video(
     else:
         logfile = None
     logger(message="Moviepy - Writing video %s\n" % filename)
+    if not pix_fmt:
+        pix_fmt = "rgba" if withmask else "rgb24"
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
@@ -243,6 +251,7 @@ def ffmpeg_write_video(
         audiofile=audiofile,
         threads=threads,
         ffmpeg_params=ffmpeg_params,
+        pix_fmt=pix_fmt,
     ) as writer:
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
@@ -260,12 +269,14 @@ def ffmpeg_write_video(
     logger(message="Moviepy - Done !")
 
 
-def ffmpeg_write_image(filename, image, logfile=False):
-    """ Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
-        ffmpeg. """
+def ffmpeg_write_image(filename, image, logfile=False, pix_fmt=None):
+    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
+    ffmpeg."""
 
     if image.dtype != "uint8":
         image = image.astype("uint8")
+    if not pix_fmt:
+        pix_fmt = "rgba" if (image.shape[2] == 4) else "rgb24"
 
     cmd = [
         FFMPEG_BINARY,
@@ -275,7 +286,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
         "-f",
         "rawvideo",
         "-pix_fmt",
-        "rgba" if (image.shape[2] == 4) else "rgb24",
+        pix_fmt,
         "-i",
         "-",
         filename,
@@ -295,13 +306,11 @@ def ffmpeg_write_image(filename, image, logfile=False):
     out, err = proc.communicate(image.tostring())
 
     if proc.returncode:
-        err = "\n".join(
-            [
-                "[MoviePy] Running : %s\n" % cmd,
-                "WARNING: this command returned an error:",
-                err.decode("utf8"),
-            ]
+        error = (
+            f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
+            f"writing file {filename} with command {cmd}:\n\n {err.decode()}"
         )
-        raise IOError(err)
+
+        raise IOError(error)
 
     del proc

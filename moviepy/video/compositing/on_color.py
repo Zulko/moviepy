@@ -3,11 +3,11 @@ from moviepy.video.VideoClip import ColorClip
 
 
 def on_color(clip, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
-    """ 
+    """
     Returns a clip made of the current clip overlaid on a color
     clip of a possibly bigger size. Can serve to flatten transparent
     clips (ideal for previewing clips with masks).
-    
+
     :param size: size of the final clip. By default it will be the
        size of the current clip.
     :param bg_color: the background color of the final clip

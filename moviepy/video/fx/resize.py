@@ -56,34 +56,34 @@ except ImportError:
 
 
 def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
-    """ 
+    """
     Returns a video clip that is a resized version of the clip.
-    
+
     Parameters
     ------------
-    
+
     new_size:
-      Can be either 
+      Can be either
         - ``(width,height)`` in pixels or a float representing
         - A scaling factor, like 0.5
         - A function of time returning one of these.
-            
+
     width:
       width of the new clip in pixel. The height is then computed so
-      that the width/height ratio is conserved. 
-            
+      that the width/height ratio is conserved.
+
     height:
       height of the new clip in pixel. The width is then computed so
       that the width/height ratio is conserved.
-    
+
     Examples
     ----------
-             
+
     >>> myClip.resize( (460,720) ) # New resolution: (460,720)
     >>> myClip.resize(0.6) # width and heigth multiplied by 0.6
     >>> myClip.resize(width=800) # height computed automatically.
     >>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-    
+
     """
 
     w, h = clip.size
@@ -101,6 +101,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
                 return new_size_
 
         if hasattr(new_size, "__call__"):
+            # The resizing is a function of time
 
             def get_new_size(t):
                 return translate_new_size(new_size(t))
@@ -118,12 +119,15 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
                 def filter(get_frame, t):
                     return resizer(get_frame(t).astype("uint8"), get_new_size(t))
 
-            return clip.with_filter(
+            newclip = clip.with_filter(
                 filter, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
             )
+            if apply_to_mask and clip.mask is not None:
+                newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+
+            return newclip
 
         else:
-
             new_size = translate_new_size(new_size)
 
     elif height is not None:
@@ -146,15 +150,16 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
                 return 1.0 * width(t) / w
 
             return resize(clip, func)
+
         else:
             new_size = [width, h * width / w]
 
-    # From here, the resizing is constant (not a function of time), size=new_size
+    # From here, the resizing is constant (not a function of time), size=newsize
 
     if clip.is_mask:
 
         def image_filter(pic):
-            return resizer((255 * pic).astype("uint8"), new_size) / 255.0
+            return 1.0 * resizer((255 * pic).astype("uint8"), new_size) / 255.0
 
     else:
 
