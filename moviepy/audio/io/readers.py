@@ -74,16 +74,16 @@ class FFMPEG_AudioReader:
         self.initialize()
         self.buffer_around(1)
 
-    def initialize(self, starttime=0):
+    def initialize(self, start_time=0):
         """ Opens the file, creates the pipe. """
 
         self.close()  # if any
 
-        if starttime != 0:
-            offset = min(1, starttime)
+        if start_time != 0:
+            offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.05f" % (starttime - offset),
+                "%.05f" % (start_time - offset),
                 "-i",
                 self.filename,
                 "-vn",
@@ -123,7 +123,7 @@ class FFMPEG_AudioReader:
 
         self.proc = sp.Popen(cmd, **popen_params)
 
-        self.pos = np.round(self.fps * starttime)
+        self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
         _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)

@@ -72,7 +72,7 @@ class FFMPEG_VideoReader:
     def initialize(self, start_time=0):
         """
         Opens the file, creates the pipe.
-        Sets self.pos to the appropriate value (1 if starttime == 0 because
+        Sets self.pos to the appropriate value (1 if start_time == 0 because
         it pre-reads the first frame)
         """
 
@@ -124,7 +124,7 @@ class FFMPEG_VideoReader:
         # self.pos represents the (0-indexed) index of the frame that is next in line
         # to be read by self.read_frame().
         # Eg when self.pos is 1, the 2nd frame will be read next.
-        self.pos = self.get_frame_number(starttime)
+        self.pos = self.get_frame_number(start_time)
         self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):

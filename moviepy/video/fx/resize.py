@@ -123,7 +123,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
                 filter, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
             )
             if apply_to_mask and clip.mask is not None:
-                newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+                newclip.mask = resize(clip.mask, new_size, apply_to_mask=False)
 
             return newclip
 
