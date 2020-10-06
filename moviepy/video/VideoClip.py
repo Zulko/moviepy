@@ -1415,7 +1415,7 @@ class BitmapClip(VideoClip):
 
         VideoClip.__init__(
             self,
-            make_frame=lambda t: frame_array[int(t)],
+            make_frame=lambda t: frame_array[int(t * fps)],
             is_mask=is_mask,
             duration=duration,
         )
