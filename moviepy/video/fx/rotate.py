@@ -61,8 +61,6 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         def angle(t):
             return a
 
-    transpo = [1, 0] if clip.ismask else [1, 0, 2]
-
     def fl(gf, t):
 
         a = angle(t)
@@ -70,6 +68,8 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
 
         if unit == "rad":
             a = 360.0 * a / (2 * np.pi)
+
+        transpo = [1, 0] if len(im.shape) == 2 else [1, 0, 2]
 
         a %= 360
         if (a == 0) and expand:
