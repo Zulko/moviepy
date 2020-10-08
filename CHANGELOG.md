@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed <!-- for changes in existing functionality -->
 
-### Deprecated <!-- for soon-to-be removed features -->		
+### Deprecated <!-- for soon-to-be removed features -->
+- `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [#1105]
 
 ### Removed <!-- for now removed features -->
 

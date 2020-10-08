@@ -1,16 +1,11 @@
 """
-Loads all the fx !
-Usage:
-import moviepy.video.fx.all as vfx
-clip = vfx.resize(some_clip, width=400)
-clip = vfx.mirror_x(some_clip)
+moviepy.video.fx.all is deprecated. 
+
+Use the fx method directly from the clip instance (e.g. ``clip.resize(...)``)
+or import the function from moviepy.video.fx instead. 
 """
+import warnings
 
-import pkgutil
+from .. import *
 
-import moviepy.video.fx as fx
-
-__all__ = [name for _, name, _ in pkgutil.iter_modules(fx.__path__) if name != "all"]
-
-for name in __all__:
-    exec("from ..%s import %s" % (name, name))
+warnings.warn(f"\nMoviePy: {__doc__}", UserWarning)

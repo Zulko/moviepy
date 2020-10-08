@@ -90,7 +90,7 @@ class VideoClip(Clip):
     def __init__(
         self, make_frame=None, is_mask=False, duration=None, has_constant_size=True
     ):
-        Clip.__init__(self)
+        super().__init__()
         self.mask = None
         self.audio = None
         self.pos = lambda t: (0, 0)

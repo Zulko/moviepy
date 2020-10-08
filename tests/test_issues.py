@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
 import pytest
+import os
 
 from moviepy.editor import *
 from moviepy.utils import close_all_clips

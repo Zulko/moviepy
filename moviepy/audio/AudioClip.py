@@ -44,7 +44,7 @@ class AudioClip(Clip):
     """
 
     def __init__(self, make_frame=None, duration=None, fps=None):
-        Clip.__init__(self)
+        super().__init__()
 
         if fps is not None:
             self.fps = fps
