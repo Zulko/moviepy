@@ -8,4 +8,4 @@ import warnings
 
 from .. import *
 
-warnings.warn(f"MoviePy: {__doc__}", UserWarning)
+warnings.warn(f"\nMoviePy: {__doc__}", UserWarning)
