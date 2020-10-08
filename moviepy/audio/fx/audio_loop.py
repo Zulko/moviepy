@@ -1,6 +1,8 @@
 from ..AudioClip import concatenate_audioclips
+from moviepy.decorators import audio_video_fx
 
 
+@audio_video_fx
 def audio_loop(clip, n_loops=None, duration=None):
     """Loops over an audio clip.
 
@@ -17,12 +19,6 @@ def audio_loop(clip, n_loops=None, duration=None):
     >>> videoclip.with_audio(audio)
 
     """
-    try:
-        clip = clip.audio
-    except AttributeError:
-        # assume it's already an audioclip
-        pass
-
     if duration is not None:
         n_loops = int(duration / clip.duration) + 1
         return concatenate_audioclips(n_loops * [clip]).with_duration(duration)
