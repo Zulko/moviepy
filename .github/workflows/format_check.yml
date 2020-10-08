@@ -7,12 +7,11 @@ jobs:
   black:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2    
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
       - name: Black
-        uses: lgeiger/black-action@v1.0.1    
-        with:
-          args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
+        uses: psf/black@stable  # already includes args "--check --diff"
   flake8:
     runs-on: ubuntu-latest
     steps:

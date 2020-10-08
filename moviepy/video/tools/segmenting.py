@@ -4,12 +4,12 @@ import scipy.ndimage as ndi
 from moviepy.video.VideoClip import ImageClip
 
 
-def findObjects(clip, rem_thr=500, preview=False):
+def find_objects(clip, size_threshold=500, preview=False):
     """
     Returns a list of ImageClips representing each a separate object on
     the screen.
 
-    rem_thr : all objects found with size < rem_Thr will be
+    size_threshold : all objects found with size < size_threshold will be
          considered false positives and will be removed
 
     """
@@ -23,33 +23,33 @@ def findObjects(clip, rem_thr=500, preview=False):
 
     # find the objects
     slices = []
-    for e in ndi.find_objects(labelled):
-        if mask[e[0], e[1]].mean() <= 0.2:
+    for obj in ndi.find_objects(labelled):
+        if mask[obj[0], obj[1]].mean() <= 0.2:
             # remove letter holes (in o,e,a, etc.)
             continue
-        if image[e[0], e[1]].size <= rem_thr:
+        if image[obj[0], obj[1]].size <= size_threshold:
             # remove very small slices
             continue
-        slices.append(e)
-    islices = sorted(enumerate(slices), key=lambda s: s[1][1].start)
+        slices.append(obj)
+    indexed_slices = sorted(enumerate(slices), key=lambda slice: slice[1][1].start)
 
     letters = []
-    for i, (ind, (sy, sx)) in enumerate(islices):
+    for i, (sy, sx) in indexed_slices:
         """ crop each letter separately """
         sy = slice(sy.start - 1, sy.stop + 1)
         sx = slice(sx.start - 1, sx.stop + 1)
         letter = image[sy, sx]
         labletter = labelled[sy, sx]
-        maskletter = (labletter == (ind + 1)) * mask[sy, sx]
+        maskletter = (labletter == (i + 1)) * mask[sy, sx]
         letter = ImageClip(image[sy, sx])
-        letter.mask = ImageClip(maskletter, ismask=True)
+        letter.mask = ImageClip(maskletter, is_mask=True)
         letter.screenpos = np.array((sx.start, sy.start))
         letters.append(letter)
 
     if preview:
         import matplotlib.pyplot as plt
 
-        print("found %d objects" % (num_features))
+        print(f"Found {num_features} objects")
         fig, ax = plt.subplots(2)
         ax[0].axis("off")
         ax[0].imshow(labelled)

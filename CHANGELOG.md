@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Important Announcements
 
 ### Added <!-- for new features -->
+- `VideoFileClip.coreader()` that creates a new clip created from the same source file as the original (to complement the existing `AudioFileClip.coreader()`) [#1332]
 
 ### Changed <!-- for changes in existing functionality -->
 

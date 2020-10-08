@@ -102,8 +102,8 @@ test_reqs = [
 extra_reqs = {"optional": optional_reqs, "doc": doc_reqs, "test": test_reqs}
 
 # Load the README.
-with open("README.rst", "r", "utf-8") as f:
-    readme = f.read()
+with open("README.rst", "r", "utf-8") as file:
+    readme = file.read()
 
 setup(
     name="moviepy",

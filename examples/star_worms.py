@@ -48,7 +48,7 @@ txt = 10 * "\n" + txt + 10 * "\n"
 
 
 clip_txt = TextClip(
-    txt, color="white", align="West", fontsize=25, font="Xolonium-Bold", method="label"
+    txt, color="white", align="West", font_size=25, font="Xolonium-Bold", method="label"
 )
 
 
@@ -56,23 +56,23 @@ clip_txt = TextClip(
 
 txt_speed = 27
 fl = lambda gf, t: gf(t)[int(txt_speed * t) : int(txt_speed * t) + h, :]
-moving_txt = clip_txt.fl(fl, apply_to=["mask"])
+moving_txt = clip_txt.transform(fl, apply_to=["mask"])
 
 
 # ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK
 
 grad = color_gradient(
-    moving_txt.size, p1=(0, 2 * h / 3), p2=(0, h / 4), col1=0.0, col2=1.0
+    moving_txt.size, p1=(0, 2 * h / 3), p2=(0, h / 4), color_1=0.0, color_2=1.0
 )
-gradmask = ImageClip(grad, ismask=True)
+gradmask = ImageClip(grad, is_mask=True)
 fl = lambda pic: np.minimum(pic, gradmask.img)
-moving_txt.mask = moving_txt.mask.fl_image(fl)
+moving_txt.mask = moving_txt.mask.image_transform(fl)
 
 
 # WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)
 
 
-def trapzWarp(pic, cx, cy, ismask=False):
+def trapzWarp(pic, cx, cy, is_mask=False):
     """ Complicated function (will be latex packaged as a fx) """
     Y, X = pic.shape[:2]
     src = np.array([[0, 0], [X, 0], [X, Y], [0, Y]])
@@ -80,19 +80,19 @@ def trapzWarp(pic, cx, cy, ismask=False):
     tform = tf.ProjectiveTransform()
     tform.estimate(src, dst)
     im = tf.warp(pic, tform.inverse, output_shape=(Y, X))
-    return im if ismask else (im * 255).astype("uint8")
+    return im if is_mask else (im * 255).astype("uint8")
 
 
 fl_im = lambda pic: trapzWarp(pic, 0.2, 0.3)
-fl_mask = lambda pic: trapzWarp(pic, 0.2, 0.3, ismask=True)
-warped_txt = moving_txt.fl_image(fl_im)
-warped_txt.mask = warped_txt.mask.fl_image(fl_mask)
+fl_mask = lambda pic: trapzWarp(pic, 0.2, 0.3, is_mask=True)
+warped_txt = moving_txt.image_transform(fl_im)
+warped_txt.mask = warped_txt.mask.image_transform(fl_mask)
 
 
 # BACKGROUND IMAGE, DARKENED AT 60%
 
 stars = ImageClip("../../videos/stars.jpg")
-stars_darkened = stars.fl_image(lambda pic: (0.6 * pic).astype("int16"))
+stars_darkened = stars.image_transform(lambda pic: (0.6 * pic).astype("int16"))
 
 
 # COMPOSE THE MOVIE
@@ -104,7 +104,7 @@ final = CompositeVideoClip(
 
 # WRITE TO A FILE
 
-final.set_duration(8).write_videofile("starworms.avi", fps=5)
+final.with_duration(8).write_videofile("starworms.avi", fps=5)
 
 # This script is heavy (30s of computations to render 8s of video)
 
@@ -125,7 +125,7 @@ final.set_duration(8).write_videofile("starworms.avi", fps=5)
 def annotate(clip, txt, txt_color="white", bg_color=(0, 0, 255)):
     """ Writes a text at the bottom of the clip. """
 
-    txtclip = TextClip(txt, fontsize=20, font="Ubuntu-bold", color=txt_color)
+    txtclip = TextClip(txt, font_size=20, font="Ubuntu-bold", color=txt_color)
 
     txtclip = txtclip.on_color(
         (clip.w, txtclip.h + 6), color=(0, 0, 255), pos=(6, "center")
@@ -133,7 +133,7 @@ def annotate(clip, txt, txt_color="white", bg_color=(0, 0, 255)):
 
     cvc = CompositeVideoClip([clip, txtclip.set_pos((0, "bottom"))])
 
-    return cvc.set_duration(clip.duration)
+    return cvc.with_duration(clip.duration)
 
 
 def resizeCenter(clip):
@@ -164,7 +164,7 @@ annotated_clips = [
             "We generate a text image.",
         ),
         (
-            composeCenter(moving_txt.set_mask(None)).subclip(6, 9),
+            composeCenter(moving_txt.with_mask(None)).subclip(6, 9),
             "We scroll the text by cropping a moving region of it.",
         ),
         (

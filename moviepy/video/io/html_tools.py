@@ -97,7 +97,7 @@ def html_embed(
         TEMP_PREFIX = "__temp__"
         if isinstance(clip, ImageClip):
             filename = TEMP_PREFIX + ".png"
-            kwargs = {"filename": filename, "withmask": True}
+            kwargs = {"filename": filename, "with_mask": True}
             kwargs.update(rd_kwargs)
             clip.save_frame(**kwargs)
         elif isinstance(clip, VideoClip):
@@ -164,8 +164,8 @@ def html_embed(
                 "But note that embedding large videos may take all the memory away !"
             )
 
-    with open(filename, "rb") as f:
-        data = b64encode(f.read()).decode("utf-8")
+    with open(filename, "rb") as file:
+        data = b64encode(file.read()).decode("utf-8")
 
     template = templates[filetype]
 

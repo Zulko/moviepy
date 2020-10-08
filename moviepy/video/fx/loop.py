@@ -19,9 +19,9 @@ def loop(clip, n=None, duration=None):
       Total duration of the clip. Can be specified instead of n.
     """
     previous_duration = clip.duration
-    clip = clip.fl_time(lambda t: t % previous_duration)
+    clip = clip.time_transform(lambda t: t % previous_duration)
     if n:
         duration = n * previous_duration
     if duration:
-        clip = clip.set_duration(duration)
+        clip = clip.with_duration(duration)
     return clip

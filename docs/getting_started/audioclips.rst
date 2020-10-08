@@ -37,4 +37,4 @@ Exporting and previewing audio clips
 
 You can also export assign an audio clip as the soundtrack of a video clip with ::
 
-    videoclip2 = videoclip.set_audio(my_audioclip)
+    videoclip2 = videoclip.with_audio(my_audioclip)
