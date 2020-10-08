@@ -33,7 +33,7 @@ def test_release_of_file_via_close():
             TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
         )
 
-        clip = clips_array([[red, green, blue]]).set_duration(0.5)
+        clip = clips_array([[red, green, blue]]).with_duration(0.5)
         clip.write_videofile(local_video_filename)
 
         # Open it up with VideoFileClip.

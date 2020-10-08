@@ -10,7 +10,7 @@ of the tracking time interval).
 
 import numpy as np
 
-from moviepy.decorators import convert_to_seconds, use_clip_fps_by_default
+from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
 
 from ..io.preview import imdisplay
 from .interpolators import Trajectory
@@ -30,9 +30,9 @@ except Exception:
 # MANUAL TRACKING
 
 
-@convert_to_seconds(["t1", "t2"])
+@convert_parameter_to_seconds(["t1", "t2"])
 @use_clip_fps_by_default
-def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None):
+def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None):
     """
     Allows manual tracking of an object(s) in the video clip between
     times `t1` and `t2`. This displays the clip frame by frame
@@ -48,13 +48,13 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
 
     t1,t2:
       times during which to track (defaults are start and
-      end of the clip). t1 and t2 can be expressed in seconds
+      end of the clip). start_time and t2 can be expressed in seconds
       like 15.35, in (min, sec), in (hour, min, sec), or as a
       string: '01:03:05.35'.
     fps:
       Number of frames per second to freeze on. If None, the clip's
       fps attribute is used instead.
-    nobjects:
+    n_objects:
       Number of objects to click on each frame.
     savefile:
       If provided, the result is saved to a file, which makes
@@ -67,15 +67,14 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     >>> from moviepy.video.tools.tracking import manual_tracking
     >>> clip = VideoFileClip("myvideo.mp4")
     >>> # manually indicate 3 trajectories, save them to a file
-    >>> trajectories = manual_tracking(clip, t1=5, t2=7, fps=5,
-                                       nobjects=3, savefile="track.txt")
+    >>> trajectories = manual_tracking(clip, start_time=5, t2=7, fps=5,
+                                       nobjects=3, savefile="track.text")
     >>> # ...
     >>> # LATER, IN ANOTHER SCRIPT, RECOVER THESE TRAJECTORIES
     >>> from moviepy.video.tools.tracking import Trajectory
-    >>> traj1, traj2, traj3 = Trajectory.load_list('track.txt')
+    >>> traj1, traj2, traj3 = Trajectory.load_list('track.text')
     >>> # If ever you only have one object being tracked, recover it with
-    >>> traj, =  Trajectory.load_list('track.txt')
-
+    >>> traj, =  Trajectory.load_list('track.text')
     """
 
     import pygame as pg
@@ -92,7 +91,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
     def gatherClicks(t):
 
         imdisplay(clip.get_frame(t), screen)
-        objects_to_click = nobjects
+        objects_to_click = n_objects
         clicks = []
         while objects_to_click:
 
@@ -123,7 +122,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, nobjects=1, savefile=None)
 
     tt, xylist = zip(*txy_list)
     result = []
-    for i in range(nobjects):
+    for i in range(n_objects):
         xys = [e[i] for e in xylist]
         xx, yy = zip(*xys)
         result.append(Trajectory(tt, xx, yy))

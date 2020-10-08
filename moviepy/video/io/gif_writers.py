@@ -29,7 +29,7 @@ def write_gif_with_tempfiles(
     dispose=True,
     colors=None,
     logger="bar",
-    pix_fmt=None,
+    pixel_format=None,
 ):
     """Write the VideoClip to a GIF file.
 
@@ -41,7 +41,7 @@ def write_gif_with_tempfiles(
 
     """
     logger = proglog.default_bar_logger(logger)
-    fileName, ext = os.path.splitext(filename)
+    file_root, ext = os.path.splitext(filename)
     tt = np.arange(0, clip.duration, 1.0 / fps)
 
     tempfiles = []
@@ -51,18 +51,18 @@ def write_gif_with_tempfiles(
 
     for i, t in logger.iter_bar(t=list(enumerate(tt))):
 
-        name = "%s_GIFTEMP%04d.png" % (fileName, i + 1)
+        name = "%s_GIFTEMP%04d.png" % (file_root, i + 1)
         tempfiles.append(name)
-        clip.save_frame(name, t, withmask=True)
+        clip.save_frame(name, t, with_mask=True)
 
     delay = int(100.0 / fps)
 
     if clip.mask is None:
-        withmask = False
+        with_mask = False
 
     if program == "ImageMagick":
-        if not pix_fmt:
-            pix_fmt = "RGBA" if withmask else "RGB"
+        if not pixel_format:
+            pixel_format = "RGBA" if with_mask else "RGB"
 
         logger(message="MoviePy - - Optimizing GIF with ImageMagick...")
         cmd = (
@@ -74,7 +74,7 @@ def write_gif_with_tempfiles(
                 "%d" % (2 if dispose else 1),
                 "-loop",
                 "%d" % loop,
-                "%s_GIFTEMP*.png" % fileName,
+                "%s_GIFTEMP*.png" % file_root,
                 "-coalesce",
                 "-fuzz",
                 "%02d" % fuzz + "%",
@@ -82,15 +82,15 @@ def write_gif_with_tempfiles(
                 "%s" % opt,
                 "-set",
                 "colorspace",
-                pix_fmt,
+                pixel_format,
             ]
             + (["-colors", "%d" % colors] if colors is not None else [])
             + [filename]
         )
 
     elif program == "ffmpeg":
-        if not pix_fmt:
-            pix_fmt = "rgba" if withmask else "rgb24"
+        if not pixel_format:
+            pixel_format = "rgba" if with_mask else "rgb24"
 
         cmd = [
             FFMPEG_BINARY,
@@ -100,12 +100,12 @@ def write_gif_with_tempfiles(
             "-r",
             str(fps),
             "-i",
-            fileName + "_GIFTEMP%04d.png",
+            file_root + "_GIFTEMP%04d.png",
             "-r",
             str(fps),
             filename,
             "-pix_fmt",
-            (pix_fmt),
+            (pixel_format),
         ]
 
     try:
@@ -129,8 +129,8 @@ def write_gif_with_tempfiles(
 
         raise IOError(error)
 
-    for f in tempfiles:
-        os.remove(f)
+    for file in tempfiles:
+        os.remove(file)
 
 
 @requires_duration
@@ -142,12 +142,12 @@ def write_gif(
     program="ImageMagick",
     opt="OptimizeTransparency",
     fuzz=1,
-    withmask=True,
+    with_mask=True,
     loop=0,
     dispose=True,
     colors=None,
     logger="bar",
-    pix_fmt=None,
+    pixel_format=None,
 ):
     """Write the VideoClip to a GIF file, without temporary files.
 
@@ -179,7 +179,7 @@ def write_gif(
       the colors that are less than fuzz% different are in fact
       the same.
 
-    pix_fmt
+    pixel_format
       Pixel format for the output gif file. If is not specified
       'rgb24' will be used as the default format unless ``clip.mask``
       exist, then 'rgba' will be used. This option is going to
@@ -215,9 +215,9 @@ def write_gif(
     delay = 100.0 / fps
     logger = proglog.default_bar_logger(logger)
     if clip.mask is None:
-        withmask = False
-    if not pix_fmt:
-        pix_fmt = "rgba" if withmask else "rgb24"
+        with_mask = False
+    if not pixel_format:
+        pixel_format = "rgba" if with_mask else "rgb24"
 
     cmd1 = [
         FFMPEG_BINARY,
@@ -233,7 +233,7 @@ def write_gif(
         "-s",
         "%dx%d" % (clip.w, clip.h),
         "-pix_fmt",
-        (pix_fmt),
+        (pixel_format),
         "-i",
         "-",
     ]
@@ -251,7 +251,7 @@ def write_gif(
             cmd1
             + [
                 "-pix_fmt",
-                (pix_fmt),
+                (pixel_format),
                 "-r",
                 "%.02f" % fps,
                 filename,
@@ -317,7 +317,7 @@ def write_gif(
         for t, frame in clip.iter_frames(
             fps=fps, logger=logger, with_times=True, dtype="uint8"
         ):
-            if withmask:
+            if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 frame = np.dstack([frame, mask]).astype("uint8")
             proc1.stdin.write(frame.tostring())

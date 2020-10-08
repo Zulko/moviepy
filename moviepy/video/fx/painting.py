@@ -28,7 +28,7 @@ def painting(clip, saturation=1.4, black=0.006):
     flashy. ``black`` gives the anount of black lines wanted.
     Requires Scikit-image or Scipy installed.
     """
-    return clip.fl_image(lambda im: to_painting(im, saturation, black))
+    return clip.image_transform(lambda im: to_painting(im, saturation, black))
 
 
 # ------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------
@@ -36,7 +36,7 @@ def painting(clip, saturation=1.4, black=0.006):
 if not painting_possible:
     doc = painting.__doc__
 
-    def painting(clip, newsize=None, height=None, width=None):
+    def painting(clip, saturation=None, black=None):
         raise IOError("fx painting needs scikit-image or scipy")
 
     painting.__doc__ = doc

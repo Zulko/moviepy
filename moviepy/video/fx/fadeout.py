@@ -14,15 +14,15 @@ def fadeout(clip, duration, final_color=None):
     """
 
     if final_color is None:
-        final_color = 0 if clip.ismask else [0, 0, 0]
+        final_color = 0 if clip.is_mask else [0, 0, 0]
 
     final_color = np.array(final_color)
 
-    def fl(gf, t):
+    def filter(get_frame, t):
         if (clip.duration - t) >= duration:
-            return gf(t)
+            return get_frame(t)
         else:
             fading = 1.0 * (clip.duration - t) / duration
-            return fading * gf(t) + (1 - fading) * final_color
+            return fading * get_frame(t) + (1 - fading) * final_color
 
-    return clip.fl(fl)
+    return clip.transform(filter)

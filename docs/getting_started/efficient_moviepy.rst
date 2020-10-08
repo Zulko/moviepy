@@ -43,7 +43,7 @@ So, the rules of thumb are:
     * Call ``close()`` on any clip that you **construct** once you have finished using it and have also finished using any clip that was derived from it.
     * Also close any clips you create through ``AudioFileClip.coreader()``.
     * Even if you close a ``CompositeVideoClip`` instance, you still need to close the clips it was created from.
-    * Otherwise, if you have a clip that was created by deriving it from from another clip (e.g. by calling ``set_mask()``), then generally you shouldn't close it. Closing the original clip will also close the copy.
+    * Otherwise, if you have a clip that was created by deriving it from from another clip (e.g. by calling ``with_mask()``), then generally you shouldn't close it. Closing the original clip will also close the copy.
 
 Clips act as `context managers <https://docs.python.org/3/reference/datamodel.html#context-managers>`_. This means you
 can use them with a ``with`` statement, and they will automatically be closed at the end of the block, even if there is

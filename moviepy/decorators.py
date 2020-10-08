@@ -5,95 +5,98 @@ import os
 
 import decorator
 
-from moviepy.tools import cvsecs
+from moviepy.tools import convert_to_seconds
 
 
 @decorator.decorator
-def outplace(f, clip, *a, **k):
-    """ Applies f(clip.copy(), *a, **k) and returns clip.copy()"""
-    newclip = clip.copy()
-    f(newclip, *a, **k)
-    return newclip
+def outplace(func, clip, *args, **kwargs):
+    """ Applies func(clip.copy(), *args, **kwargs) and returns clip.copy()"""
+    new_clip = clip.copy()
+    func(new_clip, *args, **kwargs)
+    return new_clip
 
 
 @decorator.decorator
-def convert_masks_to_RGB(f, clip, *a, **k):
+def convert_masks_to_RGB(func, clip, *args, **kwargs):
     """ If the clip is a mask, convert it to RGB before running the function """
-    if clip.ismask:
+    if clip.is_mask:
         clip = clip.to_RGB()
-    return f(clip, *a, **k)
+    return func(clip, *args, **kwargs)
 
 
 @decorator.decorator
-def apply_to_mask(f, clip, *a, **k):
-    """This decorator will apply the same function f to the mask of
-    the clip created with f"""
+def apply_to_mask(func, clip, *args, **kwargs):
+    """This decorator will apply the same function func to the mask of
+    the clip created with func"""
 
-    newclip = f(clip, *a, **k)
-    if getattr(newclip, "mask", None):
-        newclip.mask = f(newclip.mask, *a, **k)
-    return newclip
-
-
-@decorator.decorator
-def apply_to_audio(f, clip, *a, **k):
-    """This decorator will apply the function f to the audio of
-    the clip created with f"""
-
-    newclip = f(clip, *a, **k)
-    if getattr(newclip, "audio", None):
-        newclip.audio = f(newclip.audio, *a, **k)
-    return newclip
+    new_clip = func(clip, *args, **kwargs)
+    if getattr(new_clip, "mask", None):
+        new_clip.mask = func(new_clip.mask, *args, **kwargs)
+    return new_clip
 
 
 @decorator.decorator
-def requires_duration(f, clip, *a, **k):
+def apply_to_audio(func, clip, *args, **kwargs):
+    """This decorator will apply the function func to the audio of
+    the clip created with func"""
+
+    new_clip = func(clip, *args, **kwargs)
+    if getattr(new_clip, "audio", None):
+        new_clip.audio = func(new_clip.audio, *args, **kwargs)
+    return new_clip
+
+
+@decorator.decorator
+def requires_duration(func, clip, *args, **kwargs):
     """ Raise an error if the clip has no duration."""
 
     if clip.duration is None:
         raise ValueError("Attribute 'duration' not set")
     else:
-        return f(clip, *a, **k)
+        return func(clip, *args, **kwargs)
 
 
 @decorator.decorator
-def audio_video_fx(f, clip, *a, **k):
+def audio_video_fx(func, clip, *args, **kwargs):
     """Use an audio function on a video/audio clip
 
-    This decorator tells that the function f (audioclip -> audioclip)
+    This decorator tells that the function func (audioclip -> audioclip)
     can be also used on a video clip, at which case it returns a
     videoclip with unmodified video and modified audio.
     """
 
     if hasattr(clip, "audio"):
-        newclip = clip.copy()
+        new_clip = clip.copy()
         if clip.audio is not None:
-            newclip.audio = f(clip.audio, *a, **k)
-        return newclip
+            new_clip.audio = func(clip.audio, *args, **kwargs)
+        return new_clip
     else:
-        return f(clip, *a, **k)
+        return func(clip, *args, **kwargs)
 
 
 def preprocess_args(fun, varnames):
     """ Applies fun to variables in varnames before launching the function """
 
-    def wrapper(f, *a, **kw):
-        func_code = f.__code__
+    def wrapper(func, *args, **kwargs):
+        func_code = func.__code__
 
         names = func_code.co_varnames
-        new_a = [
+        new_args = [
             fun(arg) if (name in varnames) and (arg is not None) else arg
-            for (arg, name) in zip(a, names)
+            for (arg, name) in zip(args, names)
         ]
-        new_kw = {k: fun(v) if k in varnames else v for (k, v) in kw.items()}
-        return f(*new_a, **new_kw)
+        new_kwargs = {
+            kwarg: fun(value) if kwarg in varnames else value
+            for (kwarg, value) in kwargs.items()
+        }
+        return func(*new_args, **new_kwargs)
 
     return decorator.decorator(wrapper)
 
 
-def convert_to_seconds(varnames):
+def convert_parameter_to_seconds(varnames):
     """Converts the specified variables to seconds"""
-    return preprocess_args(cvsecs, varnames)
+    return preprocess_args(convert_to_seconds, varnames)
 
 
 def convert_path_to_string(varnames):
@@ -102,18 +105,18 @@ def convert_path_to_string(varnames):
 
 
 @decorator.decorator
-def add_mask_if_none(f, clip, *a, **k):
+def add_mask_if_none(func, clip, *args, **kwargs):
     """ Add a mask to the clip if there is none. """
     if clip.mask is None:
         clip = clip.add_mask()
-    return f(clip, *a, **k)
+    return func(clip, *args, **kwargs)
 
 
 @decorator.decorator
-def use_clip_fps_by_default(f, clip, *a, **k):
-    """ Will use clip.fps if no fps=... is provided in **k """
+def use_clip_fps_by_default(func, clip, *args, **kwargs):
+    """ Will use clip.fps if no fps=... is provided in **kwargs """
 
-    def fun(fps):
+    def find_fps(fps):
         if fps is not None:
             return fps
         elif getattr(clip, "fps", None):
@@ -122,14 +125,19 @@ def use_clip_fps_by_default(f, clip, *a, **k):
             "No 'fps' (frames per second) attribute specified"
             " for function %s and the clip has no 'fps' attribute. Either"
             " provide e.g. fps=24 in the arguments of the function, or define"
-            " the clip's fps with `clip.fps=24`" % f.__name__
+            " the clip's fps with `clip.fps=24`" % func.__name__
         )
 
-    func_code = f.__code__
+    func_code = func.__code__
 
     names = func_code.co_varnames[1:]
 
-    new_a = [fun(arg) if (name == "fps") else arg for (arg, name) in zip(a, names)]
-    new_kw = {k: fun(v) if k == "fps" else v for (k, v) in k.items()}
+    new_args = [
+        find_fps(arg) if (name == "fps") else arg for (arg, name) in zip(args, names)
+    ]
+    new_kwargs = {
+        kwarg: find_fps(value) if kwarg == "fps" else value
+        for (kwarg, value) in kwargs.items()
+    }
 
-    return f(clip, *new_a, **new_kw)
+    return func(clip, *new_args, **new_kwargs)

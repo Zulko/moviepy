@@ -77,18 +77,18 @@ class AudioClip(Clip):
         if chunk_duration is not None:
             chunksize = int(chunk_duration * fps)
 
-        totalsize = int(fps * self.duration)
+        total_size = int(fps * self.duration)
 
-        nchunks = totalsize // chunksize + 1
+        nchunks = total_size // chunksize + 1
 
-        pospos = np.linspace(0, totalsize, nchunks + 1, endpoint=True, dtype=int)
+        positions = np.linspace(0, total_size, nchunks + 1, endpoint=True, dtype=int)
 
         for i in logger.iter_bar(chunk=list(range(nchunks))):
-            size = pospos[i + 1] - pospos[i]
+            size = positions[i + 1] - positions[i]
             assert size <= chunksize
-            tt = (1.0 / fps) * np.arange(pospos[i], pospos[i + 1])
+            timings = (1.0 / fps) * np.arange(positions[i], positions[i + 1])
             yield self.to_soundarray(
-                tt, nbytes=nbytes, quantize=quantize, fps=fps, buffersize=chunksize
+                timings, nbytes=nbytes, quantize=quantize, fps=fps, buffersize=chunksize
             )
 
     @requires_duration
@@ -133,8 +133,6 @@ class AudioClip(Clip):
                                         quantize=quantize, nbytes=nbytes)
                               for ttc in tt_chunks])
         """
-        # print tt.max() - tt.min(), tt.min(), tt.max()
-
         snd_array = self.get_frame(tt)
 
         if quantize:
@@ -307,19 +305,19 @@ class CompositeAudioClip(AudioClip):
         Clip.__init__(self)
         self.clips = clips
 
-        ends = [c.end for c in self.clips]
-        self.nchannels = max([c.nchannels for c in self.clips])
-        if not any([(e is None) for e in ends]):
+        ends = [clip.end for clip in self.clips]
+        self.nchannels = max([clip.nchannels for clip in self.clips])
+        if not any([(end is None) for end in ends]):
             self.duration = max(ends)
             self.end = max(ends)
 
         def make_frame(t):
 
-            played_parts = [c.is_playing(t) for c in self.clips]
+            played_parts = [clip.is_playing(t) for clip in self.clips]
 
             sounds = [
-                c.get_frame(t - c.start) * np.array([part]).T
-                for c, part in zip(self.clips, played_parts)
+                clip.get_frame(t - clip.start) * np.array([part]).T
+                for clip, part in zip(self.clips, played_parts)
                 if (part is not False)
             ]
 
@@ -338,12 +336,12 @@ def concatenate_audioclips(clips):
     """
     The clip with the highest FPS will be the FPS of the result clip.
     """
-    durations = [c.duration for c in clips]
-    tt = np.cumsum([0] + durations)  # start times, and end time.
-    newclips = [c.set_start(t) for c, t in zip(clips, tt)]
+    durations = [clip.duration for clip in clips]
+    timings = np.cumsum([0] + durations)  # start times, and end time.
+    newclips = [clip.with_start(t) for clip, t in zip(clips, timings)]
 
-    result = CompositeAudioClip(newclips).set_duration(tt[-1])
+    result = CompositeAudioClip(newclips).with_duration(timings[-1])
 
-    fpss = [c.fps for c in clips if getattr(c, "fps", None)]
+    fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
     result.fps = max(fpss) if fpss else None
     return result
