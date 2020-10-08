@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-      - uses: psf/black@stable
-        #with:
-        #  args: "--check --diff --target-version py36 $GITHUB_WORKSPACE"
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Black
+        uses: psf/black@stable  # already includes args "--check --diff"
   flake8:
     runs-on: ubuntu-latest
     steps:
