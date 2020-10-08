@@ -36,7 +36,7 @@ class VideoFileClip(VideoClip):
       wish to read the audio.
 
     target_resolution:
-      Set to (desired_height, desired_width) to have ffmpeg resize the frames
+      Set to (desired_width, desired_height) to have ffmpeg resize the frames
       before returning them. This is much faster than streaming in high-res
       and then resizing. If either dimension is None, the frames are resized
       by keeping the existing aspect ratio.
@@ -51,7 +51,7 @@ class VideoFileClip(VideoClip):
       can be set to 'tbr', which may be helpful if you are finding that it is reading
       the incorrect fps from the file.
 
-    pix_fmt
+    pixel_format
       Optional: Pixel format for the video to read. If is not specified
       'rgb24' will be used as the default format unless ``has_mask`` is set
       as ``True``, then 'rgba' will be used.
@@ -92,18 +92,18 @@ class VideoFileClip(VideoClip):
         audio_fps=44100,
         audio_nbytes=2,
         fps_source="fps",
-        pix_fmt=None,
+        pixel_format=None,
     ):
 
         VideoClip.__init__(self)
 
         # Make a reader
-        if not pix_fmt:
-            pix_fmt = "rgba" if has_mask else "rgb24"
+        if not pixel_format:
+            pixel_format = "rgba" if has_mask else "rgb24"
         self.reader = FFMPEG_VideoReader(
             filename,
             decode_file=decode_file,
-            pix_fmt=pix_fmt,
+            pixel_format=pixel_format,
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,
             fps_source=fps_source,
@@ -123,12 +123,12 @@ class VideoFileClip(VideoClip):
 
             self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
 
-            def mask_mf(t):
+            def mask_make_frame(t):
                 return self.reader.get_frame(t)[:, :, 3] / 255.0
 
-            self.mask = VideoClip(ismask=True, make_frame=mask_mf).set_duration(
-                self.duration
-            )
+            self.mask = VideoClip(
+                is_mask=True, make_frame=mask_make_frame
+            ).with_duration(self.duration)
             self.mask.fps = self.fps
 
         else:

@@ -46,7 +46,7 @@ import moviepy.video.compositing.transitions as transfx
 import moviepy.video.tools as videotools
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
 from .video.io.html_tools import ipython_display
-from .tools import cvsecs
+from .tools import convert_to_seconds
 
 try:
     from .video.io.sliders import sliders

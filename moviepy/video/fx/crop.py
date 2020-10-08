@@ -60,6 +60,6 @@ def crop(
     x2 = x2 or clip.size[0]
     y2 = y2 or clip.size[1]
 
-    return clip.fl_image(
-        lambda pic: pic[int(y1) : int(y2), int(x1) : int(x2)], apply_to=["mask"]
+    return clip.image_transform(
+        lambda frame: frame[int(y1) : int(y2), int(x1) : int(x2)], apply_to=["mask"]
     )

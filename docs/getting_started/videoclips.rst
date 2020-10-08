@@ -130,13 +130,13 @@ The fundamental difference between masks and standard clips is that standard cli
 
 When you create or load a clip that you will use as a mask you need to declare it: ::
 
-    maskclip = VideoClip(makeframe, duration=4, ismask=True)
-    maskclip = ImageClip("my_mask.jpeg", ismask=True)
-    maskclip = VideoFileClip("myvideo.mp4", ismask=True)
+    maskclip = VideoClip(makeframe, duration=4, is_mask=True)
+    maskclip = ImageClip("my_mask.jpeg", is_mask=True)
+    maskclip = VideoFileClip("myvideo.mp4", is_mask=True)
 
 In the case of video and image files, if these are not already black and white they will be converted automatically.
 
-Then you attach this mask to a clip (which must have the same dimensions) with ``myclip.set_mask(maskclip)``.
+Then you attach this mask to a clip (which must have the same dimensions) with ``myclip.with_mask(maskclip)``.
 
 Some image formats like PNG support transparency with an *alpha layer*, which MoviePy will use as a mask: ::
 
@@ -166,12 +166,12 @@ To write a clip as a video file, use ::
 MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
 
 
-Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *a priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.set_duration``: ::
+Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *args priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.with_duration``: ::
 
     # Make a video showing a flower for 5 seconds
     my_clip = ImageClip("flower.jpeg") # has infinite duration
     my_clip.write_videofile("flower.mp4") # Will fail! NO DURATION!
-    my_clip.set_duration(5).write_videofile("flower.mp4") # works!
+    my_clip.with_duration(5).write_videofile("flower.mp4") # works!
 
 
 Animated GIFs
@@ -197,4 +197,4 @@ You can write a frame to an image file with ::
     myclip.save_frame("frame.png") # by default the first frame is extracted
     myclip.save_frame("frame.jpeg", t='01:00:00') # frame at time t=1h
 
-If the clip has a mask it will be exported as the alpha layer of the image unless you specify ``withmask=False``.
+If the clip has a mask it will be exported as the alpha layer of the image unless you specify ``with_mask=False``.

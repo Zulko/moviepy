@@ -6,8 +6,8 @@ try:
     import cv2
     import numpy as np
 
-    def resizer(pic, newsize):
-        lx, ly = int(newsize[0]), int(newsize[1])
+    def resizer(pic, new_size):
+        lx, ly = int(new_size[0]), int(new_size[1])
         if lx > pic.shape[1] or ly > pic.shape[0]:
             # For upsizing use linear for good quality & decent speed
             interpolation = cv2.INTER_LINEAR
@@ -25,16 +25,16 @@ except ImportError:
         from PIL import Image
         import numpy as np
 
-        def resizer(pic, newsize):
-            newsize = list(map(int, newsize))[::-1]
+        def resizer(pic, new_size):
+            new_size = list(map(int, new_size))[::-1]
             shape = pic.shape
             if len(shape) == 3:
-                newshape = (newsize[0], newsize[1], shape[2])
+                newshape = (new_size[0], new_size[1], shape[2])
             else:
-                newshape = (newsize[0], newsize[1])
+                newshape = (new_size[0], new_size[1])
 
-            pilim = Image.fromarray(pic)
-            resized_pil = pilim.resize(newsize[::-1], Image.ANTIALIAS)
+            pil_img = Image.fromarray(pic)
+            resized_pil = pil_img.resize(new_size[::-1], Image.ANTIALIAS)
             # arr = np.fromstring(resized_pil.tostring(), dtype='uint8')
             # arr.reshape(newshape)
             return np.array(resized_pil)
@@ -46,8 +46,8 @@ except ImportError:
         try:
             from scipy.misc import imresize
 
-            def resizer(pic, newsize):
-                return imresize(pic, map(int, newsize[::-1]))
+            def resizer(pic, new_size):
+                return imresize(pic, map(int, new_size[::-1]))
 
             resizer.origin = "Scipy"
 
@@ -55,14 +55,14 @@ except ImportError:
             resize_possible = False
 
 
-def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
+def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
     """
     Returns a video clip that is a resized version of the clip.
 
     Parameters
     ------------
 
-    newsize:
+    new_size:
       Can be either
         - ``(width,height)`` in pixels or a float representing
         - A scaling factor, like 0.5
@@ -88,93 +88,96 @@ def resize(clip, newsize=None, height=None, width=None, apply_to_mask=True):
 
     w, h = clip.size
 
-    if newsize is not None:
+    if new_size is not None:
 
-        def trans_newsize(ns):
-
-            if isinstance(ns, (int, float)):
-                return [ns * w, ns * h]
+        def translate_new_size(new_size_):
+            """
+            Returns a [w, h] pair from `new_size_`. If `new_size_` is a scalar, then work out
+            the correct pair using the clip's size. Otherwise just return `new_size_`
+            """
+            if isinstance(new_size_, (int, float)):
+                return [new_size_ * w, new_size_ * h]
             else:
-                return ns
+                return new_size_
 
-        if hasattr(newsize, "__call__"):
+        if hasattr(new_size, "__call__"):
             # The resizing is a function of time
 
-            def newsize2(t):
-                return trans_newsize(newsize(t))
+            def get_new_size(t):
+                return translate_new_size(new_size(t))
 
-            if clip.ismask:
+            if clip.is_mask:
 
-                def fun(gf, t):
+                def filter(get_frame, t):
                     return (
-                        1.0 * resizer((255 * gf(t)).astype("uint8"), newsize2(t)) / 255
+                        resizer((255 * get_frame(t)).astype("uint8"), get_new_size(t))
+                        / 255.0
                     )
 
             else:
 
-                def fun(gf, t):
-                    return resizer(gf(t).astype("uint8"), newsize2(t))
+                def filter(get_frame, t):
+                    return resizer(get_frame(t).astype("uint8"), get_new_size(t))
 
-            newclip = clip.fl(
-                fun, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
+            newclip = clip.transform(
+                filter, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
             )
             if apply_to_mask and clip.mask is not None:
-                newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+                newclip.mask = resize(clip.mask, new_size, apply_to_mask=False)
 
             return newclip
 
         else:
-            newsize = trans_newsize(newsize)
+            new_size = translate_new_size(new_size)
 
     elif height is not None:
 
         if hasattr(height, "__call__"):
 
-            def fun(t):
+            def func(t):
                 return 1.0 * int(height(t)) / h
 
-            return resize(clip, fun)
+            return resize(clip, func)
 
         else:
-            newsize = [w * height / h, height]
+            new_size = [w * height / h, height]
 
     elif width is not None:
 
         if hasattr(width, "__call__"):
 
-            def fun(t):
+            def func(t):
                 return 1.0 * width(t) / w
 
-            return resize(clip, fun)
+            return resize(clip, func)
 
         else:
-            newsize = [width, h * width / w]
+            new_size = [width, h * width / w]
 
     # From here, the resizing is constant (not a function of time), size=newsize
 
-    if clip.ismask:
+    if clip.is_mask:
 
-        def fl(pic):
-            return 1.0 * resizer((255 * pic).astype("uint8"), newsize) / 255.0
+        def image_filter(pic):
+            return 1.0 * resizer((255 * pic).astype("uint8"), new_size) / 255.0
 
     else:
 
-        def fl(pic):
-            return resizer(pic.astype("uint8"), newsize)
+        def image_filter(pic):
+            return resizer(pic.astype("uint8"), new_size)
 
-    newclip = clip.fl_image(fl)
+    new_clip = clip.image_transform(image_filter)
 
     if apply_to_mask and clip.mask is not None:
-        newclip.mask = resize(clip.mask, newsize, apply_to_mask=False)
+        new_clip.mask = resize(clip.mask, new_size, apply_to_mask=False)
 
-    return newclip
+    return new_clip
 
 
 if not resize_possible:
-
     doc = resize.__doc__
 
-    def resize(clip, newsize=None, height=None, width=None):
+    def resize(clip, new_size=None, height=None, width=None):
         raise ImportError("fx resize needs OpenCV or Scipy or PIL")
 
     resize.__doc__ = doc

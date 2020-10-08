@@ -18,9 +18,9 @@ def crossfadein(clip, duration):
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
-    newclip = clip.copy()
-    newclip.mask = clip.mask.fx(fadein, duration)
-    return newclip
+    new_clip = clip.copy()
+    new_clip.mask = clip.mask.fx(fadein, duration)
+    return new_clip
 
 
 @requires_duration
@@ -30,9 +30,9 @@ def crossfadeout(clip, duration):
     Only works when the clip is included in a CompositeVideoClip.
     """
     clip.mask.duration = clip.duration
-    newclip = clip.copy()
-    newclip.mask = clip.mask.fx(fadeout, duration)
-    return newclip
+    new_clip = clip.copy()
+    new_clip.mask = clip.mask.fx(fadeout, duration)
+    return new_clip
 
 
 def slide_in(clip, duration, side):
@@ -73,7 +73,7 @@ def slide_in(clip, duration, side):
         "bottom": lambda t: ("center", max(0, h * (1 - t / duration))),
     }
 
-    return clip.set_position(pos_dict[side])
+    return clip.with_position(pos_dict[side])
 
 
 @requires_duration
@@ -117,14 +117,15 @@ def slide_out(clip, duration, side):
         "bottom": lambda t: ("center", max(0, h * ((t - ts) / duration))),
     }
 
-    return clip.set_position(pos_dict[side])
+    return clip.with_position(pos_dict[side])
 
 
 @requires_duration
-def make_loopable(clip, cross_duration):
+def make_loopable(clip, overlap_duration):
     """Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``cross`` is the duration in seconds
+    it can be looped indefinitely. ``overlap_duration`` is the duration in seconds
     of the fade-in."""
-    d = clip.duration
-    clip2 = clip.fx(crossfadein, cross_duration).set_start(d - cross_duration)
-    return CompositeVideoClip([clip, clip2]).subclip(cross_duration, d)
+    clip2 = clip.fx(crossfadein, overlap_duration).with_start(
+        clip.duration - overlap_duration
+    )
+    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)

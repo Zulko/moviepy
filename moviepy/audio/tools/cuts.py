@@ -1,20 +1,19 @@
 import numpy as np
 
 
-def find_audio_period(aclip, t_min=0.1, t_max=2, t_res=0.01):
+def find_audio_period(clip, min_time=0.1, max_time=2, time_resolution=0.01):
     """Finds the period, in seconds of an audioclip.
-
     The beat is then given by bpm = 60/T
 
-    t_min and _tmax are bounds for the returned value, t_res
+    min_time and max_time are bounds for the returned value, time_resolution
     is the numerical precision
     """
-    chunksize = int(t_res * aclip.fps)
-    chunk_duration = 1.0 * chunksize / aclip.fps
+    chunksize = int(time_resolution * clip.fps)
+    chunk_duration = 1.0 * chunksize / clip.fps
     # v denotes the list of volumes
-    v = np.array([(c ** 2).sum() for c in aclip.iter_chunks(chunksize)])
+    v = np.array([(chunk ** 2).sum() for chunk in clip.iter_chunks(chunksize)])
     v = v - v.mean()
     corrs = np.correlate(v, v, mode="full")[-len(v) :]
-    corrs[: int(t_min / chunk_duration)] = 0
-    corrs[int(t_max / chunk_duration) :] = 0
+    corrs[: int(min_time / chunk_duration)] = 0
+    corrs[int(max_time / chunk_duration) :] = 0
     return chunk_duration * np.argmax(corrs)

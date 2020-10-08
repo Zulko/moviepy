@@ -1,11 +1,11 @@
 from ..AudioClip import concatenate_audioclips
 
 
-def audio_loop(audioclip, nloops=None, duration=None):
+def audio_loop(audioclip, n_loops=None, duration=None):
     """Loops over an audio clip.
 
     Returns an audio clip that plays the given clip either
-    `nloops` times, or during `duration` seconds.
+    `n_loops` times, or during `duration` seconds.
 
     Examples
     ========
@@ -14,15 +14,15 @@ def audio_loop(audioclip, nloops=None, duration=None):
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
     >>> audio = afx.audio_loop( music, duration=videoclip.duration)
-    >>> videoclip.set_audio(audio)
+    >>> videoclip.with_audio(audio)
 
     """
 
     if duration is not None:
 
-        nloops = int(duration / audioclip.duration) + 1
-        return concatenate_audioclips(nloops * [audioclip]).set_duration(duration)
+        n_loops = int(duration / audioclip.duration) + 1
+        return concatenate_audioclips(n_loops * [audioclip]).with_duration(duration)
 
     else:
 
-        return concatenate_audioclips(nloops * [audioclip])
+        return concatenate_audioclips(n_loops * [audioclip])

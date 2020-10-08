@@ -1,15 +1,17 @@
 import copy
 
 
-def blink(clip, d_on, d_off):
+def blink(clip, duration_on, duration_off):
     """
-    Makes the clip blink. At each blink it will be displayed ``d_on``
-    seconds and disappear ``d_off`` seconds. Will only work in
+    Makes the clip blink. At each blink it will be displayed ``duration_on``
+    seconds and disappear ``duration_off`` seconds. Will only work in
     composite clips.
     """
-    newclip = copy.copy(clip)
-    if newclip.mask is None:
-        newclip = newclip.with_mask()
-    D = d_on + d_off
-    newclip.mask = newclip.mask.fl(lambda gf, t: gf(t) * ((t % D) < d_on))
-    return newclip
+    new_clip = copy.copy(clip)
+    if new_clip.mask is None:
+        new_clip = new_clip.with_mask()
+    duration = duration_on + duration_off
+    new_clip.mask = new_clip.mask.transform(
+        lambda get_frame, t: get_frame(t) * ((t % duration) < duration_on)
+    )
+    return new_clip

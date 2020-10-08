@@ -13,7 +13,7 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import cvsecs
+from moviepy.tools import convert_to_seconds
 
 
 class FFMPEG_VideoReader:
@@ -23,7 +23,7 @@ class FFMPEG_VideoReader:
         decode_file=True,
         print_infos=False,
         bufsize=None,
-        pix_fmt="rgb24",
+        pixel_format="rgb24",
         check_duration=True,
         target_resolution=None,
         resize_algo="bicubic",
@@ -40,9 +40,6 @@ class FFMPEG_VideoReader:
         self.rotation = infos["video_rotation"]
 
         if target_resolution:
-            # revert the order, as ffmpeg used (width, height)
-            target_resolution = target_resolution[1], target_resolution[0]
-
             if None in target_resolution:
                 ratio = 1
                 for idx, target in enumerate(target_resolution):
@@ -60,8 +57,8 @@ class FFMPEG_VideoReader:
 
         self.infos = infos
 
-        self.pix_fmt = pix_fmt
-        self.depth = 4 if pix_fmt[-1] == "a" else 3
+        self.pixel_format = pixel_format
+        self.depth = 4 if pixel_format[-1] == "a" else 3
         # 'a' represents 'alpha' which means that each pixel has 4 values instead of 3.
         # See https://github.com/Zulko/moviepy/issues/1070#issuecomment-644457274
 
@@ -72,20 +69,20 @@ class FFMPEG_VideoReader:
         self.bufsize = bufsize
         self.initialize()
 
-    def initialize(self, starttime=0):
+    def initialize(self, start_time=0):
         """
         Opens the file, creates the pipe.
-        Sets self.pos to the appropriate value (1 if starttime == 0 because
+        Sets self.pos to the appropriate value (1 if start_time == 0 because
         it pre-reads the first frame)
         """
 
         self.close(delete_lastread=False)  # if any
 
-        if starttime != 0:
-            offset = min(1, starttime)
+        if start_time != 0:
+            offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.06f" % (starttime - offset),
+                "%.06f" % (start_time - offset),
                 "-i",
                 self.filename,
                 "-ss",
@@ -107,7 +104,7 @@ class FFMPEG_VideoReader:
                 "-sws_flags",
                 self.resize_algo,
                 "-pix_fmt",
-                self.pix_fmt,
+                self.pixel_format,
                 "-vcodec",
                 "rawvideo",
                 "-",
@@ -127,7 +124,7 @@ class FFMPEG_VideoReader:
         # self.pos represents the (0-indexed) index of the frame that is next in line
         # to be read by self.read_frame().
         # Eg when self.pos is 1, the 2nd frame will be read next.
-        self.pos = self.get_frame_number(starttime)
+        self.pos = self.get_frame_number(start_time)
         self.lastread = self.read_frame()
 
     def skip_frames(self, n=1):
@@ -160,7 +157,7 @@ class FFMPEG_VideoReader:
                 + "Using the last valid frame instead.",
                 UserWarning,
             )
-            if not hasattr(self, "lastread"):
+            if not hasattr(self, "last_read"):
                 raise IOError(
                     (
                         "MoviePy error: failed to read the first frame of "
@@ -172,7 +169,7 @@ class FFMPEG_VideoReader:
                     )
                 )
 
-            result = self.lastread
+            result = self.last_read
 
         else:
             if hasattr(np, "frombuffer"):
@@ -180,7 +177,7 @@ class FFMPEG_VideoReader:
             else:
                 result = np.fromstring(s, dtype="uint8")
             result.shape = (h, w, len(s) // (w * h))  # reshape((h, w, len(s)//(w*h)))
-            self.lastread = result
+            self.last_read = result
 
         # We have to do this down here because `self.pos` is used in the warning above
         self.pos += 1
@@ -204,10 +201,10 @@ class FFMPEG_VideoReader:
         if not self.proc:
             print(f"Proc not detected")
             self.initialize(t)
-            return self.lastread
+            return self.last_read
 
         if pos == self.pos:
-            return self.lastread
+            return self.last_read
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
@@ -233,14 +230,14 @@ class FFMPEG_VideoReader:
             self.proc.stderr.close()
             self.proc.wait()
             self.proc = None
-        if delete_lastread and hasattr(self, "lastread"):
-            del self.lastread
+        if delete_lastread and hasattr(self, "last_read"):
+            del self.last_read
 
     def __del__(self):
         self.close()
 
 
-def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
+def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
     """Read an image file (PNG, BMP, JPEG...).
 
     Wraps FFMPEG_Videoreader to read just one image.
@@ -259,16 +256,18 @@ def ffmpeg_read_image(filename, with_mask=True, pix_fmt=None):
       If the image has a transparency layer, ``with_mask=true`` will save
       this layer as the mask of the returned ImageClip
 
-    pix_fmt
+    pixel_format
       Optional: Pixel format for the image to read. If is not specified
       'rgb24' will be used as the default format unless ``with_mask`` is set
       as ``True``, then 'rgba' will be used.
 
     """
-    if not pix_fmt:
-        pix_fmt = "rgba" if with_mask else "rgb24"
-    reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt, check_duration=False)
-    im = reader.lastread
+    if not pixel_format:
+        pixel_format = "rgba" if with_mask else "rgb24"
+    reader = FFMPEG_VideoReader(
+        filename, pixel_format=pixel_format, check_duration=False
+    )
+    im = reader.last_read
     del reader
     return im
 
@@ -339,14 +338,16 @@ def ffmpeg_parse_infos(
             else:
                 line = [l for l in lines if "Duration:" in l][-1]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
-            result["duration"] = cvsecs(match)
+            result["duration"] = convert_to_seconds(match)
         except Exception:
             raise IOError(
                 f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}"
             )
 
     # get the output line that speaks about video
-    lines_video = [l for l in lines if " Video: " in l and re.search(r"\d+x\d+", l)]
+    lines_video = [
+        line for line in lines if " Video: " in line and re.search(r"\d+x\d+", line)
+    ]
 
     result["video_found"] = lines_video != []
 
@@ -356,9 +357,8 @@ def ffmpeg_parse_infos(
 
             # get the size, of the form 460x320 (w x h)
             match = re.search(" [0-9]*x[0-9]*(,| )", line)
-            s = list(map(int, line[match.start() : match.end() - 1].split("x")))
-            result["video_size"] = s
-
+            size = list(map(int, line[match.start() : match.end() - 1].split("x")))
+            result["video_size"] = size
         except Exception:
             raise IOError(
                 (
@@ -427,7 +427,9 @@ def ffmpeg_parse_infos(
         # get the video rotation info.
         try:
             rotation_lines = [
-                l for l in lines if "rotate          :" in l and re.search(r"\d+$", l)
+                line
+                for line in lines
+                if "rotate          :" in line and re.search(r"\d+$", line)
             ]
             if len(rotation_lines):
                 rotation_line = rotation_lines[0]
