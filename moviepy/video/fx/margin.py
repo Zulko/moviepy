@@ -60,4 +60,4 @@ def margin(
             im[top : top + h, left : left + w] = pic
             return im
 
-        return clip.with_filter(filter)
+        return clip.transform(filter)
