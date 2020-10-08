@@ -18,6 +18,7 @@ __all__ = [
     "afx",
     "AudioClip",
     "AudioFileClip",
+    "BitmapClip",
     "clips_array",
     "ColorClip",
     "CompositeAudioClip",
@@ -43,7 +44,6 @@ __all__ = [
 
 import os
 import inspect
-import itertools
 
 
 # Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
@@ -80,15 +80,16 @@ try:
 except ImportError:
     pass
 
-# The next loop transforms many effects into VideoClip methods so that
-# they can be called with myclip.resize(width=500) instead of
-# myclip.fx( vfx.resize, width= 500)
+# Transforms the effects into Clip methods so that
+# they can be called with clip.resize(width=500) instead of
+# clip.fx(vfx.resize, width=500)
 audio_fxs = inspect.getmembers(afx, inspect.isfunction)
-video_fxs = itertools.chain(
-    inspect.getmembers(vfx, inspect.isfunction),
-    inspect.getmembers(transfx, inspect.isfunction),
-    audio_fxs,
+video_fxs = (
+    inspect.getmembers(vfx, inspect.isfunction)
+    + inspect.getmembers(transfx, inspect.isfunction)
+    + audio_fxs
 )
+
 for name, function in video_fxs:
     setattr(VideoClip, name, function)
 
