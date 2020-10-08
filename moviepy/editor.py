@@ -24,7 +24,7 @@ __all__ = [
     "CompositeVideoClip",
     "concatenate_audioclips",
     "concatenate_videoclips",
-    "cvsecs",
+    "convert_to_seconds",
     "download_webfile",
     "ffmpeg_tools",
     "ImageClip",
