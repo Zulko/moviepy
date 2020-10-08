@@ -31,4 +31,4 @@ def scroll(
         y = int(max(0, min(y_max, y_start + round(y_speed * t))))
         return get_frame(t)[y : y + h, x : x + w]
 
-    return clip.with_filter(filter, apply_to=apply_to)
+    return clip.transform(filter, apply_to=apply_to)

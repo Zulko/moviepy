@@ -97,11 +97,11 @@ class Clip:
             # print(t)
             return self.make_frame(t)
 
-    def with_filter(self, func, apply_to=None, keep_duration=True):
+    def transform(self, func, apply_to=None, keep_duration=True):
         """General processing of a clip.
 
         Returns a new Clip whose frames are a transformation
-        (through function ``fun``) of the frames of the current clip.
+        (through function ``func``) of the frames of the current clip.
 
         Parameters
         -----------
@@ -131,7 +131,7 @@ class Clip:
         ``clip`` at 50 pixels per second.
 
         >>> filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]
-        >>> new_clip = clip.with_filter(filter, apply_to='mask')
+        >>> new_clip = clip.transform(filter, apply_to='mask')
 
         """
         if apply_to is None:
@@ -150,14 +150,14 @@ class Clip:
         for attribute in apply_to:
             attribute_value = getattr(new_clip, attribute, None)
             if attribute_value is not None:
-                new_attribute_value = attribute_value.with_filter(
+                new_attribute_value = attribute_value.transform(
                     func, keep_duration=keep_duration
                 )
                 setattr(new_clip, attribute, new_attribute_value)
 
         return new_clip
 
-    def with_time_filter(self, time_func, apply_to=None, keep_duration=False):
+    def time_transform(self, time_func, apply_to=None, keep_duration=False):
         """
         Returns a Clip instance playing the content of the current clip
         but with a modified timeline, time ``t`` being replaced by another
@@ -171,7 +171,7 @@ class Clip:
 
         apply_to:
           Can be either 'mask', or 'audio', or ['mask','audio'].
-          Specifies if the filter ``with_filter`` should also be applied to the
+          Specifies if the filter ``transform`` should also be applied to the
           audio or the mask of the clip, if any.
 
         keep_duration:
@@ -182,16 +182,16 @@ class Clip:
         --------
 
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.with_time_filter(lambda: 2*t, apply_to=['mask', 'audio'])
+        >>> new_clip = clip.time_transform(lambda: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.with_time_filter(lambda: 3-t)
+        >>> new_clip = clip.time_transform(lambda: 3-t)
 
         """
         if apply_to is None:
             apply_to = []
 
-        return self.with_filter(
+        return self.transform(
             lambda get_frame, t: get_frame(time_func(t)),
             apply_to,
             keep_duration=keep_duration,
@@ -397,7 +397,7 @@ class Clip:
                 + "duration (%.02f)." % self.duration
             )
 
-        new_clip = self.with_time_filter(lambda t: t + start_time, apply_to=[])
+        new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])
 
         if (end_time is None) and (self.duration is not None):
 
@@ -441,7 +441,7 @@ class Clip:
         if they exist.
         """
 
-        new_clip = self.with_time_filter(
+        new_clip = self.time_transform(
             lambda t: t + (t >= start_time) * (end_time - start_time)
         )
 

@@ -49,7 +49,7 @@ def margin(
     if isinstance(clip, ImageClip):
         im = make_bg(clip.w, clip.h)
         im[top : top + clip.h, left : left + clip.w] = clip.img
-        return clip.with_image_filter(lambda pic: im)
+        return clip.image_transform(lambda pic: im)
 
     else:
 

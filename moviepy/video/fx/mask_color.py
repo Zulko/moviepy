@@ -28,7 +28,7 @@ def mask_color(clip, color=None, threshold=0, stiffness=1):
     def flim(im):
         return hill(np.sqrt(((im - color) ** 2).sum(axis=2)))
 
-    mask = clip.with_image_filter(flim)
+    mask = clip.image_transform(flim)
     mask.is_mask = True
     new_clip = clip.with_mask(mask)
     return new_clip

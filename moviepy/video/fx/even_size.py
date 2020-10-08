@@ -27,4 +27,4 @@ def even_size(clip):
         def image_filter(a):
             return a[:-1, :, :]
 
-    return clip.with_image_filter(image_filter)
+    return clip.image_transform(image_filter)

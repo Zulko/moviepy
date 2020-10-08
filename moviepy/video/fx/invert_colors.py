@@ -5,4 +5,4 @@ def invert_colors(clip):
     Black becomes white, green becomes purple, etc.
     """
     maxi = 1.0 if clip.is_mask else 255
-    return clip.with_image_filter(lambda f: maxi - f)
+    return clip.image_transform(lambda f: maxi - f)

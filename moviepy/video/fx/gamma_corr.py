@@ -5,4 +5,4 @@ def gamma_corr(clip, gamma):
         corrected = 255 * (1.0 * im / 255) ** gamma
         return corrected.astype("uint8")
 
-    return clip.with_image_filter(filter)
+    return clip.image_transform(filter)

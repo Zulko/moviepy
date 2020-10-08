@@ -28,7 +28,7 @@ def painting(clip, saturation=1.4, black=0.006):
     flashy. ``black`` gives the anount of black lines wanted.
     Requires Scikit-image or Scipy installed.
     """
-    return clip.with_image_filter(lambda im: to_painting(im, saturation, black))
+    return clip.image_transform(lambda im: to_painting(im, saturation, black))
 
 
 # ------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------

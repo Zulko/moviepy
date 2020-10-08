@@ -119,7 +119,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
                 def filter(get_frame, t):
                     return resizer(get_frame(t).astype("uint8"), get_new_size(t))
 
-            newclip = clip.with_filter(
+            newclip = clip.transform(
                 filter, keep_duration=True, apply_to=(["mask"] if apply_to_mask else [])
             )
             if apply_to_mask and clip.mask is not None:
@@ -166,7 +166,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
         def image_filter(pic):
             return resizer(pic.astype("uint8"), new_size)
 
-    new_clip = clip.with_image_filter(image_filter)
+    new_clip = clip.image_transform(image_filter)
 
     if apply_to_mask and clip.mask is not None:
         new_clip.mask = resize(clip.mask, new_size, apply_to_mask=False)

@@ -8,4 +8,4 @@ def lum_contrast(clip, lum=0, contrast=0, contrast_threshold=127):
         corrected[corrected > 255] = 255
         return corrected.astype("uint8")
 
-    return clip.with_image_filter(image_filter)
+    return clip.image_transform(image_filter)

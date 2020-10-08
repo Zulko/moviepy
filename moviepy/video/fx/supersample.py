@@ -12,4 +12,4 @@ def supersample(clip, d, n_frames):
         )
         return frame_average.astype("uint8")
 
-    return clip.with_filter(filter)
+    return clip.transform(filter)

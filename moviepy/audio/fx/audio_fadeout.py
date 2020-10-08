@@ -20,4 +20,4 @@ def audio_fadeout(clip, duration):
             factor = np.vstack([factor, factor]).T
         return factor * frame
 
-    return clip.with_filter(fading, keep_duration=True)
+    return clip.transform(fading, keep_duration=True)

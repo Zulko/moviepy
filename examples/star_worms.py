@@ -56,7 +56,7 @@ clip_txt = TextClip(
 
 txt_speed = 27
 fl = lambda gf, t: gf(t)[int(txt_speed * t) : int(txt_speed * t) + h, :]
-moving_txt = clip_txt.with_filter(fl, apply_to=["mask"])
+moving_txt = clip_txt.transform(fl, apply_to=["mask"])
 
 
 # ADD A VANISHING EFFECT ON THE TEXT WITH A GRADIENT MASK
@@ -66,7 +66,7 @@ grad = color_gradient(
 )
 gradmask = ImageClip(grad, is_mask=True)
 fl = lambda pic: np.minimum(pic, gradmask.img)
-moving_txt.mask = moving_txt.mask.with_image_filter(fl)
+moving_txt.mask = moving_txt.mask.image_transform(fl)
 
 
 # WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)
@@ -85,14 +85,14 @@ def trapzWarp(pic, cx, cy, is_mask=False):
 
 fl_im = lambda pic: trapzWarp(pic, 0.2, 0.3)
 fl_mask = lambda pic: trapzWarp(pic, 0.2, 0.3, is_mask=True)
-warped_txt = moving_txt.with_image_filter(fl_im)
-warped_txt.mask = warped_txt.mask.with_image_filter(fl_mask)
+warped_txt = moving_txt.image_transform(fl_im)
+warped_txt.mask = warped_txt.mask.image_transform(fl_mask)
 
 
 # BACKGROUND IMAGE, DARKENED AT 60%
 
 stars = ImageClip("../../videos/stars.jpg")
-stars_darkened = stars.with_image_filter(lambda pic: (0.6 * pic).astype("int16"))
+stars_darkened = stars.image_transform(lambda pic: (0.6 * pic).astype("int16"))
 
 
 # COMPOSE THE MOVIE

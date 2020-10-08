@@ -89,4 +89,4 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         else:
             return pil_rotater(im, angle, resample=resample, expand=expand)
 
-    return clip.with_filter(filter, apply_to=["mask"])
+    return clip.transform(filter, apply_to=["mask"])

@@ -14,8 +14,8 @@ def mask_and(clip, other_clip):
         other_clip = other_clip.img
 
     if isinstance(other_clip, np.ndarray):
-        return clip.with_image_filter(lambda frame: np.minimum(frame, other_clip))
+        return clip.image_transform(lambda frame: np.minimum(frame, other_clip))
     else:
-        return clip.with_filter(
+        return clip.transform(
             lambda get_frame, t: np.minimum(get_frame(t), other_clip.get_frame(t))
         )

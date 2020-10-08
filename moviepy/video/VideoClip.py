@@ -569,13 +569,13 @@ class VideoClip(Clip):
 
     # IMAGE FILTERS
 
-    def with_image_filter(self, image_func, apply_to=None):
+    def image_transform(self, image_func, apply_to=None):
         """
         Modifies the images of a clip by replacing the frame
         `get_frame(t)` by another frame,  `image_func(get_frame(t))`
         """
         apply_to = apply_to or []
-        return self.with_filter(lambda get_frame, t: image_func(get_frame(t)), apply_to)
+        return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
 
     # --------------------------------------------------------------
     # C O M P O S I T I N G
@@ -767,7 +767,7 @@ class VideoClip(Clip):
         Returns a semi-transparent copy of the clip where the mask is
         multiplied by ``op`` (any float, normally between 0 and 1).
         """
-        self.mask = self.mask.with_image_filter(lambda pic: opacity * pic)
+        self.mask = self.mask.image_transform(lambda pic: opacity * pic)
 
     @apply_to_mask
     @outplace
@@ -830,14 +830,14 @@ class VideoClip(Clip):
         if self.is_mask:
             return self
         else:
-            new_clip = self.with_image_filter(lambda pic: 1.0 * pic[:, :, canal] / 255)
+            new_clip = self.image_transform(lambda pic: 1.0 * pic[:, :, canal] / 255)
             new_clip.is_mask = True
             return new_clip
 
     def to_RGB(self):
         """Return a non-mask video clip made from the mask video clip."""
         if self.is_mask:
-            new_clip = self.with_image_filter(
+            new_clip = self.image_transform(
                 lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")
             )
             new_clip.is_mask = False
@@ -1022,27 +1022,27 @@ class ImageClip(VideoClip):
         self.size = img.shape[:2][::-1]
         self.img = img
 
-    def with_filter(self, func, apply_to=None, keep_duration=True):
+    def transform(self, func, apply_to=None, keep_duration=True):
         """General transformation filter.
 
-        Equivalent to VideoClip.with_filter. The result is no more an
+        Equivalent to VideoClip.transform. The result is no more an
         ImageClip, it has the class VideoClip (since it may be animated)
         """
         if apply_to is None:
             apply_to = []
-        # When we use with_filter on an image clip it may become animated.
+        # When we use transform on an image clip it may become animated.
         # Therefore the result is not an ImageClip, just a VideoClip.
-        new_clip = VideoClip.with_filter(
+        new_clip = VideoClip.transform(
             self, func, apply_to=apply_to, keep_duration=keep_duration
         )
         new_clip.__class__ = VideoClip
         return new_clip
 
     @outplace
-    def with_image_filter(self, image_func, apply_to=None):
+    def image_transform(self, image_func, apply_to=None):
         """Image-transformation filter.
 
-        Does the same as VideoClip.with_image_filter, but for ImageClip the
+        Does the same as VideoClip.image_transform, but for ImageClip the
         tranformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
@@ -1056,15 +1056,15 @@ class ImageClip(VideoClip):
         for attr in apply_to:
             a = getattr(self, attr, None)
             if a is not None:
-                new_a = a.with_image_filter(image_func)
+                new_a = a.image_transform(image_func)
                 setattr(self, attr, new_a)
 
     @outplace
-    def with_time_filter(self, time_func, apply_to=None, keep_duration=False):
+    def time_transform(self, time_func, apply_to=None, keep_duration=False):
         """Time-transformation filter.
 
         Applies a transformation to the clip's timeline
-        (see Clip.with_time_filter).
+        (see Clip.time_transform).
 
         This method does nothing for ImageClips (but it may affect their
         masks or their audios). The result is still an ImageClip.
@@ -1074,7 +1074,7 @@ class ImageClip(VideoClip):
         for attr in apply_to:
             a = getattr(self, attr, None)
             if a is not None:
-                new_a = a.with_time_filter(time_func)
+                new_a = a.time_transform(time_func)
                 setattr(self, attr, new_a)
 
 
