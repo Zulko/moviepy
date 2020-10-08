@@ -27,4 +27,4 @@ def audio_loop(clip, n_loops=None, duration=None):
         n_loops = int(duration / clip.duration) + 1
         return concatenate_audioclips(n_loops * [clip]).with_duration(duration)
 
-    return concatenate_audioclips(nloops * [clip])
+    return concatenate_audioclips(n_loops * [clip])
