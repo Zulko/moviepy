@@ -31,6 +31,9 @@ AudioClip.ipython_display = ipython_display
 # Previews: try to import pygame, else make methods which raise
 # exceptions saying to install PyGame
 
+# Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+
 # Add methods preview and show (only if pygame installed)
 try:
     from .video.io.preview import show, preview

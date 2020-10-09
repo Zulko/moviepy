@@ -15,9 +15,6 @@ import inspect
 from .version import __version__
 
 
-# Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
-
 # Clips
 from .video.io.VideoFileClip import VideoFileClip
 from .video.io.ImageSequenceClip import ImageSequenceClip
