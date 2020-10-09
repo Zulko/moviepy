@@ -10,6 +10,8 @@ MoviePy that you will use for live editing by simply typing:
 - Enables ``clip.ipython_display()`` if in an IPython Notebook
 """
 
+import os
+
 from . import *
 from .video.io.html_tools import ipython_display
 

@@ -9,7 +9,6 @@ you can write ``clip.resize(2)``.
 
 """
 
-import os
 import inspect
 
 from .version import __version__
@@ -55,4 +54,4 @@ for name, function in audio_fxs:
 
 # Cleanup namespace
 del audio_fxs, video_fxs, name, function
-del os, inspect
+del inspect
