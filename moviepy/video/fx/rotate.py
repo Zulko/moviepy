@@ -62,8 +62,6 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
         def get_angle(t):
             return angle
 
-    transpose = [1, 0] if clip.is_mask else [1, 0, 2]
-
     def filter(get_frame, t):
 
         angle = get_angle(t)
@@ -71,6 +69,8 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
 
         if unit == "rad":
             angle = 360.0 * angle / (2 * np.pi)
+
+        transpose = [1, 0] if len(im.shape) == 2 else [1, 0, 2]
 
         angle %= 360
         if (angle == 0) and expand:
