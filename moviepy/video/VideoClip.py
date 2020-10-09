@@ -11,7 +11,6 @@ import tempfile
 import numpy as np
 import proglog
 from imageio import imread, imsave
-
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
@@ -23,7 +22,6 @@ from moviepy.decorators import (
     outplace,
     requires_duration,
     use_clip_fps_by_default,
-    convert_path_to_string,
 )
 from moviepy.tools import extensions_dict, find_extension, subprocess_call
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
@@ -33,6 +31,7 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
+from PIL import Image
 
 
 class VideoClip(Clip):
@@ -556,11 +555,11 @@ class VideoClip(Clip):
         >>> new_clip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
 
         """
-        left = self.subclip(0, start_time) if start_time else None
+        left = None if (start_time == 0) else self.subclip(0, start_time)
         center = self.subclip(start_time, end_time).fx(fx, **kwargs)
-        right = self.subclip(start_time=end_time) if end_time else None
+        right = None if (end_time is None) else self.subclip(start_time=end_time)
 
-        clips = [clip for clip in (left, center, right) if clip]
+        clips = [clip for clip in [left, center, right] if clip is not None]
 
         # beurk, have to find other solution
         from moviepy.video.compositing.concatenate import concatenate_videoclips
@@ -603,25 +602,36 @@ class VideoClip(Clip):
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-        hf, wf = framesize = picture.shape[:2]
-
-        if self.is_mask and picture.max():
-            return np.minimum(1, picture + self.blit_on(np.zeros(framesize), t))
+        hf, wf = picture.size
 
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
+        img = self.get_frame(ct).astype("uint8")
+        im_img = Image.fromarray(img)
 
-        img = self.get_frame(ct)
-        mask = self.mask.get_frame(ct) if self.mask else None
+        if self.mask is not None:
+            mask = self.mask.get_frame(ct).astype("uint8")
+            im_mask = Image.fromarray(255 * mask).convert("L")
 
-        if mask is not None and (
-            (img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])
-        ):
-            img = self.fill_array(img, mask.shape)
+            if im_img.size != im_mask.size:
+                bg_size = (
+                    max(im_img.size[0], im_mask.size[0]),
+                    max(im_img.size[1], im_mask.size[1]),
+                )
 
-        hi, wi = img.shape[:2]
+                im_img_bg = Image.new("RGB", bg_size, "black")
+                im_img_bg.paste(im_img, (0, 0))
 
+                im_mask_bg = Image.new("L", bg_size, 0)
+                im_mask_bg.paste(im_mask, (0, 0))
+
+                im_img, im_mask = im_img_bg, im_mask_bg
+
+        else:
+            im_mask = None
+
+        hi, wi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
 
@@ -652,8 +662,7 @@ class VideoClip(Clip):
             pos[1] = D[pos[1]]
 
         pos = map(int, pos)
-
-        return blit(img, picture, pos, mask=mask, is_mask=self.is_mask)
+        return blit(im_img, picture, pos, mask=im_mask)
 
     def add_mask(self):
         """Add a mask VideoClip to the VideoClip.

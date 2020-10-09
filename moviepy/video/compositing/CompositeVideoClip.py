@@ -2,6 +2,7 @@ import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
+from PIL import Image
 
 #  CompositeVideoClip
 
@@ -9,7 +10,6 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 class CompositeVideoClip(VideoClip):
 
     """
-
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
 
@@ -116,16 +116,21 @@ class CompositeVideoClip(VideoClip):
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
-        def make_frame(t):
-            """The clips playing at time `t` are blitted over one
-            another."""
+    def make_frame(self, t):
+        """The clips playing at time `t` are blitted over one another."""
 
-            frame = self.bg.get_frame(t)
-            for clip in self.playing_clips(t):
-                frame = clip.blit_on(frame, t)
-            return frame
+        frame = self.bg.get_frame(t).astype("uint8")
+        im = Image.fromarray(frame)
 
-        self.make_frame = make_frame
+        if self.bg.mask is not None:
+            frame_mask = self.bg.mask.get_frame(t)
+            im_mask = Image.fromarray(255 * frame_mask).convert("L")
+            im = im.putalpha(im_mask)
+
+        for clip in self.playing_clips(t):
+            im = clip.blit_on(im, t)
+
+        return np.array(im)
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are
@@ -144,7 +149,6 @@ class CompositeVideoClip(VideoClip):
 
 
 def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
-
     """
 
     rows_widths
