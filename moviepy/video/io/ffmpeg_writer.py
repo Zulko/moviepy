@@ -58,13 +58,13 @@ class FFMPEG_VideoWriter:
       Only relevant for codecs which accept a bitrate. "5000k" offers
       nice results in general.
 
-    withmask
+    with_mask
       Boolean. Set to ``True`` if there is a mask in the video to be
       encoded.
 
-    pix_fmt
+    pixel_format
       Optional: Pixel format for the output video file. If is not specified
-      'rgb24' will be used as the default format unless ``withmask`` is set
+      'rgb24' will be used as the default format unless ``with_mask`` is set
       as ``True``, then 'rgba' will be used.
 
     """
@@ -78,11 +78,11 @@ class FFMPEG_VideoWriter:
         audiofile=None,
         preset="medium",
         bitrate=None,
-        withmask=False,
+        with_mask=False,
         logfile=None,
         threads=None,
         ffmpeg_params=None,
-        pix_fmt=None,
+        pixel_format=None,
     ):
         if logfile is None:
             logfile = sp.PIPE
@@ -90,8 +90,8 @@ class FFMPEG_VideoWriter:
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
-        if not pix_fmt:
-            pix_fmt = "rgba" if withmask else "rgb24"
+        if not pixel_format:
+            pixel_format = "rgba" if with_mask else "rgb24"
 
         # order is important
         cmd = [
@@ -106,7 +106,7 @@ class FFMPEG_VideoWriter:
             "-s",
             "%dx%d" % (size[0], size[1]),
             "-pix_fmt",
-            pix_fmt,
+            pixel_format,
             "-r",
             "%.02f" % fps,
             "-an",
@@ -220,13 +220,13 @@ def ffmpeg_write_video(
     codec="libx264",
     bitrate=None,
     preset="medium",
-    withmask=False,
+    with_mask=False,
     write_logfile=False,
     audiofile=None,
     threads=None,
     ffmpeg_params=None,
     logger="bar",
-    pix_fmt=None,
+    pixel_format=None,
 ):
     """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
@@ -238,8 +238,8 @@ def ffmpeg_write_video(
     else:
         logfile = None
     logger(message="Moviepy - Writing video %s\n" % filename)
-    if not pix_fmt:
-        pix_fmt = "rgba" if withmask else "rgb24"
+    if not pixel_format:
+        pixel_format = "rgba" if with_mask else "rgb24"
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
@@ -251,12 +251,12 @@ def ffmpeg_write_video(
         audiofile=audiofile,
         threads=threads,
         ffmpeg_params=ffmpeg_params,
-        pix_fmt=pix_fmt,
+        pixel_format=pixel_format,
     ) as writer:
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
-            if withmask:
+            if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 if mask.dtype != "uint8":
                     mask = mask.astype("uint8")
@@ -269,14 +269,14 @@ def ffmpeg_write_video(
     logger(message="Moviepy - Done !")
 
 
-def ffmpeg_write_image(filename, image, logfile=False, pix_fmt=None):
+def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
     ffmpeg."""
 
     if image.dtype != "uint8":
         image = image.astype("uint8")
-    if not pix_fmt:
-        pix_fmt = "rgba" if (image.shape[2] == 4) else "rgb24"
+    if not pixel_format:
+        pixel_format = "rgba" if (image.shape[2] == 4) else "rgb24"
 
     cmd = [
         FFMPEG_BINARY,
@@ -286,7 +286,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pix_fmt=None):
         "-f",
         "rawvideo",
         "-pix_fmt",
-        pix_fmt,
+        pixel_format,
         "-i",
         "-",
         filename,

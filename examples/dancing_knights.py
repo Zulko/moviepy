@@ -78,7 +78,7 @@ dancing_knights = (
     clips_array([[edited_left, edited_right]])
     .fadein(1)
     .fadeout(1)
-    .set_audio(audio)
+    .with_audio(audio)
     .subclip(0.3)
 )
 
@@ -88,18 +88,18 @@ dancing_knights = (
 txt_title = (
     TextClip(
         "15th century dancing\n(hypothetical)",
-        fontsize=70,
+        font_size=70,
         font="Century-Schoolbook-Roman",
         color="white",
     )
     .margin(top=15, opacity=0)
-    .set_position(("center", "top"))
+    .with_position(("center", "top"))
 )
 
 title = (
     CompositeVideoClip([dancing_knights.to_ImageClip(), txt_title])
     .fadein(0.5)
-    .set_duration(3.5)
+    .with_duration(3.5)
 )
 
 
@@ -127,13 +127,13 @@ credits = (
         txt_credits,
         color="white",
         font="Century-Schoolbook-Roman",
-        fontsize=35,
+        font_size=35,
         kerning=-2,
         interline=-1,
         bg_color="black",
         size=title.size,
     )
-    .set_duration(2.5)
+    .with_duration(2.5)
     .fadein(0.5)
     .fadeout(0.5)
 )

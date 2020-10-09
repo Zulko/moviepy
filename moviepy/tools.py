@@ -9,17 +9,7 @@ import warnings
 import proglog
 
 
-def sys_write_flush(s):
-    """ Writes and flushes without delay a text in the console """
-    # Reason for not using `print` is that in some consoles "print"
-    # commands get delayed, while stdout.flush are instantaneous,
-    # so this method is better at providing feedback.
-    # See https://github.com/Zulko/moviepy/pull/485
-    sys.stdout.write(s)
-    sys.stdout.flush()
-
-
-def subprocess_call(cmd, logger="bar", errorprint=True):
+def subprocess_call(cmd, logger="bar"):
     """Executes the given subprocess command.
 
     Set logger to None or a custom Proglog logger to avoid printings.
@@ -38,8 +28,7 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
     proc.stderr.close()
 
     if proc.returncode:
-        if errorprint:
-            logger(message="Moviepy - Command returned an error")
+        logger(message="Moviepy - Command returned an error")
         raise IOError(err.decode("utf8"))
     else:
         logger(message="Moviepy - Command successful")
@@ -47,7 +36,7 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
     del proc
 
 
-def cvsecs(time):
+def convert_to_seconds(time):
     """Will convert any time into seconds.
 
     If the type of `time` is not valid,
@@ -55,25 +44,25 @@ def cvsecs(time):
 
     Here are the accepted formats::
 
-    >>> cvsecs(15.4)   # seconds
+    >>> convert_to_seconds(15.4)   # seconds
     15.4
-    >>> cvsecs((1, 21.5))   # (min,sec)
+    >>> convert_to_seconds((1, 21.5))   # (min,sec)
     81.5
-    >>> cvsecs((1, 1, 2))   # (hr, min, sec)
+    >>> convert_to_seconds((1, 1, 2))   # (hr, min, sec)
     3662
-    >>> cvsecs('01:01:33.045')
+    >>> convert_to_seconds('01:01:33.045')
     3693.045
-    >>> cvsecs('01:01:33,5')    # coma works too
+    >>> convert_to_seconds('01:01:33,5')    # coma works too
     3693.5
-    >>> cvsecs('1:33,5')    # only minutes and secs
+    >>> convert_to_seconds('1:33,5')    # only minutes and secs
     99.5
-    >>> cvsecs('33.5')      # only secs
+    >>> convert_to_seconds('33.5')      # only secs
     33.5
     """
     factors = (1, 60, 3600)
 
     if isinstance(time, str):
-        time = [float(f.replace(",", ".")) for f in time.split(":")]
+        time = [float(part.replace(",", ".")) for part in time.split(":")]
 
     if not isinstance(time, (tuple, list)):
         return time
@@ -81,20 +70,19 @@ def cvsecs(time):
     return sum(mult * part for mult, part in zip(factors, reversed(time)))
 
 
-def deprecated_version_of(f, oldname, newname=None):
+def deprecated_version_of(func, old_name):
     """Indicates that a function is deprecated and has a new name.
 
-    `f` is the new function, `oldname` the name of the deprecated
-    function, `newname` the name of `f`, which can be automatically
-    found.
+    `func` is the new function and `old_name` is the name of the deprecated
+    function.
 
     Returns
     ========
 
-    f_deprecated
-      A function that does the same thing as f, but with a docstring
+    deprecated_func
+      A function that does the same thing as `func`, but with a docstring
       and a printed message on call which say that the function is
-      deprecated and that you should use f instead.
+      deprecated and that you should use `func` instead.
 
     Examples
     =========
@@ -107,26 +95,26 @@ def deprecated_version_of(f, oldname, newname=None):
     >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
 
-    if newname is None:
-        newname = f.__name__
+    # Detect new name of func
+    new_name = func.__name__
 
     warning = (
         "The function ``%s`` is deprecated and is kept temporarily "
         "for backwards compatibility.\nPlease use the new name, "
         "``%s``, instead."
-    ) % (oldname, newname)
+    ) % (old_name, new_name)
 
-    def fdepr(*a, **kw):
+    def deprecated_func(*args, **kwargs):
         warnings.warn("MoviePy: " + warning, PendingDeprecationWarning)
-        return f(*a, **kw)
+        return func(*args, **kwargs)
 
-    fdepr.__doc__ = warning
+    deprecated_func.__doc__ = warning
 
-    return fdepr
+    return deprecated_func
 
 
-# non-exhaustive dictionnary to store default informations.
-# any addition is most welcome.
+# Non-exhaustive dictionary to store default informations.
+# Any addition is most welcome.
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 

@@ -88,9 +88,7 @@ optional_reqs = [
 
 doc_reqs = [
     "pygame>=1.9.3,<2.0; python_version<'3.8'",
-    "numpydoc>=0.6.0,<1.0",
-    "sphinx_rtd_theme>=0.1.10b0,<1.0",
-    "Sphinx>=1.5.2,<2.0",
+    "numpydoc<2.0",
 ]
 
 test_reqs = [
@@ -104,8 +102,8 @@ test_reqs = [
 extra_reqs = {"optional": optional_reqs, "doc": doc_reqs, "test": test_reqs}
 
 # Load the README.
-with open("README.rst", "r", "utf-8") as f:
-    readme = f.read()
+with open("README.rst", "r", "utf-8") as file:
+    readme = file.read()
 
 setup(
     name="moviepy",

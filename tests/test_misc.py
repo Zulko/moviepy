@@ -20,9 +20,9 @@ def test_cuts1():
 
 
 def test_subtitles():
-    red = ColorClip((800, 600), color=(255, 0, 0)).set_duration(10)
-    green = ColorClip((800, 600), color=(0, 255, 0)).set_duration(10)
-    blue = ColorClip((800, 600), color=(0, 0, 255)).set_duration(10)
+    red = ColorClip((800, 600), color=(255, 0, 0)).with_duration(10)
+    green = ColorClip((800, 600), color=(0, 255, 0)).with_duration(10)
+    blue = ColorClip((800, 600), color=(0, 0, 255)).with_duration(10)
     myvideo = concatenate_videoclips([red, green, blue])
     assert myvideo.duration == 30
 
@@ -30,7 +30,7 @@ def test_subtitles():
         txt,
         font=FONT,
         size=(800, 600),
-        fontsize=24,
+        font_size=24,
         method="caption",
         align="South",
         color="white",
