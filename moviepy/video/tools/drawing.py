@@ -6,11 +6,10 @@ methods that are difficult to do with the existing Python libraries.
 import numpy as np
 
 
-def blit(im1, im2, pos=None, mask=None, is_mask=False):
+def blit(im1, im2, pos=None, mask=None):
     """Blit an image over another.
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
-    ``mask`` if provided. If ``im1`` and ``im2`` are mask pictures
-    (2D float arrays) then ``is_mask`` must be ``True``.
+    ``mask`` if provided.
     """
     if pos is None:
         pos = [0, 0]
