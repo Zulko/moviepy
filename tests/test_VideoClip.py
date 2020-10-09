@@ -80,7 +80,7 @@ def test_save_frame():
 
 
 def test_write_image_sequence():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
     locations = clip.write_images_sequence(os.path.join(TMP_DIR, "frame%02d.png"))
     for location in locations:
         assert os.path.isfile(location)
@@ -112,7 +112,7 @@ def test_write_gif_ffmpeg_pixel_format():
 
 
 def test_write_gif_ffmpeg_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True)
     assert os.path.isfile(location)
@@ -120,7 +120,7 @@ def test_write_gif_ffmpeg_tmpfiles():
 
 
 def test_write_gif_ffmpeg_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
     assert os.path.isfile(location)
@@ -137,7 +137,7 @@ def test_write_gif_ImageMagick():
 
 
 def test_write_gif_ImageMagick_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True)
     assert os.path.isfile(location)
@@ -145,7 +145,7 @@ def test_write_gif_ImageMagick_tmpfiles():
 
 
 def test_write_gif_ImageMagick_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
     assert os.path.isfile(location)
