@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added <!-- for new features -->
 - `VideoFileClip.coreader()` that creates a new clip created from the same source file as the original (to complement the existing `AudioFileClip.coreader()`) [#1332]
 
-### Changed <!-- for changes in existing functionality -->
+### Changed <!-- for changes in existing functionality -->\
+Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [#1170]
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [#1105]
