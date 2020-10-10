@@ -16,13 +16,7 @@ def freeze(clip, t=0, freeze_duration=None, total_duration=None, padding_end=0):
     """
 
     if t == "end":
-        if padding_end:
-            if hasattr(clip, "fps"):
-                t = clip.duration - padding_end - 1 / clip.fps
-            else:
-                t = clip.duration - padding_end
-        else:
-            t = clip.duration - 0.0001
+        t = clip.duration - padding_end
 
     if freeze_duration is None:
         freeze_duration = total_duration - clip.duration
