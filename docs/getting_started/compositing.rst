@@ -65,19 +65,19 @@ Starting and stopping times
 
 In a CompositionClip, all the clips start to play at a time that is specified by the ``clip.start`` attribute. You can set this starting time as follows: ::
 
-    clip1 = clip1.set_start(5) # start after 5 seconds
+    clip1 = clip1.with_start(5) # start after 5 seconds
 
 So for instance your composition will look like ::
 
     video = CompositeVideoClip([clip1, # starts at t=0
-                                clip2.set_start(5), # start at t=5s
-                                clip3.set_start(9)]) # start at t=9s
+                                clip2.with_start(5), # start at t=5s
+                                clip3.with_start(9)]) # start at t=9s
 
 In the example above, maybe ``clip2`` will start before ``clip1`` is over. In this case you can make ``clip2`` appear with a *fade-in* effect of one second: ::
 
     video = CompositeVideoClip([clip1, # starts at t=0
-                                clip2.set_start(5).crossfadein(1),
-                                clip3.set_start(9).crossfadein(1.5)])
+                                clip2.with_start(5).crossfadein(1),
+                                clip3.with_start(9).crossfadein(1.5)])
 
 Positioning clips
 """"""""""""""""""
@@ -85,26 +85,26 @@ Positioning clips
 If ``clip2`` and ``clip3`` are smaller than ``clip1``, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel of the clips: ::
 
     video = CompositeVideoClip([clip1,
-                               clip2.set_position((45,150)),
-                               clip3.set_position((90,100))])
+                               clip2.with_position((45,150)),
+                               clip3.with_position((90,100))])
 
 There are many ways to specify the position: ::
 
-    clip2.set_position((45,150)) # x=45, y=150 , in pixels
+    clip2.with_position((45,150)) # x=45, y=150 , in pixels
 
-    clip2.set_position("center") # automatically centered
+    clip2.with_position("center") # automatically centered
 
     # clip2 is horizontally centered, and at the top of the picture
-    clip2.set_position(("center","top"))
+    clip2.with_position(("center","top"))
 
     # clip2 is vertically centered, at the left of the picture
-    clip2.set_position(("left","center"))
+    clip2.with_position(("left","center"))
 
     # clip2 is at 40% of the width, 70% of the height of the screen:
-    clip2.set_position((0.4,0.7), relative=True)
+    clip2.with_position((0.4,0.7), relative=True)
 
     # clip2's position is horizontally centered, and moving down!
-    clip2.set_position(lambda t: ('center', 50+t) )
+    clip2.with_position(lambda t: ('center', 50+t) )
 
 When indicating the position keep in mind that the ``y`` coordinate has its zero at the top of the picture:
 
@@ -129,6 +129,6 @@ If you want to make a custom audiotrack from several audio sources: audioc clips
     # ... make some audio clips aclip1, aclip2, aclip3
     concat = concatenate_audioclips([aclip1, aclip2, aclip3])
     compo = CompositeAudioClip([aclip1.volumex(1.2),
-                                aclip2.set_start(5), # start at t=5s
-                                aclip3.set_start(9)])
+                                aclip2.with_start(5), # start at t=5s
+                                aclip3.with_start(9)])
 

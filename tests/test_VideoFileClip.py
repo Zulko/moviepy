@@ -19,7 +19,7 @@ def test_setup():
     blue = ColorClip((256, 200), color=(0, 0, 255))
 
     red.fps = green.fps = blue.fps = 10
-    with clips_array([[red, green, blue]]).set_duration(5) as video:
+    with clips_array([[red, green, blue]]).with_duration(5) as video:
         video.write_videofile(os.path.join(TMP_DIR, "test.mp4"))
 
     assert os.path.exists(os.path.join(TMP_DIR, "test.mp4"))
@@ -39,7 +39,7 @@ def test_ffmpeg_resizing():
     for target_resolution in target_resolutions:
         video = VideoFileClip(video_file, target_resolution=target_resolution)
         frame = video.get_frame(0)
-        for (target, observed) in zip(target_resolution, frame.shape):
+        for (target, observed) in zip(target_resolution[::-1], frame.shape):
             if target is not None:
                 assert target == observed
         video.close()
@@ -51,7 +51,7 @@ def test_shallow_copy():
     does not corrupt the original clip."""
     video_file = "media/big_buck_bunny_0_30.webm"
     video = VideoFileClip(video_file)
-    video_copy = video.set_start(1)
+    video_copy = video.with_start(1)
     del video_copy
     # The clip object buffers 200000 frames, around 5 seconds ahead.
     # When recentering the buffer, if the new buffer is more than 1000000 frames,

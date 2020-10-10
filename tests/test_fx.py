@@ -188,7 +188,7 @@ def test_invert_colors():
 
 def test_loop():
     clip = get_test_video()
-    clip1 = loop(clip).set_duration(3)  # infinite looping
+    clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
     return  # Still buggy. TODO fix
@@ -226,7 +226,7 @@ def test_margin():
     assert clip == clip1
 
     # 1 pixel black margin
-    clip2 = margin(clip, mar=1)
+    clip2 = margin(clip, margin_size=1)
     target = BitmapClip(
         [
             [
@@ -247,7 +247,7 @@ def test_margin():
     assert target == clip2
 
     # 1 pixel green margin
-    clip3 = margin(clip, mar=1, color=(0, 255, 0))
+    clip3 = margin(clip, margin_size=1, color=(0, 255, 0))
     target = BitmapClip(
         [
             [
@@ -349,7 +349,7 @@ def test_rotate(angle_offset):
 
 def test_rotate_nonstandard_angles():
     # Test rotate with color clip
-    clip = ColorClip([600, 400], [150, 250, 100]).set_duration(1).set_fps(5)
+    clip = ColorClip([600, 400], [150, 250, 100]).with_duration(1).with_fps(5)
     clip = rotate(clip, 20)
     clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
 

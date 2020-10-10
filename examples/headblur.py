@@ -22,8 +22,8 @@ clip = VideoFileClip("../../videos/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
 # IF THE MANUAL TRACKING HAS BEEN PREVIOUSLY DONE,
 # LOAD THE TRACKING DATA AND CONVERT IT TO FUNCTIONS x(t),fy(t)
 
-with open("../../chaplin_txy.dat", "r") as f:
-    fx, fy = to_fxfy(pickle.load(f))
+with open("../../chaplin_txy.dat", "r") as file:
+    fx, fy = to_fxfy(pickle.load(file))
 
 
 # BLUR CHAPLIN'S HEAD IN THE CLIP
@@ -39,13 +39,13 @@ txt = TextClip(
     size=clip.size,
     bg_color="grey20",
     font="Century-Schoolbook-Italic",
-    fontsize=40,
+    font_size=40,
 )
 
 
 # Concatenate the Chaplin clip with the text clip, add audio
 
-final = concatenate_videoclips([clip_blurred, txt.set_duration(3)]).set_audio(
+final = concatenate_videoclips([clip_blurred, txt.with_duration(3)]).with_audio(
     clip.audio
 )
 

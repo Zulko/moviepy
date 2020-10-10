@@ -29,17 +29,17 @@ def test_PR_306():
 def test_PR_339():
     # In caption mode.
     TextClip(
-        txt="foo",
+        text="foo",
         color="white",
         font=FONT,
         size=(640, 480),
         method="caption",
         align="center",
-        fontsize=25,
+        font_size=25,
     ).close()
 
     # In label mode.
-    TextClip(txt="foo", font=FONT, method="label").close()
+    TextClip(text="foo", font=FONT, method="label").close()
 
 
 def test_PR_373():
@@ -79,7 +79,7 @@ def test_PR_515():
 def test_PR_528():
     with ImageClip("media/vacation_2017.jpg") as clip:
         new_clip = scroll(clip, w=1000, x_speed=50)
-        new_clip = new_clip.set_duration(1)
+        new_clip = new_clip.with_duration(1)
         new_clip.fps = 24
         new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
 
@@ -93,8 +93,8 @@ def test_PR_610():
     """
     Test that the max fps of the video clips is used for the composite video clip
     """
-    clip1 = ColorClip((640, 480), color=(255, 0, 0)).set_duration(1)
-    clip2 = ColorClip((640, 480), color=(0, 255, 0)).set_duration(1)
+    clip1 = ColorClip((640, 480), color=(255, 0, 0)).with_duration(1)
+    clip2 = ColorClip((640, 480), color=(0, 255, 0)).with_duration(1)
     clip1.fps = 24
     clip2.fps = 25
     composite = CompositeVideoClip([clip1, clip2])
@@ -135,7 +135,7 @@ def test_PR_1137_subtitles():
         return TextClip(
             txt,
             font=FONT,
-            fontsize=24,
+            font_size=24,
             color="white",
             stroke_color="black",
             stroke_width=0.5,

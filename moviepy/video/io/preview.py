@@ -5,7 +5,8 @@ import numpy as np
 
 import pygame as pg
 from moviepy.decorators import convert_masks_to_RGB, requires_duration
-from moviepy.tools import cvsecs
+from moviepy.tools import convert_to_seconds
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 pg.init()
 pg.display.set_caption("MoviePy")
@@ -38,12 +39,11 @@ def show(clip, t=0, with_mask=True, interactive=False):
     """
 
     if isinstance(t, tuple):
-        t = cvsecs(*t)
+        t = convert_to_seconds(*t)
 
     if with_mask and (clip.mask is not None):
-        import moviepy.video.compositing.CompositeVideoClip as cvc
+        clip = CompositeVideoClip([clip.with_position((0, 0))])
 
-        clip = cvc.CompositeVideoClip([clip.set_position((0, 0))])
     img = clip.get_frame(t)
     imdisplay(img)
 
@@ -114,20 +114,20 @@ def preview(
         # pygame and openCV already use several cpus it seems.
 
         # two synchro-flags to tell whether audio and video are ready
-        videoFlag = threading.Event()
-        audioFlag = threading.Event()
+        video_flag = threading.Event()
+        audio_flag = threading.Event()
         # launch the thread
         audiothread = threading.Thread(
             target=clip.audio.preview,
-            args=(audio_fps, audio_buffersize, audio_nbytes, audioFlag, videoFlag),
+            args=(audio_fps, audio_buffersize, audio_nbytes, audio_flag, video_flag),
         )
         audiothread.start()
 
     img = clip.get_frame(0)
     imdisplay(img, screen)
     if audio:  # synchronize with audio
-        videoFlag.set()  # say to the audio: video is ready
-        audioFlag.wait()  # wait for the audio to be ready
+        video_flag.set()  # say to the audio: video is ready
+        audio_flag.wait()  # wait for the audio to be ready
 
     result = []
 
@@ -141,7 +141,7 @@ def preview(
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
             ):
                 if audio:
-                    videoFlag.clear()
+                    video_flag.clear()
                 print("Interrupt")
                 return result
 
