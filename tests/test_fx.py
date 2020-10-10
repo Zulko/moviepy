@@ -141,7 +141,7 @@ def test_freeze():
     target3 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
     assert clip3 == target3
 
-    clip4 = freeze(clip, t="end", total_duration=4, padding_end=1)
+    clip4 = freeze(clip, t="end", total_duration=4, padding_end=2)
     target4 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
     assert clip4 == target4
 
