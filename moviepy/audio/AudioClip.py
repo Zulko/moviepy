@@ -148,8 +148,9 @@ class AudioClip(Clip):
 
         maxi = np.array([0, 0]) if stereo else 0
         for chunk in self.iter_chunks(chunksize=chunksize, logger=logger):
+            chunk = np.array(chunk)
             maxi = (
-                np.maximum(maxi, abs(chunk).max(axis=0))
+                np.maximum(maxi, abs(chunk).max(axis=1))
                 if stereo
                 else max(maxi, abs(chunk).max())
             )
