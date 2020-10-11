@@ -902,7 +902,7 @@ class DataVideoClip(VideoClip):
         self.fps = fps
 
         def make_frame(t):
-            return self.data_to_frame(self.data[int(self.fps * t)])
+            return self.data_to_frame(self.data[min(int(self.fps * t), len(self.data) - 1)])
 
         VideoClip.__init__(
             self,
@@ -1424,7 +1424,7 @@ class BitmapClip(VideoClip):
 
         VideoClip.__init__(
             self,
-            make_frame=lambda t: frame_array[int(t * fps)],
+            make_frame=lambda t: frame_array[min(int(t * fps), self.total_frames - 1)],
             is_mask=is_mask,
             duration=duration,
         )
