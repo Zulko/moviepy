@@ -902,7 +902,9 @@ class DataVideoClip(VideoClip):
         self.fps = fps
 
         def make_frame(t):
-            return self.data_to_frame(self.data[min(int(self.fps * t), len(self.data) - 1)])
+            return self.data_to_frame(
+                self.data[min(int(self.fps * t), len(self.data) - 1)]
+            )
 
         VideoClip.__init__(
             self,
