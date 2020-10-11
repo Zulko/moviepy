@@ -1,0 +1,25 @@
+ffmpeg version 4.2.2 Copyright (c) 2000-2019 the FFmpeg developers
+  built with gcc 9.2.1 (GCC) 20200122
+  configuration: --enable-gpl --enable-version3 --enable-sdl2 --enable-fontconfig --enable-gnutls --enable-iconv --enable-libass --enable-libdav1d --enable-libbluray --enable-libfreetype --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-libshine --enable-libsnappy --enable-libsoxr --enable-libtheora --enable-libtwolame --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxml2 --enable-libzimg --enable-lzma --enable-zlib --enable-gmp --enable-libvidstab --enable-libvorbis --enable-libvo-amrwbenc --enable-libmysofa --enable-libspeex --enable-libxvid --enable-libaom --enable-libmfx --enable-amf --enable-ffnvcodec --enable-cuvid --enable-d3d11va --enable-nvenc --enable-nvdec --enable-dxva2 --enable-avisynth --enable-libopenmpt
+  libavutil      56. 31.100 / 56. 31.100
+  libavcodec     58. 54.100 / 58. 54.100
+  libavformat    58. 29.100 / 58. 29.100
+  libavdevice    58.  8.100 / 58.  8.100
+  libavfilter     7. 57.100 /  7. 57.100
+  libswscale      5.  5.100 /  5.  5.100
+  libswresample   3.  5.100 /  3.  5.100
+  libpostproc    55.  5.100 / 55.  5.100
+Guessed Channel Layout for Input Stream #0.0 : stereo
+Input #0, s32le, from 'pipe:':
+  Duration: N/A, bitrate: 2822 kb/s
+    Stream #0:0: Audio: pcm_s32le, 44100 Hz, stereo, s32, 2822 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s32le (native) -> mp3 (libmp3lame))
+Output #0, mp3, to 'logged-writeTEMP_MPY_wvf_snd.mp3':
+  Metadata:
+    TSSE            : Lavf58.29.100
+    Stream #0:0: Audio: mp3 (libmp3lame), 44100 Hz, stereo, s32p
+    Metadata:
+      encoder         : Lavc58.54.100 libmp3lame
+size=      17kB time=00:00:01.01 bitrate= 133.1kbits/s speed=6.39x    
+video:0kB audio:16kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: 1.513339%
