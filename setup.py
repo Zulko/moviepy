@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+"""
+This file will first try to import setuptools,
+then reach for the embedded ez_setup.py file (or the ez_setup package),
+and fail with a message if neither are successful.
+"""
 
-# This will try to import setuptools. If not here, it will reach for the embedded
-# ez_setup (or the ez_setup package). If none, it fails with a message
 import sys
 from codecs import open
 
@@ -15,9 +18,10 @@ except ImportError:
         ez_setup.use_setuptools()
     except ImportError:
         raise ImportError(
-            "MoviePy could not be installed, probably because"
-            " neither setuptools nor ez_setup are installed on this computer."
-            "\nInstall setuptools ([sudo] pip install setuptools) and try again."
+            "MoviePy could not be installed, probably because "
+            "neither setuptools nor ez_setup are installed on this computer.\n"
+            "Install setuptools with $ (sudo) pip install setuptools and "
+            "try again."
         )
 
 
@@ -43,8 +47,8 @@ class PyTest(TestCommand):
             import pytest
         except ImportError:
             raise ImportError(
-                "Running tests requires additional dependencies."
-                "\nPlease run (pip install moviepy[test])"
+                "Running tests requires additional dependencies.\n"
+                "Please run $ pip install moviepy[test]"
             )
 
         errno = pytest.main(self.pytest_args.split(" "))
