@@ -1,40 +1,59 @@
-# Moviepy's contribution guidelines
+# MoviePy's Contribution Guidelines
 
-## Keeping/Improving code quality
- 
-- Respect PEP8 conventions!
-- Just the right amount of comments. Try to write auto-documented code (with very explicit variable names).
-- If you introduce a new functionality or fix a subtle bug, document it in the docstring/code.
-- Moviepy's team adopted [black](https://github.com/psf/black) to autoformat the code. This is enforced for any pull request. 
-  
-> Tip: use `black -t py36 .` to autoformat your code, or set black as a plugin of your editor. 
+## Communication on GitHub
 
-
-## Using Github
-
-- Keep the discussions on Github to their minimum. Remember that many people receive these messages.
+- Keep messages on GitHub issues and pull requests on-topic and to the point. Be aware that each comment triggers a notification which gets sent out to a number of people.
   - Opinions are OK.
-  - Avoid messages that don't bring the discussion forward ("Thanks", etc.)
-  - For proper discussions, use the [Moviepy Gitter](https://gitter.im/Movie-py). If these discussions lead to a decision (merge/reject), leave a message on the Moviepy issue that summarizes the reasons of the decision.
-- Do not push any commit that changes the API without previous discussion.
+  - For longer or more in-depth discussions, use the [MoviePy Gitter](https://gitter.im/Movie-py). If these discussions lead to a decision, like a merge/reject, please leave a message on the relevant MoviePy issue to document the outcome of the discussion/the reason for the decision.
+- Do not push any commit that changes the API without prior discussion.
 
 ## Preparing for development
-- Fork moviepy using the button in the top right corner
-- Clone your fork: `git clone https://github.com/yourname/moviepy.git`
-- Add the main repository as a remote: `git remote add upstream https://github.com/Zulko/moviepy.git`
+- Fork the official MoviePy repository to your own GitHub account:  
+Use the "Fork" button in the top right corner of the GitHub interface while viewing [the official MoviePy](https://github.com/Zulko/moviepy) repository.
+- Use your fork as the basis for cloning the repository to your local machine: `$ git clone URL_TO_YOUR_FORK`  
+You can get the appropriate URL (SSH- or HTTPS-based) by using the green "Code" button located at the top right of the repository view while looking at your fork. By default, Git refers to any remote you clone from – i.e. in this case your fork on GitHub – as `origin`.
+- Enter your local clone and add the official MoviePy repository as a second remote, with alias `upstream`:  
+`$ git remote add upstream git@github.com:Zulko/moviepy.git` (using SSL) _or_   
+`$ git remote add upstream https://github.com/Zulko/moviepy.git` (using HTTPS).
 
-## Standard workflow
-- Pull any changes made to the main repository: `git pull upstream master`
-- Push these changes to your fork: `git push`
-- Always keep your `master` branch up-to-date with `upstream master` and don't develop features on it
-- To make a change
-  - Create a new local branch: `git checkout -b branchname`
-  - Make any changes in it
-  - Make sure that your code still conforms to the formatting standard: `black -t py36 .`
-  - Run the test suite over it to expose any problems: `pytest`
-  - Push the local branch to your fork on github: `git push -u origin branchname`
-  - Go to github.com/yourname/moviepy and it will display 'Recently pushed branches' giving you the option to make a Pull Request to the main repo
-  - Fill in any details for your PR and submit
-  - The test suite will automatically be ran over your submission
-  - A moviepy collaborator will review your code, and help you to get it merge-ready
-- You don't have to have finished your feature/bugfix before submitting a PR; just mention that it is a work-in-progress
+## Coding conventions, code quality
+ 
+- Respect [PEP8](https://www.python.org/dev/peps/pep-0008/) conventions.
+- Add just the "right" amount of comments. Try to write auto-documented code with very explicit variable names.
+- If you introduce new functionality or fix a bug, document it in the docstring or with code comments.
+- MoviePy's team adopted [black](https://github.com/psf/black) to autoformat code. This is enforced for any pull request. 
+  
+> Tip: use `black -t py36 .` to autoformat your code, or set black as a [plugin for your editor](https://black.readthedocs.io/en/stable/editor_integration.html). 
+
+
+## Standard contribution workflow
+
+### Local development
+- Keep your local `master` branch up-to-date with the official repo's master by periodically fetching/pulling it:  
+`$ git pull upstream master`
+- Never make changes on `master` directly, but branch off into separate develop branches:  
+`$ git checkout --branch YOUR_DEVELOP_BRANCH`  
+Ideally, these are given names which function as keywords for what you are working on, and are prefixed with `fix_` (for bug fixes), `feature_` or something similarly appropriate and descriptive.
+- Base any changes you submit on the most recent `master`.
+
+More detailed explanation of the last point:
+
+It is likely that the official repo's `master` branch will move on (get updated, have other PRs merged into it) while you are working on your changes. Before creating a pull request, you will have to make sure your changes are not based on outdated code. For this reason, it makes sense to avoid falling "too much behind" while developing by rebasing your local `master` branch at intervals. Make sure your `master` branch is in sync with the official `master` branch (as per the first point), then, while checked into your develop branch, run: `$ git rebase master`
+
+If you **haven't rebased before**, make sure to **familiarise yourself** with the concept.
+
+### Submitting Pull Requests
+
+You do not have to have finished your feature or bug fix before submitting a PR; just mention that it still is a work in progress.
+
+Before submitting PRs:
+
+- make sure your code still conforms to the formatting standard (using Black formatter: `$ black -t py36 .`)
+- run the test suite over your code to expose any problems: `$ pytest`
+- push your local develop branch to your GitHub fork `$ git push origin YOUR_DEVELOP_BRANCH`
+
+When you now look at your forked repo on your GitHub account, you will see GitHub suggest branches for sending pull requests to the official `Zulko/moviepy` repository.
+
+Once you open a PR, you will be presented with a template which you are asked to fill out. You are encouraged to add any additional information which helps provide further context to your changes, and to link to any issues or PRs which your pull request references or is informed by.
+
+On submitting your PR, an automated test suite runs over your submission, which might take a few minutes to complete. In a next step, a MoviePy maintainer will review your code and, if necessary, help you to get it merge-ready.
