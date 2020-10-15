@@ -88,9 +88,15 @@ class AudioClip(Clip):
             size = positions[i + 1] - positions[i]
             assert size <= chunksize
             timings = (1.0 / fps) * np.arange(positions[i], positions[i + 1])
-            soundarrays.append(self.to_soundarray(
-                timings, nbytes=nbytes, quantize=quantize, fps=fps, buffersize=chunksize
-            ))
+            soundarrays.append(
+                self.to_soundarray(
+                    timings,
+                    nbytes=nbytes,
+                    quantize=quantize,
+                    fps=fps,
+                    buffersize=chunksize,
+                )
+            )
         return soundarrays
 
     @requires_duration
