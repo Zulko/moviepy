@@ -228,20 +228,7 @@ def test_margin():
     # 1 pixel black margin
     clip2 = margin(clip, margin_size=1)
     target = BitmapClip(
-        [
-            [
-                "OOOOO",
-                "ORRRO",
-                "ORRRO",
-                "OOOOO",
-            ],
-            [
-                "OOOOO",
-                "ORRBO",
-                "ORRBO",
-                "OOOOO",
-            ],
-        ],
+        [["OOOOO", "ORRRO", "ORRRO", "OOOOO",], ["OOOOO", "ORRBO", "ORRBO", "OOOOO",],],
         fps=1,
     )
     assert target == clip2
@@ -249,20 +236,7 @@ def test_margin():
     # 1 pixel green margin
     clip3 = margin(clip, margin_size=1, color=(0, 255, 0))
     target = BitmapClip(
-        [
-            [
-                "GGGGG",
-                "GRRRG",
-                "GRRRG",
-                "GGGGG",
-            ],
-            [
-                "GGGGG",
-                "GRRBG",
-                "GRRBG",
-                "GGGGG",
-            ],
-        ],
+        [["GGGGG", "GRRRG", "GRRRG", "GGGGG",], ["GGGGG", "GRRBG", "GRRBG", "GGGGG",],],
         fps=1,
     )
     assert target == clip3
