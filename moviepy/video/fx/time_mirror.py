@@ -10,4 +10,4 @@ def time_mirror(clip):
     The clip must have its ``duration`` attribute set.
     The same effect is applied to the clip's audio and mask if any.
     """
-    return clip.time_transform(lambda t: clip.duration - t - 1, keep_duration=True)
+    return clip.time_transform(lambda t: clip.duration - t, keep_duration=True)
