@@ -19,7 +19,7 @@ MoviePy
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.6+. Here it is in action in an IPython notebook:
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux systems, with Python 3.6+. Here it is in action in an IPython notebook:
 
 .. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
     :alt: [logo]
@@ -28,7 +28,7 @@ MoviePy can read and write all the most common audio and video formats, includin
 Example
 -------
 
-In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
+In this example we have open a video file, then select the subclip between t=50s and t=60s, and add a title at the center of the screen, also write the result to a new file:
 
 .. code:: python
 
@@ -50,10 +50,10 @@ Maintainers wanted!
 
 As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
-Installation
+Installation:
 ------------
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
+MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, do provide feedback.
 
 **Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
 
@@ -74,7 +74,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above
     $ (sudo) pip install setuptools
 
 
-Optional but useful dependencies
+Optional but useful dependencies:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can install ``moviepy`` with all dependencies via:
@@ -103,7 +103,7 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 Documentation
 -------------
 
-Running `build_docs` has additional dependencies that require installation.
+Running `build_docs` has additional dependencies that requires installation.
 
 .. code:: bash
 
@@ -132,7 +132,7 @@ manage progress bars and messages using
 enables to display nice progress bars in the console as well as in
 a Jupyter notebook or any user interface, like a website.
 
-To display notebook friendly progress bars, first install IPyWidgets:
+To display notebook friendly progress bars, first install the IPyWidgets:
 
 .. code::
 
@@ -151,7 +151,7 @@ Have a look at the Proglog project page for more options.
 Running Tests
 -------------
 
-In order to run the test suite locally, first install the dependencies by navigating to the project directory and running:
+In order to run the test suite locally, first install the dependencies by navigating to the project directory and running it:
 
 .. code:: bash
 
