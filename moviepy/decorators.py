@@ -42,7 +42,7 @@ def apply_to_audio(func, clip, *args, **kwargs):
 
     new_clip = func(clip, *args, **kwargs)
     if getattr(new_clip, "audio", None):
-        new_clip.audio = func(new_clip.audio, *args, **kwargs)
+        new_clip.audio = func(clip.audio, *args, **kwargs)
     return new_clip
 
 
