@@ -27,7 +27,7 @@ Advantages and limitations
 
 MoviePy has been developed with the following goals in mind:
 
-- **Simple an intuitive**. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.
+- **Simple and intuitive**. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.
 - **Flexible**. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.
 - **Portable**. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.
 
