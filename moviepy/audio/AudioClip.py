@@ -83,13 +83,21 @@ class AudioClip(Clip):
 
         positions = np.linspace(0, total_size, nchunks + 1, endpoint=True, dtype=int)
 
+        sound_arrays = []
         for i in logger.iter_bar(chunk=list(range(nchunks))):
             size = positions[i + 1] - positions[i]
             assert size <= chunksize
             timings = (1.0 / fps) * np.arange(positions[i], positions[i + 1])
-            yield self.to_soundarray(
-                timings, nbytes=nbytes, quantize=quantize, fps=fps, buffersize=chunksize
+            sound_arrays.append(
+                self.to_soundarray(
+                    timings,
+                    nbytes=nbytes,
+                    quantize=quantize,
+                    fps=fps,
+                    buffersize=chunksize,
+                )
             )
+        return sound_arrays
 
     @requires_duration
     def to_soundarray(
