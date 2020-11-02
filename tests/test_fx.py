@@ -114,14 +114,20 @@ def test_even_size():
 
 
 def test_fadein():
-    color_dict = {"I": (0, 0, 0), "R": (255, 0, 0), "G": (0, 255, 0), "B": (0, 0, 255), "W": (255, 255, 255)}
+    color_dict = {
+        "I": (0, 0, 0),
+        "R": (255, 0, 0),
+        "G": (0, 255, 0),
+        "B": (0, 0, 255),
+        "W": (255, 255, 255),
+    }
     clip = BitmapClip([["R"], ["G"], ["B"]], color_dict=color_dict, fps=1)
 
-    clip1 = fadein(clip, 1) #default initial color
+    clip1 = fadein(clip, 1)  # default initial color
     target1 = BitmapClip([["I"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip1 == target1
 
-    clip2 = fadein(clip, 1, initial_color=(255, 255, 255)) # different initial color
+    clip2 = fadein(clip, 1, initial_color=(255, 255, 255))  # different initial color
     target2 = BitmapClip([["W"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip2 == target2
 
@@ -207,7 +213,7 @@ def test_loop():
     )
     assert clip2 == target2
 
-    clip3 = loop(clip).with_duration(5) # infinite loop
+    clip3 = loop(clip).with_duration(5)  # infinite loop
     target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
     assert clip3 == target3
 
@@ -216,12 +222,12 @@ def test_loop():
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
     return  # Still buggy. TODO fix
-    #clip2 = loop(clip, duration=10)  # loop for 10 seconds
-    #clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    # clip2 = loop(clip, duration=10)  # loop for 10 seconds
+    # clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
-    #clip3 = loop(clip, n=3)  # loop 3 times
-    #clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
-    #close_all_clips(objects=locals())
+    # clip3 = loop(clip, n=3)  # loop 3 times
+    # clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+    # close_all_clips(objects=locals())
 
 
 def test_lum_contrast():
