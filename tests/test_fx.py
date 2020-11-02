@@ -200,7 +200,6 @@ def test_invert_colors():
 
 
 def test_loop():
-
     clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
 
     clip1 = loop(clip, n=2)  # loop 2 times
