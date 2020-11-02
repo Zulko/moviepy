@@ -187,17 +187,18 @@ def test_invert_colors():
 
 
 def test_loop():
-    clip = get_test_video()
-    clip1 = loop(clip).with_duration(3)  # infinite looping
-    clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    return  # Still buggy. TODO fix
-    clip2 = loop(clip, duration=10)  # loop for 10 seconds
-    clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
 
-    clip3 = loop(clip, n=3)  # loop 3 times
-    clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
-    close_all_clips(objects=locals())
+    clip1 = loop(clip, n=2)  # loop 2 times
+    target1 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"], ["B"]], fps=1)
+    assert clip1 == target1
+
+    clip2 = loop(clip, duration=8)  # loop 8 seconds
+    target2 = BitmapClip(
+        [["R"], ["G"], ["B"], ["R"], ["G"], ["B"], ["R"], ["G"]], fps=1
+    )
+    assert clip2 == target2
 
 
 def test_lum_contrast():
@@ -228,20 +229,7 @@ def test_margin():
     # 1 pixel black margin
     clip2 = margin(clip, margin_size=1)
     target = BitmapClip(
-        [
-            [
-                "OOOOO",
-                "ORRRO",
-                "ORRRO",
-                "OOOOO",
-            ],
-            [
-                "OOOOO",
-                "ORRBO",
-                "ORRBO",
-                "OOOOO",
-            ],
-        ],
+        [["OOOOO", "ORRRO", "ORRRO", "OOOOO"], ["OOOOO", "ORRBO", "ORRBO", "OOOOO"]],
         fps=1,
     )
     assert target == clip2
@@ -249,20 +237,7 @@ def test_margin():
     # 1 pixel green margin
     clip3 = margin(clip, margin_size=1, color=(0, 255, 0))
     target = BitmapClip(
-        [
-            [
-                "GGGGG",
-                "GRRRG",
-                "GRRRG",
-                "GGGGG",
-            ],
-            [
-                "GGGGG",
-                "GRRBG",
-                "GRRBG",
-                "GGGGG",
-            ],
-        ],
+        [["GGGGG", "GRRRG", "GRRRG", "GGGGG"], ["GGGGG", "GRRBG", "GRRBG", "GGGGG"]],
         fps=1,
     )
     assert target == clip3
