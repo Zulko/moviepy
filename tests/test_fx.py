@@ -29,6 +29,7 @@ from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
+from moviepy.video.fx.supersample import supersample
 
 from tests.test_helper import TMP_DIR
 
@@ -113,10 +114,22 @@ def test_even_size():
 
 
 def test_fadein():
-    clip = get_test_video()
-    clip1 = fadein(clip, 0.5)
-    clip1.write_videofile(os.path.join(TMP_DIR, "fadein1.webm"))
-    close_all_clips(locals())
+    color_dict = {
+        "I": (0, 0, 0),
+        "R": (255, 0, 0),
+        "G": (0, 255, 0),
+        "B": (0, 0, 255),
+        "W": (255, 255, 255),
+    }
+    clip = BitmapClip([["R"], ["G"], ["B"]], color_dict=color_dict, fps=1)
+
+    clip1 = fadein(clip, 1)  # default initial color
+    target1 = BitmapClip([["I"], ["G"], ["B"]], color_dict=color_dict, fps=1)
+    assert clip1 == target1
+
+    clip2 = fadein(clip, 1, initial_color=(255, 255, 255))  # different initial color
+    target2 = BitmapClip([["W"], ["G"], ["B"]], color_dict=color_dict, fps=1)
+    assert clip2 == target2
 
 
 def test_fadeout():
@@ -187,17 +200,33 @@ def test_invert_colors():
 
 
 def test_loop():
+    clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
+
+    clip1 = loop(clip, n=2)  # loop 2 times
+    target1 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"], ["B"]], fps=1)
+    assert clip1 == target1
+
+    clip2 = loop(clip, duration=8)  # loop 8 seconds
+    target2 = BitmapClip(
+        [["R"], ["G"], ["B"], ["R"], ["G"], ["B"], ["R"], ["G"]], fps=1
+    )
+    assert clip2 == target2
+
+    clip3 = loop(clip).with_duration(5)  # infinite loop
+    target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
+    assert clip3 == target3
+
     clip = get_test_video()
     clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
     return  # Still buggy. TODO fix
-    clip2 = loop(clip, duration=10)  # loop for 10 seconds
-    clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    # clip2 = loop(clip, duration=10)  # loop for 10 seconds
+    # clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
-    clip3 = loop(clip, n=3)  # loop 3 times
-    clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
-    close_all_clips(objects=locals())
+    # clip3 = loop(clip, n=3)  # loop 3 times
+    # clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+    # close_all_clips(objects=locals())
 
 
 def test_lum_contrast():
@@ -228,20 +257,7 @@ def test_margin():
     # 1 pixel black margin
     clip2 = margin(clip, margin_size=1)
     target = BitmapClip(
-        [
-            [
-                "OOOOO",
-                "ORRRO",
-                "ORRRO",
-                "OOOOO",
-            ],
-            [
-                "OOOOO",
-                "ORRBO",
-                "ORRBO",
-                "OOOOO",
-            ],
-        ],
+        [["OOOOO", "ORRRO", "ORRRO", "OOOOO"], ["OOOOO", "ORRBO", "ORRBO", "OOOOO"]],
         fps=1,
     )
     assert target == clip2
@@ -249,20 +265,7 @@ def test_margin():
     # 1 pixel green margin
     clip3 = margin(clip, margin_size=1, color=(0, 255, 0))
     target = BitmapClip(
-        [
-            [
-                "GGGGG",
-                "GRRRG",
-                "GRRRG",
-                "GGGGG",
-            ],
-            [
-                "GGGGG",
-                "GRRBG",
-                "GRRBG",
-                "GGGGG",
-            ],
-        ],
+        [["GGGGG", "GRRRG", "GRRRG", "GGGGG"], ["GGGGG", "GRRBG", "GRRBG", "GGGGG"]],
         fps=1,
     )
     assert target == clip3
