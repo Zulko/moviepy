@@ -191,12 +191,23 @@ def test_loop():
     clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    return  # Still buggy. TODO fix
     clip2 = loop(clip, duration=10)  # loop for 10 seconds
     clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
     clip3 = loop(clip, n=3)  # loop 3 times
     clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+
+    clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
+    clip1 = loop(clip, n=2)  # loop 2 times
+    target1 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"], ["B"]], fps=1)
+    assert clip1 == target1
+
+    clip2 = loop(clip, duration=8)  # loop 8 seconds
+    target2 = BitmapClip(
+        [["R"], ["G"], ["B"], ["R"], ["G"], ["B"], ["R"], ["G"]], fps=1
+    )
+    assert clip2 == target2
+
     close_all_clips(objects=locals())
 
 
