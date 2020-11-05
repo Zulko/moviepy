@@ -487,6 +487,7 @@ class Clip:
             t = frame_index / fps
 
             frame = self.get_frame(t)
+            if frame is None: return
             if (dtype is not None) and (frame.dtype != dtype):
                 frame = frame.astype(dtype)
             if with_times:
