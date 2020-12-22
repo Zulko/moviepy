@@ -1052,7 +1052,7 @@ class ImageClip(VideoClip):
         """Image-transformation filter.
 
         Does the same as VideoClip.image_transform, but for ImageClip the
-        tranformed clip is computed once and for all at the beginning,
+        transformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
         if apply_to is None:
