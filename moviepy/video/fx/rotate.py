@@ -11,19 +11,20 @@ try:
         # PIL expects uint8 type data. However a mask image has values in the
         # range [0, 1] and is of float type.  To handle this we scale it up by
         # a factor 'a' for use with PIL and then back again by 'a' afterwards.
-        if pic.dtype == 'float64':
+        if pic.dtype == "float64":
             # this is a mask image
             a = 255.0
         else:
             a = 1
 
-        return np.array(
-            Image.fromarray(
-                np.array(a * pic).astype(np.uint8)
-            ).rotate(
-                angle, expand=expand, resample=resample
+        return (
+            np.array(
+                Image.fromarray(np.array(a * pic).astype(np.uint8)).rotate(
+                    angle, expand=expand, resample=resample
+                )
             )
-        ) / a
+            / a
+        )
 
 
 except ImportError:
