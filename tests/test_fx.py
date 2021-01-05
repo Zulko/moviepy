@@ -1,7 +1,9 @@
 import os
 
+import numpy as np
 import pytest
 
+from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.fx.audio_normalize import audio_normalize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
@@ -453,6 +455,13 @@ def test_normalize():
     clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
+    close_all_clips(locals())
+
+
+def test_normalize_muted():
+    make_frame = lambda t: np.array([0.0])
+    clip = AudioClip(make_frame, duration=1, fps=44100)
+    clip = audio_normalize(clip)
     close_all_clips(locals())
 
 
