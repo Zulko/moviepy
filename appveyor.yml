@@ -41,7 +41,7 @@ install:
   # Might need to be updated from time to time
   # Versions >=7.0 have problems - executables changed names.
   # Assume 64-bit. Need to change to x86 for 32-bit.
-  - curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
+  - curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
 
   # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
   - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
