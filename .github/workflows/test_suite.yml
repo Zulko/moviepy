@@ -37,6 +37,11 @@ jobs:
     #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
     - name: Install pythonw
       run: conda install python.app
+    # https://github.com/ContinuumIO/anaconda-issues/issues/12188
+    - name: Fix python.app issue
+      run: |
+        rm -rf /usr/local/miniconda/python.app/Contents/
+        mv /usr/local/miniconda/python.app/pythonapp/Contents/ /usr/local/miniconda/python.app/Contents/
     - name: Python Version Info
       run: |
         pythonw --version
