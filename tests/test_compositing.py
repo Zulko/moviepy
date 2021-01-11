@@ -60,4 +60,5 @@ def test_concatenate_floating_point():
     """
     clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).with_fps(25.0)
     concat = concatenate_videoclips([clip])
-    concat.write_videofile("concat.mp4", preset="ultrafast")
+    concat.write_videofile(join(TMP_DIR, "concat.mp4"), preset="ultrafast")
+    close_all_clips(locals())
