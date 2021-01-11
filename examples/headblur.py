@@ -23,7 +23,7 @@ clip = VideoFileClip("../../videos/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
 traj = Trajectory.from_file("blurred_trajectory.txt")
 
 
-# BLUR CHAPLIN'S HEAD IN THE CLIP PASSING xi(t) and yi(t) FUCTIONS
+# BLUR CHAPLIN'S HEAD IN THE CLIP PASSING xi(t) and yi(t) FUNCTIONS
 
 clip_blurred = clip.fx(vfx.headblur, traj.xi, traj.yi, r_zone=25, r_blur=25)
 
