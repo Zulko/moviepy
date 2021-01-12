@@ -16,7 +16,7 @@ clip = VideoFileClip("../../videos/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
 
 
 # IF THE MANUAL TRACKING HAS BEEN PREVIOUSLY DONE,
-# LOAD THE TRACKING DATA AND CONVERT IT TO TRAJECTORY INTERPOLATORS x(t), fy(t)
+# LOAD THE TRACKING DATA AND CONVERT IT TO TRAJECTORY INTERPOLATORS fx(t), fy(t)
 
 traj = Trajectory.from_file("blurred_trajectory.txt")
 
