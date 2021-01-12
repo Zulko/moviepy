@@ -7,7 +7,7 @@ import pytest
 from moviepy.video.io.bindings import mplfig_to_npimage
 from moviepy.video.VideoClip import VideoClip
 
-from tests.test_helper import PYTHON_VERSION, TMP_DIR, TRAVIS
+from tests.test_helper import TMP_DIR
 
 try:
     import matplotlib
@@ -17,7 +17,6 @@ except ImportError:
 
 @pytest.mark.skipif(True, reason="testing on github actions")
 @pytest.mark.skipif(not matplotlib, reason="no mpl")
-@pytest.mark.skipif(PYTHON_VERSION == "3.5", reason="travis py35")
 def test_matplotlib():
     # for now, python 3.5 installs a version of matplotlib that complains
     # about $DISPLAY variable, so lets just ignore for now.
