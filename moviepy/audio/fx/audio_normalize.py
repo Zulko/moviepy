@@ -9,6 +9,7 @@ def audio_normalize(clip):
 
     Return an audio (or video) clip whose audio volume is normalized
     so that the maximum volume is at 0db, the maximum achievable volume.
+    Audio that is muted is left unchanged.
 
     Examples
     ========
@@ -20,6 +21,8 @@ def audio_normalize(clip):
 
     max_volume = clip.max_volume()
     if max_volume == 0:
+        # Nothing to normalize.
+        # Avoids a divide by zero error.
         return clip.copy()
     else:
         return volumex(clip, 1 / max_volume)
