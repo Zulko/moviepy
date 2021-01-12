@@ -18,13 +18,7 @@ from moviepy.utils import close_all_clips
 
 from tests.test_helper import TMP_DIR
 
-skip_if_windows = pytest.mark.skipif(
-    sys.platform.startswith("win"),
-    reason="Temporarily skipping on windows because otherwise test suite fails with Invalid Handle Error",
-)
 
-
-@skip_if_windows
 def test_audio_coreader():
     sound = AudioFileClip("media/crunching.mp3")
     sound = sound.subclip(1, 4)
@@ -85,7 +79,6 @@ def test_audioclip_concat():
     concat_clip.write_audiofile(os.path.join(TMP_DIR, "concat_audioclip.mp3"))
 
 
-@skip_if_windows
 def test_audioclip_with_file_concat():
     make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
     clip1 = AudioClip(make_frame_440, duration=1, fps=44100)
