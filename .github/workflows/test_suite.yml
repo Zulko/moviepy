@@ -56,7 +56,7 @@ jobs:
         brew install pkg-config
         python -m pip install --upgrade wheel
         python -m pip install --upgrade setuptools
-        python -m pip install ".[test]"
+        python -m pip install ".[test, optional]"
 
     - name: Test with pytest
       run: |
