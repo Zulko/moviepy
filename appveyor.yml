@@ -55,7 +55,7 @@ install:
 
 build_script:
   # Install all dependencies, including dev dependencies
-  - pip install .[test]
+  - pip install ".[test, optional]"
 
 test_script:
   - pytest
