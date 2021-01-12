@@ -258,14 +258,14 @@ def test_issue_359():
 
 
 def test_issue_368():
-    import matplotlib
-    matplotlib.use("Agg")
     import numpy as np
+    import matplotlib
     import matplotlib.pyplot as plt
     from sklearn import svm
     from sklearn.datasets import make_moons
     from moviepy.video.io.bindings import mplfig_to_npimage
 
+    plt.switch_backend("agg")
 
     X, Y = make_moons(50, noise=0.1, random_state=2)  # semi-random data
 
