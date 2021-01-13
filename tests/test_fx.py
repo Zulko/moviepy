@@ -220,13 +220,13 @@ def test_loop():
     clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    return  # Still buggy. TODO fix
-    # clip2 = loop(clip, duration=10)  # loop for 10 seconds
-    # clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    clip2 = loop(clip, duration=10)  # loop for 10 seconds
+    clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
-    # clip3 = loop(clip, n=3)  # loop 3 times
-    # clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
-    # close_all_clips(objects=locals())
+    clip3 = loop(clip, n=3)  # loop 3 times
+    clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+
+    close_all_clips(objects=locals())
 
 
 def test_lum_contrast():
