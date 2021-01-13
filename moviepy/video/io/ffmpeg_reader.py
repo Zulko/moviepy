@@ -225,10 +225,11 @@ class FFMPEG_VideoReader:
 
     def close(self, delete_lastread=True):
         if self.proc:
-            self.proc.terminate()
-            self.proc.stdout.close()
-            self.proc.stderr.close()
-            self.proc.wait()
+            if self.proc.poll() is None:
+                self.proc.terminate()
+                self.proc.stdout.close()
+                self.proc.stderr.close()
+                self.proc.wait()
             self.proc = None
         if delete_lastread and hasattr(self, "last_read"):
             del self.last_read
