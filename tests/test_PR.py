@@ -141,7 +141,7 @@ def test_PR_1137_subtitles():
             stroke_width=0.5,
         )
 
-    SubtitlesClip(Path("media/subtitles1.srt"), make_textclip=make_textclip).close()
+    SubtitlesClip(Path("media/subtitles.srt"), make_textclip=make_textclip).close()
 
 
 if __name__ == "__main__":
