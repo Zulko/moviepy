@@ -18,11 +18,21 @@ from moviepy.version import __version__
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.video.io.downloader import download_webfile
-from moviepy.video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip, BitmapClip
+from moviepy.video.VideoClip import (
+    VideoClip,
+    ImageClip,
+    ColorClip,
+    TextClip,
+    BitmapClip,
+)
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 
-from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
+from moviepy.audio.AudioClip import (
+    AudioClip,
+    CompositeAudioClip,
+    concatenate_audioclips,
+)
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 # FX
@@ -52,6 +62,21 @@ for name, function in video_fxs:
 for name, function in audio_fxs:
     setattr(AudioClip, name, function)
 
+
+def preview(self, *args, **kwargs):
+    """NOT AVAILABLE: clip.preview requires importing from moviepy.editor"""
+    raise ImportError("clip.preview requires importing from moviepy.editor")
+
+
+def show(self, *args, **kwargs):
+    """NOT AVAILABLE: clip.show requires importing from moviepy.editor"""
+    raise ImportError("clip.show requires importing from moviepy.editor")
+
+
+VideoClip.preview = preview
+VideoClip.show = show
+AudioClip.preview = preview
+
 # Cleanup namespace
-del audio_fxs, video_fxs, name, function
+del audio_fxs, video_fxs, name, function, preview, show
 del inspect

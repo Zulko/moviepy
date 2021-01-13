@@ -41,11 +41,11 @@ try:
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """NOT AVAILABLE : clip.preview requires Pygame installed."""
+        """NOT AVAILABLE: clip.preview requires Pygame installed"""
         raise ImportError("clip.preview requires Pygame installed")
 
     def show(self, *args, **kwargs):
-        """NOT AVAILABLE : clip.show requires Pygame installed."""
+        """NOT AVAILABLE: clip.show requires Pygame installed"""
         raise ImportError("clip.show requires Pygame installed")
 
 
@@ -57,7 +57,7 @@ try:
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE : clip.preview requires Pygame installed."""
+        """ NOT AVAILABLE: clip.preview requires Pygame installed"""
         raise ImportError("clip.preview requires Pygame installed")
 
 
