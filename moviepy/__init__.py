@@ -11,29 +11,29 @@ you can write ``clip.resize(2)``.
 
 import inspect
 
-from .version import __version__
+from moviepy.version import __version__
 
 
 # Clips
-from .video.io.VideoFileClip import VideoFileClip
-from .video.io.ImageSequenceClip import ImageSequenceClip
-from .video.io.downloader import download_webfile
-from .video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip, BitmapClip
-from .video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from .video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+from moviepy.video.io.downloader import download_webfile
+from moviepy.video.VideoClip import VideoClip, ImageClip, ColorClip, TextClip, BitmapClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
+from moviepy.video.compositing.concatenate import concatenate_videoclips
 
-from .audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
-from .audio.io.AudioFileClip import AudioFileClip
+from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip, concatenate_audioclips
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 
 # FX
-from .video import fx as vfx
+from moviepy.video import fx as vfx
 import moviepy.audio.fx as afx
 import moviepy.video.compositing.transitions as transfx
 
 # Tools
 import moviepy.video.tools as videotools
 import moviepy.video.io.ffmpeg_tools as ffmpeg_tools
-from .tools import convert_to_seconds
+from moviepy.tools import convert_to_seconds
 
 
 # Transforms the effects into Clip methods so that
