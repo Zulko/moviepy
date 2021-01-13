@@ -459,9 +459,11 @@ def test_normalize():
 
 
 def test_normalize_muted():
-    make_frame = lambda t: np.array([0.0])
+    z_array = np.array([0.0])
+    make_frame = lambda t: z_array
     clip = AudioClip(make_frame, duration=1, fps=44100)
     clip = audio_normalize(clip)
+    assert np.array_equal(clip.to_soundarray(), z_array)
     close_all_clips(locals())
 
 
