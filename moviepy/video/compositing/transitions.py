@@ -1,7 +1,6 @@
 """
 Here is the current catalogue. These are meant
 to be used with clip.fx. There are available as transfx.crossfadein etc.
-if you load them with ``from moviepy.editor import *``
 """
 
 from moviepy.decorators import add_mask_if_none, requires_duration
@@ -60,7 +59,7 @@ def slide_in(clip, duration, side):
     Examples
     =========
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> clips = [... make a list of clips]
     >>> slided_clips = [CompositeVideoClip([
                             clip.fx(transfx.slide_in, duration=1, side='left')])
@@ -102,7 +101,7 @@ def slide_out(clip, duration, side):
     Examples
     =========
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> clips = [... make a list of clips]
     >>> slided_clips = [CompositeVideoClip([
                             clip.fx(transfx.slide_out, duration=1, side='left')])

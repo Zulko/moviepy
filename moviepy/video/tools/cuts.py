@@ -126,7 +126,7 @@ class FramesMatches(list):
         We find all matching frames in a given video and turn the best match with
         a duration of 1.5s or more into a GIF:
 
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>> clip = VideoFileClip("foo.mp4").resize(width=200)
         >>> matches = FramesMatches.from_clip(clip, distance_threshold=10, max_duration=3) # will take time

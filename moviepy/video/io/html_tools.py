@@ -73,7 +73,7 @@ def html_embed(
 
     Examples
     =========
-
+    TODO Update example
     >>> import moviepy.editor as mpy
     >>> # later ...
     >>> clip.write_videofile("test.mp4")

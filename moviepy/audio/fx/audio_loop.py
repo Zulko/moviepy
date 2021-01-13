@@ -12,7 +12,7 @@ def audio_loop(clip, n_loops=None, duration=None):
     Examples
     ========
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
     >>> audio = afx.audio_loop( music, duration=videoclip.duration)

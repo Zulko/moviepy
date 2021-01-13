@@ -32,7 +32,7 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 
 .. code:: python
 
-    from moviepy.editor import *
+    from moviepy import *
 
     video = VideoFileClip("myHolidays.mp4").subclip(50,60)
 

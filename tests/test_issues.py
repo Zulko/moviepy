@@ -3,7 +3,7 @@
 import pytest
 import os
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize

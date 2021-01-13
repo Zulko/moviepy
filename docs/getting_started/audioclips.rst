@@ -18,7 +18,7 @@ Creating a new audio clip
 
 Audio clips can be created from an audio file or from the soundtrack of a video file ::
 
-    from moviepy.editor import *
+    from moviepy import *
     audioclip = AudioFileClip("some_audiofile.mp3")
     audioclip = AudioFileClip("some_video.avi")
 

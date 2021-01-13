@@ -4,10 +4,9 @@ MoviePy that you will use for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
-- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
-    if pygame is installed
-- Allows the use of ``sliders`` if matplotlib is installed
+- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()`` if pygame is installed
 - Enables ``clip.ipython_display()`` if in an IPython Notebook
+- Allows the use of ``sliders`` if Matplotlib is installed
 """
 
 import os

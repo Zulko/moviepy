@@ -13,7 +13,7 @@ def audio_normalize(clip):
     Examples
     ========
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> videoclip = VideoFileClip('myvideo.mp4').fx(afx.audio_normalize)
 
     """
