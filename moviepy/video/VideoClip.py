@@ -602,7 +602,7 @@ class VideoClip(Clip):
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-        hf, wf = picture.size
+        wf, hf = picture.size
 
         ct = t - self.start  # clip time
 
@@ -631,7 +631,7 @@ class VideoClip(Clip):
         else:
             im_mask = None
 
-        hi, wi = im_img.size
+        wi, hi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
 
