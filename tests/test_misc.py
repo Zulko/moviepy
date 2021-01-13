@@ -23,7 +23,7 @@ MEDIA_SUBTITLES_DATA = [
 ]
 
 MEDIA_SUBTITLES_UNICODE_DATA = [
-    ([0, 0, 5.0], "ÁÉíöÙ"),
+    ([0, 5.0], "ÁÉíöÙ"),
 ]
 
 
@@ -67,7 +67,7 @@ def test_file_to_subtitles():
 
 def test_file_to_subtitles_unicode():
     assert MEDIA_SUBTITLES_UNICODE_DATA == file_to_subtitles(
-        "media/subtitles-unicode.srt"
+        "media/subtitles-unicode.srt", encoding="utf-8"
     )
 
 
