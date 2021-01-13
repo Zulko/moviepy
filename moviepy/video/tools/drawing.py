@@ -12,13 +12,11 @@ def blit(im1, im2, pos=None, mask=None):
     ``mask`` if provided.
     """
     if pos is None:
-        pos = [0, 0]
-
-    xp, yp = pos
-    xp1 = max(0, xp)
-    yp1 = max(0, yp)
-
-    im2.paste(im1, (xp1, yp1), mask)
+        pos = (0, 0)
+    else:
+        # Cast to tuple in case pos is not subscriptable.
+        pos = tuple(pos)
+    im2.paste(im1, pos, mask)
     return im2
 
 

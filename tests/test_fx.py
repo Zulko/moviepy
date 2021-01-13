@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pytest
 
 from moviepy import AudioFileClip, BitmapClip, ColorClip, VideoFileClip
@@ -218,13 +219,13 @@ def test_loop():
     clip1 = loop(clip).with_duration(3)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    return  # Still buggy. TODO fix
-    # clip2 = loop(clip, duration=10)  # loop for 10 seconds
-    # clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    clip2 = loop(clip, duration=10)  # loop for 10 seconds
+    clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
-    # clip3 = loop(clip, n=3)  # loop 3 times
-    # clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
-    # close_all_clips(objects=locals())
+    clip3 = loop(clip, n=3)  # loop 3 times
+    clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+
+    close_all_clips(objects=locals())
 
 
 def test_lum_contrast():
@@ -451,6 +452,15 @@ def test_normalize():
     clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
+    close_all_clips(locals())
+
+
+def test_normalize_muted():
+    z_array = np.array([0.0])
+    make_frame = lambda t: z_array
+    clip = AudioClip(make_frame, duration=1, fps=44100)
+    clip = audio_normalize(clip)
+    assert np.array_equal(clip.to_soundarray(), z_array)
     close_all_clips(locals())
 
 
