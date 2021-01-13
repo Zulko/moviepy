@@ -3,7 +3,7 @@ from moviepy.video.tools.tracking import manual_tracking
 from moviepy.video.tools.interpolators import Trajectory
 
 # LOAD THE CLIP (subclip 6'51 - 7'01 of a chaplin movie)
-clip = VideoFileClip("../../videos/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
+clip = VideoFileClip("media/chaplin.mp4").subclip((6, 51.7), (7, 01.3))
 
 # MANUAL TRACKING OF THE HEAD
 
@@ -47,4 +47,4 @@ final = concatenate_videoclips([clip_blurred, txt.with_duration(3)]).with_audio(
 # We write the result to a file. Here we raise the bitrate so that
 # the final video is not too ugly.
 
-final.write_videofile("../../blurredChaplin.avi", bitrate="3000k")
+final.write_videofile("blurredChaplin.avi", bitrate="3000k")
