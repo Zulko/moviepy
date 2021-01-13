@@ -320,7 +320,7 @@ def write_gif(
             if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 frame = np.dstack([frame, mask]).astype("uint8")
-            proc1.stdin.write(frame.tostring())
+            proc1.stdin.write(frame.tobytes())
 
     except IOError as err:
 
