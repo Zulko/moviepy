@@ -2,8 +2,6 @@ from moviepy.decorators import apply_to_audio, apply_to_mask, requires_duration
 
 
 @requires_duration
-@apply_to_mask
-@apply_to_audio
 def loop(clip, n=None, duration=None):
     """
     Returns a clip that plays the current clip in an infinite loop.
@@ -19,7 +17,9 @@ def loop(clip, n=None, duration=None):
       Total duration of the clip. Can be specified instead of n.
     """
     previous_duration = clip.duration
-    clip = clip.time_transform(lambda t: t % previous_duration)
+    clip = clip.time_transform(
+        lambda t: t % previous_duration, apply_to=["mask", "audio"]
+    )
     if n:
         duration = n * previous_duration
     if duration:

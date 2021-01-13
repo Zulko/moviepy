@@ -257,10 +257,11 @@ class FFMPEG_AudioReader:
 
     def close(self):
         if self.proc:
-            self.proc.terminate()
-            self.proc.stdout.close()
-            self.proc.stderr.close()
-            self.proc.wait()
+            if self.proc.poll() is None:
+                self.proc.terminate()
+                self.proc.stdout.close()
+                self.proc.stderr.close()
+                self.proc.wait()
             self.proc = None
 
     def __del__(self):

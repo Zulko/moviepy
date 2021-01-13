@@ -182,10 +182,10 @@ class Clip:
         --------
 
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda: 2*t, apply_to=['mask', 'audio'])
+        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda: 3-t)
+        >>> new_clip = clip.time_transform(lambda t: 3-t)
 
         """
         if apply_to is None:

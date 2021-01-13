@@ -602,7 +602,7 @@ class VideoClip(Clip):
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-        hf, wf = picture.size
+        wf, hf = picture.size
 
         ct = t - self.start  # clip time
 
@@ -631,7 +631,7 @@ class VideoClip(Clip):
         else:
             im_mask = None
 
-        hi, wi = im_img.size
+        wi, hi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
 
@@ -1052,7 +1052,7 @@ class ImageClip(VideoClip):
         """Image-transformation filter.
 
         Does the same as VideoClip.image_transform, but for ImageClip the
-        tranformed clip is computed once and for all at the beginning,
+        transformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
         if apply_to is None:
