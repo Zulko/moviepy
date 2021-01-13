@@ -25,6 +25,7 @@ Lots of method and parameter names have been changed. This will be explained bet
 ### Fixed <!-- for any bug fixes -->
 - Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [#1333]
 - Fixed `rotate` sometimes failing with `ValueError: axes don't match array` [#1335]
+- Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2)
