@@ -25,7 +25,8 @@ Lots of method and parameter names have been changed. This will be explained bet
 ### Fixed <!-- for any bug fixes -->
 - Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [#1333]
 - Fixed `rotate` sometimes failing with `ValueError: axes don't match array` [#1335]
-- Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` #1429
+- Fixed positioning error generating frames in `CompositeVideoClip` [\#1420](https://github.com/Zulko/moviepy/pull/1420)
+- Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
 
