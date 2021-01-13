@@ -86,7 +86,7 @@ Install with `pip install moviepy --pre --upgrade`.
 ### Removed <!-- for now removed features -->
 - Support removed for Python versions 2.7, 3.4 & 3.5
 - Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [\#1109](https://github.com/Zulko/moviepy/pull/1109)
-- Removed ``config.get_setting()`` and ``config.change_settings()`` functions #1109
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions [\#1109](https://github.com/Zulko/moviepy/pull/1109)
 - All previously deprecated methods and parameters [\#1115](https://github.com/Zulko/moviepy/pull/1115):
     - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
     - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
