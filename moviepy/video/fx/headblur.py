@@ -24,11 +24,10 @@ def headblur(clip, fx, fy, radius, intensity=None):
     """
 
     if intensity is None:
-        intensity = 2 * radius / 3
+        intensity = int(2 * radius / 3)
 
     def filter(gf, t):
-
-        im = gf(t)
+        im = gf(t).copy()
         h, w, d = im.shape
         x, y = int(fx(t)), int(fy(t))
         x1, x2 = max(0, x - radius), min(x + radius, w)
