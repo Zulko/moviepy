@@ -368,15 +368,6 @@ def test_issue_470():
     subclip.write_audiofile(os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True)
 
 
-def test_issue_246():
-    def test_audio_reader():
-        video = VideoFileClip("media/video_with_failing_audio.mp4")
-        subclip = video.subclip(270)
-        subclip.write_audiofile(
-            os.path.join(TMP_DIR, "issue_246.wav"), write_logfile=True
-        )
-
-
 def test_issue_547():
     red = ColorClip((640, 480), color=(255, 0, 0)).with_duration(1)
     green = ColorClip((640, 480), color=(0, 255, 0)).with_duration(2)
