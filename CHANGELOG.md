@@ -27,7 +27,7 @@ Lots of method and parameter names have been changed. This will be explained bet
 - Fixed `rotate` sometimes failing with `ValueError: axes don't match array` [#1335]
 - Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` #1429
 
-## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2)
+## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...v2.0.0.dev2)
 
