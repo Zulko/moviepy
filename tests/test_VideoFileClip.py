@@ -52,6 +52,7 @@ def test_videofileclip_safe_deepcopy(monkeypatch):
     # patch __copy__ in the clip
     def fake__copy__():
         return "foo"
+
     monkeypatch.setattr(clip, "__copy__", fake__copy__)
 
     # this should not raise any exception (see `VideoFileClip.__deepcopy__`)
