@@ -29,9 +29,9 @@ MoviePy has been developed with the following goals in mind:
 
 - **Simple and intuitive**. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.
 - **Flexible**. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.
-- **Portable**. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.
+- **Portable**. The code uses very common software (Numpy and FFmpeg) and can run on (almost) any machine with any supported version of Python.
 
-For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (>100), but this will be fixed in future versions.
+For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (>100).
 
 Example code
 ~~~~~~~~~~~~~~
@@ -63,7 +63,7 @@ In a typical MoviePy script, you load video or audio files, modify them, put the
 How MoviePy works
 ~~~~~~~~~~~~~~~~~~~
 
-MoviePy uses the software ``ffmpeg`` to read and to export video and audio files. It also (optionally) uses ImageMagick to generate texts and write GIF files. The processing of the different media is ensured by Python's fast numerical library Numpy. Advanced effects and enhancements use some of Python's numerous image processing libraries (PIL, Scikit-image, scipy, etc.).
+MoviePy uses the software ``ffmpeg`` to read and to export video and audio files. It also (optionally) uses ImageMagick to generate text and write GIF files. The processing of the different media is ensured by Python's fast numerical library Numpy. Advanced effects and enhancements use some of Python's numerous image processing libraries (PIL, Scikit-image, scipy, etc.).
 
 .. image:: explanations.jpeg
     :width: 570px
@@ -72,9 +72,9 @@ MoviePy uses the software ``ffmpeg`` to read and to export video and audio files
 Basic concepts
 ~~~~~~~~~~~~~~~
 
-The central objects of MoviePy are *clips*, which can be ``AudioClips`` or ``VideoClips``. They can be modified (cut, slowed down, darkened...) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). ``VideoClips`` for instance can be created from a video file, an image, a text, or a custom animation. They can have an audio track (which is an ``AudioClip``) and a mask (a special ``VideoClip`` indicating which parts of the clip to hide when the clip is mixed with other clips). See :ref:`videoclips` and :ref:`CompositeVideoClips` for more details.
+The central objects of MoviePy are *clips*, each of which can be an ``AudioClip`` or a ``VideoClip``. They can be modified (cut, slowed down, darkened...) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). A ``VideoClip``, for instance, can be created from a video file, an image, a text, or a custom animation. They can have an audio track (an ``AudioClip``) and a mask (a special ``VideoClip`` indicating which parts of the clip to hide when the clip is mixed with other clips). See :ref:`videoclips` and :ref:`CompositeVideoClips` for more details.
 
-A clip can be modified using one of moviepy's numerous effects (like in ``clip.resize(width="360")``, ``clip.subclip(t1,t2)``, or ``clip.fx(vfx.black_white)``) or using a user-implemented effect. MoviePy implements many functions (like ``clip.fl``, ``clip.fx``, etc.) which make it very easy to code your own effect in a few lines. See :ref:`effects` for more.
+A clip can be modified using one of MoviePy's numerous effects (e.g. ``clip.resize(width="360")`` or ``clip.subclip(t1,t2)``) or using a user-implemented effect. MoviePy implements many functions (like ``clip.transform``, ``clip.fx``, etc.) which make it very easy to code your own effect in a few lines. See :ref:`effects` for more.
 
 You will also find a few advanced goodies in ``moviepy.video.tools`` to track objects in a video, draw simple shapes and color gradients (very useful for masks), generate subtitles and end credits, etc. See :ref:`advancedtools` for a description of these.
 
