@@ -1,7 +1,7 @@
 import os
 
+import numpy as np
 import pytest
-from numpy import pi, sin, array
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -39,8 +39,8 @@ def test_write_frame_errors():
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec")
     assert (
-        "The video export failed because FFMPEG didn't find the specified codec for video "
-        "encoding nonexistent-codec" in str(e.value)
+        "The video export failed because FFMPEG didn't find the specified"
+        " codec for video encoding nonexistent-codec" in str(e.value)
     ), e.value
     close_all_clips(locals())
 
@@ -57,8 +57,8 @@ def test_write_frame_errors_with_redirected_logs():
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec", write_logfile=True)
     assert (
-        "The video export failed because FFMPEG didn't find the specified codec for video "
-        "encoding nonexistent-codec" in str(e.value)
+        "The video export failed because FFMPEG didn't find the specified"
+        " codec for video encoding nonexistent-codec" in str(e.value)
     )
     close_all_clips(locals())
 
@@ -197,7 +197,7 @@ def test_oncolor():
 
 def test_setaudio():
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
+    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
     audio = AudioClip(make_frame_440, duration=0.5)
     audio.fps = 44100
     clip = clip.with_audio(audio)

@@ -40,7 +40,7 @@ templates = {
         + sorry
         + "</audio>"
     ),
-    "image": "<img %(options)s " "src='data:image/%(ext)s;base64,%(data)s'>",
+    "image": "<img %(options)s src='data:image/%(ext)s;base64,%(data)s'>",
     "video": (
         "<video %(options)s"
         "src='data:video/%(ext)s;base64,%(data)s' controls>" + sorry + "</video>"

@@ -102,10 +102,19 @@ test_reqs = [
     "pytest-cov>=2.5.1,<3.0",
     "pytest>=3.0.0,<4.0",
     "requests>=2.8.1,<3.0",
-    "flake8>3.7.0,<4.0.0",
 ]
 
-extra_reqs = {"optional": optional_reqs, "doc": doc_reqs, "test": test_reqs}
+lint_reqs = [
+    "flake8>3.7.0,<4.0.0",
+    "flake8-implicit-str-concat==0.2.0",
+]
+
+extra_reqs = {
+    "optional": optional_reqs,
+    "doc": doc_reqs,
+    "test": test_reqs,
+    "lint": lint_reqs,
+}
 
 # Load the README.
 with open("README.rst", "r", "utf-8") as file:

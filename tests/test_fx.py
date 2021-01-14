@@ -9,7 +9,8 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 from moviepy.video.fx.blackwhite import blackwhite
-from moviepy.video.fx.blink import blink
+
+# from moviepy.video.fx.blink import blink
 from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.even_size import even_size
@@ -30,8 +31,8 @@ from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip
-from moviepy.video.fx.supersample import supersample
+
+# from moviepy.video.fx.supersample import supersample
 
 from tests.test_helper import TMP_DIR
 

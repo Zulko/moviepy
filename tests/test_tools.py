@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
-import sys
-
 import pytest
 
 import moviepy.tools as tools
@@ -38,7 +36,9 @@ def test_find_extensions_not_found():
     ],
 )
 def test_cvsecs(given, expected):
-    """Test the convert_to_seconds funtion outputs correct times as per the docstring."""
+    """Test the convert_to_seconds funtion outputs correct times as per
+    the docstring.
+    """
     assert tools.convert_to_seconds(given) == expected
 
 

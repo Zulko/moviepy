@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """
-    Tool tests meant to be run with pytest.
-    
-    Testing whether issue #596 has been repaired. 
-    
-    Note: Platform dependent test. Will only fail on Windows > NT. """
+Tool tests meant to be run with pytest.
+
+Testing whether issue #596 has been repaired.
+
+Note: Platform dependent test. Will only fail on Windows > NT.
+"""
 
 import time
 from os import remove

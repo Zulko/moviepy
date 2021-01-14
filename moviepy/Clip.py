@@ -291,7 +291,7 @@ class Clip:
             self.end = None if (duration is None) else (self.start + duration)
         else:
             if self.duration is None:
-                raise Exception("Cannot change clip start when new" "duration is None")
+                raise Exception("Cannot change clip start when new duration is None")
             self.start = self.end - duration
 
     @outplace

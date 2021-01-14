@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
 import os
-import sys
 
 import pytest
 import numpy as np
@@ -10,7 +9,6 @@ from numpy import pi, sin
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
-    CompositeAudioClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
