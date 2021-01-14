@@ -1,3 +1,5 @@
+import numpy as np
+
 # ------- CHECKING DEPENDENCIES -----------------------------------------
 painting_possible = True
 try:
@@ -8,9 +10,6 @@ except Exception:
     except Exception:
         painting_possible = False
 # -----------------------------------------------------------------------
-
-
-import numpy as np
 
 
 def to_painting(image, saturation=1.4, black=0.006):

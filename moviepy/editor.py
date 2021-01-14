@@ -31,6 +31,7 @@ __all__ = [
     "ImageClip",
     "ImageSequenceClip",
     "ipython_display",
+    "sliders",
     "TextClip",
     "transfx",
     "vfx",

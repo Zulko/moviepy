@@ -1,6 +1,5 @@
 from moviepy.decorators import requires_duration
 from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.VideoClip import ImageClip
 
 
 @requires_duration

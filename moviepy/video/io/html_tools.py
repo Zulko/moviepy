@@ -153,15 +153,17 @@ def html_embed(
             )
 
     if filetype in ["audio", "video"]:
-
         duration = ffmpeg_parse_infos(filename, decode_file=True)["duration"]
         if duration > maxduration:
             raise ValueError(
-                "The duration of video %s (%.1f) exceeds the 'maxduration' "
+                (
+                    "The duration of video %s (%.1f) exceeds the 'maxduration'"
+                    " attribute. You can increase 'maxduration', by passing"
+                    " 'maxduration' parameter to ipython_display function."
+                    " But note that embedding large videos may take all the memory"
+                    " away!"
+                )
                 % (filename, duration)
-                + "attribute. You can increase 'maxduration', by passing 'maxduration' parameter"
-                "to ipython_display function."
-                "But note that embedding large videos may take all the memory away !"
             )
 
     with open(filename, "rb") as file:

@@ -30,3 +30,37 @@ from .speedx import speedx
 from .supersample import supersample
 from .time_mirror import time_mirror
 from .time_symmetrize import time_symmetrize
+
+
+__all__ = (
+    "accel_decel",
+    "blackwhite",
+    "blink",
+    "colorx",
+    "crop",
+    "even_size",
+    "fadein",
+    "fadeout",
+    "freeze",
+    "freeze_region",
+    "gamma_corr",
+    "headblur",
+    "invert_colors",
+    "loop",
+    "lum_contrast",
+    "make_loopable",
+    "margin",
+    "mask_and",
+    "mask_color",
+    "mask_or",
+    "mirror_x",
+    "mirror_y",
+    "painting",
+    "resize",
+    "rotate",
+    "scroll",
+    "speedx",
+    "supersample",
+    "time_mirror",
+    "time_symmetrize",
+)
