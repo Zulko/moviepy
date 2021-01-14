@@ -161,7 +161,6 @@ class VideoClip(Clip):
         audio_bufsize=2000,
         temp_audiofile=None,
         temp_audiofile_path="",
-        rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
         threads=None,
