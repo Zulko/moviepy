@@ -22,7 +22,7 @@ Audio clips can be created from an audio file or from the soundtrack of a video 
     audioclip = AudioFileClip("some_audiofile.mp3")
     audioclip = AudioFileClip("some_video.avi")
 
-for more, see :class:`~moviepy.audio.io.AudioFileClip.AudioFileClip`.
+for more, see :class:`moviepy.audio.io.AudioFileClip.AudioFileClip`.
 
 Alternatively you can get the audio track of an already created video clip ::
 
@@ -32,7 +32,7 @@ Alternatively you can get the audio track of an already created video clip ::
 Compositing audio clips
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-:class:`~moviepy.audio.AudioClip.CompositeAudioClip` is used to combine multiple audio clips together. ::
+:class:`moviepy.audio.AudioClip.CompositeAudioClip` is used to combine multiple audio clips together. ::
 
     from moviepy import *
     first = AudioFileClip("some_audiofile.mp3")
@@ -44,8 +44,8 @@ In the following example, ``first`` will start playing after 2 seconds and ``sec
 
     combined = CompositeAudioClip([first.with_start(2), second.with_start(5)])
 
-If you want to play your audio clips sequentially, use :func:`moviepy.audio.AudioClip.concatenate_audioclips`.
-Here, `second` only starts playing when `first` finishes. ::
+If you want to play your audio clips sequentially, use :method:`moviepy.audio.AudioClip.concatenate_audioclips`.
+Here, ``second`` only starts playing when ``first`` finishes. ::
 
     combined = concatenate_audioclips([first, second])
 
