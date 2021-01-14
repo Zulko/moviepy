@@ -1,3 +1,4 @@
+import copy
 import os
 
 import pytest
@@ -9,7 +10,7 @@ from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, BitmapClip
+from moviepy.video.VideoClip import ColorClip, BitmapClip, VideoClip
 
 from tests.test_helper import TMP_DIR
 
@@ -296,6 +297,57 @@ def test_setfps_withchangeduration():
     assert clip2_sums == clip_sums
     assert clip2.duration == clip.duration / 2
     close_all_clips(locals())
+
+
+@pytest.mark.parametrize(
+    "copy_func",
+    (
+        lambda clip: clip.copy(),
+        lambda clip: copy.copy(clip),
+        lambda clip: copy.deepcopy(clip),
+    ),
+    ids=("clip.copy()", "copy.copy(clip)", "copy.deepcopy(clip)"),
+)
+def test_videoclip_copy(copy_func):
+    """It must be possible to do a mixed copy of VideoClip using `clip.copy()`
+    and `copy.copy(clip)`.
+    """
+    clip = VideoClip()
+    other_clip = VideoClip()
+
+    for attr in clip.__dict__:
+        # mask and audio are shallow copies that should be initialized
+        if attr in ("mask", "audio"):
+            if attr == "mask":
+                nested_object = BitmapClip([["R"]], duration=0.01)
+            else:
+                nested_object = AudioClip(
+                    lambda t: [sin(880 * 2 * pi * t)], duration=0.01, fps=44100
+                )
+            setattr(clip, attr, nested_object)
+        else:
+            setattr(clip, attr, "foo")
+
+    copied_clip = copy_func(clip)
+
+    # VideoClip attributes are copied
+    for attr in copied_clip.__dict__:
+        value = getattr(copied_clip, attr)
+        assert value == getattr(clip, attr)
+
+        # other copies are not edited
+        assert value != getattr(other_clip, attr)
+
+        # shallow copies of mask and audio
+        if attr in ("mask", "audio"):
+            for nested_attr in value.__dict__:
+                assert getattr(value, nested_attr) == getattr(
+                    getattr(clip, attr), nested_attr
+                )
+
+    # nested objects of other copies are not edited
+    assert other_clip.mask is None
+    assert other_clip.audio is None
 
 
 if __name__ == "__main__":

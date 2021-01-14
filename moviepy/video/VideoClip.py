@@ -7,6 +7,7 @@ main subclasses:
 import os
 import subprocess as sp
 import tempfile
+import copy as _copy
 
 import numpy as np
 import proglog
@@ -115,6 +116,33 @@ class VideoClip(Clip):
     @property
     def aspect_ratio(self):
         return self.w / float(self.h)
+
+    def __copy__(self):
+        """Mixed copy of the clip.
+
+        Returns a shallow copy of the clip whose mask and audio will
+        be shallow copies of the clip's mask and audio if they exist.
+
+        This method is intensively used to produce new clips every time
+        there is an outplace transformation of the clip (clip.resize,
+        clip.subclip, etc.)
+
+        Acts like a deepcopy except for the fact that readers and other
+        possible unpickleables objects are not copied.
+        """
+        cls = self.__class__
+        new_clip = cls.__new__(cls)
+        for attr in self.__dict__:
+            value = getattr(self, attr)
+            if attr in ("mask", "audio"):
+                value = _copy.copy(value)
+            setattr(new_clip, attr, value)
+
+        new_clip.audio = _copy.copy(self.audio)
+        new_clip.mask = _copy.copy(self.mask)
+        return new_clip
+
+    copy = __copy__
 
     # ===============================================================
     # EXPORT OPERATIONS

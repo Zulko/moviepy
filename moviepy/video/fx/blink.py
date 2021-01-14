@@ -1,13 +1,10 @@
-import copy
-
-
 def blink(clip, duration_on, duration_off):
     """
     Makes the clip blink. At each blink it will be displayed ``duration_on``
     seconds and disappear ``duration_off`` seconds. Will only work in
     composite clips.
     """
-    new_clip = copy.copy(clip)
+    new_clip = clip.copy()
     if new_clip.mask is None:
         new_clip = new_clip.with_mask()
     duration = duration_on + duration_off

@@ -344,14 +344,6 @@ def test_issue_417():
     # final.with_duration(7).write_videofile("test.mp4", fps=30)
 
 
-def test_issue_467():
-    cad = "media/python_logo.png"
-    clip = ImageClip(cad)
-
-    # caused an error, NameError: global name 'copy' is not defined
-    clip = clip.fx(blink, duration_on=1, duration_off=1)
-
-
 def test_issue_470():
     audio_clip = AudioFileClip("media/crunching.mp3")
 

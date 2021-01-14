@@ -31,10 +31,7 @@ mask = color_split(
 mask_clip = ImageClip(mask, is_mask=True)
 
 clip_left = (
-    main_clip.coreader()
-    .subclip(0, duration)
-    .crop(x1=60, x2=60 + 2 * W / 3)
-    .with_mask(mask_clip)
+    main_clip.subclip(0, duration).crop(x1=60, x2=60 + 2 * W / 3).with_mask(mask_clip)
 )
 
 
@@ -47,8 +44,7 @@ mask = color_split(
 mask_clip = ImageClip(mask, is_mask=True)
 
 clip_right = (
-    main_clip.coreader()
-    .subclip(21, 21 + duration)
+    main_clip.subclip(21, 21 + duration)
     .crop(x1=70, x2=70 + 2 * W / 3)
     .with_mask(mask_clip)
 )

@@ -19,6 +19,7 @@ Lots of method and parameter names have been changed. This will be explained bet
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
+- `VideoFileClip.coreader` and `AudioFileClip.coreader` methods. Use `VideoFileClip.copy` and `AudioFileClip.copy` instead [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 
 ### Removed <!-- for now removed features -->
 
