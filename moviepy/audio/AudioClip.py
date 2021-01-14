@@ -119,8 +119,10 @@ class AudioClip(Clip):
         if tt is None:
             if self.duration > max_duration:
                 return stacker(
-                    self.iter_chunks(
-                        fps=fps, quantize=quantize, nbytes=2, chunksize=buffersize
+                    tuple(
+                        self.iter_chunks(
+                            fps=fps, quantize=quantize, nbytes=2, chunksize=buffersize
+                        )
                     )
                 )
             else:
