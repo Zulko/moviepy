@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Important Announcements
 
 ### Added <!-- for new features -->
-- `VideoFileClip.coreader()` that creates a new clip created from the same source file as the original (to complement the existing `AudioFileClip.coreader()`) [\#1332](https://github.com/Zulko/moviepy/pull/1332)
+- Support for `copy.copy(clip)` and `copy.deepcopy(clip)` with same behaviour as `clip.copy()` [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 
 ### Changed <!-- for changes in existing functionality -->
 Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
