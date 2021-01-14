@@ -94,6 +94,8 @@ optional_reqs = [
 doc_reqs = [
     "pygame>=1.9.3,<2.0; python_version<'3.8'",
     "numpydoc<2.0",
+    "Sphinx==3.4.3",
+    "sphinx-rtd-theme<0.5",
 ]
 
 test_reqs = [
