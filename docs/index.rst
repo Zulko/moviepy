@@ -8,7 +8,7 @@
 
 
 
-MoviePy is a Python module for video editing, which can be used for basic operations (like cuts, concatenations, title insertions), video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write the most common video formats, including GIF.
+MoviePy is a Python module for video editing, which can be used for basic operations (like cuts, concatenations, title insertions), video compositing (a.k.a. non-linear editing), video processing, or to create advanced effects. It can read and write all common video formats.
 
 Here it is in action (run in an IPython Notebook):
 
@@ -34,7 +34,7 @@ User Guide
 Contribute!
 --------------
 
-MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 2 or Python 3. The code is hosted on Github_, where you can push improvements, report bugs and ask for help. There is also a MoviePy forum on Reddit_ and a mailing list on librelist_.
+MoviePy is an open source software originally written by Zulko_ and released under the MIT licence. It works on Windows, Mac, and Linux, with Python 3.6+. The code is hosted on Github_, where you can submit improvements, report bugs and ask for help. There is also a MoviePy subreddit_ and a `Gitter chat`_.
 
 .. raw:: html
 
@@ -57,5 +57,5 @@ MoviePy is an open source software originally written by Zulko_ and released und
 .. _Zulko: https://github.com/Zulko/
 .. _Stackoverflow: https://stackoverflow.com/
 .. _Github: https://github.com/Zulko/moviepy
-.. _Reddit: https://www.reddit.com/r/moviepy/
-.. _librelist: mailto:moviepy@librelist.com
+.. _subreddit: https://www.reddit.com/r/moviepy/
+.. _Gitter chat: https://gitter.im/movie-py/Lobby
