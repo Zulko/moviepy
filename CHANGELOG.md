@@ -27,6 +27,7 @@ Lots of method and parameter names have been changed. This will be explained bet
 - Fixed `rotate` sometimes failing with `ValueError: axes don't match array` [\#1335](https://github.com/Zulko/moviepy/pull/1335)
 - Fixed positioning error generating frames in `CompositeVideoClip` [\#1420](https://github.com/Zulko/moviepy/pull/1420)
 - Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
+- Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
