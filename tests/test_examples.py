@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+import os
+
+import numpy as np
+import pytest
+
+from moviepy.video.io.bindings import mplfig_to_npimage
+from moviepy.video.VideoClip import VideoClip
+
+from tests.test_helper import TMP_DIR
+
+try:
+    import matplotlib
+except ImportError:
+    matplotlib = None
+
+
+@pytest.mark.skipif(not matplotlib, reason="no mpl")
+def test_matplotlib_simple_example():
+    import matplotlib.pyplot as plt
+
+    plt.switch_backend("agg")
+
+    x = np.linspace(-2, 2, 200)
+    duration = 2
+
+    fig, ax = plt.subplots()
+
+    def make_frame(t):
+        ax.clear()
+        ax.plot(x, np.sinc(x ** 2) + np.sin(x + 2 * np.pi / duration * t), lw=3)
+        ax.set_ylim(-1.5, 2.5)
+        return mplfig_to_npimage(fig)
+
+    animation = VideoClip(make_frame, duration=duration)
+    animation.write_gif(os.path.join(TMP_DIR, "matplotlib.gif"), fps=20)
