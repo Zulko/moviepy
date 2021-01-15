@@ -4,50 +4,19 @@ MoviePy that you will use for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
-- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()`` if pygame is installed
+- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
+  if pygame is installed
 - Enables ``clip.ipython_display()`` if in an IPython Notebook
 - Allows the use of ``sliders`` if Matplotlib is installed
 """
 
-<<<<<<< HEAD
-__all__ = [
-    "afx",
-    "AudioClip",
-    "AudioFileClip",
-    "BitmapClip",
-    "clips_array",
-    "ColorClip",
-    "CompositeAudioClip",
-    "CompositeVideoClip",
-    "concatenate_audioclips",
-    "concatenate_videoclips",
-    "convert_to_seconds",
-    "download_webfile",
-    "ffmpeg_tools",
-    "ImageClip",
-    "ImageSequenceClip",
-    "ipython_display",
-    "sliders",
-    "TextClip",
-    "transfx",
-    "vfx",
-    "VideoClip",
-    "VideoFileClip",
-    "videotools",
-]
-
-# Note that these imports could have been performed in the __init__.py
-# file, but this would make the loading of moviepy slower.
-
-=======
->>>>>>> master
 import os
 
-from . import *
-from .video.io.html_tools import ipython_display
+from moviepy import *  # noqa F403
+from moviepy.video.io.html_tools import ipython_display
 
 try:
-    from .video.io.sliders import sliders
+    from moviepy.video.io.sliders import sliders
 except ImportError:
 
     def sliders(*args, **kwargs):
@@ -56,8 +25,8 @@ except ImportError:
 
 
 # adds easy ipython integration
-VideoClip.ipython_display = ipython_display
-AudioClip.ipython_display = ipython_display
+VideoClip.ipython_display = ipython_display  # noqa F405
+AudioClip.ipython_display = ipython_display  # noqa F405
 
 
 # -----------------------------------------------------------------
@@ -69,7 +38,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from .video.io.preview import show, preview
+    from moviepy.video.io.preview import show, preview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -81,11 +50,11 @@ except ImportError:
         raise ImportError("clip.show requires Pygame installed")
 
 
-VideoClip.preview = preview
-VideoClip.show = show
+VideoClip.preview = preview  # noqa F405
+VideoClip.show = show  # noqa F405
 
 try:
-    from .audio.io.preview import preview
+    from moviepy.audio.io.preview import preview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -93,7 +62,7 @@ except ImportError:
         raise ImportError("clip.preview requires Pygame installed")
 
 
-AudioClip.preview = preview
+AudioClip.preview = preview  # noqa F405
 
 __all__ = ["ipython_display", "sliders"]
 
