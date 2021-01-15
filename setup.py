@@ -108,6 +108,7 @@ lint_reqs = [
     "black>=20.8b1",
     "flake8>3.7.0,<4.0.0",
     "flake8-implicit-str-concat==0.2.0",
+    "flake8-absolute-import-1.0",
 ]
 
 extra_reqs = {

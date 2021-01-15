@@ -1,4 +1,4 @@
-from ..AudioClip import concatenate_audioclips
+from moviepy.audio.AudioClip import concatenate_audioclips
 from moviepy.decorators import audio_video_fx
 
 

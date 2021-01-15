@@ -709,7 +709,7 @@ class VideoClip(Clip):
           background.
 
         """
-        from .compositing.CompositeVideoClip import CompositeVideoClip
+        from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
         if size is None:
             size = self.size

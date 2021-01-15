@@ -7,7 +7,7 @@ from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 
-from .CompositeVideoClip import CompositeVideoClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 
 __all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out", "make_loopable"]
