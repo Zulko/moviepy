@@ -7,7 +7,7 @@ def audio_volume(clip, factor):
     value `factor`. Can be applied to both audio and video clips.
 
     This effect is loaded as a clip method when you use moviepy.editor,
-    so you can just write ``clip.volumex(2)``
+    so you can just write ``clip.audio_volume(2)``
 
     Examples
     ---------
