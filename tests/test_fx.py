@@ -1,4 +1,5 @@
 import os
+import random
 
 import numpy as np
 import pytest
@@ -42,10 +43,73 @@ def test_accel_decel():
 
 
 def test_blackwhite():
-    # TODO update to use BitmapClip
-    clip = get_test_video()
-    clip1 = blackwhite(clip)
-    clip1.write_videofile(os.path.join(TMP_DIR, "blackwhite1.webm"))
+    # Create black/white spectrum ``bw_color_dict`` to compare against it.
+    # Colors after ``blackwhite`` FX must be inside this dictionary
+    # Note: black/white spectrum is made of colors with same numbers
+    # [(0, 0, 0), (1, 1, 1), (2, 2, 2)...]
+    bw_color_dict = {}
+    for num in range(0, 256):
+        bw_color_dict[chr(num + 255)] = (num, num, num)
+    color_dict = bw_color_dict.copy()
+    # update dictionary with default BitmapClip color_dict values
+    color_dict.update(BitmapClip.DEFAULT_COLOR_DICT)
+
+    # add row with random colors in b/w spectrum
+    random_row = ""
+    for num in range(512, 515):
+        # use unique unicode representation for each color
+        char = chr(num)
+        random_row += char
+
+        # random colors in the b/w spectrum
+        color_dict[char] = tuple(random.randint(0, 255) for i in range(3))
+
+    # clip converted below to black/white
+    clip = BitmapClip([["RGB", random_row]], color_dict=color_dict, fps=1)
+
+    # for each possible ``preserve_luminosity`` boolean argument value
+    for preserve_luminosity in [True, False]:
+        # default argument (``RGB=None``)
+        clip_bw = blackwhite(clip, preserve_luminosity=preserve_luminosity)
+
+        bitmap = clip_bw.to_bitmap()
+        assert bitmap
+
+        for i, row in enumerate(bitmap[0]):
+            for char in row:
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
+                if i == 0:  # pure "RGB" colors are converted to [85, 85, 85]
+                    assert char == row[0]  # so are equal
+
+        # custom random ``RGB`` argument
+        clip_bw_custom_rgb = blackwhite(
+            clip,
+            RGB=(random.randint(0, 255), 0, 0),
+            preserve_luminosity=preserve_luminosity,
+        )
+        bitmap = clip_bw_custom_rgb.to_bitmap()
+        for i, row in enumerate(bitmap[0]):
+            for i2, char in enumerate(row):
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
+                # for clip "RGB" row, two latest converted colors are equal
+                if i == 0 and i2 > 0:
+                    assert char == row[1] and char == row[2]
+
+        # ``RGB="CRT_phosphor"`` argument
+        clip_bw_crt_phosphor = blackwhite(
+            clip, RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+        )
+        bitmap = clip_bw_crt_phosphor.to_bitmap()
+        assert bitmap
+        for row in bitmap[0]:
+            for char in row:
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
     close_all_clips(locals())
 
 

@@ -1336,6 +1336,19 @@ class TextClip(ImageClip):
 
 
 class BitmapClip(VideoClip):
+    DEFAULT_COLOR_DICT = {
+        "R": (255, 0, 0),
+        "G": (0, 255, 0),
+        "B": (0, 0, 255),
+        "O": (0, 0, 0),
+        "W": (255, 255, 255),
+        "A": (89, 225, 62),
+        "C": (113, 157, 108),
+        "D": (215, 182, 143),
+        "E": (57, 26, 252),
+        "F": (225, 135, 33),
+    }
+
     @convert_parameter_to_seconds(["duration"])
     def __init__(
         self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
@@ -1390,21 +1403,7 @@ class BitmapClip(VideoClip):
         """
         assert fps is not None or duration is not None
 
-        if color_dict:
-            self.color_dict = color_dict
-        else:
-            self.color_dict = {
-                "R": (255, 0, 0),
-                "G": (0, 255, 0),
-                "B": (0, 0, 255),
-                "O": (0, 0, 0),
-                "W": (255, 255, 255),
-                "A": (89, 225, 62),
-                "C": (113, 157, 108),
-                "D": (215, 182, 143),
-                "E": (57, 26, 252),
-                "F": (225, 135, 33),
-            }
+        self.color_dict = color_dict if color_dict else self.DEFAULT_COLOR_DICT
 
         frame_list = []
         for input_frame in bitmap_frames:
