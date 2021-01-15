@@ -12,7 +12,7 @@ MoviePy that you will use for live editing by simply typing:
 
 import os
 
-from moviepy import *  # noqa F403
+from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
 try:
@@ -25,8 +25,8 @@ except ImportError:
 
 
 # adds easy ipython integration
-VideoClip.ipython_display = ipython_display  # noqa F405
-AudioClip.ipython_display = ipython_display  # noqa F405
+VideoClip.ipython_display = ipython_display
+AudioClip.ipython_display = ipython_display
 
 
 # -----------------------------------------------------------------
@@ -50,8 +50,8 @@ except ImportError:
         raise ImportError("clip.show requires Pygame installed")
 
 
-VideoClip.preview = preview  # noqa F405
-VideoClip.show = show  # noqa F405
+VideoClip.preview = preview
+VideoClip.show = show
 
 try:
     from moviepy.audio.io.preview import preview
@@ -62,7 +62,7 @@ except ImportError:
         raise ImportError("clip.preview requires Pygame installed")
 
 
-AudioClip.preview = preview  # noqa F405
+AudioClip.preview = preview
 
 __all__ = ["ipython_display", "sliders"]
 
