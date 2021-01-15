@@ -456,6 +456,16 @@ def test_audio_normalize():
     close_all_clips(locals())
 
 
+def test_audio_normalize_muted():
+    z_array = np.array([0.0])
+    make_frame = lambda t: z_array
+    clip = AudioClip(make_frame, duration=1, fps=44100)
+    clip = audio_normalize(clip)
+    assert np.array_equal(clip.to_soundarray(), z_array)
+
+    close_all_clips(locals())
+
+
 def test_audio_stereo_volume():
     clip = AudioFileClip("media/crunching.mp3")
 
@@ -493,16 +503,6 @@ def test_audio_stereo_volume():
     mono_channel_doubled = doubled_mono_clip.to_soundarray()
     d_channel = mono_clip.to_soundarray() * 2
     assert np.array_equal(mono_channel_doubled, d_channel)
-
-    close_all_clips(locals())
-
-
-def test_normalize_muted():
-    z_array = np.array([0.0])
-    make_frame = lambda t: z_array
-    clip = AudioClip(make_frame, duration=1, fps=44100)
-    clip = audio_normalize(clip)
-    assert np.array_equal(clip.to_soundarray(), z_array)
 
     close_all_clips(locals())
 
