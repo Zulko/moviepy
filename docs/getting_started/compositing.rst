@@ -22,7 +22,7 @@ Two simple ways of putting clips together is to concatenate them (to play them o
 
 Concatenation is done with the function ``concatenate_videoclips``: ::
 
-    from moviepy.editor import VideoFileClip, concatenate_videoclips
+    from moviepy import VideoFileClip, concatenate_videoclips
     clip1 = VideoFileClip("myvideo.mp4")
     clip2 = VideoFileClip("myvideo2.mp4").subclip(50,60)
     clip3 = VideoFileClip("myvideo3.mp4")
@@ -34,7 +34,7 @@ The ``final_clip`` is a clip that plays the clips 1, 2, and 3 one after the othe
 
 Stacking is done with ``clip_array``: ::
 
-    from moviepy.editor import VideoFileClip, clips_array, vfx
+    from moviepy import VideoFileClip, clips_array, vfx
     clip1 = VideoFileClip("myvideo.mp4").margin(10) # add 10px contour
     clip2 = clip1.fx( vfx.mirror_x)
     clip3 = clip1.fx( vfx.mirror_y)
@@ -125,7 +125,7 @@ When you mix video clips together, MoviePy will automatically compose their resp
 
 If you want to make a custom audiotrack from several audio sources: audioc clips can be mixed together with ``CompositeAudioClip`` and ``concatenate_audioclips``: ::
 
-    from moviepy.editor import *
+    from moviepy import *
     # ... make some audio clips aclip1, aclip2, aclip3
     concat = concatenate_audioclips([aclip1, aclip2, aclip3])
     compo = CompositeAudioClip([aclip1.volumex(1.2),

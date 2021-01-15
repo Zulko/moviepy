@@ -9,7 +9,7 @@ MoviePy allows you to produce custom animations by defining a function that retu
 
 An example of this workflow is below: ::
 
-	from moviepy.editor import VideoClip
+	from moviepy import VideoClip
 
 	def make_frame(t):
 	    """Returns an image of the frame for time t."""
@@ -32,7 +32,7 @@ An example of an animation using `matplotlib` can then be as follows: ::
 
 	import matplotlib.pyplot as plt
 	import numpy as np
-	from moviepy.editor import VideoClip
+	from moviepy import VideoClip
 	from moviepy.video.io.bindings import mplfig_to_npimage
 
 	x = np.linspace(-2, 2, 200) 

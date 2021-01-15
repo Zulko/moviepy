@@ -3,35 +3,32 @@ import os
 import numpy as np
 import pytest
 
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.audio.fx.audio_normalize import audio_normalize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
+from moviepy.audio.fx import audio_normalize
 from moviepy.utils import close_all_clips
-from moviepy.video.VideoClip import BitmapClip, ColorClip
-from moviepy.video.fx.blackwhite import blackwhite
-from moviepy.video.fx.blink import blink
-from moviepy.video.fx.colorx import colorx
-from moviepy.video.fx.crop import crop
-from moviepy.video.fx.even_size import even_size
-from moviepy.video.fx.fadein import fadein
-from moviepy.video.fx.fadeout import fadeout
-from moviepy.video.fx.freeze import freeze
-from moviepy.video.fx.freeze_region import freeze_region
-from moviepy.video.fx.invert_colors import invert_colors
-from moviepy.video.fx.loop import loop
-from moviepy.video.fx.lum_contrast import lum_contrast
-from moviepy.video.fx.make_loopable import make_loopable
-from moviepy.video.fx.margin import margin
-from moviepy.video.fx.mirror_x import mirror_x
-from moviepy.video.fx.mirror_y import mirror_y
-from moviepy.video.fx.resize import resize
-from moviepy.video.fx.rotate import rotate
-from moviepy.video.fx.speedx import speedx
-from moviepy.video.fx.time_mirror import time_mirror
-from moviepy.video.fx.time_symmetrize import time_symmetrize
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip
-from moviepy.video.fx.supersample import supersample
+from moviepy.video.fx import (
+    blackwhite,
+    blink,
+    colorx,
+    crop,
+    even_size,
+    fadein,
+    fadeout,
+    freeze,
+    freeze_region,
+    invert_colors,
+    loop,
+    lum_contrast,
+    make_loopable,
+    margin,
+    mirror_x,
+    mirror_y,
+    resize,
+    rotate,
+    speedx,
+    time_mirror,
+    time_symmetrize,
+)
 
 from tests.test_helper import TMP_DIR
 

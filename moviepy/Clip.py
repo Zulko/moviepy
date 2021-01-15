@@ -475,7 +475,7 @@ class Clip:
 
         >>> # prints the maximum of red that is contained
         >>> # on the first line of each frame of the clip.
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> myclip = VideoFileClip('myvideo.mp4')
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])

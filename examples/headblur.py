@@ -1,4 +1,4 @@
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.tracking import manual_tracking
 from moviepy.video.tools.interpolators import Trajectory
 

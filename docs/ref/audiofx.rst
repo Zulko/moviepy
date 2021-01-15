@@ -28,7 +28,7 @@ Or import everything: ::
 
 When you type ::
     
-    from moviepy.editor import *
+    from moviepy import *
 
 the module ``audio.fx`` is loaded as ``afx`` and you can use ``afx.volumex``, etc.
 
