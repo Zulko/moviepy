@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
+
 import pytest
 import os
 

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """FFmpeg reader tests meant to be run with pytest."""
+
 import pytest
 import numpy as np
 

@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
+
 import pytest
 
 import moviepy.tools as tools

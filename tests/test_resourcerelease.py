@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Tool tests meant to be run with pytest.
 
