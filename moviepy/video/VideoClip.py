@@ -277,7 +277,7 @@ class VideoClip(Clip):
         Examples
         ========
 
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()

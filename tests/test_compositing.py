@@ -4,7 +4,7 @@ from os.path import join
 
 import pytest
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.utils import close_all_clips
 
 from tests.test_helper import TMP_DIR

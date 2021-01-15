@@ -12,20 +12,11 @@ The best way to start with MoviePy is to use it with the IPython Notebook: it ma
 Should I use ``moviepy.editor``?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most examples in this documentation use the submodule ``moviepy.editor``, but this submodule is not adapted to all needs so should *you* use it? Short answer: if you use MoviePy to edit videos *by hand*, use it, but if you use MoviePy inside a larger library or program or webserver, it is better to avoid it and just load the functions that you need.
-
-The module ``moviepy.editor`` can be loaded using one of the three following methods: ::
-
-
-    from moviepy.editor import * # imports everything, quick and dirty
-    import moviepy.editor as mpy # Clean. Then use mpy.VideoClip, etc.
-    from moviepy.editor import VideoFileClip # just import what you need
-
-With any of these lines, the ``moviepy.editor`` module will actually do a lot of work behind the curtain: it will fetch all the most common classes, functions and subpackages of MoviePy, initialize a PyGame session (if PyGame is installed) to be able to preview video clips, and implement some shortcuts, like adding the ``resize`` transformation to the clips. This way you can use ``clip.resize(width=240)`` instead of the longer ``clip.fx( resize, width=240)``. In short, ``moviepy.editor`` 
-provides all you need to play around and edit your videos, but it will  take time to load (circa one second). So if all you need is one or two features inside another library, it is better to import directly what you need, as follows: ::
-    
-    from moviepy.video.io.VideoFileClip import VideoFileClip
-    from moviepy.video.fx.resize import resize
+Older versions of MoviePy always recommended importing from ``moviepy.editor``. In v2.0 and above this is no longer recommended and you should generally import directly from ``moviepy`` (for example, ``from moviepy import VideoFileClip``).
+The module ``moviepy.editor`` should now only be loaded if you are using MoviePy to edit videos *by hand*. Importing it will:
+- Start a pygame session to enable ``clip.show()`` and ``clip.preview()`` if pygame is installed
+- Enable ``clip.ipython_display()`` if in an IPython Notebook
+- Enable ``sliders()`` if Matplotlib is installed
 
 .. _previewing:
 

@@ -5,7 +5,7 @@ talking at the same time, because it is actually two scenes of a same
 movie put together.
 """
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.drawing import color_split
 
 duration = 6  # duration of the final clip

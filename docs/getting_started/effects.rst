@@ -47,15 +47,15 @@ but this is not easy to read. To have a clearer syntax you can use ``clip.fx``: 
                    .fx( effect_2, args2)
                    .fx( effect_3, args3))
 
-Much better! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, when you use ``from moviepy.editor import *``, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
+Much better! There are already many effects implemented in the modules ``moviepy.video.fx`` and ``moviepy.audio.fx``. The fx methods in these modules are automatically applied to the sound and the mask of the clip if it is relevant, so that you don't have to worry about modifying these. For practicality, these two modules are loaded as ``vfx`` and ``afx``, so you may write something like ::
     
-    from moviepy.editor import *
+    from moviepy import *
     clip = (VideoFileClip("myvideo.avi")
             .fx( vfx.resize, width=460) # resize (keep aspect ratio)
             .fx( vfx.speedx, 2) # double the speed
             .fx( vfx.colorx, 0.5)) # darken the picture
 
-For convenience, when you use ``moviepy.editor``, frequently used methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
+For convenience, fx methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
 
 
 Methods to create custom effects
