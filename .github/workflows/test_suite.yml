@@ -155,6 +155,6 @@ jobs:
 
       - name: Coveralls
         env:
-          COVERALLS_REPO_TOKEN: w480ZQkQQ8I9wZECi8kA3m2SqqTjNis0Y
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
         run: |
           coveralls
