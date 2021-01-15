@@ -94,17 +94,18 @@ optional_reqs = [
 doc_reqs = [
     "pygame>=1.9.3,<2.0; python_version<'3.8'",
     "numpydoc<2.0",
+    "Sphinx==3.4.3",
+    "sphinx-rtd-theme<0.5",
 ]
 
 test_reqs = [
-    "coverage<5.0",
-    "coveralls>=1.1,<2.0",
+    "coveralls>=3.0.0",
     "pytest-cov>=2.5.1,<3.0",
     "pytest>=3.0.0,<4.0",
-    "requests>=2.8.1,<3.0",
 ]
 
 lint_reqs = [
+    "black>=20.0.0",
     "flake8>3.7.0,<4.0.0",
     "flake8-implicit-str-concat==0.2.0",
 ]
