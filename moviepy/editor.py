@@ -63,4 +63,5 @@ except ImportError:
 
 AudioClip.preview = preview
 
-__all__ = ["sliders"]
+__all__ = ["ipython_display",
+           "sliders"]
