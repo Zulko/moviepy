@@ -105,7 +105,7 @@ test_reqs = [
 ]
 
 lint_reqs = [
-    "black>=20.0.0",
+    "black>=20.8b1",
     "flake8>3.7.0,<4.0.0",
     "flake8-implicit-str-concat==0.2.0",
 ]
