@@ -49,7 +49,7 @@ def test_clip_copy(copy_func):
     for attr in copied_clip.__dict__:
         assert getattr(copied_clip, attr) == getattr(clip, attr)
 
-        # other copies are not edited
+        # other instances are not edited
         assert getattr(copied_clip, attr) != getattr(other_clip, attr)
 
 

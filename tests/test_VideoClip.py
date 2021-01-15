@@ -299,6 +299,21 @@ def test_setfps_withchangeduration():
     close_all_clips(locals())
 
 
+def test_copied_videoclip_write_videofile():
+    """Check if a copied ``VideoClip`` instance can render a file which has
+    the same features as the copied clip when opening with ``VideoFileClip``.
+    """
+    clip = BitmapClip([["RRR", "GGG", "BBB"]], fps=1)
+    copied_clip = clip.copy()
+
+    output_filepath = os.path.join(TMP_DIR, "copied_videoclip_from_bitmap.webm")
+    copied_clip.write_videofile(output_filepath)
+    copied_clip_from_file = VideoFileClip(output_filepath)
+
+    assert list(copied_clip.size) == list(copied_clip_from_file.size)
+    assert copied_clip.duration == copied_clip_from_file.duration
+
+
 @pytest.mark.parametrize(
     "copy_func",
     (
@@ -309,8 +324,8 @@ def test_setfps_withchangeduration():
     ids=("clip.copy()", "copy.copy(clip)", "copy.deepcopy(clip)"),
 )
 def test_videoclip_copy(copy_func):
-    """It must be possible to do a mixed copy of VideoClip using `clip.copy()`
-    and `copy.copy(clip)`.
+    """It must be possible to do a mixed copy of VideoClip using ``clip.copy()``,
+    ``copy.copy(clip)`` and ``copy.deepcopy(clip)``.
     """
     clip = VideoClip()
     other_clip = VideoClip()
@@ -335,7 +350,7 @@ def test_videoclip_copy(copy_func):
         value = getattr(copied_clip, attr)
         assert value == getattr(clip, attr)
 
-        # other copies are not edited
+        # other instances are not edited
         assert value != getattr(other_clip, attr)
 
         # shallow copies of mask and audio
@@ -345,7 +360,7 @@ def test_videoclip_copy(copy_func):
                     getattr(clip, attr), nested_attr
                 )
 
-    # nested objects of other copies are not edited
+    # nested objects of instances copies are not edited
     assert other_clip.mask is None
     assert other_clip.audio is None
 
