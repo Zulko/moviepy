@@ -1,6 +1,6 @@
 from moviepy.decorators import audio_video_fx
 
-from .volumex import volumex
+from .audio_volume import audio_volume
 
 
 @audio_video_fx
@@ -24,4 +24,4 @@ def audio_normalize(clip):
         # Avoids a divide by zero error.
         return clip.copy()
     else:
-        return volumex(clip, 1 / max_volume)
+        return audio_volume(clip, 1 / max_volume)

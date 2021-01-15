@@ -5,6 +5,7 @@ import pytest
 
 from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
 from moviepy.audio.fx import audio_normalize
+from moviepy.audio.fx import audio_stereo_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -448,10 +449,51 @@ def test_time_symmetrize():
     assert clip1 == target1
 
 
-def test_normalize():
+def test_audio_normalize():
     clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
+    close_all_clips(locals())
+
+
+def test_audio_stereo_volume():
+    clip = AudioFileClip("media/crunching.mp3")
+
+    # mute
+    clip_left_channel_muted = audio_stereo_volume(clip, left=0)
+    clip_right_channel_muted = audio_stereo_volume(clip, right=0, left=2)
+
+    left_channel_muted = clip_left_channel_muted.to_soundarray()[:, 0]
+    right_channel_muted = clip_right_channel_muted.to_soundarray()[:, 1]
+
+    z_channel = np.zeros(len(left_channel_muted))
+
+    assert np.array_equal(left_channel_muted, z_channel)
+    assert np.array_equal(right_channel_muted, z_channel)
+
+    # double level
+    left_channel_doubled = clip_right_channel_muted.to_soundarray()[:, 0]
+    d_channel = clip.to_soundarray()[:, 0] * 2
+    assert np.array_equal(left_channel_doubled, d_channel)
+
+    # mono muted
+    sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    muted_mono_clip = audio_stereo_volume(mono_clip, left=0)
+    mono_channel_muted = muted_mono_clip.to_soundarray()
+
+    z_channel = np.zeros(len(mono_channel_muted))
+    assert np.array_equal(mono_channel_muted, z_channel)
+
+    # mono doubled
+    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    doubled_mono_clip = audio_stereo_volume(
+        mono_clip, left=None, right=2
+    )  # using right
+    mono_channel_doubled = doubled_mono_clip.to_soundarray()
+    d_channel = mono_clip.to_soundarray() * 2
+    assert np.array_equal(mono_channel_doubled, d_channel)
+
     close_all_clips(locals())
 
 
@@ -461,6 +503,7 @@ def test_normalize_muted():
     clip = AudioClip(make_frame, duration=1, fps=44100)
     clip = audio_normalize(clip)
     assert np.array_equal(clip.to_soundarray(), z_array)
+
     close_all_clips(locals())
 
 
