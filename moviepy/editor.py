@@ -62,3 +62,5 @@ except ImportError:
 
 
 AudioClip.preview = preview
+
+__all__ = ["sliders"]
