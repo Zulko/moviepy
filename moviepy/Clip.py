@@ -61,7 +61,7 @@ class Clip:
 
     def copy(self):
         """
-        Sugar syntax to use ``.copy()`` in clips as chained methods invocation.
+        Allows the usage of ``.copy()`` in clips as chained methods invocation.
         """
         return _copy.copy(self)
 

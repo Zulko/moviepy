@@ -148,8 +148,7 @@ class VideoFileClip(VideoClip):
     def __deepcopy__(self, memo):
         """AudioFileClip can't be deeply copied because the locked Thread
         of ``proc`` isn't pickleable. Without this override, calls to
-        ``copy.deepcopy(clip)`` will raise next ``TypeError`` if this method
-        ``__deepcopy__`` is not overwritten using ``__copy__`` of parent class:
+        ``copy.deepcopy(clip)`` will raise next ``TypeError``:
 
         ```
         TypeError: cannot pickle '_thread.lock' object
