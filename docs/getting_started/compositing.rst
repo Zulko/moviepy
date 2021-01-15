@@ -128,7 +128,7 @@ If you want to make a custom audiotrack from several audio sources: audioc clips
     from moviepy import *
     # ... make some audio clips aclip1, aclip2, aclip3
     concat = concatenate_audioclips([aclip1, aclip2, aclip3])
-    compo = CompositeAudioClip([aclip1.volumex(1.2),
+    compo = CompositeAudioClip([aclip1.multiply_volume(1.2),
                                 aclip2.with_start(5), # start at t=5s
                                 aclip3.with_start(9)])
 

@@ -57,7 +57,10 @@ clip_right = (
 # ASSEMBLE AND WRITE THE MOVIE TO A FILE
 
 cc = CompositeVideoClip(
-    [clip_right.set_pos("right").volumex(0.4), clip_left.set_pos("left").volumex(0.4)],
+    [
+        clip_right.set_pos("right").multiply_volume(0.4),
+        clip_left.set_pos("left").multiply_volume(0.4),
+    ],
     size=(W, H),
 )
 # cc.preview()

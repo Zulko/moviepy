@@ -45,7 +45,7 @@ In a typical MoviePy script, you load video or audio files, modify them, put the
     clip = VideoFileClip("myHolidays.mp4").subclip(50,60)
 
     # Reduce the audio volume (volume x 0.8)
-    clip = clip.volumex(0.8)
+    clip = clip.multiply_volume(0.8)
 
     # Generate a text clip. You can customize the font, color, etc.
     txt_clip = TextClip("My Holidays 2013",fontsize=70,color='white')
