@@ -58,8 +58,8 @@ clip_right = (
 
 cc = CompositeVideoClip(
     [
-        clip_right.set_pos("right").audio_volume(0.4),
-        clip_left.set_pos("left").audio_volume(0.4),
+        clip_right.set_pos("right").multiply_volume(0.4),
+        clip_left.set_pos("left").multiply_volume(0.4),
     ],
     size=(W, H),
 )

@@ -4,7 +4,7 @@ from moviepy.decorators import audio_video_fx
 
 
 @audio_video_fx
-def audio_stereo_volume(clip, left=1, right=1):
+def multiply_stereo_volume(clip, left=1, right=1):
     """
     For a stereo audioclip, this function enables to change the volume
     of the left and right channel separately (with the factors `left`
@@ -16,8 +16,8 @@ def audio_stereo_volume(clip, left=1, right=1):
 
     >>> from moviepy import AudioFileClip
     >>> music = AudioFileClip('music.ogg')
-    >>> audio_r = music.audio_stereo_volume(left=0, right=1)  # mute left channel/s
-    >>> audio_h = music.audio_stereo_volume(left=0.5, right=0.5)  # half audio
+    >>> audio_r = music.multiply_stereo_volume(left=0, right=1)  # mute left channel/s
+    >>> audio_h = music.multiply_stereo_volume(left=0.5, right=0.5)  # half audio
     """
 
     def stereo_volume(get_frame, t):

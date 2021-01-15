@@ -6,7 +6,7 @@ import pytest
 
 from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
 from moviepy.audio.fx import audio_normalize
-from moviepy.audio.fx import audio_stereo_volume
+from moviepy.audio.fx import multiply_stereo_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -530,12 +530,12 @@ def test_audio_normalize_muted():
     close_all_clips(locals())
 
 
-def test_audio_stereo_volume():
+def test_multiply_stereo_volume():
     clip = AudioFileClip("media/crunching.mp3")
 
     # mute
-    clip_left_channel_muted = audio_stereo_volume(clip, left=0)
-    clip_right_channel_muted = audio_stereo_volume(clip, right=0, left=2)
+    clip_left_channel_muted = multiply_stereo_volume(clip, left=0)
+    clip_right_channel_muted = multiply_stereo_volume(clip, right=0, left=2)
 
     left_channel_muted = clip_left_channel_muted.to_soundarray()[:, 0]
     right_channel_muted = clip_right_channel_muted.to_soundarray()[:, 1]
@@ -553,7 +553,7 @@ def test_audio_stereo_volume():
     # mono muted
     sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
     mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
-    muted_mono_clip = audio_stereo_volume(mono_clip, left=0)
+    muted_mono_clip = multiply_stereo_volume(mono_clip, left=0)
     mono_channel_muted = muted_mono_clip.to_soundarray()
 
     z_channel = np.zeros(len(mono_channel_muted))
@@ -561,7 +561,7 @@ def test_audio_stereo_volume():
 
     # mono doubled
     mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
-    doubled_mono_clip = audio_stereo_volume(
+    doubled_mono_clip = multiply_stereo_volume(
         mono_clip, left=None, right=2
     )  # using right
     mono_channel_doubled = doubled_mono_clip.to_soundarray()

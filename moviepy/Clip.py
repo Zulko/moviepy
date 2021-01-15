@@ -212,10 +212,10 @@ class Clip:
         The motivation of fx is to keep the name of the effect near its
         parameters when the effects are chained:
 
-        >>> from moviepy.video.fx import audio_volume, resize, mirrorx
-        >>> clip.fx(audio_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
+        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
+        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(audio_volume(clip, 0.5), 0.3))
+        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
         """
 
         return func(self, *args, **kwargs)
