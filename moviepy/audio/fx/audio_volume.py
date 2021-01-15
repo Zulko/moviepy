@@ -14,7 +14,7 @@ def audio_volume(clip, factor):
 
     >>> from moviepy import AudioFileClip
     >>> music = AudioFileClip('music.ogg')
-    >>> new_clip = clip.audio_volume(clip, 2)  # doubles audio volume
+    >>> new_clip = clip.audio_volume(2)  # doubles audio volume
     >>> new_clip = clip.audio_volume(0.5)  # half audio
     """
     return clip.transform(
