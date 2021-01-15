@@ -3,8 +3,6 @@ This module implements all the functions to read a video or a picture
 using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 """
 
-from __future__ import division
-
 import os
 import re
 import subprocess as sp
