@@ -6,6 +6,6 @@ or import the function from moviepy.video.fx instead.
 """
 import warnings
 
-from .. import *  # noqa 401,F403
+from moviepy.video.fx import *  # noqa F401,F403
 
 warnings.warn(f"\nMoviePy: {__doc__}", UserWarning)
