@@ -154,7 +154,7 @@ jobs:
           pip install -e .[doc]
 
       - name: Coveralls
+        run: coveralls
         env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
-        run: |
-          coveralls
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_SERVICE_NAME: github

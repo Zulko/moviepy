@@ -99,8 +99,7 @@ doc_reqs = [
 ]
 
 test_reqs = [
-    "coverage<5.0",
-    "coveralls>=1.1,<2.0",
+    "coveralls>=3.0.0",
     "pytest-cov>=2.5.1,<3.0",
     "pytest>=3.0.0,<4.0",
     "requests>=2.8.1,<3.0",
