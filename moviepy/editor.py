@@ -20,7 +20,7 @@ try:
 except ImportError:
 
     def sliders(*args, **kwargs):
-        """NOT AVAILABLE: sliders requires matplotlib installed."""
+        """NOT AVAILABLE: sliders requires matplotlib installed"""
         raise ImportError("sliders requires matplotlib installed")
 
 
