@@ -1,6 +1,5 @@
 import os
 import subprocess as sp
-import warnings
 
 import proglog
 

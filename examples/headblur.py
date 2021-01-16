@@ -1,5 +1,5 @@
 from moviepy import *
-from moviepy.video.tools.tracking import manual_tracking
+from moviepy.video.tools.tracking import manual_tracking  # noqa 401
 from moviepy.video.tools.interpolators import Trajectory
 
 # LOAD THE CLIP (subclip 6'51 - 7'01 of a chaplin movie)

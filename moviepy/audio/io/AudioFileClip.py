@@ -1,5 +1,3 @@
-from __future__ import division
-
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
 from moviepy.decorators import convert_path_to_string
@@ -43,10 +41,12 @@ class AudioFileClip(AudioClip):
     Lifetime
     --------
 
-    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
-    close() afterwards, or the subresources will not be cleaned up until the process ends.
+    Note that this creates subprocesses and locks files. If you construct one
+    of these instances, you must call close() afterwards, or the subresources
+    will not be cleaned up until the process ends.
 
-    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
+    If copies are made, and close() is called on one, it may cause methods on
+    the other copies to fail.
 
     However, coreaders must be closed separately.
 

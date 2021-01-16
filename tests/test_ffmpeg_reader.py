@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """FFmpeg reader tests meant to be run with pytest."""
+
 import pytest
 import numpy as np
 
@@ -99,14 +99,14 @@ def test_large_skip_frame_pos():
     assert reader.fps == 24
 
     # 10 sec * 24 fps = 240 frames
-    frame = reader.get_frame(240 // 24)
+    reader.get_frame(240 // 24)
     assert reader.pos == 241
 
-    frame2 = reader.get_frame(719 / 24)
+    reader.get_frame(719 / 24)
     assert reader.pos == 720
 
     # Go backwards
-    backwards_frame = reader.get_frame(120 // 24)
+    reader.get_frame(120 // 24)
     assert reader.pos == 121
 
 

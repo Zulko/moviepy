@@ -3,8 +3,6 @@ This module implements all the functions to read a video or a picture
 using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 """
 
-from __future__ import division
-
 import os
 import re
 import subprocess as sp
@@ -149,12 +147,20 @@ class FFMPEG_VideoReader:
 
         if len(s) != nbytes:
             warnings.warn(
-                f"In file {self.filename}, "
-                + "%d bytes wanted but %d bytes read," % (nbytes, len(s))
-                + f"at frame index {self.pos} (out of a total {self.nframes} frames), "
-                + f"at time %.02f/%.02f sec. "
-                % (1.0 * self.pos / self.fps, self.duration)
-                + "Using the last valid frame instead.",
+                (
+                    "In file %s, %d bytes wanted but %d bytes read at frame index"
+                    " %d (out of a total %d frames), at time %.02f/%.02f sec."
+                    " Using the last valid frame instead."
+                )
+                % (
+                    self.filename,
+                    nbytes,
+                    len(s),
+                    self.pos,
+                    self.nframes,
+                    1.0 * self.pos / self.fps,
+                    self.duration,
+                ),
                 UserWarning,
             )
             if not hasattr(self, "last_read"):
@@ -199,7 +205,7 @@ class FFMPEG_VideoReader:
 
         # Initialize proc if it is not open
         if not self.proc:
-            print(f"Proc not detected")
+            print("Proc not detected")
             self.initialize(t)
             return self.last_read
 
@@ -335,14 +341,15 @@ def ffmpeg_parse_infos(
     if check_duration:
         try:
             if decode_file:
-                line = [l for l in lines if "time=" in l][-1]
+                line = [line for line in lines if "time=" in line][-1]
             else:
-                line = [l for l in lines if "Duration:" in l][-1]
+                line = [line for line in lines if "Duration:" in line][-1]
             match = re.findall("([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])", line)[0]
             result["duration"] = convert_to_seconds(match)
         except Exception:
             raise IOError(
-                f"MoviePy error: failed to read the duration of file {filename}.\nHere are the file infos returned by ffmpeg:\n\n{infos}"
+                f"MoviePy error: failed to read the duration of file {filename}.\n"
+                f"Here are the file infos returned by ffmpeg:\n\n{infos}"
             )
 
     # get the output line that speaks about video
@@ -449,7 +456,7 @@ def ffmpeg_parse_infos(
                 % (filename, infos)
             )
 
-    lines_audio = [l for l in lines if " Audio: " in l]
+    lines_audio = [line for line in lines if " Audio: " in line]
 
     result["audio_found"] = lines_audio != []
 
