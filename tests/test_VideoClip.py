@@ -337,7 +337,7 @@ def test_videoclip_copy(copy_func):
                 nested_object = BitmapClip([["R"]], duration=0.01)
             else:
                 nested_object = AudioClip(
-                    lambda t: [sin(880 * 2 * pi * t)], duration=0.01, fps=44100
+                    lambda t: [np.sin(880 * 2 * np.pi * t)], duration=0.01, fps=44100
                 )
             setattr(clip, attr, nested_object)
         else:

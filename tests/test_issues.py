@@ -7,7 +7,6 @@ from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
-from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
