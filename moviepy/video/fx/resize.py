@@ -27,11 +27,11 @@ except ImportError:
 
         def resizer(pic, new_size):
             new_size = list(map(int, new_size))[::-1]
-            shape = pic.shape
-            if len(shape) == 3:
-                newshape = (new_size[0], new_size[1], shape[2])
-            else:
-                newshape = (new_size[0], new_size[1])
+            # shape = pic.shape
+            # if len(shape) == 3:
+            #     newshape = (new_size[0], new_size[1], shape[2])
+            # else:
+            #     newshape = (new_size[0], new_size[1])
 
             pil_img = Image.fromarray(pic)
             resized_pil = pil_img.resize(new_size[::-1], Image.ANTIALIAS)
@@ -91,9 +91,9 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
     if new_size is not None:
 
         def translate_new_size(new_size_):
-            """
-            Returns a [w, h] pair from `new_size_`. If `new_size_` is a scalar, then work out
-            the correct pair using the clip's size. Otherwise just return `new_size_`
+            """Returns a [w, h] pair from `new_size_`. If `new_size_` is a
+            scalar, then work out the correct pair using the clip's size.
+            Otherwise just return `new_size_`
             """
             if isinstance(new_size_, (int, float)):
                 return [new_size_ * w, new_size_ * h]

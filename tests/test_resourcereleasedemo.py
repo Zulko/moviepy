@@ -1,30 +1,25 @@
-# -*- coding: utf-8 -*-
-
 """
-    Tool tests meant to be run with pytest.
-    
-    Demonstrates issue #596 exists. 
-    
-    Note: Platform dependent test. Will only fail on Windows > NT. """
+Tool tests meant to be run with pytest.
 
+Demonstrates issue #596 exists.
+
+Note: Platform dependent test. Will only fail on Windows > NT.
+"""
+
+import os
 import time
-from os import remove
-from os.path import join
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
 
-# from tempfile import NamedTemporaryFile
 from tests.test_helper import TMP_DIR
-
-# import pytest
 
 
 def test_failure_to_release_file():
     """This isn't really a test, because it is expected to fail.
-    It demonstrates that there *is* a problem with not releasing resources when running on
-    Windows.
+    It demonstrates that there *is* a problem with not releasing resources when
+    running on Windows.
 
     The real issue was that, as of movepy 0.2.3.2, there was no way around it.
 
@@ -32,7 +27,7 @@ def test_failure_to_release_file():
     """
 
     # Get the name of a temporary file we can use.
-    local_video_filename = join(
+    local_video_filename = os.path.join(
         TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
     )
 
@@ -66,7 +61,7 @@ def test_failure_to_release_file():
                 "On Windows, this succeeds the first few times around the loop"
                 " but eventually fails."
             )
-            print("Need to shut down the process now. No more tests in" "this file.")
+            print("Need to shut down the process now. No more tests in this file.")
             return
 
         try:
@@ -76,7 +71,7 @@ def test_failure_to_release_file():
             # In particular, this raises an exception with PermissionError.
             # In  there was no way to avoid it.
 
-            remove(local_video_filename)
+            os.remove(local_video_filename)
             print("You are not running Windows, because that worked.")
         except OSError:  # More specifically, PermissionError in Python 3.
             print("Yes, on Windows this fails.")

@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-
 """
-    Tool tests meant to be run with pytest.
-    
-    Testing whether issue #596 has been repaired. 
-    
-    Note: Platform dependent test. Will only fail on Windows > NT. """
+Tool tests meant to be run with pytest.
 
+Testing whether issue #596 has been repaired.
+
+Note: Platform dependent test. Will only fail on Windows > NT.
+"""
+
+import os
 import time
-from os import remove
-from os.path import join
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -29,7 +27,7 @@ def test_release_of_file_via_close():
     # Repeat this so we can see no conflicts.
     for i in range(3):
         # Get the name of a temporary file we can use.
-        local_video_filename = join(
+        local_video_filename = os.path.join(
             TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
         )
 
@@ -45,7 +43,7 @@ def test_release_of_file_via_close():
         # This would fail on Windows if the file is still locked.
 
         # This should succeed without exceptions.
-        remove(local_video_filename)
+        os.remove(local_video_filename)
 
     red.close()
     green.close()
