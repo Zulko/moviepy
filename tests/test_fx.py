@@ -290,6 +290,13 @@ def test_loop():
     clip3 = loop(clip, n=3)  # loop 3 times
     clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
 
+    clip = AudioClip(
+        lambda t: np.sin(440 * 2 * np.pi * t) * (t % 1) + 0.5, duration=2.5, fps=44100
+    )
+    clip1 = clip.loop(2)
+    # TODO fix AudioClip.__eq__()
+    # assert concatenate_audioclips([clip, clip]) == clip1
+
     close_all_clips(objects=locals())
 
 
@@ -572,4 +579,5 @@ def test_multiply_stereo_volume():
 
 
 if __name__ == "__main__":
-    pytest.main()
+    # pytest.main()
+    test_loop()

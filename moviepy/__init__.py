@@ -49,7 +49,7 @@ from moviepy.tools import convert_to_seconds
 # Transforms the effects into Clip methods so that
 # they can be called with clip.resize(width=500) instead of
 # clip.fx(vfx.resize, width=500)
-audio_fxs = inspect.getmembers(afx, inspect.isfunction)
+audio_fxs = inspect.getmembers(afx, inspect.isfunction) + [("loop", vfx.loop)]
 video_fxs = (
     inspect.getmembers(vfx, inspect.isfunction)
     + inspect.getmembers(transfx, inspect.isfunction)
