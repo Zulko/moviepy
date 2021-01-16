@@ -60,7 +60,7 @@ def _get_scipy_resizer():
             return (
                 None,
                 [
-                    "scipy.misc.imresize not found (was deprecated in scipy v1.3.0,"
+                    "scipy.misc.imresize not found (was removed in scipy v1.3.0,"
                     f" you are using v{__scipy_version__}, install 'Pillow')"
                 ],
             )
