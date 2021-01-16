@@ -82,6 +82,7 @@ requires = [
 ]
 
 optional_reqs = [
+    "pygame>=1.9.3",
     "python-dotenv>=0.10",
     "opencv-python",
     "scikit-image",
@@ -92,7 +93,6 @@ optional_reqs = [
 ]
 
 doc_reqs = [
-    "pygame>=1.9.3",
     "numpydoc<2.0",
     "Sphinx==3.4.3",
     "sphinx-rtd-theme==0.5.1",
