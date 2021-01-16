@@ -76,32 +76,32 @@ requires = [
     "decorator>=4.0.2,<5.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
-    "numpy>=1.17.3",
+    "numpy>=1.17.3,<=1.20",
     "requests>=2.8.1,<3.0",
     "proglog<=1.0.0",
 ]
 
 optional_reqs = [
-    "python-dotenv>=0.10.0",
-    "opencv-python>=3.0,<4.0",
-    "scikit-image>=0.13.0,<1.0",
+    "pygame>=1.9.3",
+    "python-dotenv>=0.10",
+    "opencv-python",
+    "scikit-image",
     "scikit-learn",
-    "scipy>=0.19.0,<1.5",
-    "matplotlib>=2.0.0,<3.0",
+    "scipy",
+    "matplotlib",
     "youtube_dl",
 ]
 
 doc_reqs = [
-    "pygame>=1.9.3,<2.0; python_version<'3.8'",
     "numpydoc<2.0",
     "Sphinx==3.4.3",
-    "sphinx-rtd-theme<0.5",
+    "sphinx-rtd-theme==0.5.1",
 ]
 
 test_reqs = [
-    "coveralls>=3.0.0",
+    "coveralls>=3.0,<4.0",
     "pytest-cov>=2.5.1,<3.0",
-    "pytest>=3.0.0,<4.0",
+    "pytest>=3.0.0,<7.0.0",
 ]
 
 lint_reqs = [
@@ -140,6 +140,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Multimedia",
         "Topic :: Multimedia :: Sound/Audio",
         "Topic :: Multimedia :: Sound/Audio :: Analysis",
