@@ -1,37 +1,36 @@
 import os
+import random
 
 import numpy as np
 import pytest
 
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.audio.fx.audio_normalize import audio_normalize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
+from moviepy.audio.fx import audio_normalize
+from moviepy.audio.fx import multiply_stereo_volume
 from moviepy.utils import close_all_clips
-from moviepy.video.VideoClip import BitmapClip, ColorClip
-from moviepy.video.fx.blackwhite import blackwhite
-from moviepy.video.fx.blink import blink
-from moviepy.video.fx.colorx import colorx
-from moviepy.video.fx.crop import crop
-from moviepy.video.fx.even_size import even_size
-from moviepy.video.fx.fadein import fadein
-from moviepy.video.fx.fadeout import fadeout
-from moviepy.video.fx.freeze import freeze
-from moviepy.video.fx.freeze_region import freeze_region
-from moviepy.video.fx.invert_colors import invert_colors
-from moviepy.video.fx.loop import loop
-from moviepy.video.fx.lum_contrast import lum_contrast
-from moviepy.video.fx.make_loopable import make_loopable
-from moviepy.video.fx.margin import margin
-from moviepy.video.fx.mirror_x import mirror_x
-from moviepy.video.fx.mirror_y import mirror_y
-from moviepy.video.fx.resize import resize
-from moviepy.video.fx.rotate import rotate
-from moviepy.video.fx.speedx import speedx
-from moviepy.video.fx.time_mirror import time_mirror
-from moviepy.video.fx.time_symmetrize import time_symmetrize
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip
-from moviepy.video.fx.supersample import supersample
+from moviepy.video.fx import (
+    blackwhite,
+    blink,
+    colorx,
+    crop,
+    even_size,
+    fadein,
+    fadeout,
+    freeze,
+    freeze_region,
+    invert_colors,
+    loop,
+    lum_contrast,
+    make_loopable,
+    margin,
+    mirror_x,
+    mirror_y,
+    resize,
+    rotate,
+    speedx,
+    time_mirror,
+    time_symmetrize,
+)
 
 from tests.test_helper import TMP_DIR
 
@@ -45,10 +44,73 @@ def test_accel_decel():
 
 
 def test_blackwhite():
-    # TODO update to use BitmapClip
-    clip = get_test_video()
-    clip1 = blackwhite(clip)
-    clip1.write_videofile(os.path.join(TMP_DIR, "blackwhite1.webm"))
+    # Create black/white spectrum ``bw_color_dict`` to compare against it.
+    # Colors after ``blackwhite`` FX must be inside this dictionary
+    # Note: black/white spectrum is made of colors with same numbers
+    # [(0, 0, 0), (1, 1, 1), (2, 2, 2)...]
+    bw_color_dict = {}
+    for num in range(0, 256):
+        bw_color_dict[chr(num + 255)] = (num, num, num)
+    color_dict = bw_color_dict.copy()
+    # update dictionary with default BitmapClip color_dict values
+    color_dict.update(BitmapClip.DEFAULT_COLOR_DICT)
+
+    # add row with random colors in b/w spectrum
+    random_row = ""
+    for num in range(512, 515):
+        # use unique unicode representation for each color
+        char = chr(num)
+        random_row += char
+
+        # random colors in the b/w spectrum
+        color_dict[char] = tuple(random.randint(0, 255) for i in range(3))
+
+    # clip converted below to black/white
+    clip = BitmapClip([["RGB", random_row]], color_dict=color_dict, fps=1)
+
+    # for each possible ``preserve_luminosity`` boolean argument value
+    for preserve_luminosity in [True, False]:
+        # default argument (``RGB=None``)
+        clip_bw = blackwhite(clip, preserve_luminosity=preserve_luminosity)
+
+        bitmap = clip_bw.to_bitmap()
+        assert bitmap
+
+        for i, row in enumerate(bitmap[0]):
+            for char in row:
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
+                if i == 0:  # pure "RGB" colors are converted to [85, 85, 85]
+                    assert char == row[0]  # so are equal
+
+        # custom random ``RGB`` argument
+        clip_bw_custom_rgb = blackwhite(
+            clip,
+            RGB=(random.randint(0, 255), 0, 0),
+            preserve_luminosity=preserve_luminosity,
+        )
+        bitmap = clip_bw_custom_rgb.to_bitmap()
+        for i, row in enumerate(bitmap[0]):
+            for i2, char in enumerate(row):
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
+                # for clip "RGB" row, two latest converted colors are equal
+                if i == 0 and i2 > 0:
+                    assert char == row[1] and char == row[2]
+
+        # ``RGB="CRT_phosphor"`` argument
+        clip_bw_crt_phosphor = blackwhite(
+            clip, RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+        )
+        bitmap = clip_bw_crt_phosphor.to_bitmap()
+        assert bitmap
+        for row in bitmap[0]:
+            for char in row:
+                # all characters returned by ``to_bitmap`` are in the b/w spectrum
+                assert char in bw_color_dict
+
     close_all_clips(locals())
 
 
@@ -227,6 +289,13 @@ def test_loop():
 
     clip3 = loop(clip, n=3)  # loop 3 times
     clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+
+    clip = AudioClip(
+        lambda t: np.sin(440 * 2 * np.pi * t) * (t % 1) + 0.5, duration=2.5, fps=44100
+    )
+    clip1 = clip.loop(2)
+    # TODO fix AudioClip.__eq__()
+    # assert concatenate_audioclips([clip, clip]) == clip1
 
     close_all_clips(objects=locals())
 
@@ -451,21 +520,64 @@ def test_time_symmetrize():
     assert clip1 == target1
 
 
-def test_normalize():
+def test_audio_normalize():
     clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
     close_all_clips(locals())
 
 
-def test_normalize_muted():
+def test_audio_normalize_muted():
     z_array = np.array([0.0])
     make_frame = lambda t: z_array
     clip = AudioClip(make_frame, duration=1, fps=44100)
     clip = audio_normalize(clip)
     assert np.array_equal(clip.to_soundarray(), z_array)
+
+    close_all_clips(locals())
+
+
+def test_multiply_stereo_volume():
+    clip = AudioFileClip("media/crunching.mp3")
+
+    # mute
+    clip_left_channel_muted = multiply_stereo_volume(clip, left=0)
+    clip_right_channel_muted = multiply_stereo_volume(clip, right=0, left=2)
+
+    left_channel_muted = clip_left_channel_muted.to_soundarray()[:, 0]
+    right_channel_muted = clip_right_channel_muted.to_soundarray()[:, 1]
+
+    z_channel = np.zeros(len(left_channel_muted))
+
+    assert np.array_equal(left_channel_muted, z_channel)
+    assert np.array_equal(right_channel_muted, z_channel)
+
+    # double level
+    left_channel_doubled = clip_right_channel_muted.to_soundarray()[:, 0]
+    d_channel = clip.to_soundarray()[:, 0] * 2
+    assert np.array_equal(left_channel_doubled, d_channel)
+
+    # mono muted
+    sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    muted_mono_clip = multiply_stereo_volume(mono_clip, left=0)
+    mono_channel_muted = muted_mono_clip.to_soundarray()
+
+    z_channel = np.zeros(len(mono_channel_muted))
+    assert np.array_equal(mono_channel_muted, z_channel)
+
+    # mono doubled
+    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    doubled_mono_clip = multiply_stereo_volume(
+        mono_clip, left=None, right=2
+    )  # using right
+    mono_channel_doubled = doubled_mono_clip.to_soundarray()
+    d_channel = mono_clip.to_soundarray() * 2
+    assert np.array_equal(mono_channel_doubled, d_channel)
+
     close_all_clips(locals())
 
 
 if __name__ == "__main__":
-    pytest.main()
+    # pytest.main()
+    test_loop()

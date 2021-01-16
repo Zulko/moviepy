@@ -15,18 +15,16 @@ except ImportError:
     matplotlib = None
 
 
-@pytest.mark.skipif(True, reason="testing on github actions")
 @pytest.mark.skipif(not matplotlib, reason="no mpl")
-def test_matplotlib():
-    # for now, python 3.5 installs a version of matplotlib that complains
-    # about $DISPLAY variable, so lets just ignore for now.
+def test_matplotlib_simple_example():
+    import matplotlib.pyplot as plt
+
+    plt.switch_backend("agg")
 
     x = np.linspace(-2, 2, 200)
-
     duration = 2
 
-    matplotlib.use("Agg")
-    fig, ax = matplotlib.pyplot.subplots()
+    fig, ax = plt.subplots()
 
     def make_frame(t):
         ax.clear()

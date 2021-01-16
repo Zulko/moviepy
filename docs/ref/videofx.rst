@@ -22,7 +22,7 @@ Or import everything: ::
 
 When you type: ::
 
-    from moviepy.editor import *
+    from moviepy import *
 
 the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``vfx.resize`` etc.
 

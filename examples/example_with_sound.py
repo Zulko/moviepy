@@ -5,7 +5,7 @@ talking at the same time, because it is actually two scenes of a same
 movie put together.
 """
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.drawing import color_split
 
 duration = 6  # duration of the final clip
@@ -53,7 +53,10 @@ clip_right = (
 # ASSEMBLE AND WRITE THE MOVIE TO A FILE
 
 cc = CompositeVideoClip(
-    [clip_right.set_pos("right").volumex(0.4), clip_left.set_pos("left").volumex(0.4)],
+    [
+        clip_right.set_pos("right").multiply_volume(0.4),
+        clip_left.set_pos("left").multiply_volume(0.4),
+    ],
     size=(W, H),
 )
 # cc.preview()

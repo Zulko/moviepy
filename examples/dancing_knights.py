@@ -24,7 +24,7 @@ easy to preview and fine-tune each part of the editing.
 import os
 import sys
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.audio.tools.cuts import find_audio_period
 from moviepy.video.tools.cuts import find_video_period
 

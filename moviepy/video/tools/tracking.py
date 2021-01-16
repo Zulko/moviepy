@@ -63,7 +63,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     Examples
     ---------
 
-    >>> from moviepy.editor import VideoFileClip
+    >>> from moviepy import VideoFileClip
     >>> from moviepy.video.tools.tracking import manual_tracking
     >>> clip = VideoFileClip("myvideo.mp4")
     >>> # manually indicate 3 trajectories, save them to a file

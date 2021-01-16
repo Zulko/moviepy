@@ -73,21 +73,7 @@ def html_embed(
 
     Examples
     =========
-
-    >>> import moviepy.editor as mpy
-    >>> # later ...
-    >>> clip.write_videofile("test.mp4")
-    >>> mpy.ipython_display("test.mp4", width=360)
-
-    >>> clip.audio.write_audiofile('test.ogg') # Sound !
-    >>> mpy.ipython_display('test.ogg')
-
-    >>> clip.write_gif("test.gif")
-    >>> mpy.ipython_display('test.gif')
-
-    >>> clip.save_frame("first_frame.jpeg")
-    >>> mpy.ipython_display("first_frame.jpeg")
-
+    TODO Create example based on ipython_display examples
     """
 
     if rd_kwargs is None:
@@ -218,19 +204,16 @@ def ipython_display(
     Examples
     =========
 
-    >>> import moviepy.editor as mpy
+    >>> from moviepy.editor import *
     >>> # later ...
-    >>> clip.write_videofile("test.mp4")
-    >>> mpy.ipython_display("test.mp4", width=360)
-
-    >>> clip.audio.write_audiofile('test.ogg') # Sound !
-    >>> mpy.ipython_display('test.ogg')
+    >>> clip.ipython_display(width=360)
+    >>> clip.audio.ipython_display()
 
     >>> clip.write_gif("test.gif")
-    >>> mpy.ipython_display('test.gif')
+    >>> ipython_display('test.gif')
 
     >>> clip.save_frame("first_frame.jpeg")
-    >>> mpy.ipython_display("first_frame.jpeg")
+    >>> ipython_display("first_frame.jpeg")
     """
 
     if not ipython_available:

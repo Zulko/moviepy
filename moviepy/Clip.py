@@ -199,10 +199,10 @@ class Clip:
         The motivation of fx is to keep the name of the effect near its
         parameters when the effects are chained:
 
-        >>> from moviepy.video.fx import volumex, resize, mirrorx
-        >>> clip.fx(volumex, 0.5).fx(resize, 0.3).fx(mirrorx)
+        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
+        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(volumex(clip, 0.5), 0.3))
+        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
         """
 
         return func(self, *args, **kwargs)
@@ -462,7 +462,7 @@ class Clip:
 
         >>> # prints the maximum of red that is contained
         >>> # on the first line of each frame of the clip.
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> myclip = VideoFileClip('myvideo.mp4')
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])

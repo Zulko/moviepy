@@ -1,4 +1,4 @@
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.drawing import circle
 
 clip = (
