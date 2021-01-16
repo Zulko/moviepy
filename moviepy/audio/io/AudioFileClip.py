@@ -45,23 +45,11 @@ class AudioFileClip(AudioClip):
     of these instances, you must call close() afterwards, or the subresources
     will not be cleaned up until the process ends.
 
-    If copies are made, and close() is called on one, it may cause methods on
-    the other copies to fail.
-
-    However, coreaders must be closed separately.
-
     Examples
     ----------
 
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
-    >>> snd = AudioFileClip("song.mp3", fps = 44100)
-    >>> second_reader = snd.coreader()
-    >>> second_reader.close()
-    >>> snd.close()
-    >>> with AudioFileClip(mySoundArray, fps=44100) as snd:  # from a numeric array
-    >>>     pass  # Close is implicitly performed by context manager.
-
     """
 
     @convert_path_to_string("filename")
@@ -87,12 +75,6 @@ class AudioFileClip(AudioClip):
 
         self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
-
-    def coreader(self):
-        """Returns a copy of the AudioFileClip, i.e. a new entrance point
-        to the audio file. Use copy when you have different clips
-        watching the audio file at different times."""
-        return AudioFileClip(self.filename, self.buffersize)
 
     def close(self):
         """ Close the internal reader. """

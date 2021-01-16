@@ -29,6 +29,10 @@ class AudioClip(Clip):
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
 
+    duration
+      Duration of the clip (in seconds). Some clips are infinite, in
+      this case their duration will be ``None``.
+
     nchannels
       Number of channels (one or two for mono or stereo).
 

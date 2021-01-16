@@ -1,5 +1,5 @@
 """Video file clip tests meant to be run with pytest."""
-
+import copy
 import os
 
 import pytest
@@ -45,22 +45,43 @@ def test_ffmpeg_resizing():
         video.close()
 
 
-def test_shallow_copy():
-    """Call a function which uses @outplace
-    and verify that making a shallow copy and deleting it
-    does not corrupt the original clip."""
-    video_file = "media/big_buck_bunny_0_30.webm"
-    video = VideoFileClip(video_file)
-    video_copy = video.with_start(1)
-    del video_copy
-    # The clip object buffers 200000 frames, around 5 seconds ahead.
-    # When recentering the buffer, if the new buffer is more than 1000000 frames,
-    # around 25s ahead of the end of the current buffer, the reader will
-    # reinitialize and fix self.proc.
-    # Thus to trigger the bug, you have to look for a frame between ~5 and ~30
-    # seconds away. These numbers might vary for different reasons and it would
-    # be nice to have a test which was robust to changes in default buffer size, etc.
-    video.audio.make_frame(15)
+def test_copied_videofileclip_write_videofile():
+    """Check that a copied ``VideoFileClip`` can be renderizable using
+    ``write_videofile``, opened from that render and the new video shares
+    the same data that the original clip.
+    """
+    input_video_filepath = "media/big_buck_bunny_432_433.webm"
+    output_video_filepath = os.path.join(TMP_DIR, "copied_videofileclip.mp4")
+
+    clip = VideoFileClip(input_video_filepath).subclip(0, 1)
+    copied_clip = clip.copy()
+
+    copied_clip.write_videofile(output_video_filepath)
+
+    assert os.path.exists(output_video_filepath)
+    copied_clip_from_file = VideoFileClip(output_video_filepath)
+
+    assert copied_clip.fps == copied_clip_from_file.fps
+    assert list(copied_clip.size) == copied_clip_from_file.size
+    assert isinstance(copied_clip.reader, type(copied_clip_from_file.reader))
+
+
+def test_videofileclip_safe_deepcopy(monkeypatch):
+    """Attempts to do a deepcopy of a VideoFileClip will do a mixed copy,
+    being redirected to ``__copy__`` method of ``VideoClip``, see the
+    documentation of ``VideoFileClip.__deepcopy__`` for more information
+    about this.
+    """
+    clip = VideoFileClip("media/chaplin.mp4")
+
+    # patch __copy__ in the clip
+    def fake__copy__():
+        return "foo"
+
+    monkeypatch.setattr(clip, "__copy__", fake__copy__)
+
+    # this should not raise any exception (see `VideoFileClip.__deepcopy__`)
+    assert copy.deepcopy(clip) == "foo"
 
 
 if __name__ == "__main__":
