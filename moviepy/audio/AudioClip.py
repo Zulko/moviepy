@@ -1,3 +1,4 @@
+import numbers
 import os
 
 import numpy as np
@@ -301,53 +302,65 @@ class CompositeAudioClip(AudioClip):
 
     clips
       List of audio clips, which may start playing at different times or
-      together. If all have their ``duration`` attribute set, the
-      duration of the composite clip is computed automatically.
+      together, depends on their ``start`` attributes. If all have their
+      ``duration`` attribute set, the duration of the composite clip is
+      computed automatically.
 
     """
 
     def __init__(self, clips):
-
         Clip.__init__(self)
+
         self.clips = clips
 
-        ends = [clip.end for clip in self.clips]
-        self.nchannels = max([clip.nchannels for clip in self.clips])
-        if not any([(end is None) for end in ends]):
-            self.duration = max(ends)
-            self.end = max(ends)
+        if not all((end is None) for end in self.ends):
+            self.duration = max(self.ends)
+            self.end = max(self.ends)
 
-        def make_frame(t):
+        self.nchannels = max(clip.nchannels for clip in self.clips)
 
-            played_parts = [clip.is_playing(t) for clip in self.clips]
+        self.fps = None
+        for clip in self.clips:
+            if clip.fps is not None and isinstance(clip.fps, numbers.Number):
+                self.fps = max((clip.fps, self.fps or 0))
 
-            sounds = [
-                clip.get_frame(t - clip.start) * np.array([part]).T
-                for clip, part in zip(self.clips, played_parts)
-                if (part is not False)
-            ]
+    @property
+    def starts(self):
+        return (clip.start for clip in self.clips)
 
-            if isinstance(t, np.ndarray):
-                zero = np.zeros((len(t), self.nchannels))
+    @property
+    def ends(self):
+        return (clip.end for clip in self.clips)
 
-            else:
-                zero = np.zeros(self.nchannels)
+    def make_frame(self, t):
+        played_parts = [clip.is_playing(t) for clip in self.clips]
 
-            return zero + sum(sounds)
+        sounds = [
+            clip.get_frame(t - clip.start) * np.array([part]).T
+            for clip, part in zip(self.clips, played_parts)
+            if (part is not False)
+        ]
 
-        self.make_frame = make_frame
+        if isinstance(t, np.ndarray):
+            zero = np.zeros((len(t), self.nchannels))
+        else:
+            zero = np.zeros(self.nchannels)
+
+        return zero + sum(sounds)
 
 
 def concatenate_audioclips(clips):
-    """
-    The clip with the highest FPS will be the FPS of the result clip.
-    """
-    durations = [clip.duration for clip in clips]
-    timings = np.cumsum([0] + durations)  # start times, and end time.
-    newclips = [clip.with_start(t) for clip, t in zip(clips, timings)]
+    """Concatenates one AudioClip after another, in the order that are passed
+    to ``clips`` parameter.
 
-    result = CompositeAudioClip(newclips).with_duration(timings[-1])
+    Parameters
+    ----------
 
-    fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
-    result.fps = max(fpss) if fpss else None
-    return result
+    clips
+      List of audio clips, which will be played one after other.
+    """
+    # start, end/start2, end2/start3... end
+    starts_end = np.cumsum([0, *[clip.duration for clip in clips]])
+    newclips = [clip.with_start(t) for clip, t in zip(clips, starts_end[:-1])]
+
+    return CompositeAudioClip(newclips).with_duration(starts_end[-1])
