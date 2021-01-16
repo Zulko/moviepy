@@ -16,13 +16,6 @@ from moviepy.utils import close_all_clips
 from tests.test_helper import TMP_DIR
 
 
-def test_audio_coreader():
-    sound = AudioFileClip("media/crunching.mp3")
-    sound = sound.subclip(1, 4)
-    sound2 = AudioFileClip("media/crunching.mp3")
-    sound2.write_audiofile(os.path.join(TMP_DIR, "coreader.mp3"))
-
-
 def test_audioclip():
     make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
     audio = AudioClip(make_frame, duration=2, fps=22050)

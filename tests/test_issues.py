@@ -7,7 +7,6 @@ from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
-from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -346,14 +345,6 @@ def test_issue_417():
     myclip = ImageClip(cad).fx(resize, new_size=[1280, 660])
     CompositeVideoClip([myclip], size=(1280, 720))
     # final.with_duration(7).write_videofile("test.mp4", fps=30)
-
-
-def test_issue_467():
-    cad = "media/python_logo.png"
-    clip = ImageClip(cad)
-
-    # caused an error, NameError: global name 'copy' is not defined
-    clip = clip.fx(blink, duration_on=1, duration_off=1)
 
 
 def test_issue_470():

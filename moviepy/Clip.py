@@ -4,7 +4,7 @@ all the methods that are common to the two subclasses of Clip, VideoClip
 and AudioClip.
 """
 
-from copy import copy
+import copy as _copy
 
 import numpy as np
 import proglog
@@ -60,23 +60,10 @@ class Clip:
         self.memoized_frame = None
 
     def copy(self):
-        """Shallow copy of the clip.
-
-        Returns a shallow copy of the clip whose mask and audio will
-        be shallow copies of the clip's mask and audio if they exist.
-
-        This method is intensively used to produce new clips every time
-        there is an outplace transformation of the clip (clip.resize,
-        clip.subclip, etc.)
         """
-
-        new_clip = copy(self)
-        if hasattr(self, "audio"):
-            new_clip.audio = copy(self.audio)
-        if hasattr(self, "mask"):
-            new_clip.mask = copy(self.mask)
-
-        return new_clip
+        Allows the usage of ``.copy()`` in clips as chained methods invocation.
+        """
+        return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):

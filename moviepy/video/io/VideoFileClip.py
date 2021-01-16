@@ -147,11 +147,16 @@ class VideoFileClip(VideoClip):
                 nbytes=audio_nbytes,
             )
 
-    def coreader(self):
-        """Returns a copy of the VideoFileClip, i.e. a new entrance point
-        to the video file. Use copy when you have different clips
-        watching the video file at different times."""
-        return VideoFileClip(self.filename, audio_buffersize=self.audio.buffersize)
+    def __deepcopy__(self, memo):
+        """AudioFileClip can't be deeply copied because the locked Thread
+        of ``proc`` isn't pickleable. Without this override, calls to
+        ``copy.deepcopy(clip)`` will raise next ``TypeError``:
+
+        ```
+        TypeError: cannot pickle '_thread.lock' object
+        ```
+        """
+        return self.__copy__()
 
     def close(self):
         """ Close the internal reader. """
