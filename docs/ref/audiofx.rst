@@ -41,7 +41,6 @@ the module ``audio.fx`` is loaded as ``afx`` and you can use ``afx.multiply_volu
     
     audio_fadein
     audio_fadeout
-    audio_loop
     audio_normalize
     multiply_stereo_volume
     multiply_volume

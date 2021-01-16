@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
 
 ### Removed <!-- for now removed features -->
+- `audio.fx.audio_loop` removed. Use `video.fx.loop` instead for all types of clip [\#1451](https://github.com/Zulko/moviepy/pull/1451)
 
 ### Fixed <!-- for any bug fixes -->
 - Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [\#1333](https://github.com/Zulko/moviepy/pull/1333)
