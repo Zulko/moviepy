@@ -11,15 +11,16 @@ MoviePy that you will use for live editing by simply typing:
 
 import os
 
-from . import *
-from .video.io.html_tools import ipython_display
+import moviepy  # So that we can access moviepy.__all__ later
+from moviepy import *
+from moviepy.video.io.html_tools import ipython_display
 
 try:
     from .video.io.sliders import sliders
 except ImportError:
 
     def sliders(*args, **kwargs):
-        """NOT AVAILABLE : sliders requires matplotlib installed."""
+        """NOT AVAILABLE: sliders requires matplotlib installed"""
         raise ImportError("sliders requires matplotlib installed")
 
 
@@ -63,6 +64,6 @@ except ImportError:
 
 AudioClip.preview = preview
 
-__all__ = ["ipython_display", "sliders"]
+__all__ = moviepy.__all__ + ["ipython_display", "sliders"]
 
 del preview, show
