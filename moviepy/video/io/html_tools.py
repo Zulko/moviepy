@@ -15,8 +15,8 @@ from base64 import b64encode
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.tools import extensions_dict
 
-from ..VideoClip import ImageClip, VideoClip
-from .ffmpeg_reader import ffmpeg_parse_infos
+from moviepy.video.VideoClip import ImageClip, VideoClip
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 try:
     from IPython.display import HTML
@@ -40,7 +40,7 @@ templates = {
         + sorry
         + "</audio>"
     ),
-    "image": "<img %(options)s " "src='data:image/%(ext)s;base64,%(data)s'>",
+    "image": "<img %(options)s src='data:image/%(ext)s;base64,%(data)s'>",
     "video": (
         "<video %(options)s"
         "src='data:video/%(ext)s;base64,%(data)s' controls>" + sorry + "</video>"
@@ -139,15 +139,17 @@ def html_embed(
             )
 
     if filetype in ["audio", "video"]:
-
         duration = ffmpeg_parse_infos(filename, decode_file=True)["duration"]
         if duration > maxduration:
             raise ValueError(
-                "The duration of video %s (%.1f) exceeds the 'maxduration' "
+                (
+                    "The duration of video %s (%.1f) exceeds the 'maxduration'"
+                    " attribute. You can increase 'maxduration', by passing"
+                    " 'maxduration' parameter to ipython_display function."
+                    " But note that embedding large videos may take all the memory"
+                    " away!"
+                )
                 % (filename, duration)
-                + "attribute. You can increase 'maxduration', by passing 'maxduration' parameter"
-                "to ipython_display function."
-                "But note that embedding large videos may take all the memory away !"
             )
 
     with open(filename, "rb") as file:

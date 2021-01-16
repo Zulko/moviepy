@@ -1,10 +1,8 @@
-from moviepy.decorators import apply_to_mask
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-from .crop import crop
+from moviepy.video.fx.crop import crop
 
 
-# @apply_to_mask
 def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
     """Freezes one region of the clip while the rest remains animated.
 

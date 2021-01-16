@@ -1,6 +1,6 @@
 from moviepy.decorators import audio_video_fx
 
-from .multiply_volume import multiply_volume
+from moviepy.audio.fx.multiply_volume import multiply_volume
 
 
 @audio_video_fx

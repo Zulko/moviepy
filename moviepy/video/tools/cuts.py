@@ -83,8 +83,8 @@ class FramesMatches(list):
     def filter(self, condition):
         """
         Returns a FramesMatches object obtained by filtering out the FramesMatch
-        which do not satistify the condition ``condition``. ``condition`` is a function
-        (FrameMatch -> bool).
+        which do not satistify the condition ``condition``. ``condition``
+        is a function (FrameMatch -> bool).
 
         Examples
         ---------
@@ -116,7 +116,8 @@ class FramesMatches(list):
         looping gif.
 
         This teturns a  FramesMatches object of the all pairs of frames with
-        (end_time-start_time < max_duration) and whose distance is under distance_threshold.
+        (end_time-start_time < max_duration) and whose distance is under
+        distance_threshold.
 
         This is well optimized routine and quite fast.
 
@@ -129,7 +130,8 @@ class FramesMatches(list):
         >>> from moviepy import VideoFileClip
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>> clip = VideoFileClip("foo.mp4").resize(width=200)
-        >>> matches = FramesMatches.from_clip(clip, distance_threshold=10, max_duration=3) # will take time
+        >>> matches = FramesMatches.from_clip(clip, distance_threshold=10,
+        ...                                   max_duration=3)  # will take time
         >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
         >>> clip.subclip(best.start_time, best.end_time).write_gif("foo.gif")
 

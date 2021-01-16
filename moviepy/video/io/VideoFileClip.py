@@ -72,10 +72,12 @@ class VideoFileClip(VideoClip):
     Lifetime
     --------
 
-    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
-    close() afterwards, or the subresources will not be cleaned up until the process ends.
+    Note that this creates subprocesses and locks files. If you construct one
+    of these instances, you must call close() afterwards, or the subresources
+    will not be cleaned up until the process ends.
 
-    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
+    If copies are made, and close() is called on one, it may cause methods on
+    the other copies to fail.
 
     """
 

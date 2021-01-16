@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Result: https://www.youtube.com/watch?v=Qu7HJrsEYFg
 

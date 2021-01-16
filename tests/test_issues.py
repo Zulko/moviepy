@@ -1,12 +1,17 @@
-# -*- coding: utf-8 -*-
 """Issue tests meant to be run with pytest."""
+
 import pytest
 import os
 
-from moviepy import *
-from moviepy.utils import close_all_clips
+from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.blink import blink
 from moviepy.video.fx.resize import resize
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.utils import close_all_clips
 
 from tests.test_helper import TMP_DIR
 
@@ -228,7 +233,7 @@ def test_issue_334():
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
     # TODO: Setting mask here does not work:
     # .with_mask(maskclip).resize(size)])
-    final = CompositeVideoClip([tt, concatenated.with_position(posi).resize(size)])
+    final = CompositeVideoClip([tt, concatenated.with_position(posi).fx(resize, size)])
     final.duration = tt.duration
     final.write_videofile(os.path.join(TMP_DIR, "issue_334.mp4"), fps=10)
 
@@ -247,7 +252,7 @@ def test_issue_354():
         #                           align='South-East')
         # caption.duration = clip.duration
 
-        fadecaption = clip.crossfadein(crosstime).crossfadeout(crosstime)
+        fadecaption = clip.fx(crossfadein, crosstime).fx(crossfadeout, crosstime)
         CompositeVideoClip([clip, fadecaption]).close()
 
 
@@ -259,7 +264,6 @@ def test_issue_359():
 
 def test_issue_368():
     import numpy as np
-    import matplotlib
     import matplotlib.pyplot as plt
     from sklearn import svm
     from sklearn.datasets import make_moons

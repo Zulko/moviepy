@@ -227,8 +227,8 @@ class VideoClip(Clip):
           frame rate to use when generating the sound.
 
         temp_audiofile
-          the name of the temporary audiofile, as a string or path-like object, to be created and
-          then used to write the complete video, if any.
+          the name of the temporary audiofile, as a string or path-like object,
+          to be created and then used to write the complete video, if any.
 
         temp_audiofile_path
           the location that the temporary audiofile is placed, as a
@@ -709,7 +709,7 @@ class VideoClip(Clip):
           background.
 
         """
-        from .compositing.CompositeVideoClip import CompositeVideoClip
+        from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
         if size is None:
             size = self.size
@@ -1312,12 +1312,12 @@ class TextClip(ImageClip):
 
         if arg == "font":
             # Slice removes first 8 characters: "  Font: "
-            return [l[8:] for l in lines if l.startswith("  Font:")]
+            return [line[8:] for line in lines if line.startswith("  Font:")]
         elif arg == "color":
-            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split on space and take
-            # the first item to get the color name.
+            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split
+            # on space and take the first item to get the color name.
             # The first 5 lines are header information, not colors, so ignore
-            return [l.split(" ")[0] for l in lines[5:]]
+            return [line.split(" ")[0] for line in lines[5:]]
         else:
             raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
 
@@ -1354,14 +1354,15 @@ class BitmapClip(VideoClip):
         self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
     ):
         """
-        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+        Creates a VideoClip object from a bitmap representation. Primarily used
+        in the test suite.
 
         Parameters
         -----------
 
         bitmap_frames
-          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
-          Each color represents an (r, g, b) tuple.
+          A list of frames. Each frame is a list of strings. Each string
+          represents a row of colors. Each color represents an (r, g, b) tuple.
           Example input (2 frames, 5x3 pixel size):
           [["RRRRR",
             "RRBRR",
@@ -1371,16 +1372,18 @@ class BitmapClip(VideoClip):
             "RGGGR"]]
 
         fps
-          The number of frames per second to display the clip at. `duration` will calculated from the total number of frames.
-          If both `fps` and `duration` are set, `duration` will be ignored.
+          The number of frames per second to display the clip at. `duration` will
+          calculated from the total number of frames. If both `fps` and `duration`
+          are set, `duration` will be ignored.
 
         duration
-          The total duration of the clip. `fps` will be calculated from the total number of frames.
-          If both `fps` and `duration` are set, `duration` will be ignored.
+          The total duration of the clip. `fps` will be calculated from the total
+          number of frames. If both `fps` and `duration` are set, `duration` will
+          be ignored.
 
         color_dict
-          A dictionary that can be used to set specific (r, g, b) values that correspond
-          to the letters used in ``bitmap_frames``.
+          A dictionary that can be used to set specific (r, g, b) values that
+          correspond to the letters used in ``bitmap_frames``.
           eg ``{"A": (50, 150, 150)}``.
 
           Defaults to

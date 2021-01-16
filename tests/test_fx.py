@@ -10,7 +10,6 @@ from moviepy.audio.fx import multiply_stereo_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
-    blink,
     colorx,
     crop,
     even_size,
@@ -579,5 +578,4 @@ def test_multiply_stereo_volume():
 
 
 if __name__ == "__main__":
-    # pytest.main()
-    test_loop()
+    pytest.main()

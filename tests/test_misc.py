@@ -2,7 +2,8 @@ import os
 
 import pytest
 
-import moviepy.video.tools.cuts as cuts
+from moviepy.video.tools.cuts import find_video_period
+from moviepy.video.fx.resize import resize
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
@@ -28,8 +29,8 @@ MEDIA_SUBTITLES_UNICODE_DATA = [
 
 
 def test_cuts1():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").resize(0.2)
-    cuts.find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").fx(resize, 0.2)
+    find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
     close_all_clips(locals())
 
 

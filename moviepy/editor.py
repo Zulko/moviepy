@@ -4,7 +4,8 @@ MoviePy that you will use for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
-- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()`` if pygame is installed
+- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
+  if pygame is installed
 - Enables ``clip.ipython_display()`` if in an IPython Notebook
 - Allows the use of ``sliders`` if Matplotlib is installed
 """
@@ -16,7 +17,7 @@ from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
 try:
-    from .video.io.sliders import sliders
+    from moviepy.video.io.sliders import sliders
 except ImportError:
 
     def sliders(*args, **kwargs):
@@ -38,7 +39,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from .video.io.preview import show, preview
+    from moviepy.video.io.preview import show, preview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -54,7 +55,7 @@ VideoClip.preview = preview
 VideoClip.show = show
 
 try:
-    from .audio.io.preview import preview
+    from moviepy.audio.io.preview import preview
 except ImportError:
 
     def preview(self, *args, **kwargs):

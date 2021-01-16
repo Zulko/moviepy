@@ -1,7 +1,5 @@
 import numpy as np
 
-from moviepy.decorators import apply_to_mask
-
 try:
     from PIL import Image
 
@@ -23,8 +21,9 @@ except ImportError:
 def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
     """
     Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
-    If the angle is not a multiple of 90 (degrees), the package ``pillow`` must be installed,
-    and there will be black borders. You can make them transparent with
+    If the angle is not a multiple of 90 (degrees), the package ``pillow`` must
+    be installed, and there will be black borders. You can make them
+    transparent with
 
     >>> new_clip = clip.add_mask().rotate(72)
 
@@ -45,7 +44,8 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
       One of "nearest", "bilinear", or "bicubic".
 
     expand
-      Only applIf False, the clip will maintain the same True, the clip will be resized so that the whole
+      Only applIf False, the clip will maintain the same True, the clip will be
+      resized so that the whole
     """
     if PIL_FOUND:
         resample = {

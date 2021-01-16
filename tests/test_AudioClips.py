@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
+
 import os
-import sys
 
 import pytest
 import numpy as np
-from numpy import pi, sin
 
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
-    CompositeAudioClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -27,7 +24,7 @@ def test_audio_coreader():
 
 
 def test_audioclip():
-    make_frame = lambda t: [sin(440 * 2 * pi * t)]
+    make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
     audio = AudioClip(make_frame, duration=2, fps=22050)
     audio.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"), bitrate="16")
 
@@ -62,8 +59,8 @@ def test_audioclip_io():
 
 
 def test_audioclip_concat():
-    make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
-    make_frame_880 = lambda t: [sin(880 * 2 * pi * t)]
+    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    make_frame_880 = lambda t: [np.sin(880 * 2 * np.pi * t)]
 
     clip1 = AudioClip(make_frame_440, duration=1, fps=44100)
     clip2 = AudioClip(make_frame_880, duration=2, fps=22050)
@@ -80,7 +77,7 @@ def test_audioclip_concat():
 
 
 def test_audioclip_with_file_concat():
-    make_frame_440 = lambda t: [sin(440 * 2 * pi * t)]
+    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
     clip1 = AudioClip(make_frame_440, duration=1, fps=44100)
 
     clip2 = AudioFileClip("media/crunching.mp3")

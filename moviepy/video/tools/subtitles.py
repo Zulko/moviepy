@@ -24,14 +24,16 @@ class SubtitlesClip(VideoClip):
 
     encoding
       Optional, specifies srt file encoding.
-      Any standard Python encoding is allowed (listed at https://docs.python.org/3.8/library/codecs.html#standard-encodings)
+      Any standard Python encoding is allowed (listed at
+      https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     =========
 
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
-    >>> generator = lambda text: TextClip(text, font='Georgia-Regular', font_size=24, color='white')
+    >>> generator = lambda text: TextClip(text, font='Georgia-Regular',
+    ...                                   font_size=24, color='white')
     >>> sub = SubtitlesClip("subtitles.srt", generator)
     >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
     >>> myvideo = VideoFileClip("myvideo.avi")
@@ -48,7 +50,8 @@ class SubtitlesClip(VideoClip):
             # `subtitles` is a string or path-like object
             subtitles = file_to_subtitles(subtitles, encoding=encoding)
 
-        # subtitles = [(map(convert_to_seconds, times),text) for times, text in subtitles]
+        # subtitles = [(map(convert_to_seconds, times), text)
+        #              for times, text in subtitles]
         self.subtitles = subtitles
         self.textclips = dict()
 
