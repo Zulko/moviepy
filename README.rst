@@ -164,8 +164,8 @@ The test suite can then be executed via:
     $ pytest
 
 
-Linting source code
--------------------
+Linting and formatting
+----------------------
 
 To make sure that all the code is well formatted and consistent, we use Black_ and Flake8_. Install them by navigating to the project directory and running:
 

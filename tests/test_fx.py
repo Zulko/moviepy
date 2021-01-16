@@ -578,5 +578,4 @@ def test_multiply_stereo_volume():
 
 
 if __name__ == "__main__":
-    # pytest.main()
-    test_loop()
+    pytest.main()
