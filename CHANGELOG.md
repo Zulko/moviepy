@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
 - Changed recommended import from `import moviepy.editor` to `import moviepy`. This change is fully backwards compatible [\#1340](https://github.com/Zulko/moviepy/pull/1340)
 - Renamed `audio.fx.volumex` to `audio.fx.multiply_volume` [\#1424](https://github.com/Zulko/moviepy/pull/1424)
+- Renamed `cols_widths` argument of `clips_array` function by `cols_heights` [\#1465](https://github.com/Zulko/moviepy/pull/1465)
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
