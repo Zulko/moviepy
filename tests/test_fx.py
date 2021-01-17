@@ -263,9 +263,9 @@ def test_fadeout():
         (1, None, None, None, ValueError),
         # `total_duration` 5 at start (2 seconds)
         (None, None, 5, None, ["R", "R", "R", "G", "B"]),
-        # total duration 5 at end (2 seconds)
+        # total duration 5 at end
         ("end", None, 5, None, ["R", "G", "B", "B", "B"]),
-        # total duration 5 padding end (2 seconds)
+        # total duration 5 padding end
         ("end", None, 5, 1, ["R", "G", "G", "G", "B"]),
     ),
     ids=[
@@ -277,8 +277,8 @@ def test_fadeout():
         "at 2nd frame, 2 seconds",
         "`freeze_duration`, `total_duration` are None",
         "`total_duration` 5 at start (2 seconds)",
-        "`total_duration` 5 at end (2 seconds)",
-        "`total_duration` 5 padding end (2 seconds)",
+        "`total_duration` 5 at end",
+        "`total_duration` 5 padding end",
     ],
 )
 def test_freeze(t, freeze_duration, total_duration, padding_end, output_frames):
