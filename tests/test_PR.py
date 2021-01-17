@@ -79,7 +79,7 @@ def test_PR_515():
 def test_PR_528():
     with ImageClip("media/vacation_2017.jpg") as clip:
         new_clip = scroll(clip, w=1000, x_speed=50)
-        new_clip = new_clip.with_duration(1)
+        new_clip = new_clip.with_duration(0.2)
         new_clip.fps = 24
         new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
 
@@ -105,7 +105,9 @@ def test_PR_1137_video():
     """
     Test support for path-like objects as arguments for VideoFileClip.
     """
-    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")) as video:
+    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")).subclip(
+        0.2, 0.4
+    ) as video:
         video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
         assert isinstance(video.filename, str)
 

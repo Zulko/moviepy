@@ -279,16 +279,17 @@ def test_loop():
     target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
     assert clip3 == target3
 
-    clip = get_test_video()
-    clip1 = loop(clip).with_duration(3)  # infinite looping
+    clip = get_test_video().subclip(0.2, 0.3)  # 0.1 seconds long
+    clip1 = loop(clip).with_duration(0.5)  # infinite looping
     clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
 
-    clip2 = loop(clip, duration=10)  # loop for 10 seconds
+    clip2 = loop(clip, duration=0.5)  # loop for 1 second
     clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
 
     clip3 = loop(clip, n=3)  # loop 3 times
     clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
 
+    # Test audio looping
     clip = AudioClip(
         lambda t: np.sin(440 * 2 * np.pi * t) * (t % 1) + 0.5, duration=2.5, fps=44100
     )
@@ -373,7 +374,7 @@ def test_painting():
 
 def test_resize():
     # TODO update to use BitmapClip
-    clip = get_test_video()
+    clip = get_test_video().subclip(0.2, 0.3)
 
     clip1 = resize(clip, (460, 720))  # New resolution: (460,720)
     assert clip1.size == (460, 720)
