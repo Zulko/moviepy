@@ -256,7 +256,7 @@ def test_issue_354():
 
 
 def test_issue_359():
-    with ColorClip((800, 600), color=(255, 0, 0)).with_duration(5) as video:
+    with ColorClip((800, 600), color=(255, 0, 0)).with_duration(0.2) as video:
         video.fps = 30
         video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
 
@@ -301,7 +301,7 @@ def test_issue_368():
 
         return mplfig_to_npimage(fig)
 
-    animation = VideoClip(make_frame, duration=2)
+    animation = VideoClip(make_frame, duration=0.2)
     animation.write_gif(os.path.join(TMP_DIR, "svm.gif"), fps=20)
 
 

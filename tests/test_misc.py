@@ -15,12 +15,11 @@ from tests.test_helper import FONT, TMP_DIR
 
 
 MEDIA_SUBTITLES_DATA = [
-    ([0.0, 4.0], "Red!"),
-    ([5.0, 9.0], "More Red!"),
-    ([10.0, 14.0], "Green!"),
-    ([15.0, 19.0], "More Green!"),
-    ([20.0, 24.0], "Blue"),
-    ([25.0, 29.0], "More Blue!"),
+    ([0.0, 1.0], "Red!"),
+    ([2.0, 3.5], "More Red!"),
+    ([5.0, 6.0], "Green!"),
+    ([7.0, 8.0], "Blue"),
+    ([9.0, 10.0], "More Blue!"),
 ]
 
 MEDIA_SUBTITLES_UNICODE_DATA = [

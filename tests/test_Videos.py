@@ -17,8 +17,7 @@ def test_afterimage():
     some_background_clip = ColorClip((800, 600), color=(255, 255, 255))
     final_clip = CompositeVideoClip(
         [some_background_clip, masked_clip], use_bgclip=True
-    )
-    final_clip.duration = 5
+    ).with_duration(0.2)
     final_clip.write_videofile(os.path.join(TMP_DIR, "afterimage.mp4"), fps=30)
 
 
