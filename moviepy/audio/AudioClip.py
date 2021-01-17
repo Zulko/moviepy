@@ -115,13 +115,13 @@ class AudioClip(Clip):
           2 for 16bit, 4 for 32bit sound.
 
         """
-        if fps is None:
-            fps = self.fps
-
-        stacker = np.vstack if self.nchannels == 2 else np.hstack
-        max_duration = 1.0 * buffersize / fps
         if tt is None:
+            if fps is None:
+                fps = self.fps
+
+            max_duration = 1 * buffersize / fps
             if self.duration > max_duration:
+                stacker = np.vstack if self.nchannels == 2 else np.hstack
                 return stacker(
                     tuple(
                         self.iter_chunks(
