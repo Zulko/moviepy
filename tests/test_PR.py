@@ -105,7 +105,9 @@ def test_PR_1137_video():
     """
     Test support for path-like objects as arguments for VideoFileClip.
     """
-    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")).subclip(0.2, 0.4) as video:
+    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")).subclip(
+        0.2, 0.4
+    ) as video:
         video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
         assert isinstance(video.filename, str)
 
