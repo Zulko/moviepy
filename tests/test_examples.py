@@ -21,7 +21,7 @@ def test_matplotlib_simple_example():
     plt.switch_backend("agg")
 
     x = np.linspace(-2, 2, 200)
-    duration = 2
+    duration = 0.5
 
     fig, ax = plt.subplots()
 
