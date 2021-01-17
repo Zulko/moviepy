@@ -211,7 +211,7 @@ def test_fadeout():
         "output_frames",
     ),
     (
-        # at start, 1 second (default t arg)
+        # at start, 1 second (default t == 0)
         (
             None,
             1,
@@ -219,7 +219,7 @@ def test_fadeout():
             None,
             ["R", "R", "G", "B"],
         ),
-        # at start, 1 second (explicit t arg)
+        # at start, 1 second (explicit t)
         (
             0,
             1,
