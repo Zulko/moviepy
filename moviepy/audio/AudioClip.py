@@ -317,20 +317,23 @@ class CompositeAudioClip(AudioClip):
     """
 
     def __init__(self, clips):
-        Clip.__init__(self)
-
         self.clips = clips
-
-        if not any((end is None) for end in self.ends):
-            self.duration = max(self.ends)
-            self.end = max(self.ends)
-
         self.nchannels = max(clip.nchannels for clip in self.clips)
 
-        self.fps = None
+        # self.duration is setted at AudioClip
+        duration = None
+        for end in self.ends:
+            if end is None:
+                break
+            duration = max(end, duration or 0)
+
+        # self.fps is setted at AudioClip
+        fps = None
         for clip in self.clips:
             if clip.fps is not None and isinstance(clip.fps, numbers.Number):
-                self.fps = max((clip.fps, self.fps or 0))
+                fps = max((clip.fps, fps or 0))
+
+        super().__init__(duration=duration, fps=fps)
 
     @property
     def starts(self):
