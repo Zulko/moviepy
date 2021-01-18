@@ -114,12 +114,12 @@ def test_concatenate_audioclips_CompositeAudioClip():
     close_all_clips(locals())
 
 
-def test_CompositeAudioClip_no_concatenated():
+def test_CompositeAudioClip_by__init__():
     """The difference between the CompositeAudioClip returned by
     ``concatenate_audioclips`` and a CompositeAudioClip created using the class
     directly, is that audios in ``concatenate_audioclips`` are played one after
     other and AudioClips passed to CompositeAudioClip can be played at different
-    times, it depends on their ``start`` attribute.
+    times, it depends on their ``start`` attributes.
     """
     frequencies = [440, 880, 1760]
     durations = [2, 5, 1]
