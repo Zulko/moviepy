@@ -158,7 +158,7 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
     clips_array([[clip1, clip2, clip3], [clip4, clip5, clip6]])
     ```
 
-    will result in a CompositeVideoClip layout displayed like:
+    the result will be a CompositeVideoClip with a layout displayed like:
 
     ```
     ┏━━━━━━━┳━━━━━━━┳━━━━━━━┓
@@ -180,14 +180,14 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
       Matrix of clips included in the returned composited video clip.
 
     rows_widths
-      Widths of the different rows in pixels. If None, is set automatically.
+      Widths of the different rows in pixels. If ``None``, is set automatically.
 
     cols_heights
-      Heights of the different colums in pixels. If None, is set automatically.
+      Heights of the different colums in pixels. If ``None``, is set automatically.
 
     bg_color
-       Fill color for the masked and unfilled regions. Set to None for these
-       regions to be transparent (will be slower).
+       Fill color for the masked and unfilled regions. Set to ``None`` for these
+       regions to be transparent (processing will be slower).
     """
     array = np.array(array)
     sizes_array = np.array([[clip.size for clip in line] for line in array])
