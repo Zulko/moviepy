@@ -321,7 +321,7 @@ class CompositeAudioClip(AudioClip):
 
         self.clips = clips
 
-        if not all((end is None) for end in self.ends):
+        if not any((end is None) for end in self.ends):
             self.duration = max(self.ends)
             self.end = max(self.ends)
 
