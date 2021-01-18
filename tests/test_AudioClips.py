@@ -157,7 +157,7 @@ def test_concatenate_audioclip_with_audiofileclip():
     # stereo A note
     make_frame = lambda t: np.array(
         [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
-    ).T.copy(order="C")
+    ).T
 
     clip1 = AudioClip(make_frame, duration=1, fps=44100)
     clip2 = AudioFileClip("media/crunching.mp3")
