@@ -39,10 +39,18 @@ class AudioClip(Clip):
     Examples
     ---------
 
-    >>> # Plays the note A (a sine wave of frequency 440HZ)
+    >>> # Plays the note A in mono (a sine wave of frequency 440 Hz)
     >>> import numpy as np
     >>> make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
     >>> clip = AudioClip(make_frame, duration=5, fps=44100)
+    >>> clip.preview()
+
+    >>> # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
+    >>> make_frame = lambda t: np.array([
+    ...     np.sin(440 * 2 * np.pi * t),
+    ...     np.sin(880 * 2 * np.pi * t)
+    ... ]).T.copy(order="C")
+    >>> clip = AudioClip(make_frame, duration=3, fps=44100)
     >>> clip.preview()
 
     """
