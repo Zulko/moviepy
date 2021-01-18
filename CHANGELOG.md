@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed positioning error generating frames in `CompositeVideoClip` [\#1420](https://github.com/Zulko/moviepy/pull/1420)
 - Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
 - Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
+- Fixed `freeze` FX was freezing at time minus 1 second as the end [\#1461](https://github.com/Zulko/moviepy/pull/1461)
 - `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
 
 

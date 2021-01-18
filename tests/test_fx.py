@@ -202,24 +202,127 @@ def test_fadeout():
     close_all_clips(locals())
 
 
-def test_freeze():
-    clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)  # 3 separate frames
+@pytest.mark.parametrize(
+    (
+        "t",
+        "freeze_duration",
+        "total_duration",
+        "padding_end",
+        "output_frames",
+    ),
+    (
+        # at start, 1 second (default t == 0)
+        (
+            None,
+            1,
+            None,
+            None,
+            ["R", "R", "G", "B"],
+        ),
+        # at start, 1 second (explicit t)
+        (
+            0,
+            1,
+            None,
+            None,
+            ["R", "R", "G", "B"],
+        ),
+        # at end, 1 second
+        (
+            "end",
+            1,
+            None,
+            None,
+            ["R", "G", "B", "B"],
+        ),
+        # at end 1 second, padding end 1 second
+        (
+            "end",
+            1,
+            None,
+            1,
+            ["R", "G", "G", "B"],
+        ),
+        # at 2nd frame, 1 second
+        (
+            1,  # second 0 is frame 1, second 1 is frame 2...
+            1,
+            None,
+            None,
+            ["R", "G", "G", "B"],
+        ),
+        # at 2nd frame, 2 seconds
+        (
+            1,
+            2,
+            None,
+            None,
+            ["R", "G", "G", "G", "B"],
+        ),
+        # `freeze_duration`, `total_duration` are None
+        (1, None, None, None, ValueError),
+        # `total_duration` 5 at start (2 seconds)
+        (None, None, 5, None, ["R", "R", "R", "G", "B"]),
+        # total duration 5 at end
+        ("end", None, 5, None, ["R", "G", "B", "B", "B"]),
+        # total duration 5 padding end
+        ("end", None, 5, 1, ["R", "G", "G", "G", "B"]),
+    ),
+    ids=[
+        "at start, 1 second (default t == 0)",
+        "at start, 1 second (explicit t)",
+        "at end, 1 second",
+        "at end 1 second, padding end 1 second",
+        "at 2nd frame, 1 second",
+        "at 2nd frame, 2 seconds",
+        "`freeze_duration`, `total_duration` are None",
+        "`total_duration` 5 at start (2 seconds)",
+        "`total_duration` 5 at end",
+        "`total_duration` 5 padding end",
+    ],
+)
+def test_freeze(t, freeze_duration, total_duration, padding_end, output_frames):
+    input_frames = ["R", "G", "B"]
+    clip_duration = len(input_frames)
 
-    clip1 = freeze(clip, t=1, freeze_duration=1)
-    target1 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
-    assert clip1 == target1
+    # create BitmapClip with predefined set of colors, during 1 second each one
+    clip = BitmapClip([list(color) for color in input_frames], fps=1).with_duration(
+        clip_duration
+    )
 
-    clip2 = freeze(clip, t="end", freeze_duration=1)
-    target2 = BitmapClip([["R"], ["G"], ["B"], ["B"]], fps=1)
-    assert clip2 == target2
+    # build kwargs passed to `freeze`
+    possible_kwargs = {
+        "t": t,
+        "freeze_duration": freeze_duration,
+        "total_duration": total_duration,
+        "padding_end": padding_end,
+    }
+    kwargs = {
+        kw_name: kw_value
+        for kw_name, kw_value in possible_kwargs.items()
+        if kw_value is not None
+    }
 
-    clip3 = freeze(clip, t=1, total_duration=4)
-    target3 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
-    assert clip3 == target3
+    # freeze clip
+    if hasattr(output_frames, "__traceback__"):
+        with pytest.raises(output_frames):
+            freeze(clip, **kwargs)
+        return
+    else:
+        freezed_clip = freeze(clip, **kwargs)
 
-    clip4 = freeze(clip, t="end", total_duration=4, padding_end=1)
-    target4 = BitmapClip([["R"], ["G"], ["G"], ["B"]], fps=1)
-    assert clip4 == target4
+    # assert new duration
+    expected_freeze_duration = (
+        freeze_duration
+        if freeze_duration is not None
+        else total_duration - clip_duration
+    )
+    assert freezed_clip.duration == clip_duration + expected_freeze_duration
+
+    # assert colors are the expected
+    for i, color in enumerate(freezed_clip.iter_frames()):
+        expected_color = list(BitmapClip.DEFAULT_COLOR_DICT[output_frames[i]])
+        assert list(color[0][0]) == expected_color
 
 
 def test_freeze_region():
@@ -234,8 +337,6 @@ def test_freeze_region():
     clip2 = freeze_region(clip, t=1, outside_region=(2, 0, 3, 1))
     target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]], fps=1)
     assert clip2 == target2
-
-    pass
 
 
 def test_gamma_corr():
