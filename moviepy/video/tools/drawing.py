@@ -149,7 +149,7 @@ def color_gradient(
             arr = np.dstack(3 * [arr])
         return arr * color_1 + (1 - arr) * color_2
 
-    elif shape == "radial":        
+    elif shape == "radial":
         if (radius or 0) == 0:
             arr = np.ones((h, w))
         else:
