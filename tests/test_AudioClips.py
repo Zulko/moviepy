@@ -8,6 +8,7 @@ import numpy as np
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
+    CompositeAudioClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -50,51 +51,137 @@ def test_audioclip_io():
     )
     assert (output_array[len(input_array) :] == 0).all()
 
+    close_all_clips(locals())
 
-def test_audioclip_concat():
+
+def test_concatenate_audioclips_render():
+    """Concatenated AudioClips through ``concatenate_audioclips`` should return
+    a clip that can be rendered to a file.
+    """
     make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
     make_frame_880 = lambda t: [np.sin(880 * 2 * np.pi * t)]
 
-    clip1 = AudioClip(make_frame_440, duration=1, fps=44100)
-    clip2 = AudioClip(make_frame_880, duration=2, fps=22050)
+    clip_440 = AudioClip(make_frame_440, duration=0.01, fps=44100)
+    clip_880 = AudioClip(make_frame_880, duration=0.000001, fps=22050)
 
-    concat_clip = concatenate_audioclips((clip1, clip2))
-    # concatenate_audioclips should return a clip with an fps of the greatest
-    # fps passed into it
+    concat_clip = concatenate_audioclips((clip_440, clip_880))
+    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concatenate_audioclips.mp3"))
+
+    assert concat_clip.duration == clip_440.duration + clip_880.duration
+    close_all_clips(locals())
+
+
+def test_concatenate_audioclips_CompositeAudioClip():
+    """Concatenated AudioClips through ``concatenate_audioclips`` should return
+    a CompositeAudioClip whose attributes should be consistent:
+
+    - Returns CompositeAudioClip.
+    - Their fps is taken from the maximum of their audios.
+    - Audios are placed one after other:
+      - Duration is the sum of their durations.
+      - Ends are the accumulated sum of their durations.
+      - Starts are the accumulated sum of their durations, but first start is 0
+        and lastest is ignored.
+    - Channels are the max channels of their clips.
+    """
+    frequencies = [440, 880, 1760]
+    durations = [2, 5, 1]
+    fpss = [44100, 22050, 11025]
+
+    clips = [
+        AudioClip(
+            lambda t: [np.sin(frequency * 2 * np.pi * t)], duration=duration, fps=fps
+        )
+        for frequency, duration, fps in zip(frequencies, durations, fpss)
+    ]
+
+    concat_clip = concatenate_audioclips(clips)
+
+    # should return a CompositeAudioClip
+    assert isinstance(concat_clip, CompositeAudioClip)
+
+    # fps of the greatest fps passed into it
     assert concat_clip.fps == 44100
 
-    return
-    # Does run without errors, but the length of the audio is way to long,
-    # so it takes ages to run.
-    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concat_audioclip.mp3"))
+    # audios placed on after other
+    assert concat_clip.duration == sum(durations)
+    assert list(concat_clip.ends) == list(np.cumsum(durations))
+    assert list(concat_clip.starts), list(np.cumsum([0, *durations[:-1]]))
+
+    # channels are maximum number of channels of the clips
+    assert concat_clip.nchannels == max(clip.nchannels for clip in clips)
+
+    close_all_clips(locals())
 
 
-def test_audioclip_with_file_concat():
-    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    clip1 = AudioClip(make_frame_440, duration=1, fps=44100)
+def test_CompositeAudioClip_by__init__():
+    """The difference between the CompositeAudioClip returned by
+    ``concatenate_audioclips`` and a CompositeAudioClip created using the class
+    directly, is that audios in ``concatenate_audioclips`` are played one after
+    other and AudioClips passed to CompositeAudioClip can be played at different
+    times, it depends on their ``start`` attributes.
+    """
+    frequencies = [440, 880, 1760]
+    durations = [2, 5, 1]
+    fpss = [44100, 22050, 11025]
+    starts = [0, 1, 2]
 
+    clips = [
+        AudioClip(
+            lambda t: [np.sin(frequency * 2 * np.pi * t)], duration=duration, fps=fps
+        ).with_start(start)
+        for frequency, duration, fps, start in zip(frequencies, durations, fpss, starts)
+    ]
+
+    compound_clip = CompositeAudioClip(clips)
+
+    # should return a CompositeAudioClip
+    assert isinstance(compound_clip, CompositeAudioClip)
+
+    # fps of the greatest fps passed into it
+    assert compound_clip.fps == 44100
+
+    # duration depends on clips starts and durations
+    ends = [start + duration for start, duration in zip(starts, durations)]
+    assert compound_clip.duration == max(ends)
+    assert list(compound_clip.ends) == ends
+    assert list(compound_clip.starts) == starts
+
+    # channels are maximum number of channels of the clips
+    assert compound_clip.nchannels == max(clip.nchannels for clip in clips)
+
+    close_all_clips(locals())
+
+
+def test_concatenate_audioclip_with_audiofileclip():
+    # stereo A note
+    make_frame = lambda t: np.array(
+        [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
+    ).T
+
+    clip1 = AudioClip(make_frame, duration=1, fps=44100)
     clip2 = AudioFileClip("media/crunching.mp3")
 
     concat_clip = concatenate_audioclips((clip1, clip2))
-
-    return
-    # Fails with strange error
-    # "ValueError: operands could not be broadcast together with
-    # shapes (1993,2) (1993,1993)1
     concat_clip.write_audiofile(
         os.path.join(TMP_DIR, "concat_clip_with_file_audio.mp3")
     )
 
+    assert concat_clip.duration == clip1.duration + clip2.duration
 
-def test_audiofileclip_concat():
-    sound = AudioFileClip("media/crunching.mp3")
-    sound = sound.subclip(1, 4)
+
+def test_concatenate_audiofileclips():
+    clip1 = AudioFileClip("media/crunching.mp3").subclip(1, 4)
 
     # Checks it works with videos as well
-    sound2 = AudioFileClip("media/big_buck_bunny_432_433.webm")
-    concat = concatenate_audioclips((sound, sound2))
+    clip2 = AudioFileClip("media/big_buck_bunny_432_433.webm")
+    concat_clip = concatenate_audioclips((clip1, clip2))
 
-    concat.write_audiofile(os.path.join(TMP_DIR, "concat_audio_file.mp3"))
+    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concat_audio_file.mp3"))
+
+    assert concat_clip.duration == clip1.duration + clip2.duration
+
+    close_all_clips(locals())
 
 
 def test_audioclip_mono_max_volume():
