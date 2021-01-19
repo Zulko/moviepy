@@ -30,10 +30,10 @@ def test_ffmpeg_parse_infos():
 
 def test_ffmpeg_parse_infos_duration():
     infos = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm")
-    assert infos["video_nframes"] == 720
+    assert infos["video_n_frames"] == 720
 
     infos = ffmpeg_parse_infos("media/bitmap.mp4")
-    assert infos["video_nframes"] == 5
+    assert infos["video_n_frames"] == 5
 
 
 def test_ffmpeg_parse_infos_for_i926():

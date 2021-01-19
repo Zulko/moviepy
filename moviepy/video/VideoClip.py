@@ -126,7 +126,7 @@ class VideoClip(Clip):
     @property
     @requires_duration
     @requires_fps
-    def nframes(self):
+    def n_frames(self):
         return int(self.duration * self.fps)
 
     def __copy__(self):

@@ -49,7 +49,7 @@ class FFMPEG_VideoReader:
 
         self.duration = infos["video_duration"]
         self.ffmpeg_duration = infos["duration"]
-        self.nframes = infos["video_nframes"]
+        self.n_frames = infos["video_n_frames"]
         self.bitrate = infos["video_bitrate"]
 
         self.infos = infos
@@ -155,7 +155,7 @@ class FFMPEG_VideoReader:
                     nbytes,
                     len(s),
                     self.pos,
-                    self.nframes,
+                    self.n_frames,
                     1.0 * self.pos / self.fps,
                     self.duration,
                 ),
@@ -287,7 +287,7 @@ def ffmpeg_parse_infos(
     """Get file infos using ffmpeg.
 
     Returns a dictionnary with the fields:
-    "video_found", "video_fps", "duration", "video_nframes",
+    "video_found", "video_fps", "duration", "video_n_frames",
     "video_duration", "video_bitrate","audio_found", "audio_fps", "audio_bitrate"
 
     "video_duration" is slightly smaller than "duration" to avoid
@@ -420,14 +420,14 @@ def ffmpeg_parse_infos(
                 result["video_fps"] = x * coef
 
         if check_duration:
-            result["video_nframes"] = int(result["duration"] * result["video_fps"])
+            result["video_n_frames"] = int(result["duration"] * result["video_fps"])
             result["video_duration"] = result["duration"]
         else:
-            result["video_nframes"] = 1
+            result["video_n_frames"] = 1
             result["video_duration"] = None
         # We could have also recomputed the duration from the number
         # of frames, as follows:
-        # >>> result['video_duration'] = result['video_nframes'] / result['video_fps']
+        # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
 
         # get the video rotation info.
         try:
