@@ -97,5 +97,51 @@ def test_audiofileclip_concat():
     concat.write_audiofile(os.path.join(TMP_DIR, "concat_audio_file.mp3"))
 
 
+def test_audioclip_mono_max_volume():
+    # mono
+    make_frame_440 = lambda t: np.sin(440 * 2 * np.pi * t)
+    clip = AudioClip(make_frame_440, duration=1, fps=44100)
+    max_volume = clip.max_volume()
+    assert isinstance(max_volume, float)
+    assert max_volume > 0
+
+
+@pytest.mark.parametrize(("nchannels"), (2, 4, 8, 16))
+@pytest.mark.parametrize(("channel_muted"), ("left", "right"))
+def test_audioclip_stereo_max_volume(nchannels, channel_muted):
+    def make_frame(t):
+        frame = []
+        # build channels (one of each pair muted)
+        for i in range(int(nchannels / 2)):
+            if channel_muted == "left":
+                # if muted channel is left, [0, sound, 0, sound...]
+                frame.append(np.sin(t * 0))
+                frame.append(np.sin(440 * 2 * np.pi * t))
+            else:
+                # if muted channel is right, [sound, 0, sound, 0...]
+                frame.append(np.sin(440 * 2 * np.pi * t))
+                frame.append(np.sin(t * 0))
+        return np.array(frame).T
+
+    clip = AudioClip(make_frame, fps=44100, duration=1)
+    max_volume = clip.max_volume(stereo=True)
+    # if `stereo == True`, `AudioClip.max_volume` returns a Numpy array`
+    assert isinstance(max_volume, np.ndarray)
+    assert len(max_volume) == nchannels
+
+    # check channels muted and with sound
+    for i, channel_max_volume in enumerate(max_volume):
+        if i % 2 == 0:
+            if channel_muted == "left":
+                assert channel_max_volume == 0
+            else:
+                assert channel_max_volume > 0
+        else:
+            if channel_muted == "right":
+                assert channel_max_volume == 0
+            else:
+                assert channel_max_volume > 0
+
+
 if __name__ == "__main__":
     pytest.main()

@@ -39,10 +39,18 @@ class AudioClip(Clip):
     Examples
     ---------
 
-    >>> # Plays the note A (a sine wave of frequency 440HZ)
+    >>> # Plays the note A in mono (a sine wave of frequency 440 Hz)
     >>> import numpy as np
     >>> make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
     >>> clip = AudioClip(make_frame, duration=5, fps=44100)
+    >>> clip.preview()
+
+    >>> # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
+    >>> make_frame = lambda t: np.array([
+    ...     np.sin(440 * 2 * np.pi * t),
+    ...     np.sin(880 * 2 * np.pi * t)
+    ... ]).T.copy(order="C")
+    >>> clip = AudioClip(make_frame, duration=3, fps=44100)
     >>> clip.preview()
 
     """
@@ -149,17 +157,16 @@ class AudioClip(Clip):
         return snd_array
 
     def max_volume(self, stereo=False, chunksize=50000, logger=None):
+        # max volume separated by channels if ``stereo`` and not mono
+        stereo = stereo and self.nchannels > 1
 
-        stereo = stereo and (self.nchannels == 2)
-
-        maxi = np.array([0, 0]) if stereo else 0
+        # zero for each channel
+        maxi = np.zeros(self.nchannels)
         for chunk in self.iter_chunks(chunksize=chunksize, logger=logger):
-            maxi = (
-                np.maximum(maxi, abs(chunk).max(axis=0))
-                if stereo
-                else max(maxi, abs(chunk).max())
-            )
-        return maxi
+            maxi = np.maximum(maxi, abs(chunk).max(axis=0))
+
+        # if mono returns float, otherwise array of volumes by channel
+        return maxi if stereo else maxi[0]
 
     @requires_duration
     @convert_path_to_string("filename")

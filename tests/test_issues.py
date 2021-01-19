@@ -14,6 +14,11 @@ from moviepy.utils import close_all_clips
 
 from tests.test_helper import TMP_DIR
 
+try:
+    import matplotlib
+except ImportError:
+    matplotlib = None
+
 
 def test_issue_145():
     video = ColorClip((800, 600), color=(255, 0, 0)).with_duration(5)
@@ -261,6 +266,7 @@ def test_issue_359():
         video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
 
 
+@pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_issue_368():
     import numpy as np
     import matplotlib.pyplot as plt
