@@ -129,13 +129,11 @@ def color_gradient(
     if shape == "linear":
         if vector is None:
             if p2 is not None:
-                p2 = np.array(p2[::-1])
-                vector = p2 - p1
+                vector = np.array(p2[::-1]) - p1
             else:
                 raise ValueError("You must provide either 'p2' or 'vector'")
         else:
             vector = np.array(vector[::-1])
-            p2 = p1 + vector
 
         if vector is not None:
             norm = np.linalg.norm(vector)
