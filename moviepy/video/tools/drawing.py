@@ -158,9 +158,7 @@ def color_gradient(
         if color_1.size > 1:
             arr = np.dstack(3 * [arr])
         return (1 - arr) * color_1 + arr * color_2
-    raise ValueError(
-        "Invalid shape, should be either 'radial', 'linear' or 'bilinear'"
-    )
+    raise ValueError("Invalid shape, should be either 'radial', 'linear' or 'bilinear'")
 
 
 def color_split(
