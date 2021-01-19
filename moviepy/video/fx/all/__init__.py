@@ -1,8 +1,9 @@
 """
 moviepy.video.fx.all is deprecated.
 
-Use the fx method directly from the clip instance (e.g. ``clip.resize(...)``)
-or import the function from moviepy.video.fx instead.
+.. deprecated:: 2.0.0
+    Use the fx method directly from the clip instance (e.g. ``clip.resize(...)``)
+    or import the function from moviepy.video.fx instead.
 """
 import warnings
 

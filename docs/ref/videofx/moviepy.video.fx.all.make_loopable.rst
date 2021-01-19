@@ -1,5 +1,5 @@
-moviepy.video.fx.all.make_loopable
-==================================
+﻿moviepy.video.fx.all.make\_loopable
+===================================
 
 .. currentmodule:: moviepy.video.fx.all
 

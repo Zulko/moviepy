@@ -1,5 +1,5 @@
-moviepy.video.fx.all.lum_contrast
-=================================
+﻿moviepy.video.fx.all.lum\_contrast
+==================================
 
 .. currentmodule:: moviepy.video.fx.all
 

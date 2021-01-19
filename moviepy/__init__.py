@@ -78,7 +78,7 @@ VideoClip.show = show
 AudioClip.preview = preview
 
 # Cleanup namespace
-del audio_fxs, video_fxs, name, function, preview, show
+# del audio_fxs, video_fxs, name, function, preview, show
 del inspect
 
 # Importing with `from moviepy import *` will only import these names

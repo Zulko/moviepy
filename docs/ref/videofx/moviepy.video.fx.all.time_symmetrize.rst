@@ -1,5 +1,5 @@
-moviepy.video.fx.all.time_symmetrize
-====================================
+﻿moviepy.video.fx.all.time\_symmetrize
+=====================================
 
 .. currentmodule:: moviepy.video.fx.all
 

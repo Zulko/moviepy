@@ -1,5 +1,5 @@
-moviepy.video.fx.all.mirror_x
-=============================
+﻿moviepy.video.fx.all.mirror\_x
+==============================
 
 .. currentmodule:: moviepy.video.fx.all
 

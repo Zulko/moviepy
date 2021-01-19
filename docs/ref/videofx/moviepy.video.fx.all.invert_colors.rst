@@ -1,5 +1,5 @@
-moviepy\.video\.fx\.all\.invert\_colors
-=======================================
+﻿moviepy.video.fx.all.invert\_colors
+===================================
 
 .. currentmodule:: moviepy.video.fx.all
 

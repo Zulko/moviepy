@@ -607,6 +607,7 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
     def fill_array(self, pre_array, shape=(0, 0)):
+        """TODO Document"""
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
         dy = shape[1] - pre_shape[1]

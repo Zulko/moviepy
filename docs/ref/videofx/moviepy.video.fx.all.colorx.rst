@@ -1,4 +1,4 @@
-moviepy.video.fx.all.colorx
+﻿moviepy.video.fx.all.colorx
 ===========================
 
 .. currentmodule:: moviepy.video.fx.all

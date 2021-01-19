@@ -1,7 +1,12 @@
 .. ref_audiotools:
 
 ************
-audio.tools
+audiotools
 ************
 
-Currently empty
+Cuts
+--------
+.. automodule:: moviepy.audio.tools.cuts
+   :members:
+   :inherited-members:
+   :show-inheritance:

@@ -1,5 +1,5 @@
-moviepy.video.fx.all.rotate
-=============================
+﻿moviepy.video.fx.all.rotate
+===========================
 
 .. currentmodule:: moviepy.video.fx.all
 
