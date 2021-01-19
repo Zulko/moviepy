@@ -1,10 +1,10 @@
-import os
 import subprocess as sp
 
 import proglog
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
+from moviepy.tools import cross_platform_popen_params
 
 
 class FFMPEG_AudioWriter:
@@ -82,10 +82,9 @@ class FFMPEG_AudioWriter:
             cmd.extend(ffmpeg_params)
         cmd.extend([filename])
 
-        popen_params = {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
+        )
 
         self.proc = sp.Popen(cmd, **popen_params)
 

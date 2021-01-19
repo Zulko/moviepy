@@ -8,6 +8,19 @@ import warnings
 import proglog
 
 
+def cross_platform_popen_params(popen_params):
+    """Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and
+    will be ready to work without unexpected behaviours in any platform.
+    Currently, the implementation will add to them:
+
+    - ``creationflags=0x08000000``: no extra unwanted window opens on Windows
+      when the child process is created. Only added on Windows.
+    """
+    if os.name == "nt":
+        popen_params["creationflags"] = 0x08000000
+    return popen_params
+
+
 def subprocess_call(cmd, logger="bar"):
     """Executes the given subprocess command.
 
@@ -16,10 +29,9 @@ def subprocess_call(cmd, logger="bar"):
     logger = proglog.default_bar_logger(logger)
     logger(message="Moviepy - Running:\n>>> " + " ".join(cmd))
 
-    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
+    )
 
     proc = sp.Popen(cmd, **popen_params)
 

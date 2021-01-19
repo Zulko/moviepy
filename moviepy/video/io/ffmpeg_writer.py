@@ -3,13 +3,13 @@ On the long term this will implement several methods to make videos
 out of VideoClips
 """
 
-import os
 import subprocess as sp
 
 import numpy as np
 from proglog import proglog
 
 from moviepy.config import FFMPEG_BINARY
+from moviepy.tools import cross_platform_popen_params
 
 
 class FFMPEG_VideoWriter:
@@ -128,12 +128,9 @@ class FFMPEG_VideoWriter:
             cmd.extend(["-pix_fmt", "yuv420p"])
         cmd.extend([filename])
 
-        popen_params = {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
-
-        # This was added so that no extra unwanted window opens on windows
-        # when the child process is created
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000  # CREATE_NO_WINDOW
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
+        )
 
         self.proc = sp.Popen(cmd, **popen_params)
 
@@ -297,10 +294,9 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     else:
         log_file = sp.PIPE
 
-    popen_params = {"stdout": sp.DEVNULL, "stderr": log_file, "stdin": sp.PIPE}
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {"stdout": sp.DEVNULL, "stderr": log_file, "stdin": sp.PIPE}
+    )
 
     proc = sp.Popen(cmd, **popen_params)
     out, err = proc.communicate(image.tostring())

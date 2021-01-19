@@ -1,4 +1,3 @@
-import os
 import subprocess as sp
 import warnings
 
@@ -6,6 +5,7 @@ import numpy as np
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+from moviepy.tools import cross_platform_popen_params
 
 
 class FFMPEG_AudioReader:
@@ -111,15 +111,14 @@ class FFMPEG_AudioReader:
             ]
         )
 
-        popen_params = {
-            "bufsize": self.buffersize,
-            "stdout": sp.PIPE,
-            "stderr": sp.PIPE,
-            "stdin": sp.DEVNULL,
-        }
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        popen_params = cross_platform_popen_params(
+            {
+                "bufsize": self.buffersize,
+                "stdout": sp.PIPE,
+                "stderr": sp.PIPE,
+                "stdin": sp.DEVNULL,
+            }
+        )
 
         self.proc = sp.Popen(cmd, **popen_params)
 
