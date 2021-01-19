@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 import subprocess as sp
 
+from moviepy.tools import cross_platform_popen_params
+
 
 if os.name == "nt":
     import winreg as wr
@@ -20,13 +22,9 @@ IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
 
 def try_cmd(cmd):
     try:
-        popen_params = {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
-
-        # This was added so that no extra unwanted window opens on windows
-        # when the child process is created
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
-
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
+        )
         proc = sp.Popen(cmd, **popen_params)
         proc.communicate()
     except Exception as err:

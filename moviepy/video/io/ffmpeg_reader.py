@@ -3,7 +3,6 @@ This module implements all the functions to read a video or a picture
 using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 """
 
-import os
 import re
 import subprocess as sp
 import warnings
@@ -11,7 +10,7 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import convert_to_seconds
+from moviepy.tools import convert_to_seconds, cross_platform_popen_params
 
 
 class FFMPEG_VideoReader:
@@ -108,15 +107,14 @@ class FFMPEG_VideoReader:
                 "-",
             ]
         )
-        popen_params = {
-            "bufsize": self.bufsize,
-            "stdout": sp.PIPE,
-            "stderr": sp.PIPE,
-            "stdin": sp.DEVNULL,
-        }
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        popen_params = cross_platform_popen_params(
+            {
+                "bufsize": self.bufsize,
+                "stdout": sp.PIPE,
+                "stderr": sp.PIPE,
+                "stdin": sp.DEVNULL,
+            }
+        )
         self.proc = sp.Popen(cmd, **popen_params)
 
         # self.pos represents the (0-indexed) index of the frame that is next in line
@@ -301,15 +299,14 @@ def ffmpeg_parse_infos(
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 
-    popen_params = {
-        "bufsize": 10 ** 5,
-        "stdout": sp.PIPE,
-        "stderr": sp.PIPE,
-        "stdin": sp.DEVNULL,
-    }
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {
+            "bufsize": 10 ** 5,
+            "stdout": sp.PIPE,
+            "stderr": sp.PIPE,
+            "stdin": sp.DEVNULL,
+        }
+    )
 
     proc = sp.Popen(cmd, **popen_params)
     (output, error) = proc.communicate()

@@ -24,7 +24,12 @@ from moviepy.decorators import (
     requires_duration,
     use_clip_fps_by_default,
 )
-from moviepy.tools import extensions_dict, find_extension, subprocess_call
+from moviepy.tools import (
+    cross_platform_popen_params,
+    extensions_dict,
+    find_extension,
+    subprocess_call,
+)
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
     write_gif,
@@ -1324,10 +1329,9 @@ class TextClip(ImageClip):
         """Returns a list of all valid entries for the ``font`` or ``color`` argument of
         ``TextClip``"""
 
-        popen_params = {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
+        )
 
         process = sp.Popen(
             [IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params
