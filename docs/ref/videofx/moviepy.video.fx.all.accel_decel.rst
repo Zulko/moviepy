@@ -1,5 +1,5 @@
-moviepy\.video\.fx\.all\.accel\_decel
-=====================================
+﻿moviepy.video.fx.all.accel\_decel
+=================================
 
 .. currentmodule:: moviepy.video.fx.all
 

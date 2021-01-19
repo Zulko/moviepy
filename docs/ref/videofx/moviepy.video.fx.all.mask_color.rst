@@ -1,5 +1,5 @@
-moviepy\.video\.fx\.all\.mask\_color
-====================================
+﻿moviepy.video.fx.all.mask\_color
+================================
 
 .. currentmodule:: moviepy.video.fx.all
 

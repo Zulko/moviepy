@@ -1,4 +1,4 @@
-moviepy.video.fx.all.multiply_color
+﻿moviepy.video.fx.all.multiply_color
 ===================================
 
 .. currentmodule:: moviepy.video.fx.all

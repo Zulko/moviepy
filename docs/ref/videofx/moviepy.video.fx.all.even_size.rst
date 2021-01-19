@@ -1,5 +1,5 @@
-moviepy\.video\.fx\.all\.even\_size
-===================================
+﻿moviepy.video.fx.all.even\_size
+===============================
 
 .. currentmodule:: moviepy.video.fx.all
 

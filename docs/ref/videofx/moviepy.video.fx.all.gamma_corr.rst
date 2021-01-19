@@ -1,5 +1,5 @@
-moviepy.video.fx.all.gamma_corr
-===============================
+﻿moviepy.video.fx.all.gamma\_corr
+================================
 
 .. currentmodule:: moviepy.video.fx.all
 

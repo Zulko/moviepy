@@ -43,7 +43,6 @@ class Clip:
     _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
-
         self.start = 0
         self.end = None
         self.duration = None
@@ -58,8 +57,18 @@ class Clip:
 
     @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):
-        """Gets a numpy array representing the RGB picture of the clip at time ``t``
-        or (mono or stereo) value for a sound clip.
+        """Gets a numpy array representing the value of the clip at time ``t``.
+
+        Parameters
+        ----------
+        t : int or float or string
+            Time :func:`moviepy.tools.convert_to_seconds`
+
+        Returns
+        -------
+        numpy.ndarray
+            Array represents an RGB picture if clip is a :class:`moviepy.video.VideoClip`
+            or a mono or stereo value for an :class:`AudioClip`
         """
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
@@ -71,50 +80,59 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
-            # print(t)
             return self.make_frame(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
-        """General processing of a clip.
+        """General transforming of a clip.
 
-        Returns a new Clip whose frames are a transformation
+        Returns a new :class:`Clip` whose frames are a transformation
         (through function ``func``) of the frames of the current clip.
 
         Parameters
         ----------
-
         func : function
-          A function with signature (gf,t -> frame) where ``gf`` will
+          A function with signature ``(gf, t -> frame)`` where ``gf`` will
           represent the current clip's ``get_frame`` method,
-          i.e. ``gf`` is a function (t->image). Parameter `t` is a time
-          in seconds, `frame` is a picture (=Numpy array) which will be
-          returned by the transformed clip (see examples below).
+          i.e. ``gf`` is a function ``(t -> frame)``. Parameter ``t`` is a time
+          in seconds, `frame` is a numpy array returned by the transformed clip
+          (representing an RGB picture for
+          a :class:`moviepy.video.VideoClip` or a mono or stereo value for an
+          :class:`AudioClip`).
 
-        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
-          Can be either ``'mask'``, or ``'audio'``, or
-          ``['mask','audio']``.
-          Specifies if the filter should also be applied to the
+        apply_to: {"mask", "audio", ["mask, "audio"]}, optional
+          Specifies if the transformation should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration : bool, optional
-          Set to True if the transformation does not change the
-          ``duration`` of the clip.
+        keep_duration : bool, default True
+          The transformation will not change the ``duration`` of the clip if ``True``.
+
+        Returns
+        -------
+
+        Clip
+          The transformed clip.
+
+        Notes
+        -----
+        This method is the central functionality of MoviePy. Almost all other
+        transformations and effects use this method internally.
 
         Examples
         --------
 
-        In the following ``new_clip`` a 100 pixels-high clip whose video
-        content scrolls from the top to the bottom of the frames of
-        ``clip`` at 50 pixels per second.
+        Creates a 100 pixel high clip whose video content scrolls from top to bottom
+        at 50 pixels per second.
 
-        >>> filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]
-        >>> new_clip = clip.transform(filter, apply_to='mask')
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> transform = lambda get_frame, t : get_frame(t)[50 * int(t) : 50 * int(t) + 100]
+        >>> new_clip = clip.transform(transform)
+
+        TODO link other places in source code using `transform`
 
         """
         if apply_to is None:
             apply_to = []
 
-        # mf = copy(self.make_frame)
         new_clip = self.with_make_frame(lambda t: func(self.get_frame, t))
 
         if not keep_duration:
@@ -135,7 +153,8 @@ class Clip:
         return new_clip
 
     def time_transform(self, time_func, apply_to=None, keep_duration=False):
-        """
+        """Timeline transforming of a clip.
+
         Returns a Clip instance playing the content of the current clip
         but with a modified timeline, time ``t`` being replaced by another
         time `time_func(t)`.
@@ -146,23 +165,30 @@ class Clip:
         time_func : function
           A function ``t -> new_t``.
 
-        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
-          Can be either 'mask', or 'audio', or ['mask','audio'].
-          Specifies if the filter ``transform`` should also be applied to the
+        apply_to: {"mask", "audio", ["mask, "audio"]}, optional
+          Specifies if the transformation should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration : bool, optional
-          ``False`` (default) if the transformation modifies the
-          ``duration`` of the clip.
+        keep_duration : bool, default False
+          The transformation will not change the ``duration`` of the clip if ``True``.
+
+        Returns
+        -------
+
+        Clip
+          The transformed clip.
 
         Examples
         --------
 
-        >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
-        >>>
-        >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda t: 3-t)
+        Plays the clip (along its mask and sound) twice as fast:
+
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> new_clip = clip.time_transform(lambda t: 2 * t, apply_to=['mask', 'audio'])
+
+        Plays the clip starting at t=3, and backwards:
+
+        >>> new_clip = clip.time_transform(lambda t: 3 - t)
 
         """
         if apply_to is None:
@@ -175,8 +201,15 @@ class Clip:
         )
 
     def fx(self, func, *args, **kwargs):
-        """Returns the result of ``func(self, *args, **kwargs)``, for instance
+        """Apply fx function to clip.
 
+        Returns
+        -------
+        Clip
+          The result of ``func(self, *args, **kwargs)``.
+
+        Examples
+        --------
         >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
 
         is equivalent to
@@ -186,10 +219,10 @@ class Clip:
         The motivation of fx is to keep the name of the effect near its
         parameters when the effects are chained:
 
-        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
-        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
+        >>> from moviepy.video.fx import crop, resize, mirror_x
+        >>> clip.fx(crop, x1=50, x2=70).fx(resize, 0.3).fx(mirror_x)
         >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
+        >>> mirror_x(resize(crop(clip, x1=50, x2=70), 0.3))
         """
         return func(self, *args, **kwargs)
 
@@ -289,7 +322,7 @@ class Clip:
 
     @outplace
     def with_is_mask(self, is_mask):
-        """Says wheter the clip is a mask or not (is_mask is a boolean)."""
+        """Says whether the clip is a mask or not (is_mask is a boolean)."""
         self.is_mask = is_mask
 
     @outplace
