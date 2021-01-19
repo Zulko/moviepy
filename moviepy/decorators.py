@@ -57,6 +57,16 @@ def requires_duration(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
+def requires_fps(func, clip, *args, **kwargs):
+    """ Raise an error if the clip has no fps."""
+
+    if not hasattr(clip, "fps") or clip.fps is None:
+        raise ValueError("Attribute 'fps' not set")
+    else:
+        return func(clip, *args, **kwargs)
+
+
+@decorator.decorator
 def audio_video_fx(func, clip, *args, **kwargs):
     """Use an audio function on a video/audio clip
 
