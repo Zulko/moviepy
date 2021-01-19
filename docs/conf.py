@@ -67,7 +67,7 @@ copyright = "2021, Zulko"
 # built documents.
 #
 # The short X.Y version.
-version = 2.0
+version = "2.0"
 # The full version, including alpha/beta/rc tags.
 release = moviepy.__version__
 
