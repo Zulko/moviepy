@@ -95,7 +95,7 @@ optional_reqs = [
 doc_reqs = [
     "numpydoc==1.1.0",
     "Sphinx==3.4.3",
-    "sphinx-rtd-theme==0.5.1",
+    "guzzle-sphinx-theme==0.7.11",
 ]
 
 test_reqs = [
