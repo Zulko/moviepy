@@ -135,9 +135,7 @@ def color_gradient(
         else:
             vector = np.array(vector[::-1])
 
-        if vector is not None:
-            norm = np.linalg.norm(vector)
-
+        norm = np.linalg.norm(vector)
         n_vec = vector / norm ** 2  # norm 1/norm(vector)
 
         p1 = p1 + offset * vector
