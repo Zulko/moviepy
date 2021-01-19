@@ -411,8 +411,6 @@ class Clip:
 
         return new_clip
 
-    @apply_to_mask
-    @apply_to_audio
     @convert_parameter_to_seconds(["start_time", "end_time"])
     def cutout(self, start_time, end_time):
         """
@@ -429,15 +427,13 @@ class Clip:
         """
 
         new_clip = self.time_transform(
-            lambda t: t + (t >= start_time) * (end_time - start_time)
+            lambda t: t + (t >= start_time) * (end_time - start_time),
+            apply_to=["audio", "mask"],
         )
 
         if self.duration is not None:
-
             return new_clip.with_duration(self.duration - (end_time - start_time))
-
         else:
-
             return new_clip
 
     @requires_duration
