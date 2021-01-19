@@ -137,9 +137,6 @@ class VideoClip(Clip):
             if attr in ("mask", "audio"):
                 value = _copy.copy(value)
             setattr(new_clip, attr, value)
-
-        new_clip.audio = _copy.copy(self.audio)
-        new_clip.mask = _copy.copy(self.mask)
         return new_clip
 
     copy = __copy__

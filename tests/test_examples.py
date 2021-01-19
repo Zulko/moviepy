@@ -14,7 +14,7 @@ except ImportError:
     matplotlib = None
 
 
-@pytest.mark.skipif(not matplotlib, reason="no mpl")
+@pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_matplotlib_simple_example():
     import matplotlib.pyplot as plt
 
