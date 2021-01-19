@@ -330,8 +330,8 @@ class CompositeAudioClip(AudioClip):
         # self.fps is setted at AudioClip
         fps = None
         for clip in self.clips:
-            if clip.fps is not None and isinstance(clip.fps, numbers.Number):
-                fps = max((clip.fps, fps or 0))
+            if hasattr(clip, "fps") and isinstance(clip.fps, numbers.Number):
+                fps = max(clip.fps, fps or 0)
 
         super().__init__(duration=duration, fps=fps)
 
