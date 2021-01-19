@@ -124,22 +124,21 @@ def color_gradient(
 
     p1 = np.array(p1[::-1]).astype(float)
 
-    if vector is None:
-        if p2 is not None:
-            p2 = np.array(p2[::-1])
-            vector = p2 - p1
-        else:
-            raise ValueError("You must provide either 'p2' or 'vector'")
-    else:
-        vector = np.array(vector[::-1])
-        p2 = p1 + vector
-
-    if vector is not None:
-        norm = np.linalg.norm(vector)
-
     M = np.dstack(np.meshgrid(range(w), range(h))[::-1]).astype(float)
 
     if shape == "linear":
+        if vector is None:
+            if p2 is not None:
+                p2 = np.array(p2[::-1])
+                vector = p2 - p1
+            else:
+                raise ValueError("You must provide either 'p2' or 'vector'")
+        else:
+            vector = np.array(vector[::-1])
+            p2 = p1 + vector
+
+        if vector is not None:
+            norm = np.linalg.norm(vector)
 
         n_vec = vector / norm ** 2  # norm 1/norm(vector)
 
@@ -150,11 +149,8 @@ def color_gradient(
             arr = np.dstack(3 * [arr])
         return arr * color_1 + (1 - arr) * color_2
 
-    elif shape == "radial":
-        if radius is None:
-            radius = norm
-
-        if radius == 0:
+    elif shape == "radial":        
+        if (radius or 0) == 0:
             arr = np.ones((h, w))
         else:
             arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * radius
