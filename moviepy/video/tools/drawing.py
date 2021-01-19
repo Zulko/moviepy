@@ -102,6 +102,8 @@ def color_gradient(
 
     if shape == "bilinear":
         if vector is None:
+            if p2 is None:
+                raise ValueError("You must provide either 'p2' or 'vector'")
             vector = np.array(p2) - np.array(p1)
 
         m1, m2 = [
