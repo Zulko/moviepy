@@ -90,7 +90,7 @@ optional_reqs = [
 ]
 
 doc_reqs = [
-    "numpydoc<2.0",
+    "numpydoc==1.1.0",
     "Sphinx==3.4.3",
     "sphinx-rtd-theme==0.5.1",
 ]
