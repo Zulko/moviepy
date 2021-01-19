@@ -428,7 +428,7 @@ class Clip:
 
         new_clip = self.time_transform(
             lambda t: t + (t >= start_time) * (end_time - start_time),
-            apply_to=["audio", "video"],
+            apply_to=["audio", "mask"],
         )
 
         if self.duration is not None:
