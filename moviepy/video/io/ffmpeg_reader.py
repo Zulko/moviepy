@@ -283,6 +283,9 @@ def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
 
 class FFmpegInfosParser:
     """Finite state ffmpeg `-i` command option file information parser.
+    Is designed to parse the output fast, in one loop. Iterates line by
+    line of the `ffmpeg -i <filename> [-f null -]` command output changing
+    the internal state of the parser.
 
     Parameters
     ----------
@@ -319,6 +322,12 @@ class FFmpegInfosParser:
         self.fps_source = fps_source
         self.duration_tag_separator = "time=" if decode_file else "Duration: "
 
+        self._reset_state()
+
+    def _reset_state(self):
+        """Reinitializes the state of the parser. Used internally at
+        initialization and at the end of the parsing process.
+        """
         # could be 2 possible types of metadata:
         #   - file_metadata: Metadata of the container. Here are the tags setted
         #     by the user using `-metadata` ffmpeg option
@@ -515,6 +524,9 @@ class FFmpegInfosParser:
             result["video_duration"] = None
         # We could have also recomputed duration from the number of frames, as follows:
         # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
+
+        # reset state of the parser
+        self._reset_state()
 
         return result
 
