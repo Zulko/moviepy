@@ -22,6 +22,7 @@ from moviepy.decorators import (
     convert_parameter_to_seconds,
     outplace,
     requires_duration,
+    requires_fps,
     use_clip_fps_by_default,
 )
 from moviepy.tools import (
@@ -121,6 +122,12 @@ class VideoClip(Clip):
     @property
     def aspect_ratio(self):
         return self.w / float(self.h)
+
+    @property
+    @requires_duration
+    @requires_fps
+    def n_frames(self):
+        return int(self.duration * self.fps)
 
     def __copy__(self):
         """Mixed copy of the clip.

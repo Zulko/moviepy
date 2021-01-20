@@ -67,8 +67,8 @@ class FFMPEG_AudioReader:
         self.infos = infos
         self.proc = None
 
-        self.nframes = int(self.fps * self.duration)
-        self.buffersize = min(self.nframes + 1, buffersize)
+        self.n_frames = int(self.fps * self.duration)
+        self.buffersize = min(self.n_frames + 1, buffersize)
         self.buffer = None
         self.buffer_startframe = 1
         self.initialize()
@@ -218,7 +218,7 @@ class FFMPEG_AudioReader:
         else:
 
             ind = int(self.fps * tt)
-            if ind < 0 or ind > self.nframes:  # out of time: return 0
+            if ind < 0 or ind > self.n_frames:  # out of time: return 0
                 return np.zeros(self.nchannels)
 
             if not (0 <= (ind - self.buffer_startframe) < len(self.buffer)):
