@@ -442,10 +442,14 @@ class FFmpegInfosParser:
                     self._current_input_file["input_number"] = input_number
                 elif self._current_input_file["input_number"] != input_number:
                     # new input file
+
+                    # include their chapters if there are for this input file
                     if len(input_chapters) >= input_number + 1:
                         self._current_input_file["chapters"] = input_chapters[
                             input_number
                         ]
+
+                    # add new input file to result
                     result["inputs"].append(self._current_input_file)
                     self._current_input_file = {"input_number": input_number}
 
