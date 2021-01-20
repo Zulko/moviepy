@@ -30,7 +30,11 @@ class FFMPEG_VideoReader:
         self.filename = filename
         self.proc = None
         infos = ffmpeg_parse_infos(
-            filename, decode_file, print_infos, check_duration, fps_source
+            filename,
+            check_duration=check_duration,
+            fps_source=fps_source,
+            decode_file=decode_file,
+            print_infos=print_infos,
         )
         self.fps = infos["video_fps"]
         self.size = infos["video_size"]
@@ -289,12 +293,17 @@ class FFmpegInfosParser:
     infos
       Information returned by FFmpeg.
 
-    fps_souce
+    fps_source
       Indicates what source data will be preferably used to retrieve fps data.
 
     check_duration
       Enable or disable the parsing of the duration of the file. Useful to
       skip the duration check, for example, for images.
+
+    duration_tag_separator
+      Indicates what separator will be used splitting the line from which duration
+      of the file is extracted. This will be `"time="` if the whole file has been
+      decoded by ffmpeg using `-f null -`, or "Duration: " otherwise.
     """
 
     def __init__(
@@ -308,8 +317,8 @@ class FFmpegInfosParser:
         self.infos = infos
         self.filename = filename
         self.check_duration = check_duration
-        self.duration_tag_separator = duration_tag_separator
         self.fps_source = fps_source
+        self.duration_tag_separator = duration_tag_separator
 
         # could be 2 possible types of metadata:
         #   - file_metadata: Metadata of the container. Here are the tags setted
@@ -327,7 +336,8 @@ class FFmpegInfosParser:
 
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary
-        for a file with ``-i`` option and returns a dictionary with all data.
+        for a file with ``-i`` option and returns a dictionary with all data needed
+        by moviepy.
         """
         result = {
             "video_found": False,
@@ -644,17 +654,18 @@ class FFmpegInfosParser:
 
 def ffmpeg_parse_infos(
     filename,
-    decode_file=False,
-    print_infos=False,
     check_duration=True,
     fps_source="fps",
+    decode_file=False,
+    print_infos=False,
 ):
-    """Get file infos using ffmpeg.
+    """Get the information of a file using ffmpeg.
 
     Returns a dictionary with next fields:
 
     - ``"duration"``
-    - ``"file_metadata"``
+    - ``"metadata"``
+    - ``"inputs"``
     - ``"video_found"``
     - ``"video_fps"``
     - ``"video_n_frames"``
@@ -668,6 +679,27 @@ def ffmpeg_parse_infos(
 
     Note that "video_duration" is slightly smaller than "duration" to avoid
     fetching the uncomplete frames at the end, which raises an error.
+
+    Parameters
+    ----------
+
+    filename
+      Name of the file parsed, only used to raise accurate error messages.
+
+    infos
+      Information returned by FFmpeg.
+
+    fps_source
+      Indicates what source data will be preferably used to retrieve fps data.
+
+    check_duration
+      Enable or disable the parsing of the duration of the file. Useful to
+      skip the duration check, for example, for images.
+
+    decode_file
+      Indicates if the file must be completely decoded to retrieve their duration.
+      This is needed for some files in order to get the correct duration (see
+      https://github.com/Zulko/moviepy/pull/1222).
     """
     # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]
