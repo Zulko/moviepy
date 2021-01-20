@@ -224,7 +224,7 @@ def test_ffmpeg_parse_infos_metadata():
     def get_value_from_dict_using_lower_key(field, dictionary):
         """Obtains a value from a dictionary using a key, no matter if the key
         is uppercased in the dictionary. This function is needed because
-        some media containers convert to uppercase metadata field names. 
+        some media containers convert to uppercase metadata field names.
         """
         value = None
         for d_field, d_value in dictionary.items():
