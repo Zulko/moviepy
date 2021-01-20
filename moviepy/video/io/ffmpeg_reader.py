@@ -3,6 +3,7 @@ This module implements all the functions to read a video or a picture
 using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
 """
 
+import os
 import re
 import subprocess as sp
 import warnings
@@ -752,10 +753,17 @@ def ffmpeg_parse_infos(
         # print the whole info text returned by FFMPEG
         print(infos)
 
-    return FFmpegInfosParser(
-        infos,
-        filename,
-        fps_source=fps_source,
-        check_duration=check_duration,
-        decode_file=decode_file,
-    ).parse()
+    try:
+        return FFmpegInfosParser(
+            infos,
+            filename,
+            fps_source=fps_source,
+            check_duration=check_duration,
+            decode_file=decode_file,
+        ).parse()
+    except Exception as exc:
+        if os.path.isdir(filename):
+            raise IsADirectoryError(f"'{filename}' is a directory")
+        elif not os.path.exists(filename):
+            raise FileNotFoundError(f"'{filename}' not found")
+        raise exc
