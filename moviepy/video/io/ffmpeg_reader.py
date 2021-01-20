@@ -674,12 +674,14 @@ def ffmpeg_parse_infos(
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 
-    popen_params = cross_platform_popen_params({
-        "bufsize": 10 ** 5,
-        "stdout": sp.PIPE,
-        "stderr": sp.PIPE,
-        "stdin": sp.DEVNULL,
-    })
+    popen_params = cross_platform_popen_params(
+        {
+            "bufsize": 10 ** 5,
+            "stdout": sp.PIPE,
+            "stderr": sp.PIPE,
+            "stdin": sp.DEVNULL,
+        }
+    )
 
     proc = sp.Popen(cmd, **popen_params)
     (output, error) = proc.communicate()
