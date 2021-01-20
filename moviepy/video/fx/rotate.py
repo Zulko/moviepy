@@ -123,18 +123,22 @@ def rotate(
 
         # build PIL.rotate kwargs
         kwargs, _locals = ({}, locals())
-        for PIL_rotate_kw_name, support_data in PIL_rotate_kwargs_supported.items():
+        for PIL_rotate_kw_name, (
+            kw_name,
+            supported,
+            min_version,
+        ) in PIL_rotate_kwargs_supported.items():
             # get the value passed to rotate FX from `locals()` dictionary
-            kwarg_value = _locals[support_data[0]]
+            kw_value = _locals[kw_name]
 
-            if support_data[1]:  # if argument supported by PIL version
-                kwargs[PIL_rotate_kw_name] = kwarg_value
+            if supported:  # if argument supported by PIL version
+                kwargs[PIL_rotate_kw_name] = kw_value
             else:
-                if kwarg_value is not None:  # if not default value
+                if kw_value is not None:  # if not default value
                     warnings.warn(
-                        f"rotate '{support_data[0]}' argument not supported by your"
+                        f"rotate '{kw_name}' argument not supported by your"
                         " Pillow version and is being ignored. Minimum Pillow version"
-                        f" required: v{'.'.join(str(n) for n in support_data[2])}",
+                        f" required: v{'.'.join(str(n) for n in min_version)}",
                         UserWarning,
                     )
 
