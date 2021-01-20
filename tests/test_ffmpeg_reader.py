@@ -43,11 +43,50 @@ def test_ffmpeg_parse_infos():
 
 
 def test_ffmpeg_parse_infos_video_nframes():
-    infos = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm")
-    assert infos["video_n_frames"] == 720
+    d = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm")
+    assert d["video_n_frames"] == 720
 
-    infos = ffmpeg_parse_infos("media/bitmap.mp4")
-    assert infos["video_n_frames"] == 5
+    d = ffmpeg_parse_infos("media/bitmap.mp4")
+    assert d["video_n_frames"] == 5
+
+
+@pytest.mark.parametrize(
+    ("decode_file", "expected_duration"),
+    (
+        (False, 30),
+        (True, 30.02),
+    ),
+    ids=(
+        "decode_file=False",
+        "decode_file=True",
+    ),
+)
+def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
+    """Test `decode_file` argument of `ffmpeg_parse_infos` function."""
+    d = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm", decode_file=decode_file)
+    assert d["duration"] == expected_duration
+
+    # check metadata is fine
+    assert len(d["metadata"]) == 1
+
+    # check input
+    assert len(d["inputs"]) == 1
+
+    # check streams
+    streams = d["inputs"][0]["streams"]
+    assert len(streams) == 2
+    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["stream_number"] == 0
+    assert streams[0]["fps"] == 24
+    assert streams[0]["size"] == [1280, 720]
+    assert streams[0]["default"] is True
+    assert streams[0]["language"] is None
+
+    assert streams[1]["stream_type"] == "audio"
+    assert streams[1]["stream_number"] == 1
+    assert streams[1]["fps"] == 44100
+    assert streams[1]["default"] is True
+    assert streams[1]["language"] is None
 
 
 def test_ffmpeg_parse_infos_multiple_audio_streams():

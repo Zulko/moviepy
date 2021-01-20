@@ -300,10 +300,9 @@ class FFmpegInfosParser:
       Enable or disable the parsing of the duration of the file. Useful to
       skip the duration check, for example, for images.
 
-    duration_tag_separator
-      Indicates what separator will be used splitting the line from which duration
-      of the file is extracted. This will be `"time="` if the whole file has been
-      decoded by ffmpeg using `-f null -`, or "Duration: " otherwise.
+    decode_file
+      Indicates if the whole file has been decoded. The duration parsing strategy
+      will differ depending on this argument.
     """
 
     def __init__(
@@ -312,19 +311,25 @@ class FFmpegInfosParser:
         filename,
         fps_source="fps",
         check_duration=True,
-        duration_tag_separator="Duration: ",
+        decode_file=False,
     ):
         self.infos = infos
         self.filename = filename
         self.check_duration = check_duration
         self.fps_source = fps_source
-        self.duration_tag_separator = duration_tag_separator
+        self.duration_tag_separator = "time=" if decode_file else "Duration: "
 
         # could be 2 possible types of metadata:
         #   - file_metadata: Metadata of the container. Here are the tags setted
         #     by the user using `-metadata` ffmpeg option
         #   - stream_metadata: Metadata for each stream of the container.
         self._inside_file_metadata = False
+
+        # this state is neeeded if `duration_tag_separator == "time="` because
+        # execution of ffmpeg decoding the whole file using `-f null -` appends
+        # to the output a the blocks "Stream mapping:" and "Output:", which
+        # should be ignored
+        self._inside_output = False
 
         # flag which indicates that a default stream has not been found yet
         self._default_stream_found = False
@@ -348,7 +353,7 @@ class FFmpegInfosParser:
         # chapters by input file
         input_chapters = []
 
-        for line in self.infos.splitlines():
+        for line in self.infos.splitlines()[1:]:
             if (
                 self.duration_tag_separator == "time="
                 and self.check_duration
@@ -356,9 +361,10 @@ class FFmpegInfosParser:
             ):
                 # parse duration using file decodification
                 result["duration"] = self.parse_duration(line)
-            elif line[0] != " ":
+            elif self._inside_output or line[0] != " ":
+                if self.duration_tag_separator == "time=" and not self._inside_output:
+                    self._inside_output = True
                 # skip lines like "At least one output file must be specified"
-                continue
             elif not self._inside_file_metadata and line.startswith("  Metadata:"):
                 # enter "  Metadata:" group
                 self._inside_file_metadata = True
@@ -697,7 +703,7 @@ def ffmpeg_parse_infos(
       skip the duration check, for example, for images.
 
     decode_file
-      Indicates if the file must be completely decoded to retrieve their duration.
+      Indicates if the whole file must be read to retrieve their duration.
       This is needed for some files in order to get the correct duration (see
       https://github.com/Zulko/moviepy/pull/1222).
     """
@@ -731,5 +737,5 @@ def ffmpeg_parse_infos(
         filename,
         fps_source=fps_source,
         check_duration=check_duration,
-        duration_tag_separator="time=" if decode_file else "Duration: ",
+        decode_file=decode_file,
     ).parse()
