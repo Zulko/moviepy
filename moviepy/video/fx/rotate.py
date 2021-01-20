@@ -5,7 +5,7 @@ import numpy as np
 try:
     import PIL
 
-    PIL__rotate_kwargs_supported = {
+    PIL_rotate_kwargs_supported = {
         # [moviepy rotate argument name,
         #  PIL.rotate argument supported,
         #  minimum PIL version required]
@@ -18,9 +18,9 @@ try:
         # check support for PIL.rotate arguments
         PIL__version_info__ = tuple(int(n) for n in PIL.__version__ if n.isdigit())
 
-        for PIL_rotate_kw_name, support_data in PIL__rotate_kwargs_supported.items():
+        for PIL_rotate_kw_name, support_data in PIL_rotate_kwargs_supported.items():
             if PIL__version_info__ >= support_data[2]:
-                PIL__rotate_kwargs_supported[PIL_rotate_kw_name][1] = True
+                PIL_rotate_kwargs_supported[PIL_rotate_kw_name][1] = True
 
     Image = PIL.Image
 
@@ -117,18 +117,17 @@ def rotate(
         if not Image:
             raise ValueError(
                 'Without "Pillow" installed, only angles that are a multiple of 90'
-                " without center, translations and background color transformations"
+                " without centering, translation and background color transformations"
                 ' are supported, please install "Pillow" with `pip install pillow`'
             )
 
         # build PIL.rotate kwargs
         kwargs, _locals = ({}, locals())
-        for PIL_rotate_kw_name, support_data in PIL__rotate_kwargs_supported.items():
-
+        for PIL_rotate_kw_name, support_data in PIL_rotate_kwargs_supported.items():
+            # get the value passed to rotate FX from `locals()` dictionary
             kwarg_value = _locals[support_data[0]]
 
-            # if argument supported by PIL version
-            if support_data[1]:
+            if support_data[1]:  # if argument supported by PIL version
                 kwargs[PIL_rotate_kw_name] = kwarg_value
             else:
                 if kwarg_value is not None:  # if not default value
