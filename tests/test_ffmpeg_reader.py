@@ -166,6 +166,7 @@ def test_ffmpeg_parse_infos_multiple_audio_streams():
 
 
 def test_ffmpeg_parse_infos_metadata():
+    """Check that `ffmpeg_parse_infos` is able to retrieve metadata from files."""
     filepath = os.path.join(TMP_DIR, "ffmpeg_parse_infos_metadata.mkv")
     if os.path.isfile(filepath):
         os.remove(filepath)
@@ -221,6 +222,10 @@ def test_ffmpeg_parse_infos_metadata():
     d = ffmpeg_parse_infos(filepath)
 
     def get_value_from_dict_using_lower_key(field, dictionary):
+        """Obtains a value from a dictionary using a key, no matter if the key
+        is uppercased in the dictionary. This function is needed because
+        some media containers convert to uppercase metadata field names. 
+        """
         value = None
         for d_field, d_value in dictionary.items():
             if str(d_field).lower() == field:
