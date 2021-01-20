@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for `copy.copy(clip)` and `copy.deepcopy(clip)` with same behaviour as `clip.copy()` [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 - `audio.fx.multiply_stereo_volume` to control volume by audio channels [\#1424](https://github.com/Zulko/moviepy/pull/1424)
 - Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
+- `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
 
 ### Changed <!-- for changes in existing functionality -->
 - Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
