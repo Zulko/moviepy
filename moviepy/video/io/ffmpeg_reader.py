@@ -455,7 +455,9 @@ class FFmpegInfosParser:
                         stream_type, line
                     )
                 except NotImplementedError as exc:
-                    warnings.warn(str(exc) + self.infos, UserWarning)
+                    warnings.warn(
+                        f"{str(exc)}\nffmpeg output:\n\n{self.infos}", UserWarning
+                    )
                 else:
                     result.update(global_data)
                     self._current_stream.update(stream_data)
@@ -549,7 +551,9 @@ class FFmpegInfosParser:
         global_data, stream_data = ({"audio_found": True}, {})
         try:
             stream_data["fps"] = int(re.search(r" (\d+) Hz", line).group(1))
-        except Exception:
+        except (AttributeError, ValueError):
+            # AttributeError: 'NoneType' object has no attribute 'group'
+            # ValueError: invalid literal for int() with base 10: '<string>'
             stream_data["fps"] = "unknown"
         match_audio_bitrate = re.search(r"(\d+) kb/s", line)
         stream_data["bitrate"] = (
@@ -593,12 +597,12 @@ class FFmpegInfosParser:
         if self.fps_source == "fps":
             try:
                 fps = self.parse_fps(line)
-            except Exception:
+            except (AttributeError, ValueError):
                 fps = self.parse_tbr(line)
         elif self.fps_source == "tbr":
             try:
                 fps = self.parse_tbr(line)
-            except Exception:
+            except (AttributeError, ValueError):
                 fps = self.parse_fps(line)
         else:
             raise ValueError(
