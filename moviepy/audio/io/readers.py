@@ -59,10 +59,6 @@ class FFMPEG_AudioReader:
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(filename, decode_file=decode_file)
         self.duration = infos["duration"]
-        if "video_duration" in infos:
-            self.duration = infos["video_duration"]
-        else:
-            self.duration = infos["duration"]
         self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None

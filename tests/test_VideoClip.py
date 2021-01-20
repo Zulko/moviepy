@@ -310,7 +310,7 @@ def test_copied_videoclip_write_videofile():
     copied_clip.write_videofile(output_filepath)
     copied_clip_from_file = VideoFileClip(output_filepath)
 
-    assert list(copied_clip.size) == list(copied_clip_from_file.size)
+    assert list(copied_clip.size) == copied_clip_from_file.size
     assert copied_clip.duration == copied_clip_from_file.duration
 
 
