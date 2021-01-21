@@ -167,6 +167,7 @@ Maintainers
 - `@overdrivr`_
 - `@keikoro`_
 - `@ryanfox`_
+- `@mondeja`_
 
 
 .. MoviePy links
