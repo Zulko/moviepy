@@ -3,7 +3,6 @@
 from moviepy.video.fx.accel_decel import accel_decel
 from moviepy.video.fx.blackwhite import blackwhite
 from moviepy.video.fx.blink import blink
-from moviepy.video.fx.colorx import colorx
 from moviepy.video.fx.crop import crop
 from moviepy.video.fx.even_size import even_size
 from moviepy.video.fx.fadein import fadein
@@ -22,6 +21,7 @@ from moviepy.video.fx.mask_color import mask_color
 from moviepy.video.fx.mask_or import mask_or
 from moviepy.video.fx.mirror_x import mirror_x
 from moviepy.video.fx.mirror_y import mirror_y
+from moviepy.video.fx.multiply_color import multiply_color
 from moviepy.video.fx.painting import painting
 from moviepy.video.fx.resize import resize
 from moviepy.video.fx.rotate import rotate
@@ -36,7 +36,6 @@ __all__ = (
     "accel_decel",
     "blackwhite",
     "blink",
-    "colorx",
     "crop",
     "even_size",
     "fadein",
@@ -55,6 +54,7 @@ __all__ = (
     "mask_or",
     "mirror_x",
     "mirror_y",
+    "multiply_color",
     "painting",
     "resize",
     "rotate",
