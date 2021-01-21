@@ -49,7 +49,6 @@ You do not have to have finished your feature or bug fix before submitting a PR;
 
 Before submitting PRs:
 
-- make sure that your code passes code checks: `$ pre-commit run --all-files`
 - run the test suite over your code to expose any problems: `$ pytest`
 - push your local develop branch to your GitHub fork `$ git push origin YOUR_DEVELOP_BRANCH`
 
