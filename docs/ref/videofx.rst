@@ -59,7 +59,7 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.multiply_colo
     resize
     rotate
     scroll
-    speedx
+    multiply_speed
     supersample
     time_mirror
     time_symmetrize

@@ -1,6 +1,6 @@
-moviepy.video.fx.all.speedx
+moviepy.video.fx.all.multiply_speed
 ===========================
 
 .. currentmodule:: moviepy.video.fx.all
 
-.. autofunction:: speedx
+.. autofunction:: multiply_speed
