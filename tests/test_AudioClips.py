@@ -2,8 +2,8 @@
 
 import os
 
-import pytest
 import numpy as np
+import pytest
 
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
@@ -13,7 +13,6 @@ from moviepy.audio.AudioClip import (
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
-
 from tests.test_helper import TMP_DIR
 
 

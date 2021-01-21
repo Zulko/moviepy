@@ -5,7 +5,6 @@ import os
 import pytest
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
-
 from tests.test_helper import TMP_DIR
 
 

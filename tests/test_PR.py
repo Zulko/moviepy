@@ -13,7 +13,6 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
-
 from tests.test_helper import FONT, TMP_DIR
 
 

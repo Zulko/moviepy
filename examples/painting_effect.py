@@ -2,6 +2,7 @@
 
 from moviepy import *
 
+
 # WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
 
 charade = VideoFileClip("../../videos/charade.mp4")

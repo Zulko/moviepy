@@ -48,7 +48,7 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 Maintainers wanted!
 -------------------
 
-As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
+As there are more and more people seeking support (270 open issues as of Jan. 2021!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
 Installation
 ------------
@@ -103,7 +103,7 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 Documentation
 -------------
 
-Running `build_docs` has additional dependencies that require installation.
+Building the documentation has additional dependencies that require installation.
 
 .. code:: bash
 

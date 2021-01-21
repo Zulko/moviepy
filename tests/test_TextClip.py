@@ -3,7 +3,6 @@ import pytest
 from moviepy.utils import close_all_clips
 from moviepy.video.fx.blink import blink
 from moviepy.video.VideoClip import TextClip
-
 from tests.test_helper import FONT
 
 

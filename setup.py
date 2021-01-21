@@ -8,6 +8,7 @@ and fail with a message if neither are successful.
 import sys
 from codecs import open
 
+
 try:
     from setuptools import find_packages, setup
     from setuptools.command.test import test as TestCommand
@@ -109,6 +110,8 @@ lint_reqs = [
     "flake8>3.7.0,<4.0.0",
     "flake8-implicit-str-concat==0.2.0",
     "flake8-absolute-import>=1.0",
+    "isort>=5.7.0",
+    "pre-commit>=2.9.3",
 ]
 
 extra_reqs = {
