@@ -53,7 +53,7 @@ Much better! There are already many effects implemented in the modules ``moviepy
     clip = (VideoFileClip("myvideo.avi")
             .fx( vfx.resize, width=460) # resize (keep aspect ratio)
             .fx( vfx.speedx, 2) # double the speed
-            .fx( vfx.colorx, 0.5)) # darken the picture
+            .fx( vfx.multiply_color, 0.5)) # darken the picture
 
 For convenience, fx methods such as ``resize`` can be called in a simpler way: ``clip.resize(...)`` instead of ``clip.fx( vfx.resize, ...)``
 

@@ -10,7 +10,7 @@ from moviepy.audio.fx import multiply_stereo_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
-    colorx,
+    multiply_color,
     crop,
     even_size,
     fadein,
@@ -120,11 +120,11 @@ def test_blackwhite():
 #       clip1.write_videofile(os.path.join(TMP_DIR,"blink1.webm"))
 
 
-def test_colorx():
+def test_multiply_color():
     color_dict = {"H": (0, 0, 200), "L": (0, 0, 50), "B": (0, 0, 255), "O": (0, 0, 0)}
     clip = BitmapClip([["LLO", "BLO"]], color_dict=color_dict, fps=1)
 
-    clipfx = colorx(clip, 4)
+    clipfx = multiply_color(clip, 4)
     target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict, fps=1)
     assert target == clipfx
 
