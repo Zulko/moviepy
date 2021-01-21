@@ -48,4 +48,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install .[lint]
       - name: Check imports
-        run: isort --check-only moviepy tests docs/conf.py
+        run: isort --check-only moviepy tests examples docs/conf.py
