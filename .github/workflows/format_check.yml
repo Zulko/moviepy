@@ -36,7 +36,7 @@ jobs:
         run: flake8 moviepy --show-source
   isort:
     runs-on: ubuntu-latest
-    name: Isort
+    name: isort
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python
