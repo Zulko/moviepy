@@ -1,4 +1,4 @@
-"""Miscelaneous bindings to ffmpeg."""
+"""Miscellaneous bindings to ffmpeg."""
 
 import os
 

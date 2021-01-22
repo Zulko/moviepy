@@ -121,7 +121,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
     Parameters
     ----------
 
-    new_size : tuple, optional
+    new_size : tuple or float or function, optional
       Can be either
         - ``(width, height)`` in pixels or a float representing
         - A scaling factor, like ``0.5``.

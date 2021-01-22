@@ -150,7 +150,7 @@ class VideoFileClip(VideoClip):
 
         VideoFileClip class instances can't be deeply copied because the locked Thread
         of ``proc`` isn't pickleable. Without this override, calls to
-        ``copy.deepcopy(clip)`` would raise next ``TypeError``:
+        ``copy.deepcopy(clip)`` would raise a ``TypeError``:
 
         ```
         TypeError: cannot pickle '_thread.lock' object

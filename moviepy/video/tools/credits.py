@@ -8,7 +8,7 @@ from moviepy.video.VideoClip import ImageClip, TextClip
 
 
 class CreditsClip(TextClip):
-    """Experimental credits clip.
+    """Credits clip.
 
     Parameters
     ----------
