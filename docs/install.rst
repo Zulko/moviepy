@@ -7,21 +7,19 @@ Download and Installation
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal
+**Method with pip (recommended):** if you have ``pip`` installed, just type this in a terminal:
 
 .. code:: bash
 
     $ (sudo) pip install moviepy
 
-**Method by hand:** Download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type
+**Method by hand:** Download the source files, either from PyPI_ or from Github_ (if you want the development version), open a terminal, navigate to the folder containing `setup.py`, and type:
 
 .. code:: bash
 
     $ (sudo) python setup.py install
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation.
-
-MoviePy depends on the software FFmpeg for video reading and writing. You don't need to worry about that, as FFmpeg should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFmpeg, you can set the
+MoviePy depends on the software FFmpeg for video reading and writing. You don't need to worry about that, as FFmpeg should be automatically downloaded/installed by one of MoviePy's dependencies, imageio_. If you want to use a specific version of FFmpeg, you can set the
 `FFMPEG_BINARY` environment variable.
 
 
@@ -106,10 +104,6 @@ To test if FFmpeg and ImageMagick are found by MoviePy, in a Python console run:
 
     >>> from moviepy.config import check
     >>> check()
-
-.. _`Numpy`: https://www.scipy.org/install.html
-.. _decorator: https://pypi.python.org/pypi/decorator
-.. _proglog: https://pypi.org/project/proglog/
 
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 
