@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns data from all streams by FFmpeg inputs in attribute `inputs` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns metadata of the container in attribute `metadata` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
+- `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
 
 ### Changed <!-- for changes in existing functionality -->
 - Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
