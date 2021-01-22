@@ -9,6 +9,7 @@ from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.fx.resize import resize
 from moviepy.video.VideoClip import BitmapClip, ColorClip
+
 from tests.test_helper import TMP_DIR
 
 

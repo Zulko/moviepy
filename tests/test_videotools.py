@@ -6,6 +6,7 @@ from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.credits import CreditsClip
 from moviepy.video.tools.cuts import detect_scenes
 from moviepy.video.VideoClip import ColorClip
+
 from tests.test_helper import FONT, TMP_DIR
 
 

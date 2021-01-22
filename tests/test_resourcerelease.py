@@ -12,6 +12,7 @@ import time
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip
+
 from tests.test_helper import TMP_DIR
 
 

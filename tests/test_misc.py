@@ -10,6 +10,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.cuts import find_video_period
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
+
 from tests.test_helper import FONT, TMP_DIR
 
 

@@ -29,6 +29,7 @@ from moviepy.video.fx import (
     time_mirror,
     time_symmetrize,
 )
+
 from tests.test_helper import TMP_DIR
 
 

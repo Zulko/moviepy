@@ -12,6 +12,7 @@ from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+
 from tests.test_helper import TMP_DIR
 
 

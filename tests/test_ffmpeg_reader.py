@@ -11,6 +11,7 @@ from moviepy.config import FFMPEG_BINARY
 from moviepy.utils import close_all_clips
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader, ffmpeg_parse_infos
 from moviepy.video.VideoClip import BitmapClip
+
 from tests.test_helper import TMP_DIR
 
 

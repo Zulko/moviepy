@@ -5,6 +5,7 @@ import pytest
 
 from moviepy.video.io.bindings import mplfig_to_npimage
 from moviepy.video.VideoClip import VideoClip
+
 from tests.test_helper import TMP_DIR
 
 
