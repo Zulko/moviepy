@@ -8,7 +8,7 @@ from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.speedx import speedx
+from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
 
@@ -166,7 +166,7 @@ def test_write_gif_ImageMagick_tmpfiles_pixel_format():
 
 def test_subfx():
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
-    transform = lambda c: speedx(c, 0.5)
+    transform = lambda c: multiply_speed(c, 0.5)
     new_clip = clip.subfx(transform, 0.5, 0.8)
     location = os.path.join(TMP_DIR, "subfx.mp4")
     new_clip.write_videofile(location)

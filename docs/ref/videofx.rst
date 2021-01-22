@@ -55,11 +55,11 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.multiply_colo
     mirror_x
     mirror_y
     multiply_color
+    multiply_speed
     painting
     resize
     rotate
     scroll
-    speedx
     supersample
     time_mirror
     time_symmetrize

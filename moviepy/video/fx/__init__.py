@@ -22,11 +22,11 @@ from moviepy.video.fx.mask_or import mask_or
 from moviepy.video.fx.mirror_x import mirror_x
 from moviepy.video.fx.mirror_y import mirror_y
 from moviepy.video.fx.multiply_color import multiply_color
+from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.fx.painting import painting
 from moviepy.video.fx.resize import resize
 from moviepy.video.fx.rotate import rotate
 from moviepy.video.fx.scroll import scroll
-from moviepy.video.fx.speedx import speedx
 from moviepy.video.fx.supersample import supersample
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.fx.time_symmetrize import time_symmetrize
@@ -55,11 +55,11 @@ __all__ = (
     "mirror_x",
     "mirror_y",
     "multiply_color",
+    "multiply_speed",
     "painting",
     "resize",
     "rotate",
     "scroll",
-    "speedx",
     "supersample",
     "time_mirror",
     "time_symmetrize",
