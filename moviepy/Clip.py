@@ -90,13 +90,13 @@ class Clip:
           in seconds, `frame` is a picture (=Numpy array) which will be
           returned by the transformed clip (see examples below).
 
-        apply_to : {"mask", "audio", ["mask", "audio"]}
+        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
           Can be either ``'mask'``, or ``'audio'``, or
           ``['mask','audio']``.
           Specifies if the filter should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration : bool
+        keep_duration : bool, optional
           Set to True if the transformation does not change the
           ``duration`` of the clip.
 
@@ -146,12 +146,12 @@ class Clip:
         time_func : function
           A function ``t -> new_t``.
 
-        apply_to : {"mask", "audio", ["mask", "audio"]}
+        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
           Can be either 'mask', or 'audio', or ['mask','audio'].
           Specifies if the filter ``transform`` should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration : bool
+        keep_duration : bool, optional
           ``False`` (default) if the transformation modifies the
           ``duration`` of the clip.
 
