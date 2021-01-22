@@ -523,7 +523,7 @@ class VideoClip(Clip):
         slower than the clip you will use ::
 
             >>> # slow down clip 50% and make it a gif
-            >>> myClip.speedx(0.5).to_gif('myClip.gif')
+            >>> myClip.multiply_speed(0.5).to_gif('myClip.gif')
 
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
@@ -589,7 +589,7 @@ class VideoClip(Clip):
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
         >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
+        >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
 
         """
         left = None if (start_time == 0) else self.subclip(0, start_time)

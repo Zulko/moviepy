@@ -195,7 +195,7 @@ def write_gif(
     slower than the clip you will use ::
 
         >>> # slow down clip 50% and make it a gif
-        >>> myClip.speedx(0.5).write_gif('myClip.gif')
+        >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
 
     """
 

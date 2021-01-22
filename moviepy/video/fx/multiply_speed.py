@@ -1,4 +1,4 @@
-def speedx(clip, factor=None, final_duration=None):
+def multiply_speed(clip, factor=None, final_duration=None):
     """
     Returns a clip playing the current clip but at a speed multiplied
     by ``factor``. Instead of factor one can indicate the desired
