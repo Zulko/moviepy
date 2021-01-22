@@ -23,9 +23,9 @@ from moviepy.video.fx import (
     mirror_x,
     mirror_y,
     multiply_color,
+    multiply_speed,
     resize,
     rotate,
-    multiply_speed,
     time_mirror,
     time_symmetrize,
 )
