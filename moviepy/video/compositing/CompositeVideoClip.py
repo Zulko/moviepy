@@ -6,7 +6,6 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 
 class CompositeVideoClip(VideoClip):
-
     """
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
@@ -116,7 +115,6 @@ class CompositeVideoClip(VideoClip):
 
     def make_frame(self, t):
         """The clips playing at time `t` are blitted over one another."""
-
         frame = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(frame)
 
@@ -132,10 +130,12 @@ class CompositeVideoClip(VideoClip):
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are
-        actually playing at the given time `t`."""
+        actually playing at the given time `t`.
+        """
         return [clip for clip in self.clips if clip.is_playing(t)]
 
     def close(self):
+        """Closes the instance, releasing all the resources."""
         if self.created_bg and self.bg:
             # Only close the background clip if it was locally created.
             # Otherwise, it remains the job of whoever created it.

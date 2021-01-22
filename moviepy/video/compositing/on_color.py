@@ -14,7 +14,6 @@ def on_color(clip, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
     :param pos: the position of the clip in the final clip.
     :param col_opacity: should the added zones be transparent ?
     """
-
     if size is None:
         size = clip.size
     if pos is None:

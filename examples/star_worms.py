@@ -3,7 +3,6 @@ Description of the video:
 Mimic of Star Wars' opening title. A text with a (false)
 perspective effect goes towards the end of space, on a
 background made of stars. Slight fading effect on the text.
-
 """
 
 import numpy as np
@@ -74,7 +73,7 @@ moving_txt.mask = moving_txt.mask.image_transform(fl)
 
 
 def trapzWarp(pic, cx, cy, is_mask=False):
-    """ Complicated function (will be latex packaged as a fx) """
+    """Complicated function (will be latex packaged as a fx)."""
     Y, X = pic.shape[:2]
     src = np.array([[0, 0], [X, 0], [X, Y], [0, Y]])
     dst = np.array([[cx * X, cy * Y], [(1 - cx) * X, cy * Y], [X, Y], [0, Y]])
@@ -124,8 +123,7 @@ final.with_duration(8).write_videofile("starworms.avi", fps=5)
 
 
 def annotate(clip, txt, txt_color="white", bg_color=(0, 0, 255)):
-    """ Writes a text at the bottom of the clip. """
-
+    """Writes a text at the bottom of the clip."""
     txtclip = TextClip(txt, font_size=20, font="Ubuntu-bold", color=txt_color)
 
     txtclip = txtclip.on_color(
@@ -137,11 +135,11 @@ def annotate(clip, txt, txt_color="white", bg_color=(0, 0, 255)):
     return cvc.with_duration(clip.duration)
 
 
-def resizeCenter(clip):
+def resizeCenter(clip):  # noqa D103
     return clip.resize(height=h).set_pos("center")
 
 
-def composeCenter(clip):
+def composeCenter(clip):  # noqa D103
     return CompositeVideoClip([clip.set_pos("center")], size=moviesize)
 
 

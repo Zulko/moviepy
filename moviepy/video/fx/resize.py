@@ -87,8 +87,8 @@ def _get_resizer():
     - ``resizer``: Function used to resize images in ``resize`` FX function.
     - ``origin``: Library used to resize.
     - ``error_msgs``: If any of the libraries is available, shows the user why
-    this feature is not available and how to fix it in several error messages
-    which are formatted in the error displayed, if resizing is not possible.
+      this feature is not available and how to fix it in several error messages
+      which are formatted in the error displayed, if resizing is not possible.
     """
     error_messages = []
 
@@ -116,36 +116,33 @@ if _resizer_data["resizer"] is not None:
 
 
 def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
-    """
-    Returns a video clip that is a resized version of the clip.
+    """Returns a video clip that is a resized version of the clip.
 
     Parameters
-    ------------
+    ----------
 
-    new_size:
+    new_size : tuple or float or function, optional
       Can be either
-        - ``(width,height)`` in pixels or a float representing
-        - A scaling factor, like 0.5
+        - ``(width, height)`` in pixels or a float representing
+        - A scaling factor, like ``0.5``.
         - A function of time returning one of these.
 
-    width:
-      width of the new clip in pixel. The height is then computed so
+    width : int, optional
+      Width of the new clip in pixels. The height is then computed so
       that the width/height ratio is conserved.
 
-    height:
-      height of the new clip in pixel. The width is then computed so
+    height : int, optional
+      Height of the new clip in pixels. The width is then computed so
       that the width/height ratio is conserved.
 
     Examples
-    ----------
+    --------
 
     >>> myClip.resize( (460,720) ) # New resolution: (460,720)
     >>> myClip.resize(0.6) # width and heigth multiplied by 0.6
     >>> myClip.resize(width=800) # height computed automatically.
     >>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-
     """
-
     w, h = clip.size
 
     if new_size is not None:
@@ -240,6 +237,10 @@ if resizer is None:
     doc = resize.__doc__
 
     def resize(clip, new_size=None, height=None, width=None):
+        """Fallback resize FX function, if OpenCV, Scipy and PIL are not installed.
+
+        This docstring will be replaced at runtime.
+        """
         fix_tips = "- " + "\n- ".join(_resizer_data["error_msgs"])
         raise ImportError(f"fx resize needs OpenCV or Scipy or PIL\n{fix_tips}")
 

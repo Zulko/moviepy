@@ -1,6 +1,5 @@
-"""
-This module implements ipython_display
-A function to embed images/videos/audio in the IPython Notebook
+"""Implements ``ipython_display``, a function to embed images/videos/audio in the
+IPython Notebook.
 """
 
 # Notes:
@@ -23,7 +22,7 @@ try:
 
     ipython_available = True
 
-    class HTML2(HTML):
+    class HTML2(HTML):  # noqa D101
         def __add__(self, other):
             return HTML2(self.data + other.data)
 
@@ -64,18 +63,17 @@ def html_embed(
       based on the extension of ``filename``, but this can bug.
 
     rd_kwargs
-      keyword arguments for the rendering, like {'fps':15, 'bitrate':'50k'}
+      Keyword arguments for the rendering, like ``{'fps':15, 'bitrate':'50k'}``
 
 
-    **html_kwargs
-      Allow you to give some options, like width=260, autoplay=True,
-      loop=1 etc.
+    html_kwargs
+      Allow you to give some options, like ``width=260``, ``autoplay=True``,
+      ``loop=1`` etc.
 
     Examples
-    =========
+    --------
     TODO Create example based on ipython_display examples
     """
-
     if rd_kwargs is None:
         rd_kwargs = {}
 
@@ -174,7 +172,8 @@ def ipython_display(
     center=True,
     **html_kwargs,
 ):
-    """
+    """Displays clip content in an IPython Notebook.
+
     clip
       Either the name of a file, or a clip to preview. The clip will
       actually be written to a file and embedded as if a filename was
@@ -195,7 +194,7 @@ def ipython_display(
     fps
       Enables to specify an fps, as required for clips whose fps is unknown.
 
-    **kwargs:
+    kwargs
       Allow you to give some options, like width=260, etc. When editing
       looping gifs, a good choice is loop=1, autoplay=1.
 
@@ -204,7 +203,7 @@ def ipython_display(
     Important: The media will be physically embedded in the notebook.
 
     Examples
-    =========
+    --------
 
     >>> from moviepy.editor import *
     >>> # later ...
@@ -217,7 +216,6 @@ def ipython_display(
     >>> clip.save_frame("first_frame.jpeg")
     >>> ipython_display("first_frame.jpeg")
     """
-
     if not ipython_available:
         raise ImportError("Only works inside an IPython Notebook")
 

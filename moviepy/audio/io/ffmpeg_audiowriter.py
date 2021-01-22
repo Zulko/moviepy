@@ -12,7 +12,7 @@ class FFMPEG_AudioWriter:
     A class to write an AudioClip into an audio file.
 
     Parameters
-    ------------
+    ----------
 
     filename
       Name of any video or audio file, like ``video.mp4`` or ``sound.wav`` etc.
@@ -89,6 +89,7 @@ class FFMPEG_AudioWriter:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
+        """TODO: add documentation"""
         try:
             self.proc.stdin.write(frames_array.tobytes())
         except IOError as err:
@@ -141,6 +142,7 @@ class FFMPEG_AudioWriter:
             raise IOError(error)
 
     def close(self):
+        """Closes the writer, terminating the subprocess if is still alive."""
         if hasattr(self, "proc") and self.proc:
             self.proc.stdin.close()
             self.proc.stdin = None
@@ -181,7 +183,6 @@ def ffmpeg_audiowrite(
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
     """
-
     if write_logfile:
         logfile = open(filename + ".log", "w+")
     else:

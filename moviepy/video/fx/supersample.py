@@ -3,7 +3,8 @@ import numpy as np
 
 def supersample(clip, d, n_frames):
     """Replaces each frame at time t by the mean of `n_frames` equally spaced frames
-    taken in the interval [t-d, t+d]. This results in motion blur."""
+    taken in the interval [t-d, t+d]. This results in motion blur.
+    """
 
     def filter(get_frame, t):
         timings = np.linspace(t - d, t + d, n_frames)

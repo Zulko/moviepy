@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-"""
-This file will first try to import setuptools,
-then reach for the embedded ez_setup.py file (or the ez_setup package),
-and fail with a message if neither are successful.
-"""
+"""MoviePy setup script."""
 
 import sys
 from codecs import open
@@ -108,8 +104,10 @@ test_reqs = [
 lint_reqs = [
     "black>=20.8b1",
     "flake8>3.7.0,<4.0.0",
-    "flake8-implicit-str-concat==0.2.0",
     "flake8-absolute-import>=1.0",
+    "flake8-docstrings>=1.5.0",
+    "flake8-rst-docstrings>=0.0.14",
+    "flake8-implicit-str-concat==0.2.0",
     "isort>=5.7.0",
     "pre-commit>=2.9.3",
 ]

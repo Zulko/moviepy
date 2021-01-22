@@ -1,14 +1,13 @@
+"""Parses url below to extract latest image magick version (major version 6.9),
+to feed it into CI system. Not the best way for reproducible builds, but it's
+preferred for now over storing imagemagick installer into the GIT repository.
+"""
+
 import re
 from urllib import request
 
 
 url = "https://legacy.imagemagick.org/script/index.php"
-
-"""This little script parses url above to extract latest image magick version
-(major version 6.9), to feed it into CI system. Not the best way for reproducible
-builds, but it's preferred for now over storing imagemagick installer into the
-git repository
-"""
 
 response = request.urlopen(url)
 html = response.read().decode(r"utf-8")

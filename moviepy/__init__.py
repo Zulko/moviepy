@@ -1,12 +1,10 @@
-"""
-Imports everything that you need from the MoviePy submodules so that every thing
+"""Imports everything that you need from the MoviePy submodules so that every thing
 can be directly imported like `from moviepy import VideoFileClip`.
 
 In particular it loads all effects from the video.fx and audio.fx folders
 and turns them into VideoClip and AudioClip methods, so that instead of
 ``clip.fx(vfx.resize, 2)`` or ``vfx.resize(clip, 2)``
 you can write ``clip.resize(2)``.
-
 """
 
 import inspect

@@ -13,7 +13,6 @@ def freeze(clip, t=0, freeze_duration=None, total_duration=None, padding_end=0):
     the clip and the freeze (i.e. the duration of the freeze is
     automatically computed). One of them must be provided.
     """
-
     if t == "end":
         t = clip.duration - padding_end - 1 / clip.fps
 

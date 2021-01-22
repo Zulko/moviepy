@@ -48,7 +48,7 @@ def rotate(
     >>> new_clip = clip.add_mask().rotate(72)
 
     Parameters
-    ===========
+    ----------
 
     clip : VideoClip
       A video clip.

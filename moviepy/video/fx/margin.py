@@ -29,7 +29,6 @@ def margin(
         this value to 0 yields transparent margins.
 
     """
-
     if (opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
         clip = clip.add_mask()
 

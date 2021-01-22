@@ -14,7 +14,7 @@ except Exception:
 
 
 def to_painting(image, saturation=1.4, black=0.006):
-    """ transforms any photo into some kind of painting """
+    """Transforms any photo into some kind of painting."""
     edges = sobel(image.mean(axis=2))
     darkening = black * (255 * np.dstack(3 * [edges]))
     painting = saturation * image - darkening
@@ -37,6 +37,11 @@ if not painting_possible:
     doc = painting.__doc__
 
     def painting(clip, saturation=None, black=None):
+        """Fallback painting FX function, used if scikit-image and scipy are not
+        installed.
+
+        This docstring will be replaced at runtime.
+        """
         raise IOError("fx painting needs scikit-image or scipy")
 
     painting.__doc__ = doc
