@@ -236,7 +236,11 @@ if resizer is None:
 
     doc = resize.__doc__
 
-    def resize(clip, new_size=None, height=None, width=None):  # noqa D103
+    def resize(clip, new_size=None, height=None, width=None):
+        """Fallback resize FX function, if OpenCV, Scipy and PIL are not installed.
+
+        This docstring will be replaced at runtime.
+        """
         fix_tips = "- " + "\n- ".join(_resizer_data["error_msgs"])
         raise ImportError(f"fx resize needs OpenCV or Scipy or PIL\n{fix_tips}")
 

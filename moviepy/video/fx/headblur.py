@@ -50,7 +50,11 @@ def headblur(clip, fx, fy, radius, intensity=None):
 if not headblur_possible:
     doc = headblur.__doc__
 
-    def headblur(clip, fx, fy, r_zone, r_blur=None):  # noqa D103
+    def headblur(clip, fx, fy, r_zone, r_blur=None):
+        """Fallback headblur FX function, used if OpenCV is not installed.
+
+        This docstring will be replaced at runtime.
+        """
         raise IOError("fx painting needs opencv")
 
     headblur.__doc__ = doc

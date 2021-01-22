@@ -36,7 +36,12 @@ def painting(clip, saturation=1.4, black=0.006):
 if not painting_possible:
     doc = painting.__doc__
 
-    def painting(clip, saturation=None, black=None):  # noqa D103
+    def painting(clip, saturation=None, black=None):
+        """Fallback painting FX function, used if scikit-image and scipy are not
+        installed.
+
+        This docstring will be replaced at runtime.
+        """
         raise IOError("fx painting needs scikit-image or scipy")
 
     painting.__doc__ = doc
