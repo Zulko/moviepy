@@ -41,40 +41,39 @@ def rotate(
 ):
     """
     Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
-    If the angle is not a multiple of 90 (degrees), the package ``pillow`` must
-    be installed, and there will be black borders. You can make them
-    transparent with:
+    If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
+    and ``bg_color`` are not ``None``, the package ``pillow`` must be installed,
+    and there will be black borders. You can make them transparent with:
 
     >>> new_clip = clip.add_mask().rotate(72)
 
     Parameters
     ===========
 
-    clip
+    clip : VideoClip
       A video clip.
 
-    angle
+    angle : float
       Either a value or a function angle(t) representing the angle of rotation.
 
-    unit
-      Unit of parameter `angle` (either `deg` for degrees or `rad` for radians).
-      Default: `deg`
+    unit : str, optional
+      Unit of parameter `angle` (either "deg" for degrees or "rad" for radians).
 
-    resample
+    resample : str, optional
       An optional resampling filter. One of "nearest", "bilinear", or "bicubic".
 
-    expand
+    expand : bool, optional
       If true, expands the output image to make it large enough to hold the
       entire rotated image. If false or omitted, make the output image the same
       size as the input image.
 
-    translate
+    translate : tuple, optional
       An optional post-rotate translation (a 2-tuple).
 
-    center
+    center : tuple, optional
       Optional center of rotation (a 2-tuple). Origin is the upper left corner.
 
-    bg_color
+    bg_color : tuple, optional
       An optional color for area outside the rotated image. Only has effect if
       ``expand`` is true.
     """
