@@ -4,12 +4,11 @@ to be used with clip.fx. There are available as transfx.crossfadein etc.
 """
 
 from moviepy.decorators import add_mask_if_none, requires_duration
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 
 
-__all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out", "make_loopable"]
+__all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out"]
 
 
 @requires_duration
@@ -119,14 +118,3 @@ def slide_out(clip, duration, side):
     }
 
     return clip.with_position(pos_dict[side])
-
-
-@requires_duration
-def make_loopable(clip, overlap_duration):
-    """Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``overlap_duration`` is the duration in seconds
-    of the fade-in."""
-    clip2 = clip.fx(crossfadein, overlap_duration).with_start(
-        clip.duration - overlap_duration
-    )
-    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)
