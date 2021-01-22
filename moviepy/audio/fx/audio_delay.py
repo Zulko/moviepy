@@ -6,20 +6,20 @@ from moviepy.audio.AudioClip import CompositeAudioClip
 
 
 @audio_video_fx
-def audio_delay(clip, offset=0.2, n_repeats=8, decay=0.2):
+def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
     """Return an audio (or video) clip whose audio is repeated certain number
     of times with gaps between with a specific decay in its volume level.
 
     Parameters
     ----------
 
-    offset (float)
+    offset : float, optional
       Gap between repetitions start times, in seconds.
 
-    n_repeats (int)
+    n_repeats : int, optional
       Number of repetitions (without including the clip itself).
 
-    decay (float)
+    decay : float, optional
       Multiplication factor for the volume level of the last repetition. Each
       repetition will have a value in the linear function between 1 and this value,
       increasing or decreasing constantly. Keep in mind that the last repetition
@@ -27,7 +27,7 @@ def audio_delay(clip, offset=0.2, n_repeats=8, decay=0.2):
       for each repetition.
 
     Examples
-    ========
+    --------
 
     >>> from moviepy import *
     >>> videoclip = AudioFileClip('myaudio.wav').fx(
