@@ -7,8 +7,9 @@ from moviepy.audio.AudioClip import CompositeAudioClip
 
 @audio_video_fx
 def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
-    """Return an audio (or video) clip whose audio is repeated certain number
-    of times with gaps between with a specific decay in its volume level.
+    """Repeats audio certain number of times at constant intervals multiplying
+    their volume levels using a linear space in the range 1 to ``decay`` argument
+    value.
 
     Parameters
     ----------
