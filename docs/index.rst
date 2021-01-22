@@ -24,6 +24,7 @@ User Guide
 
    install
    getting_started/getting_started
+   updating_to_v2
    gallery
    examples/examples
    docker
