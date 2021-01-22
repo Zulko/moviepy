@@ -157,7 +157,7 @@ def write_gif(
 
 
     Parameters
-    -----------
+    ----------
 
     filename
       Name of the resulting gif file.
@@ -198,7 +198,6 @@ def write_gif(
         >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
 
     """
-
     #
     # We use processes chained with pipes.
     #
@@ -352,15 +351,7 @@ def write_gif(
 def write_gif_with_image_io(
     clip, filename, fps=None, opt=0, loop=0, colors=None, logger="bar"
 ):
-    """
-    Writes the gif with the Python library ImageIO (calls FreeImage).
-
-    Parameters
-    -----------
-    opt
-
-    """
-
+    """Writes the gif with the Python library ImageIO (calls FreeImage)."""
     if colors is None:
         colors = 256
     logger = proglog.default_bar_logger(logger)

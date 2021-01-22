@@ -4,7 +4,6 @@ from moviepy.decorators import convert_path_to_string
 
 
 class AudioFileClip(AudioClip):
-
     """
     An audio clip read from a sound file, or an array.
     The whole file is not loaded in memory. Instead, only a portion is
@@ -13,7 +12,7 @@ class AudioFileClip(AudioClip):
     backward and forward.
 
     Parameters
-    ------------
+    ----------
 
     filename
       Either a soundfile name (of any extension supported by ffmpeg)
@@ -27,7 +26,7 @@ class AudioFileClip(AudioClip):
 
 
     Attributes
-    ------------
+    ----------
 
     nbytes
       Number of bits per frame of the original audio file.
@@ -46,7 +45,7 @@ class AudioFileClip(AudioClip):
     will not be cleaned up until the process ends.
 
     Examples
-    ----------
+    --------
 
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
@@ -77,7 +76,7 @@ class AudioFileClip(AudioClip):
         self.nchannels = self.reader.nchannels
 
     def close(self):
-        """ Close the internal reader. """
+        """Close the internal reader."""
         if self.reader:
             self.reader.close()
             self.reader = None

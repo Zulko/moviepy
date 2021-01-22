@@ -19,7 +19,7 @@ cvc = CompositeVideoClip([txtClip.with_position("center")], size=screensize)
 rotMatrix = lambda a: np.array([[np.cos(a), np.sin(a)], [-np.sin(a), np.cos(a)]])
 
 
-def vortex(screenpos, i, nletters):
+def vortex(screenpos, i, nletters):  # noqa D103
     d = lambda t: 1.0 / (0.3 + t ** 8)  # damping
     a = i * np.pi / nletters  # angle of the movement
     v = rotMatrix(a).dot([-1, 0])
@@ -28,19 +28,19 @@ def vortex(screenpos, i, nletters):
     return lambda t: screenpos + 400 * d(t) * rotMatrix(0.5 * d(t) * a).dot(v)
 
 
-def cascade(screenpos, i, nletters):
+def cascade(screenpos, i, nletters):  # noqa D103
     v = np.array([0, -1])
     d = lambda t: 1 if t < 0 else abs(np.sinc(t) / (1 + t ** 4))
     return lambda t: screenpos + v * 400 * d(t - 0.15 * i)
 
 
-def arrive(screenpos, i, nletters):
+def arrive(screenpos, i, nletters):  # noqa D103
     v = np.array([-1, 0])
     d = lambda t: max(0, 3 - 3 * t)
     return lambda t: screenpos - 400 * v * d(t - 0.2 * i)
 
 
-def vortexout(screenpos, i, nletters):
+def vortexout(screenpos, i, nletters):  # noqa D103
     d = lambda t: max(0, t)  # damping
     a = i * np.pi / nletters  # angle of the movement
     v = rotMatrix(a).dot([-1, 0])
@@ -59,7 +59,7 @@ letters = find_objects(cvc)  # a list of ImageClips
 # WE ANIMATE THE LETTERS
 
 
-def moveLetters(letters, funcpos):
+def moveLetters(letters, funcpos):  # noqa D103
     return [
         letter.set_pos(funcpos(letter.screenpos, i, len(letters)))
         for i, letter in enumerate(letters)

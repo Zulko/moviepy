@@ -1,5 +1,6 @@
 def f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
-    """
+    """Acceleration and deceleration function.
+
     abruptness
       negative abruptness (>-1): speed up down up
       zero abruptness : no effect
@@ -9,7 +10,6 @@ def f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
       for positive abruptness, determines how soon the
       speedup occurs (0<soonness < inf)
     """
-
     a = 1.0 + abruptness
 
     def _f(t):
@@ -25,7 +25,7 @@ def f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
 
 
 def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
-    """
+    """Accelerates and decelerates a clip, useful for GIF making.
 
     new_duration
       If None, will be that of the current clip.
@@ -39,7 +39,6 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
       for positive abruptness, determines how soon the
       speedup occurs (0<soonness < inf)
     """
-
     if new_duration is None:
         new_duration = clip.duration
 

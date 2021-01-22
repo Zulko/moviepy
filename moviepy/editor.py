@@ -1,6 +1,6 @@
 """
-This file is meant to make it easy to load the features of
-MoviePy that you will use for live editing by simply typing:
+Module meant to make it easy to load the features of MoviePy that you will use
+for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
@@ -22,7 +22,7 @@ try:
 except ImportError:
 
     def sliders(*args, **kwargs):
-        """NOT AVAILABLE: sliders requires matplotlib installed"""
+        """NOT AVAILABLE: sliders requires matplotlib installed."""
         raise ImportError("sliders requires matplotlib installed")
 
 
@@ -44,11 +44,11 @@ try:
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """NOT AVAILABLE: clip.preview requires Pygame installed"""
+        """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
     def show(self, *args, **kwargs):
-        """NOT AVAILABLE: clip.show requires Pygame installed"""
+        """NOT AVAILABLE: clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
 
 
@@ -60,7 +60,7 @@ try:
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE: clip.preview requires Pygame installed"""
+        """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
 

@@ -10,7 +10,7 @@ def multiply_volume(clip, factor):
     so you can just write ``clip.multiply_volume(2)``
 
     Examples
-    ---------
+    --------
 
     >>> from moviepy import AudioFileClip
     >>> music = AudioFileClip('music.ogg')

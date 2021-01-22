@@ -21,6 +21,7 @@ IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
 
 
 def try_cmd(cmd):
+    """TODO: add documentation"""
     try:
         popen_params = cross_platform_popen_params(
             {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
@@ -95,6 +96,7 @@ else:
 
 
 def check():
+    """TODO: add documentation"""
     if try_cmd([FFMPEG_BINARY])[0]:
         print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
     else:

@@ -6,7 +6,7 @@ try:
 
     PIL_FOUND = True
 
-    def pil_rotater(pic, angle, resample, expand):
+    def pil_rotater(pic, angle, resample, expand):  # noqa D103
         # Ensures that pic is of the correct type
         return np.array(
             Image.fromarray(np.array(pic).astype(np.uint8)).rotate(
@@ -29,7 +29,7 @@ def rotate(clip, angle, unit="deg", resample="bicubic", expand=True):
     >>> new_clip = clip.add_mask().rotate(72)
 
     Parameters
-    ===========
+    ----------
 
     clip
       A video clip

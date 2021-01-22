@@ -15,7 +15,7 @@ class FFMPEG_AudioReader:
     raw data.
 
     Parameters
-    ------------
+    ----------
 
     filename
       Name of any video or audio file, like ``video.mp4`` or
@@ -71,8 +71,7 @@ class FFMPEG_AudioReader:
         self.buffer_around(1)
 
     def initialize(self, start_time=0):
-        """ Opens the file, creates the pipe. """
-
+        """Opens the file, creates the pipe."""
         self.close()  # if any
 
         if start_time != 0:
@@ -121,11 +120,13 @@ class FFMPEG_AudioReader:
         self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
+        """TODO: add documentation"""
         _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
+        """TODO: add documentation"""
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
         s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
@@ -164,6 +165,7 @@ class FFMPEG_AudioReader:
         self.pos = pos
 
     def get_frame(self, tt):
+        """TODO: add documentation"""
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases
@@ -229,7 +231,6 @@ class FFMPEG_AudioReader:
         Fills the buffer with frames, centered on ``frame_number``
         if possible
         """
-
         # start-frame for the buffer
         new_bufferstart = max(0, frame_number - self.buffersize // 2)
 
@@ -251,6 +252,7 @@ class FFMPEG_AudioReader:
         self.buffer_startframe = new_bufferstart
 
     def close(self):
+        """Closes the reader, terminating the subprocess if is still alive."""
         if self.proc:
             if self.proc.poll() is None:
                 self.proc.terminate()

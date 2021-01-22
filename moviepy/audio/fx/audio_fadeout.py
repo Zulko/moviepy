@@ -7,7 +7,8 @@ from moviepy.decorators import audio_video_fx, requires_duration
 @requires_duration
 def audio_fadeout(clip, duration):
     """Return a sound clip where the sound fades out progressively
-    over ``duration`` seconds at the end of the clip."""
+    over ``duration`` seconds at the end of the clip.
+    """
 
     def fading(get_frame, t):
         frame = get_frame(t)
