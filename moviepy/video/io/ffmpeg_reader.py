@@ -628,11 +628,11 @@ class FFmpegInfosParser:
         return (global_data, stream_data)
 
     def parse_fps(self, line):
-        """Parses number of FPS from a line of the `ffmpeg -i` command output."""
+        """Parses number of FPS from a line of the ``ffmpeg -i`` command output."""
         return float(re.search(r" (\d+.?\d*) fps", line).group(1))
 
     def parse_tbr(self, line):
-        """Parses number of TBS from a line of the `ffmpeg -i` command output."""
+        """Parses number of TBS from a line of the ``ffmpeg -i`` command output."""
         s_tbr = re.search(r" (\d+.?\d*k?) tbr", line).group(1)
 
         # Sometimes comes as e.g. 12k. We need to replace that with 12000.
