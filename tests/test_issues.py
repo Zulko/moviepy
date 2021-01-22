@@ -1,18 +1,20 @@
 """Issue tests meant to be run with pytest."""
 
-import pytest
 import os
 
-from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+import pytest
+
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.resize import resize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.utils import close_all_clips
+from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import TMP_DIR
+
 
 try:
     import matplotlib
@@ -268,10 +270,11 @@ def test_issue_359():
 
 @pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_issue_368():
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
     from sklearn import svm
     from sklearn.datasets import make_moons
+
     from moviepy.video.io.bindings import mplfig_to_npimage
 
     plt.switch_backend("agg")

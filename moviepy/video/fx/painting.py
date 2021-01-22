@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # ------- CHECKING DEPENDENCIES -----------------------------------------
 painting_possible = True
 try:

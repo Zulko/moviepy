@@ -3,6 +3,7 @@
 import sys
 import tempfile
 
+
 PYTHON_VERSION = "%s.%s" % (sys.version_info.major, sys.version_info.minor)
 TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 

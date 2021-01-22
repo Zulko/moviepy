@@ -10,7 +10,7 @@ from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, BitmapClip, VideoClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
 
 from tests.test_helper import TMP_DIR
 
@@ -310,7 +310,7 @@ def test_copied_videoclip_write_videofile():
     copied_clip.write_videofile(output_filepath)
     copied_clip_from_file = VideoFileClip(output_filepath)
 
-    assert list(copied_clip.size) == list(copied_clip_from_file.size)
+    assert list(copied_clip.size) == copied_clip_from_file.size
     assert copied_clip.duration == copied_clip_from_file.duration
 
 

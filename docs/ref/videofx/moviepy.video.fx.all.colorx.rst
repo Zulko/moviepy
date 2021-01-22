@@ -1,6 +1,6 @@
-moviepy.video.fx.all.colorx
-===========================
+moviepy.video.fx.all.multiply_color
+===================================
 
 .. currentmodule:: moviepy.video.fx.all
 
-.. autofunction:: colorx
+.. autofunction:: multiply_color
