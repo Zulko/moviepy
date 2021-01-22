@@ -1,8 +1,9 @@
-.. _refvideofx:
+.. _ref_videofx:
 
 ***********************
-moviepy.video.fx (vfx)
+video.fx
 ***********************
+
 The module ``moviepy.video.fx`` regroups functions meant to be used with ``videoclip.fx()``.
 
 For all other modifications, we use ``clip.fx`` and ``clip.fl``. ``clip.fx`` is meant to make it easy to use already-written transformation functions, while  ``clip.fl`` makes it easy to write new transformation functions.
@@ -27,7 +28,7 @@ When you type: ::
 the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.multiply_color``, ``vfx.resize`` etc.
 
 
-.. currentmodule:: moviepy.video.fx.all
+.. currentmodule:: moviepy.video.fx
 
 .. autosummary::
     :toctree: videofx
