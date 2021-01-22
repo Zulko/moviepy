@@ -4,22 +4,24 @@ main subclasses:
 - Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
+import copy as _copy
 import os
 import subprocess as sp
 import tempfile
-import copy as _copy
 
 import numpy as np
 import proglog
 from imageio import imread, imsave
+from PIL import Image
+
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
-    convert_path_to_string,
     convert_parameter_to_seconds,
+    convert_path_to_string,
     outplace,
     requires_duration,
     requires_fps,
@@ -38,7 +40,6 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
-from PIL import Image
 
 
 class VideoClip(Clip):

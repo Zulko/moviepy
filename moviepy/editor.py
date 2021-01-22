@@ -16,6 +16,7 @@ import moviepy  # So that we can access moviepy.__all__ later
 from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
+
 try:
     from moviepy.video.io.sliders import sliders
 except ImportError:
@@ -39,7 +40,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from moviepy.video.io.preview import show, preview
+    from moviepy.video.io.preview import preview, show
 except ImportError:
 
     def preview(self, *args, **kwargs):

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 try:
     from PIL import Image
 

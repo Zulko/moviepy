@@ -26,6 +26,7 @@ from moviepy import *
 from moviepy.audio.tools.cuts import find_audio_period
 from moviepy.video.tools.cuts import find_video_period
 
+
 # Next lines are for downloading the required videos from Youtube.
 # To do this you must have youtube-dl installed, otherwise you will need to
 # download the videos by hand and rename them, as follows:

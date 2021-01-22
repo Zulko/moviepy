@@ -2,8 +2,8 @@
 
 import os
 
-import pytest
 import numpy as np
+import pytest
 
 from moviepy.audio.AudioClip import (
     AudioArrayClip,

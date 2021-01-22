@@ -4,8 +4,8 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY
-from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.tools import cross_platform_popen_params
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
 class FFMPEG_AudioReader:
@@ -59,10 +59,6 @@ class FFMPEG_AudioReader:
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(filename, decode_file=decode_file)
         self.duration = infos["duration"]
-        if "video_duration" in infos:
-            self.duration = infos["video_duration"]
-        else:
-            self.duration = infos["duration"]
         self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None

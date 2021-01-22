@@ -14,9 +14,9 @@ from base64 import b64encode
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.tools import extensions_dict
-
-from moviepy.video.VideoClip import ImageClip, VideoClip
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+from moviepy.video.VideoClip import ImageClip, VideoClip
+
 
 try:
     from IPython.display import HTML

@@ -3,6 +3,7 @@ import numpy as np
 from moviepy import *
 from moviepy.video.tools.segmenting import find_objects
 
+
 # WE CREATE THE TEXT THAT IS GOING TO MOVE, WE CENTER IT.
 
 screensize = (720, 460)
