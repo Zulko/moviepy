@@ -1,7 +1,5 @@
-"""
-This module implements the central object of MoviePy, the Clip, and
-all the methods that are common to the two subclasses of Clip, VideoClip
-and AudioClip.
+"""Implements the central object of MoviePy, the Clip, and all the methods that
+are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
 
 import copy as _copy
@@ -20,24 +18,20 @@ from moviepy.decorators import (
 
 
 class Clip:
-
-    """
-
-    Base class of all clips (VideoClips and AudioClips).
-
+    """Base class of all clips (VideoClips and AudioClips).
 
     Attributes
     -----------
 
-    start:
+    start : float
       When the clip is included in a composition, time of the
       composition at which the clip starts playing (in seconds).
 
-    end:
+    end : float
       When the clip is included in a composition, time of the
       composition at which the clip stops playing (in seconds).
 
-    duration:
+    duration : float
       Duration of the clip (in seconds). Some clips are infinite, in
       this case their duration will be ``None``.
 

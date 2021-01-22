@@ -1,6 +1,4 @@
-"""
-Misc. useful functions that can be used at many places in the program.
-"""
+"""Misc. useful functions that can be used at many places in the program."""
 import os
 import subprocess as sp
 import warnings
@@ -55,20 +53,20 @@ def convert_to_seconds(time):
 
     Here are the accepted formats::
 
-    >>> convert_to_seconds(15.4)   # seconds
-    15.4
-    >>> convert_to_seconds((1, 21.5))   # (min,sec)
-    81.5
-    >>> convert_to_seconds((1, 1, 2))   # (hr, min, sec)
-    3662
-    >>> convert_to_seconds('01:01:33.045')
-    3693.045
-    >>> convert_to_seconds('01:01:33,5')    # coma works too
-    3693.5
-    >>> convert_to_seconds('1:33,5')    # only minutes and secs
-    99.5
-    >>> convert_to_seconds('33.5')      # only secs
-    33.5
+        >>> convert_to_seconds(15.4)   # seconds
+        15.4
+        >>> convert_to_seconds((1, 21.5))   # (min,sec)
+        81.5
+        >>> convert_to_seconds((1, 1, 2))   # (hr, min, sec)
+        3662
+        >>> convert_to_seconds('01:01:33.045')
+        3693.045
+        >>> convert_to_seconds('01:01:33,5')    # coma works too
+        3693.5
+        >>> convert_to_seconds('1:33,5')    # only minutes and secs
+        99.5
+        >>> convert_to_seconds('33.5')      # only secs
+        33.5
     """
     factors = (1, 60, 3600)
 
@@ -88,7 +86,7 @@ def deprecated_version_of(func, old_name):
     function.
 
     Returns
-    ========
+    -------
 
     deprecated_func
       A function that does the same thing as `func`, but with a docstring
@@ -96,7 +94,7 @@ def deprecated_version_of(func, old_name):
       deprecated and that you should use `func` instead.
 
     Examples
-    =========
+    --------
 
     >>> # The badly named method 'to_file' is replaced by 'write_file'
     >>> class Clip:
@@ -105,7 +103,6 @@ def deprecated_version_of(func, old_name):
     >>>
     >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
-
     # Detect new name of func
     new_name = func.__name__
 
@@ -146,6 +143,14 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
 
 
 def find_extension(codec):
+    """Returns the correspondent file extension for a codec.
+
+    Parameters
+    ----------
+
+    codec : str
+      Video or audio codec name.
+    """
     if codec in extensions_dict:
         # codec is already the extension
         return codec
