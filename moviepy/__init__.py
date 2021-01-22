@@ -11,40 +11,31 @@ you can write ``clip.resize(2)``.
 
 import inspect
 
-from moviepy.version import __version__
-
-# Clips
-from moviepy.video.VideoClip import (
-    VideoClip,
-    ImageClip,
-    ColorClip,
-    TextClip,
-    BitmapClip,
-)
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
-
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-
-from moviepy.video.io.downloader import download_webfile
-
+from moviepy.audio import fx as afx
 from moviepy.audio.AudioClip import (
     AudioClip,
     CompositeAudioClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-
-# FX
-from moviepy.video import fx as vfx
-from moviepy.audio import fx as afx
-from moviepy.video.compositing import transitions as transfx
-
-# Tools
-from moviepy.video import tools as videotools
-from moviepy.video.io import ffmpeg_tools
 from moviepy.tools import convert_to_seconds
+from moviepy.version import __version__
+from moviepy.video import fx as vfx, tools as videotools
+from moviepy.video.compositing import transitions as transfx
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
+from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.io import ffmpeg_tools
+from moviepy.video.io.downloader import download_webfile
+from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import (
+    BitmapClip,
+    ColorClip,
+    ImageClip,
+    TextClip,
+    VideoClip,
+)
+
 
 # Transforms the effects into Clip methods so that
 # they can be called with clip.resize(width=500) instead of

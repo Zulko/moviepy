@@ -1,6 +1,6 @@
 import os
-from pathlib import Path
 import subprocess as sp
+from pathlib import Path
 
 from moviepy.tools import cross_platform_popen_params
 
@@ -9,7 +9,7 @@ if os.name == "nt":
     import winreg as wr
 
 try:
-    from dotenv import load_dotenv, find_dotenv
+    from dotenv import find_dotenv, load_dotenv
 
     DOTENV = find_dotenv()
     load_dotenv(DOTENV)

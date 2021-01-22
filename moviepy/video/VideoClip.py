@@ -4,22 +4,24 @@ main subclasses:
 - Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
+import copy as _copy
 import os
 import subprocess as sp
 import tempfile
-import copy as _copy
 
 import numpy as np
 import proglog
 from imageio import imread, imsave
+from PIL import Image
+
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
-    convert_path_to_string,
     convert_parameter_to_seconds,
+    convert_path_to_string,
     outplace,
     requires_duration,
     requires_fps,
@@ -38,7 +40,6 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
-from PIL import Image
 
 
 class VideoClip(Clip):
@@ -522,7 +523,7 @@ class VideoClip(Clip):
         slower than the clip you will use ::
 
             >>> # slow down clip 50% and make it a gif
-            >>> myClip.speedx(0.5).to_gif('myClip.gif')
+            >>> myClip.multiply_speed(0.5).to_gif('myClip.gif')
 
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
@@ -588,7 +589,7 @@ class VideoClip(Clip):
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
         >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
+        >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
 
         """
         left = None if (start_time == 0) else self.subclip(0, start_time)

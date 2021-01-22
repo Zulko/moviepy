@@ -1,5 +1,4 @@
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-
 from moviepy.video.fx.crop import crop
 
 

@@ -1,6 +1,7 @@
 import os
 
 from moviepy.video.io.ffmpeg_tools import ffmpeg_stabilize_video
+
 from tests.test_helper import TMP_DIR
 
 

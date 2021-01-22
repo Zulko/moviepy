@@ -5,15 +5,15 @@ import numpy as np
 import pytest
 
 from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
-from moviepy.audio.fx import audio_normalize
 from moviepy.audio.fx import (
-    multiply_volume,
+    audio_delay,
+    audio_normalize,
     multiply_stereo_volume,
+    multiply_volume,
 )
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
-    multiply_color,
     crop,
     even_size,
     fadein,
@@ -27,9 +27,10 @@ from moviepy.video.fx import (
     margin,
     mirror_x,
     mirror_y,
+    multiply_color,
+    multiply_speed,
     resize,
     rotate,
-    speedx,
     time_mirror,
     time_symmetrize,
 )
@@ -536,22 +537,22 @@ def test_scroll():
     pass
 
 
-def test_speedx():
+def test_multiply_speed():
     clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
 
-    clip1 = speedx(clip, 0.5)  # 1/2x speed
+    clip1 = multiply_speed(clip, 0.5)  # 1/2x speed
     target1 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip1 == target1
 
-    clip2 = speedx(clip, final_duration=8)  # 1/2x speed
+    clip2 = multiply_speed(clip, final_duration=8)  # 1/2x speed
     target2 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip2 == target2
 
-    clip3 = speedx(clip, final_duration=12)  # 1/2x speed
+    clip3 = multiply_speed(clip, final_duration=12)  # 1/2x speed
     target3 = BitmapClip(
         [
             ["A"],
@@ -571,15 +572,15 @@ def test_speedx():
     )
     assert clip3 == target3
 
-    clip4 = speedx(clip, 2)  # 2x speed
+    clip4 = multiply_speed(clip, 2)  # 2x speed
     target4 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip4 == target4
 
-    clip5 = speedx(clip, final_duration=2)  # 2x speed
+    clip5 = multiply_speed(clip, final_duration=2)  # 2x speed
     target5 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip5 == target5
 
-    clip6 = speedx(clip, 4)  # 4x speed
+    clip6 = multiply_speed(clip, 4)  # 4x speed
     target6 = BitmapClip([["A"]], fps=1)
     assert (
         clip6 == target6
@@ -641,10 +642,54 @@ def test_audio_normalize_muted():
     close_all_clips(locals())
 
 
+def test_multiply_volume():
+    clip = AudioFileClip("media/crunching.mp3")
+    clip_array = clip.to_soundarray()
+
+    # stereo mute
+    clip_muted = multiply_volume(clip, 0)
+
+    left_channel_muted = clip_muted.to_soundarray()[:, 0]
+    right_channel_muted = clip_muted.to_soundarray()[:, 1]
+
+    z_channel = np.zeros(len(left_channel_muted))
+
+    assert np.array_equal(left_channel_muted, z_channel)
+    assert np.array_equal(right_channel_muted, z_channel)
+
+    # stereo level doubled
+    clip_doubled = multiply_volume(clip, 2)
+    clip_doubled_array = clip_doubled.to_soundarray()
+    left_channel_doubled = clip_doubled_array[:, 0]
+    right_channel_doubled = clip_doubled_array[:, 1]
+    expected_left_channel_doubled = clip_array[:, 0] * 2
+    expected_right_channel_doubled = clip_array[:, 1] * 2
+
+    assert np.array_equal(left_channel_doubled, expected_left_channel_doubled)
+    assert np.array_equal(right_channel_doubled, expected_right_channel_doubled)
+
+    # mono muted
+    sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
+    muted_mono_clip = multiply_volume(mono_clip, 0)
+    mono_channel_muted = muted_mono_clip.to_soundarray()
+
+    z_channel = np.zeros(len(mono_channel_muted))
+    assert np.array_equal(mono_channel_muted, z_channel)
+
+    mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
+    doubled_mono_clip = multiply_volume(mono_clip, 2)
+    mono_channel_doubled = doubled_mono_clip.to_soundarray()
+    d_channel = mono_clip.to_soundarray() * 2
+    assert np.array_equal(mono_channel_doubled, d_channel)
+
+    close_all_clips(locals())
+
+
 def test_multiply_stereo_volume():
     clip = AudioFileClip("media/crunching.mp3")
 
-    # mute
+    # stereo mute
     clip_left_channel_muted = multiply_stereo_volume(clip, left=0)
     clip_right_channel_muted = multiply_stereo_volume(clip, right=0, left=2)
 
@@ -656,14 +701,14 @@ def test_multiply_stereo_volume():
     assert np.array_equal(left_channel_muted, z_channel)
     assert np.array_equal(right_channel_muted, z_channel)
 
-    # double level
+    # stereo level doubled
     left_channel_doubled = clip_right_channel_muted.to_soundarray()[:, 0]
-    d_channel = clip.to_soundarray()[:, 0] * 2
-    assert np.array_equal(left_channel_doubled, d_channel)
+    expected_left_channel_doubled = clip.to_soundarray()[:, 0] * 2
+    assert np.array_equal(left_channel_doubled, expected_left_channel_doubled)
 
     # mono muted
     sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
     muted_mono_clip = multiply_stereo_volume(mono_clip, left=0)
     mono_channel_muted = muted_mono_clip.to_soundarray()
 
@@ -671,7 +716,7 @@ def test_multiply_stereo_volume():
     assert np.array_equal(mono_channel_muted, z_channel)
 
     # mono doubled
-    mono_clip = AudioClip(sinus_wave, duration=2, fps=22050)
+    mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
     doubled_mono_clip = multiply_stereo_volume(
         mono_clip, left=None, right=2
     )  # using right
@@ -716,7 +761,7 @@ def test_audio_delay(duration, offset, n_repeats, decay):
     clip_array = clip.to_soundarray()
 
     # stereo delayed clip
-    delayed_clip = clip.audio_delay(offset=offset, n_repeats=n_repeats, decay=decay)
+    delayed_clip = audio_delay(clip, offset=offset, n_repeats=n_repeats, decay=decay)
     delayed_clip_array = delayed_clip.to_soundarray()
 
     # size of chunks with audios

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns data from all streams by FFmpeg inputs in attribute `inputs` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns metadata of the container in attribute `metadata` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
+- `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
 - `audio.fx.audio_delay` FX [\#1481](https://github.com/Zulko/moviepy/pull/1481)
 
 ### Changed <!-- for changes in existing functionality -->
@@ -26,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `cols_widths` argument of `clips_array` function by `cols_heights` [\#1465](https://github.com/Zulko/moviepy/pull/1465)
 - `video_nframes` attribute of dictionary returned from `ffmpeg_parse_infos` renamed to `video_n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
 - Renamed `colorx` FX by `multiply_color` [\#1475](https://github.com/Zulko/moviepy/pull/1475)
+- Renamed `speedx` FX by `multiply_speed` [\#1478](https://github.com/Zulko/moviepy/pull/1478)
+- `make_loopable` transition must be used as FX [\#1477](https://github.com/Zulko/moviepy/pull/1477)
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)

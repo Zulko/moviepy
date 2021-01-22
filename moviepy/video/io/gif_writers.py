@@ -8,6 +8,7 @@ from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import cross_platform_popen_params, subprocess_call
 
+
 try:
     import imageio
 
@@ -194,7 +195,7 @@ def write_gif(
     slower than the clip you will use ::
 
         >>> # slow down clip 50% and make it a gif
-        >>> myClip.speedx(0.5).write_gif('myClip.gif')
+        >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
 
     """
 
