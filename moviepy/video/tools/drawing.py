@@ -1,5 +1,4 @@
-"""
-This module deals with making images (np arrays). It provides drawing
+"""Deals with making images (np arrays). It provides drawing
 methods that are difficult to do with the existing Python libraries.
 """
 
@@ -42,7 +41,7 @@ def color_gradient(
 
 
     Parameters
-    ------------
+    ----------
 
     size
         Size (width, height) in pixels of the final picture/array.
@@ -80,7 +79,7 @@ def color_gradient(
         this creates a blurry disc of radius d(p1,p2).
 
     Returns
-    --------
+    -------
 
     image
         An Numpy array of dimensions (W,H,ncolors) of type float
@@ -88,12 +87,11 @@ def color_gradient(
 
 
     Examples
-    ---------
+    --------
 
     >>> grad = color_gradient(blabla).astype('uint8')
 
     """
-
     # np-arrayize and change x,y coordinates to y,x
     w, h = size
 
@@ -179,7 +177,7 @@ def color_split(
     respectively.
 
     Parameters
-    -----------
+    ----------
 
     x: (int)
         If provided, the image is splitted horizontally in x, the left
@@ -206,7 +204,7 @@ def color_split(
 
 
     Examples
-    ---------
+    --------
 
     >>> size = [200,200]
     >>> # an image with all pixels with x<50 =0, the others =1
@@ -216,7 +214,6 @@ def color_split(
     >>> # An image splitted along an arbitrary line (see below)
     >>> color_split(size, p1=[20,50], p2=[25,70] color_1=0, color_2=1)
     """
-
     if gradient_width or ((x is None) and (y is None)):
         if p2 is not None:
             vector = np.array(p2) - np.array(p1)

@@ -81,7 +81,7 @@ def test_concatenate_audioclips_CompositeAudioClip():
       - Duration is the sum of their durations.
       - Ends are the accumulated sum of their durations.
       - Starts are the accumulated sum of their durations, but first start is 0
-        and lastest is ignored.
+      and lastest is ignored.
     - Channels are the max channels of their clips.
     """
     frequencies = [440, 880, 1760]

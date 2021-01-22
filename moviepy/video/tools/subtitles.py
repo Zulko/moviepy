@@ -1,4 +1,4 @@
-""" Experimental module for subtitles support. """
+"""Experimental module for subtitles support."""
 
 import re
 
@@ -17,7 +17,7 @@ class SubtitlesClip(VideoClip):
     needed.
 
     Parameters
-    ==========
+    ----------
 
     subtitles
       Either the name of a file as a string or path-like object, or a list
@@ -28,7 +28,7 @@ class SubtitlesClip(VideoClip):
       https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
-    =========
+    --------
 
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
@@ -75,7 +75,8 @@ class SubtitlesClip(VideoClip):
         def add_textclip_if_none(t):
             """Will generate a textclip if it hasn't been generated asked
             to generate it yet. If there is no subtitle to show at t, return
-            false."""
+            false.
+            """
             sub = [
                 ((text_start, text_end), text)
                 for ((text_start, text_end), text) in self.textclips.keys()
@@ -110,7 +111,8 @@ class SubtitlesClip(VideoClip):
     def in_subclip(self, start_time=None, end_time=None):
         """Returns a sequence of [(t1,t2), text] covering all the given subclip
         from start_time to end_time. The first and last times will be cropped so as
-        to be exactly start_time and end_time if possible."""
+        to be exactly start_time and end_time if possible.
+        """
 
         def is_in_subclip(t1, t2):
             try:
@@ -146,11 +148,13 @@ class SubtitlesClip(VideoClip):
         return "\n\n".join(to_srt(sub) for sub in self.subtitles)
 
     def match_expr(self, expr):
+        """Matchs a regular expression against the subtitles of the clip."""
         return SubtitlesClip(
             [sub for sub in self.subtitles if re.findall(expr, sub[1]) != []]
         )
 
     def write_srt(self, filename):
+        """Writes an ``.srt`` file with the content of the clip."""
         with open(filename, "w+") as file:
             file.write(str(self))
 
@@ -164,7 +168,6 @@ def file_to_subtitles(filename, encoding=None):
 
     Only works for '.srt' format for the moment.
     """
-
     times_texts = []
     current_times = None
     current_text = ""

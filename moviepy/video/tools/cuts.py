@@ -1,5 +1,4 @@
-""" This module contains everything that can help automatize
-the cuts in MoviePy """
+"""Contains everything that can help automatize the cuts in MoviePy."""
 
 from collections import defaultdict
 
@@ -10,7 +9,7 @@ from moviepy.decorators import use_clip_fps_by_default
 
 @use_clip_fps_by_default
 def find_video_period(clip, fps=None, start_time=0.3):
-    """ Finds the period of a video based on frames correlation """
+    """Finds the period of a video based on frames correlation."""
 
     def frame(t):
         return clip.get_frame(t).flatten()
@@ -25,7 +24,7 @@ class FramesMatch:
     """
 
     Parameters
-    -----------
+    ----------
 
     start_time
       Starting time
@@ -72,28 +71,31 @@ class FramesMatch:
 
 
 class FramesMatches(list):
+    """TODO: needs documentation"""
+
     def __init__(self, lst):
         list.__init__(self, sorted(lst, key=lambda e: e.max_distance))
 
     def best(self, n=1, percent=None):
+        """TODO: needs documentation"""
         if percent is not None:
             n = len(self) * percent / 100
         return self[0] if n == 1 else FramesMatches(self[:n])
 
     def filter(self, condition):
-        """
-        Returns a FramesMatches object obtained by filtering out the FramesMatch
+        """Returns a FramesMatches object obtained by filtering out the FramesMatch
         which do not satistify the condition ``condition``. ``condition``
         is a function (FrameMatch -> bool).
 
         Examples
-        ---------
+        --------
         >>> # Only keep the matches corresponding to (> 1 second) sequences.
         >>> new_matches = matches.filter( lambda match: match.time_span > 1)
         """
         return FramesMatches(filter(condition, self))
 
     def save(self, filename):
+        """TODO: needs documentation"""
         np.savetxt(
             filename,
             np.array([np.array(list(e)) for e in self]),
@@ -104,6 +106,9 @@ class FramesMatches(list):
     @staticmethod
     def load(filename):
         """Loads a FramesMatches object from a file.
+
+        Examples
+        --------
         >>> matching_frames = FramesMatches.load("somefile")
         """
         arr = np.loadtxt(filename)
@@ -122,7 +127,7 @@ class FramesMatches(list):
         This is well optimized routine and quite fast.
 
         Examples
-        ---------
+        --------
 
         We find all matching frames in a given video and turn the best match with
         a duration of 1.5s or more into a GIF:
@@ -136,7 +141,7 @@ class FramesMatches(list):
         >>> clip.subclip(best.start_time, best.end_time).write_gif("foo.gif")
 
         Parameters
-        -----------
+        ----------
 
         clip
           A MoviePy video clip, possibly transformed/resized
@@ -151,7 +156,6 @@ class FramesMatches(list):
           Frames per second (default will be clip.fps)
 
         """
-
         N_pixels = clip.w * clip.h * 3
 
         def dot_product(F1, F2):
@@ -225,6 +229,8 @@ class FramesMatches(list):
     ):
         """
 
+        Parameters
+        ----------
         match_threshold
           The smaller, the better-looping the gifs are.
 
@@ -236,7 +242,6 @@ class FramesMatches(list):
           If None, then it is chosen equal to match_threshold
 
         """
-
         if nomatch_threshold is None:
             nomatch_threshold = match_threshold
 
@@ -290,6 +295,7 @@ class FramesMatches(list):
         return FramesMatches(result)
 
     def write_gifs(self, clip, gif_dir):
+        """TODO: needs documentation"""
         for (start, end, _, _) in self:
             name = "%s/%08d_%08d.gif" % (gif_dir, 100 * start, 100 * end)
             clip.subclip(start, end).write_gif(name)
@@ -304,14 +310,14 @@ def detect_scenes(
     Note that for large clip this may take some time
 
     Returns
-    --------
+    -------
     cuts, luminosities
       cuts is a series of cuts [(0,t1), (t1,t2),...(...,tf)]
       luminosities are the luminosities computed for each
       frame of the clip.
 
     Parameters
-    -----------
+    ----------
 
     clip
       A video clip. Can be None if a list of luminosities is

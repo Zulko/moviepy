@@ -1,8 +1,6 @@
+"""This module implements all the functions to read a video or a picture
+using ffmpeg.
 """
-This module implements all the functions to read a video or a picture
-using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
-"""
-
 import os
 import re
 import subprocess as sp
