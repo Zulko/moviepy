@@ -39,6 +39,7 @@ the module ``audio.fx`` is loaded as ``afx`` and you can use ``afx.multiply_volu
     :toctree: audiofx
     :nosignatures:
     
+    audio_delay
     audio_fadein
     audio_fadeout
     audio_normalize
