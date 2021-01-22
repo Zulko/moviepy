@@ -2,12 +2,12 @@ import os
 
 import pytest
 
-from moviepy.video.tools.cuts import find_video_period
-from moviepy.video.fx.resize import resize
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.tools.cuts import find_video_period
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
 

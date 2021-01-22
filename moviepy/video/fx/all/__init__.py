@@ -8,4 +8,5 @@ import warnings
 
 from moviepy.video.fx import *  # noqa F401,F403
 
+
 warnings.warn(f"\nMoviePy: {__doc__}", UserWarning)
