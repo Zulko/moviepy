@@ -8,6 +8,7 @@
 - Do not push any commit that changes the API without prior discussion.
 
 ## Preparing for development
+
 - Fork the official MoviePy repository to your own GitHub account:  
 Use the "Fork" button in the top right corner of the GitHub interface while viewing [the official MoviePy](https://github.com/Zulko/moviepy) repository.
 - Use your fork as the basis for cloning the repository to your local machine: `$ git clone URL_TO_YOUR_FORK`  
@@ -15,15 +16,15 @@ You can get the appropriate URL (SSH- or HTTPS-based) by using the green "Code" 
 - Enter your local clone and add the official MoviePy repository as a second remote, with alias `upstream`:  
 `$ git remote add upstream git@github.com:Zulko/moviepy.git` (using SSL) _or_   
 `$ git remote add upstream https://github.com/Zulko/moviepy.git` (using HTTPS).
+- Install the library inside a [virtual environment](https://docs.python.org/3/tutorial/venv.html) with all dependencies included using `$ pip install -e ".[optional,doc,test,lint]"`
+- Configure pre-commit hooks running `$ pre-commit install`
 
 ## Coding conventions, code quality
  
 - Respect [PEP8](https://www.python.org/dev/peps/pep-0008/) conventions.
 - Add just the "right" amount of comments. Try to write auto-documented code with very explicit variable names.
 - If you introduce new functionality or fix a bug, document it in the docstring or with code comments.
-- MoviePy's team adopted [black](https://github.com/psf/black) to autoformat code. This is enforced for any pull request. 
-  
-> Tip: use `black -t py36 .` to autoformat your code, or set black as a [plugin for your editor](https://black.readthedocs.io/en/stable/editor_integration.html). 
+- MoviePy's team adopted [pre-commit](https://pre-commit.com/) to run code checks using black, flake8 and isort, so make sure that you've configured the pre-commit hooks with `pre-commit install`. 
 
 
 ## Standard contribution workflow
@@ -48,7 +49,6 @@ You do not have to have finished your feature or bug fix before submitting a PR;
 
 Before submitting PRs:
 
-- make sure your code still conforms to the formatting standard (using Black formatter: `$ black -t py36 .`)
 - run the test suite over your code to expose any problems: `$ pytest`
 - push your local develop branch to your GitHub fork `$ git push origin YOUR_DEVELOP_BRANCH`
 

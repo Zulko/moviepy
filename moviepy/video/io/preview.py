@@ -2,11 +2,12 @@ import threading
 import time
 
 import numpy as np
-
 import pygame as pg
+
 from moviepy.decorators import convert_masks_to_RGB, requires_duration
 from moviepy.tools import convert_to_seconds
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
 
 pg.init()
 pg.display.set_caption("MoviePy")

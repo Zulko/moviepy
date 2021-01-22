@@ -5,12 +5,10 @@ import numpy as np
 import pytest
 
 from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
-from moviepy.audio.fx import audio_normalize
-from moviepy.audio.fx import multiply_stereo_volume
+from moviepy.audio.fx import audio_normalize, multiply_stereo_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
-    multiply_color,
     crop,
     even_size,
     fadein,
@@ -24,6 +22,7 @@ from moviepy.video.fx import (
     margin,
     mirror_x,
     mirror_y,
+    multiply_color,
     resize,
     rotate,
     speedx,

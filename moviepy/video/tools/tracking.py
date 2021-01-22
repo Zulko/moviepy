@@ -11,9 +11,9 @@ of the tracking time interval).
 import numpy as np
 
 from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
-
 from moviepy.video.io.preview import imdisplay
 from moviepy.video.tools.interpolators import Trajectory
+
 
 try:
     import cv2
