@@ -23,9 +23,9 @@ from moviepy.video.fx import (
     mirror_x,
     mirror_y,
     multiply_color,
+    multiply_speed,
     resize,
     rotate,
-    speedx,
     time_mirror,
     time_symmetrize,
 )
@@ -532,22 +532,22 @@ def test_scroll():
     pass
 
 
-def test_speedx():
+def test_multiply_speed():
     clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
 
-    clip1 = speedx(clip, 0.5)  # 1/2x speed
+    clip1 = multiply_speed(clip, 0.5)  # 1/2x speed
     target1 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip1 == target1
 
-    clip2 = speedx(clip, final_duration=8)  # 1/2x speed
+    clip2 = multiply_speed(clip, final_duration=8)  # 1/2x speed
     target2 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip2 == target2
 
-    clip3 = speedx(clip, final_duration=12)  # 1/2x speed
+    clip3 = multiply_speed(clip, final_duration=12)  # 1/2x speed
     target3 = BitmapClip(
         [
             ["A"],
@@ -567,15 +567,15 @@ def test_speedx():
     )
     assert clip3 == target3
 
-    clip4 = speedx(clip, 2)  # 2x speed
+    clip4 = multiply_speed(clip, 2)  # 2x speed
     target4 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip4 == target4
 
-    clip5 = speedx(clip, final_duration=2)  # 2x speed
+    clip5 = multiply_speed(clip, final_duration=2)  # 2x speed
     target5 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip5 == target5
 
-    clip6 = speedx(clip, 4)  # 4x speed
+    clip6 = multiply_speed(clip, 4)  # 4x speed
     target6 = BitmapClip([["A"]], fps=1)
     assert (
         clip6 == target6
