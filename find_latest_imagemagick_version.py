@@ -1,6 +1,7 @@
 import re
 from urllib import request
 
+
 url = "https://legacy.imagemagick.org/script/index.php"
 
 """This little script parses url above to extract latest image magick version

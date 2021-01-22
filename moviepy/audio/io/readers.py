@@ -4,8 +4,8 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY
-from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.tools import cross_platform_popen_params
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
 class FFMPEG_AudioReader:

@@ -8,6 +8,7 @@ from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import cross_platform_popen_params, subprocess_call
 
+
 try:
     import imageio
 

@@ -10,7 +10,7 @@ from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.speedx import speedx
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, BitmapClip, VideoClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
 
 from tests.test_helper import TMP_DIR
 

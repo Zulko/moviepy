@@ -3,14 +3,14 @@
 import os
 import subprocess
 
-import pytest
 import numpy as np
+import pytest
 
-from moviepy.config import FFMPEG_BINARY
 from moviepy.audio.AudioClip import AudioClip
-from moviepy.video.VideoClip import BitmapClip
-from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos, FFMPEG_VideoReader
+from moviepy.config import FFMPEG_BINARY
 from moviepy.utils import close_all_clips
+from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader, ffmpeg_parse_infos
+from moviepy.video.VideoClip import BitmapClip
 
 from tests.test_helper import TMP_DIR
 

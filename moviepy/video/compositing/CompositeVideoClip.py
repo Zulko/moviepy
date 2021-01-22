@@ -1,10 +1,8 @@
 import numpy as np
+from PIL import Image
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
-from PIL import Image
-
-#  CompositeVideoClip
 
 
 class CompositeVideoClip(VideoClip):
