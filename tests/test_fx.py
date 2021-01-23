@@ -20,6 +20,7 @@ from moviepy.video.fx import (
     lum_contrast,
     make_loopable,
     margin,
+    mask_and,
     mirror_x,
     mirror_y,
     multiply_color,
@@ -442,8 +443,45 @@ def test_margin():
     assert target == clip3
 
 
-def test_mask_and():
-    pass
+@pytest.mark.parametrize("duration", (None, "random"))
+@pytest.mark.parametrize(
+    ("color", "mask_color", "expected_color"),
+    (
+        (
+            (0, 0, 0),
+            (255, 255, 255),
+            (0, 0, 0),
+        ),
+        (
+            (255, 0, 0),
+            (0, 0, 255),
+            (0, 0, 0),
+        ),
+        (
+            (255, 255, 255),
+            (0, 10, 20),
+            (0, 10, 20),
+        ),
+        (
+            (10, 10, 10),
+            (20, 0, 20),
+            (10, 0, 10),
+        ),
+    ),
+)
+def test_mask_and(duration, color, mask_color, expected_color):
+    """Checks ``mask_and`` FX behaviour."""
+    clip_size = tuple(random.randint(3, 10) for i in range(2))
+
+    if duration == "random":
+        duration = round(random.uniform(0, 0.5), 2)
+
+    clip = ColorClip(color=color, size=clip_size).with_duration(duration)
+    mask_clip = ColorClip(color=mask_color, size=clip.size)
+    masked_clip = mask_and(clip, mask_clip)
+
+    assert masked_clip.duration == clip.duration
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mask_color():
