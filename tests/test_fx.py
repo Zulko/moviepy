@@ -524,6 +524,13 @@ def test_resize():
             [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
         ),
         (
+            lambda t: 90,
+            None,
+            None,
+            None,
+            [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
+        ),
+        (
             180,
             None,
             None,
@@ -584,8 +591,12 @@ def test_rotate(
 
     # angles are defined in degrees, so convert to radians testing ``unit="rad"``
     if unit == "rad":
-        angle = math.radians(angle)
-
+        if hasattr(angle, "__call__"):
+            _angle = lambda t: math.radians(angle(0))
+        else:
+            _angle = math.radians(angle)
+    else:
+        _angle = angle
     clip = BitmapClip(original_frames, fps=1)
 
     kwargs = {
@@ -597,13 +608,13 @@ def test_rotate(
     }
     if resample not in ["bilinear", "nearest", "bicubic"]:
         with pytest.raises(ValueError) as exc:
-            clip.rotate(angle, **kwargs)
+            clip.rotate(_angle, **kwargs)
         assert (
             "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
         ) == str(exc.value)
         return
     else:
-        rotated_clip = clip.rotate(angle, **kwargs)
+        rotated_clip = clip.rotate(_angle, **kwargs)
 
     expected_clip = BitmapClip(expected_frames, fps=1)
     assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
