@@ -1,3 +1,4 @@
+import math
 import warnings
 
 import numpy as np
@@ -99,7 +100,7 @@ def rotate(
         im = get_frame(t)
 
         if unit == "rad":
-            angle = 360.0 * angle / (2 * np.pi)
+            angle = math.degrees(angle)
 
         angle %= 360
         if not center and not translate and not bg_color:
