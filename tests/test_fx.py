@@ -4,7 +4,14 @@ import random
 import numpy as np
 import pytest
 
-from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
+from moviepy import (
+    AudioClip,
+    AudioFileClip,
+    BitmapClip,
+    ColorClip,
+    VideoClip,
+    VideoFileClip,
+)
 from moviepy.audio.fx import audio_normalize, multiply_stereo_volume, multiply_volume
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
@@ -477,6 +484,7 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     if duration == "random":
         duration = round(random.uniform(0, 0.5), 2)
 
+    # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
     masked_clip = mask_and(
@@ -484,6 +492,14 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     )
 
     assert masked_clip.duration == clip.duration
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
+
+    # test VideoClip as mask argument
+    color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
+    clip = VideoClip(lambda t: color_frame).with_duration(duration)
+    mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
+    masked_clip = mask_and(clip, mask_clip)
+
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
