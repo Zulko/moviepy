@@ -5,7 +5,7 @@ def scroll(
     Scrolls horizontally or vertically a clip, e.g. to make end credits
 
     Parameters
-    -----------
+    ----------
 
     w, h
       The width and height of the final clip. Default to clip.w and clip.h

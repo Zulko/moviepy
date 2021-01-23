@@ -14,7 +14,7 @@ pg.display.set_caption("MoviePy")
 
 
 def imdisplay(imarray, screen=None):
-    """Splashes the given image array on the given pygame screen """
+    """Splashes the given image array on the given pygame screen."""
     a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
     if screen is None:
         screen = pg.display.set_mode(imarray.shape[:2][::-1])
@@ -28,7 +28,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
     Splashes the frame of clip corresponding to time ``t``.
 
     Parameters
-    ------------
+    ----------
 
     t
       Time in seconds of the frame to display.
@@ -38,7 +38,6 @@ def show(clip, t=0, with_mask=True, interactive=False):
       without the mask.
 
     """
-
     if isinstance(t, tuple):
         t = convert_to_seconds(*t)
 
@@ -83,7 +82,7 @@ def preview(
     reducing the ``fps``.
 
     Parameters
-    ------------
+    ----------
 
     fps
       Number of frames per seconds in the displayed video.

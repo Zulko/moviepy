@@ -1,8 +1,4 @@
-"""
-This module implements all the functions to read a video or a picture
-using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
-"""
-
+"""Implements all the functions to read a video or a picture using ffmpeg."""
 import os
 import re
 import subprocess as sp
@@ -15,6 +11,8 @@ from moviepy.tools import convert_to_seconds, cross_platform_popen_params
 
 
 class FFMPEG_VideoReader:
+    """Class for video byte-level reading with ffmpeg."""
+
     def __init__(
         self,
         filename,
@@ -74,10 +72,10 @@ class FFMPEG_VideoReader:
     def initialize(self, start_time=0):
         """
         Opens the file, creates the pipe.
-        Sets self.pos to the appropriate value (1 if start_time == 0 because
-        it pre-reads the first frame)
-        """
 
+        Sets self.pos to the appropriate value (1 if start_time == 0 because
+        it pre-reads the first frame).
+        """
         self.close(delete_lastread=False)  # if any
 
         if start_time != 0:
@@ -201,7 +199,6 @@ class FFMPEG_VideoReader:
         This function tries to avoid fetching arbitrary frames
         whenever possible, by moving between adjacent frames.
         """
-
         # + 1 so that it represents the frame position that it will be
         # after the frame is read. This makes the later comparisions easier.
         pos = self.get_frame_number(t) + 1
@@ -233,6 +230,7 @@ class FFMPEG_VideoReader:
         return int(self.fps * t + 0.00001)
 
     def close(self, delete_lastread=True):
+        """Closes the reader terminating the process, if is still open."""
         if self.proc:
             if self.proc.poll() is None:
                 self.proc.terminate()
@@ -257,7 +255,7 @@ def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
     Use ImageClip instead to make clips out of image files.
 
     Parameters
-    -----------
+    ----------
 
     filename
       Name of the image file. Can be of any format supported by ffmpeg.
@@ -352,7 +350,7 @@ class FFmpegInfosParser:
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary
         for a file with ``-i`` option and returns a dictionary with all data needed
-        by moviepy.
+        by MoviePy.
         """
         result = {
             "video_found": False,
@@ -630,9 +628,11 @@ class FFmpegInfosParser:
         return (global_data, stream_data)
 
     def parse_fps(self, line):
+        """Parses number of FPS from a line of the ``ffmpeg -i`` command output."""
         return float(re.search(r" (\d+.?\d*) fps", line).group(1))
 
     def parse_tbr(self, line):
+        """Parses number of TBS from a line of the ``ffmpeg -i`` command output."""
         s_tbr = re.search(r" (\d+.?\d*k?) tbr", line).group(1)
 
         # Sometimes comes as e.g. 12k. We need to replace that with 12000.

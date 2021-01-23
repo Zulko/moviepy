@@ -6,14 +6,13 @@ serious historical study here: https://www.youtube.com/watch?v=zvCvOC2VwDc
 
 Here is what we do:
 
-0- Get the video of a dancing knight, and a (Creative Commons) audio music file.
-1- load the audio file and automatically find the tempo
-2- load the video and automatically find a segment that loops well
-3- extract this segment, slow it down so that it matches the audio tempo,
-   and make it loop forever.
-4- Symmetrize this segment so that we will get two knights instead of one
-5- Add a title screen and some credits, write to a file.
-
+0. Get the video of a dancing knight, and a (Creative Commons) audio music file.
+1. Load the audio file and automatically find the tempo.
+2. Load the video and automatically find a segment that loops well
+3. Extract this segment, slow it down so that it matches the audio tempo, and make
+   it loop forever.
+4. Symmetrize this segment so that we will get two knights instead of one
+5. Add a title screen and some credits, write to a file.
 
 This example has been originally edited in an IPython Notebook, which makes it
 easy to preview and fine-tune each part of the editing.

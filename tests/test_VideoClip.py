@@ -34,7 +34,7 @@ def test_check_codec():
 
 
 def test_write_frame_errors():
-    """Checks error cases return helpful messages"""
+    """Checks error cases return helpful messages."""
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "unlogged-write.mp4")
     with pytest.raises(IOError) as e:
@@ -51,8 +51,9 @@ def test_write_frame_errors():
 
 
 def test_write_frame_errors_with_redirected_logs():
-    """Checks error cases return helpful messages even when logs redirected
-    See https://github.com/Zulko/moviepy/issues/877"""
+    """Checks error cases return helpful messages even when logs redirected.
+    See https://github.com/Zulko/moviepy/issues/877
+    """
     clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
     location = os.path.join(TMP_DIR, "logged-write.mp4")
     with pytest.raises(IOError) as e:

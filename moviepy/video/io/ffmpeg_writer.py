@@ -19,7 +19,7 @@ class FFMPEG_VideoWriter:
     choice of formats.
 
     Parameters
-    -----------
+    ----------
 
     filename
       Any filename like 'video.mp4' etc. but if you want to avoid
@@ -135,7 +135,7 @@ class FFMPEG_VideoWriter:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frame(self, img_array):
-        """ Writes one frame in the file."""
+        """Writes one frame in the file."""
         try:
             self.proc.stdin.write(img_array.tobytes())
         except IOError as err:
@@ -193,6 +193,7 @@ class FFMPEG_VideoWriter:
             raise IOError(error)
 
     def close(self):
+        """Closes the writer, terminating the subprocess if is still alive."""
         if self.proc:
             self.proc.stdin.close()
             if self.proc.stderr is not None:
@@ -267,9 +268,7 @@ def ffmpeg_write_video(
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
-    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using
-    ffmpeg."""
-
+    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg."""
     if image.dtype != "uint8":
         image = image.astype("uint8")
     if not pixel_format:

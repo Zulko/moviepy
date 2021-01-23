@@ -10,7 +10,7 @@ def audio_loop(clip, n_loops=None, duration=None):
     `n_loops` times, or during `duration` seconds.
 
     Examples
-    ========
+    --------
 
     >>> from moviepy import *
     >>> videoclip = VideoFileClip('myvideo.mp4')

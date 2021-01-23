@@ -23,7 +23,7 @@ class AudioClip(Clip):
     sound back into the bounds at conversion time, without much impact).
 
     Parameters
-    -----------
+    ----------
 
     make_frame
       A function `t-> frame at time t`. The frame does not mean much
@@ -38,7 +38,7 @@ class AudioClip(Clip):
       Number of channels (one or two for mono or stereo).
 
     Examples
-    ---------
+    --------
 
     >>> # Plays the note A in mono (a sine wave of frequency 440 Hz)
     >>> import numpy as np
@@ -113,7 +113,7 @@ class AudioClip(Clip):
         or written in a wav file. See ``AudioClip.preview``.
 
         Parameters
-        ------------
+        ----------
 
         fps
           Frame rate of the sound for the conversion.
@@ -158,6 +158,7 @@ class AudioClip(Clip):
         return snd_array
 
     def max_volume(self, stereo=False, chunksize=50000, logger=None):
+        """Returns the maximum volume level of the clip."""
         # max volume separated by channels if ``stereo`` and not mono
         stereo = stereo and self.nchannels > 1
 
@@ -187,7 +188,7 @@ class AudioClip(Clip):
 
 
         Parameters
-        -----------
+        ----------
 
         filename
           Name of the output file, as a string or a path-like object.
@@ -259,7 +260,7 @@ class AudioArrayClip(AudioClip):
     An audio clip made from a sound array.
 
     Parameters
-    -----------
+    ----------
 
     array
       A Numpy array representing the sound, of size Nx1 for mono,
@@ -279,9 +280,9 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
 
         def make_frame(t):
-            """complicated, but must be able to handle the case where t
-            is a list of the form sin(t)"""
-
+            """Complicated, but must be able to handle the case where t
+            is a list of the form sin(t).
+            """
             if isinstance(t, np.ndarray):
                 array_inds = np.round(self.fps * t).astype(int)
                 in_array = (array_inds >= 0) & (array_inds < len(self.array))
@@ -305,14 +306,13 @@ class CompositeAudioClip(AudioClip):
     An audio clip made by putting together several audio clips.
 
     Parameters
-    ------------
+    ----------
 
     clips
       List of audio clips, which may start playing at different times or
       together, depends on their ``start`` attributes. If all have their
       ``duration`` attribute set, the duration of the composite clip is
       computed automatically.
-
     """
 
     def __init__(self, clips):
@@ -336,13 +336,16 @@ class CompositeAudioClip(AudioClip):
 
     @property
     def starts(self):
+        """Returns starting times for all clips in the composition."""
         return (clip.start for clip in self.clips)
 
     @property
     def ends(self):
+        """Returns ending times for all clips in the composition."""
         return (clip.end for clip in self.clips)
 
     def make_frame(self, t):
+        """Renders a frame for the composition for the time ``t``."""
         played_parts = [clip.is_playing(t) for clip in self.clips]
 
         sounds = [

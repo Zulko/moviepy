@@ -5,15 +5,12 @@ from moviepy.video.VideoClip import ImageClip
 
 
 def find_objects(clip, size_threshold=500, preview=False):
-    """
-    Returns a list of ImageClips representing each a separate object on
+    """Returns a list of ImageClips representing each a separate object on
     the screen.
 
     size_threshold : all objects found with size < size_threshold will be
          considered false positives and will be removed
-
     """
-
     image = clip.get_frame(0)
     if not clip.mask:
         clip = clip.add_mask()

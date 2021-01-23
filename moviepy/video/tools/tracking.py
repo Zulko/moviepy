@@ -1,11 +1,10 @@
 """
-This module contains different functions for tracking objects in videos,
-manually or automatically. The tracking functions return results under
-the form:  ``( txy, (fx,fy) )`` where txy is of the form [(ti, xi, yi)...]
-and (fx(t),fy(t)) give the position of the track for all times t (if the
-time t is out of the time bounds of the tracking time interval
-fx and fy return the position of the object at the start or at the end
-of the tracking time interval).
+Contains different functions for tracking objects in videos, manually or automatically.
+The tracking functions return results under the form:  ``( txy, (fx,fy) )`` where txy
+is of the form [(ti, xi, yi)...] and (fx(t),fy(t)) give the position of the track for
+all times t (if the time t is out of the time bounds of the tracking time interval fx
+and fy return the position of the object at the start or at the end of the tracking time
+interval).
 """
 
 import numpy as np
@@ -44,7 +43,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     form (ti, [(xi1,yi1), (xi2,yi2), ...] )
 
     Parameters
-    -------------
+    ----------
 
     t1,t2:
       times during which to track (defaults are start and
@@ -61,7 +60,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
       it easier to edit and re-use later.
 
     Examples
-    ---------
+    --------
 
     >>> from moviepy import VideoFileClip
     >>> from moviepy.video.tools.tracking import manual_tracking
@@ -76,7 +75,6 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     >>> # If ever you only have one object being tracked, recover it with
     >>> traj, =  Trajectory.load_list('track.text')
     """
-
     import pygame as pg
 
     screen = pg.display.set_mode(clip.size)
@@ -136,11 +134,10 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
 
 
 def findAround(pic, pat, xy=None, r=None):
-    """
-    find image pattern ``pat`` in ``pic[x +/- r, y +/- r]``.
-    if xy is none, consider the whole picture.
-    """
+    """Find a image pattern ``pat`` in ``pic[x +/- r, y +/- r]``.
 
+    If xy is none, consider the whole picture.
+    """
     if xy and r:
         h, w = pat.shape[:2]
         x, y = xy
@@ -152,19 +149,18 @@ def findAround(pic, pat, xy=None, r=None):
 
 
 def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
-    """
-    Tracks a given pattern (small image array) in a video clip.
-    Returns [(x1,y1),(x2,y2)...] where xi,yi are
-    the coordinates of the pattern in the clip on frame i.
-    To select the frames you can either specify a list of times with ``tt``
-    or select a frame rate with ``fps``.
-    This algorithm assumes that the pattern's aspect does not vary much
-    and that the distance between two occurences of the pattern in
-    two consecutive frames is smaller than ``radius`` (if you set ``radius``
-    to -1 the pattern will be searched in the whole screen at each frame).
-    You can also provide the original position of the pattern with xy0.
-    """
+    """Tracks a given pattern (small image array) in a video clip.
 
+    Returns [(x1,y1),(x2,y2)...] where xi,yi are the coordinates of the pattern in the
+    clip on frame i. To select the frames you can either specify a list of times with
+    ``tt`` or select a frame rate with ``fps``.
+
+    This algorithm assumes that the pattern's aspect does not vary much and that the
+    distance between two occurences of the pattern in two consecutive frames is smaller
+    than ``radius`` (if you set ``radius`` to -1 the pattern will be searched in the
+    whole screen at each frame). You can also provide the original position of the
+    pattern with xy0.
+    """
     if not autotracking_possible:
         raise IOError(
             "Sorry, autotrack requires OpenCV for the moment. "

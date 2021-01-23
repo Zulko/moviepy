@@ -277,7 +277,8 @@ def test_ffmpeg_parse_infos_chapters():
 def test_sequential_frame_pos():
     """test_video.mp4 contains 5 frames at 1 fps.
     Each frame is 1x1 pixels and the sequence is Red, Green, Blue, Black, White.
-    The rgb values are not pure due to compression."""
+    The rgb values are not pure due to compression.
+    """
     reader = FFMPEG_VideoReader("media/test_video.mp4")
     assert reader.pos == 1
 
@@ -344,8 +345,6 @@ def test_large_skip_frame_pos():
 
 
 def test_large_small_skip_equal():
-    """Get the 241st frame of the file in 4 different ways:
-    Reading every frame, Reading every 24th frame, Jumping straight there"""
     sequential_reader = FFMPEG_VideoReader("media/big_buck_bunny_0_30.webm")
     small_skip_reader = FFMPEG_VideoReader("media/big_buck_bunny_0_30.webm")
     large_skip_reader = FFMPEG_VideoReader("media/big_buck_bunny_0_30.webm")
