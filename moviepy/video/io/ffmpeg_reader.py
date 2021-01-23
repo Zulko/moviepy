@@ -518,7 +518,7 @@ class FFmpegInfosParser:
                 field, value = self.parse_metadata_field_value(line)
                 self._current_chapter["metadata"][field] = value
 
-        # last input file, must be included in the self.result
+        # last input file, must be included in self.result
         if self._current_input_file:
             self._current_input_file["streams"].append(self._current_stream)
             # include their chapters, if there are
