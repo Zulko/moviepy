@@ -347,17 +347,19 @@ class FFmpegInfosParser:
         self._current_stream = None
         self._current_chapter = None
 
-    def parse(self):
-        """Parses the information returned by FFmpeg in stderr executing their binary
-        for a file with ``-i`` option and returns a dictionary with all data needed
-        by MoviePy.
-        """
-        result = {
+        # resulting data of the parsing process
+        self.result = {
             "video_found": False,
             "audio_found": False,
             "metadata": {},
             "inputs": [],
         }
+
+    def parse(self):
+        """Parses the information returned by FFmpeg in stderr executing their binary
+        for a file with ``-i`` option and returns a dictionary with all data needed
+        by MoviePy.
+        """
         # chapters by input file
         input_chapters = []
 
@@ -368,7 +370,7 @@ class FFmpegInfosParser:
                 and "time=" in line
             ):
                 # parse duration using file decodification
-                result["duration"] = self.parse_duration(line)
+                self.result["duration"] = self.parse_duration(line)
             elif self._inside_output or line[0] != " ":
                 if self.duration_tag_separator == "time=" and not self._inside_output:
                     self._inside_output = True
@@ -380,21 +382,23 @@ class FFmpegInfosParser:
                 # exit "  Metadata:" group
                 self._inside_file_metadata = False
                 if self.check_duration and self.duration_tag_separator == "Duration: ":
-                    result["duration"] = self.parse_duration(line)
+                    self.result["duration"] = self.parse_duration(line)
 
                 # parse global bitrate (in kb/s)
                 bitrate_match = re.search(r"bitrate: (\d+) kb/s", line)
-                result["bitrate"] = (
+                self.result["bitrate"] = (
                     int(bitrate_match.group(1)) if bitrate_match else None
                 )
 
                 # parse start time (in seconds)
                 start_match = re.search(r"start: (\d+\.?\d+)", line)
-                result["start"] = float(start_match.group(1)) if start_match else None
+                self.result["start"] = (
+                    float(start_match.group(1)) if start_match else None
+                )
             elif self._inside_file_metadata:
                 # file metadata line
                 field, value = self.parse_metadata_field_value(line)
-                result["metadata"].update({field: value})
+                self.result["metadata"].update({field: value})
             elif line.startswith("    Stream "):
                 # exit stream "    Metadata:"
                 if self._current_stream:
@@ -428,8 +432,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    result[f"default_{stream_type_lower}_input_number"] = input_number
-                    result[f"default_{stream_type_lower}_stream_number"] = stream_number
+                    self.result[
+                        f"default_{stream_type_lower}_input_number"
+                    ] = input_number
+                    self.result[
+                        f"default_{stream_type_lower}_stream_number"
+                    ] = stream_number
 
                 # exit chapter
                 if self._current_chapter:
@@ -448,8 +456,8 @@ class FFmpegInfosParser:
                             input_number
                         ]
 
-                    # add new input file to result
-                    result["inputs"].append(self._current_input_file)
+                    # add new input file to self.result
+                    self.result["inputs"].append(self._current_input_file)
                     self._current_input_file = {"input_number": input_number}
 
                 # parse relevant data by stream type
@@ -462,7 +470,7 @@ class FFmpegInfosParser:
                         f"{str(exc)}\nffmpeg output:\n\n{self.infos}", UserWarning
                     )
                 else:
-                    result.update(global_data)
+                    self.result.update(global_data)
                     self._current_stream.update(stream_data)
             elif line.startswith("    Metadata:"):
                 # enter group "    Metadata:"
@@ -476,7 +484,7 @@ class FFmpegInfosParser:
                 if self._current_stream["stream_type"] == "video":
                     field, value = self.video_metadata_type_casting(field, value)
                     if field == "rotate":
-                        result["video_rotation"] = value
+                        self.result["video_rotation"] = value
                 self._current_stream["metadata"][field] = value
             elif line.startswith("    Chapter"):
                 # Chapter data line
@@ -510,7 +518,7 @@ class FFmpegInfosParser:
                 field, value = self.parse_metadata_field_value(line)
                 self._current_chapter["metadata"][field] = value
 
-        # last input file, must be included in the result
+        # last input file, must be included in self.result
         if self._current_input_file:
             self._current_input_file["streams"].append(self._current_stream)
             # include their chapters, if there are
@@ -518,17 +526,21 @@ class FFmpegInfosParser:
                 self._current_input_file["chapters"] = input_chapters[
                     self._current_input_file["input_number"]
                 ]
-            result["inputs"].append(self._current_input_file)
+            self.result["inputs"].append(self._current_input_file)
 
         # some video duration utilities
-        if result["video_found"] and self.check_duration:
-            result["video_n_frames"] = int(result["duration"] * result["video_fps"])
-            result["video_duration"] = result["duration"]
+        if self.result["video_found"] and self.check_duration:
+            self.result["video_n_frames"] = int(
+                self.result["duration"] * self.result["video_fps"]
+            )
+            self.result["video_duration"] = self.result["duration"]
         else:
-            result["video_n_frames"] = 1
-            result["video_duration"] = None
+            self.result["video_n_frames"] = 1
+            self.result["video_duration"] = None
         # We could have also recomputed duration from the number of frames, as follows:
         # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
+
+        result = self.result
 
         # reset state of the parser
         self._reset_state()
@@ -621,10 +633,13 @@ class FFmpegInfosParser:
                 fps = x * coef
         stream_data["fps"] = fps
 
-        if self._current_stream["default"]:
+        if self._current_stream["default"] or "video_size" not in self.result:
             global_data["video_size"] = stream_data.get("size", None)
+        if self._current_stream["default"] or "video_bitrate" not in self.result:
             global_data["video_bitrate"] = stream_data.get("bitrate", None)
+        if self._current_stream["default"] or "video_fps" not in self.result:
             global_data["video_fps"] = stream_data["fps"]
+
         return (global_data, stream_data)
 
     def parse_fps(self, line):
