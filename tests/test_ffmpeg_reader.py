@@ -274,6 +274,27 @@ def test_ffmpeg_parse_infos_chapters():
         assert isinstance(chapters[num]["metadata"]["title"], str)
 
 
+def test_ffmpeg_parse_infos_metadata_with_attached_pic():
+    """Check that the parser can parse audios with attached pictures.
+
+    Currently, does not distinguish if the video found is an attached picture,
+    this test serves mainly to ensure that #1487 issue does not happen again:
+    """
+    d = ffmpeg_parse_infos("media/with-attached-pic.mp3")
+
+    assert d["audio_bitrate"] == 320
+    assert d["audio_found"]
+    assert d["audio_fps"] == 44100
+
+    assert len(d["inputs"]) == 1
+    streams = d["inputs"][0]["streams"]
+    assert len(streams) == 2
+    assert streams[0]["stream_type"] == "audio"
+    assert streams[1]["stream_type"] == "video"
+
+    assert len(d["metadata"].keys()) == 7
+
+
 def test_sequential_frame_pos():
     """test_video.mp4 contains 5 frames at 1 fps.
     Each frame is 1x1 pixels and the sequence is Red, Green, Blue, Black, White.
