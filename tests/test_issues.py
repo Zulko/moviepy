@@ -401,5 +401,14 @@ def test_issue_655():
     assert True
 
 
+def test_issue_1487():
+    audio_clip = AudioFileClip("media/mp3-thumbnail.mp3")
+    assert audio_clip.duration == 1.02
+    video_clip = VideoFileClip("media/mp3-thumbnail.mp3")
+    location = os.path.join(TMP_DIR, "mp3-thumbnail.png")
+    video_clip.save_frame(location, t=0.5)
+    assert os.path.isfile(location)
+
+
 if __name__ == "__main__":
     pytest.main()
