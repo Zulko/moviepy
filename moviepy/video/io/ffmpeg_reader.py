@@ -766,4 +766,4 @@ def ffmpeg_parse_infos(
             raise IsADirectoryError(f"'{filename}' is a directory")
         elif not os.path.exists(filename):
             raise FileNotFoundError(f"'{filename}' not found")
-        raise exc
+        raise IOError(f"Error pasing `ffmpeg -i` command output:\n\n{infos}") from exc
