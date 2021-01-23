@@ -28,6 +28,7 @@ from moviepy.video.fx import (
     make_loopable,
     margin,
     mask_and,
+    mask_or,
     mirror_x,
     mirror_y,
     multiply_color,
@@ -507,8 +508,57 @@ def test_mask_color():
     pass
 
 
-def test_mask_or():
-    pass
+@pytest.mark.parametrize("image_from", ("np.ndarray", "ImageClip"))
+@pytest.mark.parametrize("duration", (None, "random"))
+@pytest.mark.parametrize(
+    ("color", "mask_color", "expected_color"),
+    (
+        (
+            (0, 0, 0),
+            (255, 255, 255),
+            (255, 255, 255),
+        ),
+        (
+            (255, 0, 0),
+            (0, 0, 255),
+            (255, 0, 255),
+        ),
+        (
+            (255, 255, 255),
+            (0, 10, 20),
+            (255, 255, 255),
+        ),
+        (
+            (10, 10, 10),
+            (20, 0, 20),
+            (20, 10, 20),
+        ),
+    ),
+)
+def test_mask_or(image_from, duration, color, mask_color, expected_color):
+    """Checks ``mask_or`` FX behaviour."""
+    clip_size = tuple(random.randint(3, 10) for i in range(2))
+
+    if duration == "random":
+        duration = round(random.uniform(0, 0.5), 2)
+
+    # test ImageClip and np.ndarray types as mask argument
+    clip = ColorClip(color=color, size=clip_size).with_duration(duration)
+    mask_clip = ColorClip(color=mask_color, size=clip.size)
+    masked_clip = mask_or(
+        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    )
+
+    assert masked_clip.duration == clip.duration
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
+
+    # test VideoClip as mask argument
+    color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
+    clip = VideoClip(lambda t: color_frame).with_duration(duration)
+    mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
+    masked_clip = mask_or(clip, mask_clip)
+
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mirror_x():
