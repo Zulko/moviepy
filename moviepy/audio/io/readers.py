@@ -58,9 +58,7 @@ class FFMPEG_AudioReader:
         self.codec = "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(filename, decode_file=decode_file)
-        self.duration = infos.get("video_duration")
-        if self.duration is None:
-            self.duration = infos["duration"]
+        self.duration = infos["duration"]
         self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None
