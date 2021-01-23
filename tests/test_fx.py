@@ -1,10 +1,18 @@
+import math
 import os
 import random
 
 import numpy as np
 import pytest
 
-from moviepy import AudioClip, AudioFileClip, BitmapClip, ColorClip, VideoFileClip
+from moviepy import (
+    AudioClip,
+    AudioFileClip,
+    BitmapClip,
+    ColorClip,
+    VideoClip,
+    VideoFileClip,
+)
 from moviepy.audio.fx import (
     audio_delay,
     audio_normalize,
@@ -25,6 +33,8 @@ from moviepy.video.fx import (
     lum_contrast,
     make_loopable,
     margin,
+    mask_and,
+    mask_or,
     mirror_x,
     mirror_y,
     multiply_color,
@@ -447,16 +457,114 @@ def test_margin():
     assert target == clip3
 
 
-def test_mask_and():
-    pass
+@pytest.mark.parametrize("image_from", ("np.ndarray", "ImageClip"))
+@pytest.mark.parametrize("duration", (None, "random"))
+@pytest.mark.parametrize(
+    ("color", "mask_color", "expected_color"),
+    (
+        (
+            (0, 0, 0),
+            (255, 255, 255),
+            (0, 0, 0),
+        ),
+        (
+            (255, 0, 0),
+            (0, 0, 255),
+            (0, 0, 0),
+        ),
+        (
+            (255, 255, 255),
+            (0, 10, 20),
+            (0, 10, 20),
+        ),
+        (
+            (10, 10, 10),
+            (20, 0, 20),
+            (10, 0, 10),
+        ),
+    ),
+)
+def test_mask_and(image_from, duration, color, mask_color, expected_color):
+    """Checks ``mask_and`` FX behaviour."""
+    clip_size = tuple(random.randint(3, 10) for i in range(2))
+
+    if duration == "random":
+        duration = round(random.uniform(0, 0.5), 2)
+
+    # test ImageClip and np.ndarray types as mask argument
+    clip = ColorClip(color=color, size=clip_size).with_duration(duration)
+    mask_clip = ColorClip(color=mask_color, size=clip.size)
+    masked_clip = mask_and(
+        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    )
+
+    assert masked_clip.duration == clip.duration
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
+
+    # test VideoClip as mask argument
+    color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
+    clip = VideoClip(lambda t: color_frame).with_duration(duration)
+    mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
+    masked_clip = mask_and(clip, mask_clip)
+
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mask_color():
     pass
 
 
-def test_mask_or():
-    pass
+@pytest.mark.parametrize("image_from", ("np.ndarray", "ImageClip"))
+@pytest.mark.parametrize("duration", (None, "random"))
+@pytest.mark.parametrize(
+    ("color", "mask_color", "expected_color"),
+    (
+        (
+            (0, 0, 0),
+            (255, 255, 255),
+            (255, 255, 255),
+        ),
+        (
+            (255, 0, 0),
+            (0, 0, 255),
+            (255, 0, 255),
+        ),
+        (
+            (255, 255, 255),
+            (0, 10, 20),
+            (255, 255, 255),
+        ),
+        (
+            (10, 10, 10),
+            (20, 0, 20),
+            (20, 10, 20),
+        ),
+    ),
+)
+def test_mask_or(image_from, duration, color, mask_color, expected_color):
+    """Checks ``mask_or`` FX behaviour."""
+    clip_size = tuple(random.randint(3, 10) for i in range(2))
+
+    if duration == "random":
+        duration = round(random.uniform(0, 0.5), 2)
+
+    # test ImageClip and np.ndarray types as mask argument
+    clip = ColorClip(color=color, size=clip_size).with_duration(duration)
+    mask_clip = ColorClip(color=mask_color, size=clip.size)
+    masked_clip = mask_or(
+        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    )
+
+    assert masked_clip.duration == clip.duration
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
+
+    # test VideoClip as mask argument
+    color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
+    clip = VideoClip(lambda t: color_frame).with_duration(duration)
+    mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
+    masked_clip = mask_or(clip, mask_clip)
+
+    assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mirror_x():
@@ -500,30 +608,128 @@ def test_resize():
     # clip4.write_videofile(os.path.join(TMP_DIR, "resize4.webm"))
 
 
+# Run several times to ensure that adding 360 to rotation angles has no effect
 @pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
-def test_rotate(angle_offset):
-    # Run several times to ensure that adding 360 to rotation angles has no effect
-    clip = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
+@pytest.mark.parametrize("unit", ["deg", "rad"])
+@pytest.mark.parametrize("resample", ["bilinear", "nearest", "bicubic", "unknown"])
+@pytest.mark.parametrize(
+    (
+        "angle",
+        "translate",
+        "center",
+        "bg_color",
+        "expected_frames",
+    ),
+    (
+        (
+            0,
+            None,
+            None,
+            None,
+            [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]],
+        ),
+        (
+            90,
+            None,
+            None,
+            None,
+            [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
+        ),
+        (
+            lambda t: 90,
+            None,
+            None,
+            None,
+            [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
+        ),
+        (
+            180,
+            None,
+            None,
+            None,
+            [["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]],
+        ),
+        (
+            270,
+            None,
+            None,
+            None,
+            [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]],
+        ),
+        (
+            45,
+            (50, 50),
+            None,
+            (0, 255, 0),
+            [
+                ["GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG"],
+                ["GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG"],
+            ],
+        ),
+        (
+            45,
+            (50, 50),
+            (20, 20),
+            (255, 0, 0),
+            [
+                ["RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR"],
+                ["RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR"],
+            ],
+        ),
+        (
+            135,
+            (-100, -100),
+            None,
+            (0, 0, 255),
+            [
+                ["BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB"],
+                ["BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB"],
+            ],
+        ),
+    ),
+)
+def test_rotate(
+    angle_offset,
+    angle,
+    unit,
+    resample,
+    translate,
+    center,
+    bg_color,
+    expected_frames,
+):
+    """Check ``rotate`` FX behaviour against possible combinations of arguments."""
+    original_frames = [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]
 
-    clip1 = rotate(clip, 0 + angle_offset)
-    target1 = BitmapClip([["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]], fps=1)
-    assert clip1 == target1
+    # angles are defined in degrees, so convert to radians testing ``unit="rad"``
+    if unit == "rad":
+        if hasattr(angle, "__call__"):
+            _angle = lambda t: math.radians(angle(0))
+        else:
+            _angle = math.radians(angle)
+    else:
+        _angle = angle
+    clip = BitmapClip(original_frames, fps=1)
 
-    clip2 = rotate(clip, 90 + angle_offset)
-    target2 = BitmapClip(
-        [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]], fps=1
-    )
-    assert clip2 == target2, clip2.to_bitmap()
+    kwargs = {
+        "unit": unit,
+        "resample": resample,
+        "translate": translate,
+        "center": center,
+        "bg_color": bg_color,
+    }
+    if resample not in ["bilinear", "nearest", "bicubic"]:
+        with pytest.raises(ValueError) as exc:
+            clip.rotate(_angle, **kwargs)
+        assert (
+            "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
+        ) == str(exc.value)
+        return
+    else:
+        rotated_clip = clip.rotate(_angle, **kwargs)
 
-    clip3 = rotate(clip, 180 + angle_offset)
-    target3 = BitmapClip([["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]], fps=1)
-    assert clip3 == target3
-
-    clip4 = rotate(clip, 270 + angle_offset)
-    target4 = BitmapClip(
-        [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]], fps=1
-    )
-    assert clip4 == target4
+    expected_clip = BitmapClip(expected_frames, fps=1)
+    assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
 
 
 def test_rotate_nonstandard_angles():

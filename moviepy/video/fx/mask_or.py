@@ -4,12 +4,26 @@ from moviepy.video.VideoClip import ImageClip
 
 
 def mask_or(clip, other_clip):
-    """Returns the logical 'or' (max) between two masks.
+    """Returns the logical 'or' (maximum pixel color values) between two masks.
 
-    ``other_clip`` can be a mask clip or a picture (np.array).
-    The result has the duration of 'clip' (if it has any).
+    The result has the duration of the clip to which has been applied, if it has any.
+
+    Parameters
+    ----------
+
+    other_clip ImageClip or np.ndarray
+      Clip used to mask the original clip.
+
+    Examples
+    --------
+
+    >>> clip = ColorClip(color=(255, 0, 0), size=(1, 1))  # red
+    >>> mask = ColorClip(color=(0, 255, 0), size=(1, 1))  # green
+    >>> masked_clip = clip.fx(mask_or, mask)              # yellow
+    >>> masked_clip.get_frame(0)
+    [[[255 255   0]]]
     """
-    # To ensure that 'or' of two ImageClips will be an ImageClip.
+    # to ensure that 'or' of two ImageClips will be an ImageClip
     if isinstance(other_clip, ImageClip):
         other_clip = other_clip.img
 
