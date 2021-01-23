@@ -10,6 +10,7 @@ def mask_and(clip, other_clip):
 
     Parameters
     ----------
+
     other_clip ImageClip or np.ndarray
       Clip used to mask the original clip.
 
