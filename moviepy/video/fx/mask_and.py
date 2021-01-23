@@ -15,6 +15,7 @@ def mask_and(clip, other_clip):
 
     Examples
     --------
+
     >>> clip = ColorClip(color=(255, 0, 0), size=(1, 1))  # red
     >>> mask = ColorClip(color=(0, 255, 0), size=(1, 1))  # green
     >>> masked_clip = clip.fx(mask_and, mask)             # black
