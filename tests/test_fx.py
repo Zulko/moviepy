@@ -13,7 +13,12 @@ from moviepy import (
     VideoClip,
     VideoFileClip,
 )
-from moviepy.audio.fx import audio_normalize, multiply_stereo_volume, multiply_volume
+from moviepy.audio.fx import (
+    audio_delay,
+    audio_normalize,
+    multiply_stereo_volume,
+    multiply_volume,
+)
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -926,6 +931,90 @@ def test_multiply_stereo_volume():
     assert np.array_equal(mono_channel_doubled, d_channel)
 
     close_all_clips(locals())
+
+
+@pytest.mark.parametrize(
+    ("duration", "offset", "n_repeats", "decay"),
+    (
+        (0.1, 0.2, 11, 0),
+        (0.4, 2, 5, 2),
+        (0.5, 0.6, 3, -1),
+        (0.3, 1, 7, 4),
+    ),
+)
+def test_audio_delay(duration, offset, n_repeats, decay):
+    """Check that creating a short pulse of audio, the delay converts to a sound
+    with the volume level in the form `-_-_-_-_-`, being `-` pulses expressed by
+    `duration` argument and `_` being chunks of muted audio. Keep in mind that this
+    way of test the FX only works if `duration <= offset`, but as does not make sense
+    create a delay with `duration > offset`, this is enough for our purposes.
+
+    Note that decayment values are not tested here, but are created using
+    `multiply_volume`, should be OK.
+    """
+    # limits of this test
+    assert n_repeats > 0  # some repetition, if not does not make sense
+    assert duration <= offset  # avoid wave distorsion
+    assert not offset * 1000000 % 2  # odd offset -> no accurate muted chunk size
+
+    # stereo A note
+    make_frame = lambda t: np.array(
+        [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
+    ).T.copy(order="C")
+
+    # stereo audio clip
+    clip = AudioClip(make_frame=make_frame, duration=duration, fps=44100)
+    clip_array = clip.to_soundarray()
+
+    # stereo delayed clip
+    delayed_clip = audio_delay(clip, offset=offset, n_repeats=n_repeats, decay=decay)
+    delayed_clip_array = delayed_clip.to_soundarray()
+
+    # size of chunks with audios
+    sound_chunk_size = clip_array.shape[0]
+    # muted chunks size
+    muted_chunk_size = int(sound_chunk_size * offset / duration) - sound_chunk_size
+
+    zeros_expected_chunk_as_muted = np.zeros((muted_chunk_size, 2))
+
+    decayments = np.linspace(1, max(0, decay), n_repeats)
+
+    for i in range(n_repeats + 1):  # first clip, is not part of the repeated ones
+
+        if i == n_repeats:
+            # the delay ends in sound, so last muted chunk does not exists
+            break
+
+        # sound chunk
+        sound_start_at = i * sound_chunk_size + i * muted_chunk_size
+        sound_ends_at = sound_start_at + sound_chunk_size
+
+        # first sound chunk
+        if i == 0:
+            assert np.array_equal(
+                delayed_clip_array[:, :][sound_start_at:sound_ends_at],
+                multiply_volume(clip, decayments[i]).to_soundarray(),
+            )
+
+        # muted chunk
+        mute_starts_at = sound_ends_at + 1
+        mute_ends_at = mute_starts_at + muted_chunk_size
+
+        assert np.array_equal(
+            delayed_clip_array[:, :][mute_starts_at:mute_ends_at],
+            zeros_expected_chunk_as_muted,
+        )
+
+        # check muted bounds
+        assert not np.array_equal(
+            delayed_clip_array[:, :][mute_starts_at - 1 : mute_ends_at],
+            zeros_expected_chunk_as_muted,
+        )
+
+        assert not np.array_equal(
+            delayed_clip_array[:, :][mute_starts_at : mute_ends_at + 1],
+            zeros_expected_chunk_as_muted,
+        )
 
 
 if __name__ == "__main__":
