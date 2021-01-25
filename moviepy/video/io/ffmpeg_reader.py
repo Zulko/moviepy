@@ -355,6 +355,8 @@ class FFmpegInfosParser:
             "inputs": [],
         }
 
+        self._last_metadata_field_added = None
+
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary
         for a file with ``-i`` option and returns a dictionary with all data needed
@@ -398,7 +400,13 @@ class FFmpegInfosParser:
             elif self._inside_file_metadata:
                 # file metadata line
                 field, value = self.parse_metadata_field_value(line)
-                self.result["metadata"].update({field: value})
+
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self.result["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
+                self.result["metadata"][field] = value
             elif line.startswith("    Stream "):
                 # exit stream "    Metadata:"
                 if self._current_stream:
@@ -481,10 +489,16 @@ class FFmpegInfosParser:
                     self._current_stream["metadata"] = {}
 
                 field, value = self.parse_metadata_field_value(line)
+
                 if self._current_stream["stream_type"] == "video":
                     field, value = self.video_metadata_type_casting(field, value)
                     if field == "rotate":
                         self.result["video_rotation"] = value
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self._current_stream["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
                 self._current_stream["metadata"][field] = value
             elif line.startswith("    Chapter"):
                 # Chapter data line
@@ -516,6 +530,11 @@ class FFmpegInfosParser:
                 if "metadata" not in self._current_chapter:
                     self._current_chapter["metadata"] = {}
                 field, value = self.parse_metadata_field_value(line)
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self._current_chapter["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
                 self._current_chapter["metadata"][field] = value
 
         # last input file, must be included in self.result
