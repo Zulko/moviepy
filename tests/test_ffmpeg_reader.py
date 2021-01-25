@@ -9,7 +9,11 @@ import pytest
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.config import FFMPEG_BINARY
 from moviepy.utils import close_all_clips
-from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader, ffmpeg_parse_infos
+from moviepy.video.io.ffmpeg_reader import (
+    FFMPEG_VideoReader,
+    FFmpegInfosParser,
+    ffmpeg_parse_infos,
+)
 from moviepy.video.VideoClip import BitmapClip
 
 from tests.test_helper import TMP_DIR
@@ -293,6 +297,175 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert streams[1]["stream_type"] == "video"
 
     assert len(d["metadata"].keys()) == 7
+
+
+def test_ffmpeg_parse_infos_multiline_metadata():
+    """Check that the parser can parse multiline metadata values."""
+    infos = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/110_PREV_FINAL.mov':
+  Metadata:
+    major_brand     : foo
+    minor_version   : 537199360
+    compatible_brands: bar
+    creation_time   : 2999-08-12 09:00:01
+    xmw             : <?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>
+                    : <second XML line">
+                    :  <rdf:RDF xmlns:rdf="http://www.w3.org/1999/22-rdf-syntax-ns#">
+                    :   <rdf:Description rdf:about=""
+                    :     xmlns:xmpMM="http://nowhere.ext"
+                    :     xmlns:xmpDM="http://nowhere.ext/"
+                    :     xmlns:stDim="http://nowhere.ext/Dimensions#"
+                    :     xmlns:dc="http://nowhere.ext/dc/elements/1.1/"
+                    :    xmpMM:DocumentID="xmw.did:39FA818BE85AE511B9009F953BF804AA"
+                    :    xmwMM:InstanceID="xmw.iid:39FA818BE85AE511B9009F953BF804AA"
+                    :    xmwDM:videoFrameRate="24.000000"
+                    :    xmwDM:videoFieldOrder="Progressive"
+                    :    xmwDM:videoPixelAspectRatio="1/1"
+                    :    xmwDM:audioSampleRate="44100"
+                    :    xmwDM:audioSampleType="16Int"
+                    :    xmwDM:audioChannelType="Mono"
+                    :    dc:format="QuickTimeline">
+                    :    <xmwDM:startTimecode
+                    :     xmwDM:timeValue="00:00:00:00"
+                    :     xmwDM:timeFormat="24Timecode"/>
+                    :    <xmwDM:altTimecode
+                    :     xmwDM:timeValue="00:00:00:00"
+                    :     xmwDM:timeFormat="24Timecode"/>
+                    :    <xmwDM:videoFrameSize
+                    :     stDim:w="768"
+                    :     stDim:h="576"
+                    :     stDim:unit="pixel"/>
+                    :   </rdf:Description>
+                    :  </rdf:RDF>
+                    : </x:xmwmeta>
+                    :
+                    :
+                    : <?xpacket end="w"?>
+  Duration: 00:02:10.67, start: 0.000000, bitrate: 26287 kb/s
+    Stream #0:0(eng): Video: mjpeg 768x576 26213 kb/s, 24 fps, 24 tbr (default)
+    Metadata:
+      creation_time   : 2015-09-14 14:57:32
+      handler_name    : Foo
+                      : Bar
+      encoder         : Photo - JPEG
+      timecode        : 00:00:00:00
+    Stream #0:1(eng): Audio: aac (mp4a / 0x6), 44100 Hz, mono, fltp, 64 kb/s (default)
+    Metadata:
+      creation_time   : 2015-09-14 14:57:33
+      handler_name    : Bar
+                      : Foo
+      timecode        : 00:00:00:00
+    Stream #0:2(eng): Data: none (tmcd / 0x64636D74) (default)
+    Metadata:
+      creation_time   : 2015-09-14 14:58:24
+      handler_name    : Baz
+                      : Foo
+      timecode        : 00:00:00:00
+At least one output file must be specified
+"""
+
+    d = FFmpegInfosParser(infos, "foo.mkv").parse()
+
+    # container data
+    assert d["audio_bitrate"] == 64
+    assert d["audio_found"] is True
+    assert d["audio_fps"] == 44100
+    assert d["duration"] == 130.67
+    assert d["video_duration"] == 130.67
+    assert d["video_found"] is True
+    assert d["video_fps"] == 24
+    assert d["video_n_frames"] == 3136
+    assert d["video_size"] == [768, 576]
+    assert d["start"] == 0
+    assert d["default_audio_input_number"] == 0
+    assert d["default_audio_stream_number"] == 1
+    assert d["default_data_input_number"] == 0
+    assert d["default_data_stream_number"] == 2
+    assert d["default_video_input_number"] == 0
+    assert d["default_video_stream_number"] == 0
+
+    # container metadata
+    assert d["metadata"]["compatible_brands"] == "bar"
+    assert d["metadata"]["creation_time"] == "2999-08-12 09:00:01"
+    assert d["metadata"]["major_brand"] == "foo"
+    assert d["metadata"]["minor_version"] == "537199360"
+    assert d["metadata"]["xmw"] == (
+        """<?xpacket begin="\ufeff" id="W5M0MpCehiHzreSzNTczkc9d"?>
+<second XML line">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/22-rdf-syntax-ns#">
+<rdf:Description rdf:about=""
+xmlns:xmpMM="http://nowhere.ext"
+xmlns:xmpDM="http://nowhere.ext/"
+xmlns:stDim="http://nowhere.ext/Dimensions#"
+xmlns:dc="http://nowhere.ext/dc/elements/1.1/"
+xmpMM:DocumentID="xmw.did:39FA818BE85AE511B9009F953BF804AA"
+xmwMM:InstanceID="xmw.iid:39FA818BE85AE511B9009F953BF804AA"
+xmwDM:videoFrameRate="24.000000"
+xmwDM:videoFieldOrder="Progressive"
+xmwDM:videoPixelAspectRatio="1/1"
+xmwDM:audioSampleRate="44100"
+xmwDM:audioSampleType="16Int"
+xmwDM:audioChannelType="Mono"
+dc:format="QuickTimeline">
+<xmwDM:startTimecode
+xmwDM:timeValue="00:00:00:00"
+xmwDM:timeFormat="24Timecode"/>
+<xmwDM:altTimecode
+xmwDM:timeValue="00:00:00:00"
+xmwDM:timeFormat="24Timecode"/>
+<xmwDM:videoFrameSize
+stDim:w="768"
+stDim:h="576"
+stDim:unit="pixel"/>
+</rdf:Description>
+</rdf:RDF>
+</x:xmwmeta>
+
+
+<?xpacket end="w"?>"""
+    )
+
+    # streams
+    assert len(d["inputs"]) == 1
+
+    streams = d["inputs"][0]["streams"]
+    assert len(streams) == 3
+
+    # video stream
+    assert streams[0]["default"] is True
+    assert streams[0]["fps"] == 24
+    assert streams[0]["input_number"] == 0
+    assert streams[0]["language"] == "eng"
+    assert streams[0]["stream_number"] == 0
+    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["size"] == [768, 576]
+
+    assert streams[0]["metadata"]["creation_time"] == "2015-09-14 14:57:32"
+    assert streams[0]["metadata"]["encoder"] == "Photo - JPEG"
+    assert streams[0]["metadata"]["handler_name"] == "Foo\nBar"
+    assert streams[0]["metadata"]["timecode"] == "00:00:00:00"
+
+    # audio stream
+    assert streams[1]["default"] is True
+    assert streams[1]["fps"] == 44100
+    assert streams[1]["input_number"] == 0
+    assert streams[1]["language"] == "eng"
+    assert streams[1]["stream_number"] == 1
+    assert streams[1]["stream_type"] == "audio"
+
+    assert streams[1]["metadata"]["creation_time"] == "2015-09-14 14:57:33"
+    assert streams[1]["metadata"]["timecode"] == "00:00:00:00"
+    assert streams[1]["metadata"]["handler_name"] == "Bar\nFoo"
+
+    # data stream
+    assert streams[2]["default"] is True
+    assert streams[2]["input_number"] == 0
+    assert streams[2]["language"] == "eng"
+    assert streams[2]["stream_number"] == 2
+    assert streams[2]["stream_type"] == "data"
+
+    assert streams[2]["metadata"]["creation_time"] == "2015-09-14 14:58:24"
+    assert streams[2]["metadata"]["timecode"] == "00:00:00:00"
+    assert streams[2]["metadata"]["handler_name"] == "Baz\nFoo"
 
 
 def test_sequential_frame_pos():

@@ -335,7 +335,7 @@ class FFmpegInfosParser:
 
         # this state is neeeded if `duration_tag_separator == "time="` because
         # execution of ffmpeg decoding the whole file using `-f null -` appends
-        # to the output a the blocks "Stream mapping:" and "Output:", which
+        # to the output the blocks "Stream mapping:" and "Output:", which
         # should be ignored
         self._inside_output = False
 
@@ -354,6 +354,10 @@ class FFmpegInfosParser:
             "metadata": {},
             "inputs": [],
         }
+
+        # keep the value of latest metadata value parsed so we can build
+        # at next lines a multiline metadata value
+        self._last_metadata_field_added = None
 
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary
@@ -398,7 +402,14 @@ class FFmpegInfosParser:
             elif self._inside_file_metadata:
                 # file metadata line
                 field, value = self.parse_metadata_field_value(line)
-                self.result["metadata"].update({field: value})
+
+                # multiline metadata value parsing
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self.result["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
+                self.result["metadata"][field] = value
             elif line.startswith("    Stream "):
                 # exit stream "    Metadata:"
                 if self._current_stream:
@@ -481,10 +492,18 @@ class FFmpegInfosParser:
                     self._current_stream["metadata"] = {}
 
                 field, value = self.parse_metadata_field_value(line)
+
                 if self._current_stream["stream_type"] == "video":
                     field, value = self.video_metadata_type_casting(field, value)
                     if field == "rotate":
                         self.result["video_rotation"] = value
+
+                # multiline metadata value parsing
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self._current_stream["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
                 self._current_stream["metadata"][field] = value
             elif line.startswith("    Chapter"):
                 # Chapter data line
@@ -516,6 +535,13 @@ class FFmpegInfosParser:
                 if "metadata" not in self._current_chapter:
                     self._current_chapter["metadata"] = {}
                 field, value = self.parse_metadata_field_value(line)
+
+                # multiline metadata value parsing
+                if field == "":
+                    field = self._last_metadata_field_added
+                    value = self._current_chapter["metadata"][field] + "\n" + value
+                else:
+                    self._last_metadata_field_added = field
                 self._current_chapter["metadata"][field] = value
 
         # last input file, must be included in self.result
