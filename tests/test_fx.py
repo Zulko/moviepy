@@ -588,7 +588,8 @@ def test_painting():
     pass
 
 
-@pytest.mark.parametrize(("library"), ("PIL", "cv2", "scipy"))
+@pytest.mark.parametrize("library", ("PIL", "cv2", "scipy"))
+@pytest.mark.parametrize("apply_to_mask", (True, False))
 @pytest.mark.parametrize(
     (
         "size",
@@ -666,7 +667,9 @@ def test_painting():
         ),
     ),
 )
-def test_resize(library, size, duration, new_size, height, width, monkeypatch):
+def test_resize(
+    library, apply_to_mask, size, duration, new_size, height, width, monkeypatch
+):
     """Checks ``resize`` FX behaviours using all argument and third party
     implementation combinations.
     """
@@ -720,21 +723,39 @@ def test_resize(library, size, duration, new_size, height, width, monkeypatch):
 
     clip = ColorClip(size=size, color=(0, 0, 0), duration=duration)
     clip.fps = 1
+    mask = ColorClip(size=size, color=0, is_mask=True)
+    clip = clip.with_mask(mask)
 
     # any resizing argument passed, raises `ValueError`
     if expected_new_sizes is None:
         with pytest.raises(ValueError):
-            resized_clip = clip.resize(new_size=new_size, height=height, width=width)
+            resized_clip = clip.resize(
+                new_size=new_size,
+                height=height,
+                width=width,
+                apply_to_mask=apply_to_mask,
+            )
         resized_clip = clip
         expected_new_sizes = [size]
     else:
-        resized_clip = clip.resize(new_size=new_size, height=height, width=width)
+        resized_clip = clip.resize(
+            new_size=new_size, height=height, width=width, apply_to_mask=apply_to_mask
+        )
 
     # assert new size for each frame
     for t in range(duration):
-        frame = resized_clip.get_frame(t)
-        assert len(frame[0]) == expected_new_sizes[t][0]
-        assert len(frame) == expected_new_sizes[t][1]
+        expected_width = expected_new_sizes[t][0]
+        expected_height = expected_new_sizes[t][1]
+
+        clip_frame = resized_clip.get_frame(t)
+
+        assert len(clip_frame[0]) == expected_width
+        assert len(clip_frame) == expected_height
+
+        mask_frame = resized_clip.mask.get_frame(t)
+        if apply_to_mask:
+            assert len(mask_frame[0]) == expected_width
+            assert len(mask_frame) == expected_height
 
 
 # Run several times to ensure that adding 360 to rotation angles has no effect
