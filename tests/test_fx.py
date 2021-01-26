@@ -718,7 +718,7 @@ def test_resize(library, size, duration, new_size, height, width, monkeypatch):
     else:
         expected_new_sizes = None
 
-    clip = ColorClip(size=size, color=(255, 0, 0), duration=duration)
+    clip = ColorClip(size=size, color=(0, 0, 0), duration=duration)
     clip.fps = 1
 
     # any resizing argument passed, raises `ValueError`
