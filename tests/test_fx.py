@@ -1,6 +1,9 @@
+import decimal
 import math
+import numbers
 import os
 import random
+import sys
 
 import numpy as np
 import pytest
@@ -585,27 +588,174 @@ def test_painting():
     pass
 
 
-def test_resize():
-    # TODO update to use BitmapClip
-    clip = get_test_video().subclip(0.2, 0.3)
+@pytest.mark.parametrize("library", ("PIL", "cv2", "scipy"))
+@pytest.mark.parametrize("apply_to_mask", (True, False))
+@pytest.mark.parametrize(
+    (
+        "size",
+        "duration",
+        "new_size",
+        "width",
+        "height",
+    ),
+    (
+        (
+            [8, 2],
+            1,
+            [4, 1],
+            None,
+            None,
+        ),
+        (
+            [8, 2],
+            1,
+            None,
+            4,
+            None,
+        ),
+        (
+            [2, 8],
+            1,
+            None,
+            None,
+            4,
+        ),
+        # neither 'new_size', 'height' or 'width'
+        (
+            [2, 2],
+            1,
+            None,
+            None,
+            None,
+        ),
+        # `new_size` as scaling factor
+        (
+            [5, 5],
+            1,
+            2,
+            None,
+            None,
+        ),
+        (
+            [5, 5],
+            1,
+            decimal.Decimal(2.5),
+            None,
+            None,
+        ),
+        # arguments as functions
+        (
+            [2, 2],
+            4,
+            lambda t: {0: [4, 4], 1: [8, 8], 2: [11, 11], 3: [5, 8]}[t],
+            None,
+            None,
+        ),
+        (
+            [2, 4],
+            2,
+            None,
+            None,
+            lambda t: {0: 3, 1: 4}[t],
+        ),
+        (
+            [5, 2],
+            2,
+            None,
+            lambda t: {0: 3, 1: 4}[t],
+            None,
+        ),
+    ),
+)
+def test_resize(
+    library, apply_to_mask, size, duration, new_size, height, width, monkeypatch
+):
+    """Checks ``resize`` FX behaviours using all argument and third party
+    implementation combinations.
+    """
+    # mock implementation
+    resize_fx_mod = sys.modules[resize.__module__]
+    resizer_func, error_msgs = {
+        "PIL": resize_fx_mod._get_PIL_resizer,
+        "cv2": resize_fx_mod._get_cv2_resizer,
+        "scipy": resize_fx_mod._get_scipy_resizer,
+    }[library]()
 
-    clip1 = resize(clip, (460, 720))  # New resolution: (460,720)
-    assert clip1.size == (460, 720)
-    clip1.write_videofile(os.path.join(TMP_DIR, "resize1.webm"))
+    # if function is not available, skip test for implementation
+    if error_msgs:
+        pytest.skip(error_msgs[0].split(" (")[0])
+    monkeypatch.setattr(resize_fx_mod, "resizer", resizer_func)
 
-    clip2 = resize(clip, 0.6)  # width and heigth multiplied by 0.6
-    assert clip2.size == (clip.size[0] * 0.6, clip.size[1] * 0.6)
-    clip2.write_videofile(os.path.join(TMP_DIR, "resize2.webm"))
+    # build expected sizes (using `width` or `height` arguments will be proportional
+    # to original size)
+    if new_size:
+        if hasattr(new_size, "__call__"):
+            # function
+            expected_new_sizes = [new_size(t) for t in range(duration)]
+        elif isinstance(new_size, numbers.Number):
+            # scaling factor
+            expected_new_sizes = [[int(size[0] * new_size), int(size[1] * new_size)]]
+        else:
+            # tuple or list
+            expected_new_sizes = [new_size]
+    elif height:
+        if hasattr(height, "__call__"):
+            expected_new_sizes = []
+            for t in range(duration):
+                new_height = height(t)
+                expected_new_sizes.append(
+                    [int(size[0] * new_height / size[1]), new_height]
+                )
+        else:
+            expected_new_sizes = [[size[0] * height / size[1], height]]
+    elif width:
+        if hasattr(width, "__call__"):
+            expected_new_sizes = []
+            for t in range(duration):
+                new_width = width(t)
+                expected_new_sizes.append(
+                    [new_width, int(size[1] * new_width / size[0])]
+                )
+        else:
+            expected_new_sizes = [[width, size[1] * width / size[0]]]
+    else:
+        expected_new_sizes = None
 
-    clip3 = resize(clip, width=800)  # height computed automatically.
-    assert clip3.w == 800
-    # assert clip3.h == ??
-    clip3.write_videofile(os.path.join(TMP_DIR, "resize3.webm"))
-    close_all_clips(locals())
+    clip = ColorClip(size=size, color=(0, 0, 0), duration=duration)
+    clip.fps = 1
+    mask = ColorClip(size=size, color=0, is_mask=True)
+    clip = clip.with_mask(mask)
 
-    # I get a general stream error when playing this video.
-    # clip4=clip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
-    # clip4.write_videofile(os.path.join(TMP_DIR, "resize4.webm"))
+    # any resizing argument passed, raises `ValueError`
+    if expected_new_sizes is None:
+        with pytest.raises(ValueError):
+            resized_clip = clip.resize(
+                new_size=new_size,
+                height=height,
+                width=width,
+                apply_to_mask=apply_to_mask,
+            )
+        resized_clip = clip
+        expected_new_sizes = [size]
+    else:
+        resized_clip = clip.resize(
+            new_size=new_size, height=height, width=width, apply_to_mask=apply_to_mask
+        )
+
+    # assert new size for each frame
+    for t in range(duration):
+        expected_width = expected_new_sizes[t][0]
+        expected_height = expected_new_sizes[t][1]
+
+        clip_frame = resized_clip.get_frame(t)
+
+        assert len(clip_frame[0]) == expected_width
+        assert len(clip_frame) == expected_height
+
+        mask_frame = resized_clip.mask.get_frame(t)
+        if apply_to_mask:
+            assert len(mask_frame[0]) == expected_width
+            assert len(mask_frame) == expected_height
 
 
 # Run several times to ensure that adding 360 to rotation angles has no effect

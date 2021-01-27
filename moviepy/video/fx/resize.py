@@ -1,3 +1,6 @@
+import numbers
+
+
 def _get_cv2_resizer():
     try:
         import cv2
@@ -152,7 +155,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
             scalar, then work out the correct pair using the clip's size.
             Otherwise just return `new_size_`
             """
-            if isinstance(new_size_, (int, float)):
+            if isinstance(new_size_, numbers.Number):
                 return [new_size_ * w, new_size_ * h]
             else:
                 return new_size_
@@ -210,6 +213,8 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
 
         else:
             new_size = [width, h * width / w]
+    else:
+        raise ValueError("You must provide either 'new_size' or 'height' or 'width'")
 
     # From here, the resizing is constant (not a function of time), size=newsize
 
