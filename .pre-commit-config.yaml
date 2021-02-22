@@ -12,7 +12,8 @@ repos:
     rev: master
     hooks:
       - id: isort
-        args: ['--check-only', '--filter-files']
+        args:
+          - '--filter-files'
         files: \.py$
   - repo: https://github.com/psf/black
     rev: stable

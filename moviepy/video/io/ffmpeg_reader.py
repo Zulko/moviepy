@@ -566,6 +566,16 @@ class FFmpegInfosParser:
         # We could have also recomputed duration from the number of frames, as follows:
         # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
 
+        # not default audio found, assume first audio stream is the default
+        if self.result["audio_found"] and not self.result.get("audio_bitrate"):
+            for streams_input in self.result["inputs"]:
+                for stream in streams_input["streams"]:
+                    if stream["stream_type"] == "audio" and stream.get("bitrate"):
+                        self.result["audio_bitrate"] = stream["bitrate"]
+                        break
+                if self.result.get("audio_bitrate"):
+                    break
+
         result = self.result
 
         # reset state of the parser
