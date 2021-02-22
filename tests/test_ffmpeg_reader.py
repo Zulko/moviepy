@@ -468,6 +468,19 @@ stDim:unit="pixel"/>
     assert streams[2]["metadata"]["handler_name"] == "Baz\nFoo"
 
 
+def test_not_default_audio_stream_audio_bitrate():
+    infos = """Input #0, avi, from 'file_example_AVI_1280_1_5MG.avi':
+  Metadata:
+    encoder         : Lavf57.19.100
+  Duration: 00:00:30.61, start: 0.000000, bitrate: 387 kb/s
+    Stream #0:0: Video: ..., 30 tbr, 60 tbc
+    Stream #0:1: Audio: aac (LC) (...), 48000 Hz, stereo, fltp, 139 kb/s
+"""
+
+    d = FFmpegInfosParser(infos, "foo.avi").parse()
+    assert d["audio_bitrate"] == 139
+
+
 def test_sequential_frame_pos():
     """test_video.mp4 contains 5 frames at 1 fps.
     Each frame is 1x1 pixels and the sequence is Red, Green, Blue, Black, White.
