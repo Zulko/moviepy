@@ -24,6 +24,7 @@ class FFMPEG_VideoReader:
         target_resolution=None,
         resize_algo="bicubic",
         fps_source="fps",
+        crop=None,
     ):
 
         self.filename = filename
@@ -39,6 +40,10 @@ class FFMPEG_VideoReader:
         self.size = infos["video_size"]
         self.rotation = infos.get("video_rotation", 0)
 
+        if crop:
+            self.crop = calc_crop(self.size, **crop)
+        else:
+            self.crop = None
         if target_resolution:
             if None in target_resolution:
                 ratio = 1
@@ -48,6 +53,8 @@ class FFMPEG_VideoReader:
                 self.size = (int(self.size[0] * ratio), int(self.size[1] * ratio))
             else:
                 self.size = target_resolution
+        elif self.crop:
+            self.size = self.crop[0:2]
         self.resize_algo = resize_algo
 
         self.duration = infos["video_duration"]
@@ -100,7 +107,11 @@ class FFMPEG_VideoReader:
                 "-f",
                 "image2pipe",
                 "-vf",
-                "scale=%d:%d" % tuple(self.size),
+                (
+                    "crop=%d:%d:%d:%d,scale=%d:%d" % (*self.crop, *self.size)
+                    if self.crop
+                    else "scale=%d:%d" % tuple(self.size)
+                ),
                 "-sws_flags",
                 self.resize_algo,
                 "-pix_fmt",
@@ -818,3 +829,38 @@ def ffmpeg_parse_infos(
         elif not os.path.exists(filename):
             raise FileNotFoundError(f"'{filename}' not found")
         raise IOError(f"Error pasing `ffmpeg -i` command output:\n\n{infos}") from exc
+
+
+def calc_crop(
+    size,
+    x1=None,
+    y1=None,
+    x2=None,
+    y2=None,
+    width=None,
+    height=None,
+    x_center=None,
+    y_center=None,
+):
+
+    if width and x1 is not None:
+        x2 = x1 + width
+    elif width and x2 is not None:
+        x1 = x2 - width
+
+    if height and y1 is not None:
+        y2 = y1 + height
+    elif height and y2 is not None:
+        y1 = y2 - height
+
+    if x_center:
+        x1, x2 = x_center - width / 2, x_center + width / 2
+
+    if y_center:
+        y1, y2 = y_center - height / 2, y_center + height / 2
+
+    x1 = x1 or 0
+    y1 = y1 or 0
+    x2 = x2 or size[0]
+    y2 = y2 or size[1]
+    return (x2 - x1), (y2 - y1), x1, y1
