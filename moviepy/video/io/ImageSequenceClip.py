@@ -37,13 +37,13 @@ class ImageSequenceClip(VideoClip):
     """
 
     def __init__(
-        self,
-        sequence,
-        fps=None,
-        durations=None,
-        with_mask=True,
-        is_mask=False,
-        load_images=False,
+            self,
+            sequence,
+            fps=None,
+            durations=None,
+            with_mask=True,
+            is_mask=False,
+            load_images=False,
     ):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
@@ -73,7 +73,7 @@ class ImageSequenceClip(VideoClip):
                 [os.path.join(sequence, file) for file in os.listdir(sequence)]
             )
 
-        #check that all the images are of the same size and check if they are grayscale
+        # check that all the images are of the same size and check if they are grayscale
         grayscale = False
 
         if isinstance(sequence[0], str):
@@ -163,7 +163,6 @@ class ImageSequenceClip(VideoClip):
                 return self.sequence[index][:, :, :3]
 
             if with_mask and (self.sequence[0].shape[2] == 4):
-
                 self.mask = VideoClip(is_mask=True)
 
                 def mask_make_frame(t):
