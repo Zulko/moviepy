@@ -131,7 +131,7 @@ class ImageSequenceClip(VideoClip):
 
                 if index != self.last_index:
                     # using wrapper function to resolve possible grayscale issues
-                    self.last_image = read_image(self.sequence[index])[:, :, :3]
+                    self.last_image = read_image(self.sequence[index], grayscale)[:, :, :3]
                     self.last_index = index
 
                 return self.last_image
