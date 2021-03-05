@@ -181,4 +181,6 @@ def file_to_subtitles(filename, encoding=None):
                 current_times, current_text = None, ""
             elif current_times:
                 current_text += line
+        if current_times:
+            times_texts.append((current_times, current_text.strip("\n")))
     return times_texts
