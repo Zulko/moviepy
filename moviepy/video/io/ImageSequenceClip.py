@@ -113,7 +113,8 @@ class ImageSequenceClip(VideoClip):
 
         def read_image(name, grayscale):
             """
-            Wrapper for optional conversion from grayscale into rgb by duplicating single channel into 3 channels.
+            Wrapper for optional conversion from grayscale into rgb
+            by duplicating single channel into 3 channels.
             """
             image = imread(name)
             if grayscale:
@@ -131,7 +132,8 @@ class ImageSequenceClip(VideoClip):
 
                 if index != self.last_index:
                     # using wrapper function to resolve possible grayscale issues
-                    self.last_image = read_image(self.sequence[index], grayscale)[:, :, :3]
+                    self.last_image = read_image(
+                        self.sequence[index], grayscale)[:, :, :3]
                     self.last_index = index
 
                 return self.last_image
