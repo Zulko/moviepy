@@ -22,6 +22,30 @@ class SubtitlesClip(VideoClip):
     subtitles
       Either the name of a file as a string or path-like object, or a list
 
+    font
+      Name of the font to use. See ``TextClip.list('font')`` for
+      the list of fonts you can use on your computer.
+
+    font size
+      Size of the font to use.
+
+    color
+      Color of the text. See ``TextClip.list('color')`` for a
+      list of acceptable names.
+
+    stroke_color
+      Color of the stroke (=contour line) of the text. If ``None``,
+      there will be no stroke.
+
+    stroke_width
+      Width of the stroke, in pixels. Can be a float, like 1.5.
+
+    auto_wrap
+      Specifies if auto-wrapping of text is required (True or False)
+
+    video_width
+      Compulsory parameter with auto_wrap to specify the width of the video (i.e. maximum text wrapping width)
+
     encoding
       Optional, specifies srt file encoding.
       Any standard Python encoding is allowed (listed at
@@ -32,17 +56,15 @@ class SubtitlesClip(VideoClip):
 
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
-    >>> generator = lambda text: TextClip(text, font='Georgia-Regular',
-    ...                                   font_size=24, color='white')
-    >>> sub = SubtitlesClip("subtitles.srt", generator)
-    >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
+    >>> sub = SubtitlesClip("subtitles.srt", auto_wrap=True, video_width=1280)
+    >>> sub = SubtitlesClip("subtitles.srt", encoding='utf-8')
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.write_videofile("final.mp4", fps=myvideo.fps)
 
     """
 
-    def __init__(self, subtitles, make_textclip=None, encoding=None):
+    def __init__(self, subtitles, font='Arial', font_size=36, color='white', stroke_color='black', stroke_width=0.5, auto_wrap=None, video_width=None, encoding=None):
 
         VideoClip.__init__(self, has_constant_size=False)
 
@@ -55,17 +77,19 @@ class SubtitlesClip(VideoClip):
         self.subtitles = subtitles
         self.textclips = dict()
 
-        if make_textclip is None:
+        make_textclip = None
+
+        if auto_wrap:
+            if not isinstance(video_width, int):
+                raise ValueError("Valid video_width not specified for subtitle auto_wrap.")
 
             def make_textclip(txt):
                 return TextClip(
-                    txt,
-                    font="Georgia-Bold",
-                    font_size=24,
-                    color="white",
-                    stroke_color="black",
-                    stroke_width=0.5,
-                )
+                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method = 'caption', size = (video_width, None))
+        else:
+            def make_textclip(txt):
+                return TextClip(
+                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width)
 
         self.make_textclip = make_textclip
         self.start = 0
