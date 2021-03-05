@@ -3,7 +3,7 @@ Placing clips according to a picture
 ======================================
 
 
-So how do you do some complex compositing like this ?
+So how do you do some complex compositing like this?
 
 .. raw:: html
 

@@ -1,45 +1,69 @@
-# -*- coding: utf-8 -*-
 """Compositing tests for use with pytest."""
-from os.path import join
-import sys
+
+import os
+
 import pytest
-from moviepy.editor import *
-sys.path.append("tests")
-from test_helper import TMP_DIR
+
+from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.fx.resize import resize
+from moviepy.video.VideoClip import BitmapClip, ColorClip
+
+from tests.test_helper import TMP_DIR
+
 
 def test_clips_array():
-    red = ColorClip((1024,800), color=(255,0,0))
-    green = ColorClip((1024,800), color=(0,255,0))
-    blue = ColorClip((1024,800), color=(0,0,255))
+    red = ColorClip((1024, 800), color=(255, 0, 0))
+    green = ColorClip((1024, 800), color=(0, 255, 0))
+    blue = ColorClip((1024, 800), color=(0, 0, 255))
 
     video = clips_array([[red, green, blue]])
 
-    with pytest.raises(ValueError,
-                       message="Expecting ValueError (duration not set)"):
-       video.resize(width=480).write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
-    video.close()
-    red.close()
-    green.close()
-    blue.close()
+    with pytest.raises(ValueError):  # duration not set
+        video.fx(resize, width=480).write_videofile(
+            os.path.join(TMP_DIR, "test_clips_array.mp4")
+        )
+    close_all_clips(locals())
+
 
 def test_clips_array_duration():
-    for i in range(20):
-        red = ColorClip((1024,800), color=(255,0,0))
-        green = ColorClip((1024,800), color=(0,255,0))
-        blue = ColorClip((1024,800), color=(0,0,255))
+    # NOTE: anyone knows what behaviour this sets ? If yes please replace
+    # this comment.
+    red = ColorClip((256, 200), color=(255, 0, 0))
+    green = ColorClip((256, 200), color=(0, 255, 0))
+    blue = ColorClip((256, 200), color=(0, 0, 255))
 
-        with clips_array([[red, green, blue]]).set_duration(5) as video:
-            with pytest.raises(AttributeError,
-                               message="Expecting ValueError (fps not set)"):
-                 video.write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
+    video = clips_array([[red, green, blue]]).with_duration(5)
+    with pytest.raises(AttributeError):  # fps not set
+        video.write_videofile(os.path.join(TMP_DIR, "test_clips_array.mp4"))
+
+    # this one should work correctly
+    red.fps = green.fps = blue.fps = 30
+    video = clips_array([[red, green, blue]]).with_duration(5)
+    video.write_videofile(os.path.join(TMP_DIR, "test_clips_array.mp4"))
+    close_all_clips(locals())
 
 
-        #this one should work correctly
-        red.fps = green.fps = blue.fps = 30
+def test_concatenate_self():
+    clip = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
+    target = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
 
-        with clips_array([[red, green, blue]]).set_duration(5) as video:
-            video.write_videofile(join(TMP_DIR, "test_clips_array.mp4"))
+    concatenated = concatenate_videoclips([clip])
 
-        red.close()
-        green.close()
-        blue.close()
+    concatenated.write_videofile(os.path.join(TMP_DIR, "test_concatenate_self.mp4"))
+    assert concatenated == target
+
+
+def test_concatenate_floating_point():
+    """
+    >>> print("{0:.20f}".format(1.12))
+    1.12000000000000010658
+
+    This test uses duration=1.12 to check that it still works when the clip duration is
+    represented as being bigger than it actually is. Fixed in #1195.
+    """
+    clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).with_fps(25.0)
+    concat = concatenate_videoclips([clip])
+    concat.write_videofile(os.path.join(TMP_DIR, "concat.mp4"), preset="ultrafast")
+    close_all_clips(locals())
