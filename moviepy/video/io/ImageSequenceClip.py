@@ -37,13 +37,13 @@ class ImageSequenceClip(VideoClip):
     """
 
     def __init__(
-            self,
-            sequence,
-            fps=None,
-            durations=None,
-            with_mask=True,
-            is_mask=False,
-            load_images=False,
+        self,
+        sequence,
+        fps=None,
+        durations=None,
+        with_mask=True,
+        is_mask=False,
+        load_images=False,
     ):
 
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
