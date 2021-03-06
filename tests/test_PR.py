@@ -122,7 +122,6 @@ def test_PR_1137_image():
 
 def test_PR_1137_subtitles():
     """Test support for path-like objects as arguments for SubtitlesClip."""
-
     SubtitlesClip(
         Path("media/subtitles.srt"),
         font=FONT,
