@@ -64,7 +64,18 @@ class SubtitlesClip(VideoClip):
 
     """
 
-    def __init__(self, subtitles, font='Arial', font_size=36, color='white', stroke_color='black', stroke_width=0.5, auto_wrap=None, video_width=None, encoding=None):
+    def __init__(
+        self,
+        subtitles,
+        font="Arial",
+        font_size=36,
+        color="white",
+        stroke_color="black",
+        stroke_width=0.5,
+        auto_wrap=None,
+        video_width=None,
+        encoding=None,
+    ):
 
         VideoClip.__init__(self, has_constant_size=False)
 
@@ -81,15 +92,34 @@ class SubtitlesClip(VideoClip):
 
         if auto_wrap:
             if not isinstance(video_width, int):
-                raise ValueError("Valid video_width not specified for subtitle auto_wrap.")
+                raise ValueError(
+                    "Valid video_width not specified for subtitle auto_wrap."
+                )
 
             def make_textclip(txt):
                 return TextClip(
-                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method = 'pango', size = (video_width, None))
+                    txt,
+                    font=font,
+                    font_size=font_size,
+                    color=color,
+                    stroke_color=stroke_color,
+                    stroke_width=stroke_width,
+                    method="pango",
+                    size=(video_width, None),
+                )
+
         else:
+
             def make_textclip(txt):
                 return TextClip(
-                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method='pango')
+                    txt,
+                    font=font,
+                    font_size=font_size,
+                    color=color,
+                    stroke_color=stroke_color,
+                    stroke_width=stroke_width,
+                    method="pango",
+                )
 
         self.make_textclip = make_textclip
         self.start = 0
