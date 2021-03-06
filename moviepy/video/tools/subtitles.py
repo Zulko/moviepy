@@ -44,7 +44,8 @@ class SubtitlesClip(VideoClip):
       Specifies if auto-wrapping of text is required (True or False)
 
     video_width
-      Compulsory parameter with auto_wrap to specify the width of the video (i.e. maximum text wrapping width)
+      Compulsory parameter with auto_wrap to specify the width of the video
+      (i.e. maximum text wrapping width)
 
     encoding
       Optional, specifies srt file encoding.
