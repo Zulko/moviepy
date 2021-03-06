@@ -40,23 +40,17 @@ def test_subtitles():
     myvideo = concatenate_videoclips([red, green, blue])
     assert myvideo.duration == 30
 
-    generator = lambda txt: TextClip(
-        txt,
-        font=FONT,
-        size=(800, 600),
-        font_size=24,
-        method="caption",
-        align="South",
-        color="white",
+    subtitles = SubtitlesClip(
+        "media/subtitles.srt", font=FONT, video_width=800, font_size=24, color="white"
     )
-
-    subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
     final.write_videofile(os.path.join(TMP_DIR, "subtitles.mp4"), fps=30)
 
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
 
-    subtitles = SubtitlesClip(MEDIA_SUBTITLES_DATA, generator)
+    subtitles = SubtitlesClip(
+        MEDIA_SUBTITLES_DATA, font=FONT, video_width=800, font_size=24, color="white"
+    )
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
     close_all_clips(locals())
 

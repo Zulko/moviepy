@@ -123,17 +123,14 @@ def test_PR_1137_image():
 def test_PR_1137_subtitles():
     """Test support for path-like objects as arguments for SubtitlesClip."""
 
-    def make_textclip(txt):
-        return TextClip(
-            txt,
-            font=FONT,
-            font_size=24,
-            color="white",
-            stroke_color="black",
-            stroke_width=0.5,
-        )
-
-    SubtitlesClip(Path("media/subtitles.srt"), make_textclip=make_textclip).close()
+    SubtitlesClip(
+        Path("media/subtitles.srt"),
+        font=FONT,
+        font_size=24,
+        color="white",
+        stroke_color="black",
+        stroke_width=0.5,
+    ).close()
 
 
 if __name__ == "__main__":
