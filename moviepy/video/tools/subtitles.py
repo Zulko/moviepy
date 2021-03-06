@@ -85,11 +85,11 @@ class SubtitlesClip(VideoClip):
 
             def make_textclip(txt):
                 return TextClip(
-                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method = 'caption', size = (video_width, None))
+                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method = 'pango', size = (video_width, None))
         else:
             def make_textclip(txt):
                 return TextClip(
-                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width)
+                    txt, font=font, font_size=font_size, color=color, stroke_color=stroke_color, stroke_width=stroke_width, method='pango')
 
         self.make_textclip = make_textclip
         self.start = 0
