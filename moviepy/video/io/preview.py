@@ -143,6 +143,7 @@ def preview(
                 if audio:
                     video_flag.clear()
                 print("Interrupt")
+                pg.quit()
                 return result
 
             elif event.type == pg.MOUSEBUTTONDOWN:
@@ -157,3 +158,5 @@ def preview(
         t1 = time.time()
         time.sleep(max(0, t - (t1 - t0)))
         imdisplay(img, screen)
+
+    pg.quit()
