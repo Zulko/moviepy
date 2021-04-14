@@ -1,14 +1,11 @@
 [[source]]
-url = "https://pypi.org/simple"
-verify_ssl = true
 name = "pypi"
-
-[packages]
-moviepy = {editable = true, path = "."}
+verify_ssl = true
+url = "https://pypi.org/simple"
 
 [dev-packages]
-pytest = "*"
-"pathlib2" = "*"
-scandir = "*"
+
+[packages]
 
 [requires]
+python_version = "3.5"

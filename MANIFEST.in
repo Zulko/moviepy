@@ -1,4 +1,3 @@
 include *.txt
 recursive-include docs *
 include *.rst
-include ez_setup.py

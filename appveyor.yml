@@ -4,10 +4,6 @@ environment:
   global:
     IMAGE_MAGICK_INSTALL_DIR: c://ImageMagick
   matrix:
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_ARCH: "64"
-      ARCH: x64
-
     - PYTHON: "C:\\Python36-x64"
       PYTHON_ARCH: "64"
       ARCH: x64
@@ -32,8 +28,7 @@ install:
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - pip install --upgrade pip --user
-  - pip install pipenv
+  - python -m pip install --upgrade pip --user
 
   # Find latest image magick version by parsing website
 
@@ -46,7 +41,7 @@ install:
   # Might need to be updated from time to time
   # Versions >=7.0 have problems - executables changed names.
   # Assume 64-bit. Need to change to x86 for 32-bit.
-  - curl ftp.fifi.org/ImageMagick/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
+  - curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe -o ImageMagick.exe
 
   # Install ImageMagick, telling InnoSetup to not open a window and change default install dir
   - ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
@@ -60,12 +55,10 @@ install:
 
 build_script:
   # Install all dependencies, including dev dependencies
-  - pipenv install --dev
-  # Build the compiled extension
-  #- "%CMD_IN_ENV% python c:\\projects\\moviepy\\setup.py build"
+  - pip install ".[test, optional]"
 
 test_script:
-  - pipenv run pytest
+  - pytest
 
 # TODO: Support the post-test generation of binaries - Pending a version number that is supported (e.g. 0.3.0)
 #
