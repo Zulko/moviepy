@@ -889,8 +889,8 @@ def test_rotate(
     else:
         rotate_func = rotate
 
-    # resolve the angle, because if is a multiple of 90 the rotation can be
-    # computed event without installing PIL
+    # resolve the angle, because if it is a multiple of 90, the rotation
+    # can be computed event without an available PIL installation
     if hasattr(_angle, "__call__"):
         _resolved_angle = _angle(0)
     else:
