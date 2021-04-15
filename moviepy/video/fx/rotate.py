@@ -16,7 +16,6 @@ try:
         "translate": ["translate", False, (4, 0, 0)],
     }
 
-
     if hasattr(PIL, "__version__"):
         # check support for PIL.rotate arguments
         PIL__version_info__ = tuple(int(n) for n in PIL.__version__ if n.isdigit())
