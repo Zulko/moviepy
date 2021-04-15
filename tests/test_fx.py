@@ -958,9 +958,7 @@ def test_rotate_supported_PIL_kwargs(
     rotate_module = importlib.import_module("moviepy.video.fx.rotate")
 
     # patch supported kwargs data by PIL version
-    new_PIL_rotate_kwargs_supported = {}
-
-    min_version_by_kwarg_name = {}
+    new_PIL_rotate_kwargs_supported, min_version_by_kwarg_name = ({}, {})
     for kwarg, (
         kw_name,
         supported,
@@ -969,7 +967,7 @@ def test_rotate_supported_PIL_kwargs(
         supported = kw_name not in unsupported_kwargs
         new_PIL_rotate_kwargs_supported[kwarg] = [kw_name, supported, min_version]
 
-        min_version_by_kwarg_name[kw_name] = min_version
+        min_version_by_kwarg_name[kw_name] = ".".join(str(n) for n in min_version)
 
     monkeypatch.setattr(
         rotate_module,
@@ -995,13 +993,10 @@ def test_rotate_supported_PIL_kwargs(
         messages.append(record.message.args[0])
 
     for unsupported_kwarg in unsupported_kwargs:
-        min_version_required = ".".join(
-            str(n) for n in min_version_by_kwarg_name[unsupported_kwarg]
-        )
         expected_message = (
             f"rotate '{unsupported_kwarg}' argument is not supported by your"
             " Pillow version and is being ignored. Minimum Pillow version"
-            f" required: v{min_version_required}"
+            f" required: v{min_version_by_kwarg_name[unsupported_kwarg]}"
         )
         assert expected_message in messages
 
