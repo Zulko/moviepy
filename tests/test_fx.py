@@ -889,6 +889,18 @@ def test_rotate_nonstandard_angles():
     clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
 
 
+def test_rotate_mask():
+    # Prior to https://github.com/Zulko/moviepy/pull/1399
+    # all the pixels of the resulting video were 0
+    clip = (
+        ColorClip(color=0.5, size=(1, 1), is_mask=True)
+        .with_fps(1)
+        .with_duration(1)
+        .fx(rotate, 45)
+    )
+    assert clip.get_frame(0)[1][1] != 0
+
+
 def test_scroll():
     pass
 
