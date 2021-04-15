@@ -137,7 +137,7 @@ def rotate(
             else:
                 if kw_value is not None:  # if not default value
                     warnings.warn(
-                        f"rotate '{PIL_rotate_kw_name}' argument is not supported"
+                        f"rotate '{kw_name}' argument is not supported"
                         " by your Pillow version and is being ignored. Minimum"
                         " Pillow version required:"
                         f" v{'.'.join(str(n) for n in min_version)}",

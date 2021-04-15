@@ -936,18 +936,18 @@ def test_rotate_mask():
 @pytest.mark.parametrize(
     ("unsupported_kwargs",),
     (
-        (["fillcolor"],),
+        (["bg_color"],),
         (["center"],),
         (["translate"],),
         (["translate", "center"],),
-        (["center", "fillcolor", "translate"],),
+        (["center", "bg_color", "translate"],),
     ),
     ids=(
-        "fillcolor",
+        "bg_color",
         "center",
         "translate",
         "translate,center",
-        "center,fillcolor,translate",
+        "center,bg_color,translate",
     ),
 )
 def test_rotate_supported_PIL_kwargs(
@@ -959,9 +959,17 @@ def test_rotate_supported_PIL_kwargs(
 
     # patch supported kwargs data by PIL version
     new_PIL_rotate_kwargs_supported = {}
-    for kwarg, support_data in rotate_module.PIL_rotate_kwargs_supported.items():
-        support_data[1] = kwarg not in unsupported_kwargs
-        new_PIL_rotate_kwargs_supported[kwarg] = support_data
+
+    min_version_by_kwarg_name = {}
+    for kwarg, (
+        kw_name,
+        supported,
+        min_version,
+    ) in rotate_module.PIL_rotate_kwargs_supported.items():
+        supported = kw_name not in unsupported_kwargs
+        new_PIL_rotate_kwargs_supported[kwarg] = [kw_name, supported, min_version]
+
+        min_version_by_kwarg_name[kw_name] = min_version
 
     monkeypatch.setattr(
         rotate_module,
@@ -988,7 +996,7 @@ def test_rotate_supported_PIL_kwargs(
 
     for unsupported_kwarg in unsupported_kwargs:
         min_version_required = ".".join(
-            str(n) for n in new_PIL_rotate_kwargs_supported[unsupported_kwarg][2]
+            str(n) for n in min_version_by_kwarg_name[unsupported_kwarg]
         )
         expected_message = (
             f"rotate '{unsupported_kwarg}' argument is not supported by your"
