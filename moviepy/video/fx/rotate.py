@@ -158,7 +158,8 @@ def rotate(
                 Image.fromarray(np.array(a * im).astype(np.uint8)).rotate(
                     angle, expand=expand, resample=resample, **kwargs
                 )
-            ) / a
+            )
+            / a
         )
 
     return clip.transform(filter, apply_to=["mask"])
