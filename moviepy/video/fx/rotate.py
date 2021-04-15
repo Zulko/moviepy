@@ -26,7 +26,7 @@ try:
 
     Image = PIL.Image
 
-except ImportError:
+except ImportError:  # pragma: no cover
     Image = None
 
 
