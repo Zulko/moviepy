@@ -143,11 +143,23 @@ def rotate(
                         UserWarning,
                     )
 
+        # PIL expects uint8 type data. However a mask image has values in the
+        # range [0, 1] and is of float type.  To handle this we scale it up by
+        # a factor 'a' for use with PIL and then back again by 'a' afterwards.
+        if im.dtype == "float64":
+            # this is a mask image
+            a = 255.0
+        else:
+            a = 1
+
         # call PIL.rotate
-        return np.array(
-            Image.fromarray(np.array(im).astype(np.uint8)).rotate(
-                angle, expand=expand, resample=resample, **kwargs
+        return (
+            np.array(
+                Image.fromarray(np.array(a * im).astype(np.uint8)).rotate(
+                    angle, expand=expand, resample=resample, **kwargs
+                )
             )
+            / a
         )
 
     return clip.transform(filter, apply_to=["mask"])
