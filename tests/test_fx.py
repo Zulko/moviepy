@@ -759,7 +759,6 @@ def test_resize(
             assert len(mask_frame) == expected_height
 
 
-# Run several times to ensure that adding 360 to rotation angles has no effect
 @pytest.mark.parametrize("PIL_installed", (True, False))
 @pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
 @pytest.mark.parametrize("unit", ["deg", "rad"])
@@ -932,6 +931,74 @@ def test_rotate_mask():
         .fx(rotate, 45)
     )
     assert clip.get_frame(0)[1][1] != 0
+
+
+@pytest.mark.parametrize(
+    ("unsupported_kwargs",),
+    (
+        (["bg_color"],),
+        (["center"],),
+        (["translate"],),
+        (["translate", "center"],),
+        (["center", "bg_color", "translate"],),
+    ),
+    ids=(
+        "bg_color",
+        "center",
+        "translate",
+        "translate,center",
+        "center,bg_color,translate",
+    ),
+)
+def test_rotate_supported_PIL_kwargs(
+    unsupported_kwargs,
+    monkeypatch,
+):
+    """Test supported 'rotate' FX arguments by PIL version."""
+    rotate_module = importlib.import_module("moviepy.video.fx.rotate")
+
+    # patch supported kwargs data by PIL version
+    new_PIL_rotate_kwargs_supported, min_version_by_kwarg_name = ({}, {})
+    for kwarg, (
+        kw_name,
+        supported,
+        min_version,
+    ) in rotate_module.PIL_rotate_kwargs_supported.items():
+        supported = kw_name not in unsupported_kwargs
+        new_PIL_rotate_kwargs_supported[kwarg] = [kw_name, supported, min_version]
+
+        min_version_by_kwarg_name[kw_name] = ".".join(str(n) for n in min_version)
+
+    monkeypatch.setattr(
+        rotate_module,
+        "PIL_rotate_kwargs_supported",
+        new_PIL_rotate_kwargs_supported,
+    )
+
+    with pytest.warns(UserWarning) as record:
+        BitmapClip([["R", "G", "B"]], fps=1).fx(
+            rotate_module.rotate,
+            45,
+            bg_color=(10, 10, 10),
+            center=(1, 1),
+            translate=(1, 0),
+        )
+
+    # assert number of warnings
+    assert len(record.list) == len(unsupported_kwargs)
+
+    # assert messages contents
+    messages = []
+    for warning in record.list:
+        messages.append(warning.message.args[0])
+
+    for unsupported_kwarg in unsupported_kwargs:
+        expected_message = (
+            f"rotate '{unsupported_kwarg}' argument is not supported by your"
+            " Pillow version and is being ignored. Minimum Pillow version"
+            f" required: v{min_version_by_kwarg_name[unsupported_kwarg]}"
+        )
+        assert expected_message in messages
 
 
 def test_scroll():
