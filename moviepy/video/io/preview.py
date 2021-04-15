@@ -2,18 +2,19 @@ import threading
 import time
 
 import numpy as np
-
 import pygame as pg
+
 from moviepy.decorators import convert_masks_to_RGB, requires_duration
 from moviepy.tools import convert_to_seconds
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
 
 pg.init()
 pg.display.set_caption("MoviePy")
 
 
 def imdisplay(imarray, screen=None):
-    """Splashes the given image array on the given pygame screen """
+    """Splashes the given image array on the given pygame screen."""
     a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
     if screen is None:
         screen = pg.display.set_mode(imarray.shape[:2][::-1])
@@ -27,7 +28,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
     Splashes the frame of clip corresponding to time ``t``.
 
     Parameters
-    ------------
+    ----------
 
     t
       Time in seconds of the frame to display.
@@ -37,7 +38,6 @@ def show(clip, t=0, with_mask=True, interactive=False):
       without the mask.
 
     """
-
     if isinstance(t, tuple):
         t = convert_to_seconds(*t)
 
@@ -82,7 +82,7 @@ def preview(
     reducing the ``fps``.
 
     Parameters
-    ------------
+    ----------
 
     fps
       Number of frames per seconds in the displayed video.
@@ -143,6 +143,7 @@ def preview(
                 if audio:
                     video_flag.clear()
                 print("Interrupt")
+                pg.quit()
                 return result
 
             elif event.type == pg.MOUSEBUTTONDOWN:
@@ -157,3 +158,5 @@ def preview(
         t1 = time.time()
         time.sleep(max(0, t - (t1 - t0)))
         imdisplay(img, screen)
+
+    pg.quit()

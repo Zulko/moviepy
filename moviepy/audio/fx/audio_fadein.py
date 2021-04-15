@@ -6,7 +6,8 @@ from moviepy.decorators import audio_video_fx
 @audio_video_fx
 def audio_fadein(clip, duration):
     """Return an audio (or video) clip that is first mute, then the
-    sound arrives progressively over ``duration`` seconds."""
+    sound arrives progressively over ``duration`` seconds.
+    """
 
     def fading(get_frame, t):
         frame = get_frame(t)

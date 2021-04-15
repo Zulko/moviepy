@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Video file clip tests meant to be run with pytest."""
+
 import os
 
 from moviepy.video.compositing.concatenate import concatenate_videoclips
@@ -44,9 +44,7 @@ def test_credits():
 
 
 def test_detect_scenes():
-    """
-    Test that a cut is detected between concatenated red and green clips
-    """
+    """Test that a cut is detected between concatenated red and green clips."""
     red = ColorClip((640, 480), color=(255, 0, 0)).with_duration(1)
     green = ColorClip((640, 480), color=(0, 200, 0)).with_duration(1)
     video = concatenate_videoclips([red, green])

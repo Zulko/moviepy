@@ -37,6 +37,11 @@ jobs:
     #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
     - name: Install pythonw
       run: conda install python.app
+    # https://github.com/ContinuumIO/anaconda-issues/issues/12188
+    - name: Fix python.app issue
+      run: |
+        rm -rf /usr/local/miniconda/python.app/Contents/
+        mv /usr/local/miniconda/python.app/pythonapp/Contents/ /usr/local/miniconda/python.app/Contents/
     - name: Python Version Info
       run: |
         pythonw --version
@@ -51,7 +56,7 @@ jobs:
         brew install pkg-config
         python -m pip install --upgrade wheel
         python -m pip install --upgrade setuptools
-        python -m pip install ".[test]"
+        python -m pip install ".[test, optional]"
 
     - name: Test with pytest
       run: |
@@ -115,7 +120,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -149,7 +154,7 @@ jobs:
           pip install -e .[doc]
 
       - name: Coveralls
+        run: coveralls
         env:
-          COVERALLS_REPO_TOKEN: w480ZQkQQ8I9wZECi8kA3m2SqqTjNis0Y
-        run: |
-          coveralls
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_SERVICE_NAME: github

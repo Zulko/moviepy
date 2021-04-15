@@ -1,5 +1,6 @@
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.segmenting import find_objects
+
 
 # Load the image specifying the regions.
 im = ImageClip("../../ultracompositing/motif.png")

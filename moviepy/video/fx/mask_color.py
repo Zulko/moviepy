@@ -6,13 +6,13 @@ def mask_color(clip, color=None, threshold=0, stiffness=1):
     clip is of the given color.
 
     You can also have a "progressive" mask by specifying a non-null distance
-    threshold ``threshold``. In this case, if the distance between a pixel and the given
-    color is d, the transparency will be
+    threshold ``threshold``. In this case, if the distance between a pixel and
+    the given color is d, the transparency will be
 
     d**stiffness / (threshold**stiffness + d**stiffness)
 
-    which is 1 when d>>threshold and 0 for d<<threshold, the stiffness of the effect being
-    parametrized by ``stiffness``
+    which is 1 when d>>threshold and 0 for d<<threshold, the stiffness of the
+    effect being parametrized by ``stiffness``
     """
     if color is None:
         color = [0, 0, 0]

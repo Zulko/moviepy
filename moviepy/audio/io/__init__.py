@@ -1,3 +1,1 @@
-"""
-Class and methods to read, write, preview audiofiles.
-"""
+"""Class and methods to read, write, preview audiofiles."""

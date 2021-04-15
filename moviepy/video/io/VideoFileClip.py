@@ -5,9 +5,7 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
-
     """
-
     A video clip originating from a movie file. For instance: ::
 
         >>> clip = VideoFileClip("myHolidays.mp4")
@@ -17,7 +15,7 @@ class VideoFileClip(VideoClip):
 
 
     Parameters
-    ------------
+    ----------
 
     filename:
       The name of the video file, as a string or a path-like object.
@@ -58,7 +56,7 @@ class VideoFileClip(VideoClip):
 
 
     Attributes
-    -----------
+    ----------
 
     filename:
       Name of the original video file.
@@ -72,10 +70,12 @@ class VideoFileClip(VideoClip):
     Lifetime
     --------
 
-    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
-    close() afterwards, or the subresources will not be cleaned up until the process ends.
+    Note that this creates subprocesses and locks files. If you construct one
+    of these instances, you must call close() afterwards, or the subresources
+    will not be cleaned up until the process ends.
 
-    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
+    If copies are made, and close() is called on one, it may cause methods on
+    the other copies to fail.
 
     """
 
@@ -145,14 +145,21 @@ class VideoFileClip(VideoClip):
                 nbytes=audio_nbytes,
             )
 
-    def coreader(self):
-        """Returns a copy of the VideoFileClip, i.e. a new entrance point
-        to the video file. Use copy when you have different clips
-        watching the video file at different times."""
-        return VideoFileClip(self.filename, audio_buffersize=self.audio.buffersize)
+    def __deepcopy__(self, memo):
+        """Implements ``copy.deepcopy(clip)`` behaviour as ``copy.copy(clip)``.
+
+        VideoFileClip class instances can't be deeply copied because the locked Thread
+        of ``proc`` isn't pickleable. Without this override, calls to
+        ``copy.deepcopy(clip)`` would raise a ``TypeError``:
+
+        ```
+        TypeError: cannot pickle '_thread.lock' object
+        ```
+        """
+        return self.__copy__()
 
     def close(self):
-        """ Close the internal reader. """
+        """Close the internal reader."""
         if self.reader:
             self.reader.close()
             self.reader = None

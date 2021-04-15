@@ -1,4 +1,4 @@
-""" Misc. bindings to ffmpeg and ImageMagick."""
+"""Miscellaneous bindings to ffmpeg."""
 
 import os
 
@@ -12,7 +12,8 @@ def ffmpeg_extract_subclip(
     inputfile, start_time, end_time, outputfile=None, logger="bar"
 ):
     """Makes a new video file playing video file ``inputfile`` between
-    the times ``start_time`` and ``end_time``."""
+    the times ``start_time`` and ``end_time``.
+    """
     name, ext = os.path.splitext(inputfile)
     if not outputfile:
         T1, T2 = [int(1000 * t) for t in [start_time, end_time]]
@@ -49,7 +50,8 @@ def ffmpeg_merge_video_audio(
     logger="bar",
 ):
     """Merges video file ``videofile`` and audio file ``audiofile`` into one
-    movie file ``outputfile``."""
+    movie file ``outputfile``.
+    """
     cmd = [
         FFMPEG_BINARY,
         "-y",
@@ -69,7 +71,7 @@ def ffmpeg_merge_video_audio(
 
 @convert_path_to_string(("inputfile", "outputfile"))
 def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger="bar"):
-    """ Extract the sound from a video file and save it in ``outputfile`` """
+    """Extract the sound from a video file and save it in ``outputfile``."""
     cmd = [
         FFMPEG_BINARY,
         "-y",
@@ -86,8 +88,9 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
 
 @convert_path_to_string(("inputfile", "outputfile"))
 def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
-    """resizes ``inputfile`` to new size ``size`` and write the result
-    in file ``outputfile``."""
+    """Resizes ``inputfile`` to new size ``size`` and write the result
+    in file ``outputfile``.
+    """
     cmd = [
         FFMPEG_BINARY,
         "-i",
@@ -108,7 +111,7 @@ def ffmpeg_stabilize_video(
     Stabilizes ``filename`` and write the result to ``output``.
 
     Parameters
-    -----------
+    ----------
 
     inputfile
       The name of the shaky video

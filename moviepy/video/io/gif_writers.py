@@ -6,7 +6,8 @@ import proglog
 
 from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
-from moviepy.tools import subprocess_call
+from moviepy.tools import cross_platform_popen_params, subprocess_call
+
 
 try:
     import imageio
@@ -156,7 +157,7 @@ def write_gif(
 
 
     Parameters
-    -----------
+    ----------
 
     filename
       Name of the resulting gif file.
@@ -194,10 +195,9 @@ def write_gif(
     slower than the clip you will use ::
 
         >>> # slow down clip 50% and make it a gif
-        >>> myClip.speedx(0.5).write_gif('myClip.gif')
+        >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
 
     """
-
     #
     # We use processes chained with pipes.
     #
@@ -238,10 +238,9 @@ def write_gif(
         "-",
     ]
 
-    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {"stdout": sp.DEVNULL, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
+    )
 
     if program == "ffmpeg":
         popen_params["stdin"] = sp.PIPE
@@ -320,7 +319,7 @@ def write_gif(
             if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 frame = np.dstack([frame, mask]).astype("uint8")
-            proc1.stdin.write(frame.tostring())
+            proc1.stdin.write(frame.tobytes())
 
     except IOError as err:
 
@@ -352,15 +351,7 @@ def write_gif(
 def write_gif_with_image_io(
     clip, filename, fps=None, opt=0, loop=0, colors=None, logger="bar"
 ):
-    """
-    Writes the gif with the Python library ImageIO (calls FreeImage).
-
-    Parameters
-    -----------
-    opt
-
-    """
-
+    """Writes the gif with the Python library ImageIO (calls FreeImage)."""
     if colors is None:
         colors = 256
     logger = proglog.default_bar_logger(logger)

@@ -1,6 +1,5 @@
-"""
-This module implements ipython_display
-A function to embed images/videos/audio in the IPython Notebook
+"""Implements ``ipython_display``, a function to embed images/videos/audio in the
+IPython Notebook.
 """
 
 # Notes:
@@ -14,16 +13,16 @@ from base64 import b64encode
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.tools import extensions_dict
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+from moviepy.video.VideoClip import ImageClip, VideoClip
 
-from ..VideoClip import ImageClip, VideoClip
-from .ffmpeg_reader import ffmpeg_parse_infos
 
 try:
     from IPython.display import HTML
 
     ipython_available = True
 
-    class HTML2(HTML):
+    class HTML2(HTML):  # noqa D101
         def __add__(self, other):
             return HTML2(self.data + other.data)
 
@@ -40,7 +39,7 @@ templates = {
         + sorry
         + "</audio>"
     ),
-    "image": "<img %(options)s " "src='data:image/%(ext)s;base64,%(data)s'>",
+    "image": "<img %(options)s src='data:image/%(ext)s;base64,%(data)s'>",
     "video": (
         "<video %(options)s"
         "src='data:video/%(ext)s;base64,%(data)s' controls>" + sorry + "</video>"
@@ -64,32 +63,17 @@ def html_embed(
       based on the extension of ``filename``, but this can bug.
 
     rd_kwargs
-      keyword arguments for the rendering, like {'fps':15, 'bitrate':'50k'}
+      Keyword arguments for the rendering, like ``{'fps':15, 'bitrate':'50k'}``
 
 
-    **html_kwargs
-      Allow you to give some options, like width=260, autoplay=True,
-      loop=1 etc.
+    html_kwargs
+      Allow you to give some options, like ``width=260``, ``autoplay=True``,
+      ``loop=1`` etc.
 
     Examples
-    =========
-
-    >>> import moviepy.editor as mpy
-    >>> # later ...
-    >>> clip.write_videofile("test.mp4")
-    >>> mpy.ipython_display("test.mp4", width=360)
-
-    >>> clip.audio.write_audiofile('test.ogg') # Sound !
-    >>> mpy.ipython_display('test.ogg')
-
-    >>> clip.write_gif("test.gif")
-    >>> mpy.ipython_display('test.gif')
-
-    >>> clip.save_frame("first_frame.jpeg")
-    >>> mpy.ipython_display("first_frame.jpeg")
-
+    --------
+    TODO Create example based on ipython_display examples
     """
-
     if rd_kwargs is None:
         rd_kwargs = {}
 
@@ -153,15 +137,17 @@ def html_embed(
             )
 
     if filetype in ["audio", "video"]:
-
         duration = ffmpeg_parse_infos(filename, decode_file=True)["duration"]
         if duration > maxduration:
             raise ValueError(
-                "The duration of video %s (%.1f) exceeds the 'maxduration' "
+                (
+                    "The duration of video %s (%.1f) exceeds the 'maxduration'"
+                    " attribute. You can increase 'maxduration', by passing"
+                    " 'maxduration' parameter to ipython_display function."
+                    " But note that embedding large videos may take all the memory"
+                    " away!"
+                )
                 % (filename, duration)
-                + "attribute. You can increase 'maxduration', by passing 'maxduration' parameter"
-                "to ipython_display function."
-                "But note that embedding large videos may take all the memory away !"
             )
 
     with open(filename, "rb") as file:
@@ -186,7 +172,8 @@ def ipython_display(
     center=True,
     **html_kwargs,
 ):
-    """
+    """Displays clip content in an IPython Notebook.
+
     clip
       Either the name of a file, or a clip to preview. The clip will
       actually be written to a file and embedded as if a filename was
@@ -207,7 +194,7 @@ def ipython_display(
     fps
       Enables to specify an fps, as required for clips whose fps is unknown.
 
-    **kwargs:
+    kwargs
       Allow you to give some options, like width=260, etc. When editing
       looping gifs, a good choice is loop=1, autoplay=1.
 
@@ -216,23 +203,19 @@ def ipython_display(
     Important: The media will be physically embedded in the notebook.
 
     Examples
-    =========
+    --------
 
-    >>> import moviepy.editor as mpy
+    >>> from moviepy.editor import *
     >>> # later ...
-    >>> clip.write_videofile("test.mp4")
-    >>> mpy.ipython_display("test.mp4", width=360)
-
-    >>> clip.audio.write_audiofile('test.ogg') # Sound !
-    >>> mpy.ipython_display('test.ogg')
+    >>> clip.ipython_display(width=360)
+    >>> clip.audio.ipython_display()
 
     >>> clip.write_gif("test.gif")
-    >>> mpy.ipython_display('test.gif')
+    >>> ipython_display('test.gif')
 
     >>> clip.save_frame("first_frame.jpeg")
-    >>> mpy.ipython_display("first_frame.jpeg")
+    >>> ipython_display("first_frame.jpeg")
     """
-
     if not ipython_available:
         raise ImportError("Only works inside an IPython Notebook")
 

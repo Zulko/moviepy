@@ -1,9 +1,9 @@
-"""
-This module implements VideoClip (base class for video clips) and its
-main subclasses:
+"""Implements VideoClip (base class for video clips) and its main subclasses:
+
 - Animated clips:     VideofileClip, ImageSequenceClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
+import copy as _copy
 import os
 import subprocess as sp
 import tempfile
@@ -11,19 +11,27 @@ import tempfile
 import numpy as np
 import proglog
 from imageio import imread, imsave
+from PIL import Image
+
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
     convert_masks_to_RGB,
-    convert_path_to_string,
     convert_parameter_to_seconds,
+    convert_path_to_string,
     outplace,
     requires_duration,
+    requires_fps,
     use_clip_fps_by_default,
 )
-from moviepy.tools import extensions_dict, find_extension, subprocess_call
+from moviepy.tools import (
+    cross_platform_popen_params,
+    extensions_dict,
+    find_extension,
+    subprocess_call,
+)
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
     write_gif,
@@ -31,18 +39,16 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
-from PIL import Image
 
 
 class VideoClip(Clip):
     """Base class for video clips.
 
-    See ``VideoFileClip``, ``ImageClip`` etc. for more user-friendly
-    classes.
+    See ``VideoFileClip``, ``ImageClip`` etc. for more user-friendly classes.
 
 
     Parameters
-    -----------
+    ----------
 
     is_mask
       `True` if the clip is going to be used as a mask.
@@ -106,15 +112,49 @@ class VideoClip(Clip):
 
     @property
     def w(self):
+        """Returns the width of the video."""
         return self.size[0]
 
     @property
     def h(self):
+        """Returns the height of the video."""
         return self.size[1]
 
     @property
     def aspect_ratio(self):
+        """Returns the aspect ratio of the video."""
         return self.w / float(self.h)
+
+    @property
+    @requires_duration
+    @requires_fps
+    def n_frames(self):
+        """Returns the number of frames of the video."""
+        return int(self.duration * self.fps)
+
+    def __copy__(self):
+        """Mixed copy of the clip.
+
+        Returns a shallow copy of the clip whose mask and audio will
+        be shallow copies of the clip's mask and audio if they exist.
+
+        This method is intensively used to produce new clips every time
+        there is an outplace transformation of the clip (clip.resize,
+        clip.subclip, etc.)
+
+        Acts like a deepcopy except for the fact that readers and other
+        possible unpickleables objects are not copied.
+        """
+        cls = self.__class__
+        new_clip = cls.__new__(cls)
+        for attr in self.__dict__:
+            value = getattr(self, attr)
+            if attr in ("mask", "audio"):
+                value = _copy.copy(value)
+            setattr(new_clip, attr, value)
+        return new_clip
+
+    copy = __copy__
 
     # ===============================================================
     # EXPORT OPERATIONS
@@ -130,9 +170,7 @@ class VideoClip(Clip):
 
         If ``with_mask`` is ``True`` the mask is saved in
         the alpha layer of the picture (only works with PNGs).
-
         """
-
         im = self.get_frame(t)
         if with_mask and self.mask is not None:
             mask = 255 * self.mask.get_frame(t)
@@ -161,7 +199,6 @@ class VideoClip(Clip):
         audio_bufsize=2000,
         temp_audiofile=None,
         temp_audiofile_path="",
-        rewrite_audio=True,
         remove_temp=True,
         write_logfile=False,
         threads=None,
@@ -172,7 +209,7 @@ class VideoClip(Clip):
         """Write the clip to a videofile.
 
         Parameters
-        -----------
+        ----------
 
         filename
           Name of the video file to write in, as a string or a path-like object.
@@ -192,30 +229,19 @@ class VideoClip(Clip):
 
           Some examples of codecs are:
 
-          ``'libx264'`` (default codec for file extension ``.mp4``)
-          makes well-compressed videos (quality tunable using 'bitrate').
-
-
-          ``'mpeg4'`` (other codec for extension ``.mp4``) can be an alternative
-          to ``'libx264'``, and produces higher quality videos by default.
-
-
-          ``'rawvideo'`` (use file extension ``.avi``) will produce
-          a video of perfect quality, of possibly very huge size.
-
-
-          ``png`` (use file extension ``.avi``) will produce a video
-          of perfect quality, of smaller size than with ``rawvideo``.
-
-
-          ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
-          format, which is completely free/ open source. However not
-          everyone has the codecs installed by default on their machine.
-
-
-          ``'libvpx'`` (use file extension ``.webm``) is tiny a video
-          format well indicated for web videos (with HTML5). Open source.
-
+          - ``'libx264'`` (default codec for file extension ``.mp4``)
+            makes well-compressed videos (quality tunable using 'bitrate').
+          - ``'mpeg4'`` (other codec for extension ``.mp4``) can be an alternative
+            to ``'libx264'``, and produces higher quality videos by default.
+          - ``'rawvideo'`` (use file extension ``.avi``) will produce
+            a video of perfect quality, of possibly very huge size.
+          - ``png`` (use file extension ``.avi``) will produce a video
+            of perfect quality, of smaller size than with ``rawvideo``.
+          - ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
+            format, which is completely free/ open source. However not
+            everyone has the codecs installed by default on their machine.
+          - ``'libvpx'`` (use file extension ``.webm``) is tiny a video
+            format well indicated for web videos (with HTML5). Open source.
 
         audio
           Either ``True``, ``False``, or a file name.
@@ -228,8 +254,8 @@ class VideoClip(Clip):
           frame rate to use when generating the sound.
 
         temp_audiofile
-          the name of the temporary audiofile, as a string or path-like object, to be created and
-          then used to write the complete video, if any.
+          the name of the temporary audiofile, as a string or path-like object,
+          to be created and then used to write the complete video, if any.
 
         temp_audiofile_path
           the location that the temporary audiofile is placed, as a
@@ -276,9 +302,9 @@ class VideoClip(Clip):
           Pixel format for the output video file.
 
         Examples
-        ========
+        --------
 
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()
@@ -368,7 +394,7 @@ class VideoClip(Clip):
         """Writes the videoclip to a sequence of image files.
 
         Parameters
-        -----------
+        ----------
 
         name_format
           A filename specifying the numerotation format and extension
@@ -389,13 +415,13 @@ class VideoClip(Clip):
 
 
         Returns
-        --------
+        -------
 
         names_list
           A list of all the files generated.
 
         Notes
-        ------
+        -----
 
         The resulting image sequence can be read using e.g. the class
         ``ImageSequenceClip``.
@@ -439,7 +465,7 @@ class VideoClip(Clip):
         or ffmpeg.
 
         Parameters
-        -----------
+        ----------
 
         filename
           Name of the resulting gif file, as a string or a path-like object.
@@ -486,7 +512,7 @@ class VideoClip(Clip):
         slower than the clip you will use ::
 
             >>> # slow down clip 50% and make it a gif
-            >>> myClip.speedx(0.5).to_gif('myClip.gif')
+            >>> myClip.multiply_speed(0.5).to_gif('myClip.gif')
 
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
@@ -548,11 +574,11 @@ class VideoClip(Clip):
         (in seconds).
 
         Examples
-        ---------
+        --------
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
         >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.subapply(lambda c:c.speedx(0.5) , 3,6)
+        >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
 
         """
         left = None if (start_time == 0) else self.subclip(0, start_time)
@@ -569,9 +595,8 @@ class VideoClip(Clip):
     # IMAGE FILTERS
 
     def image_transform(self, image_func, apply_to=None):
-        """
-        Modifies the images of a clip by replacing the frame
-        `get_frame(t)` by another frame,  `image_func(get_frame(t))`
+        """Modifies the images of a clip by replacing the frame `get_frame(t)` by
+        another frame,  `image_func(get_frame(t))`.
         """
         apply_to = apply_to or []
         return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
@@ -580,6 +605,7 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
     def fill_array(self, pre_array, shape=(0, 0)):
+        """TODO: needs documentation."""
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
         dy = shape[1] - pre_shape[1]
@@ -597,12 +623,11 @@ class VideoClip(Clip):
         return post_array
 
     def blit_on(self, picture, t):
-        """
-        Returns the result of the blit of the clip's frame at time `t`
+        """Returns the result of the blit of the clip's frame at time `t`
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
         """
-        hf, wf = picture.size
+        wf, hf = picture.size
 
         ct = t - self.start  # clip time
 
@@ -631,7 +656,7 @@ class VideoClip(Clip):
         else:
             im_mask = None
 
-        hi, wi = im_img.size
+        wi, hi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
 
@@ -693,7 +718,7 @@ class VideoClip(Clip):
         clips.
 
         Parameters
-        -----------
+        ----------
 
         size
           Size (width, height) in pixels of the final clip.
@@ -708,9 +733,8 @@ class VideoClip(Clip):
         col_opacity
           Parameter in 0..1 indicating the opacity of the colored
           background.
-
         """
-        from .compositing.CompositeVideoClip import CompositeVideoClip
+        from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
         if size is None:
             size = self.size
@@ -764,7 +788,8 @@ class VideoClip(Clip):
         """Set the clip's mask.
 
         Returns a copy of the VideoClip with the mask attribute set to
-        ``mask``, which must be a greyscale (values in 0-1) VideoClip"""
+        ``mask``, which must be a greyscale (values in 0-1) VideoClip.
+        """
         assert mask is None or mask.is_mask
         self.mask = mask
 
@@ -790,7 +815,7 @@ class VideoClip(Clip):
         of several types.
 
         Examples
-        ----------
+        --------
 
         >>> clip.with_position((45,150)) # x=45, y=150
         >>>
@@ -816,7 +841,8 @@ class VideoClip(Clip):
         """Set the clip's layer in compositions. Clips with a greater ``layer``
         attribute will be displayed on top of others.
 
-        Note: Only has effect when the clip is used in a CompositeVideoClip."""
+        Note: Only has effect when the clip is used in a CompositeVideoClip.
+        """
         self.layer = layer
 
     # --------------------------------------------------------------
@@ -862,7 +888,6 @@ class VideoClip(Clip):
         """Remove the clip's audio.
 
         Return a copy of the clip with audio set to None.
-
         """
         self.audio = None
 
@@ -871,7 +896,6 @@ class VideoClip(Clip):
         """Transform the clip's audio.
 
         Return a new clip whose audio has been transformed by ``fun``.
-
         """
         self.audio = self.audio.fx(fun, *args, **kwargs)
 
@@ -882,7 +906,7 @@ class DataVideoClip(VideoClip):
     of successive datasets
 
     Parameters
-    -----------
+    ----------
     data
       A liste of datasets, each dataset being used for one frame of the clip
 
@@ -891,9 +915,6 @@ class DataVideoClip(VideoClip):
 
     fps
       Number of frames per second in the animation
-
-    Examples
-    ---------
     """
 
     def __init__(self, data, data_to_frame, fps, is_mask=False, has_constant_size=True):
@@ -928,15 +949,14 @@ class UpdatedVideoClip(VideoClip):
     >>>     return world.to_frame()
 
     Parameters
-    -----------
+    ----------
 
     world
       An object with the following attributes:
-      - world.clip_t : the clip's time corresponding to the
-          world's state
-      - world.update() : update the world's state, (including
-        increasing world.clip_t of one time step)
-      - world.to_frame() : renders a frame depending on the world's state
+      - world.clip_t: the clip's time corresponding to the world's state.
+      - world.update() : update the world's state, (including increasing
+      world.clip_t of one time step).
+      - world.to_frame() : renders a frame depending on the world's state.
 
     is_mask
       True if the clip is a WxH mask with values in 0-1
@@ -976,13 +996,13 @@ class ImageClip(VideoClip):
     display the given picture at all times.
 
     Examples
-    ---------
+    --------
 
     >>> clip = ImageClip("myHouse.jpeg")
     >>> clip = ImageClip( someArray ) # a Numpy array represent
 
     Parameters
-    -----------
+    ----------
 
     img
       Any picture file (png, tiff, jpeg, etc.) as a string or a path-like object,
@@ -996,7 +1016,7 @@ class ImageClip(VideoClip):
       of the picture (if it exists) to be used as a mask.
 
     Attributes
-    -----------
+    ----------
 
     img
       Array representing the image of the clip.
@@ -1052,7 +1072,7 @@ class ImageClip(VideoClip):
         """Image-transformation filter.
 
         Does the same as VideoClip.image_transform, but for ImageClip the
-        tranformed clip is computed once and for all at the beginning,
+        transformed clip is computed once and for all at the beginning,
         and not for each 'frame'.
         """
         if apply_to is None:
@@ -1091,7 +1111,7 @@ class ColorClip(ImageClip):
     """An ImageClip showing just one color.
 
     Parameters
-    -----------
+    ----------
 
     size
       Size (width, height) in pixels of the clip.
@@ -1134,7 +1154,7 @@ class TextClip(ImageClip):
     Requires ImageMagick.
 
     Parameters
-    -----------
+    ----------
 
     text
       A string of the text to write. Can be replaced by argument
@@ -1189,7 +1209,6 @@ class TextClip(ImageClip):
     transparent
       ``True`` (default) if you want to take into account the
       transparency in the image.
-
     """
 
     @convert_path_to_string("filename")
@@ -1298,12 +1317,11 @@ class TextClip(ImageClip):
     @staticmethod
     def list(arg):
         """Returns a list of all valid entries for the ``font`` or ``color`` argument of
-        ``TextClip``"""
-
-        popen_params = {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        ``TextClip``.
+        """
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
+        )
 
         process = sp.Popen(
             [IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params
@@ -1313,12 +1331,12 @@ class TextClip(ImageClip):
 
         if arg == "font":
             # Slice removes first 8 characters: "  Font: "
-            return [l[8:] for l in lines if l.startswith("  Font:")]
+            return [line[8:] for line in lines if line.startswith("  Font:")]
         elif arg == "color":
-            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split on space and take
-            # the first item to get the color name.
+            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split
+            # on space and take the first item to get the color name.
             # The first 5 lines are header information, not colors, so ignore
-            return [l.split(" ")[0] for l in lines[5:]]
+            return [line.split(" ")[0] for line in lines[5:]]
         else:
             raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
 
@@ -1329,7 +1347,6 @@ class TextClip(ImageClip):
 
         >>> # Find all the available fonts which contain "Courier"
         >>> print(TextClip.search('Courier', 'font'))
-
         """
         string = string.lower()
         names_list = TextClip.list(arg)
@@ -1337,75 +1354,79 @@ class TextClip(ImageClip):
 
 
 class BitmapClip(VideoClip):
+    """Clip made of color bitmaps. Mainly designed for testing purposes."""
+
+    DEFAULT_COLOR_DICT = {
+        "R": (255, 0, 0),
+        "G": (0, 255, 0),
+        "B": (0, 0, 255),
+        "O": (0, 0, 0),
+        "W": (255, 255, 255),
+        "A": (89, 225, 62),
+        "C": (113, 157, 108),
+        "D": (215, 182, 143),
+        "E": (57, 26, 252),
+        "F": (225, 135, 33),
+    }
+
     @convert_parameter_to_seconds(["duration"])
     def __init__(
         self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
     ):
-        """
-        Creates a VideoClip object from a bitmap representation. Primarily used in the test suite.
+        """Creates a VideoClip object from a bitmap representation. Primarily used
+        in the test suite.
 
         Parameters
-        -----------
+        ----------
 
         bitmap_frames
-          A list of frames. Each frame is a list of strings. Each string represents a row of colors.
-          Each color represents an (r, g, b) tuple.
-          Example input (2 frames, 5x3 pixel size):
-          [["RRRRR",
-            "RRBRR",
-            "RRBRR"],
-           ["RGGGR",
-            "RGGGR",
-            "RGGGR"]]
+          A list of frames. Each frame is a list of strings. Each string
+          represents a row of colors. Each color represents an (r, g, b) tuple.
+          Example input (2 frames, 5x3 pixel size)::
+
+              [["RRRRR",
+                "RRBRR",
+                "RRBRR"],
+               ["RGGGR",
+                "RGGGR",
+                "RGGGR"]]
 
         fps
-          The number of frames per second to display the clip at. `duration` will calculated from the total number of frames.
-          If both `fps` and `duration` are set, `duration` will be ignored.
+          The number of frames per second to display the clip at. `duration` will
+          calculated from the total number of frames. If both `fps` and `duration`
+          are set, `duration` will be ignored.
 
         duration
-          The total duration of the clip. `fps` will be calculated from the total number of frames.
-          If both `fps` and `duration` are set, `duration` will be ignored.
+          The total duration of the clip. `fps` will be calculated from the total
+          number of frames. If both `fps` and `duration` are set, `duration` will
+          be ignored.
 
         color_dict
-          A dictionary that can be used to set specific (r, g, b) values that correspond
-          to the letters used in ``bitmap_frames``.
+          A dictionary that can be used to set specific (r, g, b) values that
+          correspond to the letters used in ``bitmap_frames``.
           eg ``{"A": (50, 150, 150)}``.
 
-          Defaults to
-          ::
-          {
-            "R": (255, 0, 0),
-            "G": (0, 255, 0),
-            "B": (0, 0, 255),
-            "O": (0, 0, 0),  # "O" represents black
-            "W": (255, 255, 255),
-            "A": (89, 225, 62),  # "A", "C", "D", "E", "F" represent arbitrary colors
-            "C": (113, 157, 108),
-            "D": (215, 182, 143),
-            "E": (57, 26, 252),
-          }
+          Defaults to::
 
-        is_mask
-          Set to ``True`` if the clip is going to be used as a mask.
-
-        """
-        assert fps is not None or duration is not None
-
-        if color_dict:
-            self.color_dict = color_dict
-        else:
-            self.color_dict = {
+              {
                 "R": (255, 0, 0),
                 "G": (0, 255, 0),
                 "B": (0, 0, 255),
-                "O": (0, 0, 0),
+                "O": (0, 0, 0),  # "O" represents black
                 "W": (255, 255, 255),
+                # "A", "C", "D", "E", "F" represent arbitrary colors
                 "A": (89, 225, 62),
                 "C": (113, 157, 108),
                 "D": (215, 182, 143),
                 "E": (57, 26, 252),
-                "F": (225, 135, 33),
-            }
+              }
+
+        is_mask
+          Set to ``True`` if the clip is going to be used as a mask.
+        """
+        assert fps is not None or duration is not None
+
+        self.color_dict = color_dict if color_dict else self.DEFAULT_COLOR_DICT
 
         frame_list = []
         for input_frame in bitmap_frames:
@@ -1431,8 +1452,7 @@ class BitmapClip(VideoClip):
         self.fps = fps
 
     def to_bitmap(self, color_dict=None):
-        """
-        Returns a valid bitmap list that represents each frame of the clip.
+        """Returns a valid bitmap list that represents each frame of the clip.
         If `color_dict` is not specified, then it will use the same `color_dict`
         that was used to create the clip.
         """

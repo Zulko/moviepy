@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Result: https://www.youtube.com/watch?v=Qu7HJrsEYFg
 
@@ -8,24 +6,25 @@ serious historical study here: https://www.youtube.com/watch?v=zvCvOC2VwDc
 
 Here is what we do:
 
-0- Get the video of a dancing knight, and a (Creative Commons) audio music file.
-1- load the audio file and automatically find the tempo
-2- load the video and automatically find a segment that loops well
-3- extract this segment, slow it down so that it matches the audio tempo,
-   and make it loop forever.
-4- Symmetrize this segment so that we will get two knights instead of one
-5- Add a title screen and some credits, write to a file.
-
+0. Get the video of a dancing knight, and a (Creative Commons) audio music file.
+1. Load the audio file and automatically find the tempo.
+2. Load the video and automatically find a segment that loops well
+3. Extract this segment, slow it down so that it matches the audio tempo, and make
+   it loop forever.
+4. Symmetrize this segment so that we will get two knights instead of one
+5. Add a title screen and some credits, write to a file.
 
 This example has been originally edited in an IPython Notebook, which makes it
 easy to preview and fine-tune each part of the editing.
 """
 
 import os
+import sys
 
+from moviepy import *
 from moviepy.audio.tools.cuts import find_audio_period
-from moviepy.editor import *
 from moviepy.video.tools.cuts import find_video_period
+
 
 # Next lines are for downloading the required videos from Youtube.
 # To do this you must have youtube-dl installed, otherwise you will need to
@@ -33,14 +32,19 @@ from moviepy.video.tools.cuts import find_video_period
 #     https://www.youtube.com/watch?v=zvCvOC2VwDc => knights.mp4
 #     https://www.youtube.com/watch?v=lkY3Ek9VPtg => frontier.mp4
 
-if not os.path.exists("knights.mp4"):
-    os.system("youtube-dl zvCvOC2VwDc -o knights")
-    os.system("youtube-dl lkY3Ek9VPtg -o frontier")
+if not os.path.exists("knights.mp4") or not os.path.exists("frontier.webm"):
+    retcode1 = os.system("youtube-dl zvCvOC2VwDc -o knights")
+    retcode2 = os.system("youtube-dl lkY3Ek9VPtg -o frontier")
+    if retcode1 != 0 or retcode2 != 0:
+        sys.stderr.write(
+            "Error downloading videos. Check that you've installed youtube-dl.\n"
+        )
+        sys.exit(1)
+
 # ==========
 
 
 # LOAD, EDIT, ANALYZE THE AUDIO
-
 
 audio = (
     AudioFileClip("frontier.webm")
@@ -55,14 +59,13 @@ print("Analyzed the audio, found a period of %.02f seconds" % audio_period)
 
 # LOAD, EDIT, ANALYZE THE VIDEO
 
-
 clip = (
-    VideoFileClip("./knights.webm", audio=False)
+    VideoFileClip("knights.mp4", audio=False)
     .subclip((1, 24.15), (1, 26))
     .crop(x1=500, x2=1350)
 )
 
-video_period = find_video_period(clip, tmin=0.3)
+video_period = find_video_period(clip, start_time=0.3)
 print("Analyzed the video, found a period of %.02f seconds" % video_period)
 
 edited_right = (
@@ -82,8 +85,8 @@ dancing_knights = (
     .subclip(0.3)
 )
 
-# MAKE THE TITLE SCREEN
 
+# MAKE THE TITLE SCREEN
 
 txt_title = (
     TextClip(
@@ -104,7 +107,6 @@ title = (
 
 
 # MAKE THE CREDITS SCREEN
-
 
 txt_credits = """
 CREDITS

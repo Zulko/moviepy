@@ -1,5 +1,4 @@
-"""
-Classes for easy interpolation of trajectories and Curves.
+"""Classes for easy interpolation of trajectories and curves.
 Requires Scipy installed.
 """
 
@@ -7,7 +6,7 @@ import numpy as np
 
 
 class Interpolator:
-    """ Poorman's linear interpolator, doesn't require Scipy. """
+    """Poorman's linear interpolator, doesn't require Scipy."""
 
     def __init__(self, tt=None, ss=None, ttss=None, left=None, right=None):
 
@@ -21,10 +20,13 @@ class Interpolator:
         self.tmin, self.tmax = min(tt), max(tt)
 
     def __call__(self, t):
+        """TODO: needs documentation"""
         return np.interp(t, self.tt, self.ss, self.left, self.right)
 
 
 class Trajectory:
+    """TODO: needs documentation"""
+
     def __init__(self, tt, xx, yy):
 
         self.tt = 1.0 * np.array(tt)
@@ -33,32 +35,40 @@ class Trajectory:
         self.update_interpolators()
 
     def __call__(self, t):
+        """TODO: needs documentation"""
         return np.array([self.xi(t), self.yi(t)])
 
     def addx(self, x):
+        """TODO: needs documentation"""
         return Trajectory(self.tt, self.xx + x, self.yy)
 
     def addy(self, y):
+        """TODO: needs documentation"""
         return Trajectory(self.tt, self.xx, self.yy + y)
 
     def update_interpolators(self):
+        """TODO: needs documentation"""
         self.xi = Interpolator(self.tt, self.xx)
         self.yi = Interpolator(self.tt, self.yy)
 
     def txy(self, tms=False):
+        """TODO: needs documentation"""
         return zip((1000 if tms else 1) * self.tt, self.xx, self.yy)
 
     def to_file(self, filename):
+        """TODO: needs documentation"""
         np.savetxt(filename, np.array(self.txy(tms=True)), fmt="%d", delimiter="\t")
 
     @staticmethod
     def from_file(filename):
+        """TODO: needs documentation"""
         arr = np.loadtxt(filename, delimiter="\t")
         tt, xx, yy = arr.T
         return Trajectory(1.0 * tt / 1000, xx, yy)
 
     @staticmethod
     def save_list(trajs, filename):
+        """TODO: needs documentation"""
         N = len(trajs)
         arr = np.hstack([np.array(list(t.txy(tms=True))) for t in trajs])
         np.savetxt(
@@ -71,6 +81,7 @@ class Trajectory:
 
     @staticmethod
     def load_list(filename):
+        """TODO: needs documentation"""
         arr = np.loadtxt(filename, delimiter="\t").T
         Nlines = arr.shape[0]
         return [

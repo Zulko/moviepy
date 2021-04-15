@@ -5,8 +5,9 @@ talking at the same time, because it is actually two scenes of a same
 movie put together.
 """
 
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.drawing import color_split
+
 
 duration = 6  # duration of the final clip
 
@@ -31,10 +32,7 @@ mask = color_split(
 mask_clip = ImageClip(mask, is_mask=True)
 
 clip_left = (
-    main_clip.coreader()
-    .subclip(0, duration)
-    .crop(x1=60, x2=60 + 2 * W / 3)
-    .with_mask(mask_clip)
+    main_clip.subclip(0, duration).crop(x1=60, x2=60 + 2 * W / 3).with_mask(mask_clip)
 )
 
 
@@ -47,8 +45,7 @@ mask = color_split(
 mask_clip = ImageClip(mask, is_mask=True)
 
 clip_right = (
-    main_clip.coreader()
-    .subclip(21, 21 + duration)
+    main_clip.subclip(21, 21 + duration)
     .crop(x1=70, x2=70 + 2 * W / 3)
     .with_mask(mask_clip)
 )
@@ -57,7 +54,10 @@ clip_right = (
 # ASSEMBLE AND WRITE THE MOVIE TO A FILE
 
 cc = CompositeVideoClip(
-    [clip_right.set_pos("right").volumex(0.4), clip_left.set_pos("left").volumex(0.4)],
+    [
+        clip_right.set_pos("right").multiply_volume(0.4),
+        clip_left.set_pos("left").multiply_volume(0.4),
+    ],
     size=(W, H),
 )
 # cc.preview()

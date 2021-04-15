@@ -3,20 +3,18 @@ import os
 import numpy as np
 from imageio import imread
 
-from ..VideoClip import VideoClip
+from moviepy.video.VideoClip import VideoClip
 
 
 class ImageSequenceClip(VideoClip):
-    """
-
-    A VideoClip made from a series of images.
-
+    """A VideoClip made from a series of images.
 
     Parameters
-    -----------
+    ----------
 
     sequence
       Can be one of these:
+
       - The name of a folder (containing only pictures). The pictures
         will be considered in alphanumerical order.
       - A list of names of image files. In this case you can choose to
@@ -36,14 +34,6 @@ class ImageSequenceClip(VideoClip):
 
     is_mask
       Will this sequence of pictures be used as an animated mask.
-
-    Notes
-    ------
-
-    If your sequence is made of image files, the only image kept in
-
-
-
     """
 
     def __init__(

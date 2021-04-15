@@ -1,10 +1,8 @@
-"""
-This module implements the central object of MoviePy, the Clip, and
-all the methods that are common to the two subclasses of Clip, VideoClip
-and AudioClip.
+"""Implements the central object of MoviePy, the Clip, and all the methods that
+are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
 
-from copy import copy
+import copy as _copy
 
 import numpy as np
 import proglog
@@ -20,27 +18,22 @@ from moviepy.decorators import (
 
 
 class Clip:
-
-    """
-
-    Base class of all clips (VideoClips and AudioClips).
-
+    """Base class of all clips (VideoClips and AudioClips).
 
     Attributes
-    -----------
+    ----------
 
-    start:
+    start : float
       When the clip is included in a composition, time of the
       composition at which the clip starts playing (in seconds).
 
-    end:
+    end : float
       When the clip is included in a composition, time of the
       composition at which the clip stops playing (in seconds).
 
-    duration:
+    duration : float
       Duration of the clip (in seconds). Some clips are infinite, in
       this case their duration will be ``None``.
-
     """
 
     # prefix for all temporary video and audio files.
@@ -60,29 +53,13 @@ class Clip:
         self.memoized_frame = None
 
     def copy(self):
-        """Shallow copy of the clip.
-
-        Returns a shallow copy of the clip whose mask and audio will
-        be shallow copies of the clip's mask and audio if they exist.
-
-        This method is intensively used to produce new clips every time
-        there is an outplace transformation of the clip (clip.resize,
-        clip.subclip, etc.)
-        """
-
-        new_clip = copy(self)
-        if hasattr(self, "audio"):
-            new_clip.audio = copy(self.audio)
-        if hasattr(self, "mask"):
-            new_clip.mask = copy(self.mask)
-
-        return new_clip
+        """Allows the usage of ``.copy()`` in clips as chained methods invocation."""
+        return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):
-        """
-        Gets a numpy array representing the RGB picture of the clip at time t
-        or (mono or stereo) value for a sound clip
+        """Gets a numpy array representing the RGB picture of the clip at time ``t``
+        or (mono or stereo) value for a sound clip.
         """
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
@@ -104,22 +81,22 @@ class Clip:
         (through function ``func``) of the frames of the current clip.
 
         Parameters
-        -----------
+        ----------
 
-        func
+        func : function
           A function with signature (gf,t -> frame) where ``gf`` will
           represent the current clip's ``get_frame`` method,
           i.e. ``gf`` is a function (t->image). Parameter `t` is a time
           in seconds, `frame` is a picture (=Numpy array) which will be
           returned by the transformed clip (see examples below).
 
-        apply_to
+        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
           Can be either ``'mask'``, or ``'audio'``, or
           ``['mask','audio']``.
           Specifies if the filter should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration
+        keep_duration : bool, optional
           Set to True if the transformation does not change the
           ``duration`` of the clip.
 
@@ -164,17 +141,17 @@ class Clip:
         time `time_func(t)`.
 
         Parameters
-        -----------
+        ----------
 
-        time_func:
-          A function ``t -> new_t``
+        time_func : function
+          A function ``t -> new_t``.
 
-        apply_to:
+        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
           Can be either 'mask', or 'audio', or ['mask','audio'].
           Specifies if the filter ``transform`` should also be applied to the
           audio or the mask of the clip, if any.
 
-        keep_duration:
+        keep_duration : bool, optional
           ``False`` (default) if the transformation modifies the
           ``duration`` of the clip.
 
@@ -182,10 +159,10 @@ class Clip:
         --------
 
         >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda: 2*t, apply_to=['mask', 'audio'])
+        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
         >>>
         >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda: 3-t)
+        >>> new_clip = clip.time_transform(lambda t: 3-t)
 
         """
         if apply_to is None:
@@ -198,10 +175,7 @@ class Clip:
         )
 
     def fx(self, func, *args, **kwargs):
-        """
-
-        Returns the result of ``func(self, *args, **kwargs)``.
-        for instance
+        """Returns the result of ``func(self, *args, **kwargs)``, for instance
 
         >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
 
@@ -212,12 +186,11 @@ class Clip:
         The motivation of fx is to keep the name of the effect near its
         parameters when the effects are chained:
 
-        >>> from moviepy.video.fx import volumex, resize, mirrorx
-        >>> clip.fx(volumex, 0.5).fx(resize, 0.3).fx(mirrorx)
+        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
+        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
         >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(volumex(clip, 0.5), 0.3))
+        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
         """
-
         return func(self, *args, **kwargs)
 
     @apply_to_mask
@@ -225,8 +198,7 @@ class Clip:
     @convert_parameter_to_seconds(["t"])
     @outplace
     def with_start(self, t, change_end=True):
-        """
-        Returns a copy of the clip, with the ``start`` attribute set
+        """Returns a copy of the clip, with the ``start`` attribute set
         to ``t``, which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
 
@@ -242,7 +214,6 @@ class Clip:
         These changes are also applied to the ``audio`` and ``mask``
         clips of the current clip, if they exist.
         """
-
         self.start = t
         if (self.duration is not None) and change_end:
             self.end = t + self.duration
@@ -254,11 +225,9 @@ class Clip:
     @convert_parameter_to_seconds(["t"])
     @outplace
     def with_end(self, t):
-        """
-        Returns a copy of the clip, with the ``end`` attribute set to
-        ``t``, which can be expressed in seconds (15.35), in (min, sec),
-        in (hour, min, sec), or as a string: '01:03:05.35'.
-        Also sets the duration of the mask and audio, if any,
+        """Returns a copy of the clip, with the ``end`` attribute set to ``t``, which
+        can be expressed in seconds (15.35), in (min, sec), in (hour, min, sec), or as
+        a string: '01:03:05.35'. Also sets the duration of the mask and audio, if any,
         of the returned clip.
         """
         self.end = t
@@ -275,12 +244,11 @@ class Clip:
     @convert_parameter_to_seconds(["t"])
     @outplace
     def with_duration(self, duration, change_end=True):
-        """
-        Returns a copy of the clip, with the  ``duration`` attribute
-        set to ``t``, which can be expressed in seconds (15.35), in (min, sec),
-        in (hour, min, sec), or as a string: '01:03:05.35'.
-        Also sets the duration of the mask and audio, if any, of the
-        returned clip.
+        """Returns a copy of the clip, with the  ``duration`` attribute set to ``t``,
+        which can be expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
+        or as a string: '01:03:05.35'. Also sets the duration of the mask and audio,
+        if any, of the returned clip.
+
         If change_end is False, the start attribute of the clip will
         be modified in function of the duration and the preset end
         of the clip.
@@ -291,13 +259,12 @@ class Clip:
             self.end = None if (duration is None) else (self.start + duration)
         else:
             if self.duration is None:
-                raise Exception("Cannot change clip start when new" "duration is None")
+                raise Exception("Cannot change clip start when new duration is None")
             self.start = self.end - duration
 
     @outplace
     def with_make_frame(self, make_frame):
-        """
-        Sets a ``make_frame`` attribute for the clip. Useful for setting
+        """Sets a ``make_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
         """
         self.make_frame = make_frame
@@ -305,14 +272,15 @@ class Clip:
     def with_fps(self, fps, change_duration=False):
         """Returns a copy of the clip with a new default fps for functions like
         write_videofile, iterframe, etc.
+
         If ``change_duration=True``, then the video speed will change to match the
         new fps (conserving all frames 1:1). For example, if the fps is
-        halved in this mode, the duration will be doubled."""
-
+        halved in this mode, the duration will be doubled.
+        """
         if change_duration:
-            from moviepy.video.fx.speedx import speedx
+            from moviepy.video.fx.multiply_speed import multiply_speed
 
-            newclip = speedx(self, fps / self.fps)
+            newclip = multiply_speed(self, fps / self.fps)
         else:
             newclip = self.copy()
 
@@ -321,25 +289,22 @@ class Clip:
 
     @outplace
     def with_is_mask(self, is_mask):
-        """ Says wheter the clip is a mask or not (is_mask is a boolean)"""
+        """Says wheter the clip is a mask or not (is_mask is a boolean)."""
         self.is_mask = is_mask
 
     @outplace
     def with_memoize(self, memoize):
-        """ Sets wheter the clip should keep the last frame read in memory """
+        """Sets wheter the clip should keep the last frame read in memory."""
         self.memoize = memoize
 
     @convert_parameter_to_seconds(["t"])
     def is_playing(self, t):
+        """If ``t`` is a time, returns true if t is between the start and the end
+        of the clip. t can be expressed in seconds (15.35), in (min, sec), in
+        (hour, min, sec), or as a string: '01:03:05.35'. If t is a numpy array,
+        returns False if none of the t is in the clip, else returns a vector
+        [b_1, b_2, b_3...] where b_i is true iff tti is in the clip.
         """
-        If t is a time, returns true if t is between the start and
-        the end of the clip. t can be expressed in seconds (15.35),
-        in (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
-        If t is a numpy array, returns False if none of the t is in
-        theclip, else returns a vector [b_1, b_2, b_3...] where b_i
-        is true iff tti is in the clip.
-        """
-
         if isinstance(t, np.ndarray):
             # is the whole list of t outside the clip ?
             tmin, tmax = t.min(), t.max()
@@ -364,27 +329,25 @@ class Clip:
     @apply_to_mask
     @apply_to_audio
     def subclip(self, start_time=0, end_time=None):
-        """
-        Returns a clip playing the content of the current clip
-        between times ``start_time`` and ``end_time``, which can be expressed
-        in seconds (15.35), in (min, sec), in (hour, min, sec), or as a
-        string: '01:03:05.35'.
-        If ``end_time`` is not provided, it is assumed to be the duration
-        of the clip (potentially infinite).
-        If ``end_time`` is a negative value, it is reset to
-        ``clip.duration + end_time. ``. For instance: ::
+        """Returns a clip playing the content of the current clip between times
+        ``start_time`` and ``end_time``, which can be expressed in seconds (15.35),
+        in (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
+
+        If ``end_time`` is not provided, it is assumed to be the duration of the clip
+        (potentially infinite).
+
+        If ``end_time`` is negative, it is reset to ``clip.duration + end_time``.
+        For instance::
 
             >>> # cut the last two seconds of the clip:
             >>> new_clip = clip.subclip(0,-2)
 
-        If ``end_time`` is provided or if the clip has a duration attribute,
-        the duration of the returned clip is set automatically.
+        If ``end_time`` is provided or if the clip has a duration attribute, the
+        duration of the returned clip is set automatically.
 
-        The ``mask`` and ``audio`` of the resulting subclip will be
-        subclips of ``mask`` and ``audio`` the original clip, if
-        they exist.
+        The ``mask`` and ``audio`` of the resulting subclip will be subclips of ``mask``
+        and ``audio`` the original clip, if they exist.
         """
-
         if start_time < 0:
             # Make this more Python-like, a negative value means to move
             # backward from the end of the clip
@@ -424,8 +387,6 @@ class Clip:
 
         return new_clip
 
-    @apply_to_mask
-    @apply_to_audio
     @convert_parameter_to_seconds(["start_time", "end_time"])
     def cutout(self, start_time, end_time):
         """
@@ -440,17 +401,14 @@ class Clip:
         The resulting clip's ``audio`` and ``mask`` will also be cutout
         if they exist.
         """
-
         new_clip = self.time_transform(
-            lambda t: t + (t >= start_time) * (end_time - start_time)
+            lambda t: t + (t >= start_time) * (end_time - start_time),
+            apply_to=["audio", "mask"],
         )
 
         if self.duration is not None:
-
             return new_clip.with_duration(self.duration - (end_time - start_time))
-
         else:
-
             return new_clip
 
     @requires_duration
@@ -471,17 +429,19 @@ class Clip:
         Use dtype="uint8" when using the pictures to write video, images...
 
         Examples
-        ---------
+        --------
 
         >>> # prints the maximum of red that is contained
         >>> # on the first line of each frame of the clip.
-        >>> from moviepy.editor import VideoFileClip
+        >>> from moviepy import VideoFileClip
         >>> myclip = VideoFileClip('myvideo.mp4')
         >>> print ( [frame[0,:,0].max()
                      for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
-        for frame_index in logger.iter_bar(t=np.arange(0, int(self.duration * fps))):
+        for frame_index in logger.iter_bar(
+            frame_index=np.arange(0, int(self.duration * fps))
+        ):
             # int is used to ensure that floating point errors are rounded
             # down to the nearest integer
             t = frame_index / fps
@@ -495,10 +455,7 @@ class Clip:
                 yield frame
 
     def close(self):
-        """
-        Release any resources that are in use.
-        """
-
+        """Release any resources that are in use."""
         #    Implementation note for subclasses:
         #
         #    * Memory-based resources can be left to the garbage-collector.

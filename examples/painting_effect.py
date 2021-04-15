@@ -1,16 +1,15 @@
-""" requires scikit-image installed (for vfx.painting) """
+"""Requires scikit-image installed (for ``vfx.painting``)."""
 
-from moviepy.editor import *
+from moviepy import *
+
 
 # WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
 
 charade = VideoFileClip("../../videos/charade.mp4")
 tfreeze = convert_to_seconds(19.21)  # Time of the freeze, 19'21
 
-# when using several subclips of a same clip, it can be faster
-# to create 'coreaders' of the clip (=other entrance points).
-clip_before = charade.coreader().subclip(tfreeze - 2, tfreeze)
-clip_after = charade.coreader().subclip(tfreeze, tfreeze + 2)
+clip_before = charade.subclip(tfreeze - 2, tfreeze)
+clip_after = charade.subclip(tfreeze, tfreeze + 2)
 
 
 # THE FRAME TO FREEZE

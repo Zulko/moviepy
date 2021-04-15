@@ -12,7 +12,7 @@ Blurring all frames of a video
 ::
 
     from skimage.filters import gaussian
-    from moviepy.editor import VideoFileClip
+    from moviepy import VideoFileClip
 
     def blur(image):
         """ Returns a blurred (radius=2 pixels) version of the image """
@@ -56,11 +56,10 @@ Getting the average frame of a video
 """""""""""""""""""""""""""""""""""""
 ::
 
-    from moviepy.editor import VideoFileClip, ImageClip
+    from moviepy import VideoFileClip, ImageClip
     clip = VideoFileClip("video.mp4")
-    fps= 1.0 # take one frame per second
-    nframes = clip.duration*fps # total number of frames used
-    total_image = sum(clip.iter_frames(fps,dtype=float,logger='bar'))
-    average_image = ImageClip(total_image/ nframes)
+    fps = 1.0  # take one frame per second
+    total_image = sum(clip.iter_frames(fps, dtype=float, logger='bar'))
+    average_image = ImageClip(total_image / clip.n_frames)
     average_image.save_frame("average_test.png")
 

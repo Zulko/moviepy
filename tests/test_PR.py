@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Pull request tests meant to be run with pytest."""
+
 import os
 from pathlib import Path
 
@@ -79,7 +79,7 @@ def test_PR_515():
 def test_PR_528():
     with ImageClip("media/vacation_2017.jpg") as clip:
         new_clip = scroll(clip, w=1000, x_speed=50)
-        new_clip = new_clip.with_duration(1)
+        new_clip = new_clip.with_duration(0.2)
         new_clip.fps = 24
         new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
 
@@ -90,9 +90,7 @@ def test_PR_529():
 
 
 def test_PR_610():
-    """
-    Test that the max fps of the video clips is used for the composite video clip
-    """
+    """Test that the max fps of video clips is used for the composite video clip."""
     clip1 = ColorClip((640, 480), color=(255, 0, 0)).with_duration(1)
     clip2 = ColorClip((640, 480), color=(0, 255, 0)).with_duration(1)
     clip1.fps = 24
@@ -102,34 +100,28 @@ def test_PR_610():
 
 
 def test_PR_1137_video():
-    """
-    Test support for path-like objects as arguments for VideoFileClip.
-    """
-    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")) as video:
+    """Test support for path-like objects as arguments for VideoFileClip."""
+    with VideoFileClip(Path("media/big_buck_bunny_432_433.webm")).subclip(
+        0.2, 0.4
+    ) as video:
         video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
         assert isinstance(video.filename, str)
 
 
 def test_PR_1137_audio():
-    """
-    Test support for path-like objects as arguments for AudioFileClip.
-    """
+    """Test support for path-like objects as arguments for AudioFileClip."""
     with AudioFileClip(Path("media/crunching.mp3")) as audio:
         audio.write_audiofile(Path(TMP_DIR) / "pathlike.mp3")
         assert isinstance(audio.filename, str)
 
 
 def test_PR_1137_image():
-    """
-    Test support for path-like objects as arguments for ImageClip.
-    """
+    """Test support for path-like objects as arguments for ImageClip."""
     ImageClip(Path("media/vacation_2017.jpg")).close()
 
 
 def test_PR_1137_subtitles():
-    """
-    Test support for path-like objects as arguments for SubtitlesClip.
-    """
+    """Test support for path-like objects as arguments for SubtitlesClip."""
 
     def make_textclip(txt):
         return TextClip(
@@ -141,7 +133,7 @@ def test_PR_1137_subtitles():
             stroke_width=0.5,
         )
 
-    SubtitlesClip(Path("media/subtitles1.srt"), make_textclip=make_textclip).close()
+    SubtitlesClip(Path("media/subtitles.srt"), make_textclip=make_textclip).close()
 
 
 if __name__ == "__main__":

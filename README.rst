@@ -4,16 +4,16 @@ MoviePy
 .. image:: https://badge.fury.io/py/moviepy.svg
     :target: PyPI_
     :alt: MoviePy page on the Python Package Index
-.. image:: https://badges.gitter.im/movie-py/gitter.png
+.. image:: https://img.shields.io/gitter/room/movie-py/gitter?color=46BC99&logo=gitter
     :target: Gitter_
     :alt: Discuss MoviePy on Gitter
-.. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
-    :target: https://travis-ci.org/Zulko/moviepy
-    :alt: Build status on travis-ci
+.. image:: https://img.shields.io/github/workflow/status/Zulko/moviepy/Run%20Test%20Suite?logo=github
+    :target: https://github.com/Zulko/moviepy/actions?query=workflow%3A%22Run+Test+Suite%22
+    :alt: Build status on gh-actions
 .. image:: https://ci.appveyor.com/api/projects/status/github/zulko/moviepy?svg=true
     :target: https://ci.appveyor.com/project/Zulko/moviepy
     :alt: Build status on appveyor
-.. image:: https://coveralls.io/repos/github/Zulko/moviepy/badge.svg?branch=master
+.. image:: https://img.shields.io/coveralls/github/Zulko/moviepy/master?logo=coveralls
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
 
@@ -32,7 +32,7 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 
 .. code:: python
 
-    from moviepy.editor import *
+    from moviepy import *
 
     video = VideoFileClip("myHolidays.mp4").subclip(50,60)
 
@@ -48,7 +48,7 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 Maintainers wanted!
 -------------------
 
-As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
+As there are more and more people seeking support (270 open issues as of Jan. 2021!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
 Installation
 ------------
@@ -103,7 +103,7 @@ For instance, using the method ``clip.resize`` requires that at least one of Sci
 Documentation
 -------------
 
-Running `build_docs` has additional dependencies that require installation.
+Building the documentation has additional dependencies that require installation.
 
 .. code:: bash
 
@@ -148,22 +148,6 @@ Then at the beginning of your notebook enter:
 
 Have a look at the Proglog project page for more options.
 
-Running Tests
--------------
-
-In order to run the test suite locally, first install the dependencies by navigating to the project directory and running:
-
-.. code:: bash
-
-    $ (sudo) pip install moviepy[test]
-
-The test suite can then be executed via:
-
-.. code:: bash
-
-    $ pytest
-
-
 Contribute
 ----------
 
@@ -183,6 +167,7 @@ Maintainers
 - `@overdrivr`_
 - `@keikoro`_
 - `@ryanfox`_
+- `@mondeja`_
 
 
 .. MoviePy links
@@ -222,3 +207,4 @@ Maintainers
 .. _`@overdrivr`: https://github.com/overdrivr
 .. _`@keikoro`: https://github.com/keikoro
 .. _`@ryanfox`: https://github.com/ryanfox
+.. _`@mondeja`: https://github.com/mondeja

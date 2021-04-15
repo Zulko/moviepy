@@ -1,13 +1,14 @@
 import numpy as np
 
-from moviepy.editor import *
+from moviepy import *
+
 
 w, h = moviesize = (720, 380)
 
 duration = 1
 
 
-def f(t, size, a=np.pi / 3, thickness=20):
+def f(t, size, a=np.pi / 3, thickness=20):  # noqa D103
     w, h = size
     v = thickness * np.array([np.cos(a), np.sin(a)])[::-1]
     center = [int(t * w / duration), h / 2]

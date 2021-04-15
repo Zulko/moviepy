@@ -1,5 +1,4 @@
-"""
-This module deals with making images (np arrays). It provides drawing
+"""Deals with making images (np arrays). It provides drawing
 methods that are difficult to do with the existing Python libraries.
 """
 
@@ -12,13 +11,11 @@ def blit(im1, im2, pos=None, mask=None):
     ``mask`` if provided.
     """
     if pos is None:
-        pos = [0, 0]
-
-    xp, yp = pos
-    xp1 = max(0, xp)
-    yp1 = max(0, yp)
-
-    im2.paste(im1, (xp1, yp1), mask)
+        pos = (0, 0)
+    else:
+        # Cast to tuple in case pos is not subscriptable.
+        pos = tuple(pos)
+    im2.paste(im1, pos, mask)
     return im2
 
 
@@ -44,7 +41,7 @@ def color_gradient(
 
 
     Parameters
-    ------------
+    ----------
 
     size
         Size (width, height) in pixels of the final picture/array.
@@ -82,7 +79,7 @@ def color_gradient(
         this creates a blurry disc of radius d(p1,p2).
 
     Returns
-    --------
+    -------
 
     image
         An Numpy array of dimensions (W,H,ncolors) of type float
@@ -90,12 +87,11 @@ def color_gradient(
 
 
     Examples
-    ---------
+    --------
 
     >>> grad = color_gradient(blabla).astype('uint8')
 
     """
-
     # np-arrayize and change x,y coordinates to y,x
     w, h = size
 
@@ -104,6 +100,8 @@ def color_gradient(
 
     if shape == "bilinear":
         if vector is None:
+            if p2 is None:
+                raise ValueError("You must provide either 'p2' or 'vector'")
             vector = np.array(p2) - np.array(p1)
 
         m1, m2 = [
@@ -126,20 +124,18 @@ def color_gradient(
 
     p1 = np.array(p1[::-1]).astype(float)
 
-    if vector is None and p2:
-        p2 = np.array(p2[::-1])
-        vector = p2 - p1
-    else:
-        vector = np.array(vector[::-1])
-        p2 = p1 + vector
-
-    if vector is not None:
-        norm = np.linalg.norm(vector)
-
     M = np.dstack(np.meshgrid(range(w), range(h))[::-1]).astype(float)
 
     if shape == "linear":
+        if vector is None:
+            if p2 is not None:
+                vector = np.array(p2[::-1]) - p1
+            else:
+                raise ValueError("You must provide either 'p2' or 'vector'")
+        else:
+            vector = np.array(vector[::-1])
 
+        norm = np.linalg.norm(vector)
         n_vec = vector / norm ** 2  # norm 1/norm(vector)
 
         p1 = p1 + offset * vector
@@ -150,10 +146,7 @@ def color_gradient(
         return arr * color_1 + (1 - arr) * color_2
 
     elif shape == "radial":
-        if radius is None:
-            radius = norm
-
-        if radius == 0:
+        if (radius or 0) == 0:
             arr = np.ones((h, w))
         else:
             arr = (np.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * radius
@@ -163,6 +156,7 @@ def color_gradient(
         if color_1.size > 1:
             arr = np.dstack(3 * [arr])
         return (1 - arr) * color_1 + arr * color_2
+    raise ValueError("Invalid shape, should be either 'radial', 'linear' or 'bilinear'")
 
 
 def color_split(
@@ -183,7 +177,7 @@ def color_split(
     respectively.
 
     Parameters
-    -----------
+    ----------
 
     x: (int)
         If provided, the image is splitted horizontally in x, the left
@@ -210,7 +204,7 @@ def color_split(
 
 
     Examples
-    ---------
+    --------
 
     >>> size = [200,200]
     >>> # an image with all pixels with x<50 =0, the others =1
@@ -220,7 +214,6 @@ def color_split(
     >>> # An image splitted along an arbitrary line (see below)
     >>> color_split(size, p1=[20,50], p2=[25,70] color_1=0, color_2=1)
     """
-
     if gradient_width or ((x is None) and (y is None)):
         if p2 is not None:
             vector = np.array(p2) - np.array(p1)

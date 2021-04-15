@@ -1,5 +1,6 @@
 import numpy as np
 
+
 # ------- CHECKING DEPENDENCIES -----------------------------------------
 try:
     import cv2
@@ -13,22 +14,19 @@ except Exception:
 
 
 def headblur(clip, fx, fy, radius, intensity=None):
-    """
-    Returns a filter that will blur a moving part (a head ?) of
-    the frames. The position of the blur at time t is
-    defined by (fx(t), fy(t)), the radius of the blurring
-    by ``radius`` and the intensity of the blurring by ``intensity``.
-    Requires OpenCV for the circling and the blurring.
-    Automatically deals with the case where part of the image goes
-    offscreen.
-    """
+    """Returns a filter that will blur a moving part (a head ?) of the frames.
 
+    The position of the blur at time t is defined by (fx(t), fy(t)), the radius
+    of the blurring by ``radius`` and the intensity of the blurring by ``intensity``.
+
+    Requires OpenCV for the circling and the blurring. Automatically deals with the
+    case where part of the image goes offscreen.
+    """
     if intensity is None:
-        intensity = 2 * radius / 3
+        intensity = int(2 * radius / 3)
 
     def filter(gf, t):
-
-        im = gf(t)
+        im = gf(t).copy()
         h, w, d = im.shape
         x, y = int(fx(t)), int(fy(t))
         x1, x2 = max(0, x - radius), min(x + radius, w)
@@ -53,6 +51,10 @@ if not headblur_possible:
     doc = headblur.__doc__
 
     def headblur(clip, fx, fy, r_zone, r_blur=None):
+        """Fallback headblur FX function, used if OpenCV is not installed.
+
+        This docstring will be replaced at runtime.
+        """
         raise IOError("fx painting needs opencv")
 
     headblur.__doc__ = doc

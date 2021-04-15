@@ -2,20 +2,34 @@ import os
 
 import pytest
 
-import moviepy.video.tools.cuts as cuts
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.tools.cuts import find_video_period
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
 
 from tests.test_helper import FONT, TMP_DIR
 
 
+MEDIA_SUBTITLES_DATA = [
+    ([0.0, 1.0], "Red!"),
+    ([2.0, 3.5], "More Red!"),
+    ([5.0, 6.0], "Green!"),
+    ([7.0, 8.0], "Blue"),
+    ([9.0, 10.0], "More Blue!"),
+]
+
+MEDIA_SUBTITLES_UNICODE_DATA = [
+    ([0, 5.0], "ÁÉíöÙ"),
+]
+
+
 def test_cuts1():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").resize(0.2)
-    cuts.find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").fx(resize, 0.2)
+    find_video_period(clip) == pytest.approx(0.966666666667, 0.0001)
     close_all_clips(locals())
 
 
@@ -36,37 +50,25 @@ def test_subtitles():
         color="white",
     )
 
-    subtitles = SubtitlesClip("media/subtitles1.srt", generator)
+    subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
-    final.write_videofile(os.path.join(TMP_DIR, "subtitles1.mp4"), fps=30)
+    final.write_videofile(os.path.join(TMP_DIR, "subtitles.mp4"), fps=30)
 
-    data = [
-        ([0.0, 4.0], "Red!"),
-        ([5.0, 9.0], "More Red!"),
-        ([10.0, 14.0], "Green!"),
-        ([15.0, 19.0], "More Green!"),
-        ([20.0, 24.0], "Blue"),
-        ([25.0, 29.0], "More Blue!"),
-    ]
+    assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
 
-    assert subtitles.subtitles == data
-
-    subtitles = SubtitlesClip(data, generator)
-    assert subtitles.subtitles == data
+    subtitles = SubtitlesClip(MEDIA_SUBTITLES_DATA, generator)
+    assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
     close_all_clips(locals())
 
 
 def test_file_to_subtitles():
-    data = [
-        ([0.0, 4.0], "Red!"),
-        ([5.0, 9.0], "More Red!"),
-        ([10.0, 14.0], "Green!"),
-        ([15.0, 19.0], "More Green!"),
-        ([20.0, 24.0], "Blue"),
-        ([25.0, 29.0], "More Blue!"),
-    ]
+    assert MEDIA_SUBTITLES_DATA == file_to_subtitles("media/subtitles.srt")
 
-    assert data == file_to_subtitles("media/subtitles1.srt")
+
+def test_file_to_subtitles_unicode():
+    assert MEDIA_SUBTITLES_UNICODE_DATA == file_to_subtitles(
+        "media/subtitles-unicode.srt", encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":

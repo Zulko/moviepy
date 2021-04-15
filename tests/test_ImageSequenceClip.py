@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
+
 import os
 
 import pytest

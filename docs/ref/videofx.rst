@@ -22,9 +22,9 @@ Or import everything: ::
 
 When you type: ::
 
-    from moviepy.editor import *
+    from moviepy import *
 
-the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``vfx.resize`` etc.
+the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.multiply_color``, ``vfx.resize`` etc.
 
 
 .. currentmodule:: moviepy.video.fx.all
@@ -36,7 +36,6 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     accel_decel
     blackwhite
     blink
-    colorx
     crop
     even_size
     fadein
@@ -55,11 +54,12 @@ the module ``video.fx`` is loaded as ``vfx`` and you can use ``vfx.colorx``, ``v
     mask_or
     mirror_x
     mirror_y
+    multiply_color
+    multiply_speed
     painting
     resize
     rotate
     scroll
-    speedx
     supersample
     time_mirror
     time_symmetrize
