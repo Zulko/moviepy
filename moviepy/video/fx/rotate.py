@@ -146,7 +146,7 @@ def rotate(
         # PIL expects uint8 type data. However a mask image has values in the
         # range [0, 1] and is of float type.  To handle this we scale it up by
         # a factor 'a' for use with PIL and then back again by 'a' afterwards.
-        if pic.dtype == "float64":
+        if im.dtype == "float64":
             # this is a mask image
             a = 255.0
         else:
