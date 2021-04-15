@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed `Clip.cutout` transformation not being applied to audio [\#1468](https://github.com/Zulko/moviepy/pull/1468)
 - Fixed arguments inconsistency in `video.tools.drawing.color_gradient` [\#1467](https://github.com/Zulko/moviepy/pull/1467)
 - Fixed `fps` not defined in `CompositeAudioClip` at initialization [\#1462](https://github.com/Zulko/moviepy/pull/1462)
+- Fixed `clip.preview()` crashing at exit when running inside Jupyter Notebook in Windows [\#1537](https://github.com/Zulko/moviepy/pull/1537)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
