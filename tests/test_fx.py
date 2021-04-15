@@ -975,7 +975,7 @@ def test_rotate_supported_PIL_kwargs(
         new_PIL_rotate_kwargs_supported,
     )
 
-    with pytest.warns(UserWarning) as records:
+    with pytest.warns(UserWarning) as record:
         BitmapClip([["R", "G", "B"]], fps=1).fx(
             rotate_module.rotate,
             45,
@@ -985,12 +985,12 @@ def test_rotate_supported_PIL_kwargs(
         )
 
     # assert number of warnings
-    assert len(records.list) == len(unsupported_kwargs)
+    assert len(record.list) == len(unsupported_kwargs)
 
     # assert messages contents
     messages = []
-    for record in records.list:
-        messages.append(record.message.args[0])
+    for warning in record.list:
+        messages.append(warning.message.args[0])
 
     for unsupported_kwarg in unsupported_kwargs:
         expected_message = (
