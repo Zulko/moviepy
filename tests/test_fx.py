@@ -1,4 +1,5 @@
 import decimal
+import importlib
 import math
 import numbers
 import os
@@ -759,6 +760,7 @@ def test_resize(
 
 
 # Run several times to ensure that adding 360 to rotation angles has no effect
+@pytest.mark.parametrize("PIL_installed", (True, False))
 @pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
 @pytest.mark.parametrize("unit", ["deg", "rad"])
 @pytest.mark.parametrize("resample", ["bilinear", "nearest", "bicubic", "unknown"])
@@ -839,6 +841,7 @@ def test_resize(
     ),
 )
 def test_rotate(
+    PIL_installed,
     angle_offset,
     angle,
     unit,
@@ -847,6 +850,7 @@ def test_rotate(
     center,
     bg_color,
     expected_frames,
+    monkeypatch,
 ):
     """Check ``rotate`` FX behaviour against possible combinations of arguments."""
     original_frames = [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]
@@ -875,11 +879,40 @@ def test_rotate(
             "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
         ) == str(exc.value)
         return
-    else:
-        rotated_clip = clip.rotate(_angle, **kwargs)
 
-    expected_clip = BitmapClip(expected_frames, fps=1)
-    assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
+    # if the scenario implies that PIL is not installed, monkeypatch the
+    # module in which 'rotate' function resides
+    if not PIL_installed:
+        rotate_module = importlib.import_module("moviepy.video.fx.rotate")
+        monkeypatch.setattr(rotate_module, "Image", None)
+        rotate_func = rotate_module.rotate
+    else:
+        rotate_func = rotate
+
+    # resolve the angle, because if it is a multiple of 90, the rotation
+    # can be computed event without an available PIL installation
+    if hasattr(_angle, "__call__"):
+        _resolved_angle = _angle(0)
+    else:
+        _resolved_angle = _angle
+    if unit == "rad":
+        _resolved_angle = math.degrees(_resolved_angle)
+
+    if not PIL_installed and (
+        (_resolved_angle % 90 != 0) or center or translate or bg_color
+    ):
+        with pytest.raises(ValueError) as exc:
+            rotated_clip = clip.fx(rotate_func, _angle, **kwargs)
+
+        assert (
+            'Without "Pillow" installed, only angles that are a multiple of 90'
+        ) in str(exc.value)
+
+    else:
+        rotated_clip = clip.fx(rotate_func, _angle, **kwargs)
+        expected_clip = BitmapClip(expected_frames, fps=1)
+
+        assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
 
 
 def test_rotate_nonstandard_angles():
