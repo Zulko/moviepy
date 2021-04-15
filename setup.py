@@ -76,6 +76,7 @@ requires = [
     "numpy>=1.17.3,<=1.20",
     "requests>=2.8.1,<3.0",
     "proglog<=1.0.0",
+    "librosa>=0.8.0",
 ]
 
 optional_reqs = [
