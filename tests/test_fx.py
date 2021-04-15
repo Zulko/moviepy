@@ -890,7 +890,7 @@ def test_rotate_nonstandard_angles():
 
 
 def test_rotate_mask():
-    # Before https://github.com/Zulko/moviepy/pull/1399
+    # Prior to https://github.com/Zulko/moviepy/pull/1399
     # all the pixels of the resulting video were 0
     clip = (
         ColorClip(color=0.5, size=(1, 1), is_mask=True)
