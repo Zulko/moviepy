@@ -1,4 +1,4 @@
-def f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
+def _f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
     a = 1.0 + abruptness
 
     def _f(t):
@@ -58,5 +58,5 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
         raise ValueError("'sooness' should be a positive number")
 
     return clip.time_transform(
-        lambda t: f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)
+        lambda t: _f_accel_decel(t, clip.duration, new_duration, abruptness, soonness)
     ).with_duration(new_duration)
