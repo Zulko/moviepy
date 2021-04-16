@@ -27,13 +27,19 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
         Slope shape in the acceleration-deceleration function. It will depend
         on the value of the parameter:
 
-        * ``0 > abruptness > -1``: speed up, down, up.
+        * ``-1 < abruptness < 0``: speed up, down, up.
         * ``abruptness == 0``: no effect.
         * ``abruptness > 0``: speed down, up, down.
 
     soonness : float
         For positive abruptness, determines how soon the transformation occurs.
         Should be a positive number.
+
+    Raises
+    ------
+
+    ValueError
+        When ``sooness`` argument is lower than 0.
 
     Examples
     --------
