@@ -20,26 +20,26 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
     ----------
 
     new_duration : float
-        Duration for the new transformed clip. If None, will be that of the
-        current clip.
+      Duration for the new transformed clip. If None, will be that of the
+      current clip.
 
     abruptness : float
-        Slope shape in the acceleration-deceleration function. It will depend
-        on the value of the parameter:
+      Slope shape in the acceleration-deceleration function. It will depend
+      on the value of the parameter:
 
-        * ``-1 < abruptness < 0``: speed up, down, up.
-        * ``abruptness == 0``: no effect.
-        * ``abruptness > 0``: speed down, up, down.
+      * ``-1 < abruptness < 0``: speed up, down, up.
+      * ``abruptness == 0``: no effect.
+      * ``abruptness > 0``: speed down, up, down.
 
     soonness : float
-        For positive abruptness, determines how soon the transformation occurs.
-        Should be a positive number.
+      For positive abruptness, determines how soon the transformation occurs.
+      Should be a positive number.
 
     Raises
     ------
 
     ValueError
-        When ``sooness`` argument is lower than 0.
+      When ``sooness`` argument is lower than 0.
 
     Examples
     --------
@@ -51,7 +51,6 @@ def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
 
     .. image:: /_static/accel_decel-fx-params.png
        :alt: acced_decel FX parameters combinations
-
     """
     if new_duration is None:
         new_duration = clip.duration
