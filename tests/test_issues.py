@@ -14,7 +14,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import TMP_DIR
-
+from moviepy.editor import vfx
 
 try:
     import matplotlib
@@ -399,6 +399,20 @@ def test_issue_655():
                 pass
             next(v.subclip(*subclip).iter_frames())
     assert True
+
+
+def test_issue_782():
+    clip = ImageClip('flower.png')
+    clip_2 = clip.fx(vfx.mirror_y)
+    if clip.image_transform == clip_2.image_transform:
+        assert False
+    else:
+        pass
+    clip_3 = clip.fx(vfx.mirror_x)
+    if clip.image_transform == clip_3.image_transform:
+        assert False
+    else:
+        assert True
 
 
 if __name__ == "__main__":
