@@ -5,14 +5,13 @@ import pygame as pg
 
 from moviepy.decorators import requires_duration
 
-
 pg.init()
 pg.display.set_caption("MoviePy")
 
 
 @requires_duration
 def preview(
-    clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None
+        clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None
 ):
     """
     Plays the sound clip with pygame.
@@ -41,6 +40,7 @@ def preview(
       video and audio during ``VideoClip.preview()``.
 
     """
+    global passed_time
     pg.mixer.quit()
 
     pg.mixer.init(fps, -8 * nbytes, clip.nchannels, 1024)
@@ -56,6 +56,28 @@ def preview(
 
     channel = chunk.play()
     for i in range(1, len(pospos) - 1):
+        pg.init()
+        pg.display.set_caption("MoviePy")
+        screen = pg.display.set_mode((500, 500))
+        clock = pg.time.Clock()
+        font = pg.font.Font(None, 75)
+        font_color = pg.Color('white')
+        passed_time = pg.time.get_ticks() - 0
+
+        screen.fill((60, 60, 60))
+        text = font.render(str(passed_time / 1000), True, font_color)
+        screen.blit(text, (175, 225))
+
+        pg.display.flip()
+        clock.tick(fps)
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT or (
+                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
+            ):
+                pg.quit()
+                return passed_time / 1000
+
         timings = (1.0 / fps) * np.arange(pospos[i], pospos[i + 1])
         sndarray = clip.to_soundarray(timings, nbytes=nbytes, quantize=True)
         chunk = pg.sndarray.make_sound(sndarray)
@@ -67,3 +89,5 @@ def preview(
                     del channel
                     return
         channel.queue(chunk)
+    pg.quit()
+    return passed_time / 1000
