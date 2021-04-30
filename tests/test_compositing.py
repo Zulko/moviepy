@@ -5,9 +5,10 @@ import os
 import pytest
 
 from moviepy.utils import close_all_clips
-from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.compositing.CompositeVideoClip import clips_array, CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.fx.resize import resize
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
 from tests.test_helper import TMP_DIR
@@ -67,3 +68,30 @@ def test_concatenate_floating_point():
     concat = concatenate_videoclips([clip])
     concat.write_videofile(os.path.join(TMP_DIR, "concat.mp4"), preset="ultrafast")
     close_all_clips(locals())
+
+
+def test_blit_with_opacity():
+    ALLOWABLE_COLOR_VARIATION = 3 # from 0-767: how much mismatch do we allow
+
+    # bitmap.mp4 has one second R, one second G, one second B
+    clip1 = VideoFileClip("media/bitmap.mp4")
+    # overlay same clip, shifted by 1 second, at half opacity
+    clip2 = VideoFileClip("media/bitmap.mp4").subclip(1, 2).with_start(0).with_end(2).with_opacity(0.5)
+    composite = CompositeVideoClip([clip1, clip2])
+
+    def expect_color_at(ts, expected):
+        f = composite.make_frame(ts)
+        r, g, b = expected
+        actual = f[0][0]
+        diff = abs(actual[0] - r) + abs(actual[1] - g) + abs(actual[2] - b)
+
+        mismatch = diff > ALLOWABLE_COLOR_VARIATION
+        assert (not mismatch), ("Expected (%02x,%02x,%02x) but got (%02x,%02x,%02x) at timestamp %s"
+                                % (*expected, *actual, ts))
+
+    expect_color_at(0.5, (0x7f, 0x7f, 0x00))
+    expect_color_at(1.5, (0x00, 0x7f, 0x7f))
+    expect_color_at(2.5, (0x00, 0x00, 0xff))
+
+if __name__ == "__main__":
+    pytest.main()
