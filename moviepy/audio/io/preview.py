@@ -11,7 +11,7 @@ pg.display.set_caption("MoviePy")
 
 @requires_duration
 def preview(
-        clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None
+        clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None, ms=False
 ):
     """
     Plays the sound clip with pygame.
@@ -62,10 +62,18 @@ def preview(
         clock = pg.time.Clock()
         font = pg.font.Font(None, 75)
         font_color = pg.Color('white')
-        passed_time = pg.time.get_ticks() - 0
+        passed_time = pg.time.get_ticks()
+        total_seconds = passed_time / 1000
+        seconds = int(total_seconds) % 60
+        minutes = (total_seconds / 60) % 60
+        output_string = '{:02d}:{:02d}'.format(int(minutes),seconds)
+        ms_output_string = '{:02d}:{:02d}:{}'.format(int(minutes), seconds, str(total_seconds % 1)[2:5])
 
-        screen.fill((60, 60, 60))
-        text = font.render(str(passed_time / 1000), True, font_color)
+        screen.fill((60, 60, 60))#screen.fill((30, 30, 30))
+        if ms is True:
+            text = font.render(str(ms_output_string), True, font_color)
+        else:
+            text = font.render(str(output_string), True, font_color)
         screen.blit(text, (175, 225))
 
         pg.display.flip()
@@ -76,7 +84,10 @@ def preview(
                 event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
             ):
                 pg.quit()
-                return passed_time / 1000
+                if ms is True:
+                    return ms_output_string
+                else:
+                    return output_string
 
         timings = (1.0 / fps) * np.arange(pospos[i], pospos[i + 1])
         sndarray = clip.to_soundarray(timings, nbytes=nbytes, quantize=True)
@@ -90,4 +101,7 @@ def preview(
                     return
         channel.queue(chunk)
     pg.quit()
-    return passed_time / 1000
+    if ms is True:
+        return ms_output_string
+    else:
+        return output_string
