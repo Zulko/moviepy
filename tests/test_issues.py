@@ -413,7 +413,16 @@ def test_issue_782():
         assert False
     else:
         assert True
+        
+        
+def test_issue_922():
+    import moviepy.video.tools.subtitles as sub
+    tester_subtitles = sub.file_to_subtitles("media/subtitles.srt")
+    index = 0
+    while index < len(tester_subtitles):
+        assert tester_subtitles[index][0] and tester_subtitles[index][1]
+        index += 1
 
-
+        
 if __name__ == "__main__":
     pytest.main()
