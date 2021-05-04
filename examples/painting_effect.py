@@ -15,10 +15,12 @@ clip_after = test_video.subclip(tfreeze, tfreeze + 2)
 im_freeze = test_video.to_ImageClip(tfreeze)
 painting = test_video.fx(vfx.painting, saturation=1.6, black=0.006).to_ImageClip(tfreeze)
 
-txt = TextClip("Audrey", font="Amiri-regular", font_size=35, )
+
+txt = TextClip("Audrey", font="Amiri-regular", font_size=35,)
+
 
 painting_txt = (
-    CompositeVideoClip([painting])
+    CompositeVideoClip([painting, txt.with_position((300, 475))])
     .add_mask()
     .with_duration(3)
     .crossfadein(0.5)
