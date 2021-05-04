@@ -55,6 +55,8 @@ class SubtitlesClip(VideoClip):
         self.subtitles = subtitles
         self.textclips = dict()
 
+        #file_to_subtitles(self.subtitles)
+
         if make_textclip is None:
 
             def make_textclip(txt):
@@ -177,8 +179,9 @@ def file_to_subtitles(filename, encoding=None):
             if times:
                 current_times = [convert_to_seconds(t) for t in times]
             elif line.strip() == "":
-                times_texts.append((current_times, current_text.strip("\n")))
                 current_times, current_text = None, ""
             elif current_times:
                 current_text += line
+                times_texts.append((current_times, current_text))
+                current_times, current_text = None, ""
     return times_texts
