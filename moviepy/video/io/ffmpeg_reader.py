@@ -39,6 +39,10 @@ class FFMPEG_VideoReader:
         self.size = infos["video_size"]
         self.rotation = infos.get("video_rotation", 0)
 
+        if abs(self.rotation) in [90, 270]:
+            w, h = self.size
+            self.size = [h, w]
+        
         if target_resolution:
             if None in target_resolution:
                 ratio = 1
