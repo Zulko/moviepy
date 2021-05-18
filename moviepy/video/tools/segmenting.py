@@ -32,7 +32,7 @@ def find_objects(clip, size_threshold=500, preview=False):
 
     letters = []
     for i, (sy, sx) in indexed_slices:
-        """ crop each letter separately """
+        # crop each letter separately
         sy = slice(sy.start - 1, sy.stop + 1)
         sx = slice(sx.start - 1, sx.stop + 1)
         letter = image[sy, sx]
