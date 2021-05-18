@@ -73,7 +73,7 @@ with open(os.path.join("moviepy", "version.py"), "r", "utf-8") as f:
 
 # Define the requirements for specific execution needs.
 requires = [
-    "decorator>=4.0.2,<5.0",
+    "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
     "numpy>=1.17.3,<=1.20",
