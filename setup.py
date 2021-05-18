@@ -77,7 +77,6 @@ requires = [
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
     "numpy>=1.17.3,<=1.20",
-    "requests>=2.8.1,<3.0",
     "proglog<=1.0.0",
 ]
 
