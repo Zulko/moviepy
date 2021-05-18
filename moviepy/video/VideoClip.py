@@ -636,8 +636,8 @@ class VideoClip(Clip):
         im_img = Image.fromarray(img)
 
         if self.mask is not None:
-            mask = self.mask.get_frame(ct).astype("uint8")
-            im_mask = Image.fromarray(255 * mask).convert("L")
+            mask = (self.mask.get_frame(ct) * 255).astype("uint8")
+            im_mask = Image.fromarray(mask).convert("L")
 
             if im_img.size != im_mask.size:
                 bg_size = (
