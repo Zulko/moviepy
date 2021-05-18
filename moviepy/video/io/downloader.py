@@ -1,8 +1,8 @@
 """Utilities to get a file from the internet."""
 
 import os
-
-import requests
+import shutil
+import urllib.request
 
 from moviepy.tools import subprocess_call
 
@@ -18,10 +18,8 @@ def download_webfile(url, filename, overwrite=False):
         return
 
     if "." in url:
-        r = requests.get(url, stream=True)
-        with open(filename, "wb") as fd:
-            for chunk in r.iter_content(chunk_size=128):
-                fd.write(chunk)
+        with urllib.request.urlopen(url) as req, open(filename, "wb") as f:
+            shutil.copyfileobj(req, f, 128)
 
     else:
         try:
