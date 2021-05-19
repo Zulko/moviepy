@@ -14,6 +14,7 @@ from moviepy.video.io.ffmpeg_reader import (
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip
 
 from tests.test_helper import TMP_DIR
@@ -297,6 +298,27 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert streams[1]["stream_type"] == "video"
 
     assert len(d["metadata"].keys()) == 7
+
+
+def test_ffmpeg_parse_video_rotation():
+    d = ffmpeg_parse_infos("media/rotated-90-degrees.mp4")
+    assert d["video_rotation"] == 90
+    assert d["video_size"] == [1920, 1080]
+
+
+def test_correct_video_rotation():
+    """See https://github.com/Zulko/moviepy/pull/577"""
+    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+
+    corrected_rotation_filename = os.path.join(
+        TMP_DIR,
+        "correct_video_rotation.mp4",
+    )
+    clip.write_videofile(corrected_rotation_filename)
+
+    d = ffmpeg_parse_infos(corrected_rotation_filename)
+    assert "video_rotation" not in d
+    assert d["video_size"] == [1080, 1920]
 
 
 def test_ffmpeg_parse_infos_multiline_metadata():
