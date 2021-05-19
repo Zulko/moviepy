@@ -25,7 +25,7 @@ I can't seem to read any video with MoviePy
 """"""""""""""""""""""""""""""""""""""""""""""
 
 Known reason: you have a deprecated version of FFMPEG, install a recent version from the
-website, not from your OS's repositories ! (see :ref:`install`).
+website, not from your OS's repositories! (see :ref:`install`).
 
 Previewing videos make them slower than they are
 """""""""""""""""""""""""""""""""""""""""""""""""
