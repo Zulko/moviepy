@@ -37,7 +37,12 @@ class FFMPEG_VideoReader:
         )
         self.fps = infos["video_fps"]
         self.size = infos["video_size"]
-        self.rotation = infos.get("video_rotation", 0)
+
+        # ffmpeg automatically rotates videos if rotation information is
+        # available, so exchange width and height
+        self.rotation = abs(infos.get("video_rotation", 0))
+        if self.rotation in [90, 270]:
+            self.size = [self.size[1], self.size[0]]
 
         if target_resolution:
             if None in target_resolution:
@@ -575,12 +580,6 @@ class FFmpegInfosParser:
                         break
                 if self.result.get("audio_bitrate"):
                     break
-        
-        # ffmpeg automatically rotates videos if rotation information is
-        # available, so exchange width and height
-        if self.result["video_found"] and abs(self.result['video_rotation']) in [90, 270]:
-            w, h = self.result['video_size']
-            self.result['video_size'] = [h, w]
 
         result = self.result
 
