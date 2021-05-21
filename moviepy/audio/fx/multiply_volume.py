@@ -61,7 +61,7 @@ def multiply_volume(clip, factor, start=None, end=None):
         _multiply_volume_in_range(
             factor,
             clip.start if start is None else start,
-            clip.duration if end is None else end,
+            clip.end if end is None else end,
             clip.nchannels,
         ),
         keep_duration=True,
