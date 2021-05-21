@@ -24,6 +24,7 @@ from moviepy.audio.fx import (
     multiply_stereo_volume,
     multiply_volume,
 )
+from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -1287,7 +1288,7 @@ def test_audio_delay(duration, offset, n_repeats, decay):
     (
         (
             (0.2, 0.1),
-            (1, 0.4),
+            (1, "00:00:00,4"),
             (0.3, 0.13),
         )
     ),
@@ -1311,6 +1312,8 @@ def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
             assert value == 0.0
     else:
         assert first_frame == 0.0
+
+    fadein_duration = convert_to_seconds(fadein_duration)
 
     n_parts = 10
 
