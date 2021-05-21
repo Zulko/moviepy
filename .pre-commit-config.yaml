@@ -1,6 +1,6 @@
 repos:
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: master
+  - repo: https://github.com/PyCQA/flake8
+    rev: 3.9.2
     hooks:
       - id: flake8
         additional_dependencies:
@@ -9,7 +9,7 @@ repos:
         name: flake8-test
         files: \.py$
   - repo: https://github.com/PyCQA/isort
-    rev: master
+    rev: 5.8.0
     hooks:
       - id: isort
         args:
