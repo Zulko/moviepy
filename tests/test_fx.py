@@ -1187,7 +1187,7 @@ def test_audio_normalize_muted():
         ),
     ),
 )
-def test_multiply_volume(sound_type, factor, duration, start, end):
+def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
     if sound_type == "stereo":
         make_frame = lambda t: np.array(
             [
@@ -1279,6 +1279,29 @@ def test_multiply_volume(sound_type, factor, duration, start, end):
             expected_clip_transformed_array,
             clip_transformed_array,
         )
+
+
+def test_multiply_volume_videoclip():
+    start, end = (0.1, 0.2)
+
+    clip = multiply_volume(
+        VideoFileClip("media/chaplin.mp4").subclip(0, 0.3),
+        0,
+        start=start,
+        end=end,
+    )
+    clip_soundarray = clip.audio.to_soundarray()
+
+    assert len(clip_soundarray)
+
+    expected_silence = np.zeros(clip_soundarray.shape[1])
+
+    for i, frame in enumerate(clip_soundarray):
+        t = i / clip.audio.fps
+        if start <= t <= end:
+            assert np.array_equal(frame, expected_silence)
+        else:
+            assert not np.array_equal(frame, expected_silence)
 
 
 def test_multiply_stereo_volume():
