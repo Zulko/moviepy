@@ -59,17 +59,7 @@ def multiply_volume(clip, factor, start=None, end=None):
     start = clip.start if start is None else start
     end = clip.duration if end is None else end
 
-    if hasattr(clip, "nchannels"):
-        nchannels = clip.nchannels
-    else:
-        first_frame = clip.get_frame(start)
-        nchannels = (
-            first_frame.shape[1]
-            if (hasattr(first_frame, "shape") and len(first_frame.shape) > 1)
-            else 1
-        )
-
     return clip.transform(
-        _multiply_volume_in_range(factor, start, end, nchannels),
+        _multiply_volume_in_range(factor, start, end, clip.nchannels),
         keep_duration=True,
     )
