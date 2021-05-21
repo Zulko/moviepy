@@ -1304,7 +1304,7 @@ def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadein(clip, fadein_duration)
 
-    # first frame is musted
+    # first frame is muted
     first_frame = new_clip.get_frame(0)
     if sound_type == "stereo":
         assert len(first_frame) > 1
@@ -1332,7 +1332,7 @@ def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
         ]
 
     # cut non transformed part into subclips and check the expected max_volume
-    # for each one
+    # for each one (almost 1)
     time_foreach_part = (clip_duration - fadein_duration) / n_parts
     start_times = np.arange(fadein_duration, clip_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
