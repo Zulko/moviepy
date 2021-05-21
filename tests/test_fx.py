@@ -23,6 +23,7 @@ from moviepy.audio.fx import (
     multiply_stereo_volume,
     multiply_volume,
 )
+from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -1141,7 +1142,7 @@ def test_audio_normalize_muted():
             "stereo",
             0,
             0.2,
-            0.1,
+            "00:00:00,1",
             None,
             id="stereo-0-start=.1",
         ),
@@ -1150,7 +1151,7 @@ def test_audio_normalize_muted():
             0,
             0.3,
             None,
-            0.2,
+            (0, 0, 0.2),
             id="stereo-0-end=.2",
         ),
         pytest.param(
@@ -1174,7 +1175,7 @@ def test_audio_normalize_muted():
             0,
             0.2,
             None,
-            0.1,
+            "00:00:00.1",
             id="mono-0-end=.1",
         ),
         pytest.param(
@@ -1219,8 +1220,8 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
             expected_left_channel_transformed = clip_array[:, 0] * factor
             expected_right_channel_transformed = clip_array[:, 1] * factor
         else:
-            start = start if start else clip.start
-            end = end if end else clip.duration
+            start = convert_to_seconds(start) if start else clip.start
+            end = convert_to_seconds(end) if end else clip.duration
 
             expected_left_channel_transformed = np.array([])
             expected_right_channel_transformed = np.array([])
@@ -1256,8 +1257,8 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
         if start is None and end is None:
             expected_clip_transformed_array = clip_array * factor
         else:
-            start = start if start else clip.start
-            end = end if end else clip.duration
+            start = convert_to_seconds(start) if start else clip.start
+            end = convert_to_seconds(end) if end else clip.duration
 
             expected_clip_transformed_array = np.array([])
             for i, frame in enumerate(clip_array[0]):

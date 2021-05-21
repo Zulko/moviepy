@@ -1,6 +1,6 @@
 import numpy as np
 
-from moviepy.decorators import audio_video_fx
+from moviepy.decorators import audio_video_fx, convert_parameter_to_seconds
 
 
 def _multiply_volume_in_range(factor, start, end, nchannels):
@@ -20,6 +20,7 @@ def _multiply_volume_in_range(factor, start, end, nchannels):
 
 
 @audio_video_fx
+@convert_parameter_to_seconds(["start", "end"])
 def multiply_volume(clip, factor, start=None, end=None):
     """Returns a clip with audio volume multiplied by the
     value `factor`. Can be applied to both audio and video clips.
