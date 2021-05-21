@@ -57,10 +57,12 @@ def multiply_volume(clip, factor, start=None, end=None):
             keep_duration=True,
         )
 
-    start = clip.start if start is None else start
-    end = clip.duration if end is None else end
-
     return clip.transform(
-        _multiply_volume_in_range(factor, start, end, clip.nchannels),
+        _multiply_volume_in_range(
+            factor,
+            clip.start if start is None else start,
+            clip.duration if end is None else end,
+            clip.nchannels,
+        ),
         keep_duration=True,
     )
