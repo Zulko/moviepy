@@ -19,10 +19,12 @@ from moviepy import (
 )
 from moviepy.audio.fx import (
     audio_delay,
+    audio_fadein,
     audio_normalize,
     multiply_stereo_volume,
     multiply_volume,
 )
+from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
@@ -1277,6 +1279,67 @@ def test_audio_delay(duration, offset, n_repeats, decay):
             delayed_clip_array[:, :][mute_starts_at : mute_ends_at + 1],
             zeros_expected_chunk_as_muted,
         )
+
+
+@pytest.mark.parametrize("sound_type", ("stereo", "mono"))
+@pytest.mark.parametrize("fps", (44100, 22050))
+@pytest.mark.parametrize(
+    ("clip_duration", "fadein_duration"),
+    (
+        (
+            (0.2, 0.1),
+            (1, "00:00:00,4"),
+            (0.3, 0.13),
+        )
+    ),
+)
+def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
+    if sound_type == "stereo":
+        make_frame = lambda t: np.array(
+            [np.sin(440 * 2 * np.pi * t), np.sin(160 * 2 * np.pi * t)]
+        ).T.copy(order="C")
+    else:
+        make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
+
+    clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
+    new_clip = audio_fadein(clip, fadein_duration)
+
+    # first frame is muted
+    first_frame = new_clip.get_frame(0)
+    if sound_type == "stereo":
+        assert len(first_frame) > 1
+        for value in first_frame:
+            assert value == 0.0
+    else:
+        assert first_frame == 0.0
+
+    fadein_duration = convert_to_seconds(fadein_duration)
+
+    n_parts = 10
+
+    # cut transformed part into subclips and check the expected max_volume for
+    # each one
+    time_foreach_part = fadein_duration / n_parts
+    start_times = np.arange(0, fadein_duration, time_foreach_part)
+    for i, start_time in enumerate(start_times):
+        end_time = start_time + time_foreach_part
+        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+
+        possible_value = (i + 1) / n_parts
+        assert round(subclip_max_volume, 2) in [
+            possible_value,
+            round(possible_value - 0.01, 5),
+        ]
+
+    # cut non transformed part into subclips and check the expected max_volume
+    # for each one (almost 1)
+    time_foreach_part = (clip_duration - fadein_duration) / n_parts
+    start_times = np.arange(fadein_duration, clip_duration, time_foreach_part)
+    for i, start_time in enumerate(start_times):
+        end_time = start_time + time_foreach_part
+        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+
+        assert round(subclip_max_volume, 4) == 1
 
 
 if __name__ == "__main__":

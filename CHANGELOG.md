@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed rotate FX not being applied to mask images [\#1399](https://github.com/Zulko/moviepy/pull/1399)
 - Fixed opacity error blitting VideoClips [\#1552](https://github.com/Zulko/moviepy/pull/1552)
 - Fixed rotation metadata of input not being taken into account rendering VideoClips [\#577](https://github.com/Zulko/moviepy/pull/577)
+- Fixed mono clips crashing when `audio_fadein` FX applied [\#1574](https://github.com/Zulko/moviepy/pull/1574)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
