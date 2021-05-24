@@ -139,7 +139,7 @@ jobs:
         run: |
           python -m pip install --upgrade wheel
           python -m pip install --upgrade setuptools
-          python -m pip install ".[test, optional, doc]"
+          python -m pip install ".[test, doc]"
           cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: PyTest
