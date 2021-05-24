@@ -1112,7 +1112,7 @@ def test_audio_normalize_muted():
 
 
 @pytest.mark.parametrize(
-    ("sound_type", "factor", "duration", "start", "end"),
+    ("sound_type", "factor", "duration", "start_time", "end_time"),
     (
         pytest.param(
             "stereo",
@@ -1188,7 +1188,13 @@ def test_audio_normalize_muted():
         ),
     ),
 )
-def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
+def test_multiply_volume_audioclip(
+    sound_type,
+    factor,
+    duration,
+    start_time,
+    end_time,
+):
     if sound_type == "stereo":
         make_frame = lambda t: np.array(
             [
@@ -1206,7 +1212,12 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
     )
     clip_array = clip.to_soundarray()
 
-    clip_transformed = multiply_volume(clip, factor, start=start, end=end)
+    clip_transformed = multiply_volume(
+        clip,
+        factor,
+        start_time=start_time,
+        end_time=end_time,
+    )
     clip_transformed_array = clip_transformed.to_soundarray()
 
     assert len(clip_transformed_array)
@@ -1216,18 +1227,20 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
         left_channel_transformed = clip_transformed_array[:, 0]
         right_channel_transformed = clip_transformed_array[:, 1]
 
-        if start is None and end is None:
+        if start_time is None and end_time is None:
             expected_left_channel_transformed = clip_array[:, 0] * factor
             expected_right_channel_transformed = clip_array[:, 1] * factor
         else:
-            start = convert_to_seconds(start) if start else clip.start
-            end = convert_to_seconds(end) if end else clip.duration
+            start_time = convert_to_seconds(start_time) if start_time else clip.start
+            end_time = convert_to_seconds(end_time) if end_time else clip.end
 
             expected_left_channel_transformed = np.array([])
             expected_right_channel_transformed = np.array([])
             for i, frame in enumerate(clip_array):
                 t = i / clip.fps
-                transformed_frame = frame * (factor if start <= t <= end else 1)
+                transformed_frame = frame * (
+                    factor if start_time <= t <= end_time else 1
+                )
                 expected_left_channel_transformed = np.append(
                     expected_left_channel_transformed,
                     transformed_frame[0],
@@ -1254,16 +1267,18 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
     else:
         # mono clip
 
-        if start is None and end is None:
+        if start_time is None and end_time is None:
             expected_clip_transformed_array = clip_array * factor
         else:
-            start = convert_to_seconds(start) if start else clip.start
-            end = convert_to_seconds(end) if end else clip.duration
+            start_time = convert_to_seconds(start_time) if start_time else clip.start
+            end_time = convert_to_seconds(end_time) if end_time else clip.end
 
             expected_clip_transformed_array = np.array([])
             for i, frame in enumerate(clip_array[0]):
                 t = i / clip.fps
-                transformed_frame = frame * (factor if start <= t <= end else 1)
+                transformed_frame = frame * (
+                    factor if start_time <= t <= end_time else 1
+                )
                 expected_clip_transformed_array = np.append(
                     expected_clip_transformed_array,
                     transformed_frame,
@@ -1283,13 +1298,13 @@ def test_multiply_volume_audioclip(sound_type, factor, duration, start, end):
 
 
 def test_multiply_volume_videoclip():
-    start, end = (0.1, 0.2)
+    start_time, end_time = (0.1, 0.2)
 
     clip = multiply_volume(
         VideoFileClip("media/chaplin.mp4").subclip(0, 0.3),
         0,
-        start=start,
-        end=end,
+        start_time=start_time,
+        end_time=end_time,
     )
     clip_soundarray = clip.audio.to_soundarray()
 
@@ -1299,7 +1314,7 @@ def test_multiply_volume_videoclip():
 
     for i, frame in enumerate(clip_soundarray):
         t = i / clip.audio.fps
-        if start <= t <= end:
+        if start_time <= t <= end_time:
             assert np.array_equal(frame, expected_silence)
         else:
             assert not np.array_equal(frame, expected_silence)
