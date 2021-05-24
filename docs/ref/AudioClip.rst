@@ -1,7 +1,7 @@
 .. ref_AudioClip:
 
 ************
-AudioClip
+Audio Clips
 ************
 
 :class:`AudioClip`

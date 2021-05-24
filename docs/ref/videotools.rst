@@ -1,7 +1,7 @@
 .. _ref_videotools:
 
 ************
-video.tools
+videotools
 ************
 
 This module regroups advanced, useful (and less useful) functions for editing videos, by alphabetical order.

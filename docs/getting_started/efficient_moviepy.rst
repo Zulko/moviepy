@@ -13,9 +13,13 @@ Should I use ``moviepy.editor``?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Older versions of MoviePy always recommended importing from ``moviepy.editor``. In v2.0 and above this is no longer recommended and you should generally import directly from ``moviepy`` (for example, ``from moviepy import VideoFileClip``).
+
 The module ``moviepy.editor`` should now only be loaded if you are using MoviePy to edit videos *by hand*. Importing it will:
+
 - Start a pygame session to enable ``clip.show()`` and ``clip.preview()`` if pygame is installed
+
 - Enable ``clip.ipython_display()`` if in an IPython Notebook
+
 - Enable ``sliders()`` if Matplotlib is installed
 
 .. _previewing:

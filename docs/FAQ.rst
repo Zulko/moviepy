@@ -15,7 +15,6 @@ don't work for you, please open a bug report on Github_, or on the dedicated for
 MoviePy generated a video that cannot be read by my favorite player.
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 Known reason: one of the video's dimensions were not even,
 for instance 720x405, and you used a MPEG4 codec like libx264 (default
 in MoviePy). In this case the video generated uses a format that is

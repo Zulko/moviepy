@@ -1,11 +1,11 @@
-.. _reference_manual:
+.. _api_reference:
 
 
-Reference Manual
-================
+API Reference
+=============
 
 The documentation may be a little messy for the moment, it will get better with time.
-If you want to hack into the code or locate a particular function, read :ref:`codeorganization` .
+If you want to edit the code or locate a particular function, read :ref:`codeorganization` .
 
 
 .. toctree::

@@ -1,9 +1,8 @@
-.. ref_audiofx:
+.. _ref_audiofx:
 
 ************
 audio.fx
 ************
-
 
 The module ``moviepy.audio.fx`` regroups functions meant to be used with ``audio.fx()``.
 Note that some of these functions such as ``multiply_volume`` (which multiplies the volume) can
@@ -33,7 +32,7 @@ When you type ::
 the module ``audio.fx`` is loaded as ``afx`` and you can use ``afx.multiply_volume``, etc.
 
 
-.. currentmodule:: moviepy.audio.fx.all
+.. currentmodule:: moviepy.audio.fx
 
 .. autosummary::
     :toctree: audiofx

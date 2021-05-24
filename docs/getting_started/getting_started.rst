@@ -5,7 +5,7 @@ Getting started with MoviePy
 ------------------------------
 
 
-These pages explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`gallery` and the :ref:`examples`.
+These pages explains everything you need to know to get started editing with MoviePy. To go further, have a look at the :ref:`gallery` and the :ref:`examples`.
 
 
 .. toctree::

@@ -7,27 +7,19 @@ Download and Installation
 Installation
 --------------
 
-**Method with pip:** if you have ``pip`` installed, just type this in a terminal
+**Method with pip (recommended):** if you have ``pip`` installed, just type this in a terminal:
 
 .. code:: bash
 
     $ (sudo) pip install moviepy
 
-If you have neither ``setuptools`` nor ``ez_setup`` installed the command above will fail. In this case type the following before installing:
-
-.. code:: bash
-
-    $ (sudo) pip install setuptools
-
-**Method by hand:** Download the sources, either on PyPI_ or (if you want the development version) on Github_, unzip everything in one folder, open a terminal and type
+**Method by hand:** Download the source files, either from PyPI_ or from Github_ (if you want the development version), open a terminal, navigate to the folder containing `setup.py`, and type:
 
 .. code:: bash
 
     $ (sudo) python setup.py install
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. It should work on Windows/macOS/Linux, with Python 3.6+. If you have trouble installing MoviePy or one of its dependencies, please provide feedback in a Github issue!
-
-MoviePy depends on the software FFMPEG for video reading and writing. You don't need to worry about that, as FFMPEG should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). If you want to use a specific version of FFMPEG, you can set the
+MoviePy depends on the software FFmpeg for video reading and writing. You don't need to worry about that, as FFmpeg should be automatically downloaded/installed by one of MoviePy's dependencies, imageio_. If you want to use a specific version of FFmpeg, you can set the
 `FFMPEG_BINARY` environment variable.
 
 
@@ -43,20 +35,20 @@ You can install ``moviepy`` with all dependencies via:
 
 ImageMagick_ is not strictly required, but needed if you want to use TextClips_. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables.
+Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables (see below).
 
-PyGame_ is needed for video and sound previews (useless you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
+PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
 
-For advanced image processing you will need one or several of these packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
+For advanced image processing you will need one or several of the following packages. For instance using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV are installed.
 
-- The Python Imaging Library (PIL) or, better, its branch Pillow_ .
+- Pillow_, the Python Imaging Library, .
 - Scipy_ is needed for tracking, segmenting, etc., and can be used for resizing video clips if PIL and OpenCV aren't installed on your computer.
 - `Scikit Image`_ may be needed for some advanced image manipulation.
 - `OpenCV`_ (provides the package ``cv2``) may be needed for some advanced image manipulation.
 
 If you are on Linux, these packages will likely be in your repos.
 
-For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, ImageMagick may not be detected by MoviePy. This bug can be fixed. Modify the file ``/etc/ImageMagick-6/policy.xml`` commenting out the statement::
+For Ubuntu 16.04LTS users, after installing MoviePy, ImageMagick may not be detected by MoviePy. This bug can be fixed by modifying the file ``/etc/ImageMagick-6/policy.xml`` commenting out the statement::
 
     <!-- <policy domain="path" rights="none" pattern="@*" /> -->
 
@@ -113,10 +105,6 @@ To test if FFmpeg and ImageMagick are found by MoviePy, in a Python console run:
     >>> from moviepy.config import check
     >>> check()
 
-.. _`Numpy`: https://www.scipy.org/install.html
-.. _decorator: https://pypi.python.org/pypi/decorator
-.. _proglog: https://pypi.org/project/proglog/
-
 .. _ffmpeg: https://www.ffmpeg.org/download.html
 
 .. _TextClips: https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html#textclip
@@ -128,9 +116,9 @@ To test if FFmpeg and ImageMagick are found by MoviePy, in a Python console run:
 .. _Pillow: https://pillow.readthedocs.org/en/latest/
 .. _Scipy: https://www.scipy.org/
 .. _`Scikit Image`: http://scikit-image.org/download.html
+.. _`OpenCV`: https://github.com/skvark/opencv-python
 
 .. _Github: https://github.com/Zulko/moviepy
 .. _PyPI: https://pypi.python.org/pypi/moviepy
-.. _`OpenCV`: https://github.com/skvark/opencv-python
 
 
