@@ -52,8 +52,8 @@ def margin(
 
     else:
 
-        def filter(gf, t):
-            pic = gf(t)
+        def filter(get_frame, t):
+            pic = get_frame(t)
             h, w = pic.shape[:2]
             im = make_bg(w, h)
             im[top : top + h, left : left + w] = pic

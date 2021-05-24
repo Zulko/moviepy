@@ -439,28 +439,110 @@ def test_make_loopable():
     close_all_clips(locals())
 
 
-def test_margin():
+@pytest.mark.parametrize(
+    (
+        "margin_size",
+        "margins",  # [left, right, top, bottom]
+        "color",
+        "expected_result",
+    ),
+    (
+        pytest.param(
+            None,
+            None,
+            None,
+            [["RRR", "RRR"], ["RRB", "RRB"]],
+            id="default arguments",
+        ),
+        pytest.param(
+            1,
+            None,
+            None,
+            [
+                ["OOOOO", "ORRRO", "ORRRO", "OOOOO"],
+                ["OOOOO", "ORRBO", "ORRBO", "OOOOO"],
+            ],
+            id="margin_size=1,color=(0, 0, 0)",
+        ),
+        pytest.param(
+            1,
+            None,
+            (0, 255, 0),
+            [
+                ["GGGGG", "GRRRG", "GRRRG", "GGGGG"],
+                ["GGGGG", "GRRBG", "GRRBG", "GGGGG"],
+            ],
+            id="margin_size=1,color=(0, 255, 0)",
+        ),
+        pytest.param(
+            None,
+            [1, 0, 0, 0],
+            (0, 255, 0),
+            [["GRRR", "GRRR"], ["GRRB", "GRRB"]],
+            id="left=1,color=(0, 255, 0)",
+        ),
+        pytest.param(
+            None,
+            [0, 1, 0, 0],
+            (0, 255, 0),
+            [["RRRG", "RRRG"], ["RRBG", "RRBG"]],
+            id="right=1,color=(0, 255, 0)",
+        ),
+        pytest.param(
+            None,
+            [1, 0, 1, 0],
+            (0, 255, 0),
+            [["GGGG", "GRRR", "GRRR"], ["GGGG", "GRRB", "GRRB"]],
+            id="left=1,top=1,color=(0, 255, 0)",
+        ),
+        pytest.param(
+            None,
+            [0, 1, 1, 1],
+            (0, 255, 0),
+            [["GGGG", "RRRG", "RRRG", "GGGG"], ["GGGG", "RRBG", "RRBG", "GGGG"]],
+            id="right=1,top=1,bottom=1,color=(0, 255, 0)",
+        ),
+        pytest.param(
+            None,
+            [3, 0, 0, 0],
+            (255, 255, 255),
+            [["WWWRRR", "WWWRRR"], ["WWWRRB", "WWWRRB"]],
+            id="left=3,color=(255, 255, 255)",
+        ),
+        pytest.param(
+            None,
+            [0, 0, 0, 4],
+            (255, 255, 255),
+            [
+                ["RRR", "RRR", "WWW", "WWW", "WWW", "WWW"],
+                ["RRB", "RRB", "WWW", "WWW", "WWW", "WWW"],
+            ],
+            id="bottom=4,color=(255, 255, 255)",
+        ),
+    ),
+)
+def test_margin(margin_size, margins, color, expected_result):
     clip = BitmapClip([["RRR", "RRR"], ["RRB", "RRB"]], fps=1)
 
-    # Make sure that the default values leave clip unchanged
-    clip1 = margin(clip)
-    assert clip == clip1
+    # if None, set default argument values
+    if color is None:
+        color = (0, 0, 0)
 
-    # 1 pixel black margin
-    clip2 = margin(clip, margin_size=1)
-    target = BitmapClip(
-        [["OOOOO", "ORRRO", "ORRRO", "OOOOO"], ["OOOOO", "ORRBO", "ORRBO", "OOOOO"]],
-        fps=1,
-    )
-    assert target == clip2
+    if margins is None:
+        margins = [0, 0, 0, 0]
+    left, right, top, bottom = margins
 
-    # 1 pixel green margin
-    clip3 = margin(clip, margin_size=1, color=(0, 255, 0))
-    target = BitmapClip(
-        [["GGGGG", "GRRRG", "GRRRG", "GGGGG"], ["GGGGG", "GRRBG", "GRRBG", "GGGGG"]],
-        fps=1,
+    new_clip = margin(
+        clip,
+        margin_size=margin_size,
+        left=left,
+        right=right,
+        top=top,
+        bottom=bottom,
+        color=color,
     )
-    assert target == clip3
+
+    assert new_clip == BitmapClip(expected_result, fps=1)
 
 
 @pytest.mark.parametrize("image_from", ("np.ndarray", "ImageClip"))
