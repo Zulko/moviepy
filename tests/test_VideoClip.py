@@ -72,7 +72,7 @@ def test_write_frame_errors_with_redirected_logs():
 
 
 def test_write_videofiles_with_temp_audiofile_path():
-    clip = get_test_video().subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "temp_audiofile_path.webm")
     temp_location = os.path.join(TMP_DIR, "temp_audiofile")
     if not os.path.exists(temp_location):
