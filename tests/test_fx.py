@@ -440,6 +440,11 @@ def test_make_loopable():
 
 
 @pytest.mark.parametrize(
+    ("ClipClass"),
+    (ColorClip, BitmapClip),
+    ids=("ColorClip", "BitmapClip"),
+)
+@pytest.mark.parametrize(
     (
         "margin_size",
         "margins",  # [left, right, top, bottom]
@@ -451,7 +456,7 @@ def test_make_loopable():
             None,
             None,
             None,
-            [["RRR", "RRR"], ["RRB", "RRB"]],
+            [["RRR", "RRR"], ["RRR", "RRR"]],
             id="default arguments",
         ),
         pytest.param(
@@ -460,7 +465,7 @@ def test_make_loopable():
             None,
             [
                 ["OOOOO", "ORRRO", "ORRRO", "OOOOO"],
-                ["OOOOO", "ORRBO", "ORRBO", "OOOOO"],
+                ["OOOOO", "ORRRO", "ORRRO", "OOOOO"],
             ],
             id="margin_size=1,color=(0, 0, 0)",
         ),
@@ -470,7 +475,7 @@ def test_make_loopable():
             (0, 255, 0),
             [
                 ["GGGGG", "GRRRG", "GRRRG", "GGGGG"],
-                ["GGGGG", "GRRBG", "GRRBG", "GGGGG"],
+                ["GGGGG", "GRRRG", "GRRRG", "GGGGG"],
             ],
             id="margin_size=1,color=(0, 255, 0)",
         ),
@@ -478,35 +483,35 @@ def test_make_loopable():
             None,
             [1, 0, 0, 0],
             (0, 255, 0),
-            [["GRRR", "GRRR"], ["GRRB", "GRRB"]],
+            [["GRRR", "GRRR"], ["GRRR", "GRRR"]],
             id="left=1,color=(0, 255, 0)",
         ),
         pytest.param(
             None,
             [0, 1, 0, 0],
             (0, 255, 0),
-            [["RRRG", "RRRG"], ["RRBG", "RRBG"]],
+            [["RRRG", "RRRG"], ["RRRG", "RRRG"]],
             id="right=1,color=(0, 255, 0)",
         ),
         pytest.param(
             None,
             [1, 0, 1, 0],
             (0, 255, 0),
-            [["GGGG", "GRRR", "GRRR"], ["GGGG", "GRRB", "GRRB"]],
+            [["GGGG", "GRRR", "GRRR"], ["GGGG", "GRRR", "GRRR"]],
             id="left=1,top=1,color=(0, 255, 0)",
         ),
         pytest.param(
             None,
             [0, 1, 1, 1],
             (0, 255, 0),
-            [["GGGG", "RRRG", "RRRG", "GGGG"], ["GGGG", "RRBG", "RRBG", "GGGG"]],
+            [["GGGG", "RRRG", "RRRG", "GGGG"], ["GGGG", "RRRG", "RRRG", "GGGG"]],
             id="right=1,top=1,bottom=1,color=(0, 255, 0)",
         ),
         pytest.param(
             None,
             [3, 0, 0, 0],
             (255, 255, 255),
-            [["WWWRRR", "WWWRRR"], ["WWWRRB", "WWWRRB"]],
+            [["WWWRRR", "WWWRRR"], ["WWWRRR", "WWWRRR"]],
             id="left=3,color=(255, 255, 255)",
         ),
         pytest.param(
@@ -515,14 +520,17 @@ def test_make_loopable():
             (255, 255, 255),
             [
                 ["RRR", "RRR", "WWW", "WWW", "WWW", "WWW"],
-                ["RRB", "RRB", "WWW", "WWW", "WWW", "WWW"],
+                ["RRR", "RRR", "WWW", "WWW", "WWW", "WWW"],
             ],
             id="bottom=4,color=(255, 255, 255)",
         ),
     ),
 )
-def test_margin(margin_size, margins, color, expected_result):
-    clip = BitmapClip([["RRR", "RRR"], ["RRB", "RRB"]], fps=1)
+def test_margin(ClipClass, margin_size, margins, color, expected_result):
+    if ClipClass is BitmapClip:
+        clip = BitmapClip([["RRR", "RRR"], ["RRR", "RRR"]], fps=1)
+    else:
+        clip = ColorClip(color=(255, 0, 0), size=(3, 2), duration=2).with_fps(1)
 
     # if None, set default argument values
     if color is None:
