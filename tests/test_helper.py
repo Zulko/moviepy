@@ -4,6 +4,8 @@ import functools
 import sys
 import tempfile
 
+import numpy as np
+
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
@@ -24,3 +26,21 @@ else:
 @functools.lru_cache(maxsize=None)
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+
+
+@functools.lru_cache(maxsize=None)
+def get_stereo_wave(left_freq=440, right_freq=220):
+    def make_stereo_frame(t):
+        return np.array(
+            [np.sin(left_freq * 2 * np.pi * t), np.sin(right_freq * 2 * np.pi * t)]
+        ).T.copy(order="C")
+
+    return make_stereo_frame
+
+
+@functools.lru_cache(maxsize=None)
+def get_mono_wave(freq=440):
+    def make_mono_frame(t):
+        return np.sin(freq * 2 * np.pi * t)
+
+    return make_mono_frame

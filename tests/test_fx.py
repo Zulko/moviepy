@@ -52,7 +52,7 @@ from moviepy.video.fx import (
     time_symmetrize,
 )
 
-from tests.test_helper import TMP_DIR, get_test_video
+from tests.test_helper import TMP_DIR, get_mono_wave, get_stereo_wave, get_test_video
 
 
 def test_accel_decel():
@@ -1473,13 +1473,12 @@ def test_audio_delay(duration, offset, n_repeats, decay):
     assert duration <= offset  # avoid wave distorsion
     assert not offset * 1000000 % 2  # odd offset -> no accurate muted chunk size
 
-    # stereo A note
-    make_frame = lambda t: np.array(
-        [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
-    ).T.copy(order="C")
-
     # stereo audio clip
-    clip = AudioClip(make_frame=make_frame, duration=duration, fps=44100)
+    clip = AudioClip(
+        make_frame=get_stereo_wave(left_freq=440, right_freq=880),
+        duration=duration,
+        fps=44100,
+    )
     clip_array = clip.to_soundarray()
 
     # stereo delayed clip
@@ -1547,11 +1546,9 @@ def test_audio_delay(duration, offset, n_repeats, decay):
 )
 def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
     if sound_type == "stereo":
-        make_frame = lambda t: np.array(
-            [np.sin(440 * 2 * np.pi * t), np.sin(160 * 2 * np.pi * t)]
-        ).T.copy(order="C")
+        make_frame = get_stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
+        make_frame = get_mono_wave(440)
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadein(clip, fadein_duration)
@@ -1608,11 +1605,9 @@ def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
 )
 def test_audio_fadeout(sound_type, fps, clip_duration, fadeout_duration):
     if sound_type == "stereo":
-        make_frame = lambda t: np.array(
-            [np.sin(440 * 2 * np.pi * t), np.sin(160 * 2 * np.pi * t)]
-        ).T.copy(order="C")
+        make_frame = get_stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
+        make_frame = get_mono_wave(440)
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadeout(clip, fadeout_duration)
