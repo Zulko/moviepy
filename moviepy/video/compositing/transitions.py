@@ -43,13 +43,13 @@ def slide_in(clip, duration, side):
     Parameters
     ----------
 
-    clip
+    clip : moviepy.Clip.Clip
       A video clip.
 
-    duration
+    duration : float
       Time taken for the clip to be fully visible
 
-    side
+    side : str
       Side of the screen where the clip comes from. One of
       'top' | 'bottom' | 'left' | 'right'
 
@@ -57,12 +57,18 @@ def slide_in(clip, duration, side):
     --------
 
     >>> from moviepy import *
+    >>>
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [CompositeVideoClip([
-                            clip.fx(transfx.slide_in, duration=1, side='left')])
-                        for clip in clips]
-    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
-
+    >>> slided_clips = [
+    ...     CompositeVideoClip([clip.fx(transfx.slide_in, 1, "left")])
+    ...     for clip in clips
+    ... ]
+    >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
+    >>>
+    >>> clip = ColorClip(
+    ...     color=(255, 0, 0), duration=1, size=(300, 300)
+    ... ).with_fps(60)
+    >>> final_clip = CompositeVideoClip([transfx.slide_in(clip, 1, "right")])
     """
     w, h = clip.size
     pos_dict = {
