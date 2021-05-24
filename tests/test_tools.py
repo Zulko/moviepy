@@ -66,10 +66,8 @@ def test_subprocess_call(command):
 def test_cross_platform_popen_params(os_name, monkeypatch):
     tools_module = importlib.import_module("moviepy.tools")
     monkeypatch.setattr(tools_module, "OS_NAME", os_name)
-    if os.name != "nt":
-        params = tools_module.cross_platform_popen_params({})
-    else:
-        params = tools_module.cross_platform_popen_params({})
+
+    params = tools_module.cross_platform_popen_params({})
     assert len(params) == (1 if os_name == "nt" else 0)
 
 
