@@ -3,8 +3,9 @@
 import os
 
 from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.credits import CreditsClip
-from moviepy.video.tools.cuts import detect_scenes
+from moviepy.video.tools.cuts import detect_scenes, find_video_period
 from moviepy.video.VideoClip import ColorClip
 
 from tests.test_helper import FONT, TMP_DIR
@@ -52,6 +53,13 @@ def test_detect_scenes():
     cuts, luminosities = detect_scenes(video, fps=10, logger=None)
 
     assert len(cuts) == 2
+
+
+def test_find_video_period():
+    clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.5).loop(2)  # fps=25
+
+    # you need to increase the fps to get correct results
+    assert round(find_video_period(clip, fps=70), 6) == 0.5
 
 
 if __name__ == "__main__":
