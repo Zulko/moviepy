@@ -1,7 +1,10 @@
 """Define general test helper attributes and utilities."""
 
+import functools
 import sys
 import tempfile
+
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
 PYTHON_VERSION = "%s.%s" % (sys.version_info.major, sys.version_info.minor)
@@ -16,3 +19,8 @@ else:
     FONT = (
         "Liberation-Mono"  # This is available in the fonts-liberation package on Linux
     )
+
+
+@functools.lru_cache(maxsize=None)
+def get_test_video():
+    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)

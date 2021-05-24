@@ -12,7 +12,7 @@ from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
 
-from tests.test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, get_test_video
 
 
 def test_aspect_ratio():
@@ -21,7 +21,7 @@ def test_aspect_ratio():
 
 
 def test_check_codec():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "not_a_video.mas")
     try:
         clip.write_videofile(location)
@@ -35,7 +35,7 @@ def test_check_codec():
 
 def test_write_frame_errors():
     """Checks error cases return helpful messages."""
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "unlogged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec")
@@ -54,7 +54,7 @@ def test_write_frame_errors_with_redirected_logs():
     """Checks error cases return helpful messages even when logs redirected.
     See https://github.com/Zulko/moviepy/issues/877
     """
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "logged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec", write_logfile=True)
@@ -85,7 +85,7 @@ def test_write_videofiles_with_temp_audiofile_path():
 
 
 def test_save_frame():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "save_frame.png")
     clip.save_frame(location, t=0.5)
     assert os.path.isfile(location)
@@ -93,7 +93,7 @@ def test_save_frame():
 
 
 def test_write_image_sequence():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     locations = clip.write_images_sequence(os.path.join(TMP_DIR, "frame%02d.png"))
     for location in locations:
         assert os.path.isfile(location)
@@ -101,7 +101,7 @@ def test_write_image_sequence():
 
 
 def test_write_gif_imageio():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.8)
+    clip = get_test_video().subclip(0.2, 0.8)
     location = os.path.join(TMP_DIR, "imageio_gif.gif")
     clip.write_gif(location, program="imageio")
     assert os.path.isfile(location)
@@ -109,7 +109,7 @@ def test_write_gif_imageio():
 
 
 def test_write_gif_ffmpeg():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    clip = get_test_video().subclip(0.2, 0.4)
     location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
     clip.write_gif(location, program="ffmpeg")
     assert os.path.isfile(location)
@@ -117,7 +117,7 @@ def test_write_gif_ffmpeg():
 
 
 def test_write_gif_ffmpeg_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    clip = get_test_video().subclip(0.2, 0.4)
     location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
     clip.write_gif(location, program="ffmpeg", pixel_format="bgr24")
     assert os.path.isfile(location)
@@ -125,7 +125,7 @@ def test_write_gif_ffmpeg_pixel_format():
 
 
 def test_write_gif_ffmpeg_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True)
     assert os.path.isfile(location)
@@ -133,7 +133,7 @@ def test_write_gif_ffmpeg_tmpfiles():
 
 
 def test_write_gif_ffmpeg_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
     assert os.path.isfile(location)
@@ -141,7 +141,7 @@ def test_write_gif_ffmpeg_tmpfiles_pixel_format():
 
 
 def test_write_gif_ImageMagick():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = get_test_video().subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "imagemagick_gif.gif")
     clip.write_gif(location, program="ImageMagick")
     close_all_clips(locals())
@@ -150,7 +150,7 @@ def test_write_gif_ImageMagick():
 
 
 def test_write_gif_ImageMagick_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True)
     assert os.path.isfile(location)
@@ -158,7 +158,7 @@ def test_write_gif_ImageMagick_tmpfiles():
 
 
 def test_write_gif_ImageMagick_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
     assert os.path.isfile(location)
@@ -220,7 +220,7 @@ def test_setaudio_with_audiofile():
 
 
 def test_setopacity():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     clip = clip.with_opacity(0.5)
     clip = clip.on_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)
     location = os.path.join(TMP_DIR, "setopacity.mp4")
@@ -259,7 +259,7 @@ def test_compositing_with_same_layers():
 
 
 def test_toimageclip():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     clip = clip.to_ImageClip(t=0.1, duration=0.4)
     location = os.path.join(TMP_DIR, "toimageclip.mp4")
     clip.write_videofile(location, fps=24)
@@ -268,14 +268,14 @@ def test_toimageclip():
 
 
 def test_withoutaudio():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     new_clip = clip.without_audio()
     assert new_clip.audio is None
     close_all_clips(locals())
 
 
 def test_setfps_withoutchangeduration():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    clip = get_test_video()
     # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
@@ -288,7 +288,7 @@ def test_setfps_withoutchangeduration():
 
 
 def test_setfps_withchangeduration():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    clip = get_test_video()
     # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
