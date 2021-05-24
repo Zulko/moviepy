@@ -2,11 +2,13 @@
 
 import os
 
+import numpy as np
 import pytest
 
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.compositing.transitions import slide_in
 from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
@@ -109,6 +111,64 @@ def test_blit_with_opacity():
     bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
     bt.expect_color_at(1.5, (0x00, 0x7F, 0x7F))
     bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
+
+
+def test_slide_in():
+    duration = 0.1
+    size = (10, 1)
+    fps = 10
+    color = (255, 0, 0)
+
+    # left and right sides
+    clip = ColorClip(
+        color=color,
+        duration=duration,
+        size=size,
+    ).with_fps(fps)
+
+    for side in ["left", "right"]:
+        new_clip = CompositeVideoClip([slide_in(clip, duration, side)])
+
+        for t in np.arange(0, duration, duration / fps):
+            n_reds, n_reds_expected = (0, int(t * 100))
+
+            if t:
+                assert n_reds_expected
+
+            if n_reds_expected == 7:  # skip 7 due to innacurate frame
+                continue
+
+            for r, g, b in new_clip.get_frame(t)[0]:
+                if r == color[0] and g == color[1] and g == color[2]:
+                    n_reds += 1
+
+            assert n_reds == n_reds_expected
+
+    # top and bottom sides
+    clip = ColorClip(
+        color=color,
+        duration=duration,
+        size=(size[1], size[0]),
+    ).with_fps(fps)
+
+    for side in ["top", "bottom"]:
+        new_clip = CompositeVideoClip([slide_in(clip, duration, side)])
+        for t in np.arange(0, duration, duration / fps):
+            n_reds, n_reds_expected = (0, int(t * 100))
+
+            if t:
+                assert n_reds_expected
+
+            if n_reds_expected == 7:  # skip 7 due to innacurate frame
+                continue
+
+            for row in new_clip.get_frame(t):
+                r, g, b = row[0]
+
+                if r == color[0] and g == color[1] and g == color[2]:
+                    n_reds += 1
+
+            assert n_reds == n_reds_expected
 
 
 if __name__ == "__main__":
