@@ -1,3 +1,5 @@
+"""SubtitlesClip tests."""
+
 import os
 
 import pytest

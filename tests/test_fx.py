@@ -52,11 +52,7 @@ from moviepy.video.fx import (
     time_symmetrize,
 )
 
-from tests.test_helper import TMP_DIR
-
-
-def get_test_video():
-    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+from tests.test_helper import TMP_DIR, get_test_video
 
 
 def test_accel_decel():
