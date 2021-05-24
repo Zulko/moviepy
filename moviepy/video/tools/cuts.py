@@ -4,17 +4,42 @@ from collections import defaultdict
 
 import numpy as np
 
-from moviepy.decorators import use_clip_fps_by_default
+from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
 
 
 @use_clip_fps_by_default
+@convert_parameter_to_seconds(["start_time"])
 def find_video_period(clip, fps=None, start_time=0.3):
-    """Finds the period of a video based on frames correlation."""
+    """Find the period of a video based on frames correlation.
+
+    Parameters
+    ----------
+
+    clip : moviepy.Clip.Clip
+      Clip for which the video period will be computed.
+
+    fps : int, optional
+      Number of frames per second used computing the period. Higher values will
+      produce more accurate periods, but the execution time will be longer.
+
+    start_time : float, optional
+      First timeframe used to calculate the period of the clip.
+
+    Examples
+    --------
+
+    >>> from moviepy.editor import *
+    >>> from moviepy.video.tools.cuts import find_video_period
+    >>>
+    >>> clip = VideoFileClip("media/chaplin.mp4").subclip(0, 1).loop(2)
+    >>> round(videotools.find_video_period(clip, fps=80), 6)
+    1
+    """
 
     def frame(t):
         return clip.get_frame(t).flatten()
 
-    timings = np.arange(start_time, clip.duration, 1.0 / fps)[1:]
+    timings = np.arange(start_time, clip.duration, 1 / fps)[1:]
     ref = frame(0)
     corrs = [np.corrcoef(ref, frame(t))[0, 1] for t in timings]
     return timings[np.argmax(corrs)]
