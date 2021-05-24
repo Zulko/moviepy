@@ -21,6 +21,6 @@ else:
     )
 
 
-@functools.lru_cache
+@functools.lru_cache(maxsize=None)
 def get_test_video():
     return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
