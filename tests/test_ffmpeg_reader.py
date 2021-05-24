@@ -17,7 +17,7 @@ from moviepy.video.io.ffmpeg_reader import (
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip
 
-from tests.test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, get_mono_wave
 
 
 def test_ffmpeg_parse_infos():
@@ -107,19 +107,8 @@ def test_ffmpeg_parse_infos_multiple_audio_streams():
         TMP_DIR, "ffmpeg_parse_infos_multiple_streams.mp4"
     )
 
-    make_frame_440 = lambda t: np.array(
-        [
-            np.sin(440 * 2 * np.pi * t),
-        ]
-    )
-    make_frame_880 = lambda t: np.array(
-        [
-            np.sin(880 * 2 * np.pi * t),
-        ]
-    )
-
-    clip_440 = AudioClip(make_frame_440, fps=22050, duration=0.01)
-    clip_880 = AudioClip(make_frame_880, fps=22050, duration=0.01)
+    clip_440 = AudioClip(get_mono_wave(440), fps=22050, duration=0.01)
+    clip_880 = AudioClip(get_mono_wave(880), fps=22050, duration=0.01)
     clip_440.write_audiofile(clip_440_filepath)
     clip_880.write_audiofile(clip_880_filepath)
 
@@ -177,9 +166,7 @@ def test_ffmpeg_parse_infos_metadata():
         os.remove(filepath)
 
     # create video with 2 streams, video and audio
-    audioclip = AudioClip(
-        lambda t: np.sin(440 * 2 * np.pi * t), fps=22050
-    ).with_duration(1)
+    audioclip = AudioClip(get_mono_wave(440), fps=22050).with_duration(1)
     videoclip = BitmapClip([["RGB"]], fps=1).with_duration(1).with_audio(audioclip)
 
     # build metadata key-value pairs which will be passed to ``ffmpeg_params``

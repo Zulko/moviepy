@@ -14,12 +14,11 @@ from moviepy.audio.AudioClip import (
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.utils import close_all_clips
 
-from tests.test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, get_mono_wave, get_stereo_wave
 
 
 def test_audioclip():
-    make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    audio = AudioClip(make_frame, duration=2, fps=22050)
+    audio = AudioClip(get_mono_wave(440), duration=2, fps=22050)
     audio.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"), bitrate="16")
 
     assert os.path.exists(os.path.join(TMP_DIR, "audioclip.mp3"))
@@ -58,11 +57,8 @@ def test_concatenate_audioclips_render():
     """Concatenated AudioClips through ``concatenate_audioclips`` should return
     a clip that can be rendered to a file.
     """
-    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    make_frame_880 = lambda t: [np.sin(880 * 2 * np.pi * t)]
-
-    clip_440 = AudioClip(make_frame_440, duration=0.01, fps=44100)
-    clip_880 = AudioClip(make_frame_880, duration=0.000001, fps=22050)
+    clip_440 = AudioClip(get_mono_wave(440), duration=0.01, fps=44100)
+    clip_880 = AudioClip(get_mono_wave(880), duration=0.000001, fps=22050)
 
     concat_clip = concatenate_audioclips((clip_440, clip_880))
     concat_clip.write_audiofile(os.path.join(TMP_DIR, "concatenate_audioclips.mp3"))
@@ -154,12 +150,11 @@ def test_CompositeAudioClip_by__init__():
 
 
 def test_concatenate_audioclip_with_audiofileclip():
-    # stereo A note
-    make_frame = lambda t: np.array(
-        [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
-    ).T
-
-    clip1 = AudioClip(make_frame, duration=1, fps=44100)
+    clip1 = AudioClip(
+        get_stereo_wave(left_freq=440, right_freq=880),
+        duration=1,
+        fps=44100,
+    )
     clip2 = AudioFileClip("media/crunching.mp3")
 
     concat_clip = concatenate_audioclips((clip1, clip2))
@@ -185,9 +180,7 @@ def test_concatenate_audiofileclips():
 
 
 def test_audioclip_mono_max_volume():
-    # mono
-    make_frame_440 = lambda t: np.sin(440 * 2 * np.pi * t)
-    clip = AudioClip(make_frame_440, duration=1, fps=44100)
+    clip = AudioClip(get_mono_wave(440), duration=1, fps=44100)
     max_volume = clip.max_volume()
     assert isinstance(max_volume, float)
     assert max_volume > 0
