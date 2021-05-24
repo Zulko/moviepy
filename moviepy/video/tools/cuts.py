@@ -15,7 +15,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Parameters
     ----------
 
-    clip : :py:class:`moviepy.Clip.Clip`
+    clip : moviepy.Clip.Clip
       Clip for which the video period will be computed.
 
     fps : int, optional
@@ -28,11 +28,11 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Examples
     --------
 
-    >>> from moviepy.video.io.VideoFileClip import VideoFileClip
+    >>> from moviepy.editor import *
     >>> from moviepy.video.tools.cuts import find_video_period
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4").subclip(0, 1).loop(2)
-    >>> round(find_video_period(clip, fps=80), 6)
+    >>> round(videotools.find_video_period(clip, fps=80), 6)
     1
     """
 
