@@ -132,6 +132,9 @@ def test_slide_in():
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, int(t * 100))
 
+            if t:
+                assert n_reds_expected
+
             if n_reds_expected == 7:  # skip 7 due to innacurate frame
                 continue
 
@@ -152,6 +155,9 @@ def test_slide_in():
         new_clip = CompositeVideoClip([slide_in(clip, duration, side)])
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, int(t * 100))
+
+            if t:
+                assert n_reds_expected
 
             if n_reds_expected == 7:  # skip 7 due to innacurate frame
                 continue
