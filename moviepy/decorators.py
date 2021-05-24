@@ -1,4 +1,5 @@
 """Decorators used by moviepy."""
+import inspect
 import os
 
 import decorator
@@ -81,9 +82,7 @@ def preprocess_args(fun, varnames):
     """Applies fun to variables in varnames before launching the function."""
 
     def wrapper(func, *args, **kwargs):
-        func_code = func.__code__
-
-        names = func_code.co_varnames
+        names = inspect.getfullargspec(func).args
         new_args = [
             fun(arg) if (name in varnames) and (arg is not None) else arg
             for (arg, name) in zip(args, names)
@@ -131,9 +130,7 @@ def use_clip_fps_by_default(func, clip, *args, **kwargs):
             " the clip's fps with `clip.fps=24`" % func.__name__
         )
 
-    func_code = func.__code__
-
-    names = func_code.co_varnames[1:]
+    names = inspect.getfullargspec(func).args[1:]
 
     new_args = [
         find_fps(arg) if (name == "fps") else arg for (arg, name) in zip(args, names)

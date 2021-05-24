@@ -5,12 +5,35 @@ import os
 import pytest
 
 from moviepy.utils import close_all_clips
-from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.fx.resize import resize
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
 from tests.test_helper import TMP_DIR
+
+
+class ClipPixelTest:
+    ALLOWABLE_COLOR_VARIATION = 3  # from 0-767: how much mismatch do we allow
+
+    def __init__(self, clip):
+        self.clip = clip
+
+    def expect_color_at(self, ts, expected, xy=[0, 0]):
+        frame = self.clip.make_frame(ts)
+        r, g, b = expected
+        actual = frame[xy[1]][xy[0]]
+        diff = abs(actual[0] - r) + abs(actual[1] - g) + abs(actual[2] - b)
+
+        mismatch = diff > ClipPixelTest.ALLOWABLE_COLOR_VARIATION
+        assert (
+            not mismatch
+        ), "Expected (%02x,%02x,%02x) but got (%02x,%02x,%02x) at timestamp %s" % (
+            *expected,
+            *actual,
+            ts,
+        )
 
 
 def test_clips_array():
@@ -67,3 +90,26 @@ def test_concatenate_floating_point():
     concat = concatenate_videoclips([clip])
     concat.write_videofile(os.path.join(TMP_DIR, "concat.mp4"), preset="ultrafast")
     close_all_clips(locals())
+
+
+def test_blit_with_opacity():
+    # bitmap.mp4 has one second R, one second G, one second B
+    clip1 = VideoFileClip("media/bitmap.mp4")
+    # overlay same clip, shifted by 1 second, at half opacity
+    clip2 = (
+        VideoFileClip("media/bitmap.mp4")
+        .subclip(1, 2)
+        .with_start(0)
+        .with_end(2)
+        .with_opacity(0.5)
+    )
+    composite = CompositeVideoClip([clip1, clip2])
+    bt = ClipPixelTest(composite)
+
+    bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
+    bt.expect_color_at(1.5, (0x00, 0x7F, 0x7F))
+    bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
+
+
+if __name__ == "__main__":
+    pytest.main()
