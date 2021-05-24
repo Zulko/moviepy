@@ -39,7 +39,6 @@ def audio_fadeout(clip, duration):
     >>> clip = VideoFileClip("media/chaplin.mp4")
     >>> clip.fx(audio_fadeout, "00:00:06")
     """
-
     get_factor = (
         _mono_factor_getter(clip.duration)
         if clip.nchannels == 1
