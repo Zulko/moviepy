@@ -51,7 +51,7 @@ def slide_in(clip, duration, side):
 
     side : str
       Side of the screen where the clip comes from. One of
-      'top' | 'bottom' | 'left' | 'right'
+      'top', 'bottom', 'left' or 'right'.
 
     Examples
     --------
@@ -91,26 +91,30 @@ def slide_out(clip, duration, side):
     Parameters
     ----------
 
-    clip
+    clip : moviepy.Clip.Clip
       A video clip.
 
-    duration
+    duration : float
       Time taken for the clip to fully disappear.
 
-    side
+    side : str
       Side of the screen where the clip goes. One of
-      'top' | 'bottom' | 'left' | 'right'
+      'top', 'bottom', 'left' or 'right'.
 
     Examples
     --------
 
-    >>> from moviepy import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [CompositeVideoClip([
-                            clip.fx(transfx.slide_out, duration=1, side='left')])
-                        for clip in clips]
-    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
-
+    >>> slided_clips = [
+    ...     CompositeVideoClip([clip.fx(transfx.slide_out, 1, "left")])
+    ...     for clip in clips
+    ... ]
+    >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
+    >>>
+    >>> clip = ColorClip(
+    ...     color=(255, 0, 0), duration=1, size=(300, 300)
+    ... ).with_fps(60)
+    >>> final_clip = CompositeVideoClip([transfx.slide_out(clip, 1, "right")])
     """
     w, h = clip.size
     ts = clip.duration - duration  # start time of the effect.
