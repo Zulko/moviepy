@@ -8,7 +8,7 @@ import pytest
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.compositing.transitions import slide_in
+from moviepy.video.compositing.transitions import slide_in, slide_out
 from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
@@ -161,6 +161,58 @@ def test_slide_in():
 
             if n_reds_expected == 7:  # skip 7 due to innacurate frame
                 continue
+
+            for row in new_clip.get_frame(t):
+                r, g, b = row[0]
+
+                if r == color[0] and g == color[1] and g == color[2]:
+                    n_reds += 1
+
+            assert n_reds == n_reds_expected
+
+
+def test_slide_out():
+    duration = 0.1
+    size = (11, 1)
+    fps = 10
+    color = (255, 0, 0)
+
+    # left and right sides
+    clip = ColorClip(
+        color=color,
+        duration=duration,
+        size=size,
+    ).with_fps(fps)
+
+    for side in ["left", "right"]:
+        new_clip = CompositeVideoClip([slide_out(clip, duration, side)])
+
+        for t in np.arange(0, duration, duration / fps):
+            n_reds, n_reds_expected = (0, round(11 - t * 100, 6))
+
+            if t:
+                assert n_reds_expected
+
+            for r, g, b in new_clip.get_frame(t)[0]:
+                if r == color[0] and g == color[1] and g == color[2]:
+                    n_reds += 1
+
+            assert n_reds == n_reds_expected
+
+    # top and bottom sides
+    clip = ColorClip(
+        color=color,
+        duration=duration,
+        size=(size[1], size[0]),
+    ).with_fps(fps)
+
+    for side in ["top", "bottom"]:
+        new_clip = CompositeVideoClip([slide_out(clip, duration, side)])
+        for t in np.arange(0, duration, duration / fps):
+            n_reds, n_reds_expected = (0, round(11 - t * 100, 6))
+
+            if t:
+                assert n_reds_expected
 
             for row in new_clip.get_frame(t):
                 r, g, b = row[0]
