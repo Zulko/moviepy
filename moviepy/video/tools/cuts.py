@@ -46,23 +46,22 @@ def find_video_period(clip, fps=None, start_time=0.3):
 
 
 class FramesMatch:
-    """
+    """Frames match inside a set of frames.
 
     Parameters
     ----------
 
-    start_time
-      Starting time
+    start_time : float
+      Starting time.
 
-    end_time
-      End time
+    end_time : float
+      End time.
 
-    min_distance
+    min_distance : float
       Lower bound on the distance between the first and last frames
 
-    max_distance
+    max_distance : float
       Upper bound on the distance between the first and last frames
-
     """
 
     def __init__(self, start_time, end_time, min_distance, max_distance):
@@ -72,8 +71,7 @@ class FramesMatch:
         self.max_distance = max_distance
         self.time_span = end_time - start_time
 
-    def __str__(self):
-
+    def __str__(self):  # pragma: no cover
         return "(%.04f, %.04f, %.04f, %.04f)" % (
             self.start_time,
             self.end_time,
@@ -81,22 +79,35 @@ class FramesMatch:
             self.max_distance,
         )
 
-    def __repr__(self):
-        return "(%.04f, %.04f, %.04f, %.04f)" % (
-            self.start_time,
-            self.end_time,
-            self.min_distance,
-            self.max_distance,
-        )
+    def __repr__(self):  # pragma: no cover
+        return self.__str__()
 
-    def __iter__(self):
+    def __iter__(self):  # pragma: no cover
         return iter(
             (self.start_time, self.end_time, self.min_distance, self.max_distance)
         )
 
+    def __eq__(self, other):
+        return (
+            other.start_time == self.start_time
+            and other.end_time == self.end_time
+            and other.min_distance == self.min_distance
+            and other.max_distance == self.max_distance
+        )
+
 
 class FramesMatches(list):
-    """TODO: needs documentation"""
+    """Frames matches inside a set of frames.
+
+    You can instanciate it passing a list of FramesMatch objects or
+    using the class methods ``load`` and ``from_clip``.
+
+    Parameters
+    ----------
+
+    lst : list
+      Iterable of FramesMatch objects.
+    """
 
     def __init__(self, lst):
         list.__init__(self, sorted(lst, key=lambda e: e.max_distance))
@@ -108,9 +119,15 @@ class FramesMatches(list):
         return self[0] if n == 1 else FramesMatches(self[:n])
 
     def filter(self, condition):
-        """Returns a FramesMatches object obtained by filtering out the FramesMatch
-        which do not satistify the condition ``condition``. ``condition``
-        is a function (FrameMatch -> bool).
+        """Return a FramesMatches object obtained by filtering out the
+        FramesMatch which do not satistify a condition.
+
+        Parameters
+        ----------
+
+        condition : func
+          Function which takes a FrameMatch object as parameter and returns a
+          bool.
 
         Examples
         --------
@@ -120,7 +137,14 @@ class FramesMatches(list):
         return FramesMatches(filter(condition, self))
 
     def save(self, filename):
-        """TODO: needs documentation"""
+        """Save a FramesMatches object to a file.
+
+        Parameters
+        ----------
+
+        filename : str
+          Path to the file in which will be dumped the FramesMatches object data.
+        """
         np.savetxt(
             filename,
             np.array([np.array(list(e)) for e in self]),
@@ -130,7 +154,13 @@ class FramesMatches(list):
 
     @staticmethod
     def load(filename):
-        """Loads a FramesMatches object from a file.
+        """Load a FramesMatches object from a file.
+
+        Parameters
+        ----------
+
+        filename : str
+          Path to the file to use loading a FramesMatches object.
 
         Examples
         --------
@@ -141,45 +171,49 @@ class FramesMatches(list):
         return FramesMatches(mfs)
 
     @staticmethod
-    def from_clip(clip, distance_threshold, max_duration, fps=None):
-        """Finds all the frames tht look alike in a clip, for instance to make a
-        looping gif.
-
-        This teturns a  FramesMatches object of the all pairs of frames with
-        (end_time-start_time < max_duration) and whose distance is under
-        distance_threshold.
-
-        This is well optimized routine and quite fast.
-
-        Examples
-        --------
-
-        We find all matching frames in a given video and turn the best match with
-        a duration of 1.5s or more into a GIF:
-
-        >>> from moviepy import VideoFileClip
-        >>> from moviepy.video.tools.cuts import FramesMatches
-        >>> clip = VideoFileClip("foo.mp4").resize(width=200)
-        >>> matches = FramesMatches.from_clip(clip, distance_threshold=10,
-        ...                                   max_duration=3)  # will take time
-        >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
-        >>> clip.subclip(best.start_time, best.end_time).write_gif("foo.gif")
+    def from_clip(clip, distance_threshold, max_duration, fps=None, logger="bar"):
+        """Finds all the frames that look alike in a clip, for instance to make
+        a looping GIF.
 
         Parameters
         ----------
 
-        clip
-          A MoviePy video clip, possibly transformed/resized
+        clip : moviepy.video.VideoClip.VideoClip
+          A MoviePy video clip.
 
-        distance_threshold
-          Distance above which a match is rejected
+        distance_threshold : float
+          Distance above which a match is rejected.
 
-        max_duration
-          Maximal duration (in seconds) between two matching frames
+        max_duration : float
+          Maximal duration (in seconds) between two matching frames.
 
-        fps
-          Frames per second (default will be clip.fps)
+        fps : int, optional
+          Frames per second (default will be ``clip.fps``).
 
+        logger : str, optional
+          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
+
+        Returns
+        -------
+
+        FramesMatches
+            All pairs of frames with ``end_time - start_time < max_duration``
+            and whose distance is under ``distance_threshold``.
+
+        Examples
+        --------
+
+        We find all matching frames in a given video and turn the best match
+        with a duration of 1.5 seconds or more into a GIF:
+
+        >>> from moviepy import VideoFileClip
+        >>> from moviepy.video.tools.cuts import FramesMatches
+        >>> clip = VideoFileClip("foo.mp4").resize(width=200)
+        >>> matches = FramesMatches.from_clip(
+        ...     clip, distance_threshold=10, max_duration=3,  # will take time
+        ... )
+        >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
+        >>> clip.subclip(best.start_time, best.end_time).write_gif("foo.gif")
         """
         N_pixels = clip.w * clip.h * 3
 
@@ -195,7 +229,7 @@ class FramesMatches(list):
 
         matching_frames = []  # the final result.
 
-        for (t, frame) in clip.iter_frames(with_times=True, logger="bar"):
+        for (t, frame) in clip.iter_frames(with_times=True, logger=logger):
 
             flat_frame = 1.0 * frame.flatten()
             F_norm_sq = dot_product(flat_frame, flat_frame)
@@ -362,7 +396,7 @@ def detect_scenes(
       between consecutive frames.
 
     logger
-      Either "bar" for progress bar or None or any Proglog logger.
+      Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
     fps
       Must be provided if you provide no clip or a clip without
