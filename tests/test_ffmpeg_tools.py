@@ -41,7 +41,10 @@ def test_ffmpeg_extract_subclip():
     assert 0.18 <= clip.duration <= 0.22  # not accurate
 
     if os.path.isdir(extract_subclip_tempdir):
-        shutil.rmtree(extract_subclip_tempdir)
+        try:
+            shutil.rmtree(extract_subclip_tempdir)
+        except PermissionError:
+            pass
 
 
 def test_ffmpeg_resize():
@@ -63,7 +66,10 @@ def test_ffmpeg_resize():
     assert clip.size[1] == expected_size[1]
 
     if os.path.isfile(outputfile):
-        os.remove(outputfile)
+        try:
+            os.remove(outputfile)
+        except PermissionError:
+            pass
 
 
 def test_ffmpeg_stabilize_video():
@@ -103,7 +109,10 @@ def test_ffmpeg_stabilize_video():
         )
 
     if os.path.isdir(stabilize_video_tempdir):
-        shutil.rmtree(stabilize_video_tempdir)
+        try:
+            shutil.rmtree(stabilize_video_tempdir)
+        except PermissionError:
+            pass
 
 
 if __name__ == "__main__":
