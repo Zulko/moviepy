@@ -121,7 +121,7 @@ def test_write_videofiles_with_temp_audiofile_path():
     (False, True),
     ids=("mask", ""),
 )
-@pytest.mark.parametrize("t", (0, "00:00:01", 2), ids=("t=0", "t=1", "t=2"))
+@pytest.mark.parametrize("t", (0, "00:00:01", (0, 0, 2)), ids=("t=0", "t=1", "t=2"))
 @pytest.mark.parametrize(
     "frames",
     (
