@@ -122,15 +122,29 @@ def test_write_videofiles_with_temp_audiofile_path():
     ids=("mask", ""),
 )
 @pytest.mark.parametrize("t", (0, "00:00:01", 2), ids=("t=0", "t=1", "t=2"))
-def test_save_frame(with_mask, t, mask_color):
+@pytest.mark.parametrize(
+    "frames",
+    (
+        pytest.param(
+            [["RR", "RR"], ["GG", "GG"], ["BB", "BB"]],
+            id="RGB 2x2",
+        ),
+        pytest.param(
+            [["O", "O"], ["W", "W"], ["B", "B"]],
+            id="OWB 2x1",
+        ),
+    ),
+)
+def test_save_frame(with_mask, t, mask_color, frames):
     filename = os.path.join(TMP_DIR, "moviepy_VideoClip_save_frame.png")
     if os.path.isfile(filename):
         os.remove(filename)
 
-    frames = [["RR", "RR"], ["GG", "GG"], ["BB", "BB"]]
+    width, height = (len(frames[0][0]), len(frames[0]))
+
     clip = BitmapClip(frames, fps=1)
     if with_mask:
-        mask = ColorClip(color=mask_color, is_mask=True, size=(2, 2))
+        mask = ColorClip(color=mask_color, is_mask=True, size=(width, height))
         clip = clip.with_mask(mask)
 
     clip.save_frame(filename, t)
@@ -141,11 +155,11 @@ def test_save_frame(with_mask, t, mask_color):
     e_r, e_g, e_b = BitmapClip.DEFAULT_COLOR_DICT[frames[t][0][0]]
 
     im = Image.open(filename, mode="r")
-    assert im.width == 2
-    assert im.height == 2
+    assert im.width == width
+    assert im.height == height
 
-    for i in [0, 1]:
-        for j in [0, 1]:
+    for i in range(im.width):
+        for j in range(im.height):
             rgba = im.getpixel((i, j))
             if len(rgba) == 4:
                 r, g, b, a = rgba
