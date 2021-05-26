@@ -87,7 +87,7 @@ optional_reqs = [
     "scikit-image",
     "scikit-learn",
     "scipy",
-    "matplotlib",
+    "matplotlib>=3,<3.4.2",
     "youtube_dl",
 ]
 
