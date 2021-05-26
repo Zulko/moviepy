@@ -266,8 +266,8 @@ class Clip:
         (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
         of the mask and audio, if any, of the returned clip.
 
-        If change_end is False, the start attribute of the clip will be modified
-        in function of the duration and the preset end of the clip.
+        If ``change_end is False``, the start attribute of the clip will be
+        modified in function of the duration and the preset end of the clip.
 
         Parameters
         ----------
@@ -297,7 +297,7 @@ class Clip:
         ----------
 
         make_frame : function
-          New frame creator function.
+          New frame creator function for the clip.
         """
         self.make_frame = make_frame
 
@@ -404,7 +404,7 @@ class Clip:
           For instance:
 
           >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.subclip(0,-2)
+          >>> new_clip = clip.subclip(0, -2)
 
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
@@ -430,11 +430,12 @@ class Clip:
         elif (end_time is not None) and (end_time < 0):
 
             if self.duration is None:
-
                 raise ValueError(
-                    "Error: subclip with negative times (here %s)"
+                    (
+                        "Subclip with negative times (here %s)"
+                        " can only be extracted from clips with a ``duration``"
+                    )
                     % (str((start_time, end_time)))
-                    + " can only be extracted from clips with a ``duration``"
                 )
 
             else:
@@ -490,9 +491,9 @@ class Clip:
         Returns each frame of the clip as a HxWxN Numpy array,
         where N=1 for mask clips and N=3 for RGB clips.
 
-        This function is not really meant for video editing.
-        It provides an easy way to do frame-by-frame treatment of
-        a video, for fields like science, computer vision...
+        This function is not really meant for video editing. It provides an
+        easy way to do frame-by-frame treatment of a video, for fields like
+        science, computer vision...
 
         Parameters
         ----------
