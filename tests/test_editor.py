@@ -41,7 +41,7 @@ def test_preview_methods():
                 del sys.modules["moviepy.editor"]
 
         try:
-            importlib.import_module("matplotlib")
+            importlib.import_module("matplotlib.pyplot")
         except ImportError:
             editor_module = importlib.import_module("moviepy.editor")
             with pytest.raises(ImportError) as exc:
@@ -51,7 +51,7 @@ def test_preview_methods():
 
             del sys.modules["moviepy.editor"]
         else:
-            del sys.modules["matplotlib"]
+            del sys.modules["matplotlib.pyplot"]
 
     del sys.modules["moviepy"]
 

@@ -17,9 +17,11 @@ from tests.test_helper import TMP_DIR
 
 
 try:
-    import matplotlib
+    import matplotlib.pyplot
 except ImportError:
     matplotlib = None
+else:
+    matplotlib = True
 
 
 def test_issue_145():
