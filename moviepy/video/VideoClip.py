@@ -164,9 +164,9 @@ class VideoClip(Clip):
     def save_frame(self, filename, t=0, with_mask=True):
         """Save a clip's frame to an image file.
 
-        Saves in a file the frame of clip corresponding to time ``t`` in
-        ``filename``. ``t`` can be expressed in seconds (15.35), in
-        (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
+        Saves the frame of clip corresponding to time ``t`` in ``filename``.
+        ``t`` can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
 
         Parameters
         ----------
