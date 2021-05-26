@@ -19,7 +19,7 @@ except ImportError:
 def test_matplotlib_simple_example():
     import matplotlib.pyplot as plt
 
-    plt.switch_backend("agg")
+    plt.switch_backend("Agg")
 
     x = np.linspace(-2, 2, 200)
     duration = 0.5
