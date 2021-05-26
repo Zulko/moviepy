@@ -164,12 +164,23 @@ class VideoClip(Clip):
     def save_frame(self, filename, t=0, with_mask=True):
         """Save a clip's frame to an image file.
 
-        Saves the frame of clip corresponding to time ``t`` in
-        'filename'. ``t`` can be expressed in seconds (15.35), in
-        (min, sec), in (hour, min, sec), or as a string: '01:03:05.35'.
+        Saves the frame of clip corresponding to time ``t`` in ``filename``.
+        ``t`` can be expressed in seconds (15.35), in (min, sec),
+        in (hour, min, sec), or as a string: '01:03:05.35'.
 
-        If ``with_mask`` is ``True`` the mask is saved in
-        the alpha layer of the picture (only works with PNGs).
+        Parameters
+        ----------
+
+        filename : str
+          Name of the file in which the frame will be stored.
+
+        t : float or tuple or str, optional
+          Moment of the frame to be saved. As default, the first frame will be
+          saved.
+
+        with_mask : bool, optional
+          If is ``True`` the mask is saved in the alpha layer of the picture
+          (only works with PNGs).
         """
         im = self.get_frame(t)
         if with_mask and self.mask is not None:

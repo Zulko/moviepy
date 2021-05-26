@@ -3,21 +3,52 @@ import os
 
 import numpy as np
 import pytest
+from PIL import Image
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
 
-from tests.test_helper import TMP_DIR, get_test_video
+from tests.test_helper import TMP_DIR, get_stereo_wave, get_test_video
 
 
 def test_aspect_ratio():
     clip = BitmapClip([["AAA", "BBB"]], fps=1)
     assert clip.aspect_ratio == 1.5
+
+
+@pytest.mark.parametrize(
+    ("duration", "fps", "expected_n_frames"),
+    (
+        (1, 60, 60),
+        (0.1, 100, 10),
+        (2.4, 60, 144),
+    ),
+)
+def test_n_frames(duration, fps, expected_n_frames):
+    clip = VideoClip(duration=duration).with_fps(fps)
+    assert clip.n_frames == expected_n_frames
+
+
+def test_with_audio():
+    clip = VideoClip(duration=1).with_fps(1)
+    assert clip.audio is None
+
+    audio_clip = AudioClip(get_stereo_wave(), duration=1, fps=22050)
+    assert clip.with_audio(audio_clip).audio is audio_clip
+
+
+def test_without_audio():
+    audio_clip = AudioClip(get_stereo_wave(), duration=1, fps=22050)
+    clip = VideoClip(duration=1).with_fps(1).with_audio(audio_clip)
+
+    assert clip.audio is audio_clip
+    assert clip.without_audio().audio is None
 
 
 def test_check_codec():
@@ -84,12 +115,63 @@ def test_write_videofiles_with_temp_audiofile_path():
     close_all_clips(locals())
 
 
-def test_save_frame():
-    clip = get_test_video()
-    location = os.path.join(TMP_DIR, "save_frame.png")
-    clip.save_frame(location, t=0.5)
-    assert os.path.isfile(location)
-    close_all_clips(locals())
+@pytest.mark.parametrize("mask_color", (0, 0.5, 0.8, 1))
+@pytest.mark.parametrize(
+    "with_mask",
+    (False, True),
+    ids=("mask", ""),
+)
+@pytest.mark.parametrize("t", (0, "00:00:01", (0, 0, 2)), ids=("t=0", "t=1", "t=2"))
+@pytest.mark.parametrize(
+    "frames",
+    (
+        pytest.param(
+            [["RR", "RR"], ["GG", "GG"], ["BB", "BB"]],
+            id="RGB 2x2",
+        ),
+        pytest.param(
+            [["O", "O"], ["W", "W"], ["B", "B"]],
+            id="OWB 2x1",
+        ),
+    ),
+)
+def test_save_frame(with_mask, t, mask_color, frames):
+    filename = os.path.join(TMP_DIR, "moviepy_VideoClip_save_frame.png")
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    width, height = (len(frames[0][0]), len(frames[0]))
+
+    clip = BitmapClip(frames, fps=1)
+    if with_mask:
+        mask = ColorClip(color=mask_color, is_mask=True, size=(width, height))
+        clip = clip.with_mask(mask)
+
+    clip.save_frame(filename, t)
+
+    t = int(convert_to_seconds(t))
+
+    # expected RGB
+    e_r, e_g, e_b = BitmapClip.DEFAULT_COLOR_DICT[frames[t][0][0]]
+
+    im = Image.open(filename, mode="r")
+    assert im.width == width
+    assert im.height == height
+
+    for i in range(im.width):
+        for j in range(im.height):
+            rgba = im.getpixel((i, j))
+            if len(rgba) == 4:
+                r, g, b, a = rgba
+            else:
+                r, g, b = rgba
+
+            assert r == e_r
+            assert g == e_g
+            assert b == e_b
+
+            if with_mask:
+                assert round(a / 254, 2) == mask_color
 
 
 def test_write_image_sequence():
