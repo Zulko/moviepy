@@ -356,7 +356,7 @@ class Clip:
         of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
         array, returns False if none of the ``t`` is in the clip, else returns a
-        vector [b_1, b_2, b_3...] where b_i is true iff tti is in the clip.
+        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
         """
         if isinstance(t, np.ndarray):
             # is the whole list of t outside the clip ?
