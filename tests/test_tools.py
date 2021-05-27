@@ -105,7 +105,7 @@ def test_deprecated_version_of(old_name):
         ("foobarbazimpossiblecode", OSError),
     ),
 )
-def test_downloader(url, expected_result):
+def test_download_webfile(url, expected_result):
     filename = os.path.join(TMP_DIR, "moviepy_downloader_test.mp4")
     if os.path.isfile(filename):
         os.remove(filename)
