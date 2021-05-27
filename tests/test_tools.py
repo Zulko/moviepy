@@ -71,5 +71,25 @@ def test_cross_platform_popen_params(os_name, monkeypatch):
     assert len(params) == (1 if os_name == "nt" else 0)
 
 
+@pytest.mark.parametrize("old_name", ("bar", "foo"))
+def test_deprecated_version_of(old_name):
+    def to_file(*args, **kwargs):
+        return
+
+    func = tools.deprecated_version_of(to_file, old_name)
+
+    expected_warning_message = (
+        f"MoviePy: The function ``{old_name}`` is deprecated and is kept"
+        " temporarily for backwards compatibility.\nPlease use the new name"
+        f", ``{to_file.__name__}``, instead."
+    )
+
+    with pytest.warns(PendingDeprecationWarning) as record:
+        func(1, b=2)
+
+    assert len(record) == 1
+    assert record[0].message.args[0] == expected_warning_message
+
+
 if __name__ == "__main__":
     pytest.main()

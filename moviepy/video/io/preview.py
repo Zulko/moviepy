@@ -4,8 +4,11 @@ import time
 import numpy as np
 import pygame as pg
 
-from moviepy.decorators import convert_masks_to_RGB, requires_duration
-from moviepy.tools import convert_to_seconds
+from moviepy.decorators import (
+    convert_masks_to_RGB,
+    convert_parameter_to_seconds,
+    requires_duration,
+)
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 
@@ -23,6 +26,7 @@ def imdisplay(imarray, screen=None):
 
 
 @convert_masks_to_RGB
+@convert_parameter_to_seconds(["t"])
 def show(clip, t=0, with_mask=True, interactive=False):
     """
     Splashes the frame of clip corresponding to time ``t``.
@@ -30,17 +34,25 @@ def show(clip, t=0, with_mask=True, interactive=False):
     Parameters
     ----------
 
-    t
+    t : float or tuple or str, optional
       Time in seconds of the frame to display.
 
-    with_mask
-      ``False`` if the clip has a mask but you want to see the clip
-      without the mask.
+    with_mask : bool, optional
+      ``False`` if the clip has a mask but you want to see the clip without
+      the mask.
 
+    interactive : bool, optional
+      Displays the image freezed and you can clip in each pixel to see the
+      pixel number and its color.
+
+    Examples
+    --------
+
+    >>> from moviepy.editor import *
+    >>>
+    >>> clip = VideoFileClip("media/chaplin.mp4")
+    >>> clip.show(t=4, interactive=True)
     """
-    if isinstance(t, tuple):
-        t = convert_to_seconds(*t)
-
     if with_mask and (clip.mask is not None):
         clip = CompositeVideoClip([clip.with_position((0, 0))])
 
@@ -75,28 +87,40 @@ def preview(
     fullscreen=False,
 ):
     """
-    Displays the clip in a window, at the given frames per second
-    (of movie) rate. It will avoid that the clip be played faster
-    than normal, but it cannot avoid the clip to be played slower
-    than normal if the computations are complex. In this case, try
-    reducing the ``fps``.
+    Displays the clip in a window, at the given frames per second (of movie)
+    rate. It will avoid that the clip be played faster than normal, but it
+    cannot avoid the clip to be played slower than normal if the computations
+    are complex. In this case, try reducing the ``fps``.
 
     Parameters
     ----------
 
-    fps
+    fps : int, optional
       Number of frames per seconds in the displayed video.
 
-    audio
+    audio : bool, optional
       ``True`` (default) if you want the clip's audio be played during
       the preview.
 
-    audio_fps
+    audio_fps : int, optional
       The frames per second to use when generating the audio sound.
 
-    fullscreen
+    audio_buffersize : int, optional
+      The sized of the buffer used generating the audio sound.
+
+    audio_nbytes : int, optional
+      The number of bytes used generating the audio sound.
+
+    fullscreen : bool, optional
       ``True`` if you want the preview to be displayed fullscreen.
 
+    Examples
+    --------
+
+    >>> from moviepy.editor import *
+    >>>
+    >>> clip = VideoFileClip("media/chaplin.mp4")
+    >>> clip.preview(fps=10, audio=False)
     """
     if fullscreen:
         flags = pg.FULLSCREEN
