@@ -52,5 +52,5 @@ def download_webfile(url, filename, overwrite=False):
                     " youtube-dl is not installed on your computer. Install it "
                     " with 'pip install youtube_dl'."
                 )
-                % ((e.message + "\n" if hasattr(e, "message") else ""),)
+                % ((e.message + "\n" if hasattr(e, "message") else ""))
             )

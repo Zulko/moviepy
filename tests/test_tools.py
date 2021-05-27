@@ -110,7 +110,7 @@ def test_downloader(url, expected_result):
     if os.path.isfile(filename):
         os.remove(filename)
 
-    if hasattr(expected_result, "__traceback__"):
+    if hasattr(expected_result, "__traceback__") or len(url) == 11:
         if not shutil.which("youtube-dl"):
             with pytest.raises(expected_result):
                 download_webfile(url, filename)
