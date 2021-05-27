@@ -4,7 +4,6 @@ import os
 
 import pytest
 
-from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
@@ -45,13 +44,16 @@ def test_subtitles():
 
     subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
-    final.write_videofile(os.path.join(TMP_DIR, "subtitles.mp4"), fps=30)
+    final.subclip(0, 0.5).write_videofile(
+        os.path.join(TMP_DIR, "subtitles.mp4"),
+        fps=5,
+        logger=None,
+    )
 
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
 
     subtitles = SubtitlesClip(MEDIA_SUBTITLES_DATA, generator)
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
-    close_all_clips(locals())
 
 
 def test_file_to_subtitles():
