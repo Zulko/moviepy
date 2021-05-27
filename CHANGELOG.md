@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed <!-- for now removed features -->
 - `VideoFileClip.coreader` and `AudioFileClip.coreader` methods removed. Use `VideoFileClip.copy` and `AudioFileClip.copy` instead [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 - `audio.fx.audio_loop` removed. Use `video.fx.loop` instead for all types of clip [\#1451](https://github.com/Zulko/moviepy/pull/1451)
+- `video.compositing.on_color` removed. Use `VideoClip.on_color` instead [\#1456](https://github.com/Zulko/moviepy/pull/1456)
 
 ### Fixed <!-- for any bug fixes -->
 - Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [\#1333](https://github.com/Zulko/moviepy/pull/1333)

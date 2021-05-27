@@ -751,7 +751,6 @@ class VideoClip(Clip):
             size = self.size
         if pos is None:
             pos = "center"
-        colorclip = ColorClip(size, color=color)
 
         if col_opacity is not None:
             colorclip = ColorClip(
