@@ -114,15 +114,15 @@ def test_downloader(url, expected_result):
         if not shutil.which("youtube-dl"):
             with pytest.raises(expected_result):
                 download_webfile(url, filename)
-        else:
-            if len(url) != 11:
-                with pytest.raises(OSError) as exc:
-                    download_webfile(url, filename)
-                assert "Error running youtube-dl." in str(exc.value)
-                assert not os.path.isfile(filename)
-            else:
+            assert not os.path.isfile(filename)
+        elif len(url) != 11:
+            with pytest.raises(OSError) as exc:
                 download_webfile(url, filename)
-                assert os.path.isfile(filename)
+            assert "Error running youtube-dl." in str(exc.value)
+            assert not os.path.isfile(filename)
+        else:
+            download_webfile(url, filename)
+            assert os.path.isfile(filename)
     else:
         # network files
         with static_files_server():
