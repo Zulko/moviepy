@@ -30,7 +30,7 @@ def close_all_clips(objects="globals", types=("audio", "video", "image")):
       Set of types of clips to close, being "audio", "video" or "image" the supported
       values.
     """
-    if objects == "globals":
+    if objects == "globals":  # pragma: no cover
         objects = globals()
     if hasattr(objects, "values"):
         objects = objects.values()

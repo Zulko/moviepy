@@ -168,5 +168,5 @@ class VideoFileClip(VideoClip):
             if self.audio:
                 self.audio.close()
                 self.audio = None
-        except AttributeError:
+        except AttributeError:  # pragma: no cover
             pass
