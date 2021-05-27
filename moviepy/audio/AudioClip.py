@@ -1,3 +1,4 @@
+import numbers
 import os
 
 import numpy as np
@@ -22,7 +23,7 @@ class AudioClip(Clip):
     sound back into the bounds at conversion time, without much impact).
 
     Parameters
-    -----------
+    ----------
 
     make_frame
       A function `t-> frame at time t`. The frame does not mean much
@@ -37,12 +38,20 @@ class AudioClip(Clip):
       Number of channels (one or two for mono or stereo).
 
     Examples
-    ---------
+    --------
 
-    >>> # Plays the note A (a sine wave of frequency 440HZ)
+    >>> # Plays the note A in mono (a sine wave of frequency 440 Hz)
     >>> import numpy as np
     >>> make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
     >>> clip = AudioClip(make_frame, duration=5, fps=44100)
+    >>> clip.preview()
+
+    >>> # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
+    >>> make_frame = lambda t: np.array([
+    ...     np.sin(440 * 2 * np.pi * t),
+    ...     np.sin(880 * 2 * np.pi * t)
+    ... ]).T.copy(order="C")
+    >>> clip = AudioClip(make_frame, duration=3, fps=44100)
     >>> clip.preview()
 
     """
@@ -104,7 +113,7 @@ class AudioClip(Clip):
         or written in a wav file. See ``AudioClip.preview``.
 
         Parameters
-        ------------
+        ----------
 
         fps
           Frame rate of the sound for the conversion.
@@ -115,13 +124,13 @@ class AudioClip(Clip):
           2 for 16bit, 4 for 32bit sound.
 
         """
-        if fps is None:
-            fps = self.fps
-
-        stacker = np.vstack if self.nchannels == 2 else np.hstack
-        max_duration = 1.0 * buffersize / fps
         if tt is None:
+            if fps is None:
+                fps = self.fps
+
+            max_duration = 1 * buffersize / fps
             if self.duration > max_duration:
+                stacker = np.vstack if self.nchannels == 2 else np.hstack
                 return stacker(
                     tuple(
                         self.iter_chunks(
@@ -149,17 +158,17 @@ class AudioClip(Clip):
         return snd_array
 
     def max_volume(self, stereo=False, chunksize=50000, logger=None):
+        """Returns the maximum volume level of the clip."""
+        # max volume separated by channels if ``stereo`` and not mono
+        stereo = stereo and self.nchannels > 1
 
-        stereo = stereo and (self.nchannels == 2)
-
-        maxi = np.array([0, 0]) if stereo else 0
+        # zero for each channel
+        maxi = np.zeros(self.nchannels)
         for chunk in self.iter_chunks(chunksize=chunksize, logger=logger):
-            maxi = (
-                np.maximum(maxi, abs(chunk).max(axis=0))
-                if stereo
-                else max(maxi, abs(chunk).max())
-            )
-        return maxi
+            maxi = np.maximum(maxi, abs(chunk).max(axis=0))
+
+        # if mono returns float, otherwise array of volumes by channel
+        return maxi if stereo else maxi[0]
 
     @requires_duration
     @convert_path_to_string("filename")
@@ -179,7 +188,7 @@ class AudioClip(Clip):
 
 
         Parameters
-        -----------
+        ----------
 
         filename
           Name of the output file, as a string or a path-like object.
@@ -251,7 +260,7 @@ class AudioArrayClip(AudioClip):
     An audio clip made from a sound array.
 
     Parameters
-    -----------
+    ----------
 
     array
       A Numpy array representing the sound, of size Nx1 for mono,
@@ -271,9 +280,9 @@ class AudioArrayClip(AudioClip):
         self.duration = 1.0 * len(array) / fps
 
         def make_frame(t):
-            """complicated, but must be able to handle the case where t
-            is a list of the form sin(t)"""
-
+            """Complicated, but must be able to handle the case where t
+            is a list of the form sin(t).
+            """
             if isinstance(t, np.ndarray):
                 array_inds = np.round(self.fps * t).astype(int)
                 in_array = (array_inds >= 0) & (array_inds < len(self.array))
@@ -297,57 +306,74 @@ class CompositeAudioClip(AudioClip):
     An audio clip made by putting together several audio clips.
 
     Parameters
-    ------------
+    ----------
 
     clips
       List of audio clips, which may start playing at different times or
-      together. If all have their ``duration`` attribute set, the
-      duration of the composite clip is computed automatically.
-
+      together, depends on their ``start`` attributes. If all have their
+      ``duration`` attribute set, the duration of the composite clip is
+      computed automatically.
     """
 
     def __init__(self, clips):
-
-        Clip.__init__(self)
         self.clips = clips
+        self.nchannels = max(clip.nchannels for clip in self.clips)
 
-        ends = [clip.end for clip in self.clips]
-        self.nchannels = max([clip.nchannels for clip in self.clips])
-        if not any([(end is None) for end in ends]):
-            self.duration = max(ends)
-            self.end = max(ends)
+        # self.duration is setted at AudioClip
+        duration = None
+        for end in self.ends:
+            if end is None:
+                break
+            duration = max(end, duration or 0)
 
-        def make_frame(t):
+        # self.fps is setted at AudioClip
+        fps = None
+        for clip in self.clips:
+            if hasattr(clip, "fps") and isinstance(clip.fps, numbers.Number):
+                fps = max(clip.fps, fps or 0)
 
-            played_parts = [clip.is_playing(t) for clip in self.clips]
+        super().__init__(duration=duration, fps=fps)
 
-            sounds = [
-                clip.get_frame(t - clip.start) * np.array([part]).T
-                for clip, part in zip(self.clips, played_parts)
-                if (part is not False)
-            ]
+    @property
+    def starts(self):
+        """Returns starting times for all clips in the composition."""
+        return (clip.start for clip in self.clips)
 
-            if isinstance(t, np.ndarray):
-                zero = np.zeros((len(t), self.nchannels))
+    @property
+    def ends(self):
+        """Returns ending times for all clips in the composition."""
+        return (clip.end for clip in self.clips)
 
-            else:
-                zero = np.zeros(self.nchannels)
+    def make_frame(self, t):
+        """Renders a frame for the composition for the time ``t``."""
+        played_parts = [clip.is_playing(t) for clip in self.clips]
 
-            return zero + sum(sounds)
+        sounds = [
+            clip.get_frame(t - clip.start) * np.array([part]).T
+            for clip, part in zip(self.clips, played_parts)
+            if (part is not False)
+        ]
 
-        self.make_frame = make_frame
+        if isinstance(t, np.ndarray):
+            zero = np.zeros((len(t), self.nchannels))
+        else:
+            zero = np.zeros(self.nchannels)
+
+        return zero + sum(sounds)
 
 
 def concatenate_audioclips(clips):
-    """
-    The clip with the highest FPS will be the FPS of the result clip.
-    """
-    durations = [clip.duration for clip in clips]
-    timings = np.cumsum([0] + durations)  # start times, and end time.
-    newclips = [clip.with_start(t) for clip, t in zip(clips, timings)]
+    """Concatenates one AudioClip after another, in the order that are passed
+    to ``clips`` parameter.
 
-    result = CompositeAudioClip(newclips).with_duration(timings[-1])
+    Parameters
+    ----------
 
-    fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
-    result.fps = max(fpss) if fpss else None
-    return result
+    clips
+      List of audio clips, which will be played one after other.
+    """
+    # start, end/start2, end2/start3... end
+    starts_end = np.cumsum([0, *[clip.duration for clip in clips]])
+    newclips = [clip.with_start(t) for clip, t in zip(clips, starts_end[:-1])]
+
+    return CompositeAudioClip(newclips).with_duration(starts_end[-1])

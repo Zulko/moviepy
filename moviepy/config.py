@@ -1,13 +1,15 @@
 import os
-from pathlib import Path
 import subprocess as sp
+from pathlib import Path
+
+from moviepy.tools import cross_platform_popen_params
 
 
 if os.name == "nt":
     import winreg as wr
 
 try:
-    from dotenv import load_dotenv, find_dotenv
+    from dotenv import find_dotenv, load_dotenv
 
     DOTENV = find_dotenv()
     load_dotenv(DOTENV)
@@ -19,14 +21,11 @@ IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
 
 
 def try_cmd(cmd):
+    """TODO: add documentation"""
     try:
-        popen_params = {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
-
-        # This was added so that no extra unwanted window opens on windows
-        # when the child process is created
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
-
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
+        )
         proc = sp.Popen(cmd, **popen_params)
         proc.communicate()
     except Exception as err:
@@ -97,6 +96,7 @@ else:
 
 
 def check():
+    """TODO: add documentation"""
     if try_cmd([FFMPEG_BINARY])[0]:
         print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
     else:

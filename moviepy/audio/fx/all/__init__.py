@@ -8,4 +8,5 @@ import warnings
 
 from .. import *  # noqa 401,F403
 
+
 warnings.warn(f"\nMoviePy: {__doc__}", UserWarning)

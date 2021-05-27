@@ -5,9 +5,7 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
-
     """
-
     A video clip originating from a movie file. For instance: ::
 
         >>> clip = VideoFileClip("myHolidays.mp4")
@@ -17,7 +15,7 @@ class VideoFileClip(VideoClip):
 
 
     Parameters
-    ------------
+    ----------
 
     filename:
       The name of the video file, as a string or a path-like object.
@@ -58,7 +56,7 @@ class VideoFileClip(VideoClip):
 
 
     Attributes
-    -----------
+    ----------
 
     filename:
       Name of the original video file.
@@ -148,9 +146,11 @@ class VideoFileClip(VideoClip):
             )
 
     def __deepcopy__(self, memo):
-        """AudioFileClip can't be deeply copied because the locked Thread
+        """Implements ``copy.deepcopy(clip)`` behaviour as ``copy.copy(clip)``.
+
+        VideoFileClip class instances can't be deeply copied because the locked Thread
         of ``proc`` isn't pickleable. Without this override, calls to
-        ``copy.deepcopy(clip)`` will raise next ``TypeError``:
+        ``copy.deepcopy(clip)`` would raise a ``TypeError``:
 
         ```
         TypeError: cannot pickle '_thread.lock' object
@@ -159,7 +159,7 @@ class VideoFileClip(VideoClip):
         return self.__copy__()
 
     def close(self):
-        """ Close the internal reader. """
+        """Close the internal reader."""
         if self.reader:
             self.reader.close()
             self.reader = None

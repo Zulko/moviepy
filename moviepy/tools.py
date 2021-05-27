@@ -1,11 +1,25 @@
-"""
-Misc. useful functions that can be used at many places in the program.
-"""
+"""Misc. useful functions that can be used at many places in the program."""
 import os
 import subprocess as sp
 import warnings
 
 import proglog
+
+
+OS_NAME = os.name
+
+
+def cross_platform_popen_params(popen_params):
+    """Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and
+    will be ready to work without unexpected behaviours in any platform.
+    Currently, the implementation will add to them:
+
+    - ``creationflags=0x08000000``: no extra unwanted window opens on Windows
+      when the child process is created. Only added on Windows.
+    """
+    if OS_NAME == "nt":
+        popen_params["creationflags"] = 0x08000000
+    return popen_params
 
 
 def subprocess_call(cmd, logger="bar"):
@@ -16,10 +30,9 @@ def subprocess_call(cmd, logger="bar"):
     logger = proglog.default_bar_logger(logger)
     logger(message="Moviepy - Running:\n>>> " + " ".join(cmd))
 
-    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
+    )
 
     proc = sp.Popen(cmd, **popen_params)
 
@@ -41,7 +54,7 @@ def convert_to_seconds(time):
     If the type of `time` is not valid,
     it's returned as is.
 
-    Here are the accepted formats::
+    Here are the accepted formats:
 
     >>> convert_to_seconds(15.4)   # seconds
     15.4
@@ -76,7 +89,7 @@ def deprecated_version_of(func, old_name):
     function.
 
     Returns
-    ========
+    -------
 
     deprecated_func
       A function that does the same thing as `func`, but with a docstring
@@ -84,7 +97,7 @@ def deprecated_version_of(func, old_name):
       deprecated and that you should use `func` instead.
 
     Examples
-    =========
+    --------
 
     >>> # The badly named method 'to_file' is replaced by 'write_file'
     >>> class Clip:
@@ -93,7 +106,6 @@ def deprecated_version_of(func, old_name):
     >>>
     >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
-
     # Detect new name of func
     new_name = func.__name__
 
@@ -134,6 +146,14 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
 
 
 def find_extension(codec):
+    """Returns the correspondent file extension for a codec.
+
+    Parameters
+    ----------
+
+    codec : str
+      Video or audio codec name.
+    """
     if codec in extensions_dict:
         # codec is already the extension
         return codec

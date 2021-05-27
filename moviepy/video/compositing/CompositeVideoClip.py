@@ -1,14 +1,11 @@
 import numpy as np
+from PIL import Image
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
-from PIL import Image
-
-#  CompositeVideoClip
 
 
 class CompositeVideoClip(VideoClip):
-
     """
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
@@ -118,7 +115,6 @@ class CompositeVideoClip(VideoClip):
 
     def make_frame(self, t):
         """The clips playing at time `t` are blitted over one another."""
-
         frame = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(frame)
 
@@ -134,10 +130,12 @@ class CompositeVideoClip(VideoClip):
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are
-        actually playing at the given time `t`."""
+        actually playing at the given time `t`.
+        """
         return [clip for clip in self.clips if clip.is_playing(t)]
 
     def close(self):
+        """Closes the instance, releasing all the resources."""
         if self.created_bg and self.bg:
             # Only close the background clip if it was locally created.
             # Otherwise, it remains the job of whoever created it.
@@ -148,42 +146,68 @@ class CompositeVideoClip(VideoClip):
             self.audio = None
 
 
-def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
-    """
+def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
+    """Given a matrix whose rows are clips, creates a CompositeVideoClip where
+    all clips are placed side by side horizontally for each clip in each row
+    and one row on top of the other for each row. So given next matrix of clips
+    with same size:
+
+    ```python
+    clips_array([[clip1, clip2, clip3], [clip4, clip5, clip6]])
+    ```
+
+    the result will be a CompositeVideoClip with a layout displayed like:
+
+    ```
+    ┏━━━━━━━┳━━━━━━━┳━━━━━━━┓
+    ┃       ┃       ┃       ┃
+    ┃ clip1 ┃ clip2 ┃ clip3 ┃
+    ┃       ┃       ┃       ┃
+    ┣━━━━━━━╋━━━━━━━╋━━━━━━━┫
+    ┃       ┃       ┃       ┃
+    ┃ clip4 ┃ clip5 ┃ clip6 ┃
+    ┃       ┃       ┃       ┃
+    ┗━━━━━━━┻━━━━━━━┻━━━━━━━┛
+    ```
+
+    If some clips doesn't fulfill the space required by the rows or columns
+    in which are placed, that space will be filled by the color defined in
+    ``bg_color``.
+
+    array
+      Matrix of clips included in the returned composited video clip.
 
     rows_widths
-      widths of the different rows in pixels. If None, is set automatically.
+      Widths of the different rows in pixels. If ``None``, is set automatically.
 
-    cols_widths
-      widths of the different colums in pixels. If None, is set automatically.
-
-    cols_widths
+    cols_heights
+      Heights of the different colums in pixels. If ``None``, is set automatically.
 
     bg_color
-       Fill color for the masked and unfilled regions. Set to None for these
-       regions to be transparent (will be slower).
-
+       Fill color for the masked and unfilled regions. Set to ``None`` for these
+       regions to be transparent (processing will be slower).
     """
-
     array = np.array(array)
     sizes_array = np.array([[clip.size for clip in line] for line in array])
 
     # find row width and col_widths automatically if not provided
     if rows_widths is None:
         rows_widths = sizes_array[:, :, 1].max(axis=1)
-    if cols_widths is None:
-        cols_widths = sizes_array[:, :, 0].max(axis=0)
+    if cols_heights is None:
+        cols_heights = sizes_array[:, :, 0].max(axis=0)
 
-    xs = np.cumsum([0] + list(cols_widths))
+    # compute start positions of X for rows and Y for columns
+    xs = np.cumsum([0] + list(cols_heights))
     ys = np.cumsum([0] + list(rows_widths))
 
-    for j, (x, cw) in enumerate(zip(xs[:-1], cols_widths)):
+    for j, (x, ch) in enumerate(zip(xs[:-1], cols_heights)):
         for i, (y, rw) in enumerate(zip(ys[:-1], rows_widths)):
             clip = array[i, j]
             w, h = clip.size
-            if (w < cw) or (h < rw):
+            # if clip not fulfill row width or column height
+            if (w < ch) or (h < rw):
                 clip = CompositeVideoClip(
-                    [clip.with_position("center")], size=(cw, rw), bg_color=bg_color
+                    [clip.with_position("center")], size=(ch, rw), bg_color=bg_color
                 ).with_duration(clip.duration)
 
             array[i, j] = clip.with_position((x, y))

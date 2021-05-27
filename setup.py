@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-"""
-This file will first try to import setuptools,
-then reach for the embedded ez_setup.py file (or the ez_setup package),
-and fail with a message if neither are successful.
-"""
+"""MoviePy setup script."""
 
+import os
 import sys
 from codecs import open
+
 
 try:
     from setuptools import find_packages, setup
@@ -68,47 +66,52 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = None  # Explicitly set version to quieten static code checkers.
-exec(open("moviepy/version.py").read())  # loads __version__
+__version__ = None
+with open(os.path.join("moviepy", "version.py"), "r", "utf-8") as f:
+    __version__ = f.read().split(" ")[2].strip("\n").strip('"')
+
 
 # Define the requirements for specific execution needs.
 requires = [
-    "decorator>=4.0.2,<5.0",
+    "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
-    "numpy>=1.17.3",
-    "requests>=2.8.1,<3.0",
+    "numpy>=1.17.3,<=1.20",
     "proglog<=1.0.0",
 ]
 
 optional_reqs = [
-    "python-dotenv>=0.10.0",
-    "opencv-python>=3.0,<4.0",
-    "scikit-image>=0.13.0,<1.0",
+    "pygame>=1.9.3",
+    "python-dotenv>=0.10",
+    "opencv-python",
+    "scikit-image",
     "scikit-learn",
-    "scipy>=0.19.0,<1.5",
-    "matplotlib>=2.0.0,<3.0",
+    "scipy",
+    "matplotlib",
     "youtube_dl",
 ]
 
 doc_reqs = [
-    "pygame>=1.9.3,<2.0; python_version<'3.8'",
     "numpydoc<2.0",
     "Sphinx==3.4.3",
-    "sphinx-rtd-theme<0.5",
+    "sphinx-rtd-theme==0.5.1",
 ]
 
 test_reqs = [
-    "coveralls>=3.0.0",
+    "coveralls>=3.0,<4.0",
     "pytest-cov>=2.5.1,<3.0",
-    "pytest>=3.0.0,<4.0",
+    "pytest>=3.0.0,<7.0.0",
 ]
 
 lint_reqs = [
     "black>=20.8b1",
     "flake8>3.7.0,<4.0.0",
-    "flake8-implicit-str-concat==0.2.0",
     "flake8-absolute-import>=1.0",
+    "flake8-docstrings>=1.5.0",
+    "flake8-rst-docstrings>=0.0.14",
+    "flake8-implicit-str-concat==0.2.0",
+    "isort>=5.7.0",
+    "pre-commit>=2.9.3",
 ]
 
 extra_reqs = {
@@ -140,6 +143,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Multimedia",
         "Topic :: Multimedia :: Sound/Audio",
         "Topic :: Multimedia :: Sound/Audio :: Analysis",

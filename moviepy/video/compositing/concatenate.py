@@ -10,7 +10,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 def concatenate_videoclips(
     clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
 ):
-    """Concatenates several video clips
+    """Concatenates several video clips.
 
     Returns a video clip made by clip by concatenating several video clips.
     (Concatenated means that they will be played one after another).
@@ -25,19 +25,17 @@ def concatenate_videoclips(
       If you have clips of different size and you want to write directly the
       result of the concatenation to a file, use the method "compose" instead.
 
-    - method="compose", if the clips do not have the same
-      resolution, the final resolution will be such that no clip has
-       to be resized.
-       As a consequence the final clip has the height of the highest
-       clip and the width of the widest clip of the list. All the
-       clips with smaller dimensions will appear centered. The border
-       will be transparent if mask=True, else it will be of the
-       color specified by ``bg_color``.
+    - method="compose", if the clips do not have the same resolution, the final
+      resolution will be such that no clip has to be resized.
+      As a consequence the final clip has the height of the highest clip and the
+      width of the widest clip of the list. All the clips with smaller dimensions
+      will appear centered. The border will be transparent if mask=True, else it
+      will be of the color specified by ``bg_color``.
 
     The clip with the highest FPS will be the FPS of the result clip.
 
     Parameters
-    -----------
+    ----------
     clips
       A list of video clips which must all have their ``duration``
       attributes set.
@@ -58,7 +56,6 @@ def concatenate_videoclips(
       `compose`.
 
     """
-
     if transition is not None:
         clip_transition_pairs = [[v, transition] for v in clips[:-1]]
         clips = reduce(lambda x, y: x + y, clip_transition_pairs) + [clips[-1]]

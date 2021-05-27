@@ -1,5 +1,6 @@
-""" A simple test script on how to put a soundtrack to a movie """
+"""A simple test script on how to put a soundtrack to a movie."""
 from moviepy import *
+
 
 # We load a movie and replace the sound with some music:
 

@@ -1,18 +1,27 @@
 """Issue tests meant to be run with pytest."""
 
-import pytest
 import os
 
-from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+import pytest
+
+from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.resize import resize
-from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.utils import close_all_clips
+from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import TMP_DIR
+
+
+try:
+    import matplotlib.pyplot
+except ImportError:
+    matplotlib = None
+else:
+    matplotlib = True
 
 
 def test_issue_145():
@@ -256,19 +265,21 @@ def test_issue_354():
 
 
 def test_issue_359():
-    with ColorClip((800, 600), color=(255, 0, 0)).with_duration(5) as video:
+    with ColorClip((800, 600), color=(255, 0, 0)).with_duration(0.2) as video:
         video.fps = 30
         video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
 
 
+@pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_issue_368():
-    import numpy as np
     import matplotlib.pyplot as plt
+    import numpy as np
     from sklearn import svm
     from sklearn.datasets import make_moons
+
     from moviepy.video.io.bindings import mplfig_to_npimage
 
-    plt.switch_backend("agg")
+    plt.switch_backend("Agg")
 
     X, Y = make_moons(50, noise=0.1, random_state=2)  # semi-random data
 
@@ -301,7 +312,7 @@ def test_issue_368():
 
         return mplfig_to_npimage(fig)
 
-    animation = VideoClip(make_frame, duration=2)
+    animation = VideoClip(make_frame, duration=0.2)
     animation.write_gif(os.path.join(TMP_DIR, "svm.gif"), fps=20)
 
 

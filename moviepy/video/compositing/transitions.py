@@ -1,16 +1,13 @@
-"""
-Here is the current catalogue. These are meant
-to be used with clip.fx. There are available as transfx.crossfadein etc.
+"""Here is the current catalogue. These are meant to be used with ``clip.fx``
+There are available as ``transfx.crossfadein`` etc.
 """
 
 from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
 
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-
-__all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out", "make_loopable"]
+__all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out"]
 
 
 @requires_duration
@@ -44,28 +41,34 @@ def slide_in(clip, duration, side):
     and if the clip has the same size as the whole composition.
 
     Parameters
-    ===========
+    ----------
 
-    clip
+    clip : moviepy.Clip.Clip
       A video clip.
 
-    duration
+    duration : float
       Time taken for the clip to be fully visible
 
-    side
+    side : str
       Side of the screen where the clip comes from. One of
-      'top' | 'bottom' | 'left' | 'right'
+      'top', 'bottom', 'left' or 'right'.
 
     Examples
-    =========
+    --------
 
     >>> from moviepy import *
+    >>>
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [CompositeVideoClip([
-                            clip.fx(transfx.slide_in, duration=1, side='left')])
-                        for clip in clips]
-    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
-
+    >>> slided_clips = [
+    ...     CompositeVideoClip([clip.fx(transfx.slide_in, 1, "left")])
+    ...     for clip in clips
+    ... ]
+    >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
+    >>>
+    >>> clip = ColorClip(
+    ...     color=(255, 0, 0), duration=1, size=(300, 300)
+    ... ).with_fps(60)
+    >>> final_clip = CompositeVideoClip([transfx.slide_in(clip, 1, "right")])
     """
     w, h = clip.size
     pos_dict = {
@@ -86,30 +89,33 @@ def slide_out(clip, duration, side):
     and if the clip has the same size as the whole composition.
 
     Parameters
-    ===========
+    ----------
 
-    clip
+    clip : moviepy.Clip.Clip
       A video clip.
 
-    duration
+    duration : float
       Time taken for the clip to fully disappear.
 
-    side
+    side : str
       Side of the screen where the clip goes. One of
-      'top' | 'bottom' | 'left' | 'right'
+      'top', 'bottom', 'left' or 'right'.
 
     Examples
-    =========
+    --------
 
-    >>> from moviepy import *
     >>> clips = [... make a list of clips]
-    >>> slided_clips = [CompositeVideoClip([
-                            clip.fx(transfx.slide_out, duration=1, side='left')])
-                        for clip in clips]
-    >>> final_clip = concatenate_videoclips( slided_clips, padding=-1)
-
+    >>> slided_clips = [
+    ...     CompositeVideoClip([clip.fx(transfx.slide_out, 1, "left")])
+    ...     for clip in clips
+    ... ]
+    >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
+    >>>
+    >>> clip = ColorClip(
+    ...     color=(255, 0, 0), duration=1, size=(300, 300)
+    ... ).with_fps(60)
+    >>> final_clip = CompositeVideoClip([transfx.slide_out(clip, 1, "right")])
     """
-
     w, h = clip.size
     ts = clip.duration - duration  # start time of the effect.
     pos_dict = {
@@ -120,14 +126,3 @@ def slide_out(clip, duration, side):
     }
 
     return clip.with_position(pos_dict[side])
-
-
-@requires_duration
-def make_loopable(clip, overlap_duration):
-    """Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``overlap_duration`` is the duration in seconds
-    of the fade-in."""
-    clip2 = clip.fx(crossfadein, overlap_duration).with_start(
-        clip.duration - overlap_duration
-    )
-    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)

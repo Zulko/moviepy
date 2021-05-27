@@ -1,6 +1,6 @@
 """
-This file is meant to make it easy to load the features of
-MoviePy that you will use for live editing by simply typing:
+Module meant to make it easy to load the features of MoviePy that you will use
+for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
@@ -16,12 +16,13 @@ import moviepy  # So that we can access moviepy.__all__ later
 from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
+
 try:
     from moviepy.video.io.sliders import sliders
 except ImportError:
 
     def sliders(*args, **kwargs):
-        """NOT AVAILABLE: sliders requires matplotlib installed"""
+        """NOT AVAILABLE: sliders requires matplotlib installed."""
         raise ImportError("sliders requires matplotlib installed")
 
 
@@ -39,15 +40,15 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from moviepy.video.io.preview import show, preview
+    from moviepy.video.io.preview import preview, show
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """NOT AVAILABLE: clip.preview requires Pygame installed"""
+        """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
     def show(self, *args, **kwargs):
-        """NOT AVAILABLE: clip.show requires Pygame installed"""
+        """NOT AVAILABLE: clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
 
 
@@ -59,7 +60,7 @@ try:
 except ImportError:
 
     def preview(self, *args, **kwargs):
-        """ NOT AVAILABLE: clip.preview requires Pygame installed"""
+        """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
 

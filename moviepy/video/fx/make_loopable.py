@@ -4,12 +4,17 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 
 @requires_duration
-def make_loopable(clip, overlap_time):
+def make_loopable(clip, overlap_duration):
+    """Makes the clip fade in progressively at its own end, this way it can be
+    looped indefinitely.
+
+    Parameters
+    ----------
+
+    overlap_duration : float
+      Duration of the fade-in (in seconds).
     """
-    Makes the clip fade in progressively at its own end, this way
-    it can be looped indefinitely. ``overlap_time`` is the duration in seconds
-    of the fade-in."""
-    clip2 = clip.fx(transfx.crossfadein, overlap_time).with_start(
-        clip.duration - overlap_time
+    clip2 = clip.fx(transfx.crossfadein, overlap_duration).with_start(
+        clip.duration - overlap_duration
     )
-    return CompositeVideoClip([clip, clip2]).subclip(overlap_time, clip.duration)
+    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)

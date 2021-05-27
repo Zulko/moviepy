@@ -1,9 +1,10 @@
 import time
 
 import numpy as np
-
 import pygame as pg
+
 from moviepy.decorators import requires_duration
+
 
 pg.init()
 pg.display.set_caption("MoviePy")
@@ -17,7 +18,7 @@ def preview(
     Plays the sound clip with pygame.
 
     Parameters
-    -----------
+    ----------
 
     fps
        Frame rate of the sound. 44100 gives top quality, but may cause
@@ -40,7 +41,6 @@ def preview(
       video and audio during ``VideoClip.preview()``.
 
     """
-
     pg.mixer.quit()
 
     pg.mixer.init(fps, -8 * nbytes, clip.nchannels, 1024)

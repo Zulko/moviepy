@@ -1,13 +1,23 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 
+import importlib
+import os
+import shutil
+
 import pytest
 
 import moviepy.tools as tools
 
 
 @pytest.mark.parametrize(
-    "given, expected",
-    [("libx264", "mp4"), ("libmpeg4", "mp4"), ("libtheora", "ogv"), ("libvpx", "webm")],
+    ("given", "expected"),
+    [
+        ("libx264", "mp4"),
+        ("libmpeg4", "mp4"),
+        ("libtheora", "ogv"),
+        ("libvpx", "webm"),
+        ("jpeg", "jpeg"),
+    ],
 )
 def test_find_extensions(given, expected):
     """Test for find_extension function."""
@@ -40,6 +50,25 @@ def test_cvsecs(given, expected):
     the docstring.
     """
     assert tools.convert_to_seconds(given) == expected
+
+
+@pytest.mark.skipif(not shutil.which("echo"), reason="not in Unix")
+@pytest.mark.parametrize("command", ("echo", "jbdshfuygvhbsdvfghew"))
+def test_subprocess_call(command):
+    if command == "echo":
+        tools.subprocess_call(command, logger=None)
+    else:
+        with pytest.raises(IOError):
+            tools.subprocess_call(command, logger=None)
+
+
+@pytest.mark.parametrize("os_name", (os.name, "nt"))
+def test_cross_platform_popen_params(os_name, monkeypatch):
+    tools_module = importlib.import_module("moviepy.tools")
+    monkeypatch.setattr(tools_module, "OS_NAME", os_name)
+
+    params = tools_module.cross_platform_popen_params({})
+    assert len(params) == (1 if os_name == "nt" else 0)
 
 
 if __name__ == "__main__":

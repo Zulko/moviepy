@@ -8,20 +8,23 @@ from moviepy.video.VideoClip import VideoClip
 
 from tests.test_helper import TMP_DIR
 
+
 try:
-    import matplotlib
+    import matplotlib.pyplot
 except ImportError:
     matplotlib = None
+else:
+    matplotlib = True
 
 
-@pytest.mark.skipif(not matplotlib, reason="no mpl")
+@pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_matplotlib_simple_example():
     import matplotlib.pyplot as plt
 
-    plt.switch_backend("agg")
+    plt.switch_backend("Agg")
 
     x = np.linspace(-2, 2, 200)
-    duration = 2
+    duration = 0.5
 
     fig, ax = plt.subplots()
 

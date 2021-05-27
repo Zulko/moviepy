@@ -12,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
       - name: Black
-        uses: psf/black@stable  # already includes args "--check --diff"
+        uses: psf/black@20.8b1  # already includes args "--check --diff"
   flake8:
     runs-on: ubuntu-latest
     name: Flake8
@@ -34,3 +34,18 @@ jobs:
         run: flake8 tests --show-source
       - name: Lint moviepy
         run: flake8 moviepy --show-source
+  isort:
+    runs-on: ubuntu-latest
+    name: isort
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install isort
+      - name: Check imports
+        run: isort --check-only moviepy tests examples docs/conf.py

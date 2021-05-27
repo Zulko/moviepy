@@ -1,6 +1,7 @@
-""" requires scikit-image installed (for vfx.painting) """
+"""Requires scikit-image installed (for ``vfx.painting``)."""
 
 from moviepy import *
+
 
 # WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
 

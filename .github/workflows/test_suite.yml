@@ -135,12 +135,25 @@ jobs:
           which python
           python -m site --user-site
 
-      - name: Install Dependencies
+      - name: Install common requirements
         run: |
-          python -m pip install --upgrade wheel
-          python -m pip install --upgrade setuptools
+          python -m pip install --upgrade wheel setuptools
+
+      - name: Install test requirements
+        if: ${{ matrix.python-version == '3.7' }}
+        run: |
+          python -m pip install ".[test, doc]"
+
+      - name: Install test and optional requirements
+        if: ${{ matrix.python-version != '3.7' }}
+        run: |
           python -m pip install ".[test, optional, doc]"
-          cat /etc/ImageMagick-6/policy.xml | sed 's/none/read,write/g' | sudo tee /etc/ImageMagick-6/policy.xml
+
+      - name: Configure ImageMagick policy
+        run: |
+          cat /etc/ImageMagick-6/policy.xml \
+          | sed 's/none/read,write/g' \
+          | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: PyTest
         run: |

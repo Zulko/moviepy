@@ -1,28 +1,25 @@
-"""
-Utilities to get a file from the internet
-"""
+"""Utilities to get a file from the internet."""
 
 import os
-
-import requests
+import shutil
+import urllib.request
 
 from moviepy.tools import subprocess_call
 
 
 def download_webfile(url, filename, overwrite=False):
     """Small utility to download the file at 'url' under name 'filename'.
-    If url is a youtube video ID like z410eauCnH it will download the video
-    using youtube-dl (install youtube-dl first !).
-    If the filename already exists and overwrite=False, nothing will happen.
+
+    - If url is a youtube video ID like z410eauCnH it will download the video
+      using youtube-dl. Requires youtube-dl (pip install youtube-dl).
+    - If the filename already exists and overwrite=False, nothing will happen.
     """
     if os.path.exists(filename) and not overwrite:
         return
 
     if "." in url:
-        r = requests.get(url, stream=True)
-        with open(filename, "wb") as fd:
-            for chunk in r.iter_content(chunk_size=128):
-                fd.write(chunk)
+        with urllib.request.urlopen(url) as req, open(filename, "wb") as f:
+            shutil.copyfileobj(req, f, 128)
 
     else:
         try:
