@@ -361,9 +361,9 @@ def test_ipython_display(
 ):
     # patch module to use it without ipython installed
     video_io_html_tools_module = importlib.import_module("moviepy.video.io.html_tools")
-
     monkeypatch.setattr(video_io_html_tools_module, "ipython_available", True)
 
+    # build `ipython_display` kwargs
     kwargs = {}
     if fps is not None:
         kwargs["fps"] = fps
@@ -375,7 +375,7 @@ def test_ipython_display(
     if expected_error is None:
         html_content = video_io_html_tools_module.ipython_display(
             clip,
-            rd_kwargs={"logger": None},
+            rd_kwargs=dict(logger=None),
             filetype=filetype,
             **kwargs,
         )
@@ -390,25 +390,26 @@ def test_ipython_display(
         assert expected_error[1] in str(exc.value)
         return
 
+    # assert built content according to each file type
     HTML5_support_message = (
         "Sorry, seems like your browser doesn't support HTML5 audio/video"
     )
 
     def image_contents():
-        return ("></div>", "<div align=middle><img  src=")
+        return ("<div align=middle><img  src=", "></div>")
 
     if isinstance(clip, AudioClip):
-        content_end = f">{HTML5_support_message}</audio></div>"
         content_start = "<div align=middle><audio controls><source   src="
+        content_end = f">{HTML5_support_message}</audio></div>"
     elif isinstance(clip, ImageClip) or t is not None:  # t -> ImageClip
-        content_end, content_start = image_contents()
+        content_start, content_end = image_contents()
     elif isinstance(clip, VideoClip):
-        content_end = f" controls>{HTML5_support_message}</video></div>"
         content_start = "<div align=middle><video src="
+        content_end = f" controls>{HTML5_support_message}</video></div>"
     else:
         ext = os.path.splitext(clip)[1]
         if ext in [".jpg", ".gif"]:
-            content_end, content_start = image_contents()
+            content_start, content_end = image_contents()
         else:
             raise NotImplementedError(
                 f"'test_ipython_display' must handle '{ext}' extension types!"
@@ -417,6 +418,7 @@ def test_ipython_display(
     assert html_content.startswith(content_start)
     assert html_content.endswith(content_end)
 
+    # clean `ipython` and `moviepy.video.io.html_tools` module from cache
     del sys.modules["moviepy.video.io.html_tools"]
     if "ipython" in sys.modules:
         del sys.modules["ipython"]
