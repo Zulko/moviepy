@@ -1,8 +1,12 @@
 """Define general test helper attributes and utilities."""
 
+import contextlib
 import functools
+import http.server
+import socketserver
 import sys
 import tempfile
+import threading
 
 import numpy as np
 
@@ -44,3 +48,14 @@ def get_mono_wave(freq=440):
         return np.sin(freq * 2 * np.pi * t)
 
     return make_mono_frame
+
+
+@contextlib.contextmanager
+def static_files_server(port=8000):
+    class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
+        pass
+
+    my_server = socketserver.TCPServer(("", port), MyHttpRequestHandler)
+    thread = threading.Thread(target=my_server.serve_forever, daemon=True)
+    thread.start()
+    yield thread

@@ -1,5 +1,6 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 
+import filecmp
 import importlib
 import os
 import shutil
@@ -7,6 +8,9 @@ import shutil
 import pytest
 
 import moviepy.tools as tools
+from moviepy.video.io.downloader import download_webfile
+
+from tests.test_helper import TMP_DIR, static_files_server
 
 
 @pytest.mark.parametrize(
@@ -89,6 +93,45 @@ def test_deprecated_version_of(old_name):
 
     assert len(record) == 1
     assert record[0].message.args[0] == expected_warning_message
+
+
+@pytest.mark.parametrize(
+    ("url", "expected_result"),
+    (
+        (
+            "http://localhost:8000/media/chaplin.mp4",
+            os.path.join("media", "chaplin.mp4"),
+        ),
+        ("foobarbazimpossiblecode", OSError),
+    ),
+)
+def test_download_webfile(url, expected_result):
+    filename = os.path.join(TMP_DIR, "moviepy_downloader_test.mp4")
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    if hasattr(expected_result, "__traceback__") or len(url) == 11:
+        if not shutil.which("youtube-dl"):
+            with pytest.raises(expected_result):
+                download_webfile(url, filename)
+            assert not os.path.isfile(filename)
+        elif len(url) != 11:
+            with pytest.raises(OSError) as exc:
+                download_webfile(url, filename)
+            assert "Error running youtube-dl." in str(exc.value)
+            assert not os.path.isfile(filename)
+        else:
+            download_webfile(url, filename)
+            assert os.path.isfile(filename)
+    else:
+        # network files
+        with static_files_server():
+            download_webfile(url, filename)
+
+        assert filecmp.cmp(filename, expected_result)
+
+    if os.path.isfile(filename):
+        os.remove(filename)
 
 
 if __name__ == "__main__":
