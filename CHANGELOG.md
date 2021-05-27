@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for `copy.copy(clip)` and `copy.deepcopy(clip)` with same behaviour as `clip.copy()` [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 - `audio.fx.multiply_stereo_volume` to control volume by audio channels [\#1424](https://github.com/Zulko/moviepy/pull/1424)
 - Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
+- `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns data from all streams by FFmpeg inputs in attribute `inputs` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns metadata of the container in attribute `metadata` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
@@ -33,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `requests` package is no longer a dependency [\#1566](https://github.com/Zulko/moviepy/pull/1566)
 - `accel_decel` FX raises `ValueError` if `sooness` parameter value is lower than zero [\#1546](https://github.com/Zulko/moviepy/pull/1546)
 - `Clip.subclip` raise `ValueError` if `start_time >= clip.duration` (previously printing a message to stdout only if `start_time > clip.duration`) [\#1589](https://github.com/Zulko/moviepy/pull/1589)
+- Allow to pass times in `HH:MM:SS` format to `t` argument of `clip.show` method [\#1594](https://github.com/Zulko/moviepy/pull/1594)
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
@@ -49,7 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
 - Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
 - Fixed `freeze` FX was freezing at time minus 1 second as the end [\#1461](https://github.com/Zulko/moviepy/pull/1461)
-- `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
 - Fixed `Clip.cutout` transformation not being applied to audio [\#1468](https://github.com/Zulko/moviepy/pull/1468)
 - Fixed arguments inconsistency in `video.tools.drawing.color_gradient` [\#1467](https://github.com/Zulko/moviepy/pull/1467)
 - Fixed `fps` not defined in `CompositeAudioClip` at initialization [\#1462](https://github.com/Zulko/moviepy/pull/1462)
