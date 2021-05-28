@@ -109,6 +109,8 @@ jobs:
 
           move imagemagick\ffmpeg.exe ffmpeg.exe
           move imagemagick\convert.exe convert.exe
+          
+          del /F ImageMagick.exe
 
       - name: Install Python dependencies
         run: |
