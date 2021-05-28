@@ -10,9 +10,6 @@ MoviePy
 .. image:: https://img.shields.io/github/workflow/status/Zulko/moviepy/Run%20Test%20Suite?logo=github
     :target: https://github.com/Zulko/moviepy/actions?query=workflow%3A%22Run+Test+Suite%22
     :alt: Build status on gh-actions
-.. image:: https://ci.appveyor.com/api/projects/status/github/zulko/moviepy?svg=true
-    :target: https://ci.appveyor.com/project/Zulko/moviepy
-    :alt: Build status on appveyor
 .. image:: https://img.shields.io/coveralls/github/Zulko/moviepy/master?logo=coveralls
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
