@@ -10,7 +10,6 @@ on:
   pull_request:
     branches:
       - '**'
-  workflow_dispatch:
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it
