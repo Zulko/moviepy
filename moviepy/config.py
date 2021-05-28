@@ -19,6 +19,8 @@ except ImportError:
 FFMPEG_BINARY = os.getenv("FFMPEG_BINARY", "ffmpeg-imageio")
 IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
 
+IS_POSIX_OS = os.name == "posix"
+
 
 def try_cmd(cmd):
     """TODO: add documentation"""
@@ -43,7 +45,7 @@ elif FFMPEG_BINARY == "auto-detect":
 
     if try_cmd(["ffmpeg"])[0]:
         FFMPEG_BINARY = "ffmpeg"
-    elif try_cmd(["ffmpeg.exe"])[0]:
+    elif not IS_POSIX_OS and try_cmd(["ffmpeg.exe"])[0]:
         FFMPEG_BINARY = "ffmpeg.exe"
     else:
         FFMPEG_BINARY = "unset"
@@ -76,11 +78,13 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             except Exception:
                 IMAGEMAGICK_BINARY = "unset"
 
-    elif try_cmd(["convert"])[0]:
-        IMAGEMAGICK_BINARY = "convert"
-
-    else:
-        IMAGEMAGICK_BINARY = "unset"
+    if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
+        if try_cmd(["convert"])[0]:
+            IMAGEMAGICK_BINARY = "convert"
+        elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:
+            IMAGEMAGICK_BINARY = "convert.exe"
+        else:
+            IMAGEMAGICK_BINARY = "unset"
 else:
     if not os.path.exists(IMAGEMAGICK_BINARY):
         raise IOError(f"ImageMagick binary cannot be found at {IMAGEMAGICK_BINARY}")

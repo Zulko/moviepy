@@ -54,67 +54,83 @@ jobs:
         brew install imagemagick
         # needed for installing matplotlib
         brew install pkg-config
-        python -m pip install --upgrade wheel
-        python -m pip install --upgrade setuptools
+        python -m pip install --upgrade wheel setuptools coveralls
         python -m pip install ".[test, optional]"
 
     - name: Test with pytest
       run: |
-        pythonw -m pytest tests/ --doctest-modules -v
+        pythonw -m pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+
+    - name: Coveralls
+      run: coveralls
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COVERALLS_SERVICE_NAME: github
 
 
-#  TODO Re-enable when ImageMagick is fixed or removed
-#  windows:
-#    runs-on: windows-latest
-#    strategy:
-#      matrix:
-#        python-version: [3.6, 3.7, 3.8]
-#      fail-fast: false
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Python ${{ matrix.python-version }}
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: ${{ matrix.python-version }}
-#      - name: Python Version Info
-#        shell: cmd
-#        run: |
-#          python --version
-#          which python
-#          python -m site --user-site
-#
-#      - name: Install Dependencies
-#        shell: cmd
-#        run: |
-#          python find_latest_imagemagick_version.py > temp.txt
-#          set /p IMAGE_MAGICK_VERSION=<temp.txt
-#
-#          echo %IMAGE_MAGICK_VERSION%
-#          echo https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-%ARCH%-static.exe
-#          :: Download ImageMagick installer (which also installs ffmpeg.)
-#          :: From http://ftp.fifi.org/ImageMagick/binaries/
-#          :: Might need to be updated from time to time
-#          :: Versions >=7.0 have problems - executables changed names.
-#          :: Assume 64-bit. Need to change to x86 for 32-bit.
-#          curl https://imagemagick.org/download/binaries/ImageMagick-%IMAGE_MAGICK_VERSION%-x64-static.exe -o ImageMagick.exe
-#
-#          :: Install ImageMagick, telling InnoSetup to not open a window and change default install dir
-#          ImageMagick.exe /SILENT /SP /DIR="%IMAGE_MAGICK_INSTALL_DIR%"
-#
-#          :: Inspect contents and set env vars
-#          dir "%IMAGE_MAGICK_INSTALL_DIR%"
-#          set IMAGEMAGICK_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//convert.exe"
-#          echo %IMAGEMAGICK_BINARY%
-#          set FMPEG_BINARY="%IMAGE_MAGICK_INSTALL_DIR%//ffmpeg.exe"
-#          echo %FMPEG_BINARY%
-#
-#          python -m pip install --upgrade wheel
-#          python -m pip install --upgrade setuptools
-#          python -m pip install ".[test]"
-#
-#      - name: PyTest
-#        run: |
-#          pytest
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Get ImageMagick installer from cache
+        id: imagemagick-installer-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ImageMagick.exe
+          key: ${{ runner.os }}-6.9.12-13-Q16
+
+      - name: Download ImageMagick installer
+        shell: cmd
+        if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
+        run: |
+          echo https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe
+          curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe -o ImageMagick.exe
+
+      - name: Install ImageMagick
+        id: imagemagick-install
+        shell: cmd
+        run: |
+          set IMAGEMAGICK_INSTALL_DIR=%CD%\imagemagick
+          mkdir %IMAGEMAGICK_INSTALL_DIR%
+          echo %IMAGEMAGICK_INSTALL_DIR%
+
+          ImageMagick.exe /SILENT /SP /DIR=%IMAGEMAGICK_INSTALL_DIR%
+          dir imagemagick
+
+          move imagemagick\ffmpeg.exe ffmpeg.exe
+          move imagemagick\convert.exe convert.exe
+
+          del /F ImageMagick.exe
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade wheel setuptools coveralls
+          python -m pip install ".[test]"
+
+      - name: Check third party dependencies
+        run: |
+          python moviepy\config.py
+
+      - name: PyTest
+        shell: cmd
+        run: |
+          python -m pytest --cov moviepy --cov-report term-missing
+
+      - name: Coveralls
+        run: coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_SERVICE_NAME: github
 
   linux:
     runs-on: ubuntu-latest
@@ -143,6 +159,7 @@ jobs:
         if: ${{ matrix.python-version == '3.7' }}
         run: |
           python -m pip install ".[test, doc]"
+          python -m pip install python-dotenv
 
       - name: Install test and optional requirements
         if: ${{ matrix.python-version != '3.7' }}
