@@ -72,7 +72,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
 
           move imagemagick\ffmpeg.exe ffmpeg.exe
           move imagemagick\convert.exe convert.exe
-          
+
           del /F ImageMagick.exe
 
       - name: Install Python dependencies
