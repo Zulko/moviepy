@@ -54,13 +54,18 @@ jobs:
         brew install imagemagick
         # needed for installing matplotlib
         brew install pkg-config
-        python -m pip install --upgrade wheel
-        python -m pip install --upgrade setuptools
+        python -m pip install --upgrade wheel setuptools coveralls
         python -m pip install ".[test, optional]"
 
     - name: Test with pytest
       run: |
-        pythonw -m pytest tests/ --doctest-modules -v
+        pythonw -m pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+
+    - name: Coveralls
+        run: coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_SERVICE_NAME: github
 
 
 #  TODO Re-enable when ImageMagick is fixed or removed
@@ -143,6 +148,7 @@ jobs:
         if: ${{ matrix.python-version == '3.7' }}
         run: |
           python -m pip install ".[test, doc]"
+          python -m pip install dotenv
 
       - name: Install test and optional requirements
         if: ${{ matrix.python-version != '3.7' }}
