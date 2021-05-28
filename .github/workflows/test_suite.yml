@@ -73,8 +73,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8]
-        imagemagick-version: ["6.9.12-13-Q16"]
-        arch: ["x86"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -89,14 +87,14 @@ jobs:
         with:
           path: |
             ImageMagick.exe
-          key: ${{ runner.os }}-${{ matrix.imagemagick-version }}
+          key: ${{ runner.os }}-6.9.12-13-Q16
 
       - name: Download ImageMagick installer
         shell: cmd
         if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
         run: |
-          echo https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-${{ matrix.imagemagick-version }}-${{ matrix.arch }}-static.exe
-          curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-${{ matrix.imagemagick-version }}-${{ matrix.arch }}-static.exe -o ImageMagick.exe
+          echo https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe
+          curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe -o ImageMagick.exe
 
       - name: Install ImageMagick
         id: imagemagick-install
