@@ -171,8 +171,14 @@ jobs:
           | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: PyTest
+        if: ${{ matrix.python-version != '3.7' }}
         run: |
           pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+      
+      - name: PyTest (FFMPEG_BINARY=auto-detect)
+        if: ${{ matrix.python-version == '3.7' }}
+        run: |
+          FFMPEG_BINARY=auto-detect pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
 
       - name: Test pip installation
         run: |
