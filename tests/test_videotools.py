@@ -6,6 +6,7 @@ import os
 import shutil
 import sys
 
+import numpy as np
 import pytest
 
 from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip
@@ -22,6 +23,7 @@ from moviepy.video.tools.cuts import (
     detect_scenes,
     find_video_period,
 )
+from moviepy.video.tools.drawing import circle, color_gradient, color_split
 from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import FONT, TMP_DIR, get_mono_wave, get_stereo_wave
@@ -352,6 +354,464 @@ def test_FramesMatches_write_gifs():
         assert isinstance(end, int)
 
     shutil.rmtree(gifs_dir)
+
+
+@pytest.mark.parametrize(
+    (
+        "size",
+        "p1",
+        "p2",
+        "vector",
+        "radius",
+        "color_1",
+        "color_2",
+        "shape",
+        "offset",
+        "expected_result",
+    ),
+    (
+        pytest.param(
+            (6, 1),
+            (1, 1),
+            (5, 1),
+            None,
+            None,
+            0,
+            1,
+            "linear",
+            0,
+            np.array([[1.0, 1.0, 0.75, 0.5, 0.25, 0.0]]),
+            id="p1-p2-linear-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (6, 1),
+            (1, 1),
+            None,
+            (4, 0),
+            None,
+            0,
+            1,
+            "linear",
+            0,
+            np.array([[1.0, 1.0, 0.75, 0.5, 0.25, 0.0]]),
+            id="p1-vector-linear-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (6, 1),
+            (1, 1),
+            (5, 1),
+            None,
+            None,
+            (255, 0, 0),
+            (0, 255, 0),
+            "linear",
+            0,
+            np.array(
+                [
+                    [
+                        [
+                            0,
+                            255,
+                            0,
+                        ],
+                        [
+                            0,
+                            255,
+                            0,
+                        ],
+                        [
+                            63.75,
+                            191.25,
+                            0,
+                        ],
+                        [
+                            127.5,
+                            127.5,
+                            0,
+                        ],
+                        [
+                            191.25,
+                            63.75,
+                            0,
+                        ],
+                        [
+                            255,
+                            0,
+                            0,
+                        ],
+                    ]
+                ]
+            ),
+            id="p1-p2-linear-color_1=R-color_2=G",
+        ),
+        pytest.param(
+            (3, 1),
+            (1, 1),
+            (5, 1),
+            None,
+            None,
+            0,
+            1,
+            "bilinear",
+            0,
+            np.array([[0.75, 1, 0.75]]),
+            id="p1-p2-bilinear-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            (3, 1),
+            None,
+            None,
+            0,
+            1,
+            "bilinear",
+            0,
+            np.array([[0.5, 1.0, 0.5, 0.0, 0.0]]),
+            id="p1-p2-bilinear-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            None,
+            [2, 0],
+            None,
+            0,
+            1,
+            "bilinear",
+            0,
+            np.array([[0.5, 1.0, 0.5, 0.0, 0.0]]),
+            id="p1-vector-bilinear-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            None,
+            [2, 0],
+            None,
+            (255, 0, 0),
+            (0, 255, 0),
+            "bilinear",
+            0,
+            np.array(
+                [
+                    [
+                        [127.5, 127.5, 0],
+                        [0, 255, 0],
+                        [127.5, 127.5, 0],
+                        [255, 0, 0],
+                        [255, 0, 0],
+                    ]
+                ]
+            ),
+            id="p1-vector-bilinear-color_1=R-color_2=G",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            None,
+            None,
+            None,
+            0,
+            1,
+            "bilinear",
+            0,
+            (ValueError, "You must provide either 'p2' or 'vector'"),
+            id="p2=None-vector=None-bilinear-ValueError",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            None,
+            None,
+            None,
+            0,
+            1,
+            "linear",
+            0,
+            (ValueError, "You must provide either 'p2' or 'vector'"),
+            id="p2=None-vector=None-linear-ValueError",
+        ),
+        pytest.param(
+            (5, 1),
+            (1, 1),
+            None,
+            None,
+            None,
+            0,
+            1,
+            "invalid",
+            0,
+            (
+                ValueError,
+                "Invalid shape, should be either 'radial', 'linear' or 'bilinear'",
+            ),
+            id="shape=invalid-ValueError",
+        ),
+        pytest.param(
+            (5, 5),
+            (1, 1),
+            None,
+            None,
+            1,
+            0,
+            1,
+            "radial",
+            0,
+            np.array(
+                [
+                    [1, 1, 1, 1, 1],
+                    [1, 0, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                ]
+            ),
+            id="p1-radial-radius=1-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (5, 5),
+            (1, 1),
+            None,
+            None,
+            1,
+            (255, 0, 0),
+            (0, 255, 0),
+            "radial",
+            0,
+            np.array(
+                [
+                    [[0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0]],
+                    [[0, 255, 0], [255, 0, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0]],
+                    [[0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0]],
+                    [[0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0]],
+                    [[0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0], [0, 255, 0]],
+                ]
+            ),
+            id="p1-radial-radius=1-color_1=R-color_2=G",
+        ),
+        pytest.param(
+            (5, 5),
+            (3, 3),
+            None,
+            None,
+            0,
+            0,
+            1,
+            "radial",
+            0,
+            np.array(
+                [
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 1, 1, 1, 1],
+                ]
+            ),
+            id="p1-radial-radius=0-color_1=0-color_2=1",
+        ),
+    ),
+)
+def test_color_gradient(
+    size,
+    p1,
+    p2,
+    vector,
+    radius,
+    color_1,
+    color_2,
+    shape,
+    offset,
+    expected_result,
+):
+    if isinstance(expected_result, np.ndarray):
+        result = color_gradient(
+            size,
+            p1,
+            p2=p2,
+            vector=vector,
+            radius=radius,
+            color_1=color_1,
+            color_2=color_2,
+            shape=shape,
+            offset=offset,
+        )
+
+        assert expected_result.shape == result.shape
+        assert np.array_equal(result, expected_result)
+
+        if shape == "radial":
+
+            circle_result = circle(
+                size,
+                p1,
+                radius,
+                color=color_1,
+                bg_color=color_2,
+            )
+            assert np.array_equal(result, circle_result)
+    else:
+        if isinstance(expected_result, (list, tuple)):
+            expected_error, expected_message = expected_result
+        else:
+            expected_error, expected_message = (expected_result, None)
+
+        with pytest.raises(expected_error) as exc:
+            color_gradient(
+                size,
+                p1,
+                p2=p2,
+                vector=vector,
+                radius=radius,
+                color_1=color_1,
+                color_2=color_2,
+                shape=shape,
+                offset=offset,
+            )
+        if expected_message is not None:
+            assert str(exc.value) == expected_message
+
+
+@pytest.mark.parametrize(
+    (
+        "size",
+        "x",
+        "y",
+        "p1",
+        "p2",
+        "vector",
+        "color_1",
+        "color_2",
+        "gradient_width",
+        "expected_result",
+    ),
+    (
+        pytest.param(
+            (3, 4),
+            1,
+            None,
+            None,
+            None,
+            None,
+            (255, 0, 0),
+            (0, 255, 0),
+            0,
+            np.array(
+                [
+                    [[255, 0, 0], [0, 255, 0], [0, 255, 0]],
+                    [[255, 0, 0], [0, 255, 0], [0, 255, 0]],
+                    [[255, 0, 0], [0, 255, 0], [0, 255, 0]],
+                    [[255, 0, 0], [0, 255, 0], [0, 255, 0]],
+                ]
+            ),
+            id="x=1-color_1=R-color_2=G",
+        ),
+        pytest.param(
+            (3, 4),
+            1,
+            None,
+            None,
+            None,
+            None,
+            0,
+            1,
+            0,
+            np.array([[0, 1, 1], [0, 1, 1], [0, 1, 1], [0, 1, 1]]),
+            id="x=1-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (2, 2),
+            None,
+            1,
+            None,
+            None,
+            None,
+            (255, 0, 0),
+            (0, 255, 0),
+            0,
+            np.array([[[255, 0, 0], [255, 0, 0]], [[0, 255, 0], [0, 255, 0]]]),
+            id="y=1-color_1=R-color_2=G",
+        ),
+        pytest.param(
+            (2, 2),
+            None,
+            1,
+            None,
+            None,
+            None,
+            0,
+            1,
+            0,
+            np.array([[0, 0], [1, 1]]),
+            id="y=1-color_1=0-color_2=1",
+        ),
+        pytest.param(
+            (3, 2),
+            2,
+            None,
+            None,
+            None,
+            None,
+            0,
+            1,
+            1,
+            np.array([[0, 0, 1], [0, 0, 1]]),
+            id="x=2-color_1=0-color_2=1-gradient_width=1",
+        ),
+        pytest.param(
+            (2, 3),
+            None,
+            2,
+            None,
+            None,
+            None,
+            0,
+            1,
+            1,
+            np.array([[0, 0], [0, 0], [1, 1]]),
+            id="y=2-color_1=0-color_2=1-gradient_width=1",
+        ),
+        pytest.param(
+            (3, 3),
+            None,
+            None,
+            (0, 1),
+            (0, 0),
+            None,
+            0,
+            0.75,
+            3,
+            np.array([[0.75, 0.75, 0.75], [0.75, 0.75, 0.75], [0.75, 0.75, 0.75]]),
+            id="p1-p2-color_1=0-color_2=0.75-gradient_width=3",
+        ),
+    ),
+)
+def test_color_split(
+    size,
+    x,
+    y,
+    p1,
+    p2,
+    vector,
+    color_1,
+    color_2,
+    gradient_width,
+    expected_result,
+):
+    result = color_split(
+        size,
+        x=x,
+        y=y,
+        p1=p1,
+        p2=p2,
+        vector=vector,
+        color_1=color_1,
+        color_2=color_2,
+        gradient_width=gradient_width,
+    )
+
+    assert np.array_equal(result, expected_result)
 
 
 @pytest.mark.parametrize(

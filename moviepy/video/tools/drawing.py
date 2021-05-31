@@ -7,11 +7,12 @@ import numpy as np
 
 def blit(im1, im2, pos=None, mask=None):
     """Blit an image over another.
+
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided.
     """
     if pos is None:
-        pos = (0, 0)
+        pos = (0, 0)  # pragma: no cover
     else:
         # Cast to tuple in case pos is not subscriptable.
         pos = tuple(pos)
@@ -39,58 +40,86 @@ def color_gradient(
     If it is a RGB picture the result must be transformed into
     a 'uint8' array to be displayed normally:
 
-
     Parameters
     ----------
 
-    size
-        Size (width, height) in pixels of the final picture/array.
+    size : tuple or list
+        Size (width, height) in pixels of the final image array.
 
-    p1, p2
-        Coordinates (x,y) in pixels of the limit point for ``color_1``
-        and ``color_2``. The color 'before' ``p1`` is ``color_1`` and it
-        gradually changes in the direction of ``p2`` until it is ``color_2``
-        when it reaches ``p2``.
+    p1 : tuple or list
+       Position for the first coordinate of the gradient in pixels (x, y).
+       The color 'before' ``p1`` is ``color_1`` and it gradually changes in
+       the direction of ``p2`` until it is ``color_2`` when it reaches ``p2``.
 
-    vector
-        A vector [x,y] in pixels that can be provided instead of ``p2``.
+    p2 : tuple or list, optional
+       Position for the second coordinate of the gradient in pixels (x, y).
+        Coordinates (x, y)  of the limit point for ``color_1``
+        and ``color_2``.
+
+    vector : tuple or list, optional
+        A vector (x, y) in pixels that can be provided instead of ``p2``.
         ``p2`` is then defined as (p1 + vector).
 
-    color_1, color_2
-        Either floats between 0 and 1 (for gradients used in masks)
-        or [R,G,B] arrays (for colored gradients).
+    color_1 : tuple or list, optional
+        Starting color for the gradient. As default, black. Either floats
+        between 0 and 1 (for gradients used in masks) or [R, G, B] arrays
+        (for colored gradients).
 
-    shape
-        'linear', 'bilinear', or 'circular'.
-        In a linear gradient the color varies in one direction,
-        from point ``p1`` to point ``p2``.
-        In a bilinear gradient it also varies symetrically from ``p1``
-        in the other direction.
-        In a circular gradient it goes from ``color_1`` to ``color_2`` in all
-        directions.
+    color_2 : tuple or list, optional
+        Color for the second point in the gradient. As default, white. Either
+        floats between 0 and 1 (for gradients used in masks) or [R, G, B]
+        arrays (for colored gradients).
 
-    offset
+    shape : str, optional
+        Shape of the gradient. Can be either ``"linear"``, ``"bilinear"`` or
+        ``"circular"``. In a linear gradient the color varies in one direction,
+        from point ``p1`` to point ``p2``. In a bilinear gradient it also
+        varies symetrically from ``p1`` in the other direction. In a circular
+        gradient it goes from ``color_1`` to ``color_2`` in all directions.
+
+    radius : float, optional
+        If ``shape="radial"``, the radius of the gradient is defined with the
+        parameter ``radius``, in pixels.
+
+    offset : float, optional
         Real number between 0 and 1 indicating the fraction of the vector
         at which the gradient actually starts. For instance if ``offset``
         is 0.9 in a gradient going from p1 to p2, then the gradient will
         only occur near p2 (before that everything is of color ``color_1``)
         If the offset is 0.9 in a radial gradient, the gradient will
         occur in the region located between 90% and 100% of the radius,
-        this creates a blurry disc of radius d(p1,p2).
+        this creates a blurry disc of radius ``d(p1, p2)``.
 
     Returns
     -------
 
     image
-        An Numpy array of dimensions (W,H,ncolors) of type float
+        An Numpy array of dimensions (width, height, n_colors) of type float
         representing the image of the gradient.
-
 
     Examples
     --------
 
-    >>> grad = color_gradient(blabla).astype('uint8')
-
+    >>> color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black
+    [[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]
+    >>>
+    >>> color_gradient(  # from red to green
+    ...     (10, 1),  # size
+    ...     (0, 0),   # p1
+    ...     p2=(10, 0),
+    ...     color_1=(255, 0, 0),  # red
+    ...     color_2=(0, 255, 0),  # green
+    ... )
+    [[[  0.  255.    0. ]
+      [ 25.5 229.5   0. ]
+      [ 51.  204.    0. ]
+      [ 76.5 178.5   0. ]
+      [102.  153.    0. ]
+      [127.5 127.5   0. ]
+      [153.  102.    0. ]
+      [178.5  76.5   0. ]
+      [204.   51.    0. ]
+      [229.5  25.5   0. ]]]
     """
     # np-arrayize and change x,y coordinates to y,x
     w, h = size
@@ -114,7 +143,7 @@ def color_gradient(
                 shape="linear",
                 offset=offset,
             )
-            for v in [vector, -vector]
+            for v in [vector, [-v for v in vector]]
         ]
 
         arr = np.maximum(m1, m2)
@@ -179,40 +208,42 @@ def color_split(
     Parameters
     ----------
 
-    x: (int)
+    x : int, optional
         If provided, the image is splitted horizontally in x, the left
         region being region 1.
 
-    y: (int)
+    y : int, optional
         If provided, the image is splitted vertically in y, the top region
         being region 1.
 
-    p1, p2:
-        Positions (x1,y1),(x2,y2) in pixels, where the numbers can be
+    p1, p2: tuple or list, optional
+        Positions (x1, y1), (x2, y2) in pixels, where the numbers can be
         floats. Region 1 is defined as the whole region on the left when
         going from ``p1`` to ``p2``.
 
-    p1, vector:
+    p1, vector: tuple or list, optional
         ``p1`` is (x1,y1) and vector (v1,v2), where the numbers can be
         floats. Region 1 is then the region on the left when starting
         in position ``p1`` and going in the direction given by ``vector``.
 
-    gradient_width
+    gradient_width : float, optional
         If not zero, the split is not sharp, but gradual over a region of
         width ``gradient_width`` (in pixels). This is preferable in many
         situations (for instance for antialiasing).
 
-
     Examples
     --------
 
-    >>> size = [200,200]
+    >>> size = [200, 200]
+    >>>
     >>> # an image with all pixels with x<50 =0, the others =1
     >>> color_split(size, x=50, color_1=0, color_2=1)
+    >>>
     >>> # an image with all pixels with y<50 red, the others green
-    >>> color_split(size, x=50, color_1=[255,0,0], color_2=[0,255,0])
+    >>> color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])
+    >>>
     >>> # An image splitted along an arbitrary line (see below)
-    >>> color_split(size, p1=[20,50], p2=[25,70] color_1=0, color_2=1)
+    >>> color_split(size, p1=[20, 50], p2=[25, 70] color_1=0, color_2=1)
     """
     if gradient_width or ((x is None) and (y is None)):
         if p2 is not None:
@@ -243,18 +274,48 @@ def color_split(
             arr[y:] = color_2
         return arr
 
-    # if we are here, it means we didn't exit with a proper 'return'
-    print("Arguments in color_split not understood !")
-    raise
-
 
 def circle(screensize, center, radius, color=1.0, bg_color=0, blur=1):
     """Draw an image with a circle.
 
     Draws a circle of color ``color``, on a background of color ``bg_color``,
-    on a screen of size ``screensize`` at the position ``center=(x,y)``,
+    on a screen of size ``screensize`` at the position ``center=(x, y)``,
     with a radius ``radius`` but slightly blurred on the border by ``blur``
-    pixels
+    pixels.
+
+    Parameters
+    ----------
+
+    screensize : tuple or list
+        Size of the canvas.
+
+    center : tuple or list
+        Center of the circle.
+
+    radius : float
+        Radius of the circle, in pixels.
+
+    bg_color : tuple or float, optional
+        Color for the background of the canvas. As default, black.
+
+    blur : float, optional
+        Blur for the border of the circle.
+
+    Examples
+    --------
+
+    >>> from moviepy.video.tools.drawing import circle
+    >>>
+    >>> circle(
+    ...     (5, 5),  # size
+    ...     (2, 2),  # center
+    ...      2,      # radius
+    ... )
+    array([[0.        , 0.        , 0.        , 0.        , 0.        ],
+           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
+           [0.        , 1.        , 1.        , 1.        , 0.        ],
+           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
+           [0.        , 0.        , 0.        , 0.        , 0.        ]])
     """
     offset = 1.0 * (radius - blur) / radius if radius else 0
     return color_gradient(
