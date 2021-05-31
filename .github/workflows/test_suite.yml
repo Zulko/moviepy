@@ -87,7 +87,7 @@ jobs:
         with:
           path: |
             ImageMagick.exe
-          key: ${{ runner.os }}-6.9.12-13-Q16
+          key: ${{ runner.os }}-6.9.12-13-Q15
 
       - name: Download ImageMagick installer
         shell: cmd
