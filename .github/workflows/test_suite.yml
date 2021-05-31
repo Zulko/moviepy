@@ -124,7 +124,7 @@ jobs:
       - name: PyTest
         shell: cmd
         run: |
-          python -m pytest --cov moviepy --cov-report term-missing
+          python -m pytest -svv --cov moviepy --cov-report term-missing
 
       - name: Coveralls
         run: coveralls

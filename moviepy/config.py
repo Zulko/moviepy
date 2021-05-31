@@ -70,7 +70,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                     shell=True,
                     encoding="utf-8",
                 ).split("\n")[0]
-                IMAGEMAGICK_BINARY = sp.check_output(
+                IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
                     rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
                     shell=True,
                     encoding="utf-8",
@@ -81,9 +81,9 @@ if IMAGEMAGICK_BINARY == "auto-detect":
     if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
         if try_cmd(["convert"])[0]:
             IMAGEMAGICK_BINARY = "convert"
-        elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:
+        elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:  # pragma: no cover
             IMAGEMAGICK_BINARY = "convert.exe"
-        else:
+        else:  # pragma: no cover
             IMAGEMAGICK_BINARY = "unset"
 else:
     if not os.path.exists(IMAGEMAGICK_BINARY):
