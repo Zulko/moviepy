@@ -318,7 +318,11 @@ def test_FramesMatches_select_scenes(
 def test_FramesMatches_write_gifs():
     video_clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.2)
     clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
-    matching_frames = FramesMatches.from_clip(clip, 10, 3, logger=None).select_scenes(
+
+    # add matching frame starting at start < clip.start which should be ignored
+    matching_frames = FramesMatches.from_clip(clip, 10, 3, logger=None)
+    matching_frames.insert(0, FramesMatch(-1, -0.5, 0, 0))
+    matching_frames = matching_frames.select_scenes(
         1,
         0.01,
         nomatch_threshold=0,
