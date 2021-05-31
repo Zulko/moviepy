@@ -3,6 +3,7 @@
 import importlib
 import math
 import os
+import shutil
 import sys
 
 import pytest
@@ -12,6 +13,7 @@ from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.audio.tools.cuts import find_audio_period
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.fx.loop import loop
+from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.credits import CreditsClip
 from moviepy.video.tools.cuts import (
@@ -229,6 +231,127 @@ def test_FramesMatches_save_load():
     # load
     for i, frames_match in enumerate(FramesMatches.load(outputfile)):
         assert frames_match == input_matching_frames[i]
+
+
+@pytest.mark.parametrize(
+    ("n", "percent", "expected_result"),
+    (
+        pytest.param(1, None, FramesMatch(1, 2, 0, 0), id="n=1"),
+        pytest.param(
+            2,
+            None,
+            FramesMatches([FramesMatch(1, 2, 0, 0), FramesMatch(2, 3, 0, 0)]),
+            id="n=2",
+        ),
+        pytest.param(
+            1,
+            50,
+            FramesMatches([FramesMatch(1, 2, 0, 0), FramesMatch(2, 3, 0, 0)]),
+            id="percent=50",
+        ),
+    ),
+)
+def test_FramesMatches_best(n, percent, expected_result):
+    assert (
+        FramesMatches(
+            [
+                FramesMatch(1, 2, 0, 0),
+                FramesMatch(2, 3, 0, 0),
+                FramesMatch(4, 5, 0, 0),
+                FramesMatch(5, 6, 0, 0),
+            ]
+        ).best(n=n, percent=percent)
+        == expected_result
+    )
+
+
+@pytest.mark.parametrize(
+    (
+        "filename",
+        "subclip",
+        "match_threshold",
+        "min_time_span",
+        "nomatch_threshold",
+        "expected_result",
+    ),
+    (
+        pytest.param(
+            "media/chaplin.mp4",
+            (1, 3),
+            1,
+            2,
+            0,
+            FramesMatches(
+                [
+                    FramesMatch(0.08, 2.92, 0, 0),
+                    FramesMatch(0.2, 2.8, 0, 0),
+                    FramesMatch(0.32, 2.68, 0, 0),
+                    FramesMatch(0.44, 2.56, 0, 0),
+                ]
+            ),
+            id="(media/chaplin.mp4)(1, 3).fx(time_mirror)",
+        ),
+    ),
+)
+def test_FramesMatches_select_scenes(
+    filename,
+    subclip,
+    match_threshold,
+    min_time_span,
+    nomatch_threshold,
+    expected_result,
+):
+    video_clip = VideoFileClip(filename)
+    if subclip is not None:
+        video_clip = video_clip.subclip(subclip[0], subclip[1])
+    clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
+    result = FramesMatches.from_clip(clip, 10, 3, logger=None).select_scenes(
+        match_threshold,
+        min_time_span,
+        nomatch_threshold=nomatch_threshold,
+    )
+
+    assert len(result) == len(expected_result)
+    assert result == expected_result
+
+
+def test_FramesMatches_write_gifs():
+    video_clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.2)
+    clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
+
+    # add matching frame starting at start < clip.start which should be ignored
+    matching_frames = FramesMatches.from_clip(clip, 10, 3, logger=None)
+    matching_frames.insert(0, FramesMatch(-1, -0.5, 0, 0))
+    matching_frames = matching_frames.select_scenes(
+        1,
+        0.01,
+        nomatch_threshold=0,
+    )
+
+    gifs_dir = os.path.join(TMP_DIR, "moviepy_FramesMatches_write_gifs")
+    if os.path.isdir(gifs_dir):
+        shutil.rmtree(gifs_dir)
+    os.mkdir(gifs_dir)
+    assert os.path.isdir(gifs_dir)
+
+    matching_frames.write_gifs(clip, gifs_dir, logger=None)
+
+    gifs_filenames = os.listdir(gifs_dir)
+    assert len(gifs_filenames) == 7
+
+    for filename in gifs_filenames:
+        filepath = os.path.join(gifs_dir, filename)
+        assert os.path.isfile(filepath)
+
+        with open(filepath, "rb") as f:
+            assert len(f.readline())
+
+        end, start = filename.split(".")[0].split("_")
+        end, start = (int(end), int(start))
+        assert isinstance(end, int)
+        assert isinstance(end, int)
+
+    shutil.rmtree(gifs_dir)
 
 
 @pytest.mark.parametrize(

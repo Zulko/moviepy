@@ -113,10 +113,33 @@ class FramesMatches(list):
         list.__init__(self, sorted(lst, key=lambda e: e.max_distance))
 
     def best(self, n=1, percent=None):
-        """TODO: needs documentation"""
+        """Returns a new instance of FramesMatches object or a FramesMatch
+        from the current class instance given different conditions.
+
+        By default returns the first FramesMatch that the current instance
+        stores.
+
+        Parameters
+        ----------
+
+        n : int, optional
+          Number of matches to retrieve from the current FramesMatches object.
+          Only has effect when ``percent=None``.
+
+        percent : float, optional
+          Percent of the current match to retrieve.
+
+        Returns
+        -------
+
+        FramesMatch or FramesMatches : If the number of matches to retrieve is
+          greater than 1 returns a FramesMatches object, otherwise a
+          FramesMatch.
+
+        """
         if percent is not None:
             n = len(self) * percent / 100
-        return self[0] if n == 1 else FramesMatches(self[:n])
+        return self[0] if n == 1 else FramesMatches(self[: int(n)])
 
     def filter(self, condition):
         """Return a FramesMatches object obtained by filtering out the
@@ -208,6 +231,7 @@ class FramesMatches(list):
 
         >>> from moviepy import VideoFileClip
         >>> from moviepy.video.tools.cuts import FramesMatches
+        >>>
         >>> clip = VideoFileClip("foo.mp4").resize(width=200)
         >>> matches = FramesMatches.from_clip(
         ...     clip, distance_threshold=10, max_duration=3,  # will take time
@@ -286,20 +310,50 @@ class FramesMatches(list):
     def select_scenes(
         self, match_threshold, min_time_span, nomatch_threshold=None, time_distance=0
     ):
-        """
+        """Select the scenes at which a video clip can be reproduced as the
+        smoothest possible way, mainly oriented for the creation of GIF images.
 
         Parameters
         ----------
-        match_threshold
-          The smaller, the better-looping the gifs are.
 
-        min_time_span
-          Only GIFs with a duration longer than min_time_span (in seconds)
-          will be extracted.
+        match_threshold : float
+          Maximum distance possible between frames. The smaller, the
+          better-looping the GIFs are.
 
-        nomatch_threshold
-          If None, then it is chosen equal to match_threshold
+        min_time_span : float
+          Minimum duration for a scene. Only matches with a duration longer
+          than the value passed to this parameters will be extracted.
 
+        nomatch_threshold : float, optional
+          Minimum distance possible between frames. If is ``None``, then it is
+          chosen equal to ``match_threshold``.
+
+        time_distance : float, optional
+          Minimum time offset possible between matches.
+
+        Returns
+        -------
+
+        FramesMatches : New instance of the class with the selected scenes.
+
+        Examples
+        --------
+
+        >>> from pprint import pprint
+        >>> from moviepy.editor import *
+        >>> from moviepy.video.tools.cuts import FramesMatches
+        >>>
+        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclip(1, 4)
+        >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
+        >>>
+        >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
+        ...     1, 2, nomatch_threshold=0,
+        ... )
+        >>> pprint(result)
+        [(1.0000, 4.0000, 0.0000, 0.0000),
+         (1.1600, 3.8400, 0.0000, 0.0000),
+         (1.2800, 3.7200, 0.0000, 0.0000),
+         (1.4000, 3.6000, 0.0000, 0.0000)]
         """
         if nomatch_threshold is None:
             nomatch_threshold = match_threshold
@@ -353,11 +407,47 @@ class FramesMatches(list):
 
         return FramesMatches(result)
 
-    def write_gifs(self, clip, gif_dir):
-        """TODO: needs documentation"""
+    def write_gifs(self, clip, gifs_dir, **kwargs):
+        """Extract the matching frames represented by the instance from a clip
+        and write them as GIFs in a directory, one GIF for each matching frame.
+
+        Parameters
+        ----------
+
+        clip : video.VideoClip.VideoClip
+          A video clip whose frames scenes you want to obtain as GIF images.
+
+        gif_dir : str
+          Directory in which the GIF images will be written.
+
+        kwargs
+          Passed as ``clip.write_gif`` optional arguments.
+
+        Examples
+        --------
+
+        >>> import os
+        >>> from pprint import pprint
+        >>> from moviepy.editor import *
+        >>> from moviepy.video.tools.cuts import FramesMatches
+        >>>
+        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclip(1, 4)
+        >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
+        >>>
+        >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
+        ...     1, 2, nomatch_threshold=0,
+        ... )
+        >>>
+        >>> os.mkdir("foo")
+        >>> result.write_gifs(clip, "foo")
+        MoviePy - Building file foo/00000100_00000400.gif with imageio.
+        MoviePy - Building file foo/00000115_00000384.gif with imageio.
+        MoviePy - Building file foo/00000128_00000372.gif with imageio.
+        MoviePy - Building file foo/00000140_00000360.gif with imageio.
+        """
         for (start, end, _, _) in self:
-            name = "%s/%08d_%08d.gif" % (gif_dir, 100 * start, 100 * end)
-            clip.subclip(start, end).write_gif(name)
+            name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)
+            clip.subclip(start, end).write_gif(name, **kwargs)
 
 
 @use_clip_fps_by_default
@@ -366,11 +456,12 @@ def detect_scenes(
 ):
     """Detects scenes of a clip based on luminosity changes.
 
-    Note that for large clip this may take some time
+    Note that for large clip this may take some time.
 
     Returns
     -------
-    cuts, luminosities
+
+    tuple : cuts, luminosities
       cuts is a series of cuts [(0,t1), (t1,t2),...(...,tf)]
       luminosities are the luminosities computed for each
       frame of the clip.
@@ -378,31 +469,29 @@ def detect_scenes(
     Parameters
     ----------
 
-    clip
+    clip : video.VideoClip.VideoClip, optional
       A video clip. Can be None if a list of luminosities is
       provided instead. If provided, the luminosity of each
       frame of the clip will be computed. If the clip has no
       'fps' attribute, you must provide it.
 
-    luminosities
+    luminosities : list, optional
       A list of luminosities, e.g. returned by detect_scenes
       in a previous run.
 
-    luminosity_threshold
+    luminosity_threshold : float, optional
       Determines a threshold above which the 'luminosity jumps'
       will be considered as scene changes. A scene change is defined
       as a change between 2 consecutive frames that is larger than
       (avg * thr) where avg is the average of the absolute changes
       between consecutive frames.
 
-    logger
+    logger : str, optional
       Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
-    fps
-      Must be provided if you provide no clip or a clip without
-      fps attribute.
-
-
+    fps : int, optional
+      Frames per second value. Must be provided if you provide
+      no clip or a clip without fps attribute.
     """
     if luminosities is None:
         luminosities = [
