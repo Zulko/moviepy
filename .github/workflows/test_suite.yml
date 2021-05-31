@@ -87,7 +87,7 @@ jobs:
         with:
           path: |
             ImageMagick.exe
-          key: ${{ runner.os }}-6.9.12-13-Q16
+          key: ${{ runner.os }}-6.9.12
 
       - name: Download ImageMagick installer
         shell: cmd
@@ -109,8 +109,6 @@ jobs:
 
           move imagemagick\ffmpeg.exe ffmpeg.exe
           move imagemagick\convert.exe convert.exe
-
-          del /F ImageMagick.exe
 
       - name: Install Python dependencies
         run: |
