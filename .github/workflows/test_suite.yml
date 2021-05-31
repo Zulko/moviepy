@@ -91,7 +91,7 @@ jobs:
 
       - name: Download ImageMagick installer
         shell: cmd
-        #if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
+        if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
         run: |
           echo https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe
           curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe -o ImageMagick.exe
@@ -124,7 +124,7 @@ jobs:
       - name: PyTest
         shell: cmd
         run: |
-          python -m pytest -svv --cov moviepy --cov-report term-missing
+          python -m pytest --cov moviepy --cov-report term-missing
 
       - name: Coveralls
         run: coveralls
