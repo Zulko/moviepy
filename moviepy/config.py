@@ -47,7 +47,7 @@ elif FFMPEG_BINARY == "auto-detect":
         FFMPEG_BINARY = "ffmpeg"
     elif not IS_POSIX_OS and try_cmd(["ffmpeg.exe"])[0]:
         FFMPEG_BINARY = "ffmpeg.exe"
-    else:
+    else:  # pragma: no cover
         FFMPEG_BINARY = "unset"
 else:
     success, err = try_cmd([FFMPEG_BINARY])
@@ -70,7 +70,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                     shell=True,
                     encoding="utf-8",
                 ).split("\n")[0]
-                IMAGEMAGICK_BINARY = sp.check_output(
+                IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
                     rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
                     shell=True,
                     encoding="utf-8",
@@ -81,9 +81,9 @@ if IMAGEMAGICK_BINARY == "auto-detect":
     if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
         if try_cmd(["convert"])[0]:
             IMAGEMAGICK_BINARY = "convert"
-        elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:
+        elif not IS_POSIX_OS and try_cmd(["convert.exe"])[0]:  # pragma: no cover
             IMAGEMAGICK_BINARY = "convert.exe"
-        else:
+        else:  # pragma: no cover
             IMAGEMAGICK_BINARY = "unset"
 else:
     if not os.path.exists(IMAGEMAGICK_BINARY):
@@ -100,15 +100,15 @@ else:
 
 
 def check():
-    """TODO: add documentation"""
+    """Check if moviepy has found the binaries of FFmpeg and ImageMagick."""
     if try_cmd([FFMPEG_BINARY])[0]:
         print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
-    else:
+    else:  # pragma: no cover
         print(f"MoviePy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
 
     if try_cmd([IMAGEMAGICK_BINARY])[0]:
         print(f"MoviePy: ImageMagick successfully found in '{IMAGEMAGICK_BINARY}'.")
-    else:
+    else:  # pragma: no cover
         print(f"MoviePy: can't find or access ImageMagick in '{IMAGEMAGICK_BINARY}'.")
 
     if DOTENV:
@@ -116,5 +116,5 @@ def check():
         print(Path(DOTENV).read_text())
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     check()
