@@ -127,7 +127,7 @@ class FramesMatches(list):
           Only has effect when ``percent=None``.
 
         percent : float, optional
-          Percent of the of the current match to retrieve.
+          Percent of the current match to retrieve.
 
         Returns
         -------
@@ -310,7 +310,7 @@ class FramesMatches(list):
     def select_scenes(
         self, match_threshold, min_time_span, nomatch_threshold=None, time_distance=0
     ):
-        """Select the frames at which a video clip can be reproduced as the
+        """Select the scenes at which a video clip can be reproduced as the
         smoothest possible way, mainly oriented for the creation of GIF images.
 
         Parameters
@@ -326,7 +326,7 @@ class FramesMatches(list):
 
         nomatch_threshold : float, optional
           Minimum distance possible between frames. If is ``None``, then it is
-          chosen equal to match_threshold
+          chosen equal to ``match_threshold``.
 
         time_distance : float, optional
           Minimum time offset possible between matches.
@@ -407,7 +407,7 @@ class FramesMatches(list):
 
         return FramesMatches(result)
 
-    def write_gifs(self, clip, gif_dir, **kwargs):
+    def write_gifs(self, clip, gifs_dir, **kwargs):
         """Extract the matching frames represented by the instance from a clip
         and write them as GIFs in a directory, one GIF for each matching frame.
 
@@ -446,7 +446,7 @@ class FramesMatches(list):
         MoviePy - Building file foo/00000140_00000360.gif with imageio.
         """
         for (start, end, _, _) in self:
-            name = "%s/%08d_%08d.gif" % (gif_dir, 100 * start, 100 * end)
+            name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)
             clip.subclip(start, end).write_gif(name, **kwargs)
 
 
