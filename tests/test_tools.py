@@ -201,6 +201,8 @@ def test_config(
     if "moviepy.config" in sys.modules:
         del sys.modules["moviepy.config"]
 
+    if ffmpeg_binary_error is not None and os.path.isfile(ffmpeg_binary):
+        os.remove(ffmpeg_binary)
     prev_ffmpeg_binary = os.environ.get("FFMPEG_BINARY")
     os.environ["FFMPEG_BINARY"] = ffmpeg_binary
 
