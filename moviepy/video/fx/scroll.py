@@ -23,8 +23,8 @@ def scroll(
     if w is None:
         w = clip.w
 
-    x_max = clip.w - w - 1
-    y_max = clip.h - h - 1
+    x_max = w - 1
+    y_max = h - 1
 
     def filter(get_frame, t):
         x = int(max(0, min(x_max, x_start + round(x_speed * t))))
