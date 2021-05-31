@@ -1,8 +1,6 @@
 """Video file clip tests meant to be run with pytest."""
 
-import contextlib
 import importlib
-import io
 import math
 import os
 import shutil

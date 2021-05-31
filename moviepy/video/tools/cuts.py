@@ -420,7 +420,7 @@ class FramesMatches(list):
         gif_dir : str
           Directory in which the GIF images will be written.
 
-        **kwargs
+        kwargs
           Passed as ``clip.write_gif`` optional arguments.
 
         Examples
