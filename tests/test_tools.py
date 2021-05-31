@@ -137,6 +137,7 @@ def test_download_webfile(url, expected_result):
         os.remove(filename)
 
 
+@pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
 @pytest.mark.parametrize(
     ("ffmpeg_binary", "ffmpeg_binary_error"),
     (
