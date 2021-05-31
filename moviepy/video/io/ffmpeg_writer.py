@@ -268,7 +268,25 @@ def ffmpeg_write_video(
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
-    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg."""
+    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg.
+
+    Parameters
+    ----------
+
+    filename : str
+        Path to the output file.
+
+    image : np.ndarray
+        Numpy array with the image data.
+
+    logfile : bool, optional
+        Writes a logfile with the FFmpeg output (``True``) or not (``False``).
+
+    pixel_format : str, optional
+        Pixel format for ffmpeg. If not defined, it will be discovered checking
+        if the image data contains an alpha channel (``"rgba"``) or not
+        (``"rgb24"``).
+    """
     if image.dtype != "uint8":
         image = image.astype("uint8")
     if not pixel_format:
@@ -298,7 +316,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     )
 
     proc = sp.Popen(cmd, **popen_params)
-    out, err = proc.communicate(image.tostring())
+    out, err = proc.communicate(image.tobytes())
 
     if proc.returncode:
         error = (
