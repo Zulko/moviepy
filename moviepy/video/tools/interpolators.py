@@ -64,7 +64,9 @@ class Trajectory:
     """Trajectory compound by time frames and (x, y) pixels.
 
     It's designed as an interpolator, so you can get the position at a given
-    time ``t``.
+    time ``t``. You can instanciate it from a file using the methods
+    ``from_file`` and ``load_list``.
+
 
     Parameters
     ----------
@@ -77,6 +79,12 @@ class Trajectory:
 
     yy : list or numpy.ndarray
       Y positions in the trajectory.
+
+
+    Examples
+    --------
+
+    >>> trajectory = Trajectory([0, .166, .333], [554, 474, 384], [100, 90, 91])
     """
 
     def __init__(self, tt, xx, yy):
