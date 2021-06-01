@@ -12,53 +12,56 @@ from moviepy.video.VideoClip import TextClip, VideoClip
 class SubtitlesClip(VideoClip):
     """A Clip that serves as "subtitle track" in videos.
 
-    One particularity of this class is that the images of the
-    subtitle texts are not generated beforehand, but only if
-    needed.
+    One particularity of this class is that the images of the subtitle texts
+    are not generated beforehand, but only if needed.
 
     Parameters
     ----------
 
-    subtitles
-      Either the name of a file as a string or path-like object, or a list
+    subtitles : str or list
+      Either the name of a subtitles file as a string or path-like object
+      or a list.
 
-    font
-      Name of the font to use. See ``TextClip.list('font')`` for
-      the list of fonts you can use on your computer.
+    font : str, optional
+      Name of the font to use. See ``TextClip.list("font")`` for the list of
+      fonts you can use on your computer.
 
-    font size
+    font_size : int, optional
       Size of the font to use.
 
-    color
-      Color of the text. See ``TextClip.list('color')`` for a
-      list of acceptable names.
+    color : str, optional
+      Color of the text. See ``TextClip.list("color")`` for a list of
+      acceptable names.
 
-    stroke_color
-      Color of the stroke (=contour line) of the text. If ``None``,
-      there will be no stroke.
+    stroke_color : str, optional
+      Color of the stroke (contour line) of the text. If ``None``, there will
+      be no stroke.
 
-    stroke_width
-      Width of the stroke, in pixels. Can be a float, like 1.5.
+    stroke_width : float, optional
+      Width of the stroke, in pixels. Can be a float, like ``1.5`` .
 
-    auto_wrap
-      Specifies if auto-wrapping of text is required (True or False)
+    auto_wrap : bool, optional
+      Specifies if auto-wrapping of text is required (True or False).
 
-    video_width
-      Compulsory parameter with auto_wrap to specify the width of the video
-      (i.e. maximum text wrapping width)
+    video_width : int, optional
+      Compulsory parameter with ``auto_wrap`` to specify the width of the video
+      (i.e. maximum text wrapping width).
 
-    encoding
+    encoding : str, optional
       Optional, specifies srt file encoding.
       Any standard Python encoding is allowed (listed at
       https://docs.python.org/3.8/library/codecs.html#standard-encodings)
+
 
     Examples
     --------
 
     >>> from moviepy.video.tools.subtitles import SubtitlesClip
     >>> from moviepy.video.io.VideoFileClip import VideoFileClip
+    >>>
     >>> sub = SubtitlesClip("subtitles.srt", auto_wrap=True, video_width=1280)
-    >>> sub = SubtitlesClip("subtitles.srt", encoding='utf-8')
+    >>> sub = SubtitlesClip("subtitles.srt", encoding="utf-8")
+    >>>
     >>> myvideo = VideoFileClip("myvideo.avi")
     >>> final = CompositeVideoClip([clip, subtitles])
     >>> final.write_videofile("final.mp4", fps=myvideo.fps)
