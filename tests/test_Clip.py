@@ -104,8 +104,8 @@ def test_clip_with_end(duration, start, end, expected_start, expected_duration):
     ),
     (
         (5, None, None, 3, True, 3, 0, 3),
-        (5, 1, 6, 3, True, 3, 1, 4),  # change end
-        (5, 1, 6, 3, False, 3, 3, 6),  # change start
+        ("00:00:05", 1, 6, 3, True, 3, 1, 4),  # change end
+        ((0, 0, 5), 1, 6, 3, False, 3, 3, 6),  # change start
         (5, None, None, None, False, ValueError, None, None),
     ),
 )
