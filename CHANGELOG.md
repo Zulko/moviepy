@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
 - `audio.fx.audio_delay` FX [\#1481](https://github.com/Zulko/moviepy/pull/1481)
 - `start_time` and `end_time` optional arguments to `multiply_volume` FX which allow to specify a range applying the transformation [\#1572](https://github.com/Zulko/moviepy/pull/1572)
+- `loop` argument support writing GIFs with ffmpeg for `write_gif` and `write_gif_with_tempfiles` [\#1605](https://github.com/Zulko/moviepy/pull/1605)
 
 ### Changed <!-- for changes in existing functionality -->
 - Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
