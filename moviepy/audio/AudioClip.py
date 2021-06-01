@@ -220,7 +220,7 @@ class AudioClip(Clip):
           when writing the file
 
         logger
-          Either 'bar' or None or any Proglog logger
+          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
         """
         if not fps:

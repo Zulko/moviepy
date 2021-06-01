@@ -6,10 +6,12 @@ import os
 import pytest
 from PIL import Image
 
+from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
+from moviepy.video.io.gif_writers import write_gif
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.drawing import color_gradient
-from moviepy.video.VideoClip import BitmapClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip
 
 from tests.test_helper import TMP_DIR
 
@@ -171,3 +173,78 @@ def test_ffmpeg_write_image(size, logfile, pixel_format, expected_result):
     for i in range(im.width):
         for j in range(im.height):
             assert im.getpixel((i, j)) == expected_result[j][i]
+
+
+@pytest.mark.parametrize("loop", (None, 2), ids=("loop=None", "loop=2"))
+@pytest.mark.parametrize(
+    "opt",
+    (False, "OptimizeTransparency"),
+    ids=("opt=False", "opt=OptimizeTransparency"),
+)
+@pytest.mark.parametrize("clip_class", ("BitmapClip", "ColorClip"))
+@pytest.mark.parametrize(
+    "with_mask", (False, True), ids=("with_mask=False", "with_mask=True")
+)
+@pytest.mark.parametrize("pixel_format", ("invalid", None))
+def test_write_gif(clip_class, opt, loop, with_mask, pixel_format):
+    filename = os.path.join(TMP_DIR, "moviepy_write_gif.gif")
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    fps = 10
+
+    if clip_class == "BitmapClip":
+        original_clip = BitmapClip([["R"], ["G"], ["B"]], fps=fps).with_duration(0.3)
+    else:
+        original_clip = concatenate_videoclips(
+            [
+                ColorClip(
+                    (1, 1),
+                    color=color,
+                )
+                .with_duration(0.1)
+                .with_fps(fps)
+                for color in [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+            ]
+        )
+    if with_mask:
+        original_clip = original_clip.with_mask(
+            ColorClip((1, 1), color=1, is_mask=True).with_fps(fps).with_duration(0.3)
+        )
+
+    kwargs = {}
+    if pixel_format is not None:
+        kwargs["pixel_format"] = pixel_format
+
+    write_gif(
+        original_clip,
+        filename,
+        fps=fps,
+        with_mask=with_mask,
+        program="ffmpeg",
+        logger=None,
+        opt=opt,
+        loop=loop,
+        **kwargs,
+    )
+
+    if pixel_format != "invalid":
+
+        final_clip = VideoFileClip(filename)
+
+        r, g, b = final_clip.get_frame(0)[0][0]
+        assert r == 252
+        assert g == 0
+        assert b == 0
+
+        r, g, b = final_clip.get_frame(0.1)[0][0]
+        assert r == 0
+        assert g == 252
+        assert b == 0
+
+        r, g, b = final_clip.get_frame(0.2)[0][0]
+        assert r == 0
+        assert g == 0
+        assert b == 255
+
+        assert final_clip.duration == (loop or 1) * round(original_clip.duration, 6)

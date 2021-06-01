@@ -5,10 +5,11 @@ from moviepy.decorators import requires_duration
 def loop(clip, n=None, duration=None):
     """
     Returns a clip that plays the current clip in an infinite loop.
-    Ideal for clips coming from gifs.
+    Ideal for clips coming from GIFs.
 
     Parameters
     ----------
+
     n
       Number of times the clip should be played. If `None` the
       the clip will loop indefinitely (i.e. with no set duration).
