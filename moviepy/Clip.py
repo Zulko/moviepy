@@ -258,7 +258,7 @@ class Clip:
 
     @apply_to_mask
     @apply_to_audio
-    @convert_parameter_to_seconds(["t"])
+    @convert_parameter_to_seconds(["duration"])
     @outplace
     def with_duration(self, duration, change_end=True):
         """Returns a copy of the clip, with the  ``duration`` attribute set to
