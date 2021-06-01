@@ -22,6 +22,16 @@ def find_objects(clip, size_threshold=500, preview=False):
     preview : bool, optional
       Previews with matplotlib the different objects found in the image before
       applying the size threshold. Requires matplotlib installed.
+
+
+    Examples
+    --------
+
+    >>> clip = ImageClip("media/afterimage.png")
+    >>> objects = find_objects(clip)
+    >>>
+    >>> print(len(objects))
+    >>> print([obj_.screenpos for obj_ in objects])
     """
     image = clip.get_frame(0)
     if not clip.mask:  # pragma: no cover
