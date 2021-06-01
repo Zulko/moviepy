@@ -15,24 +15,21 @@ from moviepy.tools import cross_platform_popen_params
 class FFMPEG_VideoWriter:
     """A class for FFMPEG-based video writing.
 
-    A class to write videos using ffmpeg. ffmpeg will write in a large
-    choice of formats.
-
     Parameters
     ----------
 
-    filename
-      Any filename like 'video.mp4' etc. but if you want to avoid
-      complications it is recommended to use the generic extension
-      '.avi' for all your videos.
+    filename : str
+      Any filename like ``"video.mp4"`` etc. but if you want to avoid
+      complications it is recommended to use the generic extension ``".avi"``
+      for all your videos.
 
-    size
-      Size (width,height) of the output video in pixels.
+    size : tuple or list
+      Size of the output video in pixels (width, height).
 
-    fps
+    fps : int
       Frames per second in the output video file.
 
-    codec
+    codec : str, optional
       FFMPEG codec. It seems that in terms of quality the hierarchy is
       'rawvideo' = 'png' > 'mpeg4' > 'libx264'
       'png' manages the same lossless quality as 'rawvideo' but yields
@@ -44,29 +41,37 @@ class FFMPEG_VideoWriter:
       another pixel format is used, and this can cause problem in some
       video readers.
 
-    audiofile
-      Optional: The name of an audio file that will be incorporated
-      to the video.
+    audiofile : str, optional
+      The name of an audio file that will be incorporated to the video.
 
-    preset
+    preset : str, optional
       Sets the time that FFMPEG will take to compress the video. The slower,
-      the better the compression rate. Possibilities are: ultrafast,superfast,
-      veryfast, faster, fast, medium (default), slow, slower, veryslow,
-      placebo.
+      the better the compression rate. Possibilities are: ``"ultrafast"``,
+      ``"superfast"``, ``"veryfast"``, ``"faster"``, ``"fast"``,  ``"medium"``
+      (default), ``"slow"``, ``"slower"``, ``"veryslow"``, ``"placebo"``.
 
-    bitrate
+    bitrate : str, optional
       Only relevant for codecs which accept a bitrate. "5000k" offers
       nice results in general.
 
-    with_mask
-      Boolean. Set to ``True`` if there is a mask in the video to be
-      encoded.
+    with_mask : bool, optional
+      Set to ``True`` if there is a mask in the video to be encoded.
 
-    pixel_format
+    pixel_format : str, optional
       Optional: Pixel format for the output video file. If is not specified
-      'rgb24' will be used as the default format unless ``with_mask`` is set
-      as ``True``, then 'rgba' will be used.
+      ``"rgb24"`` will be used as the default format unless ``with_mask`` is
+      set as ``True``, then ``"rgba"`` will be used.
 
+    logfile : int, optional
+      File descriptor for logging output. If not defined, ``subprocess.PIPE``
+      will be used. Defined using another value, the log level of the ffmpeg
+      command will be "info", otherwise "error".
+
+    threads : int, optional
+      Number of threads used to write the output with ffmpeg.
+
+    ffmpeg_params : list, optional
+      Additional parameters passed to ffmpeg command.
     """
 
     def __init__(
@@ -90,7 +95,7 @@ class FFMPEG_VideoWriter:
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
-        if not pixel_format:
+        if not pixel_format:  # pragma: no cover
             pixel_format = "rgba" if with_mask else "rgb24"
 
         # order is important
@@ -268,7 +273,26 @@ def ffmpeg_write_video(
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
-    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg."""
+    """Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg.
+
+    Parameters
+    ----------
+
+    filename : str
+        Path to the output file.
+
+    image : np.ndarray
+        Numpy array with the image data.
+
+    logfile : bool, optional
+        Writes the ffmpeg output inside a logging file (``True``) or not
+        (``False``).
+
+    pixel_format : str, optional
+        Pixel format for ffmpeg. If not defined, it will be discovered checking
+        if the image data contains an alpha channel (``"rgba"``) or not
+        (``"rgb24"``).
+    """
     if image.dtype != "uint8":
         image = image.astype("uint8")
     if not pixel_format:
@@ -298,7 +322,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     )
 
     proc = sp.Popen(cmd, **popen_params)
-    out, err = proc.communicate(image.tostring())
+    out, err = proc.communicate(image.tobytes())
 
     if proc.returncode:
         error = (
