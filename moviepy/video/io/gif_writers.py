@@ -30,8 +30,8 @@ def write_gif_with_tempfiles(
     loop=0,
     dispose=True,
     colors=None,
-    logger="bar",
     pixel_format=None,
+    logger="bar",
 ):
     """Write the VideoClip to a GIF file.
 
@@ -41,6 +41,53 @@ def write_gif_with_tempfiles(
     docstring), but writes every frame to a file instead of passing
     them in the RAM. Useful on computers with little RAM.
 
+    Parameters
+    ----------
+
+    clip : moviepy.video.VideoClip.VideoClip
+      The clip from which the frames will be extracted to create the GIF image.
+
+    filename : str
+      Name of the resulting gif file.
+
+    fps : int, optional
+      Number of frames per second. If it isn't provided, then the function will
+      look for the clip's ``fps`` attribute.
+
+    program : str, optional
+      Software to use for the conversion, either ``"ImageMagick"`` or
+      ``"ffmpeg"``.
+
+    opt : str, optional
+      ImageMagick only optimalization to apply, either ``"optimizeplus"`` or
+      ``"OptimizeTransparency"``. Doesn't takes effect if ``program="ffmpeg"``.
+
+    fuzz : float, optional
+      ImageMagick only compression option which compresses the GIF by
+      considering that the colors that are less than ``fuzz`` different are in
+      fact the same.
+
+    loop : int, optional
+      Repeat the clip using ``loop`` iterations in the resulting GIF.
+
+    dispose : bool, optional
+      ImageMagick only option which, when enabled, the ImageMagick binary will
+      take the argument `-dispose 2`, clearing the frame area with the
+      background color, otherwise it will be defined as ``-dispose 1`` which
+      will not dispose, just overlays next frame image.
+
+    colors : int, optional
+      ImageMagick only option for color reduction. Defines the maximum number
+      of colors that the output image will have.
+
+    pixel_format : str, optional
+      FFmpeg pixel format for the output gif file. If is not specified
+      ``"rgb24"`` will be used as the default format unless ``clip.mask``
+      exist, then ``"rgba"`` will be used. Doesn't takes effect if
+      ``program="ImageMagick"``.
+
+    logger : str, optional
+      Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
     """
     logger = proglog.default_bar_logger(logger)
     file_root, ext = os.path.splitext(filename)
@@ -151,8 +198,8 @@ def write_gif(
     loop=0,
     dispose=True,
     colors=None,
-    logger="bar",
     pixel_format=None,
+    logger="bar",
 ):
     """Write the VideoClip to a GIF file, without temporary files.
 
@@ -162,6 +209,9 @@ def write_gif(
 
     Parameters
     ----------
+
+    clip : moviepy.video.VideoClip.VideoClip
+      The clip from which the frames will be extracted to create the GIF image.
 
     filename : str
       Name of the resulting gif file.
