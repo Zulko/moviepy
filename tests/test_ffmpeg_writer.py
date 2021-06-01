@@ -175,8 +175,6 @@ def test_ffmpeg_write_image(size, logfile, pixel_format, expected_result):
             assert im.getpixel((i, j)) == expected_result[j][i]
 
 
-# ImageMagick only argument, here to check if doesn't crash nothing
-# using `program="ffmpeg"`
 @pytest.mark.parametrize("loop", (None, 2), ids=("loop=None", "loop=2"))
 @pytest.mark.parametrize(
     "opt",
