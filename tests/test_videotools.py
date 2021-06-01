@@ -24,6 +24,7 @@ from moviepy.video.tools.cuts import (
     find_video_period,
 )
 from moviepy.video.tools.drawing import circle, color_gradient, color_split
+from moviepy.video.tools.interpolators import Interpolator, Trajectory
 from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import FONT, TMP_DIR, get_mono_wave, get_stereo_wave
@@ -812,6 +813,113 @@ def test_color_split(
     )
 
     assert np.array_equal(result, expected_result)
+
+
+@pytest.mark.parametrize(
+    ("ttss", "tt", "ss", "left", "right", "interpolation_results"),
+    (
+        pytest.param(
+            [[0, 3], [1, 4], [2, 5]],
+            None,
+            None,
+            -1,
+            6,
+            {
+                3: 6,
+                4: 6,  # right
+                -1: -1,
+                -2: -1,  # left
+                1: 4,
+                2: 5,  # values
+            },
+            id="ttss",
+        ),
+        pytest.param(
+            None,
+            [0, 1, 2],
+            [3, 4, 5],
+            -1,
+            39,
+            {
+                3: 39,
+                4: 39,  # right
+                -1: -1,
+                -2: -1,  # left
+                1: 4,
+                2: 5,  # values
+            },
+            id="tt-ss",
+        ),
+    ),
+)
+def test_Interpolator(ttss, tt, ss, left, right, interpolation_results):
+    interpolator = Interpolator(ttss=ttss, tt=tt, ss=ss, left=left, right=right)
+    for value, expected_result in interpolation_results.items():
+        assert interpolator(value) == expected_result
+
+
+@pytest.mark.parametrize(
+    ("tt", "xx", "yy", "interpolation_results"),
+    (
+        pytest.param(
+            [0, 1, 2],
+            [0, 2, 3],
+            [0, 2, 3],
+            {0.5: [1, 1], 1: [2, 2], 4: [3, 3], -1: [0, 0]},
+            id="simple",
+        ),
+        pytest.param(
+            [0, 1, 2],
+            [0, -5, -3],
+            [-2, 2, -5],
+            {0.5: [-2.5, 0], 1: [-5, 2], 4: [-3, -5], -1: [0, -2]},
+            id="negative",
+        ),
+    ),
+)
+def test_Trajectory(tt, xx, yy, interpolation_results):
+    trajectory = Trajectory(tt, xx, yy)
+    for value, expected_result in interpolation_results.items():
+        assert np.array_equal(trajectory(value), np.array(expected_result))
+
+
+def test_Trajectory_addx():
+    trajectory = Trajectory([0, 1], [0], [0, 1]).addx(1)
+    assert len(trajectory.xx) == 1
+    assert trajectory.xx[0] == 1
+
+
+def test_Trajectory_addy():
+    trajectory = Trajectory([0, 1], [0], [0, 1]).addy(1)
+    assert len(trajectory.yy) == 2
+    assert trajectory.yy[0] == 1
+    assert trajectory.yy[1] == 2
+
+
+def test_Trajectory_from_to_file():
+    filename = os.path.join(TMP_DIR, "moviepy_Trajectory_from_to_file.txt")
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    trajectory_file_content = """# t(ms)	x	y
+0	554	100
+166	474	90
+333	384	91
+"""
+
+    with open(filename, "w") as f:
+        f.write(trajectory_file_content)
+
+    trajectory = Trajectory.from_file(filename)
+
+    assert np.array_equal(trajectory.xx, np.array([554, 474, 384]))
+    assert np.array_equal(trajectory.yy, np.array([100, 90, 91]))
+    assert np.array_equal(trajectory.tt, np.array([0, 0.166, 0.333]))
+
+    trajectory.to_file(filename)
+
+    with open(filename, "r") as f:
+        assert f.read() == "\n".join(trajectory_file_content.split("\n")[1:])
 
 
 @pytest.mark.parametrize(
