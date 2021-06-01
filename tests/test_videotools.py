@@ -962,6 +962,7 @@ def test_Trajectory_from_to_file():
                 [896, 435],
                 [1022, 435],
             ],
+            id="filename=media/afterimage.png-10",
         ),
     ),
 )
