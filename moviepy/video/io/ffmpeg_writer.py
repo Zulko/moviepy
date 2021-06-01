@@ -70,7 +70,7 @@ class FFMPEG_VideoWriter:
     threads : int, optional
       Number of threads used to write the output with ffmpeg.
 
-    ffmpeg_params : dict, optional
+    ffmpeg_params : list, optional
       Additional parameters passed to ffmpeg command.
     """
 
@@ -285,7 +285,8 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
         Numpy array with the image data.
 
     logfile : bool, optional
-        Writes a logfile with the FFmpeg output (``True``) or not (``False``).
+        Writes the ffmpeg output inside a logging file (``True``) or not
+        (``False``).
 
     pixel_format : str, optional
         Pixel format for ffmpeg. If not defined, it will be discovered checking
