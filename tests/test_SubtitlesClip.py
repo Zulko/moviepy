@@ -7,7 +7,7 @@ import pytest
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
-from moviepy.video.VideoClip import ColorClip, TextClip
+from moviepy.video.VideoClip import ColorClip
 
 from tests.test_helper import FONT, TMP_DIR
 
@@ -32,17 +32,9 @@ def test_subtitles():
     myvideo = concatenate_videoclips([red, green, blue])
     assert myvideo.duration == 30
 
-    generator = lambda txt: TextClip(
-        txt,
-        font=FONT,
-        size=(800, 600),
-        font_size=24,
-        method="caption",
-        align="South",
-        color="white",
+    subtitles = SubtitlesClip(
+        "media/subtitles.srt", font=FONT, video_width=800, font_size=24, color="white"
     )
-
-    subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
     final.subclip(0, 0.5).write_videofile(
         os.path.join(TMP_DIR, "subtitles.mp4"),
@@ -52,7 +44,9 @@ def test_subtitles():
 
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
 
-    subtitles = SubtitlesClip(MEDIA_SUBTITLES_DATA, generator)
+    subtitles = SubtitlesClip(
+        MEDIA_SUBTITLES_DATA, font=FONT, video_width=800, font_size=24, color="white"
+    )
     assert subtitles.subtitles == MEDIA_SUBTITLES_DATA
 
 
