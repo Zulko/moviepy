@@ -51,7 +51,8 @@ jobs:
         echo $PYTHONHOME
     - name: Install dependencies
       run: |
-        brew install imagemagick pango
+        brew install imagemagick --build-from-source
+        brew install pango
         # needed for installing matplotlib
         brew install pkg-config
         python -m pip install --upgrade wheel setuptools coveralls
