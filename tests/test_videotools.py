@@ -9,6 +9,11 @@ import sys
 import numpy as np
 import pytest
 
+try:
+    import scipy
+except ImportError:
+    scipy = None
+
 from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.audio.tools.cuts import find_audio_period
@@ -923,6 +928,7 @@ def test_Trajectory_from_to_file():
         assert f.read() == "\n".join(trajectory_file_content.split("\n")[1:])
 
 
+@pytest.mark.skipif(not scipy, reason="Requires scipy installed")
 @pytest.mark.parametrize(
     ("filename", "expected_screenpos"),
     (
