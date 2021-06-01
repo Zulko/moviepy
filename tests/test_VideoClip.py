@@ -3,16 +3,19 @@ import os
 
 import numpy as np
 import pytest
+from PIL import Image
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.fx.mask_color import mask_color
 from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
-from tests.test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, get_stereo_wave, get_test_video
 
 
 def test_aspect_ratio():
@@ -20,8 +23,37 @@ def test_aspect_ratio():
     assert clip.aspect_ratio == 1.5
 
 
+@pytest.mark.parametrize(
+    ("duration", "fps", "expected_n_frames"),
+    (
+        (1, 60, 60),
+        (0.1, 100, 10),
+        (2.4, 60, 144),
+    ),
+)
+def test_n_frames(duration, fps, expected_n_frames):
+    clip = VideoClip(duration=duration).with_fps(fps)
+    assert clip.n_frames == expected_n_frames
+
+
+def test_with_audio():
+    clip = VideoClip(duration=1).with_fps(1)
+    assert clip.audio is None
+
+    audio_clip = AudioClip(get_stereo_wave(), duration=1, fps=22050)
+    assert clip.with_audio(audio_clip).audio is audio_clip
+
+
+def test_without_audio():
+    audio_clip = AudioClip(get_stereo_wave(), duration=1, fps=22050)
+    clip = VideoClip(duration=1).with_fps(1).with_audio(audio_clip)
+
+    assert clip.audio is audio_clip
+    assert clip.without_audio().audio is None
+
+
 def test_check_codec():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "not_a_video.mas")
     try:
         clip.write_videofile(location)
@@ -35,7 +67,7 @@ def test_check_codec():
 
 def test_write_frame_errors():
     """Checks error cases return helpful messages."""
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "unlogged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec")
@@ -54,7 +86,7 @@ def test_write_frame_errors_with_redirected_logs():
     """Checks error cases return helpful messages even when logs redirected.
     See https://github.com/Zulko/moviepy/issues/877
     """
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+    clip = get_test_video()
     location = os.path.join(TMP_DIR, "logged-write.mp4")
     with pytest.raises(IOError) as e:
         clip.write_videofile(location, codec="nonexistent-codec", write_logfile=True)
@@ -84,16 +116,67 @@ def test_write_videofiles_with_temp_audiofile_path():
     close_all_clips(locals())
 
 
-def test_save_frame():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
-    location = os.path.join(TMP_DIR, "save_frame.png")
-    clip.save_frame(location, t=0.5)
-    assert os.path.isfile(location)
-    close_all_clips(locals())
+@pytest.mark.parametrize("mask_color", (0, 0.5, 0.8, 1))
+@pytest.mark.parametrize(
+    "with_mask",
+    (False, True),
+    ids=("mask", ""),
+)
+@pytest.mark.parametrize("t", (0, "00:00:01", (0, 0, 2)), ids=("t=0", "t=1", "t=2"))
+@pytest.mark.parametrize(
+    "frames",
+    (
+        pytest.param(
+            [["RR", "RR"], ["GG", "GG"], ["BB", "BB"]],
+            id="RGB 2x2",
+        ),
+        pytest.param(
+            [["O", "O"], ["W", "W"], ["B", "B"]],
+            id="OWB 2x1",
+        ),
+    ),
+)
+def test_save_frame(with_mask, t, mask_color, frames):
+    filename = os.path.join(TMP_DIR, "moviepy_VideoClip_save_frame.png")
+    if os.path.isfile(filename):
+        os.remove(filename)
+
+    width, height = (len(frames[0][0]), len(frames[0]))
+
+    clip = BitmapClip(frames, fps=1)
+    if with_mask:
+        mask = ColorClip(color=mask_color, is_mask=True, size=(width, height))
+        clip = clip.with_mask(mask)
+
+    clip.save_frame(filename, t)
+
+    t = int(convert_to_seconds(t))
+
+    # expected RGB
+    e_r, e_g, e_b = BitmapClip.DEFAULT_COLOR_DICT[frames[t][0][0]]
+
+    im = Image.open(filename, mode="r")
+    assert im.width == width
+    assert im.height == height
+
+    for i in range(im.width):
+        for j in range(im.height):
+            rgba = im.getpixel((i, j))
+            if len(rgba) == 4:
+                r, g, b, a = rgba
+            else:
+                r, g, b = rgba
+
+            assert r == e_r
+            assert g == e_g
+            assert b == e_b
+
+            if with_mask:
+                assert round(a / 254, 2) == mask_color
 
 
 def test_write_image_sequence():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     locations = clip.write_images_sequence(os.path.join(TMP_DIR, "frame%02d.png"))
     for location in locations:
         assert os.path.isfile(location)
@@ -101,7 +184,7 @@ def test_write_image_sequence():
 
 
 def test_write_gif_imageio():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.8)
+    clip = get_test_video().subclip(0.2, 0.8)
     location = os.path.join(TMP_DIR, "imageio_gif.gif")
     clip.write_gif(location, program="imageio")
     assert os.path.isfile(location)
@@ -109,7 +192,7 @@ def test_write_gif_imageio():
 
 
 def test_write_gif_ffmpeg():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    clip = get_test_video().subclip(0.2, 0.4)
     location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
     clip.write_gif(location, program="ffmpeg")
     assert os.path.isfile(location)
@@ -117,7 +200,7 @@ def test_write_gif_ffmpeg():
 
 
 def test_write_gif_ffmpeg_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.4)
+    clip = get_test_video().subclip(0.2, 0.4)
     location = os.path.join(TMP_DIR, "ffmpeg_gif.gif")
     clip.write_gif(location, program="ffmpeg", pixel_format="bgr24")
     assert os.path.isfile(location)
@@ -125,7 +208,7 @@ def test_write_gif_ffmpeg_pixel_format():
 
 
 def test_write_gif_ffmpeg_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True)
     assert os.path.isfile(location)
@@ -133,7 +216,7 @@ def test_write_gif_ffmpeg_tmpfiles():
 
 
 def test_write_gif_ffmpeg_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
     clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
     assert os.path.isfile(location)
@@ -141,7 +224,7 @@ def test_write_gif_ffmpeg_tmpfiles_pixel_format():
 
 
 def test_write_gif_ImageMagick():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = get_test_video().subclip(0.2, 0.5)
     location = os.path.join(TMP_DIR, "imagemagick_gif.gif")
     clip.write_gif(location, program="ImageMagick")
     close_all_clips(locals())
@@ -150,7 +233,7 @@ def test_write_gif_ImageMagick():
 
 
 def test_write_gif_ImageMagick_tmpfiles():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True)
     assert os.path.isfile(location)
@@ -158,7 +241,7 @@ def test_write_gif_ImageMagick_tmpfiles():
 
 
 def test_write_gif_ImageMagick_tmpfiles_pixel_format():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.24)
+    clip = get_test_video().subclip(0.2, 0.24)
     location = os.path.join(TMP_DIR, "imagemagick_tmpfiles_gif.gif")
     clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
     assert os.path.isfile(location)
@@ -220,7 +303,7 @@ def test_setaudio_with_audiofile():
 
 
 def test_setopacity():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     clip = clip.with_opacity(0.5)
     clip = clip.on_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)
     location = os.path.join(TMP_DIR, "setopacity.mp4")
@@ -259,7 +342,7 @@ def test_compositing_with_same_layers():
 
 
 def test_toimageclip():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     clip = clip.to_ImageClip(t=0.1, duration=0.4)
     location = os.path.join(TMP_DIR, "toimageclip.mp4")
     clip.write_videofile(location, fps=24)
@@ -268,14 +351,14 @@ def test_toimageclip():
 
 
 def test_withoutaudio():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.6)
+    clip = get_test_video().subclip(0.2, 0.6)
     new_clip = clip.without_audio()
     assert new_clip.audio is None
     close_all_clips(locals())
 
 
 def test_setfps_withoutchangeduration():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    clip = get_test_video()
     # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
@@ -288,7 +371,7 @@ def test_setfps_withoutchangeduration():
 
 
 def test_setfps_withchangeduration():
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+    clip = get_test_video()
     # The sum is unique for each frame, so we can use it as a frame-ID
     # to check which frames are being preserved
     clip_sums = [f.sum() for f in clip.iter_frames()]
@@ -364,6 +447,18 @@ def test_videoclip_copy(copy_func):
     # nested objects of instances copies are not edited
     assert other_clip.mask is None
     assert other_clip.audio is None
+
+
+def test_afterimage():
+    ai = ImageClip("media/afterimage.png")
+    masked_clip = mask_color(ai, color=[0, 255, 1])  # for green
+    some_background_clip = ColorClip((800, 600), color=(255, 255, 255))
+    final_clip = CompositeVideoClip(
+        [some_background_clip, masked_clip], use_bgclip=True
+    ).with_duration(0.2)
+
+    filename = os.path.join(TMP_DIR, "afterimage.mp4")
+    final_clip.write_videofile(filename, fps=30, logger=None)
 
 
 if __name__ == "__main__":

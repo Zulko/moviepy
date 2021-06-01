@@ -2,6 +2,7 @@
 
 import os
 import subprocess
+import time
 
 import numpy as np
 import pytest
@@ -9,14 +10,16 @@ import pytest
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.config import FFMPEG_BINARY
 from moviepy.utils import close_all_clips
+from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
-from moviepy.video.VideoClip import BitmapClip
+from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip
 
-from tests.test_helper import TMP_DIR
+from tests.test_helper import TMP_DIR, get_mono_wave
 
 
 def test_ffmpeg_parse_infos():
@@ -106,19 +109,8 @@ def test_ffmpeg_parse_infos_multiple_audio_streams():
         TMP_DIR, "ffmpeg_parse_infos_multiple_streams.mp4"
     )
 
-    make_frame_440 = lambda t: np.array(
-        [
-            np.sin(440 * 2 * np.pi * t),
-        ]
-    )
-    make_frame_880 = lambda t: np.array(
-        [
-            np.sin(880 * 2 * np.pi * t),
-        ]
-    )
-
-    clip_440 = AudioClip(make_frame_440, fps=22050, duration=0.01)
-    clip_880 = AudioClip(make_frame_880, fps=22050, duration=0.01)
+    clip_440 = AudioClip(get_mono_wave(440), fps=22050, duration=0.01)
+    clip_880 = AudioClip(get_mono_wave(880), fps=22050, duration=0.01)
     clip_440.write_audiofile(clip_440_filepath)
     clip_880.write_audiofile(clip_880_filepath)
 
@@ -176,9 +168,7 @@ def test_ffmpeg_parse_infos_metadata():
         os.remove(filepath)
 
     # create video with 2 streams, video and audio
-    audioclip = AudioClip(
-        lambda t: np.sin(440 * 2 * np.pi * t), fps=22050
-    ).with_duration(1)
+    audioclip = AudioClip(get_mono_wave(440), fps=22050).with_duration(1)
     videoclip = BitmapClip([["RGB"]], fps=1).with_duration(1).with_audio(audioclip)
 
     # build metadata key-value pairs which will be passed to ``ffmpeg_params``
@@ -297,6 +287,27 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert streams[1]["stream_type"] == "video"
 
     assert len(d["metadata"].keys()) == 7
+
+
+def test_ffmpeg_parse_video_rotation():
+    d = ffmpeg_parse_infos("media/rotated-90-degrees.mp4")
+    assert d["video_rotation"] == 90
+    assert d["video_size"] == [1920, 1080]
+
+
+def test_correct_video_rotation():
+    """See https://github.com/Zulko/moviepy/pull/577"""
+    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+
+    corrected_rotation_filename = os.path.join(
+        TMP_DIR,
+        "correct_video_rotation.mp4",
+    )
+    clip.write_videofile(corrected_rotation_filename)
+
+    d = ffmpeg_parse_infos(corrected_rotation_filename)
+    assert "video_rotation" not in d
+    assert d["video_size"] == [1080, 1920]
 
 
 def test_ffmpeg_parse_infos_multiline_metadata():
@@ -598,6 +609,99 @@ def test_seeking_beyond_file_end():
         end_of_file_frame = reader.get_frame(30)
     assert np.array_equal(frame_1, end_of_file_frame)
     assert reader.pos == 30 * 24 + 1
+
+
+def test_release_of_file_via_close():
+    # Create a random video file.
+    red = ColorClip((256, 200), color=(255, 0, 0))
+    green = ColorClip((256, 200), color=(0, 255, 0))
+    blue = ColorClip((256, 200), color=(0, 0, 255))
+
+    red.fps = green.fps = blue.fps = 10
+
+    # Repeat this so we can see no conflicts.
+    for i in range(3):
+        # Get the name of a temporary file we can use.
+        local_video_filename = os.path.join(
+            TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+        )
+
+        clip = clips_array([[red, green, blue]]).with_duration(0.5)
+        clip.write_videofile(local_video_filename)
+
+        # Open it up with VideoFileClip.
+        video = VideoFileClip(local_video_filename)
+        video.close()
+        clip.close()
+
+        # Now remove the temporary file.
+        # This would fail on Windows if the file is still locked.
+
+        # This should succeed without exceptions.
+        os.remove(local_video_filename)
+
+    red.close()
+    green.close()
+    blue.close()
+
+
+def test_failure_to_release_file():
+    """Expected to fail. It demonstrates that there *is* a problem with not
+    releasing resources when running on Windows.
+
+    The real issue was that, as of movepy 0.2.3.2, there was no way around it.
+
+    See test_resourcerelease.py to see how the close() methods provide a solution.
+    """
+    # Get the name of a temporary file we can use.
+    local_video_filename = os.path.join(
+        TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
+    )
+
+    # Repeat this so we can see that the problems escalate:
+    for i in range(5):
+
+        # Create a random video file.
+        red = ColorClip((256, 200), color=(255, 0, 0))
+        green = ColorClip((256, 200), color=(0, 255, 0))
+        blue = ColorClip((256, 200), color=(0, 0, 255))
+
+        red.fps = green.fps = blue.fps = 30
+        video = clips_array([[red, green, blue]]).with_duration(1)
+
+        try:
+            video.write_videofile(local_video_filename)
+
+            # Open it up with VideoFileClip.
+            clip = VideoFileClip(local_video_filename)
+
+            # Normally a client would do processing here.
+
+            # All finished, so delete the clipS.
+            clip.close()
+            video.close()
+            del clip
+            del video
+
+        except IOError:
+            print(
+                "On Windows, this succeeds the first few times around the loop"
+                " but eventually fails."
+            )
+            print("Need to shut down the process now. No more tests in this file.")
+            return
+
+        try:
+            # Now remove the temporary file.
+            # This will fail on Windows if the file is still locked.
+
+            # In particular, this raises an exception with PermissionError.
+            # In  there was no way to avoid it.
+
+            os.remove(local_video_filename)
+            print("You are not running Windows, because that worked.")
+        except OSError:  # More specifically, PermissionError in Python 3.
+            print("Yes, on Windows this fails.")
 
 
 if __name__ == "__main__":

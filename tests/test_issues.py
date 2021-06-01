@@ -17,9 +17,11 @@ from tests.test_helper import TMP_DIR
 
 
 try:
-    import matplotlib
+    import matplotlib.pyplot
 except ImportError:
     matplotlib = None
+else:
+    matplotlib = True
 
 
 def test_issue_145():
@@ -277,7 +279,7 @@ def test_issue_368():
 
     from moviepy.video.io.bindings import mplfig_to_npimage
 
-    plt.switch_backend("agg")
+    plt.switch_backend("Agg")
 
     X, Y = make_moons(50, noise=0.1, random_state=2)  # semi-random data
 

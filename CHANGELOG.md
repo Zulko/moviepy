@@ -15,10 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for `copy.copy(clip)` and `copy.deepcopy(clip)` with same behaviour as `clip.copy()` [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 - `audio.fx.multiply_stereo_volume` to control volume by audio channels [\#1424](https://github.com/Zulko/moviepy/pull/1424)
 - Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
+- `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns data from all streams by FFmpeg inputs in attribute `inputs` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns metadata of the container in attribute `metadata` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
 - `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
 - `audio.fx.audio_delay` FX [\#1481](https://github.com/Zulko/moviepy/pull/1481)
+- `start_time` and `end_time` optional arguments to `multiply_volume` FX which allow to specify a range applying the transformation [\#1572](https://github.com/Zulko/moviepy/pull/1572)
+- `loop` argument support writing GIFs with ffmpeg for `write_gif` and `write_gif_with_tempfiles` [\#1605](https://github.com/Zulko/moviepy/pull/1605)
 
 ### Changed <!-- for changes in existing functionality -->
 - Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
@@ -29,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `colorx` FX by `multiply_color` [\#1475](https://github.com/Zulko/moviepy/pull/1475)
 - Renamed `speedx` FX by `multiply_speed` [\#1478](https://github.com/Zulko/moviepy/pull/1478)
 - `make_loopable` transition must be used as FX [\#1477](https://github.com/Zulko/moviepy/pull/1477)
+- `requests` package is no longer a dependency [\#1566](https://github.com/Zulko/moviepy/pull/1566)
+- `accel_decel` FX raises `ValueError` if `sooness` parameter value is lower than zero [\#1546](https://github.com/Zulko/moviepy/pull/1546)
+- `Clip.subclip` raise `ValueError` if `start_time >= clip.duration` (previously printing a message to stdout only if `start_time > clip.duration`) [\#1589](https://github.com/Zulko/moviepy/pull/1589)
+- Allow to pass times in `HH:MM:SS` format to `t` argument of `clip.show` method [\#1594](https://github.com/Zulko/moviepy/pull/1594)
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
@@ -36,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed <!-- for now removed features -->
 - `VideoFileClip.coreader` and `AudioFileClip.coreader` methods removed. Use `VideoFileClip.copy` and `AudioFileClip.copy` instead [\#1442](https://github.com/Zulko/moviepy/pull/1442)
 - `audio.fx.audio_loop` removed. Use `video.fx.loop` instead for all types of clip [\#1451](https://github.com/Zulko/moviepy/pull/1451)
+- `video.compositing.on_color` removed. Use `VideoClip.on_color` instead [\#1456](https://github.com/Zulko/moviepy/pull/1456)
 
 ### Fixed <!-- for any bug fixes -->
 - Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [\#1333](https://github.com/Zulko/moviepy/pull/1333)
@@ -44,10 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
 - Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
 - Fixed `freeze` FX was freezing at time minus 1 second as the end [\#1461](https://github.com/Zulko/moviepy/pull/1461)
-- `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
 - Fixed `Clip.cutout` transformation not being applied to audio [\#1468](https://github.com/Zulko/moviepy/pull/1468)
 - Fixed arguments inconsistency in `video.tools.drawing.color_gradient` [\#1467](https://github.com/Zulko/moviepy/pull/1467)
 - Fixed `fps` not defined in `CompositeAudioClip` at initialization [\#1462](https://github.com/Zulko/moviepy/pull/1462)
+- Fixed `clip.preview()` crashing at exit when running inside Jupyter Notebook in Windows [\#1537](https://github.com/Zulko/moviepy/pull/1537)
+- Fixed rotate FX not being applied to mask images [\#1399](https://github.com/Zulko/moviepy/pull/1399)
+- Fixed opacity error blitting VideoClips [\#1552](https://github.com/Zulko/moviepy/pull/1552)
+- Fixed rotation metadata of input not being taken into account rendering VideoClips [\#577](https://github.com/Zulko/moviepy/pull/577)
+- Fixed mono clips crashing when `audio_fadein` FX applied [\#1574](https://github.com/Zulko/moviepy/pull/1574)
+- Fixed mono clips crashing when `audio_fadeout` FX applied [\#1578](https://github.com/Zulko/moviepy/pull/1578)
+- Fixed scroll FX not being scrolling [\#1591](https://github.com/Zulko/moviepy/pull/1591)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)

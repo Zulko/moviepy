@@ -26,7 +26,7 @@ try:
 
     Image = PIL.Image
 
-except ImportError:
+except ImportError:  # pragma: no cover
     Image = None
 
 
@@ -137,17 +137,30 @@ def rotate(
             else:
                 if kw_value is not None:  # if not default value
                     warnings.warn(
-                        f"rotate '{kw_name}' argument not supported by your"
-                        " Pillow version and is being ignored. Minimum Pillow version"
-                        f" required: v{'.'.join(str(n) for n in min_version)}",
+                        f"rotate '{kw_name}' argument is not supported"
+                        " by your Pillow version and is being ignored. Minimum"
+                        " Pillow version required:"
+                        f" v{'.'.join(str(n) for n in min_version)}",
                         UserWarning,
                     )
 
+        # PIL expects uint8 type data. However a mask image has values in the
+        # range [0, 1] and is of float type.  To handle this we scale it up by
+        # a factor 'a' for use with PIL and then back again by 'a' afterwards.
+        if im.dtype == "float64":
+            # this is a mask image
+            a = 255.0
+        else:
+            a = 1
+
         # call PIL.rotate
-        return np.array(
-            Image.fromarray(np.array(im).astype(np.uint8)).rotate(
-                angle, expand=expand, resample=resample, **kwargs
+        return (
+            np.array(
+                Image.fromarray(np.array(a * im).astype(np.uint8)).rotate(
+                    angle, expand=expand, resample=resample, **kwargs
+                )
             )
+            / a
         )
 
     return clip.transform(filter, apply_to=["mask"])

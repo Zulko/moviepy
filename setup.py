@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """MoviePy setup script."""
 
+import os
 import sys
 from codecs import open
 
@@ -65,16 +66,17 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = None  # Explicitly set version to quieten static code checkers.
-exec(open("moviepy/version.py").read())  # loads __version__
+__version__ = None
+with open(os.path.join("moviepy", "version.py"), "r", "utf-8") as f:
+    __version__ = f.read().split(" ")[2].strip("\n").strip('"')
+
 
 # Define the requirements for specific execution needs.
 requires = [
-    "decorator>=4.0.2,<5.0",
+    "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
     "numpy>=1.17.3,<=1.20",
-    "requests>=2.8.1,<3.0",
     "proglog<=1.0.0",
 ]
 

@@ -7,6 +7,7 @@ import proglog
 from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import cross_platform_popen_params, subprocess_call
+from moviepy.video.fx.loop import loop as loop_fx
 
 
 try:
@@ -29,8 +30,8 @@ def write_gif_with_tempfiles(
     loop=0,
     dispose=True,
     colors=None,
-    logger="bar",
     pixel_format=None,
+    logger="bar",
 ):
     """Write the VideoClip to a GIF file.
 
@@ -40,6 +41,53 @@ def write_gif_with_tempfiles(
     docstring), but writes every frame to a file instead of passing
     them in the RAM. Useful on computers with little RAM.
 
+    Parameters
+    ----------
+
+    clip : moviepy.video.VideoClip.VideoClip
+      The clip from which the frames will be extracted to create the GIF image.
+
+    filename : str
+      Name of the resulting gif file.
+
+    fps : int, optional
+      Number of frames per second. If it isn't provided, then the function will
+      look for the clip's ``fps`` attribute.
+
+    program : str, optional
+      Software to use for the conversion, either ``"ImageMagick"`` or
+      ``"ffmpeg"``.
+
+    opt : str, optional
+      ImageMagick only optimalization to apply, either ``"optimizeplus"`` or
+      ``"OptimizeTransparency"``. Doesn't takes effect if ``program="ffmpeg"``.
+
+    fuzz : float, optional
+      ImageMagick only compression option which compresses the GIF by
+      considering that the colors that are less than ``fuzz`` different are in
+      fact the same.
+
+    loop : int, optional
+      Repeat the clip using ``loop`` iterations in the resulting GIF.
+
+    dispose : bool, optional
+      ImageMagick only option which, when enabled, the ImageMagick binary will
+      take the argument `-dispose 2`, clearing the frame area with the
+      background color, otherwise it will be defined as ``-dispose 1`` which
+      will not dispose, just overlays next frame image.
+
+    colors : int, optional
+      ImageMagick only option for color reduction. Defines the maximum number
+      of colors that the output image will have.
+
+    pixel_format : str, optional
+      FFmpeg pixel format for the output gif file. If is not specified
+      ``"rgb24"`` will be used as the default format unless ``clip.mask``
+      exist, then ``"rgba"`` will be used. Doesn't takes effect if
+      ``program="ImageMagick"``.
+
+    logger : str, optional
+      Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
     """
     logger = proglog.default_bar_logger(logger)
     file_root, ext = os.path.splitext(filename)
@@ -90,6 +138,9 @@ def write_gif_with_tempfiles(
         )
 
     elif program == "ffmpeg":
+        if loop:
+            clip = loop_fx(clip, n=loop)
+
         if not pixel_format:
             pixel_format = "rgba" if with_mask else "rgb24"
 
@@ -140,15 +191,15 @@ def write_gif(
     clip,
     filename,
     fps=None,
+    with_mask=True,
     program="ImageMagick",
     opt="OptimizeTransparency",
     fuzz=1,
-    with_mask=True,
     loop=0,
     dispose=True,
     colors=None,
-    logger="bar",
     pixel_format=None,
+    logger="bar",
 ):
     """Write the VideoClip to a GIF file, without temporary files.
 
@@ -159,44 +210,65 @@ def write_gif(
     Parameters
     ----------
 
-    filename
+    clip : moviepy.video.VideoClip.VideoClip
+      The clip from which the frames will be extracted to create the GIF image.
+
+    filename : str
       Name of the resulting gif file.
 
-    fps
-      Number of frames per second (see note below). If it
-        isn't provided, then the function will look for the clip's
-        ``fps`` attribute (VideoFileClip, for instance, have one).
+    fps : int, optional
+      Number of frames per second. If it isn't provided, then the function will
+      look for the clip's ``fps`` attribute.
 
-    program
-      Software to use for the conversion, either 'ImageMagick' or
-      'ffmpeg'.
+    with_mask : bool, optional
+      Includes tha mask of the clip in the output (the clip must have a mask
+      if this argument is ``True``).
 
-    opt
-      (ImageMagick only) optimalization to apply, either
-      'optimizeplus' or 'OptimizeTransparency'.
+    program : str, optional
+      Software to use for the conversion, either ``"ImageMagick"`` or
+      ``"ffmpeg"``.
 
-    fuzz
-      (ImageMagick only) Compresses the GIF by considering that
-      the colors that are less than fuzz% different are in fact
-      the same.
+    opt : str, optional
+      ImageMagick only optimalization to apply, either ``"optimizeplus"`` or
+      ``"OptimizeTransparency"``. Doesn't takes effect if ``program="ffmpeg"``.
 
-    pixel_format
-      Pixel format for the output gif file. If is not specified
-      'rgb24' will be used as the default format unless ``clip.mask``
-      exist, then 'rgba' will be used. This option is going to
-      be ignored if ``program=ImageMagick``.
+    fuzz : float, optional
+      ImageMagick only compression option which compresses the GIF by
+      considering that the colors that are less than ``fuzz`` different are in
+      fact the same.
+
+    loop : int, optional
+      Repeat the clip using ``loop`` iterations in the resulting GIF.
+
+    dispose : bool, optional
+      ImageMagick only option which, when enabled, the ImageMagick binary will
+      take the argument `-dispose 2`, clearing the frame area with the
+      background color, otherwise it will be defined as ``-dispose 1`` which
+      will not dispose, just overlays next frame image.
+
+    colors : int, optional
+      ImageMagick only option for color reduction. Defines the maximum number
+      of colors that the output image will have.
+
+    pixel_format : str, optional
+      FFmpeg pixel format for the output gif file. If is not specified
+      ``"rgb24"`` will be used as the default format unless ``clip.mask``
+      exist, then ``"rgba"`` will be used. Doesn't takes effect if
+      ``program="ImageMagick"``.
+
+    logger : str, optional
+      Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
 
-    Notes
-    -----
+    Examples
+    --------
 
-    The gif will be playing the clip in real time (you can
-    only change the frame rate). If you want the gif to be played
-    slower than the clip you will use ::
+    The gif will be playing the clip in real time, you can only change the
+    frame rate. If you want the gif to be played slower than the clip you will
+    use:
 
-        >>> # slow down clip 50% and make it a gif
-        >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
-
+    >>> # slow down clip 50% and make it a GIF
+    >>> myClip.multiply_speed(0.5).write_gif('myClip.gif')
     """
     #
     # We use processes chained with pipes.
@@ -243,6 +315,9 @@ def write_gif(
     )
 
     if program == "ffmpeg":
+        if loop:
+            clip = loop_fx(clip, n=loop)
+
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = sp.DEVNULL
 

@@ -10,16 +10,18 @@ from tests.test_helper import TMP_DIR
 
 
 try:
-    import matplotlib
+    import matplotlib.pyplot
 except ImportError:
     matplotlib = None
+else:
+    matplotlib = True
 
 
 @pytest.mark.skipif(not matplotlib, reason="no matplotlib")
 def test_matplotlib_simple_example():
     import matplotlib.pyplot as plt
 
-    plt.switch_backend("agg")
+    plt.switch_backend("Agg")
 
     x = np.linspace(-2, 2, 200)
     duration = 0.5
@@ -33,4 +35,8 @@ def test_matplotlib_simple_example():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame, duration=duration)
-    animation.write_gif(os.path.join(TMP_DIR, "matplotlib.gif"), fps=20)
+
+    filename = os.path.join(TMP_DIR, "matplotlib.gif")
+    animation.write_gif(filename, fps=20)
+
+    assert os.path.isfile(filename)
