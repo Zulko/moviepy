@@ -307,7 +307,7 @@ class VideoClip(Clip):
           output file in them.
 
         logger
-          Either "bar" for progress bar or None or any Proglog logger.
+          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
         pixel_format
           Pixel format for the output video file.
@@ -422,7 +422,7 @@ class VideoClip(Clip):
           will save the clip's mask (if any) as an alpha canal (PNGs only).
 
         logger
-          Either 'bar' (progress bar) or None or any Proglog logger.
+          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
 
         Returns

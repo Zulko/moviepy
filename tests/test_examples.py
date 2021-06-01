@@ -35,4 +35,8 @@ def test_matplotlib_simple_example():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame, duration=duration)
-    animation.write_gif(os.path.join(TMP_DIR, "matplotlib.gif"), fps=20)
+
+    filename = os.path.join(TMP_DIR, "matplotlib.gif")
+    animation.write_gif(filename, fps=20)
+
+    assert os.path.isfile(filename)

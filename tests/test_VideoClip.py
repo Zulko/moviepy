@@ -10,9 +10,10 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.tools import convert_to_seconds
 from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.fx.mask_color import mask_color
 from moviepy.video.fx.multiply_speed import multiply_speed
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import BitmapClip, ColorClip, VideoClip
+from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import TMP_DIR, get_stereo_wave, get_test_video
 
@@ -446,6 +447,18 @@ def test_videoclip_copy(copy_func):
     # nested objects of instances copies are not edited
     assert other_clip.mask is None
     assert other_clip.audio is None
+
+
+def test_afterimage():
+    ai = ImageClip("media/afterimage.png")
+    masked_clip = mask_color(ai, color=[0, 255, 1])  # for green
+    some_background_clip = ColorClip((800, 600), color=(255, 255, 255))
+    final_clip = CompositeVideoClip(
+        [some_background_clip, masked_clip], use_bgclip=True
+    ).with_duration(0.2)
+
+    filename = os.path.join(TMP_DIR, "afterimage.mp4")
+    final_clip.write_videofile(filename, fps=30, logger=None)
 
 
 if __name__ == "__main__":
