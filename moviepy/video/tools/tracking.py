@@ -42,6 +42,9 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     Parameters
     ----------
 
+    clip : video.VideoClip.VideoClip
+      MoviePy video clip to track.
+
     t1 : float or str or tuple, optional
       Start time to to track (defaults is start of the clip). Can be expressed
       in seconds like ``15.35``, in ``(min, sec)``, in ``(hour, min, sec)``,
@@ -56,12 +59,12 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
       Number of frames per second to freeze on. If None, the clip's
       fps attribute is used instead.
 
-    n_objects: int, optional
+    n_objects : int, optional
       Number of objects to click on each frame.
 
-    savefile: str, optional
-      If provided, the result is saved to a file, which makes
-      it easier to edit and re-use later.
+    savefile : str, optional
+      If provided, the result is saved to a file, which makes it easier to edit
+      and re-use later.
 
 
     Examples
