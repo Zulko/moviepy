@@ -25,6 +25,15 @@ from moviepy.video.tools.cuts import (
 )
 from moviepy.video.tools.drawing import circle, color_gradient, color_split
 from moviepy.video.tools.interpolators import Interpolator, Trajectory
+
+
+try:
+    import scipy
+except ImportError:
+    scipy = None
+else:
+    from moviepy.video.tools.segmenting import find_objects
+
 from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import FONT, TMP_DIR, get_mono_wave, get_stereo_wave
@@ -920,6 +929,50 @@ def test_Trajectory_from_to_file():
 
     with open(filename, "r") as f:
         assert f.read() == "\n".join(trajectory_file_content.split("\n")[1:])
+
+
+@pytest.mark.skipif(not scipy, reason="Requires scipy installed")
+@pytest.mark.parametrize(
+    ("filename", "expected_screenpos"),
+    (
+        pytest.param(
+            "media/python_logo.png",
+            [
+                [2, 2],
+                [78, 16],
+                [108, 16],
+                [137, 8],
+                [156, 0],
+                [184, 16],
+                [214, 16],
+            ],
+            id="filename=media/python_logo.png-7",
+        ),
+        pytest.param(
+            "media/afterimage.png",
+            [
+                [56, 402],
+                [177, 396],
+                [324, 435],
+                [453, 435],
+                [535, 396],
+                [535, 438],
+                [589, 435],
+                [776, 435],
+                [896, 435],
+                [1022, 435],
+            ],
+            id="filename=media/afterimage.png-10",
+        ),
+    ),
+)
+def test_find_objects(filename, expected_screenpos):
+    clip = ImageClip(filename)
+    objects = find_objects(clip)
+
+    assert len(objects) == len(expected_screenpos)
+    for i, object_ in enumerate(objects):
+        assert np.array_equal(object_.screenpos, np.array(expected_screenpos[i]))
 
 
 @pytest.mark.parametrize(

@@ -8,11 +8,33 @@ def find_objects(clip, size_threshold=500, preview=False):
     """Returns a list of ImageClips representing each a separate object on
     the screen.
 
-    size_threshold : all objects found with size < size_threshold will be
-         considered false positives and will be removed
+    Parameters
+    ----------
+
+    clip : video.VideoClip.ImageClip
+      MoviePy video clip where the objects will be searched.
+
+    size_threshold : float, optional
+      Minimum size of what is considered an object. All objects found with
+      ``size < size_threshold`` will be considered false positives and will
+      be removed.
+
+    preview : bool, optional
+      Previews with matplotlib the different objects found in the image before
+      applying the size threshold. Requires matplotlib installed.
+
+
+    Examples
+    --------
+
+    >>> clip = ImageClip("media/afterimage.png")
+    >>> objects = find_objects(clip)
+    >>>
+    >>> print(len(objects))
+    >>> print([obj_.screenpos for obj_ in objects])
     """
     image = clip.get_frame(0)
-    if not clip.mask:
+    if not clip.mask:  # pragma: no cover
         clip = clip.add_mask()
 
     mask = clip.mask.get_frame(0)
@@ -43,7 +65,7 @@ def find_objects(clip, size_threshold=500, preview=False):
         letter.screenpos = np.array((sx.start, sy.start))
         letters.append(letter)
 
-    if preview:
+    if preview:  # pragma: no cover
         import matplotlib.pyplot as plt
 
         print(f"Found {num_features} objects")
