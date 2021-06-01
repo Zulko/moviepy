@@ -9,11 +9,6 @@ import sys
 import numpy as np
 import pytest
 
-try:
-    import scipy
-except ImportError:
-    scipy = None
-
 from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.audio.tools.cuts import find_audio_period
@@ -30,7 +25,15 @@ from moviepy.video.tools.cuts import (
 )
 from moviepy.video.tools.drawing import circle, color_gradient, color_split
 from moviepy.video.tools.interpolators import Interpolator, Trajectory
-from moviepy.video.tools.segmenting import find_objects
+
+
+try:
+    import scipy
+except ImportError:
+    scipy = None
+else:
+    from moviepy.video.tools.segmenting import find_objects
+
 from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 from tests.test_helper import FONT, TMP_DIR, get_mono_wave, get_stereo_wave
