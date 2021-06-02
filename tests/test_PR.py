@@ -6,15 +6,12 @@ from pathlib import Path
 import pytest
 
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.scroll import scroll
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.tools.subtitles import SubtitlesClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
-
-from tests.test_helper import FONT, TMP_DIR, get_test_video
 
 
 def test_PR_306():
@@ -23,15 +20,14 @@ def test_PR_306():
 
     with pytest.raises(Exception):
         TextClip.list("blah")
-    close_all_clips(locals())
 
 
-def test_PR_339():
+def test_PR_339(util):
     # In caption mode.
     TextClip(
         text="foo",
         color="white",
-        font=FONT,
+        font=util.FONT,
         size=(640, 480),
         method="caption",
         align="center",
@@ -39,15 +35,15 @@ def test_PR_339():
     ).close()
 
     # In label mode.
-    TextClip(text="foo", font=FONT, method="label").close()
+    TextClip(text="foo", font=util.FONT, method="label").close()
 
 
-def test_PR_373():
+def test_PR_373(util):
     result = Trajectory.load_list("media/traj.txt")
 
-    Trajectory.save_list(result, os.path.join(TMP_DIR, "traj1.txt"))
+    Trajectory.save_list(result, os.path.join(util.TMP_DIR, "traj1.txt"))
 
-    result1 = Trajectory.load_list(os.path.join(TMP_DIR, "traj1.txt"))
+    result1 = Trajectory.load_list(os.path.join(util.TMP_DIR, "traj1.txt"))
 
     assert len(result[0].tt) == len(result1[0].tt)
     for i in range(len(result[0].tt)):
@@ -62,9 +58,9 @@ def test_PR_373():
         assert result[0].yy[i] == result1[0].yy[i]
 
 
-def test_PR_458():
+def test_PR_458(util):
     clip = ColorClip([1000, 600], color=(60, 60, 60), duration=2)
-    clip.write_videofile(os.path.join(TMP_DIR, "test.mp4"), logger=None, fps=30)
+    clip.write_videofile(os.path.join(util.TMP_DIR, "test.mp4"), logger=None, fps=30)
     clip.close()
 
 
@@ -76,12 +72,12 @@ def test_PR_515():
         assert clip.fps == 10.51
 
 
-def test_PR_528():
+def test_PR_528(util):
     with ImageClip("media/vacation_2017.jpg") as clip:
         new_clip = scroll(clip, w=1000, x_speed=50)
         new_clip = new_clip.with_duration(0.2)
         new_clip.fps = 24
-        new_clip.write_videofile(os.path.join(TMP_DIR, "pano.mp4"))
+        new_clip.write_videofile(os.path.join(util.TMP_DIR, "pano.mp4"), logger=None)
 
 
 def test_PR_529():
@@ -99,17 +95,17 @@ def test_PR_610():
     assert composite.fps == 25
 
 
-def test_PR_1137_video():
+def test_PR_1137_video(util, video):
     """Test support for path-like objects as arguments for VideoFileClip."""
-    with get_test_video().subclip(0.2, 0.4) as video:
-        video.write_videofile(Path(TMP_DIR) / "pathlike.mp4")
+    with video(start_time=0.2, end_time=0.24) as video:
+        video.write_videofile(Path(util.TMP_DIR) / "pathlike.mp4", logger=None)
         assert isinstance(video.filename, str)
 
 
-def test_PR_1137_audio():
+def test_PR_1137_audio(util):
     """Test support for path-like objects as arguments for AudioFileClip."""
     with AudioFileClip(Path("media/crunching.mp3")) as audio:
-        audio.write_audiofile(Path(TMP_DIR) / "pathlike.mp3")
+        audio.write_audiofile(Path(util.TMP_DIR) / "pathlike.mp3")
         assert isinstance(audio.filename, str)
 
 
@@ -118,13 +114,13 @@ def test_PR_1137_image():
     ImageClip(Path("media/vacation_2017.jpg")).close()
 
 
-def test_PR_1137_subtitles():
+def test_PR_1137_subtitles(util):
     """Test support for path-like objects as arguments for SubtitlesClip."""
 
     def make_textclip(txt):
         return TextClip(
             txt,
-            font=FONT,
+            font=util.FONT,
             font_size=24,
             color="white",
             stroke_color="black",

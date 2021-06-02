@@ -13,13 +13,6 @@ import pytest
 import moviepy.tools as tools
 from moviepy.video.io.downloader import download_webfile
 
-from tests.test_helper import (
-    TMP_DIR,
-    get_functions_with_decorator_defined,
-    get_moviepy_modules,
-    static_files_server,
-)
-
 
 @pytest.mark.parametrize(
     ("given", "expected"),
@@ -113,8 +106,8 @@ def test_deprecated_version_of(old_name):
         ("foobarbazimpossiblecode", OSError),
     ),
 )
-def test_download_webfile(url, expected_result):
-    filename = os.path.join(TMP_DIR, "moviepy_downloader_test.mp4")
+def test_download_webfile(static_files_server, util, url, expected_result):
+    filename = os.path.join(util.TMP_DIR, "moviepy_downloader_test.mp4")
     if os.path.isfile(filename):
         os.remove(filename)
 
@@ -197,6 +190,7 @@ def test_download_webfile(url, expected_result):
     ),
 )
 def test_config(
+    util,
     ffmpeg_binary,
     ffmpeg_binary_error,
     imagemagick_binary,
@@ -214,11 +208,11 @@ def test_config(
 
     prev_imagemagick_binary = os.environ.get("IMAGEMAGICK_BINARY")
     if imagemagick_binary_isfile:
-        imagemagick_binary = os.path.join(TMP_DIR, imagemagick_binary)
+        imagemagick_binary = os.path.join(util.TMP_DIR, imagemagick_binary)
         with open(imagemagick_binary, "w") as f:
             f.write("foo")
     elif imagemagick_binary_isdir:
-        imagemagick_binary = os.path.join(TMP_DIR, imagemagick_binary)
+        imagemagick_binary = os.path.join(util.TMP_DIR, imagemagick_binary)
         if os.path.isdir(imagemagick_binary):
             shutil.rmtree(imagemagick_binary)
         os.mkdir(imagemagick_binary)
@@ -284,7 +278,9 @@ def test_config_check():
     "decorator_name",
     ("convert_parameter_to_seconds", "convert_path_to_string"),
 )
-def test_decorators_argument_converters_consistency(decorator_name):
+def test_decorators_argument_converters_consistency(
+    moviepy_modules, functions_with_decorator_defined, decorator_name
+):
     """Checks that for all functions that have a decorator defined (like
     ``@convert_parameter_to_seconds``), the parameters passed to the decorator
     correspond to the parameters taken by the function.
@@ -300,7 +296,7 @@ def test_decorators_argument_converters_consistency(decorator_name):
     added.
     """
     with contextlib.redirect_stdout(io.StringIO()):
-        for modname, ispkg in get_moviepy_modules():
+        for modname, ispkg in moviepy_modules():
             if ispkg:
                 continue
 
@@ -309,7 +305,7 @@ def test_decorators_argument_converters_consistency(decorator_name):
             except ImportError:
                 continue
 
-            functions_with_decorator = get_functions_with_decorator_defined(
+            functions_with_decorator = functions_with_decorator_defined(
                 module,
                 decorator_name,
             )

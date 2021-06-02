@@ -9,8 +9,6 @@ from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.tools.subtitles import SubtitlesClip, file_to_subtitles
 from moviepy.video.VideoClip import ColorClip, TextClip
 
-from tests.test_helper import FONT, TMP_DIR
-
 
 MEDIA_SUBTITLES_DATA = [
     ([0.0, 1.0], "Red!"),
@@ -25,7 +23,7 @@ MEDIA_SUBTITLES_UNICODE_DATA = [
 ]
 
 
-def test_subtitles():
+def test_subtitles(util):
     red = ColorClip((800, 600), color=(255, 0, 0)).with_duration(10)
     green = ColorClip((800, 600), color=(0, 255, 0)).with_duration(10)
     blue = ColorClip((800, 600), color=(0, 0, 255)).with_duration(10)
@@ -34,7 +32,7 @@ def test_subtitles():
 
     generator = lambda txt: TextClip(
         txt,
-        font=FONT,
+        font=util.FONT,
         size=(800, 600),
         font_size=24,
         method="caption",
@@ -45,7 +43,7 @@ def test_subtitles():
     subtitles = SubtitlesClip("media/subtitles.srt", generator)
     final = CompositeVideoClip([myvideo, subtitles])
     final.subclip(0, 0.5).write_videofile(
-        os.path.join(TMP_DIR, "subtitles.mp4"),
+        os.path.join(util.TMP_DIR, "subtitles.mp4"),
         fps=5,
         logger=None,
     )

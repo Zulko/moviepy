@@ -15,10 +15,11 @@ import threading
 
 import numpy as np
 
+import pytest
+
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 
-PYTHON_VERSION = "%s.%s" % (sys.version_info.major, sys.version_info.minor)
 TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 
 # Arbitrary font used in caption testing.
@@ -33,8 +34,10 @@ else:
 
 
 @functools.lru_cache(maxsize=None)
-def get_test_video():
-    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0, 1)
+def get_video(start_time=0, end_time=1):
+    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(
+        start_time, end_time
+    )
 
 
 @functools.lru_cache(maxsize=None)
@@ -56,7 +59,7 @@ def get_mono_wave(freq=440):
 
 
 @contextlib.contextmanager
-def static_files_server(port=8000):
+def get_static_files_server(port=8000):
     my_server = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
     thread = threading.Thread(target=my_server.serve_forever, daemon=True)
     thread.start()
@@ -139,3 +142,42 @@ def get_functions_with_decorator_defined(code, decorator_name):
     visitor = FunctionsWithDefinedDecoratorExtractor()
     visitor.visit(modtree)
     return visitor.functions_with_decorator
+
+
+@pytest.fixture
+def util():
+    class MoviepyTestUtils:
+        FONT = FONT
+        TMP_DIR = TMP_DIR
+
+    return MoviepyTestUtils
+
+
+@pytest.fixture
+def video():
+    return get_video
+
+
+@pytest.fixture
+def stereo_wave():
+    return get_stereo_wave
+
+
+@pytest.fixture
+def mono_wave():
+    return get_mono_wave
+
+
+@pytest.fixture
+def static_files_server():
+    return get_static_files_server
+
+
+@pytest.fixture
+def moviepy_modules():
+    return get_moviepy_modules
+
+
+@pytest.fixture
+def functions_with_decorator_defined():
+    return get_functions_with_decorator_defined

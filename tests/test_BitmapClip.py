@@ -1,6 +1,7 @@
 """BitmapClip tests."""
 
 import numpy as np
+
 import pytest
 
 from moviepy.video.VideoClip import BitmapClip

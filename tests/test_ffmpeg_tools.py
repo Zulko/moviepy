@@ -12,11 +12,11 @@ from moviepy.video.io.ffmpeg_tools import (
 )
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
-from tests.test_helper import TMP_DIR
 
-
-def test_ffmpeg_extract_subclip():
-    extract_subclip_tempdir = os.path.join(TMP_DIR, "moviepy_ffmpeg_extract_subclip")
+def test_ffmpeg_extract_subclip(util):
+    extract_subclip_tempdir = os.path.join(
+        util.TMP_DIR, "moviepy_ffmpeg_extract_subclip"
+    )
     if os.path.isdir(extract_subclip_tempdir):
         shutil.rmtree(extract_subclip_tempdir)
     os.mkdir(extract_subclip_tempdir)
@@ -47,8 +47,8 @@ def test_ffmpeg_extract_subclip():
             pass
 
 
-def test_ffmpeg_resize():
-    outputfile = os.path.join(TMP_DIR, "moviepy_ffmpeg_resize.mp4")
+def test_ffmpeg_resize(util):
+    outputfile = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_resize.mp4")
     if os.path.isfile(outputfile):
         os.remove(outputfile)
 
@@ -72,8 +72,8 @@ def test_ffmpeg_resize():
             pass
 
 
-def test_ffmpeg_stabilize_video():
-    stabilize_video_tempdir = os.path.join(TMP_DIR, "moviepy_ffmpeg_stabilize")
+def test_ffmpeg_stabilize_video(util):
+    stabilize_video_tempdir = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_stabilize")
     if os.path.isdir(stabilize_video_tempdir):
         shutil.rmtree(stabilize_video_tempdir)
     os.mkdir(stabilize_video_tempdir)

@@ -9,6 +9,7 @@ import random
 import sys
 
 import numpy as np
+
 import pytest
 
 from moviepy import (
@@ -28,7 +29,6 @@ from moviepy.audio.fx import (
     multiply_volume,
 )
 from moviepy.tools import convert_to_seconds
-from moviepy.utils import close_all_clips
 from moviepy.video.fx import (
     blackwhite,
     crop,
@@ -53,8 +53,6 @@ from moviepy.video.fx import (
     time_mirror,
     time_symmetrize,
 )
-
-from tests.test_helper import TMP_DIR, get_mono_wave, get_stereo_wave, get_test_video
 
 
 def test_accel_decel():
@@ -129,14 +127,12 @@ def test_blackwhite():
                 # all characters returned by ``to_bitmap`` are in the b/w spectrum
                 assert char in bw_color_dict
 
-    close_all_clips(locals())
-
 
 # This currently fails with a with_mask error!
-# def test_blink():
+# def test_blink(util):
 #     with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0,10) as clip:
 #       clip1 = blink(clip, 1, 1)
-#       clip1.write_videofile(os.path.join(TMP_DIR,"blink1.webm"))
+#       clip1.write_videofile(os.path.join(util.TMP_DIR,"blink1.webm"))
 
 
 def test_multiply_color():
@@ -214,11 +210,10 @@ def test_fadein():
     assert clip2 == target2
 
 
-def test_fadeout():
-    clip = get_test_video()
+def test_fadeout(util, video):
+    clip = video(end_time=0.5)
     clip1 = fadeout(clip, 0.5)
-    clip1.write_videofile(os.path.join(TMP_DIR, "fadeout1.webm"))
-    close_all_clips(locals())
+    clip1.write_videofile(os.path.join(util.TMP_DIR, "fadeout1.webm"))
 
 
 @pytest.mark.parametrize(
@@ -382,7 +377,7 @@ def test_invert_colors():
     assert clip1 == target1
 
 
-def test_loop():
+def test_loop(util, video):
     clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
 
     clip1 = loop(clip, n=2)  # loop 2 times
@@ -399,15 +394,15 @@ def test_loop():
     target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
     assert clip3 == target3
 
-    clip = get_test_video().subclip(0.2, 0.3)  # 0.1 seconds long
+    clip = video(start_time=0.2, end_time=0.3)  # 0.1 seconds long
     clip1 = loop(clip).with_duration(0.5)  # infinite looping
-    clip1.write_videofile(os.path.join(TMP_DIR, "loop1.webm"))
+    clip1.write_videofile(os.path.join(util.TMP_DIR, "loop1.webm"))
 
     clip2 = loop(clip, duration=0.5)  # loop for 1 second
-    clip2.write_videofile(os.path.join(TMP_DIR, "loop2.webm"))
+    clip2.write_videofile(os.path.join(util.TMP_DIR, "loop2.webm"))
 
     clip3 = loop(clip, n=3)  # loop 3 times
-    clip3.write_videofile(os.path.join(TMP_DIR, "loop3.webm"))
+    clip3.write_videofile(os.path.join(util.TMP_DIR, "loop3.webm"))
 
     # Test audio looping
     clip = AudioClip(
@@ -417,25 +412,21 @@ def test_loop():
     # TODO fix AudioClip.__eq__()
     # assert concatenate_audioclips([clip, clip]) == clip1
 
-    close_all_clips(objects=locals())
 
-
-def test_lum_contrast():
-    clip = get_test_video()
+def test_lum_contrast(util, video):
+    clip = video()
     clip1 = lum_contrast(clip)
-    clip1.write_videofile(os.path.join(TMP_DIR, "lum_contrast1.webm"))
-    close_all_clips(locals())
+    clip1.write_videofile(os.path.join(util.TMP_DIR, "lum_contrast1.webm"))
 
     # what are the correct value ranges for function arguments lum,
     # contrast and contrast_thr?  Maybe we should check for these in
     # lum_contrast.
 
 
-def test_make_loopable():
-    clip = get_test_video()
+def test_make_loopable(util, video):
+    clip = video()
     clip1 = make_loopable(clip, 0.4)
-    clip1.write_videofile(os.path.join(TMP_DIR, "make_loopable1.webm"))
-    close_all_clips(locals())
+    clip1.write_videofile(os.path.join(util.TMP_DIR, "make_loopable1.webm"))
 
 
 @pytest.mark.parametrize(
@@ -1005,11 +996,11 @@ def test_rotate(
         assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
 
 
-def test_rotate_nonstandard_angles():
+def test_rotate_nonstandard_angles(util):
     # Test rotate with color clip
     clip = ColorClip([600, 400], [150, 250, 100]).with_duration(1).with_fps(5)
     clip = rotate(clip, 20)
-    clip.write_videofile(os.path.join(TMP_DIR, "color_rotate.webm"))
+    clip.write_videofile(os.path.join(util.TMP_DIR, "color_rotate.webm"))
 
 
 def test_rotate_mask():
@@ -1188,7 +1179,6 @@ def test_audio_normalize():
     clip = AudioFileClip("media/crunching.mp3")
     clip = audio_normalize(clip)
     assert clip.max_volume() == 1
-    close_all_clips(locals())
 
 
 def test_audio_normalize_muted():
@@ -1197,8 +1187,6 @@ def test_audio_normalize_muted():
     clip = AudioClip(make_frame, duration=1, fps=44100)
     clip = audio_normalize(clip)
     assert np.array_equal(clip.to_soundarray(), z_array)
-
-    close_all_clips(locals())
 
 
 @pytest.mark.parametrize(
@@ -1448,8 +1436,6 @@ def test_multiply_stereo_volume():
     d_channel = mono_clip.to_soundarray() * 2
     assert np.array_equal(mono_channel_doubled, d_channel)
 
-    close_all_clips(locals())
-
 
 @pytest.mark.parametrize(
     ("duration", "offset", "n_repeats", "decay"),
@@ -1460,7 +1446,7 @@ def test_multiply_stereo_volume():
         (0.3, 1, 7, 4),
     ),
 )
-def test_audio_delay(duration, offset, n_repeats, decay):
+def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     """Check that creating a short pulse of audio, the delay converts to a sound
     with the volume level in the form `-_-_-_-_-`, being `-` pulses expressed by
     `duration` argument and `_` being chunks of muted audio. Keep in mind that this
@@ -1477,7 +1463,7 @@ def test_audio_delay(duration, offset, n_repeats, decay):
 
     # stereo audio clip
     clip = AudioClip(
-        make_frame=get_stereo_wave(left_freq=440, right_freq=880),
+        make_frame=stereo_wave(left_freq=440, right_freq=880),
         duration=duration,
         fps=44100,
     )
@@ -1546,11 +1532,13 @@ def test_audio_delay(duration, offset, n_repeats, decay):
         )
     ),
 )
-def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
+def test_audio_fadein(
+    mono_wave, stereo_wave, sound_type, fps, clip_duration, fadein_duration
+):
     if sound_type == "stereo":
-        make_frame = get_stereo_wave(left_freq=440, right_freq=160)
+        make_frame = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = get_mono_wave(440)
+        make_frame = mono_wave(440)
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadein(clip, fadein_duration)
@@ -1605,11 +1593,13 @@ def test_audio_fadein(sound_type, fps, clip_duration, fadein_duration):
         )
     ),
 )
-def test_audio_fadeout(sound_type, fps, clip_duration, fadeout_duration):
+def test_audio_fadeout(
+    mono_wave, stereo_wave, sound_type, fps, clip_duration, fadeout_duration
+):
     if sound_type == "stereo":
-        make_frame = get_stereo_wave(left_freq=440, right_freq=160)
+        make_frame = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = get_mono_wave(440)
+        make_frame = mono_wave(440)
 
     clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
     new_clip = audio_fadeout(clip, fadeout_duration)
