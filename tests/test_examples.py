@@ -1,4 +1,4 @@
-"""Examples tests."""
+"""MoviePy examples tests."""
 
 import os
 
