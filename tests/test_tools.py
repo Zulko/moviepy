@@ -279,6 +279,7 @@ def test_config_check():
         del sys.modules["moviepy.config"]
 
 
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="Requires Python 3.8 or greater")
 @pytest.mark.parametrize(
     "decorator_name",
     ("convert_parameter_to_seconds", "convert_path_to_string"),
@@ -302,7 +303,11 @@ def test_decorators_argument_converters_consistency(decorator_name):
         for modname, ispkg in get_moviepy_modules():
             if ispkg:
                 continue
-            module = importlib.import_module(modname)
+
+            try:
+                module = importlib.import_module(modname)
+            except ImportError:
+                continue
 
             functions_with_decorator = get_functions_with_decorator_defined(
                 module,
