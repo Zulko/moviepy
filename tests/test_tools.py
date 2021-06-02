@@ -13,7 +13,12 @@ import pytest
 import moviepy.tools as tools
 from moviepy.video.io.downloader import download_webfile
 
-from tests.test_helper import TMP_DIR, static_files_server
+from tests.test_helper import (
+    TMP_DIR,
+    get_functions_with_decorator_defined,
+    get_moviepy_modules,
+    static_files_server,
+)
 
 
 @pytest.mark.parametrize(
@@ -272,6 +277,54 @@ def test_config_check():
 
     if "moviepy.config" in sys.modules:
         del sys.modules["moviepy.config"]
+
+
+@pytest.mark.skipif(sys.version_info < (3, 8), reason="Requires Python 3.8 or greater")
+@pytest.mark.parametrize(
+    "decorator_name",
+    ("convert_parameter_to_seconds", "convert_path_to_string"),
+)
+def test_decorators_argument_converters_consistency(decorator_name):
+    """Checks that for all functions that have a decorator defined (like
+    ``@convert_parameter_to_seconds``), the parameters passed to the decorator
+    correspond to the parameters taken by the function.
+
+    This test is util to prevent next case in which the parameter names doesn't
+    match between the decorator and the function definition:
+
+    >>> @convert_parameter_to_seconds(['foo'])  # doctest: +SKIP
+    >>> def whatever_function(bar):  # bar not converted to seconds
+    ...     pass
+
+    Some wrong defintions remained unnoticed in the past before this test was
+    added.
+    """
+    with contextlib.redirect_stdout(io.StringIO()):
+        for modname, ispkg in get_moviepy_modules():
+            if ispkg:
+                continue
+
+            try:
+                module = importlib.import_module(modname)
+            except ImportError:
+                continue
+
+            functions_with_decorator = get_functions_with_decorator_defined(
+                module,
+                decorator_name,
+            )
+
+            for function_data in functions_with_decorator:
+                for argument_name in function_data["decorator_arguments"]:
+                    funcname = function_data["function_name"]
+                    assert argument_name in function_data["function_arguments"], (
+                        f"Wrong argument name '{argument_name}' in"
+                        f" '@{decorator_name}' decorator for function"
+                        f" '{funcname}' found inside module '{modname}'"
+                    )
+
+                assert function_data["decorator_arguments"]
+                assert function_data["function_arguments"]
 
 
 if __name__ == "__main__":

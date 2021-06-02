@@ -13,7 +13,6 @@ __all__ = (
     "audio_delay",
     "audio_fadein",
     "audio_fadeout",
-    "audio_left_right",
     "audio_loop",
     "audio_normalize",
     "multiply_stereo_volume",
