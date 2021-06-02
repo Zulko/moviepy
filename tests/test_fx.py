@@ -1,3 +1,5 @@
+"""MoviePy effects tests."""
+
 import decimal
 import importlib
 import math

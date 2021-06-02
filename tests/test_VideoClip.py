@@ -1,3 +1,5 @@
+"""VideoClip tests."""
+
 import copy
 import os
 

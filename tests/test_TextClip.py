@@ -1,3 +1,5 @@
+"""TextClip tests."""
+
 import pytest
 
 from moviepy.utils import close_all_clips

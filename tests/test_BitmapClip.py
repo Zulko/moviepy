@@ -1,3 +1,5 @@
+"""BitmapClip tests."""
+
 import numpy as np
 import pytest
 
