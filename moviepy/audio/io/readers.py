@@ -1,3 +1,5 @@
+"""MoviePy audio reading with ffmpeg."""
+
 import subprocess as sp
 import warnings
 

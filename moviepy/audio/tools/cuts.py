@@ -1,3 +1,5 @@
+"""Cutting utilities working with audio."""
+
 import numpy as np
 
 

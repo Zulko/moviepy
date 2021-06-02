@@ -1,8 +1,9 @@
 """Implements VideoClip (base class for video clips) and its main subclasses:
 
-- Animated clips:     VideofileClip, ImageSequenceClip
+- Animated clips:     VideoFileClip, ImageSequenceClip, BitmapClip
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
+
 import copy as _copy
 import os
 import subprocess as sp

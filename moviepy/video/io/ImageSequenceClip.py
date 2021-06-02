@@ -1,3 +1,7 @@
+"""Implements ImageSequenceClip, a class to create a video clip from a set
+of image files.
+"""
+
 import os
 
 import numpy as np

@@ -1,3 +1,5 @@
+"""MoviePy video GIFs writing."""
+
 import os
 import subprocess as sp
 

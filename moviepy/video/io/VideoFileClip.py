@@ -1,3 +1,5 @@
+"""Implements VideoFileClip, a class for video clips creation using video files."""
+
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.decorators import convert_path_to_string
 from moviepy.video.io.ffmpeg_reader import FFMPEG_VideoReader

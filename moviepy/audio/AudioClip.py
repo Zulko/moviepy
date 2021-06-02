@@ -1,3 +1,9 @@
+"""Implements AudioClip (base class for audio clips) and its main subclasses:
+
+- Audio clips: AudioClip, AudioFileClip, AudioArrayClip
+- Composition: CompositeAudioClip
+"""
+
 import numbers
 import os
 
