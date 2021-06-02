@@ -1,3 +1,5 @@
+"""Implements AudioFileClip, a class for audio clips creation using audio files."""
+
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
 from moviepy.decorators import convert_path_to_string

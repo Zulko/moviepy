@@ -1,3 +1,5 @@
+"""Audio preview functions for MoviePy editor."""
+
 import time
 
 import numpy as np

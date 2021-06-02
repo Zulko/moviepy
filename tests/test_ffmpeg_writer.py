@@ -57,7 +57,10 @@ def test_ffmpeg_write_video(
 ):
     filename = os.path.join(TMP_DIR, f"moviepy_ffmpeg_write_video{ext}")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     logfile_name = filename + ".log"
     if os.path.isfile(logfile_name):

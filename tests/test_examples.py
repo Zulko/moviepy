@@ -1,3 +1,5 @@
+"""MoviePy examples tests."""
+
 import os
 
 import numpy as np

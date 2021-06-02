@@ -1,3 +1,5 @@
+"""Video clips concatenation."""
+
 from functools import reduce
 
 import numpy as np

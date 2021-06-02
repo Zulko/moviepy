@@ -1,3 +1,5 @@
+"""Main video composition interface of MoviePy."""
+
 import numpy as np
 from PIL import Image
 

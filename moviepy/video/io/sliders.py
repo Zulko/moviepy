@@ -1,3 +1,5 @@
+"""GUI matplotlib utility to tune the outputs of a function."""
+
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
 

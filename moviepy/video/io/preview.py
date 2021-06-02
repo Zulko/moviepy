@@ -1,3 +1,5 @@
+"""Video preview functions for MoviePy editor."""
+
 import threading
 import time
 

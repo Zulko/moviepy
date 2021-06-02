@@ -1,3 +1,5 @@
+"""Utilities related with segmenting useful working with video clips."""
+
 import numpy as np
 import scipy.ndimage as ndi
 

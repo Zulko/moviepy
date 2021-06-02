@@ -1,3 +1,5 @@
+"""MoviePy audio writing with ffmpeg."""
+
 import subprocess as sp
 
 import proglog

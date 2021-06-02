@@ -59,7 +59,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pythonw -m pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+        pythonw -m pytest --doctest-glob "moviepy/**/**.py" -v --cov moviepy --cov-report term-missing
 
     - name: Coveralls
       run: coveralls
@@ -172,7 +172,7 @@ jobs:
 
       - name: PyTest
         run: |
-          pytest tests/ --doctest-modules -v --cov moviepy --cov-report term-missing
+          python -m pytest --doctest-glob "moviepy/**/**.py" --cov moviepy --cov-report term-missing
 
       - name: Test pip installation
         run: |

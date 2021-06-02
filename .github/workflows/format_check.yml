@@ -29,7 +29,7 @@ jobs:
       - name: Lint examples
         run: flake8 examples --show-source
       - name: Lint scripts
-        run: flake8 setup.py find_latest_imagemagick_version.py docs/conf.py --show-source
+        run: flake8 setup.py docs/conf.py --show-source
       - name: Lint tests
         run: flake8 tests --show-source
       - name: Lint moviepy
