@@ -3,17 +3,15 @@
 import os
 
 import numpy as np
+
 import pytest
 
-from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import slide_in, slide_out
 from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
-
-from tests.test_helper import TMP_DIR
 
 
 class ClipPixelTest:
@@ -38,7 +36,7 @@ class ClipPixelTest:
         )
 
 
-def test_clips_array():
+def test_clips_array(util):
     red = ColorClip((1024, 800), color=(255, 0, 0))
     green = ColorClip((1024, 800), color=(0, 255, 0))
     blue = ColorClip((1024, 800), color=(0, 0, 255))
@@ -47,12 +45,13 @@ def test_clips_array():
 
     with pytest.raises(ValueError):  # duration not set
         video.fx(resize, width=480).write_videofile(
-            os.path.join(TMP_DIR, "test_clips_array.mp4")
+            os.path.join(util.TMP_DIR, "test_clips_array.mp4")
         )
-    close_all_clips(locals())
 
 
-def test_clips_array_duration():
+def test_clips_array_duration(util):
+    filename = os.path.join(util.TMP_DIR, "test_clips_array.mp4")
+
     # NOTE: anyone knows what behaviour this sets ? If yes please replace
     # this comment.
     red = ColorClip((256, 200), color=(255, 0, 0))
@@ -61,37 +60,37 @@ def test_clips_array_duration():
 
     video = clips_array([[red, green, blue]]).with_duration(5)
     with pytest.raises(AttributeError):  # fps not set
-        video.write_videofile(os.path.join(TMP_DIR, "test_clips_array.mp4"))
+        video.write_videofile(filename)
 
     # this one should work correctly
     red.fps = green.fps = blue.fps = 30
     video = clips_array([[red, green, blue]]).with_duration(5)
-    video.write_videofile(os.path.join(TMP_DIR, "test_clips_array.mp4"))
-    close_all_clips(locals())
+    video.write_videofile(filename)
 
 
-def test_concatenate_self():
+def test_concatenate_self(util):
     clip = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
     target = BitmapClip([["AAA", "BBB"], ["CCC", "DDD"]], fps=1)
 
     concatenated = concatenate_videoclips([clip])
 
-    concatenated.write_videofile(os.path.join(TMP_DIR, "test_concatenate_self.mp4"))
+    concatenated.write_videofile(
+        os.path.join(util.TMP_DIR, "test_concatenate_self.mp4")
+    )
     assert concatenated == target
 
 
-def test_concatenate_floating_point():
+def test_concatenate_floating_point(util):
     """
     >>> print("{0:.20f}".format(1.12))
     1.12000000000000010658
 
-    This test uses duration=1.12 to check that it still works when the clip duration is
-    represented as being bigger than it actually is. Fixed in #1195.
+    This test uses duration=1.12 to check that it still works when the clip
+    duration is represented as being bigger than it actually is. Fixed in #1195.
     """
     clip = ColorClip([100, 50], color=[255, 128, 64], duration=1.12).with_fps(25.0)
     concat = concatenate_videoclips([clip])
-    concat.write_videofile(os.path.join(TMP_DIR, "concat.mp4"), preset="ultrafast")
-    close_all_clips(locals())
+    concat.write_videofile(os.path.join(util.TMP_DIR, "concat.mp4"), preset="ultrafast")
 
 
 def test_blit_with_opacity():

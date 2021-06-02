@@ -3,8 +3,9 @@
 import multiprocessing
 import os
 
-import pytest
 from PIL import Image
+
+import pytest
 
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
@@ -12,8 +13,6 @@ from moviepy.video.io.gif_writers import write_gif
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.tools.drawing import color_gradient
 from moviepy.video.VideoClip import BitmapClip, ColorClip
-
-from tests.test_helper import TMP_DIR
 
 
 @pytest.mark.parametrize(
@@ -47,6 +46,7 @@ from tests.test_helper import TMP_DIR
     ids=("threads=None", "threads=multiprocessing.cpu_count()"),
 )
 def test_ffmpeg_write_video(
+    util,
     codec,
     is_valid_codec,
     ext,
@@ -55,7 +55,7 @@ def test_ffmpeg_write_video(
     bitrate,
     threads,
 ):
-    filename = os.path.join(TMP_DIR, f"moviepy_ffmpeg_write_video{ext}")
+    filename = os.path.join(util.TMP_DIR, f"moviepy_ffmpeg_write_video{ext}")
     if os.path.isfile(filename):
         try:
             os.remove(filename)
@@ -135,8 +135,8 @@ def test_ffmpeg_write_video(
         ),
     ),
 )
-def test_ffmpeg_write_image(size, logfile, pixel_format, expected_result):
-    filename = os.path.join(TMP_DIR, "moviepy_ffmpeg_write_image.png")
+def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
+    filename = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_write_image.png")
     if os.path.isfile(filename):
         os.remove(filename)
 
@@ -189,8 +189,8 @@ def test_ffmpeg_write_image(size, logfile, pixel_format, expected_result):
     "with_mask", (False, True), ids=("with_mask=False", "with_mask=True")
 )
 @pytest.mark.parametrize("pixel_format", ("invalid", None))
-def test_write_gif(clip_class, opt, loop, with_mask, pixel_format):
-    filename = os.path.join(TMP_DIR, "moviepy_write_gif.gif")
+def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
+    filename = os.path.join(util.TMP_DIR, "moviepy_write_gif.gif")
     if os.path.isfile(filename):
         os.remove(filename)
 

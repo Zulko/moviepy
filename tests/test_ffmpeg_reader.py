@@ -5,11 +5,11 @@ import subprocess
 import time
 
 import numpy as np
+
 import pytest
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.config import FFMPEG_BINARY
-from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
@@ -18,8 +18,6 @@ from moviepy.video.io.ffmpeg_reader import (
 )
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
-
-from tests.test_helper import TMP_DIR, get_mono_wave
 
 
 def test_ffmpeg_parse_infos():
@@ -96,21 +94,21 @@ def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     assert streams[1]["language"] is None
 
 
-def test_ffmpeg_parse_infos_multiple_audio_streams():
+def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
     """Check that ``ffmpeg_parse_infos`` can parse multiple audio streams."""
     # Create two mono audio files
     clip_440_filepath = os.path.join(
-        TMP_DIR, "ffmpeg_parse_infos_multiple_streams_440.mp3"
+        util.TMP_DIR, "ffmpeg_parse_infos_multiple_streams_440.mp3"
     )
     clip_880_filepath = os.path.join(
-        TMP_DIR, "ffmpeg_parse_infos_multiple_streams_880.mp3"
+        util.TMP_DIR, "ffmpeg_parse_infos_multiple_streams_880.mp3"
     )
     multiple_streams_filepath = os.path.join(
-        TMP_DIR, "ffmpeg_parse_infos_multiple_streams.mp4"
+        util.TMP_DIR, "ffmpeg_parse_infos_multiple_streams.mp4"
     )
 
-    clip_440 = AudioClip(get_mono_wave(440), fps=22050, duration=0.01)
-    clip_880 = AudioClip(get_mono_wave(880), fps=22050, duration=0.01)
+    clip_440 = AudioClip(mono_wave(440), fps=22050, duration=0.01)
+    clip_880 = AudioClip(mono_wave(880), fps=22050, duration=0.01)
     clip_440.write_audiofile(clip_440_filepath)
     clip_880.write_audiofile(clip_880_filepath)
 
@@ -158,17 +156,16 @@ def test_ffmpeg_parse_infos_multiple_audio_streams():
     # cleanup
     for filepath in [clip_440_filepath, clip_880_filepath, multiple_streams_filepath]:
         os.remove(filepath)
-    close_all_clips(locals())
 
 
-def test_ffmpeg_parse_infos_metadata():
+def test_ffmpeg_parse_infos_metadata(util, mono_wave):
     """Check that `ffmpeg_parse_infos` is able to retrieve metadata from files."""
-    filepath = os.path.join(TMP_DIR, "ffmpeg_parse_infos_metadata.mkv")
+    filepath = os.path.join(util.TMP_DIR, "ffmpeg_parse_infos_metadata.mkv")
     if os.path.isfile(filepath):
         os.remove(filepath)
 
     # create video with 2 streams, video and audio
-    audioclip = AudioClip(get_mono_wave(440), fps=22050).with_duration(1)
+    audioclip = AudioClip(mono_wave(440), fps=22050).with_duration(1)
     videoclip = BitmapClip([["RGB"]], fps=1).with_duration(1).with_audio(audioclip)
 
     # build metadata key-value pairs which will be passed to ``ffmpeg_params``
@@ -248,8 +245,6 @@ def test_ffmpeg_parse_infos_metadata():
 
     os.remove(filepath)
 
-    close_all_clips(locals())
-
 
 def test_ffmpeg_parse_infos_chapters():
     """Check that `ffmpeg_parse_infos` can parse chapters with their metadata."""
@@ -295,12 +290,12 @@ def test_ffmpeg_parse_video_rotation():
     assert d["video_size"] == [1920, 1080]
 
 
-def test_correct_video_rotation():
+def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
     clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
-        TMP_DIR,
+        util.TMP_DIR,
         "correct_video_rotation.mp4",
     )
     clip.write_videofile(corrected_rotation_filename)
@@ -611,7 +606,7 @@ def test_seeking_beyond_file_end():
     assert reader.pos == 30 * 24 + 1
 
 
-def test_release_of_file_via_close():
+def test_release_of_file_via_close(util):
     # Create a random video file.
     red = ColorClip((256, 200), color=(255, 0, 0))
     green = ColorClip((256, 200), color=(0, 255, 0))
@@ -623,7 +618,7 @@ def test_release_of_file_via_close():
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = os.path.join(
-            TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            util.TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
         )
 
         clip = clips_array([[red, green, blue]]).with_duration(0.5)
@@ -645,7 +640,7 @@ def test_release_of_file_via_close():
     blue.close()
 
 
-def test_failure_to_release_file():
+def test_failure_to_release_file(util):
     """Expected to fail. It demonstrates that there *is* a problem with not
     releasing resources when running on Windows.
 
@@ -655,7 +650,7 @@ def test_failure_to_release_file():
     """
     # Get the name of a temporary file we can use.
     local_video_filename = os.path.join(
-        TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
+        util.TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
     )
 
     # Repeat this so we can see that the problems escalate:

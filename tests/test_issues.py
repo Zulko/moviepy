@@ -5,15 +5,12 @@ import os
 import pytest
 
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.utils import close_all_clips
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.resize import resize
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
-
-from tests.test_helper import TMP_DIR
 
 
 try:
@@ -32,18 +29,19 @@ def test_issue_145():
 
 def test_issue_190():
     # from PIL import Image
-    # Image.new('L', (800,600), 'white').save(os.path.join(TMP_DIR, "issue_190.png"))
-
+    #
+    # filename = os.path.join(util.TMP_DIR, "issue_190.png")
+    # Image.new('L', (800,600), 'white').save(filename)
+    #
     # from imageio import imread
-    # image = imread(os.path.join(TMP_DIR, "issue_190.png"))
-
+    # image = imread(filename)
+    #
     # clip = ImageSequenceClip([image, image], fps=1)
-    # clip.write_videofile(os.path.join(TMP_DIR, "issue_190.mp4"))
+    # clip.write_videofile(os.path.splitext(filename)[0] + ".mp4"))
     pass
 
 
 def test_issue_285():
-
     clip_1, clip_2, clip_3 = (
         ImageClip("media/python_logo.png", duration=10),
         ImageClip("media/python_logo.png", duration=10),
@@ -51,10 +49,9 @@ def test_issue_285():
     )
     merged_clip = concatenate_videoclips([clip_1, clip_2, clip_3])
     assert merged_clip.duration == 30
-    close_all_clips(locals())
 
 
-def test_issue_334():
+def test_issue_334(util):
     # NOTE: this is horrible. Any simpler version ?
     last_move = None
     last_move1 = None
@@ -243,7 +240,7 @@ def test_issue_334():
     # .with_mask(maskclip).resize(size)])
     final = CompositeVideoClip([tt, concatenated.with_position(posi).fx(resize, size)])
     final.duration = tt.duration
-    final.write_videofile(os.path.join(TMP_DIR, "issue_334.mp4"), fps=10)
+    final.write_videofile(os.path.join(util.TMP_DIR, "issue_334.mp4"), fps=10)
 
 
 def test_issue_354():
@@ -264,14 +261,16 @@ def test_issue_354():
         CompositeVideoClip([clip, fadecaption]).close()
 
 
-def test_issue_359():
+def test_issue_359(util):
     with ColorClip((800, 600), color=(255, 0, 0)).with_duration(0.2) as video:
         video.fps = 30
-        video.write_gif(filename=os.path.join(TMP_DIR, "issue_359.gif"), tempfiles=True)
+        video.write_gif(
+            filename=os.path.join(util.TMP_DIR, "issue_359.gif"), tempfiles=True
+        )
 
 
 @pytest.mark.skipif(not matplotlib, reason="no matplotlib")
-def test_issue_368():
+def test_issue_368(util):
     import matplotlib.pyplot as plt
     import numpy as np
     from sklearn import svm
@@ -313,7 +312,7 @@ def test_issue_368():
         return mplfig_to_npimage(fig)
 
     animation = VideoClip(make_frame, duration=0.2)
-    animation.write_gif(os.path.join(TMP_DIR, "svm.gif"), fps=20)
+    animation.write_gif(os.path.join(util.TMP_DIR, "svm.gif"), fps=20)
 
 
 def test_issue_407():
@@ -358,20 +357,20 @@ def test_issue_417():
     # final.with_duration(7).write_videofile("test.mp4", fps=30)
 
 
-def test_issue_470():
+def test_issue_470(util):
+    wav_filename = os.path.join(util.TMP_DIR, "moviepy_issue_470.wav")
+
     audio_clip = AudioFileClip("media/crunching.mp3")
 
     # end_time is out of bounds
     subclip = audio_clip.subclip(start_time=6, end_time=9)
 
     with pytest.raises(IOError):
-        subclip.write_audiofile(
-            os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True
-        )
+        subclip.write_audiofile(wav_filename, write_logfile=True)
 
     # but this one should work..
     subclip = audio_clip.subclip(start_time=6, end_time=8)
-    subclip.write_audiofile(os.path.join(TMP_DIR, "issue_470.wav"), write_logfile=True)
+    subclip.write_audiofile(wav_filename, write_logfile=True)
 
 
 def test_issue_547():

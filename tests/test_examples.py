@@ -3,12 +3,11 @@
 import os
 
 import numpy as np
+
 import pytest
 
 from moviepy.video.io.bindings import mplfig_to_npimage
 from moviepy.video.VideoClip import VideoClip
-
-from tests.test_helper import TMP_DIR
 
 
 try:
@@ -20,7 +19,7 @@ else:
 
 
 @pytest.mark.skipif(not matplotlib, reason="no matplotlib")
-def test_matplotlib_simple_example():
+def test_matplotlib_simple_example(util):
     import matplotlib.pyplot as plt
 
     plt.switch_backend("Agg")
@@ -38,7 +37,7 @@ def test_matplotlib_simple_example():
 
     animation = VideoClip(make_frame, duration=duration)
 
-    filename = os.path.join(TMP_DIR, "matplotlib.gif")
+    filename = os.path.join(util.TMP_DIR, "matplotlib.gif")
     animation.write_gif(filename, fps=20)
 
     assert os.path.isfile(filename)

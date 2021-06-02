@@ -3,6 +3,7 @@
 import copy
 
 import numpy as np
+
 import pytest
 
 from moviepy.Clip import Clip

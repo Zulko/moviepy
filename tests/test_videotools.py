@@ -7,6 +7,7 @@ import shutil
 import sys
 
 import numpy as np
+
 import pytest
 
 from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip
@@ -36,8 +37,6 @@ else:
 
 from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
-from tests.test_helper import FONT, TMP_DIR, get_mono_wave, get_stereo_wave
-
 
 try:
     importlib.import_module("ipython.display")
@@ -48,7 +47,7 @@ else:
     del sys.modules["ipython.display"]
 
 
-def test_credits():
+def test_credits(util):
     credit_file = (
         "# This is a comment\n"
         "# The next line says : leave 4 blank lines\n"
@@ -67,13 +66,13 @@ def test_credits():
         "JEAN DIDIER\n"
     )
 
-    file_location = os.path.join(TMP_DIR, "credits.txt")
-    vid_location = os.path.join(TMP_DIR, "credits.mp4")
+    file_location = os.path.join(util.TMP_DIR, "credits.txt")
+    vid_location = os.path.join(util.TMP_DIR, "credits.mp4")
     with open(file_location, "w") as file:
         file.write(credit_file)
 
     image = CreditsClip(
-        file_location, 600, gap=100, stroke_color="blue", stroke_width=5, font=FONT
+        file_location, 600, gap=100, stroke_color="blue", stroke_width=5, font=util.FONT
     )
     image = image.with_duration(3)
     image.write_videofile(vid_location, fps=24, logger=None)
@@ -221,7 +220,7 @@ def test_FramesMatches_filter():
         assert frames_match == expected_matching_frames[i]
 
 
-def test_FramesMatches_save_load():
+def test_FramesMatches_save_load(util):
     input_matching_frames = [
         FramesMatch(1, 2, 0, 0),
         FramesMatch(1, 2, 0.8, 0),
@@ -232,7 +231,7 @@ def test_FramesMatches_save_load():
 1.000	2.000	0.800	0.800
 """
 
-    outputfile = os.path.join(TMP_DIR, "moviepy_FramesMatches_save_load.txt")
+    outputfile = os.path.join(util.TMP_DIR, "moviepy_FramesMatches_save_load.txt")
 
     # save
     FramesMatches(input_matching_frames).save(outputfile)
@@ -327,7 +326,7 @@ def test_FramesMatches_select_scenes(
     assert result == expected_result
 
 
-def test_FramesMatches_write_gifs():
+def test_FramesMatches_write_gifs(util):
     video_clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.2)
     clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
 
@@ -340,7 +339,7 @@ def test_FramesMatches_write_gifs():
         nomatch_threshold=0,
     )
 
-    gifs_dir = os.path.join(TMP_DIR, "moviepy_FramesMatches_write_gifs")
+    gifs_dir = os.path.join(util.TMP_DIR, "moviepy_FramesMatches_write_gifs")
     if os.path.isdir(gifs_dir):
         shutil.rmtree(gifs_dir)
     os.mkdir(gifs_dir)
@@ -905,8 +904,8 @@ def test_Trajectory_addy():
     assert trajectory.yy[1] == 2
 
 
-def test_Trajectory_from_to_file():
-    filename = os.path.join(TMP_DIR, "moviepy_Trajectory_from_to_file.txt")
+def test_Trajectory_from_to_file(util):
+    filename = os.path.join(util.TMP_DIR, "moviepy_Trajectory_from_to_file.txt")
     if os.path.isfile(filename):
         os.remove(filename)
 
@@ -979,7 +978,13 @@ def test_find_objects(filename, expected_screenpos):
     ("clip", "filetype", "fps", "maxduration", "t", "expected_error"),
     (
         pytest.param(
-            AudioClip(get_stereo_wave(), duration=0.2, fps=44100),
+            AudioClip(
+                lambda t: np.array(
+                    [np.sin(440 * 2 * np.pi * t), np.sin(220 * 2 * np.pi * t)]
+                ).T.copy(order="C"),
+                duration=0.2,
+                fps=44100,
+            ),
             None,
             None,
             None,
@@ -1042,7 +1047,7 @@ def test_find_objects(filename, expected_screenpos):
             id="filename(.jpg)",
         ),
         pytest.param(
-            os.path.join(TMP_DIR, "moviepy_ipython_display.foo"),
+            os.path.join("{tempdir}", "moviepy_ipython_display.foo"),
             None,  # unknown filetype
             None,
             None,
@@ -1051,7 +1056,7 @@ def test_find_objects(filename, expected_screenpos):
             id="filename(.foo)",
         ),
         pytest.param(
-            os.path.join(TMP_DIR, "moviepy_ipython_display.foo"),
+            os.path.join("{tempdir}", "moviepy_ipython_display.foo"),
             "video",  # unsupported filetype for '.foo' extension
             None,
             None,
@@ -1104,7 +1109,7 @@ def test_find_objects(filename, expected_screenpos):
     ),
 )
 def test_ipython_display(
-    clip, filetype, fps, maxduration, t, expected_error, monkeypatch
+    util, clip, filetype, fps, maxduration, t, expected_error, monkeypatch
 ):
     # patch module to use it without ipython installed
     video_io_html_tools_module = importlib.import_module("moviepy.video.io.html_tools")
@@ -1118,6 +1123,9 @@ def test_ipython_display(
         kwargs["maxduration"] = maxduration
     if t is not None:
         kwargs["t"] = t
+
+    if isinstance(clip, str):
+        clip = clip.replace("{tempdir}", util.TMP_DIR)
 
     if expected_error is None:
         html_content = video_io_html_tools_module.ipython_display(
@@ -1185,14 +1193,14 @@ def test_ipython_display_not_available():
     del sys.modules["moviepy.video.io.html_tools"]
 
 
-@pytest.mark.parametrize("wave", ("mono", "stereo"))
-def test_find_audio_period(wave):
-    if wave == "mono":
-        wave1 = get_mono_wave(freq=400)
-        wave2 = get_mono_wave(freq=100)
+@pytest.mark.parametrize("wave_type", ("mono", "stereo"))
+def test_find_audio_period(mono_wave, stereo_wave, wave_type):
+    if wave_type == "mono":
+        wave1 = mono_wave(freq=400)
+        wave2 = mono_wave(freq=100)
     else:
-        wave1 = get_stereo_wave(left_freq=400, right_freq=220)
-        wave2 = get_stereo_wave(left_freq=100, right_freq=200)
+        wave1 = stereo_wave(left_freq=400, right_freq=220)
+        wave2 = stereo_wave(left_freq=100, right_freq=200)
     clip = CompositeAudioClip(
         [
             AudioClip(make_frame=wave1, duration=0.3, fps=22050),

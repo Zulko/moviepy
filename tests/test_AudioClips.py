@@ -3,6 +3,7 @@
 import os
 
 import numpy as np
+
 import pytest
 
 from moviepy.audio.AudioClip import (
@@ -12,59 +13,57 @@ from moviepy.audio.AudioClip import (
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.utils import close_all_clips
-
-from tests.test_helper import TMP_DIR, get_mono_wave, get_stereo_wave
 
 
-def test_audioclip():
-    audio = AudioClip(get_mono_wave(440), duration=2, fps=22050)
-    audio.write_audiofile(os.path.join(TMP_DIR, "audioclip.mp3"), bitrate="16")
+def test_audioclip(util, mono_wave):
+    filename = os.path.join(util.TMP_DIR, "audioclip.mp3")
+    audio = AudioClip(mono_wave(440), duration=2, fps=22050)
+    audio.write_audiofile(filename, bitrate="16", logger=None)
 
-    assert os.path.exists(os.path.join(TMP_DIR, "audioclip.mp3"))
+    assert os.path.exists(filename)
 
-    clip = AudioFileClip(os.path.join(TMP_DIR, "audioclip.mp3"))
+    AudioFileClip(filename)
 
     # TODO Write better tests; find out why the following fail
     # assert clip.duration == 2
     # assert clip.fps == 22050
     # assert clip.reader.bitrate == 16
-    close_all_clips(locals())
 
 
-def test_audioclip_io():
+def test_audioclip_io(util):
+    filename = os.path.join(util.TMP_DIR, "random.wav")
+
     # Generate a random audio clip of 4.989 seconds at 44100 Hz,
     # and save it to a file.
     input_array = np.random.random((220000, 2)) * 1.98 - 0.99
     clip = AudioArrayClip(input_array, fps=44100)
-    clip.write_audiofile(os.path.join(TMP_DIR, "random.wav"))
+    clip.write_audiofile(filename, logger=None)
     # Load the clip.
     # The loaded clip will be slightly longer because the duration is rounded
     # up to 4.99 seconds.
     # Verify that the extra frames are all zero, and the remainder is identical
     # to the original signal.
-    clip = AudioFileClip(os.path.join(TMP_DIR, "random.wav"))
+    clip = AudioFileClip(filename)
     output_array = clip.to_soundarray()
     np.testing.assert_array_almost_equal(
         output_array[: len(input_array)], input_array, decimal=4
     )
     assert (output_array[len(input_array) :] == 0).all()
 
-    close_all_clips(locals())
 
-
-def test_concatenate_audioclips_render():
+def test_concatenate_audioclips_render(util, mono_wave):
     """Concatenated AudioClips through ``concatenate_audioclips`` should return
     a clip that can be rendered to a file.
     """
-    clip_440 = AudioClip(get_mono_wave(440), duration=0.01, fps=44100)
-    clip_880 = AudioClip(get_mono_wave(880), duration=0.000001, fps=22050)
+    filename = os.path.join(util.TMP_DIR, "concatenate_audioclips.mp3")
+
+    clip_440 = AudioClip(mono_wave(440), duration=0.01, fps=44100)
+    clip_880 = AudioClip(mono_wave(880), duration=0.000001, fps=22050)
 
     concat_clip = concatenate_audioclips((clip_440, clip_880))
-    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concatenate_audioclips.mp3"))
+    concat_clip.write_audiofile(filename, logger=None)
 
     assert concat_clip.duration == clip_440.duration + clip_880.duration
-    close_all_clips(locals())
 
 
 def test_concatenate_audioclips_CompositeAudioClip():
@@ -107,8 +106,6 @@ def test_concatenate_audioclips_CompositeAudioClip():
     # channels are maximum number of channels of the clips
     assert concat_clip.nchannels == max(clip.nchannels for clip in clips)
 
-    close_all_clips(locals())
-
 
 def test_CompositeAudioClip_by__init__():
     """The difference between the CompositeAudioClip returned by
@@ -146,12 +143,10 @@ def test_CompositeAudioClip_by__init__():
     # channels are maximum number of channels of the clips
     assert compound_clip.nchannels == max(clip.nchannels for clip in clips)
 
-    close_all_clips(locals())
 
-
-def test_concatenate_audioclip_with_audiofileclip():
+def test_concatenate_audioclip_with_audiofileclip(util, stereo_wave):
     clip1 = AudioClip(
-        get_stereo_wave(left_freq=440, right_freq=880),
+        stereo_wave(left_freq=440, right_freq=880),
         duration=1,
         fps=44100,
     )
@@ -159,28 +154,30 @@ def test_concatenate_audioclip_with_audiofileclip():
 
     concat_clip = concatenate_audioclips((clip1, clip2))
     concat_clip.write_audiofile(
-        os.path.join(TMP_DIR, "concat_clip_with_file_audio.mp3")
+        os.path.join(util.TMP_DIR, "concat_clip_with_file_audio.mp3"),
+        logger=None,
     )
 
     assert concat_clip.duration == clip1.duration + clip2.duration
 
 
-def test_concatenate_audiofileclips():
+def test_concatenate_audiofileclips(util):
     clip1 = AudioFileClip("media/crunching.mp3").subclip(1, 4)
 
     # Checks it works with videos as well
     clip2 = AudioFileClip("media/big_buck_bunny_432_433.webm")
     concat_clip = concatenate_audioclips((clip1, clip2))
 
-    concat_clip.write_audiofile(os.path.join(TMP_DIR, "concat_audio_file.mp3"))
+    concat_clip.write_audiofile(
+        os.path.join(util.TMP_DIR, "concat_audio_file.mp3"),
+        logger=None,
+    )
 
     assert concat_clip.duration == clip1.duration + clip2.duration
 
-    close_all_clips(locals())
 
-
-def test_audioclip_mono_max_volume():
-    clip = AudioClip(get_mono_wave(440), duration=1, fps=44100)
+def test_audioclip_mono_max_volume(mono_wave):
+    clip = AudioClip(mono_wave(440), duration=1, fps=44100)
     max_volume = clip.max_volume()
     assert isinstance(max_volume, float)
     assert max_volume > 0
