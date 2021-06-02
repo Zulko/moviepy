@@ -292,7 +292,7 @@ def test_decorators_argument_converters_consistency(decorator_name):
     This test is util to prevent next case in which the parameter names doesn't
     match between the decorator and the function definition:
 
-    >>> @convert_parameter_to_seconds(['foo'])  # doctest: +SKIP
+    >>> @convert_parameter_to_seconds(['foo'])
     >>> def whatever_function(bar):  # bar not converted to seconds
     ...     pass
 
