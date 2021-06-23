@@ -95,6 +95,7 @@ class VideoFileClip(VideoClip):
         audio_nbytes=2,
         fps_source="fps",
         pixel_format=None,
+        crop=None,
     ):
 
         VideoClip.__init__(self)
@@ -109,6 +110,7 @@ class VideoFileClip(VideoClip):
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,
             fps_source=fps_source,
+            crop=crop,
         )
 
         # Make some of the reader's attributes accessible from the clip
