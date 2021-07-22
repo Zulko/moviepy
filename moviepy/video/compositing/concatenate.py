@@ -20,7 +20,7 @@ def concatenate_videoclips(
     There are two methods:
 
     - method="chain": will produce a clip that simply outputs
-      the frames of the succesive clips, without any correction if they are
+      the frames of the successive clips, without any correction if they are
       not of the same size of anything. If none of the clips have masks the
       resulting clip has no mask, else the mask is a concatenation of masks
       (using completely opaque for clips that don't have masks, obviously).

@@ -596,7 +596,7 @@ def test_seeking_beyond_file_end():
     assert reader.pos == 6
 
     # Try again with a jump larger than 100 frames
-    # (which triggers different behaivour in `.get_frame()`
+    # (which triggers different behaviour in `.get_frame()`
     reader = FFMPEG_VideoReader("media/big_buck_bunny_0_30.webm")
     frame_1 = reader.get_frame(0)
 

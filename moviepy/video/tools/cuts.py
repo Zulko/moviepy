@@ -1,4 +1,4 @@
-"""Contains everything that can help automatize the cuts in MoviePy."""
+"""Contains everything that can help automate the cuts in MoviePy."""
 
 from collections import defaultdict
 
@@ -99,7 +99,7 @@ class FramesMatch:
 class FramesMatches(list):
     """Frames matches inside a set of frames.
 
-    You can instanciate it passing a list of FramesMatch objects or
+    You can instantiate it passing a list of FramesMatch objects or
     using the class methods ``load`` and ``from_clip``.
 
     Parameters
@@ -290,7 +290,7 @@ class FramesMatches(list):
                 for t3 in t_F[i + 1 :]:
                     # For all the next times t3, use d(F(t), F(end_time)) to
                     # update the bounds on d(F(t), F(t3)). See if you can
-                    # conclude on wether F(t) and F(t3) match.
+                    # conclude on whether F(t) and F(t3) match.
                     t3t, t2t3 = frame_dict[t3][t], frame_dict[t2][t3]
                     t3t["max"] = min(t3t["max"], dist + t2t3["max"])
                     t3t["min"] = max(t3t["min"], dist - t2t3["max"], t2t3["min"] - dist)

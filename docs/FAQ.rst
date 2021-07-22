@@ -3,7 +3,7 @@ FAQ and troubleshooting
 
 This section will fill up as MoviePy advances through the next steps of
 development (currently on the roadmap: MoviePy Studio, MoviePy WebApp, MoviePy OS, MoviePy
-Trust Inc., and the MoviePy Charity Fundation).
+Trust Inc., and the MoviePy Charity Foundation).
 
 Common errors that are not bugs
 --------------------------------

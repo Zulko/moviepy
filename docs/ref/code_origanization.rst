@@ -11,7 +11,7 @@ The folder ``moviepy/`` the classes and modules relative to the video and the au
 
 - ``Clip.py`` defines the base object for ``AudioClip`` and ``VideoClip`` and the simple methods that can be used by both, like ``clip.subclip``, ``clip.with_duration``, etc.
 - Files ``config.py`` and ``config_defaults.py`` store the default paths to the external programs FFMPEG and ImageMagick.
-- ``decorators.py`` provides very useful decorators that automatize some tasks, like the fact that some effects, when applied to a clip, should also be applied to it's mask, or to its audio track.
+- ``decorators.py`` provides very useful decorators that automate some tasks, like the fact that some effects, when applied to a clip, should also be applied to it's mask, or to its audio track.
 - ``tools.py`` provides misc. functions that are useful everywhere in the library, like a standardized call to subprocess, a time converter, a standardized way to print messages in the console, etc.
 - ``editor.py`` is a helper module to easily load and initiate many functionalities of moviepy (see :ref:`efficient` for more details)
 

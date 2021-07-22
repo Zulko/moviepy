@@ -74,7 +74,7 @@ def color_gradient(
         Shape of the gradient. Can be either ``"linear"``, ``"bilinear"`` or
         ``"circular"``. In a linear gradient the color varies in one direction,
         from point ``p1`` to point ``p2``. In a bilinear gradient it also
-        varies symetrically from ``p1`` in the other direction. In a circular
+        varies symmetrically from ``p1`` in the other direction. In a circular
         gradient it goes from ``color_1`` to ``color_2`` in all directions.
 
     radius : float, optional
@@ -199,7 +199,7 @@ def color_split(
     color_2=1.0,
     gradient_width=0,
 ):
-    """Make an image splitted in 2 colored regions.
+    """Make an image split in 2 colored regions.
 
     Returns an array of size ``size`` divided in two regions called 1 and
     2 in what follows, and which will have colors color_1 and color_2
@@ -209,11 +209,11 @@ def color_split(
     ----------
 
     x : int, optional
-        If provided, the image is splitted horizontally in x, the left
+        If provided, the image is split horizontally in x, the left
         region being region 1.
 
     y : int, optional
-        If provided, the image is splitted vertically in y, the top region
+        If provided, the image is split vertically in y, the top region
         being region 1.
 
     p1, p2: tuple or list, optional
@@ -242,7 +242,7 @@ def color_split(
     >>> # an image with all pixels with y<50 red, the others green
     >>> color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])
     >>>
-    >>> # An image splitted along an arbitrary line (see below)
+    >>> # An image split along an arbitrary line (see below)
     >>> color_split(size, p1=[20, 50], p2=[25, 70] color_1=0, color_2=1)
     """
     if gradient_width or ((x is None) and (y is None)):

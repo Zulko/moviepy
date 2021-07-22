@@ -220,7 +220,7 @@ class Clip:
         change_end : bool optional
           Indicates if the ``end`` attribute value must be changed accordingly,
           if possible. If ``change_end=True`` and the clip has a ``duration``
-          attribute, the ``end`` atrribute of the clip will be updated to
+          attribute, the ``end`` attribute of the clip will be updated to
           ``start + duration``. If ``change_end=False`` and the clip has a
           ``end`` attribute, the ``duration`` attribute of the clip will be
           updated to ``end - start``.
@@ -277,7 +277,7 @@ class Clip:
 
         change_end : bool, optional
           If ``True``, the ``end`` attribute value of the clip will be adjusted
-          acordingly to the new duration using ``clip.start + duration``.
+          accordingly to the new duration using ``clip.start + duration``.
         """
         self.duration = duration
 
@@ -328,7 +328,7 @@ class Clip:
 
     @outplace
     def with_is_mask(self, is_mask):
-        """Says wheter the clip is a mask or not.
+        """Says whether the clip is a mask or not.
 
         Parameters
         ----------
@@ -340,7 +340,7 @@ class Clip:
 
     @outplace
     def with_memoize(self, memoize):
-        """Sets wheter the clip should keep the last frame read in memory.
+        """Sets whether the clip should keep the last frame read in memory.
 
         Parameters
         ----------

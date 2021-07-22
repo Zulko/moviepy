@@ -205,7 +205,7 @@ class FFMPEG_VideoReader:
         whenever possible, by moving between adjacent frames.
         """
         # + 1 so that it represents the frame position that it will be
-        # after the frame is read. This makes the later comparisions easier.
+        # after the frame is read. This makes the later comparisons easier.
         pos = self.get_frame_number(t) + 1
 
         # Initialize proc if it is not open
@@ -333,12 +333,12 @@ class FFmpegInfosParser:
         initialization and at the end of the parsing process.
         """
         # could be 2 possible types of metadata:
-        #   - file_metadata: Metadata of the container. Here are the tags setted
+        #   - file_metadata: Metadata of the container. Here are the tags set
         #     by the user using `-metadata` ffmpeg option
         #   - stream_metadata: Metadata for each stream of the container.
         self._inside_file_metadata = False
 
-        # this state is neeeded if `duration_tag_separator == "time="` because
+        # this state is needed if `duration_tag_separator == "time="` because
         # execution of ffmpeg decoding the whole file using `-f null -` appends
         # to the output the blocks "Stream mapping:" and "Output:", which
         # should be ignored
@@ -761,7 +761,7 @@ def ffmpeg_parse_infos(
     - ``"audio_metadata"``
 
     Note that "video_duration" is slightly smaller than "duration" to avoid
-    fetching the uncomplete frames at the end, which raises an error.
+    fetching the incomplete frames at the end, which raises an error.
 
     Parameters
     ----------
@@ -822,4 +822,4 @@ def ffmpeg_parse_infos(
             raise IsADirectoryError(f"'{filename}' is a directory")
         elif not os.path.exists(filename):
             raise FileNotFoundError(f"'{filename}' not found")
-        raise IOError(f"Error pasing `ffmpeg -i` command output:\n\n{infos}") from exc
+        raise IOError(f"Error passing `ffmpeg -i` command output:\n\n{infos}") from exc

@@ -25,7 +25,7 @@ def painting(clip, saturation=1.4, black=0.006):
     """
     Transforms any photo into some kind of painting. Saturation
     tells at which point the colors of the result should be
-    flashy. ``black`` gives the anount of black lines wanted.
+    flashy. ``black`` gives the amount of black lines wanted.
     Requires Scikit-image or Scipy installed.
     """
     return clip.image_transform(lambda im: to_painting(im, saturation, black))

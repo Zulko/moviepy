@@ -3,7 +3,7 @@
 Creating and exporting video clips
 ===================================
 
-Video and audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For informations on modifying a clip (cuts, effects, etc.), see :ref:`effects`. For how to put clips together see :ref:`CompositeVideoClips` and to see how to preview clips before writing a file, refer to :ref:`efficient`.
+Video and audio clips are the central objects of MoviePy. In this section we present the different sorts of clips, how to create them, and how to write them to a file. For information on modifying a clip (cuts, effects, etc.), see :ref:`effects`. For how to put clips together see :ref:`CompositeVideoClips` and to see how to preview clips before writing a file, refer to :ref:`efficient`.
 
 The following code summarizes the base clips that you can create with moviepy: ::
 
@@ -189,7 +189,7 @@ There are many options to optimize the quality and size of a gif. Please refer t
 
 Note that for editing gifs the best way is to preview them in the notebook as explained here: :ref:`ipython_display`
 
-For examples of use, see `this blog post <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for informations on making GIFs from video files, and `this other post <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
+For examples of use, see `this blog post <https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python>`_ for information on making GIFs from video files, and `this other post <https://zulko.github.io/blog/2014/09/20/vector-animations-with-python/>`_ for GIF animations with vector graphics.
 
 Export images
 """""""""""""""

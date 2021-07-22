@@ -185,7 +185,7 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
     ``fps``.
 
     This algorithm assumes that the pattern's aspect does not vary much and
-    that the distance between two occurences of the pattern in two consecutive
+    that the distance between two occurrences of the pattern in two consecutive
     frames is smaller than ``radius`` (if you set ``radius`` to -1 the pattern
     will be searched in the whole screen at each frame). You can also provide
     the original position of the pattern with xy0.
@@ -207,7 +207,7 @@ def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
       Overwrites fps value used computing time frames. As default, clip's fps.
 
     radius : int, optional
-      Maximum radius to search looking for the pattern. Setted to ``-1``,
+      Maximum radius to search looking for the pattern. Set to ``-1``,
       the pattern will be searched in the whole screen at each frame.
 
     xy0 : tuple or list, optional

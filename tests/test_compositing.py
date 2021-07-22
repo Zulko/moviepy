@@ -134,7 +134,7 @@ def test_slide_in():
             if t:
                 assert n_reds_expected
 
-            if n_reds_expected == 7:  # skip 7 due to innacurate frame
+            if n_reds_expected == 7:  # skip 7 due to inaccurate frame
                 continue
 
             for r, g, b in new_clip.get_frame(t)[0]:
@@ -158,7 +158,7 @@ def test_slide_in():
             if t:
                 assert n_reds_expected
 
-            if n_reds_expected == 7:  # skip 7 due to innacurate frame
+            if n_reds_expected == 7:  # skip 7 due to inaccurate frame
                 continue
 
             for row in new_clip.get_frame(t):

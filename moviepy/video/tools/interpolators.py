@@ -18,7 +18,7 @@ class Interpolator:
     ttss : list, optional
       Lists of time frames and their correspondients values for the
       interpolator. This argument can be used instead of ``tt`` and ``ss``
-      to instanciate the interpolator using an unique argument.
+      to instantiate the interpolator using an unique argument.
 
     left : float, optional
       Value to return when ``t < tt[0]``.
@@ -30,10 +30,10 @@ class Interpolator:
     Examples
     --------
 
-    >>> # instanciate using `tt` and `ss`
+    >>> # instantiate using `tt` and `ss`
     >>> interpolator = Interpolator(tt=[0, 1, 2], ss=[3, 4, 5])
     >>>
-    >>> # instanciate using `ttss`
+    >>> # instantiate using `ttss`
     >>> interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]
     """
 
@@ -64,7 +64,7 @@ class Trajectory:
     """Trajectory compound by time frames and (x, y) pixels.
 
     It's designed as an interpolator, so you can get the position at a given
-    time ``t``. You can instanciate it from a file using the methods
+    time ``t``. You can instantiate it from a file using the methods
     ``from_file`` and ``load_list``.
 
 
@@ -173,7 +173,7 @@ class Trajectory:
 
     @staticmethod
     def from_file(filename):
-        """Instanciates an object of Trajectory using a data text file.
+        """Instantiates an object of Trajectory using a data text file.
 
         Parameters
         ----------

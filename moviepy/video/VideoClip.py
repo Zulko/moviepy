@@ -59,7 +59,7 @@ class VideoClip(Clip):
     ----------
 
     size
-      The size of the clip, (width,heigth), in pixels.
+      The size of the clip, (width,height), in pixels.
 
     w, h
       The width and height of the clip, in pixels.
