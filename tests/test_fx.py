@@ -1458,7 +1458,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     """
     # limits of this test
     assert n_repeats > 0  # some repetition, if not does not make sense
-    assert duration <= offset  # avoid wave distorsion
+    assert duration <= offset  # avoid wave distortion
     assert not offset * 1000000 % 2  # odd offset -> no accurate muted chunk size
 
     # stereo audio clip

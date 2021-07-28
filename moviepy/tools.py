@@ -124,7 +124,7 @@ def deprecated_version_of(func, old_name):
     return deprecated_func
 
 
-# Non-exhaustive dictionary to store default informations.
+# Non-exhaustive dictionary to store default information.
 # Any addition is most welcome.
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.

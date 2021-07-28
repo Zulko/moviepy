@@ -30,7 +30,7 @@ Concatenation is done with the function ``concatenate_videoclips``: ::
     final_clip.write_videofile("my_concatenation.mp4")
 
 
-The ``final_clip`` is a clip that plays the clips 1, 2, and 3 one after the other. Note that the clips do not need to be the same size. If they arent's they will all appear centered in a clip large enough to contain the biggest of them, with optionnally a color of your choosing to fill the borders. You have many other options there (see the doc of the function). You can for instance play a transition clip between the clips with the option ``transition=my_clip``.
+The ``final_clip`` is a clip that plays the clips 1, 2, and 3 one after the other. Note that the clips do not need to be the same size. If they arent's they will all appear centered in a clip large enough to contain the biggest of them, with optionally a color of your choosing to fill the borders. You have many other options there (see the doc of the function). You can for instance play a transition clip between the clips with the option ``transition=my_clip``.
 
 Stacking is done with ``clip_array``: ::
 

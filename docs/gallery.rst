@@ -63,7 +63,7 @@ This `vector animations tutorial <https://zulko.github.io/blog/2014/09/20/vector
          style="max-width:50%; height:'auto'; display:block; margin-left: auto;margin-right: auto; margin-bottom:30px;" /></a>
 
 
-It is also possible to combine MoviePy with other graphic librairies like matplotlib, etc.
+It is also possible to combine MoviePy with other graphic libraries like matplotlib, etc.
 
 
 3D animations
@@ -111,7 +111,7 @@ Or use `this script <https://gist.github.com/Zulko/b910c8b22e8e1c01fae6>`_ to ma
 Data animations
 ----------------
 
-This `data animation tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python vizualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
+This `data animation tutorial <https://zulko.github.io/blog/2014/11/13/things-you-can-do-with-python-and-pov-ray/>`_ shows how to use MoviePy to animate the different Python visualization libraries: Mayavi, Vispy, Scikit-image, Matplotlib, etc.
 
 
 Scientific or technological projects
@@ -147,7 +147,7 @@ Kapwing
 Rinconcam
 ----------
 
-`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automatized with Python.
+`Rincomcam <http://www.rinconcam.com/month/2014-03>`_ is a camera which films surfers on the Californian beach of Point Rincon. At the end of each day it cuts together a video, puts it online, and tweets it. Everything is entirely automated with Python.
 MoviePy is used to add transitions, titles and music to the videos.
 
 

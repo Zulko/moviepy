@@ -135,7 +135,7 @@ def preview(
     audio = audio and (clip.audio is not None)
 
     if audio:
-        # the sound will be played in parrallel. We are not
+        # the sound will be played in parallel. We are not
         # parralellizing it on different CPUs because it seems that
         # pygame and openCV already use several cpus it seems.
 

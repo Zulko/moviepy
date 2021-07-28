@@ -21,7 +21,7 @@ class CompositeVideoClip(VideoClip):
     clips
       A list of videoclips.
 
-      Clips with a higher ``layer`` attribute will be dislayed
+      Clips with a higher ``layer`` attribute will be displayed
       on top of other clips in a lower layer.
       If two or more clips share the same ``layer``,
       then the one appearing latest in ``clips`` will be displayed
@@ -183,7 +183,7 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
       Widths of the different rows in pixels. If ``None``, is set automatically.
 
     cols_heights
-      Heights of the different colums in pixels. If ``None``, is set automatically.
+      Heights of the different columns in pixels. If ``None``, is set automatically.
 
     bg_color
        Fill color for the masked and unfilled regions. Set to ``None`` for these

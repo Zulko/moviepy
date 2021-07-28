@@ -148,7 +148,7 @@ class SubtitlesClip(VideoClip):
         return "\n\n".join(to_srt(sub) for sub in self.subtitles)
 
     def match_expr(self, expr):
-        """Matchs a regular expression against the subtitles of the clip."""
+        """Matches a regular expression against the subtitles of the clip."""
         return SubtitlesClip(
             [sub for sub in self.subtitles if re.findall(expr, sub[1]) != []]
         )

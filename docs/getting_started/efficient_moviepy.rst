@@ -64,7 +64,7 @@ Most of the time, just having one frame of the video can tell you if you are doi
 clip.show and clip.preview
 """"""""""""""""""""""""""""
 
-The methods ``clip.show`` and ``clip.preview`` enable you to vizualise the clip in a Pygame window. They are the fastest way to preview, as the clips are generated and displayed at the same time, and they can be useful to get the coordinates or colors of pixels. These methods require to have PyGame installed, and to use the ``moviepy.editor`` module.
+The methods ``clip.show`` and ``clip.preview`` enable you to visualise the clip in a Pygame window. They are the fastest way to preview, as the clips are generated and displayed at the same time, and they can be useful to get the coordinates or colors of pixels. These methods require to have PyGame installed, and to use the ``moviepy.editor`` module.
 
 The method ``clip.show`` enables preview one frame of a clip without having to write it to a file: the following lines display the frame in a PyGame window ::
     

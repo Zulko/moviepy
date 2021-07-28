@@ -142,7 +142,7 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
     --------
 
     >>> myClip.resize( (460,720) ) # New resolution: (460,720)
-    >>> myClip.resize(0.6) # width and heigth multiplied by 0.6
+    >>> myClip.resize(0.6) # width and height multiplied by 0.6
     >>> myClip.resize(width=800) # height computed automatically.
     >>> myClip.resize(lambda t : 1+0.02*t) # slow swelling of the clip
     """

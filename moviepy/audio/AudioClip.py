@@ -325,14 +325,14 @@ class CompositeAudioClip(AudioClip):
         self.clips = clips
         self.nchannels = max(clip.nchannels for clip in self.clips)
 
-        # self.duration is setted at AudioClip
+        # self.duration is set at AudioClip
         duration = None
         for end in self.ends:
             if end is None:
                 break
             duration = max(end, duration or 0)
 
-        # self.fps is setted at AudioClip
+        # self.fps is set at AudioClip
         fps = None
         for clip in self.clips:
             if hasattr(clip, "fps") and isinstance(clip.fps, numbers.Number):

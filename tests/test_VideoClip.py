@@ -252,7 +252,7 @@ def test_oncolor(util):
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
 
-    # test constructor with default arguements
+    # test constructor with default arguments
     clip = ColorClip(size=(100, 60), is_mask=True)
     clip = ColorClip(size=(100, 60), is_mask=False)
 

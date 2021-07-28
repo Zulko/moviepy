@@ -51,7 +51,7 @@ def test_find_extensions_not_found():
     ],
 )
 def test_cvsecs(given, expected):
-    """Test the convert_to_seconds funtion outputs correct times as per
+    """Test the convert_to_seconds function outputs correct times as per
     the docstring.
     """
     assert tools.convert_to_seconds(given) == expected
@@ -292,7 +292,7 @@ def test_decorators_argument_converters_consistency(
     >>> def whatever_function(bar):  # bar not converted to seconds
     ...     pass
 
-    Some wrong defintions remained unnoticed in the past before this test was
+    Some wrong definitions remained unnoticed in the past before this test was
     added.
     """
     with contextlib.redirect_stdout(io.StringIO()):

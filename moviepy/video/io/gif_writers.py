@@ -223,7 +223,7 @@ def write_gif(
       look for the clip's ``fps`` attribute.
 
     with_mask : bool, optional
-      Includes tha mask of the clip in the output (the clip must have a mask
+      Includes the mask of the clip in the output (the clip must have a mask
       if this argument is ``True``).
 
     program : str, optional

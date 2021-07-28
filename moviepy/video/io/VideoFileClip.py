@@ -27,7 +27,7 @@ class VideoFileClip(VideoClip):
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.
       Video files rarely contain masks, but some video codecs enable
-      that. For istance if you have a MoviePy VideoClip with a mask you
+      that. For instance if you have a MoviePy VideoClip with a mask you
       can save it to a videofile with a mask. (see also
       ``VideoClip.write_videofile`` for more details).
 

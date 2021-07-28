@@ -130,7 +130,7 @@ class FFMPEG_AudioWriter:
 
             elif "bitrate not specified" in ffmpeg_error:
                 error += (
-                    "\n\nThe audio export failed, possily because the "
+                    "\n\nThe audio export failed, possibly because the "
                     "bitrate you specified was too high or too low for "
                     "the audio codec."
                 )
