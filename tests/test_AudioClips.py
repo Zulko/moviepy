@@ -3,6 +3,7 @@
 import os
 
 import numpy as np
+from numpy.core.records import array
 
 import pytest
 
@@ -29,6 +30,15 @@ def test_audioclip(util, mono_wave):
     # assert clip.fps == 22050
     # assert clip.reader.bitrate == 16
 
+def test_mono_audioarrayclip(util):
+    filename = os.path.join(util.TMP_DIR, "random.wav")
+    input_array = np.random.random((220000, )) * 1.98 - 0.99
+    clip = AudioArrayClip(input_array, fps=44100)
+    assert clip.nchannels == 1
+    clip.write_audiofile(filename, logger=None)
+    # TODO: AudioFileClip always return nchannels = 2
+    # clip = AudioFileClip(filename)
+    # assert clip.nchannels == 1
 
 def test_audioclip_io(util):
     filename = os.path.join(util.TMP_DIR, "random.wav")
