@@ -3,9 +3,10 @@ import os
 import re
 import subprocess as sp
 import warnings
-
+import io
 import numpy as np
-
+import shlex
+import errno
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import convert_to_seconds, cross_platform_popen_params
 
@@ -25,9 +26,9 @@ class FFMPEG_VideoReader:
         resize_algo="bicubic",
         fps_source="fps",
     ):
-
-        self.filename = filename
         self.proc = None
+        self.out = None
+        self.filename = filename
         infos = ffmpeg_parse_infos(
             filename,
             check_duration=check_duration,
@@ -82,49 +83,33 @@ class FFMPEG_VideoReader:
         it pre-reads the first frame).
         """
         self.close(delete_lastread=False)  # if any
+        if isinstance(self.filename, io.BytesIO):
+            stream = self.filename
+            self.filename = 'pipe:'
+            stream.seek(0)
+            stdin_pipe, stdin = sp.PIPE, stream.read()
+        else:
+            stdin_pipe, stdin = sp.DEVNULL, None
 
         if start_time != 0:
             offset = min(1, start_time)
-            i_arg = [
-                "-ss",
-                "%.06f" % (start_time - offset),
-                "-i",
-                self.filename,
-                "-ss",
-                "%.06f" % offset,
-            ]
+            i_arg = f'-ss {start_time - offset} -i {self.filename} -ss {offset}'
         else:
-            i_arg = ["-i", self.filename]
+            i_arg = f'-i {self.filename}'
+        cmd = shlex.split(f"{FFMPEG_BINARY} {i_arg} -loglevel error -f image2pipe -vf scale={self.size[0]}:{self.size[1]} "
+                          f"-sws_flags {self.resize_algo} -pix_fmt {self.pixel_format} -vcodec rawvideo pipe:")
 
-        cmd = (
-            [FFMPEG_BINARY]
-            + i_arg
-            + [
-                "-loglevel",
-                "error",
-                "-f",
-                "image2pipe",
-                "-vf",
-                "scale=%d:%d" % tuple(self.size),
-                "-sws_flags",
-                self.resize_algo,
-                "-pix_fmt",
-                self.pixel_format,
-                "-vcodec",
-                "rawvideo",
-                "-",
-            ]
-        )
         popen_params = cross_platform_popen_params(
             {
                 "bufsize": self.bufsize,
                 "stdout": sp.PIPE,
                 "stderr": sp.PIPE,
-                "stdin": sp.DEVNULL,
+                "stdin": stdin_pipe,
             }
         )
         self.proc = sp.Popen(cmd, **popen_params)
-
+        (out, err) = self.proc.communicate(stdin)
+        self.out = io.BytesIO(out)
         # self.pos represents the (0-indexed) index of the frame that is next in line
         # to be read by self.read_frame().
         # Eg when self.pos is 1, the 2nd frame will be read next.
@@ -135,8 +120,7 @@ class FFMPEG_VideoReader:
         """Reads and throws away n frames"""
         w, h = self.size
         for i in range(n):
-            self.proc.stdout.read(self.depth * w * h)
-
+            self.out.read(self.depth * w * h)
             # self.proc.stdout.flush()
         self.pos += n
 
@@ -149,7 +133,7 @@ class FFMPEG_VideoReader:
         w, h = self.size
         nbytes = self.depth * w * h
 
-        s = self.proc.stdout.read(nbytes)
+        s = self.out.read(nbytes)
 
         if len(s) != nbytes:
             warnings.warn(
@@ -245,6 +229,8 @@ class FFMPEG_VideoReader:
             self.proc = None
         if delete_lastread and hasattr(self, "last_read"):
             del self.last_read
+        if self.out is not None and not self.out.closed:
+            self.out.close()
 
     def __del__(self):
         self.close()
@@ -736,11 +722,11 @@ class FFmpegInfosParser:
 
 
 def ffmpeg_parse_infos(
-    filename,
-    check_duration=True,
-    fps_source="fps",
-    decode_file=False,
-    print_infos=False,
+        filename,
+        check_duration=True,
+        fps_source="fps",
+        decode_file=False,
+        print_infos=False,
 ):
     """Get the information of a file using ffmpeg.
 
@@ -785,7 +771,15 @@ def ffmpeg_parse_infos(
       https://github.com/Zulko/moviepy/pull/1222).
     """
     # Open the file in a pipe, read output
-    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]
+    if isinstance(filename, io.BytesIO):
+        stream = filename
+        filename = 'pipe:'
+        stream.seek(0)
+        stdin_pipe, stdin = sp.PIPE, stream.read()
+        cmd = shlex.split(f'{FFMPEG_BINARY} -i {filename} -f rawvideo -hide_banner pipe:')
+    else:
+        stdin_pipe, stdin = sp.DEVNULL, None
+        cmd = shlex.split(f'{FFMPEG_BINARY} -i {filename} -hide_banner')
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 
@@ -794,12 +788,12 @@ def ffmpeg_parse_infos(
             "bufsize": 10 ** 5,
             "stdout": sp.PIPE,
             "stderr": sp.PIPE,
-            "stdin": sp.DEVNULL,
+            "stdin": stdin_pipe,
         }
     )
 
     proc = sp.Popen(cmd, **popen_params)
-    (output, error) = proc.communicate()
+    (output, error) = proc.communicate(stdin)
     infos = error.decode("utf8", errors="ignore")
 
     proc.terminate()

@@ -1,10 +1,10 @@
 """MoviePy audio reading with ffmpeg."""
-
+import shlex
 import subprocess as sp
 import warnings
-
+import io
 import numpy as np
-
+import errno
 from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import cross_platform_popen_params
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
@@ -64,6 +64,7 @@ class FFMPEG_AudioReader:
         self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None
+        self.out = None
 
         self.n_frames = int(self.fps * self.duration)
         self.buffersize = min(self.n_frames + 1, buffersize)
@@ -75,63 +76,47 @@ class FFMPEG_AudioReader:
     def initialize(self, start_time=0):
         """Opens the file, creates the pipe."""
         self.close()  # if any
+        if isinstance(self.filename, io.BytesIO):
+            stream = self.filename
+            self.filename = 'pipe:'
+            stream.seek(0)
+            stdin_pipe, stdin = sp.PIPE, stream.read()
+        else:
+            stdin_pipe, stdin = sp.DEVNULL, None
 
         if start_time != 0:
             offset = min(1, start_time)
-            i_arg = [
-                "-ss",
-                "%.05f" % (start_time - offset),
-                "-i",
-                self.filename,
-                "-vn",
-                "-ss",
-                "%.05f" % offset,
-            ]
+            i_arg = f'-ss {start_time - offset} -i {self.filename} -vn -ss {offset}'
         else:
-            i_arg = ["-i", self.filename, "-vn"]
-
-        cmd = (
-            [FFMPEG_BINARY]
-            + i_arg
-            + [
-                "-loglevel",
-                "error",
-                "-f",
-                self.format,
-                "-acodec",
-                self.codec,
-                "-ar",
-                "%d" % self.fps,
-                "-ac",
-                "%d" % self.nchannels,
-                "-",
-            ]
-        )
+            i_arg = f'-i {self.filename} -vn'
+        cmd = shlex.split(f"{FFMPEG_BINARY} {i_arg} -loglevel error -f {self.format} -acodec {self.codec} "
+                          f"-ar {self.fps} -ac {self.nchannels} pipe:")
 
         popen_params = cross_platform_popen_params(
             {
                 "bufsize": self.buffersize,
                 "stdout": sp.PIPE,
                 "stderr": sp.PIPE,
-                "stdin": sp.DEVNULL,
+                "stdin": stdin_pipe,
             }
         )
 
         self.proc = sp.Popen(cmd, **popen_params)
-
+        (out, err) = self.proc.communicate(stdin)
+        self.out = io.BytesIO(out)
         self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
         """TODO: add documentation"""
-        _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
-        self.proc.stdout.flush()
+        _ = self.out.read(self.nchannels * chunksize * self.nbytes)
+        self.out.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
         """TODO: add documentation"""
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
-        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        s = self.out.read(self.nchannels * chunksize * self.nbytes)
         data_type = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
         if hasattr(np, "frombuffer"):
             result = np.frombuffer(s, dtype=data_type)
@@ -262,6 +247,8 @@ class FFMPEG_AudioReader:
                 self.proc.stderr.close()
                 self.proc.wait()
             self.proc = None
+        if self.out is not None and not self.out.closed:
+            self.out.close()
 
     def __del__(self):
         # If the garbage collector comes, make sure the subprocess is terminated.

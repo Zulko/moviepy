@@ -119,7 +119,7 @@ class VideoFileClip(VideoClip):
         self.size = self.reader.size
         self.rotation = self.reader.rotation
 
-        self.filename = filename
+        self.filename = self.reader.filename
 
         if has_mask:
 
