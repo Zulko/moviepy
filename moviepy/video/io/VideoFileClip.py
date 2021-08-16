@@ -14,6 +14,8 @@ class VideoFileClip(VideoClip):
         >>> clip.close()
         >>> with VideoFileClip("myMaskVideo.avi") as clip2:
         >>>    pass  # Implicit close called by context manager.
+        >>> clip = VideoFileClip(open("myHolidays.mp4", "rb").read())
+        >>> clip.close()
 
 
     Parameters
@@ -22,7 +24,7 @@ class VideoFileClip(VideoClip):
     filename:
       The name of the video file, as a string or a path-like object.
       It can have any extension supported by ffmpeg:
-      .ogv, .mp4, .mpeg, .avi, .mov etc.
+      .ogv, .mp4, .mpeg, .avi, .mov etc. It also could be a `io.BytesIO` object.
 
     has_mask:
       Set this to 'True' if there is a mask included in the videofile.

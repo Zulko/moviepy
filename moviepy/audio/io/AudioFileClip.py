@@ -21,7 +21,7 @@ class AudioFileClip(AudioClip):
       as a string or a path-like object,
       or an array representing a sound. If the soundfile is not a .wav,
       it will be converted to .wav first, using the ``fps`` and
-      ``bitrate`` arguments.
+      ``bitrate`` arguments. It also could be a `io.BytesIO` object.
 
     buffersize:
       Size to load in memory (in number of frames)
@@ -50,6 +50,8 @@ class AudioFileClip(AudioClip):
     --------
 
     >>> snd = AudioFileClip("song.wav")
+    >>> snd.close()
+    >>> snd = AudioFileClip(open("song.wav", "rb"))
     >>> snd.close()
     """
 
