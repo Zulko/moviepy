@@ -10,11 +10,12 @@ class VideoFileClip(VideoClip):
     """
     A video clip originating from a movie file. For instance: ::
 
-        >>> clip = VideoFileClip("myHolidays.mp4")
+import io        >>> clip = VideoFileClip("myHolidays.mp4")
         >>> clip.close()
         >>> with VideoFileClip("myMaskVideo.avi") as clip2:
         >>>    pass  # Implicit close called by context manager.
-        >>> clip = VideoFileClip(open("myHolidays.mp4", "rb").read())
+        >>> import io
+        >>> clip = VideoFileClip(io.BytesIO(open("myHolidays.mp4", "rb").read()))
         >>> clip.close()
 
 

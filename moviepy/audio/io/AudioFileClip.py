@@ -51,7 +51,8 @@ class AudioFileClip(AudioClip):
 
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
-    >>> snd = AudioFileClip(open("song.wav", "rb"))
+    >>> import io
+    >>> snd = AudioFileClip(io.BytesIO(open("song.wav", "rb").read()))
     >>> snd.close()
     """
 
