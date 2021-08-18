@@ -109,7 +109,10 @@ def test_deprecated_version_of(old_name):
 def test_download_webfile(static_files_server, util, url, expected_result):
     filename = os.path.join(util.TMP_DIR, "moviepy_downloader_test.mp4")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     if hasattr(expected_result, "__traceback__") or len(url) == 11:
         if not shutil.which("youtube-dl"):
@@ -132,7 +135,10 @@ def test_download_webfile(static_files_server, util, url, expected_result):
         assert filecmp.cmp(filename, expected_result)
 
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
 
 @pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
