@@ -140,6 +140,7 @@ def test_download_webfile(static_files_server, util, url, expected_result):
         except PermissionError:
             pass
 
+
 @pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
 @pytest.mark.parametrize(
     ("ffmpeg_binary", "ffmpeg_binary_error"),
