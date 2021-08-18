@@ -88,8 +88,9 @@ jobs:
         shell: cmd
         if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
         run: |
-          echo https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe
-          curl https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-13-Q16-x86-static.exe -o ImageMagick.exe
+          set IMAGEMAGICK_URL=https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-19-Q16-x86-static.exe
+          echo %IMAGEMAGICK_URL%
+          curl %IMAGEMAGICK_URL% -o ImageMagick.exe
 
       - name: Install ImageMagick
         id: imagemagick-install
