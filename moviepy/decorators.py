@@ -1,5 +1,6 @@
 """Decorators used by moviepy."""
 import inspect
+import io
 import os
 
 import decorator
@@ -102,8 +103,10 @@ def convert_parameter_to_seconds(varnames):
 
 
 def convert_path_to_string(varnames):
-    """Converts the specified variables to a path string."""
-    return preprocess_args(os.fspath, varnames)
+    """Converts the specified variables to a path string.
+    Note: it doesn't deal with `io.BytesIO` variables (for supporting Video/AudioFileClip's input).
+    """
+    return preprocess_args(lambda x: x if isinstance(x, io.BytesIO) else os.fspath(x), varnames)
 
 
 @decorator.decorator
