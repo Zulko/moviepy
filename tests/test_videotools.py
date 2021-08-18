@@ -907,7 +907,10 @@ def test_Trajectory_addy():
 def test_Trajectory_from_to_file(util):
     filename = os.path.join(util.TMP_DIR, "moviepy_Trajectory_from_to_file.txt")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     trajectory_file_content = """# t(ms)	x	y
 0	554	100

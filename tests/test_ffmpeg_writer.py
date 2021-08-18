@@ -138,7 +138,10 @@ def test_ffmpeg_write_video(
 def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
     filename = os.path.join(util.TMP_DIR, "moviepy_ffmpeg_write_image.png")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     image_array = color_gradient(
         size,
@@ -192,7 +195,10 @@ def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
 def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
     filename = os.path.join(util.TMP_DIR, "moviepy_write_gif.gif")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     fps = 10
 
