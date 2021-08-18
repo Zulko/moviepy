@@ -1,10 +1,9 @@
 """MoviePy audio reading with ffmpeg."""
+import io
+import numpy as np
 import shlex
 import subprocess as sp
 import warnings
-import io
-import numpy as np
-import errno
 from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import cross_platform_popen_params
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos

@@ -1,12 +1,11 @@
 """Implements all the functions to read a video or a picture using ffmpeg."""
-import os
-import re
-import subprocess as sp
-import warnings
 import io
 import numpy as np
+import os
+import re
 import shlex
-import errno
+import subprocess as sp
+import warnings
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import convert_to_seconds, cross_platform_popen_params
 
@@ -85,7 +84,7 @@ class FFMPEG_VideoReader:
         self.close(delete_lastread=False)  # if any
         if isinstance(self.filename, io.BytesIO):
             stream = self.filename
-            self.filename = 'pipe:'
+            self.filename = "pipe:"
             stream.seek(0)
             stdin_pipe, stdin = sp.PIPE, stream.read()
         else:
@@ -93,9 +92,9 @@ class FFMPEG_VideoReader:
 
         if start_time != 0:
             offset = min(1, start_time)
-            i_arg = f'-ss {start_time - offset} -i {self.filename} -ss {offset}'
+            i_arg = f"-ss {start_time - offset} -i {self.filename} -ss {offset}"
         else:
-            i_arg = f'-i {self.filename}'
+            i_arg = f"-i {self.filename}"
         cmd = shlex.split(f"{FFMPEG_BINARY} {i_arg} -loglevel error -f image2pipe -vf scale={self.size[0]}:{self.size[1]} "
                           f"-sws_flags {self.resize_algo} -pix_fmt {self.pixel_format} -vcodec rawvideo pipe:")
 
@@ -773,13 +772,13 @@ def ffmpeg_parse_infos(
     # Open the file in a pipe, read output
     if isinstance(filename, io.BytesIO):
         stream = filename
-        filename = 'pipe:'
+        filename = "pipe:"
         stream.seek(0)
         stdin_pipe, stdin = sp.PIPE, stream.read()
-        cmd = shlex.split(f'{FFMPEG_BINARY} -i {filename} -f rawvideo -hide_banner pipe:')
+        cmd = shlex.split(f"{FFMPEG_BINARY} -i {filename} -f rawvideo -hide_banner pipe:")
     else:
         stdin_pipe, stdin = sp.DEVNULL, None
-        cmd = shlex.split(f'{FFMPEG_BINARY} -i {filename} -hide_banner')
+        cmd = shlex.split(f"{FFMPEG_BINARY} -i {filename} -hide_banner")
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 
