@@ -28,7 +28,6 @@ Example
 In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
 
 .. code:: python
-
     from moviepy import *
 
     video = VideoFileClip("myHolidays.mp4").subclip(50,60)
@@ -40,6 +39,8 @@ In this example we open a video file, select the subclip between t=50s and t=60s
 
     result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
+    
+*Note:* This example uses the new 2.x API, for MoviePy 1.0.3, currently on PyPI, see [this snippet](https://gist.github.com/Zulko/57e6e50debef1834fb9b60700b1b9f99).
 
 
 Maintainers wanted!
