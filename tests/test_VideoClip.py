@@ -135,7 +135,10 @@ def test_write_videofiles_with_temp_audiofile_path(util):
 def test_save_frame(util, with_mask, t, mask_color, frames):
     filename = os.path.join(util.TMP_DIR, "moviepy_VideoClip_save_frame.png")
     if os.path.isfile(filename):
-        os.remove(filename)
+        try:
+            os.remove(filename)
+        except PermissionError:
+            pass
 
     width, height = (len(frames[0][0]), len(frames[0]))
 
