@@ -134,6 +134,6 @@ if __name__ == "__main__":
     pytest.main()
 
 
-def test_PR_1493_audio(util, video):
+def test_PR_1493_audio_params():
     """Test support for additional audio parameters for VideoClip."""
     pass
