@@ -287,6 +287,10 @@ class VideoClip(Clip):
           Note that it mainly an indicative goal, the bitrate won't
           necessarily be the this in the final file.
 
+        audio_ffmpeg_params
+          Any additional ffmpeg audio parameters you would like to specify
+          as a list of terms, like ['-af', 'value', '-option2' 'value2' ]
+
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
           Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
