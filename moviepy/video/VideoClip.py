@@ -290,7 +290,7 @@ class VideoClip(Clip):
         audio_ffmpeg_params
           Any additional ffmpeg audio parameters you would like to specify
           as a list of terms, like ['-af', 'acrusher=.1:1:64:0:log',
-           '-option2' 'value2' ]
+          '-option2' 'value2' ]
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
