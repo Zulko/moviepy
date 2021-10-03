@@ -132,3 +132,8 @@ def test_PR_1137_subtitles(util):
 
 if __name__ == "__main__":
     pytest.main()
+
+
+def test_PR_1493_audio(util, video):
+    """Test support for additional audio parameters for VideoClip."""
+    pass
