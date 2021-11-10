@@ -131,6 +131,7 @@ def deprecated_version_of(func, old_name):
 
 extensions_dict = {
     "mp4": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
+    "mkv": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
     "ogv": {"type": "video", "codec": ["libtheora"]},
     "webm": {"type": "video", "codec": ["libvpx"]},
     "avi": {"type": "video"},
