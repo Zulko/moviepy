@@ -82,13 +82,15 @@ jobs:
         with:
           path: |
             ImageMagick.exe
-          key: ${{ runner.os }}-6.9.12
+          key: ${{ runner.os }}-latest
 
       - name: Download ImageMagick installer
         shell: cmd
         if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
         run: |
-          set IMAGEMAGICK_URL=https://download.imagemagick.org/ImageMagick/download/binaries/ImageMagick-6.9.12-19-Q16-x86-static.exe
+          python3 scripts/get-latest-imagemagick-win.py >im-url.txt
+          set /p IMAGEMAGICK_URL= <im-url.txt
+          rm im-url.txt
           echo %IMAGEMAGICK_URL%
           curl %IMAGEMAGICK_URL% -o ImageMagick.exe
 
@@ -104,7 +106,7 @@ jobs:
           dir imagemagick
 
           move imagemagick\ffmpeg.exe ffmpeg.exe
-          move imagemagick\convert.exe convert.exe
+          move imagemagick\magick.exe convert.exe
 
       - name: Install Python dependencies
         run: |
