@@ -66,19 +66,22 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\magick.exe"
             key.Close()
         except Exception:
-            try:
-                imagemagick_path = sp.check_output(
-                    r'dir /B /O-N "C:\Program Files\ImageMagick-*"',
-                    shell=True,
-                    encoding="utf-8",
-                ).split("\n")[0]
-                IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
-                    rf'dir /B /S "C:\Program Files\{imagemagick_path}\*convert.exe"',
-                    shell=True,
-                    encoding="utf-8",
-                ).split("\n")[0]
-            except Exception:
-                IMAGEMAGICK_BINARY = "unset"
+            for imagemagick_filename in ["convert.exe", "magick.exe"]:
+                try:
+                    imagemagick_path = sp.check_output(
+                        r'dir /B /O-N "C:\\Program Files\\ImageMagick-*"',
+                        shell=True,
+                        encoding="utf-8",
+                    ).split("\n")[0]
+                    IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
+                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\''
+                        f'*{imagemagick_filename}"',
+                        shell=True,
+                        encoding="utf-8",
+                    ).split("\n")[0]
+                    break
+                except Exception:
+                    IMAGEMAGICK_BINARY = "unset"
 
     if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
         if try_cmd(["convert"])[0]:
