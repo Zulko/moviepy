@@ -69,12 +69,13 @@ if IMAGEMAGICK_BINARY == "auto-detect":
             for imagemagick_filename in ["convert.exe", "magick.exe"]:
                 try:
                     imagemagick_path = sp.check_output(
-                        r'dir /B /O-N "C:\Program Files\ImageMagick-*"',
+                        r'dir /B /O-N "C:\\Program Files\\ImageMagick-*"',
                         shell=True,
                         encoding="utf-8",
                     ).split("\n")[0]
                     IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
-                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\*{imagemagick_filename}"',
+                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\''
+                        f'*{imagemagick_filename}"',
                         shell=True,
                         encoding="utf-8",
                     ).split("\n")[0]
