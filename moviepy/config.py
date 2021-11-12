@@ -74,7 +74,7 @@ if IMAGEMAGICK_BINARY == "auto-detect":
                         encoding="utf-8",
                     ).split("\n")[0]
                     IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
-                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\''
+                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\\'
                         f'*{imagemagick_filename}"',
                         shell=True,
                         encoding="utf-8",
