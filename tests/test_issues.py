@@ -401,6 +401,20 @@ def test_issue_655():
             next(v.subclip(*subclip).iter_frames())
     assert True
 
+def test_issue_1682(util):
+    filename = "media/big_buck_bunny_0_30.webm"
+    clip  = VideoFileClip(filename)
+    clip = clip.cutout(1, 9)
+    output_video_filepath = os.path.join(util.TMP_DIR, "big_buck_bunny_0_30_cutout.webm")
+    clip.write_videofile(output_video_filepath)
+
+
+def test_issue_1682_2(util):
+    filename = "media/rain.mp3"
+    clip  = AudioFileClip(filename)
+    clip = clip.cutout(10, 17)
+    output_audio_filepath = os.path.join(util.TMP_DIR, "rain_cutout.mp3")
+    clip.write_audiofile(output_audio_filepath)
 
 if __name__ == "__main__":
     pytest.main()
