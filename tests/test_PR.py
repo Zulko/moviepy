@@ -130,17 +130,16 @@ def test_PR_1137_subtitles(util):
     SubtitlesClip(Path("media/subtitles.srt"), make_textclip=make_textclip).close()
 
 
+def test_PR_1493(util):
+    """Test support for additional audio parameters for VideoClip."""
+    with VideoFileClip(Path("media/chaplin.mp4")) as clip:
+        clip.write_videofile(
+            Path(util.TMP_DIR) / "my_new_video.mp4",
+            audio_ffmpeg_params=["-af", "acrusher=.1:1:64:0:log"],
+        )
+
+        assert os.path.exists(Path(util.TMP_DIR) / "my_new_video.mp4")
+
+
 if __name__ == "__main__":
     pytest.main()
-
-
-def test_PR_1493_audio_params():
-    """Test support for additional audio parameters for VideoClip."""
-    with VideoFileClip("media/chaplin.mp4") as clip:
-        with pytest.raises(IOError) as e:
-            clip.write_videofile(
-                "my_new_video.mp4",
-                audio_ffmpeg_params=["nonexistentparam", "acrusher=.1:1:64:0:log"],
-            )
-
-        assert "Invalid argument" in str(e.value)
