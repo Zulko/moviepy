@@ -791,7 +791,7 @@ def ffmpeg_parse_infos(
 
     popen_params = cross_platform_popen_params(
         {
-            "bufsize": 10 ** 5,
+            "bufsize": 10**5,
             "stdout": sp.PIPE,
             "stderr": sp.PIPE,
             "stdin": sp.DEVNULL,
