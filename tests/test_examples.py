@@ -31,7 +31,7 @@ def test_matplotlib_simple_example(util):
 
     def make_frame(t):
         ax.clear()
-        ax.plot(x, np.sinc(x ** 2) + np.sin(x + 2 * np.pi / duration * t), lw=3)
+        ax.plot(x, np.sinc(x**2) + np.sin(x + 2 * np.pi / duration * t), lw=3)
         ax.set_ylim(-1.5, 2.5)
         return mplfig_to_npimage(fig)
 

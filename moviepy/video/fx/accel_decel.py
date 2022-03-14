@@ -3,7 +3,7 @@ def _f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
 
     def _f(t):
         def f1(t):
-            return (0.5) ** (1 - a) * (t ** a)
+            return (0.5) ** (1 - a) * (t**a)
 
         def f2(t):
             return 1 - f1(1 - t)

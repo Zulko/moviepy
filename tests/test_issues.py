@@ -293,7 +293,7 @@ def test_issue_368(util):
 
         classifier = svm.SVC(gamma=2, C=1)
         # the varying weights make the points appear one after the other
-        weights = np.minimum(1, np.maximum(0, t ** 2 + 10 - np.arange(50)))
+        weights = np.minimum(1, np.maximum(0, t**2 + 10 - np.arange(50)))
         classifier.fit(X, Y, sample_weight=weights)
         Z = classifier.decision_function(np.c_[xx.ravel(), yy.ravel()])
         Z = Z.reshape(xx.shape)
