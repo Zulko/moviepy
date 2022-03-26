@@ -76,7 +76,7 @@ requires = [
     "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
-    "numpy>=1.17.3,<=1.20",
+    "numpy>=1.17.3",
     "proglog<=1.0.0",
 ]
 
