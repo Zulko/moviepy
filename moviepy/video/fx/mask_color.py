@@ -21,7 +21,7 @@ def mask_color(clip, color=None, threshold=0, stiffness=1):
 
     def hill(x):
         if threshold:
-            return x ** stiffness / (threshold ** stiffness + x ** stiffness)
+            return x**stiffness / (threshold**stiffness + x**stiffness)
         else:
             return 1.0 * (x != 0)
 

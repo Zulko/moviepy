@@ -27,7 +27,6 @@ try:  # pragma: no cover
         def __add__(self, other):
             return HTML2(self.data + other.data)
 
-
 except ImportError:
 
     def HTML2(content):  # noqa D103
