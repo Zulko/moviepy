@@ -487,6 +487,28 @@ def test_not_default_audio_stream_audio_bitrate():
     assert d["audio_bitrate"] == 139
 
 
+def test_stream_deidentation_not_raises_error():
+    """libavformat reduced identation for streams
+    https://github.com/FFmpeg/FFmpeg/commit/b7251aed46f5ac96fe65c1c68ddac44b07429467
+    """
+    infos = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'clip.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.12.100
+  Duration: 01:00:00.00, start: 0.000000, bitrate: 1222 kb/s
+  Stream #0:0(und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p, 1280x720 [SAR 1:1 DAR 16:9], 1221 kb/s, 25 fps, 25 tbr, 12800 tbn, 50 tbc (default)
+    Metadata:
+      handler_name    : VideoHandler
+      vendor_id       : [0][0][0][0]
+At least one output file must be specified"""
+
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+
+    assert d
+
+
 def test_sequential_frame_pos():
     """test_video.mp4 contains 5 frames at 1 fps.
     Each frame is 1x1 pixels and the sequence is Red, Green, Blue, Black, White.
