@@ -104,14 +104,14 @@ test_reqs = [
 ]
 
 lint_reqs = [
-    "black>=20.8b1",
-    "flake8>3.7.0,<4.0.0",
+    "black>=22.3.0",
+    "flake8>=4.0.1",
     "flake8-absolute-import>=1.0",
-    "flake8-docstrings>=1.5.0",
-    "flake8-rst-docstrings>=0.0.14",
-    "flake8-implicit-str-concat==0.2.0",
-    "isort>=5.7.0",
-    "pre-commit>=2.9.3",
+    "flake8-docstrings>=1.6.0",
+    "flake8-rst-docstrings>=0.2.5",
+    "flake8-implicit-str-concat==0.3.0",
+    "isort>=5.10.1",
+    "pre-commit>=2.19.0",
 ]
 
 extra_reqs = {

@@ -1066,12 +1066,15 @@ def test_rotate_supported_PIL_kwargs(
             translate=(1, 0),
         )
 
-    # assert number of warnings
-    assert len(record.list) == len(unsupported_kwargs)
+    # assert number of warnings filtering other non related warnings
+    warning_records = list(
+        filter(lambda rec: rec.category.__name__ == "UserWarning", record.list)
+    )
+    assert len(warning_records) == len(unsupported_kwargs)
 
     # assert messages contents
     messages = []
-    for warning in record.list:
+    for warning in warning_records:
         messages.append(warning.message.args[0])
 
     for unsupported_kwarg in unsupported_kwargs:

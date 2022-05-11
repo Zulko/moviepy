@@ -6,10 +6,8 @@ name: Run Test Suite
 on:
   push:
     branches:
-      - '**'
+      - master
   pull_request:
-    branches:
-      - '**'
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it
@@ -19,7 +17,7 @@ jobs:
       matrix:
         python-version: [3.7]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: s-weigand/setup-conda@v1
       with:
         activate-conda: true
@@ -70,15 +68,15 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Get ImageMagick installer from cache
         id: imagemagick-installer-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ImageMagick.exe
@@ -135,9 +133,9 @@ jobs:
         python-version: [3.6, 3.7, 3.8, 3.9]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
 
