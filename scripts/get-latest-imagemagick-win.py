@@ -1,5 +1,8 @@
+"""Obtain the latest ImageMagick version from official repositories."""
+
 import sys
 from urllib.request import urlopen
+
 
 BINARIES_URL = "https://download.imagemagick.org/ImageMagick/download/binaries/"
 
