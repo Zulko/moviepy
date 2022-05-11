@@ -111,7 +111,7 @@ lint_reqs = [
     "flake8-rst-docstrings>=0.2.5",
     "flake8-implicit-str-concat==0.3.0",
     "isort>=5.10.1",
-    "pre-commit>=2.9.3",
+    "pre-commit>=2.19.0",
 ]
 
 extra_reqs = {
