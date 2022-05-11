@@ -1,6 +1,10 @@
 name: Code Format Check
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 
 jobs:

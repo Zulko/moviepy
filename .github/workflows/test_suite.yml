@@ -3,7 +3,11 @@
 
 name: Run Test Suite
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   # Uses Python Framework build because on macos matplotlib requires it

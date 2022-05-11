@@ -1,4 +1,17 @@
 repos:
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3.6
+        files: \.py$
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        args:
+          - '--filter-files'
+        files: \.py$
   - repo: https://github.com/PyCQA/flake8
     rev: 4.0.1
     hooks:
@@ -9,17 +22,4 @@ repos:
           - flake8-rst-docstrings>=0.2.5
           - flake8-implicit-str-concat==0.3.0
         name: flake8-test
-        files: \.py$
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
-    hooks:
-      - id: isort
-        args:
-          - '--filter-files'
-        files: \.py$
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-      - id: black
-        language_version: python3.6
         files: \.py$
