@@ -415,14 +415,14 @@ class FFmpegInfosParser:
                 else:
                     self._last_metadata_field_added = field
                 self.result["metadata"][field] = value
-            elif line.startswith("    Stream "):
+            elif line.lstrip().startswith("Stream "):
                 # exit stream "    Metadata:"
                 if self._current_stream:
                     self._current_input_file["streams"].append(self._current_stream)
 
                 # get input number, stream number, language and type
                 main_info_match = re.search(
-                    r"^\s{4}Stream\s#(\d+):(\d+)\(?(\w+)?\)?:\s(\w+):", line
+                    r"^Stream\s#(\d+):(\d+)\(?(\w+)?\)?:\s(\w+):", line.lstrip()
                 )
                 (
                     input_number,
