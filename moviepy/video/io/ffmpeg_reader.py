@@ -422,7 +422,7 @@ class FFmpegInfosParser:
 
                 # get input number, stream number, language and type
                 main_info_match = re.search(
-                    r"^Stream\s#(\d+):(\d+)\(?(\w+)?\)?:\s(\w+):", line.lstrip()
+                    r"^Stream\s#(\d+):(\d+)[\[(]?(\w+)?[\])]?:\s(\w+):", line.lstrip()
                 )
                 (
                     input_number,
