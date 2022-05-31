@@ -523,6 +523,8 @@ At least one output file must be specified"""
 
     assert d
     assert len(d["inputs"][0]["streams"]) == 2
+    assert d["inputs"][0]["streams"][0]["language"] is None
+    assert d["inputs"][0]["streams"][1]["language"] is None
 
 
 def test_sequential_frame_pos():
