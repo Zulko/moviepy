@@ -585,6 +585,9 @@ class FFmpegInfosParser:
                 if self.result.get("audio_bitrate"):
                     break
 
+            if "audio_bitrate" not in self.result:
+                self.result["audio_bitrate"] = None
+
         result = self.result
 
         # reset state of the parser
