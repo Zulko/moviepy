@@ -62,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed mono clips crashing when `audio_fadein` FX applied [\#1574](https://github.com/Zulko/moviepy/pull/1574)
 - Fixed mono clips crashing when `audio_fadeout` FX applied [\#1578](https://github.com/Zulko/moviepy/pull/1578)
 - Fixed scroll FX not being scrolling [\#1591](https://github.com/Zulko/moviepy/pull/1591)
+- Fixed parsing FFMPEG streams with square brackets [\#1781](https://github.com/Zulko/moviepy/pull/1781)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)

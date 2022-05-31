@@ -511,6 +511,22 @@ At least one output file must be specified"""
     assert len(d["inputs"][0]["streams"]) == 1
 
 
+def test_stream_square_brackets():
+    infos = """
+Input #0, mpeg, from 'clip.mp4':
+  Duration: 00:02:15.00, start: 52874.498178, bitrate: 266 kb/s
+    Stream #0:0[0x1e0]: Video: ..., 25 tbr, 90k tbn, 50 tbc
+    Stream #0:1[0x1c0]: Audio: mp2, 0 channels, s16p
+At least one output file must be specified"""
+
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+
+    assert d
+    assert len(d["inputs"][0]["streams"]) == 2
+    assert d["inputs"][0]["streams"][0]["language"] is None
+    assert d["inputs"][0]["streams"][1]["language"] is None
+
+
 def test_sequential_frame_pos():
     """test_video.mp4 contains 5 frames at 1 fps.
     Each frame is 1x1 pixels and the sequence is Red, Green, Blue, Black, White.
