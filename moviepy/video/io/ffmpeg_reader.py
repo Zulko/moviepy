@@ -577,12 +577,15 @@ class FFmpegInfosParser:
 
         # not default audio found, assume first audio stream is the default
         if self.result["audio_found"] and not self.result.get("audio_bitrate"):
+
+            self.result["audio_bitrate"] = None
             for streams_input in self.result["inputs"]:
                 for stream in streams_input["streams"]:
                     if stream["stream_type"] == "audio" and stream.get("bitrate"):
                         self.result["audio_bitrate"] = stream["bitrate"]
                         break
-                if self.result.get("audio_bitrate"):
+
+                if self.result["audio_bitrate"] is not None:
                     break
 
         result = self.result
