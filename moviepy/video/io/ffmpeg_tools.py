@@ -19,6 +19,7 @@ def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate='v'):
              "-i", os.path.join(folder,folder) + '/' + s,
              "-b", "%dk"%bitrate,
              "-r", "%d"%fps,
+             "-strict", "-2",
              filename]
     
     subprocess_call(cmd)
@@ -47,7 +48,7 @@ def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
     """ merges video file ``video`` and audio file ``audio`` into one
         movie file ``output``. """
     cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", audio,"-i", video,
-             "-vcodec", vcodec, "-acodec", acodec, output]
+             "-vcodec", vcodec, "-acodec", acodec, "-strict", "-2", output]
              
     subprocess_call(cmd, logger = logger)
     
@@ -55,14 +56,14 @@ def ffmpeg_merge_video_audio(video,audio,output, vcodec='copy',
 def ffmpeg_extract_audio(inputfile,output,bitrate=3000,fps=44100):
     """ extract the sound from a video file and save it in ``output`` """
     cmd = [get_setting("FFMPEG_BINARY"), "-y", "-i", inputfile, "-ab", "%dk"%bitrate,
-         "-ar", "%d"%fps, output]
+         "-ar", "%d"%fps, "-strict", "-2", output]
     subprocess_call(cmd)
     
 
 def ffmpeg_resize(video,output,size):
     """ resizes ``video`` to new size ``size`` and write the result
         in file ``output``. """
-    cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(size[0], size[1]),
+    cmd= [get_setting("FFMPEG_BINARY"), "-i", video, "-vf", "scale=%d:%d"%(size[0], size[1]), "-strict", "-2",
              output]
              
     subprocess_call(cmd)
