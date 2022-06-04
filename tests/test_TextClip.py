@@ -1,5 +1,8 @@
 """TextClip tests."""
 
+import os
+import tempfile
+
 import pytest
 
 from moviepy.video.fx.blink import blink
@@ -50,6 +53,41 @@ def test_if_textclip_crashes_in_caption_mode(util):
 
 def test_if_textclip_crashes_in_label_mode(util):
     TextClip(text="foo", method="label", font=util.FONT).close()
+
+
+@pytest.mark.xfail(raises=AssertionError)
+def test_textclip_filename_parameter_actually_work(util):
+    """
+    Regardless you provide a filename or text paramter,
+    the final text attribute should be of the format @<file_name>
+    not @%<file_name> which is how it's set before this fix.
+    """
+    # Create the temp text file to make sure we know
+    # the exact name to use it later when checking
+    # both methods result in the same parameter value
+    tempfile_fd, temp_text_filename = tempfile.mkstemp(suffix=".txt")
+    os.close(tempfile_fd)
+
+    text_clip_with_text = TextClip(
+        text="foo",
+        temptxt=temp_text_filename,
+        method="caption",
+        size=(220, 134),
+        font=util.FONT,
+    )
+    text_clip_with_file = TextClip(
+        filename=temp_text_filename,
+        method="caption",
+        size=(220, 134),
+        font=util.FONT,
+    )
+
+    assert text_clip_with_file.text == text_clip_with_text.text
+
+    text_clip_with_file.close()
+    text_clip_with_text.close()
+
+    os.remove(temp_text_filename)
 
 
 if __name__ == "__main__":
