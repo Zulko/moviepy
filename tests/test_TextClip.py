@@ -55,7 +55,6 @@ def test_if_textclip_crashes_in_label_mode(util):
     TextClip(text="foo", method="label", font=util.FONT).close()
 
 
-@pytest.mark.xfail(raises=AssertionError)
 def test_textclip_filename_parameter_actually_work(util):
     """
     Regardless you provide a filename or text paramter,
@@ -66,6 +65,7 @@ def test_textclip_filename_parameter_actually_work(util):
     # the exact name to use it later when checking
     # both methods result in the same parameter value
     tempfile_fd, temp_text_filename = tempfile.mkstemp(suffix=".txt")
+    # TextClip instantiation will delete the file
     os.close(tempfile_fd)
 
     text_clip_with_text = TextClip(
@@ -86,8 +86,6 @@ def test_textclip_filename_parameter_actually_work(util):
 
     text_clip_with_file.close()
     text_clip_with_text.close()
-
-    os.remove(temp_text_filename)
 
 
 if __name__ == "__main__":
