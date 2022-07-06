@@ -1246,6 +1246,8 @@ class TextClip(ImageClip):
     ):
 
         if text is not None:
+            if not text:
+                text = " "
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix=".txt")
                 try:  # only in Python3 will this work
