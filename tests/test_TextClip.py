@@ -51,6 +51,9 @@ def test_if_textclip_crashes_in_caption_mode(util):
 def test_if_textclip_crashes_in_label_mode(util):
     TextClip(text="foo", method="label", font=util.FONT).close()
 
+def test_empty_string_as_text(util):
+    TextClip(text="").close()
+
 
 if __name__ == "__main__":
     pytest.main()
