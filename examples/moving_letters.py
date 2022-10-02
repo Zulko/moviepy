@@ -61,7 +61,7 @@ letters = find_objects(cvc)  # a list of ImageClips
 
 def moveLetters(letters, funcpos):  # noqa D103
     return [
-        letter.set_pos(funcpos(letter.screenpos, i, len(letters)))
+        letter.with_position(funcpos(letter.screenpos, i, len(letters)))
         for i, letter in enumerate(letters)
     ]
 
