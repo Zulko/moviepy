@@ -285,14 +285,14 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
 
 
 def test_ffmpeg_parse_video_rotation():
-    d = ffmpeg_parse_infos("media/rotated-90-degrees.mp4")
-    assert d["video_rotation"] == 90
+    d = ffmpeg_parse_infos("media/rotated-270-degrees.mp4")
+    assert d["video_rotation"] == -90
     assert d["video_size"] == [1920, 1080]
 
 
 def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
-    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+    clip = VideoFileClip("media/rotated-270-degrees.mp4").subclip(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
         util.TMP_DIR,
