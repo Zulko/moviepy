@@ -64,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed scroll FX not being scrolling [\#1591](https://github.com/Zulko/moviepy/pull/1591)
 - Fixed parsing FFMPEG streams with square brackets [\#1781](https://github.com/Zulko/moviepy/pull/1781)
 - Fixed audio processing for streams with missing `audio_bitrate` [\#1783](https://github.com/Zulko/moviepy/pull/1783)
+- Fixed parsing language from stream output with square brackets [\#1837](https://github.com/Zulko/moviepy/pull/1837)
 
 
 ## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
