@@ -435,9 +435,8 @@ class FFmpegInfosParser:
                 stream_number = int(stream_number)
                 stream_type_lower = stream_type.lower()
 
-                if language is not None:
-                    if language == "und":
-                        language = None
+                if language == "und":
+                    language = None
 
                 # start builiding the current stream
                 self._current_stream = {
