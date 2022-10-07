@@ -527,6 +527,22 @@ At least one output file must be specified"""
     assert d["inputs"][0]["streams"][1]["language"] is None
 
 
+def test_stream_square_brackets_and_language():
+    infos = """
+Input #0, mpeg, from 'clip.mp4':
+  Duration: 00:02:15.00, start: 52874.498178, bitrate: 266 kb/s
+    Stream #0:0[0x1e0](eng): Video: ..., 25 tbr, 90k tbn, 50 tbc
+    Stream #0:1[0x1c0](und): Audio: mp2, 0 channels, s16p
+At least one output file must be specified"""
+
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+
+    assert d
+    assert len(d["inputs"][0]["streams"]) == 2
+    assert d["inputs"][0]["streams"][0]["language"] == "eng"
+    assert d["inputs"][0]["streams"][1]["language"] is None
+
+
 def test_stream_missing_audio_bitrate():
     infos = """
 Input #0, mpeg, from 'clip.mp4':

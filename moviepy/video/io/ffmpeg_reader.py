@@ -422,7 +422,8 @@ class FFmpegInfosParser:
 
                 # get input number, stream number, language and type
                 main_info_match = re.search(
-                    r"^Stream\s#(\d+):(\d+)[\[(]?(\w+)?[\])]?:\s(\w+):", line.lstrip()
+                    r"^Stream\s#(\d+):(\d+)(?:\[\w+\])?\(?(\w+)?\)?:\s(\w+):",
+                    line.lstrip(),
                 )
                 (
                     input_number,
@@ -434,9 +435,8 @@ class FFmpegInfosParser:
                 stream_number = int(stream_number)
                 stream_type_lower = stream_type.lower()
 
-                if language is not None:
-                    if language == "und" or language.startswith("0x"):
-                        language = None
+                if language == "und":
+                    language = None
 
                 # start builiding the current stream
                 self._current_stream = {
