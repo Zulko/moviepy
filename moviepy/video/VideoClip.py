@@ -1256,7 +1256,7 @@ class TextClip(ImageClip):
             text = "@" + temptxt
         else:
             # use a file instead of a text.
-            text = "@%" + filename
+            text = "@" + filename
 
         if size is not None:
             size = (
