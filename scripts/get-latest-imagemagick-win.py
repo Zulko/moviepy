@@ -4,7 +4,7 @@ import sys
 from urllib.request import urlopen
 
 
-BINARIES_URL = "https://download.imagemagick.org/ImageMagick/download/binaries/"
+BINARIES_URL = "https://imagemagick.org/archive/binaries/"
 
 content = urlopen(BINARIES_URL).read().decode("utf-8")
 
