@@ -5,6 +5,7 @@ import warnings
 
 import proglog
 
+import chardet
 
 OS_NAME = os.name
 
@@ -41,7 +42,8 @@ def subprocess_call(cmd, logger="bar"):
 
     if proc.returncode:
         logger(message="Moviepy - Command returned an error")
-        raise IOError(err.decode("utf8"))
+        #raise IOError(err.decode("utf8"))
+        raise IOError(err.decode(chardet.detect(err).get('encoding','utf8')))
     else:
         logger(message="Moviepy - Command successful")
 
