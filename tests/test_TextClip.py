@@ -76,5 +76,6 @@ def test_text_filename_arguments_consistence(util):
     assert len(frames_from_file) == 1
     assert np.equal(frames_from_text[0], frames_from_file[0]).all()
 
+
 if __name__ == "__main__":
     pytest.main()
