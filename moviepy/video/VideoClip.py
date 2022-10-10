@@ -1254,9 +1254,13 @@ class TextClip(ImageClip):
                     os.write(temptxt_fd, text)
                 os.close(temptxt_fd)
             text = "@" + temptxt
-        else:
+        elif filename is not None:
             # use a file instead of a text.
             text = "@" + filename
+        else:
+            raise ValueError(
+                "You must provide either 'text' or 'filename' arguments to TextClip"
+            )
 
         if size is not None:
             size = (

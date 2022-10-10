@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `accel_decel` FX raises `ValueError` if `sooness` parameter value is lower than zero [\#1546](https://github.com/Zulko/moviepy/pull/1546)
 - `Clip.subclip` raise `ValueError` if `start_time >= clip.duration` (previously printing a message to stdout only if `start_time > clip.duration`) [\#1589](https://github.com/Zulko/moviepy/pull/1589)
 - Allow to pass times in `HH:MM:SS` format to `t` argument of `clip.show` method [\#1594](https://github.com/Zulko/moviepy/pull/1594)
+- `TextClip` now raises `ValueError` if none of the `text` or `filename` arguments are specified [\#1842](https://github.com/Zulko/moviepy/pull/1842)
 
 ### Deprecated <!-- for soon-to-be removed features -->
 - `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)

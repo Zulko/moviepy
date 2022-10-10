@@ -77,5 +77,22 @@ def test_text_filename_arguments_consistence(util):
     assert np.equal(frames_from_text[0], frames_from_file[0]).all()
 
 
+@pytest.mark.parametrize(
+    "method", ("caption", "label"), ids=("method=caption", "method=label")
+)
+def test_no_text_nor_filename_arguments(method, util):
+    expected_error_msg = (
+        "^You must provide either 'text' or 'filename' arguments to TextClip$"
+    )
+    with pytest.raises(ValueError, match=expected_error_msg):
+        TextClip(
+            size=(20, 20),
+            color="#000",
+            bg_color="#FFF",
+            font=util.FONT,
+            method=method,
+        )
+
+
 if __name__ == "__main__":
     pytest.main()
