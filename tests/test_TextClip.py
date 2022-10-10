@@ -1,7 +1,8 @@
 """TextClip tests."""
 
 import os
-import tempfile
+
+import numpy as np
 
 import pytest
 
@@ -38,55 +39,42 @@ def test_duration(util):
     assert clip2.duration == 5
 
 
-# Moved from tests.py. Maybe we can remove these?
-def test_if_textclip_crashes_in_caption_mode(util):
-    TextClip(
-        text="foo",
-        color="white",
-        size=(640, 480),
-        method="caption",
-        align="center",
-        font_size=25,
-        font=util.FONT,
-    ).close()
-
-
-def test_if_textclip_crashes_in_label_mode(util):
-    TextClip(text="foo", method="label", font=util.FONT).close()
-
-
-def test_textclip_filename_parameter_actually_work(util):
-    """
-    Regardless you provide a filename or text paramter,
-    the final text attribute should be of the format @<file_name>
-    not @%<file_name> which is how it's set before this fix.
-    """
-    # Create the temp text file to make sure we know
-    # the exact name to use it later when checking
-    # both methods result in the same parameter value
-    tempfile_fd, temp_text_filename = tempfile.mkstemp(suffix=".txt")
-    # TextClip instantiation will delete the file
-    os.close(tempfile_fd)
-
-    text_clip_with_text = TextClip(
-        text="foo",
-        temptxt=temp_text_filename,
-        method="caption",
-        size=(220, 134),
-        font=util.FONT,
-    )
-    text_clip_with_file = TextClip(
-        filename=temp_text_filename,
-        method="caption",
-        size=(220, 134),
-        font=util.FONT,
+def test_text_filename_arguments_consistence(util):
+    """Passing ``text`` or ``filename`` we obtain the same result."""
+    clip_from_text = (
+        TextClip(
+            text="Hello",
+            size=(20, 20),
+            color="#000",
+            bg_color="#FFF",
+            method="caption",
+            font=util.FONT,
+        )
+        .with_fps(1)
+        .with_duration(1)
     )
 
-    assert text_clip_with_file.text == text_clip_with_text.text
+    with open(os.path.join(util.TMP_DIR, "text-for-clip.txt"), "w") as f:
+        f.write("Hello")
 
-    text_clip_with_file.close()
-    text_clip_with_text.close()
+    clip_from_file = (
+        TextClip(
+            text="Hello",
+            size=(20, 20),
+            color="#000",
+            bg_color="#FFF",
+            method="caption",
+            font=util.FONT,
+        )
+        .with_fps(1)
+        .with_duration(1)
+    )
 
+    frames_from_text = list(clip_from_text.iter_frames())
+    frames_from_file = list(clip_from_file.iter_frames())
+    assert len(frames_from_text) == 1
+    assert len(frames_from_file) == 1
+    assert np.equal(frames_from_text[0], frames_from_file[0]).all()
 
 if __name__ == "__main__":
     pytest.main()
