@@ -3,7 +3,6 @@
 import os
 
 import numpy as np
-from numpy.core.records import array
 
 import pytest
 
