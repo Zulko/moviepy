@@ -281,7 +281,7 @@ class AudioArrayClip(AudioClip):
     def __init__(self, array, fps):
 
         Clip.__init__(self)
-        if len(array.shape) is 1:
+        if len(array.shape) == 1:
             array = array.reshape((-1, 1))
         self.array = array
         self.fps = fps
