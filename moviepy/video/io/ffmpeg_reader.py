@@ -415,14 +415,15 @@ class FFmpegInfosParser:
                 else:
                     self._last_metadata_field_added = field
                 self.result["metadata"][field] = value
-            elif line.startswith("    Stream "):
+            elif line.lstrip().startswith("Stream "):
                 # exit stream "    Metadata:"
                 if self._current_stream:
                     self._current_input_file["streams"].append(self._current_stream)
 
                 # get input number, stream number, language and type
                 main_info_match = re.search(
-                    r"^\s{4}Stream\s#(\d+):(\d+)\(?(\w+)?\)?:\s(\w+):", line
+                    r"^Stream\s#(\d+):(\d+)(?:\[\w+\])?\(?(\w+)?\)?:\s(\w+):",
+                    line.lstrip(),
                 )
                 (
                     input_number,
@@ -434,12 +435,15 @@ class FFmpegInfosParser:
                 stream_number = int(stream_number)
                 stream_type_lower = stream_type.lower()
 
+                if language == "und":
+                    language = None
+
                 # start builiding the current stream
                 self._current_stream = {
                     "input_number": input_number,
                     "stream_number": stream_number,
                     "stream_type": stream_type_lower,
-                    "language": language if language != "und" else None,
+                    "language": language,
                     "default": not self._default_stream_found
                     or line.endswith("(default)"),
                 }
@@ -573,12 +577,15 @@ class FFmpegInfosParser:
 
         # not default audio found, assume first audio stream is the default
         if self.result["audio_found"] and not self.result.get("audio_bitrate"):
+
+            self.result["audio_bitrate"] = None
             for streams_input in self.result["inputs"]:
                 for stream in streams_input["streams"]:
                     if stream["stream_type"] == "audio" and stream.get("bitrate"):
                         self.result["audio_bitrate"] = stream["bitrate"]
                         break
-                if self.result.get("audio_bitrate"):
+
+                if self.result["audio_bitrate"] is not None:
                     break
 
         result = self.result
