@@ -504,7 +504,9 @@ class FFmpegInfosParser:
 
                 if self._current_stream["stream_type"] == "video":
                     if field == "displaymatrix":
-                        match = re.search(r"rotation of (-?\d+\.\d+) degrees", value.strip())
+                        match = re.search(
+                            r"rotation of (-?\d+\.\d+) degrees", value.strip()
+                        )
                         if match is not None:
                             rotation = float(match.groups()[0])
                             self.result["video_rotation"] = rotation
@@ -736,6 +738,7 @@ class FFmpegInfosParser:
         """
         raw_field, raw_value = line.split(":", 1)
         return (raw_field.strip(" "), raw_value.strip(" "))
+
 
 def ffmpeg_parse_infos(
     filename,
