@@ -116,7 +116,7 @@ class FramesMatches(list):
         """Returns a new instance of FramesMatches object or a FramesMatch
         from the current class instance given different conditions.
 
-        By default returns the first FramesMatch that the current instance
+        By default, returns the first FramesMatch that the current instance
         stores.
 
         Parameters

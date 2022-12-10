@@ -123,7 +123,7 @@ Compositing audio clips
 
 When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don't need to worry about compositing these tracks yourself.
 
-If you want to make a custom audiotrack from several audio sources: audioc clips can be mixed together with ``CompositeAudioClip`` and ``concatenate_audioclips``: ::
+If you want to make a custom audiotrack from several audio sources: audio clips can be mixed together with ``CompositeAudioClip`` and ``concatenate_audioclips``: ::
 
     from moviepy import *
     # ... make some audio clips aclip1, aclip2, aclip3

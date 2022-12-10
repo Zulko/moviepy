@@ -23,9 +23,9 @@ def close_all_clips(objects="globals", types=("audio", "video", "image")):
     ----------
 
     objects : str or dict, optional
-      - If is a string an the value is ``"globals"``, will close all the clips
+      - If it's a string the value is ``"globals"``, will close all the clips
         contained by the ``globals()`` namespace.
-      - If is a dictionary, the values of the dictionary could be clips to close,
+      - If it's a dictionary, the values of the dictionary could be clips to close,
         useful if you want to use ``locals()``.
 
     types : Iterable, optional

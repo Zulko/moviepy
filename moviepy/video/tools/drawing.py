@@ -37,7 +37,7 @@ def color_gradient(
     gradually from color `color_1` in position ``p1`` to color ``color_2``
     in position ``p2``.
 
-    If it is a RGB picture the result must be transformed into
+    If it is an RGB picture the result must be transformed into
     a 'uint8' array to be displayed normally:
 
     Parameters
@@ -243,7 +243,7 @@ def color_split(
     >>> color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])
     >>>
     >>> # An image split along an arbitrary line (see below)
-    >>> color_split(size, p1=[20, 50], p2=[25, 70] color_1=0, color_2=1)
+    >>> color_split(size, p1=[20, 50], p2=[25, 70], color_1=0, color_2=1)
     """
     if gradient_width or ((x is None) and (y is None)):
         if p2 is not None:

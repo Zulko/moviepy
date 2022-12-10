@@ -12,7 +12,7 @@ def loop(clip, n=None, duration=None):
 
     n
       Number of times the clip should be played. If `None` the
-      the clip will loop indefinitely (i.e. with no set duration).
+      clip will loop indefinitely (i.e. with no set duration).
 
     duration
       Total duration of the clip. Can be specified instead of n.

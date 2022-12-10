@@ -1066,7 +1066,7 @@ def test_rotate_supported_PIL_kwargs(
             translate=(1, 0),
         )
 
-    # assert number of warnings filtering other non related warnings
+    # assert number of warnings filtering other non-related warnings
     warning_records = list(
         filter(lambda rec: rec.category.__name__ == "UserWarning", record.list)
     )
@@ -1456,7 +1456,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     way of test the FX only works if `duration <= offset`, but as does not make sense
     create a delay with `duration > offset`, this is enough for our purposes.
 
-    Note that decayment values are not tested here, but are created using
+    Note that decay values are not tested here, but are created using
     `multiply_volume`, should be OK.
     """
     # limits of this test
@@ -1488,7 +1488,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     for i in range(n_repeats + 1):  # first clip, is not part of the repeated ones
 
         if i == n_repeats:
-            # the delay ends in sound, so last muted chunk does not exists
+            # the delay ends in sound, so last muted chunk does not exist
             break
 
         # sound chunk
@@ -1559,7 +1559,7 @@ def test_audio_fadein(
 
     n_parts = 10
 
-    # cut transformed part into subclips and check the expected max_volume for
+    # cut transformed part into sub clips and check the expected max_volume for
     # each one
     time_foreach_part = fadein_duration / n_parts
     start_times = np.arange(0, fadein_duration, time_foreach_part)
@@ -1573,7 +1573,7 @@ def test_audio_fadein(
             round(possible_value - 0.01, 5),
         ]
 
-    # cut non transformed part into subclips and check the expected max_volume
+    # cut non transformed part into sub clips and check the expected max_volume
     # for each one (almost 1)
     time_foreach_part = (clip_duration - fadein_duration) / n_parts
     start_times = np.arange(fadein_duration, clip_duration, time_foreach_part)
@@ -1611,7 +1611,7 @@ def test_audio_fadeout(
 
     n_parts = 10
 
-    # cut transformed part into subclips and check the expected max_volume for
+    # cut transformed part into sub clips and check the expected max_volume for
     # each one
     time_foreach_part = fadeout_duration / n_parts
     start_times = np.arange(
@@ -1629,7 +1629,7 @@ def test_audio_fadeout(
             round(possible_value - 0.01, 5),
         ]
 
-    # cut non transformed part into subclips and check the expected max_volume
+    # cut non transformed part into sub clips and check the expected max_volume
     # for each one (almost 1)
     time_foreach_part = (clip_duration - fadeout_duration) / n_parts
     start_times = np.arange(0, clip_duration - fadeout_duration, time_foreach_part)

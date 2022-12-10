@@ -40,11 +40,11 @@ def show(clip, t=0, with_mask=True, interactive=False):
       Time in seconds of the frame to display.
 
     with_mask : bool, optional
-      ``False`` if the clip has a mask but you want to see the clip without
+      ``False`` if the clip has a mask, but you want to see the clip without
       the mask.
 
     interactive : bool, optional
-      Displays the image freezed and you can clip in each pixel to see the
+      Displays the image freezed, and you can clip in each pixel to see the
       pixel number and its color.
 
     Examples
@@ -108,10 +108,10 @@ def preview(
       The frames per second to use when generating the audio sound.
 
     audio_buffersize : int, optional
-      The sized of the buffer used generating the audio sound.
+      The size of the buffer used when generating the audio sound.
 
     audio_nbytes : int, optional
-      The number of bytes used generating the audio sound.
+      The number of bytes used when generating the audio sound.
 
     fullscreen : bool, optional
       ``True`` if you want the preview to be displayed fullscreen.
@@ -136,7 +136,7 @@ def preview(
 
     if audio:
         # the sound will be played in parallel. We are not
-        # parralellizing it on different CPUs because it seems that
+        # parallelizing it on different CPUs because it seems that
         # pygame and openCV already use several cpus it seems.
 
         # two synchro-flags to tell whether audio and video are ready

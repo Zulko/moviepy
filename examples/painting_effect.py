@@ -3,7 +3,7 @@
 from moviepy import *
 
 
-# WE TAKE THE SUBCLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
+# WE TAKE THE SUB CLIPS WHICH ARE 2 SECONDS BEFORE & AFTER THE FREEZE
 
 charade = VideoFileClip("../../videos/charade.mp4")
 tfreeze = convert_to_seconds(19.21)  # Time of the freeze, 19'21
@@ -27,7 +27,7 @@ painting_txt = (
     .crossfadeout(0.5)
 )
 
-# FADEIN/FADEOUT EFFECT ON THE PAINTED IMAGE
+# FADE IN/FADE OUT EFFECT ON THE PAINTED IMAGE
 
 painting_fading = CompositeVideoClip([im_freeze, painting_txt])
 

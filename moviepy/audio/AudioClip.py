@@ -212,10 +212,10 @@ class AudioClip(Clip):
           'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
 
         bitrate
-          Audio bitrate, given as a string like '50k', '500k', '3000k'.
+          Audio bit rate, given as a string like '50k', '500k', '3000k'.
           Will determine the size and quality of the output file.
-          Note that it mainly an indicative goal, the bitrate won't
-          necessarily be the this in the output file.
+          Note that it's mainly an indicative goal, the bit rate won't
+          necessarily have this exact value in the output file.
 
         ffmpeg_params
           Any additional parameters you would like to pass, as a list
@@ -376,7 +376,7 @@ def concatenate_audioclips(clips):
     ----------
 
     clips
-      List of audio clips, which will be played one after other.
+      List of audio clips, which will be played one after the other.
     """
     # start, end/start2, end2/start3... end
     starts_end = np.cumsum([0, *[clip.duration for clip in clips]])
