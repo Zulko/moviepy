@@ -116,7 +116,7 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
       The path to the file to which the audio will be stored.
 
     bitrate : int, optional
-      Bitrate for the new audio file.
+      Bit rate for the new audio file.
 
     fps : int, optional
       Frame rate for the new audio file.

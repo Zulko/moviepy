@@ -33,7 +33,7 @@ def test_2():
     durations.append(2)
     images.append("media/matplotlib_demo1.png")
 
-    # images are not the same size..
+    # images are not the same size.
     with pytest.raises(Exception):
         ImageSequenceClip(images, durations=durations).close()
 

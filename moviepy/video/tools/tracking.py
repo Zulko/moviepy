@@ -30,7 +30,7 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     """Manual tracking of objects in videoclips using the mouse.
 
     Allows manual tracking of an object(s) in the video clip between
-    times `t1` and `t2`. This displays the clip frame by frame
+    times `t1` and `t2`. This displays the clip frame by frame,
     and you must click on the object(s) in each frame. If ``t2=None``
     only the frame at ``t1`` is taken into account.
 
@@ -46,12 +46,12 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
       MoviePy video clip to track.
 
     t1 : float or str or tuple, optional
-      Start time to to track (defaults is start of the clip). Can be expressed
+      Start time to track (default is start of the clip). Can be expressed
       in seconds like ``15.35``, in ``(min, sec)``, in ``(hour, min, sec)``,
       or as a string: ``"01:03:05.35"``.
 
     t2 : float or str or tuple, optional
-      End time to to track (defaults is end of the clip). Can be expressed
+      End time to track (default is end of the clip). Can be expressed
       in seconds like ``15.35``, in ``(min, sec)``, in ``(hour, min, sec)``,
       or as a string: ``"01:03:05.35"``.
 

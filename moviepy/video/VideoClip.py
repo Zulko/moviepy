@@ -144,7 +144,7 @@ class VideoClip(Clip):
         clip.subclip, etc.)
 
         Acts like a deepcopy except for the fact that readers and other
-        possible unpickleables objects are not copied.
+        possible unpickleable objects are not copied.
         """
         cls = self.__class__
         new_clip = cls.__new__(cls)
@@ -281,10 +281,10 @@ class VideoClip(Clip):
           or 'webm', at which case the default is 'libvorbis'.
 
         audio_bitrate
-          Audio bitrate, given as a string like '50k', '500k', '3000k'.
+          Audio bit rate, given as a string like '50k', '500k', '3000k'.
           Will determine the size/quality of audio in the output file.
-          Note that it mainly an indicative goal, the bitrate won't
-          necessarily be the this in the final file.
+          Note that it's mainly an indicative goal, the bit rate won't
+          necessarily have this exact value in the final file.
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
@@ -409,7 +409,7 @@ class VideoClip(Clip):
         ----------
 
         name_format
-          A filename specifying the numerotation format and extension
+          A filename specifying the numbering format and extension
           of the pictures. For instance "frame%03d.png" for filenames
           indexed with 3 digits and PNG format. Also possible:
           "some_folder/frame%04d.jpeg", etc.
@@ -440,7 +440,7 @@ class VideoClip(Clip):
 
         """
         logger = proglog.default_bar_logger(logger)
-        # Fails on GitHub macos CI
+        # Fails on GitHub macOs CI
         # logger(message="Moviepy - Writing frames %s." % name_format)
 
         timings = np.arange(0, self.duration, 1.0 / fps)
@@ -734,7 +734,7 @@ class VideoClip(Clip):
 
         size
           Size (width, height) in pixels of the final clip.
-          By default it will be the size of the current clip.
+          By default, it will be the size of the current clip.
 
         color
           Background color of the final clip ([R,G,B]).
@@ -919,7 +919,7 @@ class DataVideoClip(VideoClip):
     Parameters
     ----------
     data
-      A liste of datasets, each dataset being used for one frame of the clip
+      A list of datasets, each dataset being used for one frame of the clip
 
     data_to_frame
       A function d -> video frame, where d is one element of the list `data`
@@ -1071,7 +1071,7 @@ class ImageClip(VideoClip):
         if apply_to is None:
             apply_to = []
         # When we use transform on an image clip it may become animated.
-        # Therefore the result is not an ImageClip, just a VideoClip.
+        # Therefore, the result is not an ImageClip, just a VideoClip.
         new_clip = VideoClip.transform(
             self, func, apply_to=apply_to, keep_duration=keep_duration
         )
@@ -1201,7 +1201,7 @@ class TextClip(ImageClip):
       Width of the stroke, in pixels. Can be a float, like 1.5.
 
     method
-      Either 'label' (default, the picture will be autosized so as to fit
+      Either 'label' (default, the picture will be auto sized to fit
       exactly the size) or 'caption' (the text will be drawn in a picture
       with fixed size provided with the ``size`` argument). If `caption`,
       the text will be wrapped automagically (sometimes it is buggy, not
@@ -1408,7 +1408,7 @@ class BitmapClip(VideoClip):
 
         fps
           The number of frames per second to display the clip at. `duration` will
-          calculated from the total number of frames. If both `fps` and `duration`
+          be calculated from the total number of frames. If both `fps` and `duration`
           are set, `duration` will be ignored.
 
         duration

@@ -44,9 +44,9 @@ def test_ffmpeg_resizing():
 
 
 def test_copied_videofileclip_write_videofile(util):
-    """Check that a copied ``VideoFileClip`` can be renderizable using
-    ``write_videofile``, opened from that render and the new video shares
-    the same data that the original clip.
+    """Check that a copied ``VideoFileClip`` can be rendered using
+    ``write_videofile``, open that rendered file and check that the
+     new video contains the same data as the original clip.
     """
     input_video_filepath = "media/big_buck_bunny_432_433.webm"
     output_video_filepath = os.path.join(util.TMP_DIR, "copied_videofileclip.mp4")

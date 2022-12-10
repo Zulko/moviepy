@@ -61,8 +61,8 @@ def write_gif_with_tempfiles(
       ``"ffmpeg"``.
 
     opt : str, optional
-      ImageMagick only optimalization to apply, either ``"optimizeplus"`` or
-      ``"OptimizeTransparency"``. Doesn't takes effect if ``program="ffmpeg"``.
+      ImageMagick only optimization to apply, either ``"optimizeplus"`` or
+      ``"OptimizeTransparency"``. Doesn't take effect if ``program="ffmpeg"``.
 
     fuzz : float, optional
       ImageMagick only compression option which compresses the GIF by
@@ -85,7 +85,7 @@ def write_gif_with_tempfiles(
     pixel_format : str, optional
       FFmpeg pixel format for the output gif file. If is not specified
       ``"rgb24"`` will be used as the default format unless ``clip.mask``
-      exist, then ``"rgba"`` will be used. Doesn't takes effect if
+      exist, then ``"rgba"`` will be used. Doesn't take effect if
       ``program="ImageMagick"``.
 
     logger : str, optional
@@ -232,7 +232,7 @@ def write_gif(
 
     opt : str, optional
       ImageMagick only optimalization to apply, either ``"optimizeplus"`` or
-      ``"OptimizeTransparency"``. Doesn't takes effect if ``program="ffmpeg"``.
+      ``"OptimizeTransparency"``. Doesn't take effect if ``program="ffmpeg"``.
 
     fuzz : float, optional
       ImageMagick only compression option which compresses the GIF by
@@ -255,7 +255,7 @@ def write_gif(
     pixel_format : str, optional
       FFmpeg pixel format for the output gif file. If is not specified
       ``"rgb24"`` will be used as the default format unless ``clip.mask``
-      exist, then ``"rgba"`` will be used. Doesn't takes effect if
+      exist, then ``"rgba"`` will be used. Doesn't take effect if
       ``program="ImageMagick"``.
 
     logger : str, optional

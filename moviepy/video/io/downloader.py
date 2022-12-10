@@ -14,7 +14,7 @@ def download_webfile(url, filename, overwrite=False):
     ----------
 
     url : str
-      If url is a youtube video ID like z410eauCnH it will download the video
+      If url is a YouTube video ID like z410eauCnH it will download the video
       using youtube-dl. Requires youtube-dl (pip install youtube-dl).
 
     filename : str

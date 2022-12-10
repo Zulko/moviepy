@@ -9,7 +9,7 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 class CompositeVideoClip(VideoClip):
     """
-    A VideoClip made of other videoclips displayed together. This is the
+    A VideoClip made of other video clips displayed together. This is the
     base class for most compositions.
 
     Parameters
@@ -172,7 +172,7 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
     ┗━━━━━━━┻━━━━━━━┻━━━━━━━┛
     ```
 
-    If some clips doesn't fulfill the space required by the rows or columns
+    If some clips don't fulfill the space required by the rows or columns
     in which are placed, that space will be filled by the color defined in
     ``bg_color``.
 

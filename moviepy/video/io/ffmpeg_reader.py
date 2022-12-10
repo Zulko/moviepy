@@ -229,7 +229,7 @@ class FFMPEG_VideoReader:
     def get_frame_number(self, t):
         """Helper method to return the frame number at time ``t``"""
         # I used this horrible '+0.00001' hack because sometimes due to numerical
-        # imprecisions a 3.0 can become a 2.99999999... which makes the int()
+        # imprecision 3.0 can become a 2.99999999... which makes the int()
         # go to the previous integer. This makes the fetching more robust when you
         # are getting the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001)
@@ -329,7 +329,7 @@ class FFmpegInfosParser:
         self._reset_state()
 
     def _reset_state(self):
-        """Reinitializes the state of the parser. Used internally at
+        """Re-initializes the state of the parser. Used internally at
         initialization and at the end of the parsing process.
         """
         # could be 2 possible types of metadata:
@@ -378,7 +378,7 @@ class FFmpegInfosParser:
                 and self.check_duration
                 and "time=" in line
             ):
-                # parse duration using file decodification
+                # parse duration using file decoding
                 self.result["duration"] = self.parse_duration(line)
             elif self._inside_output or line[0] != " ":
                 if self.duration_tag_separator == "time=" and not self._inside_output:
@@ -393,7 +393,7 @@ class FFmpegInfosParser:
                 if self.check_duration and self.duration_tag_separator == "Duration: ":
                     self.result["duration"] = self.parse_duration(line)
 
-                # parse global bitrate (in kb/s)
+                # parse global bit rate (in kb/s)
                 bitrate_match = re.search(r"bitrate: (\d+) kb/s", line)
                 self.result["bitrate"] = (
                     int(bitrate_match.group(1)) if bitrate_match else None
@@ -438,7 +438,7 @@ class FFmpegInfosParser:
                 if language == "und":
                     language = None
 
-                # start builiding the current stream
+                # start building the current stream
                 self._current_stream = {
                     "input_number": input_number,
                     "stream_number": stream_number,
@@ -654,7 +654,7 @@ class FFmpegInfosParser:
         # Current policy: Trust fps first, then tbr unless fps_source is
         # specified as 'tbr' in which case try tbr then fps
 
-        # If result is near from x*1000/1001 where x is 23,24,25,50,
+        # If result is close to x*1000/1001 where x is 23,24,25,50,
         # replace by x*1000/1001 (very common case for the fps).
 
         if self.fps_source == "fps":

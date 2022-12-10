@@ -33,11 +33,11 @@ def multiply_volume(clip, factor, start_time=None, end_time=None):
 
     start_time : float, optional
       Time from the beginning of the clip until the volume transformation
-      begins to take effect, in seconds. By default at the beginning.
+      begins to take effect, in seconds. By default, at the beginning.
 
     end_time : float, optional
       Time from the beginning of the clip until the volume transformation
-      ends to take effect, in seconds. By default at the end.
+      ends to take effect, in seconds. By default, at the end.
 
     Examples
     --------

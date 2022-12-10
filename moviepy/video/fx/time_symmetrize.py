@@ -8,7 +8,7 @@ from moviepy.video.fx.time_mirror import time_mirror
 def time_symmetrize(clip):
     """
     Returns a clip that plays the current clip once forwards and
-    then once backwards. This is very practival to make video that
+    then once backwards. This is very practical to make videos that
     loop well, e.g. to create animated GIFs.
     This effect is automatically applied to the clip's mask and audio
     if they exist.

@@ -5,7 +5,7 @@ IPython Notebook.
 # Notes:
 # All media are physically embedded in the IPython Notebook
 # (instead of simple links to the original files)
-# That is because most browsers use a cache system and they won't
+# That is because most browsers use a cache system, and they won't
 # properly refresh the media when the original files are changed.
 
 import inspect
@@ -153,7 +153,7 @@ def html_embed(
             )
 
     if filetype == "video":
-        # The next lines set the HTML5-cvompatible extension and check that the
+        # The next lines set the HTML5-compatible extension and check that the
         # extension is HTML5-valid
         exts_htmltype = {"mp4": "mp4", "webm": "webm", "ogv": "ogg"}
         allowed_exts = " ".join(exts_htmltype.keys())

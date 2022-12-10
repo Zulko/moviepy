@@ -214,7 +214,7 @@ def test_ffmpeg_parse_infos_metadata(util, mono_wave):
 
     def get_value_from_dict_using_lower_key(field, dictionary):
         """Obtains a value from a dictionary using a key, no matter if the key
-        is uppercased in the dictionary. This function is needed because
+        is uppercase in the dictionary. This function is needed because
         some media containers convert to uppercase metadata field names.
         """
         value = None
@@ -645,7 +645,7 @@ def test_large_small_skip_equal():
         small_skip_reader.get_frame(t)
     small_skip_final_frame = small_skip_reader.get_frame(10)
 
-    # Jumps straight forward 240 frames. This is greater than 100 so it uses
+    # Jumps straight forward 240 frames. This is greater than 100, so it uses
     # FFmpeg to reseek at the right position.
     large_skip_final_frame = large_skip_reader.get_frame(10)
 

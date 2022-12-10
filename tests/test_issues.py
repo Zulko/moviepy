@@ -232,7 +232,7 @@ def test_issue_334(util):
     avatar = VideoFileClip("media/big_buck_bunny_432_433.webm", has_mask=True)
     avatar.audio = None
     maskclip = ImageClip("media/afterimage.png", is_mask=True, transparent=True)
-    avatar.with_mask(maskclip)  # must set maskclip here..
+    avatar.with_mask(maskclip)  # must set maskclip here.
     concatenated = concatenate_videoclips([avatar] * 3)
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
@@ -368,7 +368,7 @@ def test_issue_470(util):
     with pytest.raises(IOError):
         subclip.write_audiofile(wav_filename, write_logfile=True)
 
-    # but this one should work..
+    # but this one should work.
     subclip = audio_clip.subclip(start_time=6, end_time=8)
     subclip.write_audiofile(wav_filename, write_logfile=True)
 

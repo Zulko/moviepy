@@ -20,7 +20,7 @@ def headblur(clip, fx, fy, radius, intensity=None):
     of the blurring by ``radius`` and the intensity of the blurring by ``intensity``.
 
     Requires OpenCV for the circling and the blurring. Automatically deals with the
-    case where part of the image goes offscreen.
+    case where part of the image goes off-screen.
     """
     if intensity is None:
         intensity = int(2 * radius / 3)
@@ -51,7 +51,7 @@ if not headblur_possible:
     doc = headblur.__doc__
 
     def headblur(clip, fx, fy, r_zone, r_blur=None):
-        """Fallback headblur FX function, used if OpenCV is not installed.
+        """Fallback head blur FX function, used if OpenCV is not installed.
 
         This docstring will be replaced at runtime.
         """

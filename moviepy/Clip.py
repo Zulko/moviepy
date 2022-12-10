@@ -53,7 +53,7 @@ class Clip:
         self.memoized_frame = None
 
     def copy(self):
-        """Allows the usage of ``.copy()`` in clips as chained methods invocation."""
+        """Allows the usage of ``.copy()`` in clips as chained method invocation."""
         return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
@@ -291,7 +291,7 @@ class Clip:
     @outplace
     def with_make_frame(self, make_frame):
         """Sets a ``make_frame`` attribute for the clip. Useful for setting
-        arbitrary/complicated videoclips.
+        arbitrary/complicated video clips.
 
         Parameters
         ----------

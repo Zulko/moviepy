@@ -18,7 +18,7 @@ class Interpolator:
     ttss : list, optional
       Lists of time frames and their correspondients values for the
       interpolator. This argument can be used instead of ``tt`` and ``ss``
-      to instantiate the interpolator using an unique argument.
+      to instantiate the interpolator using a unique argument.
 
     left : float, optional
       Value to return when ``t < tt[0]``.

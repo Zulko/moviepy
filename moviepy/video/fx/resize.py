@@ -13,7 +13,7 @@ def _get_cv2_resizer():
             # For upsizing use linear for good quality & decent speed
             interpolation = cv2.INTER_LINEAR
         else:
-            # For dowsizing use area to prevent aliasing
+            # For downsizing use area to prevent aliasing
             interpolation = cv2.INTER_AREA
         return cv2.resize(+pic.astype("uint8"), (lx, ly), interpolation=interpolation)
 
@@ -152,8 +152,8 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
 
         def translate_new_size(new_size_):
             """Returns a [w, h] pair from `new_size_`. If `new_size_` is a
-            scalar, then work out the correct pair using the clip's size.
-            Otherwise just return `new_size_`
+            scalar, then work out the correct pair using the clip's size,
+            otherwise just return `new_size_`
             """
             if isinstance(new_size_, numbers.Number):
                 return [new_size_ * w, new_size_ * h]

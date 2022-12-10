@@ -23,15 +23,15 @@ class FFMPEG_AudioWriter:
       Size (width,height) in pixels of the output video.
 
     fps_input
-      Frames per second of the input audio (given by the AUdioClip being
+      Frames per second of the input audio (given by the AudioClip being
       written down).
 
     codec
       Name of the ffmpeg codec to use for the output.
 
     bitrate:
-      A string indicating the bitrate of the final video. Only
-      relevant for codecs which accept a bitrate.
+      A string indicating the bit rate of the final video. Only
+      relevant for codecs which accept a bit rate.
 
     """
 
@@ -123,7 +123,7 @@ class FFMPEG_AudioWriter:
                     "\n\nThe audio export failed, possibly because the "
                     f"codec specified for the video {self.codec} is not compatible"
                     f" with the given extension {self.ext}. Please specify a "
-                    "valid 'codec' argument in write_audiofile or 'audio_codoc'"
+                    "valid 'codec' argument in write_audiofile or 'audio_codec'"
                     "argument in write_videofile. This would be "
                     "'libmp3lame' for mp3, 'libvorbis' for ogg..."
                 )
@@ -131,7 +131,7 @@ class FFMPEG_AudioWriter:
             elif "bitrate not specified" in ffmpeg_error:
                 error += (
                     "\n\nThe audio export failed, possibly because the "
-                    "bitrate you specified was too high or too low for "
+                    "bit rate you specified was too high or too low for "
                     "the audio codec."
                 )
 

@@ -51,7 +51,7 @@ class FFMPEG_VideoWriter:
       (default), ``"slow"``, ``"slower"``, ``"veryslow"``, ``"placebo"``.
 
     bitrate : str, optional
-      Only relevant for codecs which accept a bitrate. "5000k" offers
+      Only relevant for codecs which accept a bit rate. "5000k" offers
       nice results in general.
 
     with_mask : bool, optional
@@ -184,7 +184,7 @@ class FFMPEG_VideoWriter:
             elif "bitrate not specified" in ffmpeg_error:
 
                 error += (
-                    "\n\nThe video export failed, possibly because the bitrate "
+                    "\n\nThe video export failed, possibly because the bit rate "
                     "specified was too high or too low for the video codec."
                 )
 
@@ -231,7 +231,7 @@ def ffmpeg_write_video(
     logger="bar",
     pixel_format=None,
 ):
-    """Write the clip to a videofile. See VideoClip.write_videofile for details
+    """Write the clip to a video file. See VideoClip.write_videofile for details
     on the parameters.
     """
     logger = proglog.default_bar_logger(logger)

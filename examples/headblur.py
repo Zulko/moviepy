@@ -45,7 +45,7 @@ final = concatenate_videoclips([clip_blurred, txt.with_duration(3)]).with_audio(
     clip.audio
 )
 
-# We write the result to a file. Here we raise the bitrate so that
+# We write the result to a file. Here we raise the bit rate so that
 # the final video is not too ugly.
 
 final.write_videofile("blurredChaplin.mp4")

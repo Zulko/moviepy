@@ -10,7 +10,7 @@ on:
   pull_request:
 
 jobs:
-  # Uses Python Framework build because on macos matplotlib requires it
+  # Uses Python Framework build because on macOs matplotlib requires it
   macos:
     runs-on: macos-latest
     strategy:

@@ -44,7 +44,7 @@ GIFs made from videos
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This  `gifs tutorial
-<https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, croping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
+<https://zulko.github.io/blog/2014/01/23/making-animated-gifs-from-video-files-with-python/>`_ gives you the basics to make gifs from video files (cutting, cropping, adding text...). The last example shows how to remove a (still) background to keep only the animated part of a video.
 
 
 .. raw:: html

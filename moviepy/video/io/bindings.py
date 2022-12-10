@@ -6,7 +6,7 @@ import numpy as np
 
 
 def mplfig_to_npimage(fig):
-    """Converts a matplotlib figure to a RGB frame after updating the canvas."""
+    """Converts a matplotlib figure to an RGB frame after updating the canvas."""
     #  only the Agg backend now supports the tostring_rgb function
     from matplotlib.backends.backend_agg import FigureCanvasAgg
 

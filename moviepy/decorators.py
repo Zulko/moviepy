@@ -65,9 +65,9 @@ def requires_fps(func, clip, *args, **kwargs):
 def audio_video_fx(func, clip, *args, **kwargs):
     """Use an audio function on a video/audio clip.
 
-    This decorator tells that the function func (audioclip -> audioclip)
+    This decorator tells that the function func (audio clip -> audio clip)
     can be also used on a video clip, at which case it returns a
-    videoclip with unmodified video and modified audio.
+    video clip with unmodified video and modified audio.
     """
     if hasattr(clip, "audio"):
         new_clip = clip.copy()

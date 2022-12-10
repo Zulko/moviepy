@@ -30,7 +30,7 @@ In this section we see how to create clips, (for instance from video or audio fi
 Categories of video clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and unanimated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``, ``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
+Video clips are the building blocks of longer videos. Technically, they are clips with a ``clip.get_frame(t)`` method which outputs a HxWx3 numpy array representing the frame of the clip at time *t*. There are two main categories: animated clips (made with ``VideoFileClip`` and ``VideoClip``) and not animated clips which show the same picture for an a-priori infinite duration (``ImageClip``, ``TextClip``, ``ColorClip``). There are also special video clips call masks, which belong to the categories above but output greyscale frames indicating which parts of another clip are visible or not. A video clip can carry around an audio clip (``clip.audio``) which is its *soundtrack*, and a mask clip.
 
 VideoClip
 """"""""""
@@ -106,7 +106,7 @@ TextClip
 
 Generating a TextClip requires to have ImageMagick installed and (for windows users) linked to MoviePy, see the installation instructions.
 
-Here is how you make a textclip (you won't need all these options all the time): ::
+Here is how you make a text clip (you won't need all these options all the time): ::
 
     myclip = TextClip("Hello", font='Amiri-Bold')
 
@@ -128,7 +128,7 @@ Mask clips
 
 A mask is a special video clip which indicates which pixels will be visible when a video clip carrying this mask will be composed with other video clips (see :ref:`CompositeVideoClips`). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.
 
-The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
+The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one value per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
 
 When you create or load a clip that you will use as a mask you need to declare it: ::
 
@@ -165,7 +165,7 @@ To write a clip as a video file, use ::
     my_clip.write_videofile("movie.webm") # webm format
     my_clip.write_videofile("movie.webm",audio=False) # don't render audio.
 
-MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
+MoviePy has default codec names for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with ``codec='mpeg4'`` for instance. There are many many options when you are writing a video (bit rate, parameters of the audio writing, file size optimization, number of processors to use, etc.). Please refer to :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more.
 
 
 Sometimes it is impossible for MoviePy to guess the ``duration`` attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have *args priori* an infinite duration). Then, the ``duration`` must be set manually with ``clip.with_duration``: ::

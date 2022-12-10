@@ -110,7 +110,7 @@ class SubtitlesClip(VideoClip):
 
     def in_subclip(self, start_time=None, end_time=None):
         """Returns a sequence of [(t1,t2), text] covering all the given subclip
-        from start_time to end_time. The first and last times will be cropped so as
+        from start_time to end_time. The first and last times will be cropped
         to be exactly start_time and end_time if possible.
         """
 
