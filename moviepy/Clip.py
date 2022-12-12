@@ -279,6 +279,12 @@ class Clip:
           If ``True``, the ``end`` attribute value of the clip will be adjusted
           accordingly to the new duration using ``clip.start + duration``.
         """
+        if duration > self.duration:
+            raise ValueError(
+                "duration (%.02f) " % duration
+                + "should be smaller than the current Video clip's "
+                + "duration (%.02f)." % self.duration
+            )
         self.duration = duration
 
         if change_end:
