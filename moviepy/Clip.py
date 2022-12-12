@@ -279,6 +279,7 @@ class Clip:
           If ``True``, the ``end`` attribute value of the clip will be adjusted
           accordingly to the new duration using ``clip.start + duration``.
         """
+        # To avoid annoying error messages when the duration is out of boundary of current video, I add the following raise error mechanism
         if duration > self.duration:
             raise ValueError(
                 "duration (%.02f) " % duration
