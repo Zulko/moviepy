@@ -240,7 +240,7 @@ def ffmpeg_write_video(
         logfile = open(filename + ".log", "w+")
     else:
         logfile = None
-    logger(message="Moviepy - Writing video %s\n" % filename)
+    logger(message="MoviePy - Writing video %s\n" % filename)
     if not pixel_format:
         pixel_format = "rgba" if with_mask else "rgb24"
     with FFMPEG_VideoWriter(
@@ -269,7 +269,7 @@ def ffmpeg_write_video(
 
     if write_logfile:
         logfile.close()
-    logger(message="Moviepy - Done !")
+    logger(message="MoviePy - Done !")
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):

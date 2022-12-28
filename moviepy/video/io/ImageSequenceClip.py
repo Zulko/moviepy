@@ -89,7 +89,7 @@ class ImageSequenceClip(VideoClip):
                 image1 = imread(image)
             if size != image1.shape:
                 raise Exception(
-                    "Moviepy: ImageSequenceClip requires all images to be the same size"
+                    "MoviePy: ImageSequenceClip requires all images to be the same size"
                 )
 
         self.fps = fps

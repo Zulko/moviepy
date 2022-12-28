@@ -364,7 +364,7 @@ class VideoClip(Clip):
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-        logger(message="Moviepy - Building video %s." % filename)
+        logger(message="MoviePy - Building video %s." % filename)
         if make_audio:
             self.audio.write_audiofile(
                 audiofile,
@@ -395,7 +395,7 @@ class VideoClip(Clip):
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
                 os.remove(audiofile)
-        logger(message="Moviepy - video ready %s" % filename)
+        logger(message="MoviePy - video ready %s" % filename)
 
     @requires_duration
     @use_clip_fps_by_default
@@ -441,7 +441,7 @@ class VideoClip(Clip):
         """
         logger = proglog.default_bar_logger(logger)
         # Fails on GitHub macos CI
-        # logger(message="Moviepy - Writing frames %s." % name_format)
+        # logger(message="MoviePy - Writing frames %s." % name_format)
 
         timings = np.arange(0, self.duration, 1.0 / fps)
 
@@ -450,7 +450,7 @@ class VideoClip(Clip):
             name = name_format % i
             filenames.append(name)
             self.save_frame(name, t, with_mask=with_mask)
-        # logger(message="Moviepy - Done writing frames %s." % name_format)
+        # logger(message="MoviePy - Done writing frames %s." % name_format)
 
         return filenames
 
@@ -1353,7 +1353,7 @@ class TextClip(ImageClip):
             # The first 5 lines are header information, not colors, so ignore
             return [line.split(" ")[0] for line in lines[5:]]
         else:
-            raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
+            raise Exception("MoviePy Error: Argument must equal 'font' or 'color'")
 
     @staticmethod
     def search(string, arg):
