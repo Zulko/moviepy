@@ -41,31 +41,33 @@ def try_cmd(cmd):
 def detect_imagemagick_for_windows():
     """Detects imagemagick binary for Windows."""
 
-    # Try a few different ways of finding the ImageMagick binary on Windows
+    # Find the directory from registry, otherwise
+    # use C:\Program Files\ImageMagick-xxx directly.
     try:
+        # When is key does not exist, it will raise OSError.
         key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, r"SOFTWARE\ImageMagick\Current")
-        result = wr.QueryValueEx(key, "BinPath")[0] + r"\magick.exe"
+        imagemagick_dir = Path(wr.QueryValueEx(key, "BinPath")[0])
         key.Close()
-        return result
-    except Exception:
-        pass
+    except OSError:
+        imagemagick_dirs = [
+            d for d in Path(r"C:\Program Files").iterdir()
+            if d.name.startswith("ImageMagick-")
+        ]
+        if not imagemagick_dirs:
+            return "unset"
 
-    imagemagick_dir = [
-        d for d in Path(r"C:\Program Files").iterdir()
-        if d.name.startswith("ImageMagick-")
-    ]
+        # No matter how many versions the user installed, we use the first, because
+        # IMAGEMAGICK_BINARY can be specified through environmental variable.
+        imagemagick_dir = imagemagick_dirs[0]
 
-    if not imagemagick_dir:
-        return "unset"
-
-    # No matter how many versions the user installed, we use the first, because
-    # IMAGEMAGICK_BINARY can be specified through environmental variable.
-    imagemagick_dir = imagemagick_dir[0]
+    # Get convert.exe or magick.exe under the directory.
     for imagemagick_filename in ["convert.exe", "magick.exe"]:
         p = imagemagick_dir / imagemagick_filename
         if p.exists():
             return str(p)
 
+    # Return unset instead of raising an exception
+    # is to try other ways to detect.
     return "unset"
 
 
