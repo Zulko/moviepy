@@ -80,7 +80,7 @@ class FFMPEG_VideoReader:
         Sets self.pos to the appropriate value (1 if start_time == 0 because
         it pre-reads the first frame).
         """
-        self.close(delete_lastread=False)  # if any
+        self.close(delete_last_read=False)  # if any
 
         # self.pos represents the (0-indexed) index of the frame that is next in line
         # to be read by self.read_frame().
@@ -144,7 +144,7 @@ class FFMPEG_VideoReader:
             }
         )
         self.proc = sp.Popen(cmd, **popen_params)
-        self.lastread = self.read_frame()
+        self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames"""
@@ -159,7 +159,7 @@ class FFMPEG_VideoReader:
         """
         Reads the next frame from the file.
         Note that upon (re)initialization, the first frame will already have been read
-        and stored in ``self.lastread``.
+        and stored in ``self.last_read``.
         """
         w, h = self.size
         nbytes = self.depth * w * h
@@ -234,7 +234,7 @@ class FFMPEG_VideoReader:
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            return self.lastread
+            return self.last_read
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
@@ -249,7 +249,7 @@ class FFMPEG_VideoReader:
         # are getting the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001)
 
-    def close(self, delete_lastread=True):
+    def close(self, delete_last_read=True):
         """Closes the reader terminating the process, if is still open."""
         if self.proc:
             if self.proc.poll() is None:
@@ -258,7 +258,7 @@ class FFMPEG_VideoReader:
                 self.proc.stderr.close()
                 self.proc.wait()
             self.proc = None
-        if delete_lastread and hasattr(self, "last_read"):
+        if delete_last_read and hasattr(self, "last_read"):
             del self.last_read
 
     def __del__(self):
