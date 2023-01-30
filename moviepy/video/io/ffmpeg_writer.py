@@ -45,7 +45,7 @@ class FFMPEG_VideoWriter:
       The name of an audio file that will be incorporated to the video.
 
     audio_codec : str, optional
-      FFMPEG audio codec.
+      FFMPEG audio codec. If None, ``"copy"`` codec is used.
 
     preset : str, optional
       Sets the time that FFMPEG will take to compress the video. The slower,
