@@ -44,6 +44,9 @@ class FFMPEG_VideoWriter:
     audiofile : str, optional
       The name of an audio file that will be incorporated to the video.
 
+    audio_codec : str, optional
+      FFMPEG audio codec.
+
     preset : str, optional
       Sets the time that FFMPEG will take to compress the video. The slower,
       the better the compression rate. Possibilities are: ``"ultrafast"``,
@@ -119,7 +122,9 @@ class FFMPEG_VideoWriter:
             "-",
         ]
         if audiofile is not None:
-            cmd.extend(["-i", audiofile, "-acodec", "copy"])
+            if audio_codec is None:
+                audio_codec = "copy"
+            cmd.extend(["-i", audiofile, "-acodec", audio_codec])
         cmd.extend(["-vcodec", codec, "-preset", preset])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
@@ -226,6 +231,7 @@ def ffmpeg_write_video(
     with_mask=False,
     write_logfile=False,
     audiofile=None,
+    audio_codec=None,
     threads=None,
     ffmpeg_params=None,
     logger="bar",
@@ -252,6 +258,7 @@ def ffmpeg_write_video(
         bitrate=bitrate,
         logfile=logfile,
         audiofile=audiofile,
+        audio_codec=audio_codec,
         threads=threads,
         ffmpeg_params=ffmpeg_params,
         pixel_format=pixel_format,
