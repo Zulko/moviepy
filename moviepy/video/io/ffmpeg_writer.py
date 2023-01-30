@@ -84,6 +84,7 @@ class FFMPEG_VideoWriter:
         fps,
         codec="libx264",
         audiofile=None,
+        audio_codec=None,
         preset="medium",
         bitrate=None,
         with_mask=False,
