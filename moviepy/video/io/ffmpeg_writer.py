@@ -98,6 +98,7 @@ class FFMPEG_VideoWriter:
         self.logfile = logfile
         self.filename = filename
         self.codec = codec
+        self.audio_codec = audio_codec
         self.ext = self.filename.split(".")[-1]
         if not pixel_format:  # pragma: no cover
             pixel_format = "rgba" if with_mask else "rgb24"
@@ -164,13 +165,13 @@ class FFMPEG_VideoWriter:
                 f"writing file {self.filename}:\n\n {ffmpeg_error}"
             )
 
-            if "Unknown encoder" in ffmpeg_error:
+            if "Unknown encoder" in ffmpeg_error or "Unknown decoder" in ffmpeg_error:
                 error += (
                     "\n\nThe video export failed because FFMPEG didn't find the "
-                    f"specified codec for video encoding {self.codec}. "
+                    f"specified codec for video or audio. "
                     "Please install this codec or change the codec when calling "
                     "write_videofile.\nFor instance:\n"
-                    "  >>> clip.write_videofile('myvid.webm', codec='libvpx')"
+                    "  >>> clip.write_videofile('myvid.webm', audio='myaudio.mp3', codec='libvpx', audio_codec='aac')"
                 )
 
             elif "incorrect codec parameters ?" in ffmpeg_error:
