@@ -230,5 +230,11 @@ def test_631(inputclip):
     supersample(concatenate_videoclips([inputclip, inputclip]), 1, 1)
 
 
+@pytest.mark.parametrize(['inputclip'], [
+    [ColorClip((256, 200), color=(255, 0, 0)).with_duration(5)],
+])
+def test_632(inputclip):
+    concatenate_videoclips([inputclip, inputclip]).make_frame(inputclip.duration * 2)
+
 if __name__ == "__main__":
     pytest.main()
