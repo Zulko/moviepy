@@ -217,6 +217,7 @@ class VideoClip(Clip):
         ffmpeg_params=None,
         logger="bar",
         pixel_format=None,
+        orientation="landscape",
     ):
         """Write the clip to a videofile.
 
@@ -313,6 +314,9 @@ class VideoClip(Clip):
         pixel_format
           Pixel format for the output video file.
 
+        orientation
+            Have video output as ``"portrait"`` or ``"landscape"``
+
         Examples
         --------
 
@@ -325,6 +329,9 @@ class VideoClip(Clip):
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
         logger = proglog.default_bar_logger(logger)
+
+        if orientation == "portrait":
+            self = self.resize((self.size[1], self.size[0]))
 
         if codec is None:
 
