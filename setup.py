@@ -132,6 +132,9 @@ setup(
     description="Video editing with Python",
     long_description=readme,
     url="https://zulko.github.io/moviepy/",
+    project_urls={
+        "Source": "https://github.com/Zulko/moviepy",
+    },
     license="MIT License",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
