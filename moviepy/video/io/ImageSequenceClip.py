@@ -77,7 +77,9 @@ class ImageSequenceClip(VideoClip):
                 [os.path.join(sequence, file) for file in os.listdir(sequence)]
             )
 
-        # check that all the images are of the same size
+        # check that all the images are of the same size and check if they are grayscale
+        grayscale = False
+
         if isinstance(sequence[0], str):
             size = imread(sequence[0]).shape
         else:
@@ -91,6 +93,9 @@ class ImageSequenceClip(VideoClip):
                 raise Exception(
                     "MoviePy: ImageSequenceClip requires all images to be the same size"
                 )
+
+        if len(size) == 2 or size[2] == 1:
+            grayscale = True
 
         self.fps = fps
         if fps is not None:
@@ -110,6 +115,16 @@ class ImageSequenceClip(VideoClip):
                 [i for i in range(len(self.sequence)) if self.images_starts[i] <= t]
             )
 
+        def read_image(name, grayscale):
+            """
+            Wrapper for optional conversion from grayscale into rgb
+            by duplicating single channel into 3 channels.
+            """
+            image = imread(name)
+            if grayscale:
+                image = np.stack((image,) * 3, -1)
+            return image
+
         if fromfiles:
 
             self.last_index = None
@@ -120,12 +135,15 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.last_index:
-                    self.last_image = imread(self.sequence[index])[:, :, :3]
+                    # using wrapper function to resolve possible grayscale issues
+                    self.last_image = read_image(self.sequence[index], grayscale)[
+                        :, :, :3
+                    ]
                     self.last_index = index
 
                 return self.last_image
 
-            if with_mask and (imread(self.sequence[0]).shape[2] == 4):
+            if with_mask and (read_image(self.sequence[0], grayscale).shape[2] == 4):
 
                 self.mask = VideoClip(is_mask=True)
                 self.mask.last_index = None
@@ -152,7 +170,6 @@ class ImageSequenceClip(VideoClip):
                 return self.sequence[index][:, :, :3]
 
             if with_mask and (self.sequence[0].shape[2] == 4):
-
                 self.mask = VideoClip(is_mask=True)
 
                 def mask_make_frame(t):

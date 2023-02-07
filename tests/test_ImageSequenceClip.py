@@ -38,5 +38,17 @@ def test_2():
         ImageSequenceClip(images, durations=durations).close()
 
 
+def test_3():
+    images = []
+    durations = [2]
+
+    images.append("media/grayscale_landscape.png")
+
+    # image is grayscale, should be transformed into rgb
+    with ImageSequenceClip(images, durations=durations) as clip:
+        assert clip.duration == sum(durations)
+        clip.write_videofile(os.path.join(TMP_DIR, "ImageSequenceClip3.mp4"), fps=30)
+
+
 if __name__ == "__main__":
     pytest.main()
