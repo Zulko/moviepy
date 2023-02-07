@@ -171,7 +171,8 @@ class FFMPEG_VideoWriter:
                     f"specified codec for video or audio. "
                     "Please install this codec or change the codec when calling "
                     "write_videofile.\nFor instance:\n"
-                    "  >>> clip.write_videofile('myvid.webm', audio='myaudio.mp3', codec='libvpx', audio_codec='aac')"
+                    "  >>> clip.write_videofile('myvid.webm', audio='myaudio.mp3', "
+                    "codec='libvpx', audio_codec='aac')"
                 )
 
             elif "incorrect codec parameters ?" in ffmpeg_error:

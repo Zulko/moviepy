@@ -376,7 +376,8 @@ class VideoClip(Clip):
                 write_logfile=write_logfile,
                 logger=logger,
             )
-            # The audio is already encoded, so there is no need to encode it during video export
+            # The audio is already encoded,
+            # so there is no need to encode it during video export
             audio_codec = "copy"
 
         ffmpeg_write_video(
