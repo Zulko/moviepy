@@ -7,8 +7,8 @@ MoviePy
 .. image:: https://img.shields.io/gitter/room/movie-py/gitter?color=46BC99&logo=gitter
     :target: Gitter_
     :alt: Discuss MoviePy on Gitter
-.. image:: https://img.shields.io/github/workflow/status/Zulko/moviepy/Run%20Test%20Suite?logo=github
-    :target: https://github.com/Zulko/moviepy/actions?query=workflow%3A%22Run+Test+Suite%22
+.. image:: https://img.shields.io/github/actions/workflow/status/Zulko/moviepy/test_suite.yml?logo=github
+    :target: https://github.com/Zulko/moviepy/actions/workflows/test_suite.yml
     :alt: Build status on gh-actions
 .. image:: https://img.shields.io/coveralls/github/Zulko/moviepy/master?logo=coveralls
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
