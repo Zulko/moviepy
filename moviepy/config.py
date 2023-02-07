@@ -40,17 +40,16 @@ def try_cmd(cmd):
 
 def detect_imagemagick_for_windows():
     """Detects imagemagick binary for Windows."""
-
-    # Find the directory from registry, otherwise
-    # use C:\Program Files\ImageMagick-xxx directly.
     try:
-        # When is key does not exist, it will raise OSError.
+        # When the key does not exist, it will raise OSError.
         key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, r"SOFTWARE\ImageMagick\Current")
         imagemagick_dir = Path(wr.QueryValueEx(key, "BinPath")[0])
         key.Close()
     except OSError:
+        # Find it under C:\Program Files\ImageMagick-xxx directory.
         imagemagick_dirs = [
-            d for d in Path(r"C:\Program Files").iterdir()
+            d
+            for d in Path(r"C:\Program Files").iterdir()
             if d.name.startswith("ImageMagick-")
         ]
         if not imagemagick_dirs:
@@ -77,7 +76,6 @@ if FFMPEG_BINARY == "ffmpeg-imageio":
     FFMPEG_BINARY = get_exe()
 
 elif FFMPEG_BINARY == "auto-detect":
-
     if try_cmd(["ffmpeg"])[0]:
         FFMPEG_BINARY = "ffmpeg"
     elif not IS_POSIX_OS and try_cmd(["ffmpeg.exe"])[0]:
