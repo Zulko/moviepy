@@ -117,7 +117,9 @@ def test_write_videofiles_audio_codec_error(util, video):
     clip = video()
     location = os.path.join(util.TMP_DIR, "unlogged-write.mp4")
     with pytest.raises(IOError) as e:
-        clip.write_videofile(location, audio="media/crunching.mp3", audio_codec="nonexistent-codec")
+        clip.write_videofile(
+            location, audio="media/crunching.mp3", audio_codec="nonexistent-codec"
+        )
     assert (
         "The video export failed because FFMPEG didn't find the specified"
         " codec for video or audio" in str(e.value)
