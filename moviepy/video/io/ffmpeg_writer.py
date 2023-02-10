@@ -168,7 +168,7 @@ class FFMPEG_VideoWriter:
             if "Unknown encoder" in ffmpeg_error or "Unknown decoder" in ffmpeg_error:
                 error += (
                     "\n\nThe video export failed because FFMPEG didn't find the "
-                    f"specified codec for video or audio. "
+                    "specified codec for video or audio. "
                     "Please install this codec or change the codec when calling "
                     "write_videofile.\nFor instance:\n"
                     "  >>> clip.write_videofile('myvid.webm', audio='myaudio.mp3', "
