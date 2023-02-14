@@ -21,7 +21,7 @@ class AudioFileClip(AudioClip):
       as a string or a path-like object,
       or an array representing a sound. If the soundfile is not a .wav,
       it will be converted to .wav first, using the ``fps`` and
-      ``bitrate`` arguments.
+      ``bitrate`` arguments. It also could be a `io.BytesIO` object.
 
     buffersize:
       Size to load in memory (in number of frames)
@@ -51,6 +51,9 @@ class AudioFileClip(AudioClip):
 
     >>> snd = AudioFileClip("song.wav")
     >>> snd.close()
+    >>> import io
+    >>> snd = AudioFileClip(io.BytesIO(open("song.wav", "rb").read()))
+    >>> snd.close()
     """
 
     @convert_path_to_string("filename")
@@ -60,7 +63,6 @@ class AudioFileClip(AudioClip):
 
         AudioClip.__init__(self)
 
-        self.filename = filename
         self.reader = FFMPEG_AudioReader(
             filename,
             decode_file=decode_file,
@@ -72,7 +74,7 @@ class AudioFileClip(AudioClip):
         self.duration = self.reader.duration
         self.end = self.reader.duration
         self.buffersize = self.reader.buffersize
-        self.filename = filename
+        self.filename = self.reader.filename
 
         self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
