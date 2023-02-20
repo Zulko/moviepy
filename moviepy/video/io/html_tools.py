@@ -135,7 +135,7 @@ def html_embed(
         )
 
     filename = clip
-    options = " ".join(["%s='%s'" % (str(k), str(v)) for k, v in html_kwargs.items()])
+    options = " ".join([f"{str(k)}='{str(v)}'" for k, v in html_kwargs.items()])
     name, ext = os.path.splitext(filename)
     ext = ext[1:]
 

@@ -80,12 +80,12 @@ class FFMPEG_AudioReader:
             offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.05f" % (start_time - offset),
+                f"{start_time - offset:.05f}",
                 "-i",
                 self.filename,
                 "-vn",
                 "-ss",
-                "%.05f" % offset,
+                f"{offset:.05f}",
             ]
         else:
             i_arg = ["-i", self.filename, "-vn"]
@@ -179,9 +179,9 @@ class FFMPEG_AudioReader:
             # Check that the requested time is in the valid range
             if not in_time.any():
                 raise IOError(
-                    "Error in file %s, " % (self.filename)
-                    + "Accessing time t=%.02f-%.02f seconds, " % (tt[0], tt[-1])
-                    + "with clip duration=%f seconds, " % self.duration
+                    f"Error in file {self.filename}, "
+                    + f"Accessing time t={tt[0]:.02f}-{tt[-1]:.02f} seconds, "
+                    + f"with clip duration={self.duration:f} seconds, "
                 )
 
             # The np.round in the next line is super-important.
@@ -202,10 +202,10 @@ class FFMPEG_AudioReader:
 
             except IndexError as error:
                 warnings.warn(
-                    "Error in file %s, " % (self.filename)
-                    + "At time t=%.02f-%.02f seconds, " % (tt[0], tt[-1])
+                    f"Error in file {self.filename}, "
+                    + f"At time t={tt[0]:.02f}-{tt[-1]:.02f} seconds, "
                     + "indices wanted: %d-%d, " % (indices.min(), indices.max())
-                    + "but len(buffer)=%d\n" % (len(self.buffer))
+                    + f"but len(buffer)={len(self.buffer)}\n"
                     + str(error),
                     UserWarning,
                 )
@@ -216,7 +216,6 @@ class FFMPEG_AudioReader:
                 return result
 
         else:
-
             ind = int(self.fps * tt)
             if ind < 0 or ind > self.n_frames:  # out of time: return 0
                 return np.zeros(self.nchannels)

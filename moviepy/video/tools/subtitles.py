@@ -43,7 +43,6 @@ class SubtitlesClip(VideoClip):
     """
 
     def __init__(self, subtitles, make_textclip=None, encoding=None):
-
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):
@@ -143,7 +142,7 @@ class SubtitlesClip(VideoClip):
             (start_time, end_time), text = sub_element
             formatted_start_time = convert_to_seconds(start_time)
             formatted_end_time = convert_to_seconds(end_time)
-            return "%s - %s\n%s" % (formatted_start_time, formatted_end_time, text)
+            return f"{formatted_start_time} - {formatted_end_time}\n{text}"
 
         return "\n\n".join(to_srt(sub) for sub in self.subtitles)
 

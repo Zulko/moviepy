@@ -54,7 +54,7 @@ audio = (
 )
 
 audio_period = find_audio_period(audio)
-print("Analyzed the audio, found a period of %.02f seconds" % audio_period)
+print(f"Analyzed the audio, found a period of {audio_period:.02f} seconds")
 
 
 # LOAD, EDIT, ANALYZE THE VIDEO
@@ -66,7 +66,7 @@ clip = (
 )
 
 video_period = find_video_period(clip, start_time=0.3)
-print("Analyzed the video, found a period of %.02f seconds" % video_period)
+print(f"Analyzed the video, found a period of {video_period:.02f} seconds")
 
 edited_right = (
     clip.subclip(0, video_period)

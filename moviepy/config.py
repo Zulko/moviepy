@@ -44,7 +44,6 @@ if FFMPEG_BINARY == "ffmpeg-imageio":
     FFMPEG_BINARY = get_exe()
 
 elif FFMPEG_BINARY == "auto-detect":
-
     if try_cmd(["ffmpeg"])[0]:
         FFMPEG_BINARY = "ffmpeg"
     elif not IS_POSIX_OS and try_cmd(["ffmpeg.exe"])[0]:

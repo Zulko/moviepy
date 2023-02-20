@@ -24,7 +24,7 @@ def sliders(func, sliders_properties, wait_for_validation=False):
     # CREATE THE CANVAS
 
     figure, ax = plt.subplots(1)
-    figure.canvas.set_window_title("Inputs for '%s'" % (func.func_name))
+    figure.canvas.set_window_title(f"Inputs for '{func.func_name}'")
 
     # choose an appropriate height
 

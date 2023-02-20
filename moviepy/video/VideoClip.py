@@ -327,7 +327,6 @@ class VideoClip(Clip):
         logger = proglog.default_bar_logger(logger)
 
         if codec is None:
-
             try:
                 codec = extensions_dict[ext]["codec"][0]
             except KeyError:
@@ -359,12 +358,12 @@ class VideoClip(Clip):
             audio_ext = find_extension(audio_codec)
             audiofile = os.path.join(
                 temp_audiofile_path,
-                name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext,
+                name + Clip._TEMP_FILES_PREFIX + f"wvf_snd.{audio_ext}",
             )
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-        logger(message="MoviePy - Building video %s." % filename)
+        logger(message=f"MoviePy - Building video {filename}.")
         if make_audio:
             self.audio.write_audiofile(
                 audiofile,
@@ -395,7 +394,7 @@ class VideoClip(Clip):
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
                 os.remove(audiofile)
-        logger(message="MoviePy - video ready %s" % filename)
+        logger(message=f"MoviePy - video ready {filename}")
 
     @requires_duration
     @use_clip_fps_by_default
@@ -1044,7 +1043,6 @@ class ImageClip(VideoClip):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
-
             if img.shape[2] == 4:
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
@@ -1244,7 +1242,6 @@ class TextClip(ImageClip):
         remove_temp=True,
         print_cmd=False,
     ):
-
         if text is not None:
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix=".txt")
@@ -1281,11 +1278,11 @@ class TextClip(ImageClip):
         if font_size is not None:
             cmd += ["-pointsize", "%d" % font_size]
         if kerning is not None:
-            cmd += ["-kerning", "%0.1f" % kerning]
+            cmd += ["-kerning", f"{kerning:0.1f}"]
         if stroke_color is not None:
-            cmd += ["-stroke", stroke_color, "-strokewidth", "%.01f" % stroke_width]
+            cmd += ["-stroke", stroke_color, "-strokewidth", f"{stroke_width:.01f}"]
         if size is not None:
-            cmd += ["-size", "%sx%s" % (size[0], size[1])]
+            cmd += ["-size", f"{size[0]}x{size[1]}"]
         if align is not None:
             cmd += ["-gravity", align]
         if interline is not None:
@@ -1296,10 +1293,10 @@ class TextClip(ImageClip):
             os.close(tempfile_fd)
 
         cmd += [
-            "%s:%s" % (method, text),
+            f"{method}:{text}",
             "-type",
             "truecolormatte",
-            "PNG32:%s" % tempfilename,
+            f"PNG32:{tempfilename}",
         ]
 
         if print_cmd:

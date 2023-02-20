@@ -189,7 +189,7 @@ def test_ffmpeg_parse_infos_metadata(util, mono_wave):
     for metadata_type, data in metadata.items():
         option = "-metadata"
         if metadata_type in ["video", "audio"]:
-            option += ":s:%s:0" % ("v" if metadata_type == "video" else "a")
+            option += f":s:{'v' if metadata_type == 'video' else 'a'}:0"
         for field, value in data.items():
             ffmpeg_params.extend([option, f"{field}={value}"])
 
@@ -690,7 +690,7 @@ def test_release_of_file_via_close(util):
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = os.path.join(
-            util.TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            util.TMP_DIR, f"test_release_of_file_via_close_{int(time.time())}.mp4"
         )
 
         clip = clips_array([[red, green, blue]]).with_duration(0.5)
@@ -722,12 +722,11 @@ def test_failure_to_release_file(util):
     """
     # Get the name of a temporary file we can use.
     local_video_filename = os.path.join(
-        util.TMP_DIR, "test_release_of_file_%s.mp4" % int(time.time())
+        util.TMP_DIR, f"test_release_of_file_{int(time.time())}.mp4"
     )
 
     # Repeat this so we can see that the problems escalate:
     for i in range(5):
-
         # Create a random video file.
         red = ColorClip((256, 200), color=(255, 0, 0))
         green = ColorClip((256, 200), color=(0, 255, 0))

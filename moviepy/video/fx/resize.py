@@ -191,7 +191,6 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
             new_size = translate_new_size(new_size)
 
     elif height is not None:
-
         if hasattr(height, "__call__"):
 
             def func(t):
@@ -203,7 +202,6 @@ def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
             new_size = [w * height / h, height]
 
     elif width is not None:
-
         if hasattr(width, "__call__"):
 
             def func(t):
