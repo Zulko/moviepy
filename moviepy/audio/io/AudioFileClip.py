@@ -57,7 +57,6 @@ class AudioFileClip(AudioClip):
     def __init__(
         self, filename, decode_file=False, buffersize=200000, nbytes=2, fps=44100
     ):
-
         AudioClip.__init__(self)
 
         self.filename = filename

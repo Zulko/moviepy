@@ -253,8 +253,7 @@ class FramesMatches(list):
 
         matching_frames = []  # the final result.
 
-        for (t, frame) in clip.iter_frames(with_times=True, logger=logger):
-
+        for t, frame in clip.iter_frames(with_times=True, logger=logger):
             flat_frame = 1.0 * frame.flatten()
             F_norm_sq = dot_product(flat_frame, flat_frame)
             F_norm = np.sqrt(F_norm_sq)
@@ -359,7 +358,7 @@ class FramesMatches(list):
             nomatch_threshold = match_threshold
 
         dict_starts = defaultdict(lambda: [])
-        for (start, end, min_distance, max_distance) in self:
+        for start, end, min_distance, max_distance in self:
             dict_starts[start].append([end, min_distance, max_distance])
 
         starts_ends = sorted(dict_starts.items(), key=lambda k: k[0])
@@ -367,7 +366,6 @@ class FramesMatches(list):
         result = []
         min_start = 0
         for start, ends_distances in starts_ends:
-
             if start < min_start:
                 continue
 
@@ -445,7 +443,7 @@ class FramesMatches(list):
         MoviePy - Building file foo/00000128_00000372.gif with imageio.
         MoviePy - Building file foo/00000140_00000360.gif with imageio.
         """
-        for (start, end, _, _) in self:
+        for start, end, _, _ in self:
             name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)
             clip.subclip(start, end).write_gif(name, **kwargs)
 

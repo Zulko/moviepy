@@ -38,7 +38,6 @@ class Interpolator:
     """
 
     def __init__(self, tt=None, ss=None, ttss=None, left=None, right=None):
-
         if ttss is not None:
             tt, ss = zip(*ttss)
 
@@ -88,7 +87,6 @@ class Trajectory:
     """
 
     def __init__(self, tt, xx, yy):
-
         self.tt = 1.0 * np.array(tt)
         self.xx = np.array(xx)
         self.yy = np.array(yy)

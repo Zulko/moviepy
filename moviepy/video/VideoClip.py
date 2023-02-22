@@ -327,7 +327,6 @@ class VideoClip(Clip):
         logger = proglog.default_bar_logger(logger)
 
         if codec is None:
-
             try:
                 codec = extensions_dict[ext]["codec"][0]
             except KeyError:
@@ -1044,7 +1043,6 @@ class ImageClip(VideoClip):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
-
             if img.shape[2] == 4:
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
@@ -1244,7 +1242,6 @@ class TextClip(ImageClip):
         remove_temp=True,
         print_cmd=False,
     ):
-
         if text is not None:
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix=".txt")

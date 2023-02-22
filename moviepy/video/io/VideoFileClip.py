@@ -96,7 +96,6 @@ class VideoFileClip(VideoClip):
         fps_source="fps",
         pixel_format=None,
     ):
-
         VideoClip.__init__(self)
 
         # Make a reader
@@ -122,7 +121,6 @@ class VideoFileClip(VideoClip):
         self.filename = filename
 
         if has_mask:
-
             self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
 
             def mask_make_frame(t):
@@ -134,12 +132,10 @@ class VideoFileClip(VideoClip):
             self.mask.fps = self.fps
 
         else:
-
             self.make_frame = lambda t: self.reader.get_frame(t)
 
         # Make a reader for the audio, if any.
         if audio and self.reader.infos["audio_found"]:
-
             self.audio = AudioFileClip(
                 filename,
                 buffersize=audio_buffersize,

@@ -1486,7 +1486,6 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     decayments = np.linspace(1, max(0, decay), n_repeats)
 
     for i in range(n_repeats + 1):  # first clip, is not part of the repeated ones
-
         if i == n_repeats:
             # the delay ends in sound, so last muted chunk does not exists
             break

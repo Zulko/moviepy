@@ -654,7 +654,6 @@ def test_color_gradient(
         assert np.array_equal(result, expected_result)
 
         if shape == "radial":
-
             circle_result = circle(
                 size,
                 p1,
