@@ -100,14 +100,11 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
     txy_list = []
 
     def gatherClicks(t):
-
         imdisplay(clip.get_frame(t), screen)
         objects_to_click = n_objects
         clicks = []
         while objects_to_click:
-
             for event in pg.event.get():
-
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_BACKSLASH:
                         return "return"
@@ -122,7 +119,6 @@ def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None
         return clicks
 
     while t < t2:
-
         clicks = gatherClicks(t)
         if clicks == "return":
             txy_list.pop()

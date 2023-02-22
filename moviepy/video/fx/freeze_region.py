@@ -29,7 +29,6 @@ def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
 
     """
     if region is not None:
-
         x1, y1, x2, y2 = region
         freeze = (
             clip.fx(crop, *region)
@@ -40,7 +39,6 @@ def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
         return CompositeVideoClip([clip, freeze])
 
     elif outside_region is not None:
-
         x1, y1, x2, y2 = outside_region
         animated_region = clip.fx(crop, *outside_region).with_position((x1, y1))
         freeze = clip.to_ImageClip(t=t).with_duration(clip.duration)

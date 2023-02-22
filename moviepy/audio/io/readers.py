@@ -216,7 +216,6 @@ class FFMPEG_AudioReader:
                 return result
 
         else:
-
             ind = int(self.fps * tt)
             if ind < 0 or ind > self.n_frames:  # out of time: return 0
                 return np.zeros(self.nchannels)

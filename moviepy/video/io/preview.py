@@ -159,7 +159,6 @@ def preview(
 
     t0 = time.time()
     for t in np.arange(1.0 / fps, clip.duration - 0.001, 1.0 / fps):
-
         img = clip.get_frame(t)
 
         for event in pg.event.get():

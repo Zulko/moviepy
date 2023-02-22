@@ -49,7 +49,6 @@ class ImageSequenceClip(VideoClip):
         is_mask=False,
         load_images=False,
     ):
-
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
 
         if (fps is None) and (durations is None):
@@ -111,12 +110,10 @@ class ImageSequenceClip(VideoClip):
             )
 
         if fromfiles:
-
             self.last_index = None
             self.last_image = None
 
             def make_frame(t):
-
                 index = find_image_index(t)
 
                 if index != self.last_index:
@@ -126,13 +123,11 @@ class ImageSequenceClip(VideoClip):
                 return self.last_image
 
             if with_mask and (imread(self.sequence[0]).shape[2] == 4):
-
                 self.mask = VideoClip(is_mask=True)
                 self.mask.last_index = None
                 self.mask.last_image = None
 
                 def mask_make_frame(t):
-
                     index = find_image_index(t)
                     if index != self.mask.last_index:
                         frame = imread(self.sequence[index])[:, :, 3]
@@ -147,12 +142,10 @@ class ImageSequenceClip(VideoClip):
         else:
 
             def make_frame(t):
-
                 index = find_image_index(t)
                 return self.sequence[index][:, :, :3]
 
             if with_mask and (self.sequence[0].shape[2] == 4):
-
                 self.mask = VideoClip(is_mask=True)
 
                 def mask_make_frame(t):

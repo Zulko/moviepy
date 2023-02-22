@@ -727,7 +727,6 @@ def test_failure_to_release_file(util):
 
     # Repeat this so we can see that the problems escalate:
     for i in range(5):
-
         # Create a random video file.
         red = ColorClip((256, 200), color=(255, 0, 0))
         green = ColorClip((256, 200), color=(0, 255, 0))

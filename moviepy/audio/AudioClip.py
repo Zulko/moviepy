@@ -279,7 +279,6 @@ class AudioArrayClip(AudioClip):
     """
 
     def __init__(self, array, fps):
-
         Clip.__init__(self)
         self.array = array
         self.fps = fps

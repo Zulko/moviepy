@@ -245,7 +245,6 @@ def test_issue_334(util):
 
 def test_issue_354():
     with ImageClip("media/python_logo.png") as clip:
-
         clip.duration = 10
         crosstime = 1
 
