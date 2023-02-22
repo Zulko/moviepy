@@ -182,14 +182,12 @@ class FFMPEG_VideoWriter:
                 )
 
             elif "bitrate not specified" in ffmpeg_error:
-
                 error += (
                     "\n\nThe video export failed, possibly because the bitrate "
                     "specified was too high or too low for the video codec."
                 )
 
             elif "Invalid encoder type" in ffmpeg_error:
-
                 error += (
                     "\n\nThe video export failed because the codec "
                     "or file extension you provided is not suitable for video"

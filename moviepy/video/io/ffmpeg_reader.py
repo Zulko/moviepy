@@ -25,7 +25,6 @@ class FFMPEG_VideoReader:
         resize_algo="bicubic",
         fps_source="fps",
     ):
-
         self.filename = filename
         self.proc = None
         infos = ffmpeg_parse_infos(
@@ -577,7 +576,6 @@ class FFmpegInfosParser:
 
         # not default audio found, assume first audio stream is the default
         if self.result["audio_found"] and not self.result.get("audio_bitrate"):
-
             self.result["audio_bitrate"] = None
             for streams_input in self.result["inputs"]:
                 for stream in streams_input["streams"]:
