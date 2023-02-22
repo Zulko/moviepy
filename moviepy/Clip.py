@@ -43,7 +43,6 @@ class Clip:
     _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
-
         self.start = 0
         self.end = None
         self.duration = None
@@ -375,7 +374,6 @@ class Clip:
             return result
 
         else:
-
             return (t >= self.start) and ((self.end is None) or (t < self.end))
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
@@ -424,11 +422,9 @@ class Clip:
         new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])
 
         if (end_time is None) and (self.duration is not None):
-
             end_time = self.duration
 
         elif (end_time is not None) and (end_time < 0):
-
             if self.duration is None:
                 raise ValueError(
                     (
@@ -439,11 +435,9 @@ class Clip:
                 )
 
             else:
-
                 end_time = self.duration + end_time
 
         if end_time is not None:
-
             new_clip.duration = end_time - start_time
             new_clip.end = new_clip.start + new_clip.duration
 

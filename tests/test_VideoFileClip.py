@@ -37,7 +37,7 @@ def test_ffmpeg_resizing():
     for target_resolution in target_resolutions:
         video = VideoFileClip(video_file, target_resolution=target_resolution)
         frame = video.get_frame(0)
-        for (target, observed) in zip(target_resolution[::-1], frame.shape):
+        for target, observed in zip(target_resolution[::-1], frame.shape):
             if target is not None:
                 assert target == observed
         video.close()

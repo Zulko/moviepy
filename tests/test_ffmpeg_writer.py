@@ -238,7 +238,6 @@ def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
     )
 
     if pixel_format != "invalid":
-
         final_clip = VideoFileClip(filename)
 
         r, g, b = final_clip.get_frame(0)[0][0]

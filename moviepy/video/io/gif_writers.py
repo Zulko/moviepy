@@ -101,7 +101,6 @@ def write_gif_with_tempfiles(
     logger(message="MoviePy - - Generating GIF frames")
 
     for i, t in logger.iter_bar(t=list(enumerate(tt))):
-
         name = "%s_GIFTEMP%04d.png" % (file_root, i + 1)
         tempfiles.append(name)
         clip.save_frame(name, t, with_mask=True)
@@ -167,7 +166,6 @@ def write_gif_with_tempfiles(
         logger(message="MoviePy - GIF ready: %s." % filename)
 
     except (IOError, OSError) as err:
-
         error = (
             "MoviePy Error: creation of %s failed because "
             "of the following error:\n\n%s.\n\n." % (filename, str(err))
@@ -335,7 +333,6 @@ def write_gif(
             **popen_params,
         )
     else:
-
         popen_params["stdin"] = sp.PIPE
         popen_params["stdout"] = sp.PIPE
 
@@ -344,7 +341,6 @@ def write_gif(
         )
 
     if program == "ImageMagick":
-
         cmd2 = [
             IMAGEMAGICK_BINARY,
             "-delay",
@@ -368,7 +364,6 @@ def write_gif(
             proc2 = sp.Popen(cmd2 + ["gif:-"], **popen_params)
 
         if opt:
-
             cmd3 = (
                 [
                     IMAGEMAGICK_BINARY,
@@ -399,7 +394,6 @@ def write_gif(
             proc1.stdin.write(frame.tobytes())
 
     except IOError as err:
-
         error = (
             "[MoviePy] Error: creation of %s failed because "
             "of the following error:\n\n%s.\n\n." % (filename, str(err))
@@ -450,5 +444,4 @@ def write_gif_with_image_io(
     logger(message="MoviePy - Building file %s with imageio." % filename)
 
     for frame in clip.iter_frames(fps=fps, logger=logger, dtype="uint8"):
-
         writer.append_data(frame)
