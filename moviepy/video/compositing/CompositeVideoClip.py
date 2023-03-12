@@ -145,6 +145,38 @@ class CompositeVideoClip(VideoClip):
         if hasattr(self, "audio") and self.audio:
             self.audio.close()
             self.audio = None
+            
+
+
+def fix_clips_shape(clips, background_color, ismask = False):
+    """
+    Ensures each row in `clips` has the same number of clips. If certain rows don't have enough clips, the remaining space is replaced by placeholder empty clips
+    In other words, this function places a placeholder clip where there are missing collums
+
+    clip_array
+        Array of clips to be mutated
+
+    background_color
+        The color placeholder clips are given
+
+    :return: New and fixed clips array
+    """
+    updated_clips = []
+    maximum_row_length = len(max(clips, key=lambda clip: len(clip))) #to check if all other rows measure up or not
+    minimum_time_spent = min( min(row, key=lambda clip: clip.duration).duration for row in clips )
+
+    if background_color is None: background_color = 0.0 if ismask else (0, 0, 0) #same as CompositeVideoClip
+    placeholder_clip = ColorClip((0, 0), background_color, duration = minimum_time_spent)
+
+    for i in range(len(clips)):
+        current_row = list(clips[i])
+        for j in range(maximum_row_length - len(clips[i])): # adding however many collums are missing
+            current_row.append(placeholder_clip)
+
+        updated_clips.append(current_row)
+    return updated_clips
+
+
 
 
 def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
@@ -188,6 +220,7 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
        Fill color for the masked and unfilled regions. Set to ``None`` for these
        regions to be transparent (processing will be slower).
     """
+    array = fix_clips_shape(array, bg_color) #ensuring dimensions of array are appropriate
     array = np.array(array)
     sizes_array = np.array([[clip.size for clip in line] for line in array])
 
