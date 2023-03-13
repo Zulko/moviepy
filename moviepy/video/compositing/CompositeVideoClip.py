@@ -168,7 +168,7 @@ def fix_clips_shape(clips, background_color, ismask = False):
     if background_color is None: background_color = 0.0 if ismask else (0, 0, 0) #same as CompositeVideoClip
     placeholder_clip = ColorClip((0, 0), background_color, duration = minimum_time_spent)
 
-    for i in range(len(clips)):
+    for i in range(len(clips)): # for each row, we will check if there are enough clips
         current_row = list(clips[i])
         for j in range(maximum_row_length - len(clips[i])): # adding however many collums are missing
             current_row.append(placeholder_clip)
@@ -204,8 +204,8 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
     ```
 
     If some clips doesn't fulfill the space required by the rows or columns
-    in which are placed, that space will be filled by the color defined in
-    ``bg_color``.
+    in which are placed, or no clips are given for an expected tile,
+    that space will be filled by the color defined in ``bg_color``.
 
     array
       Matrix of clips included in the returned composited video clip.
