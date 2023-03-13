@@ -154,7 +154,7 @@ def fix_clips_shape(clips, background_color, ismask = False):
     In other words, this function places a placeholder clip where there are missing collums
 
     clip_array
-        Array of clips to be mutated
+        Array of clips to be processed
 
     background_color
         The color placeholder clips are given
