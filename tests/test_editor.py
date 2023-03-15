@@ -1,4 +1,4 @@
-"""Moviepy editor tests."""
+"""MoviePy editor tests."""
 
 import importlib
 import io

@@ -1,4 +1,4 @@
-Moviepy Docker
+MoviePy Docker
 ===============
 
 Prerequisites
