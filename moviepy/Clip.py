@@ -55,7 +55,6 @@ class Clip:
         """Allows the usage of ``.copy()`` in clips as chained methods invocation."""
         return _copy.copy(self)
 
-
     @convert_parameter_to_seconds(["t"])
     def get_frame(self, t):
         """Gets a numpy array representing the RGB picture of the clip,
@@ -389,8 +388,8 @@ class Clip:
         The ``mask`` and ``audio`` of the resulting subclip will be subclips of
         ``mask`` and ``audio`` the original clip, if they exist.
 
-        It's equivalent to slice the clip as a sequence, like 
-        ``clip[t_start:t_end]``. 
+        It's equivalent to slice the clip as a sequence, like
+        ``clip[t_start:t_end]``.
 
         Parameters
         ----------
@@ -411,7 +410,6 @@ class Clip:
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
         """
-
         if start_time < 0:
             # Make this more Python-like, a negative value means to move
             # backward from the end of the clip
@@ -550,7 +548,6 @@ class Clip:
         #    * Therefore, should NOT be called by __del__().
         pass
 
-
     def __eq__(self, other):
         if not isinstance(other, Clip):
             return NotImplemented
@@ -570,7 +567,7 @@ class Clip:
 
     def __enter__(self):
         """
-        Support the Context Manager protocol, 
+        Support the Context Manager protocol,
         to ensure that resources are cleaned up.
         """
         return self
@@ -580,31 +577,31 @@ class Clip:
 
     def __getitem__(self, key):
         """
-        Support extended slice and index operations over 
-        a clip object. 
-        
-        Simple slicing is implemented via :meth:`subclip`. 
-        So, ``clip[t_start:t_end]`` is equivalent to  
-        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not 
-        given, default to ``0``, if ``t_end`` is not given, 
-        default to ``self.duration``.   
-        
-        The slice object optionally support a third argument as 
-        a ``speed`` coefficient (that could be negative), 
-        ``clip[t_start:t_end:speed]``. 
+        Support extended slice and index operations over
+        a clip object.
+
+        Simple slicing is implemented via `subclip`.
+        So, ``clip[t_start:t_end]`` is equivalent to
+        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not
+        given, default to ``0``, if ``t_end`` is not given,
+        default to ``self.duration``.
+
+        The slice object optionally support a third argument as
+        a ``speed`` coefficient (that could be negative),
+        ``clip[t_start:t_end:speed]``.
 
         For example ``clip[::-1]`` returns a reversed (a time_mirror fx)
         the video and ``clip[:5:2]`` returns the segment from 0 to 5s
-        accelerated to 2x (ie. resulted duration would be 2.5s)  
-    
+        accelerated to 2x (ie. resulted duration would be 2.5s)
+
         In addition, a tuple of slices is supported, resulting in the concatenation
         of each segment. For example ``clip[(:1, 2:)]`` return a clip
-        with the segment from 1 to 2s removed.  
+        with the segment from 1 to 2s removed.
 
-        If ``key`` is not a slice or tuple, we assume it's a time 
-        value (expressed in any format supported by :func:`cvsec`)
-        and return the frame at that time, passing the key 
-        to :meth:`get_frame`. 
+        If ``key`` is not a slice or tuple, we assume it's a time
+        value (expressed in any format supported by `cvsec`)
+        and return the frame at that time, passing the key
+        to ``get_frame``.
         """
         apply_to = ["mask", "audio"]
         if isinstance(key, slice):
