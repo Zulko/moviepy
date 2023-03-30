@@ -4,22 +4,19 @@ MoviePy
 .. image:: https://badge.fury.io/py/moviepy.svg
     :target: PyPI_
     :alt: MoviePy page on the Python Package Index
-.. image:: https://badges.gitter.im/movie-py/gitter.png
+.. image:: https://img.shields.io/gitter/room/movie-py/gitter?color=46BC99&logo=gitter
     :target: Gitter_
     :alt: Discuss MoviePy on Gitter
-.. image:: https://travis-ci.org/Zulko/moviepy.svg?branch=master
-    :target: https://travis-ci.org/Zulko/moviepy
-    :alt: Build status on travis-ci
-.. image:: https://ci.appveyor.com/api/projects/status/github/zulko/moviepy?svg=true
-    :target: https://ci.appveyor.com/project/Zulko/moviepy
-    :alt: Build status on appveyor
-.. image:: https://coveralls.io/repos/github/Zulko/moviepy/badge.svg?branch=master
+.. image:: https://img.shields.io/github/actions/workflow/status/Zulko/moviepy/test_suite.yml?logo=github
+    :target: https://github.com/Zulko/moviepy/actions/workflows/test_suite.yml
+    :alt: Build status on gh-actions
+.. image:: https://img.shields.io/coveralls/github/Zulko/moviepy/master?logo=coveralls
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.5+. Here it is in action in an IPython notebook:
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.6+. Here it is in action in an IPython notebook:
 
 .. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
     :alt: [logo]
@@ -31,24 +28,26 @@ Example
 In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
 
 .. code:: python
-
-    from moviepy.editor import *
+    
+    from moviepy import *
 
     video = VideoFileClip("myHolidays.mp4").subclip(50,60)
 
     # Make the text. Many more options are available.
     txt_clip = ( TextClip("My Holidays 2013",fontsize=70,color='white')
-                 .set_position('center')
-                 .set_duration(10) )
+                 .with_position('center')
+                 .with_duration(10) )
 
     result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
     result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
+    
+*Note:* This example uses the new 2.x API, for MoviePy 1.0.3, currently on PyPI, see `this snippet <https://gist.github.com/Zulko/57e6e50debef1834fb9b60700b1b9f99>`_.
 
 
 Maintainers wanted!
 -------------------
 
-As there are more and more people seeking support (320 open issues as of Sept. 2019!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
+As there are more and more people seeking support (270 open issues as of Jan. 2021!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
 Installation
 ------------
@@ -71,7 +70,7 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above
 
 .. code:: bash
 
-    $ (sudo) pip install ez_setup
+    $ (sudo) pip install setuptools
 
 
 Optional but useful dependencies
@@ -85,11 +84,7 @@ You can install ``moviepy`` with all dependencies via:
 
 ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
 
-Once you have installed ImageMagick, it will be automatically detected by MoviePy, **except on Windows!** Windows users, before installing MoviePy by hand, need to edit ``moviepy/config_defaults.py`` to provide the path to the ImageMagick binary, which is called `convert`. It should look like this:
-
-.. code:: python
-
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\convert.exe"
+Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables (see the documentation).
 
 PyGame_ is needed for video and sound previews (not relevant if you intend to work with MoviePy on a server but essential for advanced video editing by hand).
 
@@ -101,27 +96,13 @@ For advanced image processing, you will need one or several of the following pac
 - `OpenCV 2.4.6`_ or a more recent version (one that provides the package ``cv2``) may be needed for some advanced image manipulation.
 - `Matplotlib`_
 
-Once you have installed it, ImageMagick will be automatically detected by MoviePy, (except for windows users and Ubuntu 16.04LTS users).
-
-For Windows users, before installing MoviePy by hand, go into the ``moviepy/config_defaults.py`` file and provide the path to the ImageMagick binary called ``magick``. It should look like this:
-
-.. code:: python
-
-    IMAGEMAGICK_BINARY = "C:\\Program Files\\ImageMagick_VERSION\\magick.exe"
-
-If you are using an older version of ImageMagick, keep in mind the name of the executable is not ``magick.exe`` but ``convert.exe``. In that case, the IMAGEMAGICK_BINARY property should be ``C:\\Program Files\\ImageMagick_VERSION\\convert.exe``
-
-For Ubuntu 16.04LTS users, after installing MoviePy on the terminal, IMAGEMAGICK will not be detected by moviepy. This bug can be fixed. Modify the file in this directory: /etc/ImageMagick-6/policy.xml, comment out the statement <!-- <policy domain="path" rights="none" pattern="@*" /> -->.
-
-PyGame_ is needed for video and sound previews (useless if you intend to work with MoviePy on a server but really essential for advanced video editing *by hand*).
-
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
 
 
 Documentation
 -------------
 
-Running `build_docs` has additional dependencies that require installation.
+Building the documentation has additional dependencies that require installation.
 
 .. code:: bash
 
@@ -166,22 +147,6 @@ Then at the beginning of your notebook enter:
 
 Have a look at the Proglog project page for more options.
 
-Running Tests
--------------
-
-In order to run the test suite locally, first install the dependencies by navigating to the project directory and running:
-
-.. code:: bash
-
-    $ (sudo) pip install moviepy[test]
-
-The test suite can then be executed via:
-
-.. code:: bash
-
-    $ pytest
-
-
 Contribute
 ----------
 
@@ -201,6 +166,7 @@ Maintainers
 - `@overdrivr`_
 - `@keikoro`_
 - `@ryanfox`_
+- `@mondeja`_
 
 
 .. MoviePy links
@@ -219,7 +185,7 @@ Maintainers
 .. Software, Tools, Libraries
 .. _Pillow: https://pillow.readthedocs.org/en/latest/
 .. _Scipy: https://www.scipy.org/
-.. _`OpenCV 2.4.6`: https://sourceforge.net/projects/opencvlibrary/files/
+.. _`OpenCV 2.4.6`: https://github.com/skvark/opencv-python
 .. _Pygame: https://www.pygame.org/download.shtml
 .. _Numpy: https://www.scipy.org/install.html
 .. _imageio: https://imageio.github.io/
@@ -240,3 +206,4 @@ Maintainers
 .. _`@overdrivr`: https://github.com/overdrivr
 .. _`@keikoro`: https://github.com/keikoro
 .. _`@ryanfox`: https://github.com/ryanfox
+.. _`@mondeja`: https://github.com/mondeja

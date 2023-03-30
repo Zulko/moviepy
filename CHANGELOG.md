@@ -7,23 +7,155 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
-[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...HEAD)
-
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev2...HEAD)
 
 ### Important Announcements
-- Support removed for Python versions 2.7, 3.4 & 3.5 [#1103, #1106]
 
 ### Added <!-- for new features -->
+- Support for `copy.copy(clip)` and `copy.deepcopy(clip)` with same behaviour as `clip.copy()` [\#1442](https://github.com/Zulko/moviepy/pull/1442)
+- `audio.fx.multiply_stereo_volume` to control volume by audio channels [\#1424](https://github.com/Zulko/moviepy/pull/1424)
+- Support for retrieve clip frames number using `clip.n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
+- `AudioClip.max_volume(stereo=True)` now can return more than 2 channels [\#1464](https://github.com/Zulko/moviepy/pull/1464)
+- `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns data from all streams by FFmpeg inputs in attribute `inputs` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
+- `video.io.ffmpeg_reader.ffmpeg_parse_infos` returns metadata of the container in attribute `metadata` [\#1466](https://github.com/Zulko/moviepy/pull/1466)
+- `center`, `translate` and `bg_color` arguments to `video.fx.rotate` [\#1474](https://github.com/Zulko/moviepy/pull/1474)
+- `audio.fx.audio_delay` FX [\#1481](https://github.com/Zulko/moviepy/pull/1481)
+- `start_time` and `end_time` optional arguments to `multiply_volume` FX which allow to specify a range applying the transformation [\#1572](https://github.com/Zulko/moviepy/pull/1572)
+- `loop` argument support writing GIFs with ffmpeg for `write_gif` and `write_gif_with_tempfiles` [\#1605](https://github.com/Zulko/moviepy/pull/1605)
 
 ### Changed <!-- for changes in existing functionality -->
+- Lots of method and parameter names have been changed. This will be explained better in the documentation soon. See https://github.com/Zulko/moviepy/pull/1170 for more information. [\#1170](https://github.com/Zulko/moviepy/pull/1170)
+- Changed recommended import from `import moviepy.editor` to `import moviepy`. This change is fully backwards compatible [\#1340](https://github.com/Zulko/moviepy/pull/1340)
+- Renamed `audio.fx.volumex` to `audio.fx.multiply_volume` [\#1424](https://github.com/Zulko/moviepy/pull/1424)
+- Renamed `cols_widths` argument of `clips_array` function by `cols_heights` [\#1465](https://github.com/Zulko/moviepy/pull/1465)
+- `video_nframes` attribute of dictionary returned from `ffmpeg_parse_infos` renamed to `video_n_frames` [\#1471](https://github.com/Zulko/moviepy/pull/1471)
+- Renamed `colorx` FX by `multiply_color` [\#1475](https://github.com/Zulko/moviepy/pull/1475)
+- Renamed `speedx` FX by `multiply_speed` [\#1478](https://github.com/Zulko/moviepy/pull/1478)
+- `make_loopable` transition must be used as FX [\#1477](https://github.com/Zulko/moviepy/pull/1477)
+- `requests` package is no longer a dependency [\#1566](https://github.com/Zulko/moviepy/pull/1566)
+- `accel_decel` FX raises `ValueError` if `sooness` parameter value is lower than zero [\#1546](https://github.com/Zulko/moviepy/pull/1546)
+- `Clip.subclip` raise `ValueError` if `start_time >= clip.duration` (previously printing a message to stdout only if `start_time > clip.duration`) [\#1589](https://github.com/Zulko/moviepy/pull/1589)
+- Allow to pass times in `HH:MM:SS` format to `t` argument of `clip.show` method [\#1594](https://github.com/Zulko/moviepy/pull/1594)
+- `TextClip` now raises `ValueError` if none of the `text` or `filename` arguments are specified [\#1842](https://github.com/Zulko/moviepy/pull/1842)
 
 ### Deprecated <!-- for soon-to-be removed features -->
+- `moviepy.video.fx.all` and `moviepy.audio.fx.all`. Use the fx method directly from the clip instance or import the fx function from `moviepy.video.fx` and `moviepy.audio.fx`. [\#1105](https://github.com/Zulko/moviepy/pull/1105)
+
+### Removed <!-- for now removed features -->
+- `VideoFileClip.coreader` and `AudioFileClip.coreader` methods removed. Use `VideoFileClip.copy` and `AudioFileClip.copy` instead [\#1442](https://github.com/Zulko/moviepy/pull/1442)
+- `audio.fx.audio_loop` removed. Use `video.fx.loop` instead for all types of clip [\#1451](https://github.com/Zulko/moviepy/pull/1451)
+- `video.compositing.on_color` removed. Use `VideoClip.on_color` instead [\#1456](https://github.com/Zulko/moviepy/pull/1456)
+
+### Fixed <!-- for any bug fixes -->
+- Fixed BitmapClip with fps != 1 not returning the correct frames or crashing [\#1333](https://github.com/Zulko/moviepy/pull/1333)
+- Fixed `rotate` sometimes failing with `ValueError: axes don't match array` [\#1335](https://github.com/Zulko/moviepy/pull/1335)
+- Fixed positioning error generating frames in `CompositeVideoClip` [\#1420](https://github.com/Zulko/moviepy/pull/1420)
+- Changed deprecated `tostring` method by `tobytes` in `video.io.gif_writers::write_gif` [\#1429](https://github.com/Zulko/moviepy/pull/1429)
+- Fixed calling `audio_normalize` on a clip with no sound causing `ZeroDivisionError` [\#1401](https://github.com/Zulko/moviepy/pull/1401)
+- Fixed `freeze` FX was freezing at time minus 1 second as the end [\#1461](https://github.com/Zulko/moviepy/pull/1461)
+- Fixed `Clip.cutout` transformation not being applied to audio [\#1468](https://github.com/Zulko/moviepy/pull/1468)
+- Fixed arguments inconsistency in `video.tools.drawing.color_gradient` [\#1467](https://github.com/Zulko/moviepy/pull/1467)
+- Fixed `fps` not defined in `CompositeAudioClip` at initialization [\#1462](https://github.com/Zulko/moviepy/pull/1462)
+- Fixed `clip.preview()` crashing at exit when running inside Jupyter Notebook in Windows [\#1537](https://github.com/Zulko/moviepy/pull/1537)
+- Fixed rotate FX not being applied to mask images [\#1399](https://github.com/Zulko/moviepy/pull/1399)
+- Fixed opacity error blitting VideoClips [\#1552](https://github.com/Zulko/moviepy/pull/1552)
+- Fixed rotation metadata of input not being taken into account rendering VideoClips [\#577](https://github.com/Zulko/moviepy/pull/577)
+- Fixed mono clips crashing when `audio_fadein` FX applied [\#1574](https://github.com/Zulko/moviepy/pull/1574)
+- Fixed mono clips crashing when `audio_fadeout` FX applied [\#1578](https://github.com/Zulko/moviepy/pull/1578)
+- Fixed scroll FX not being scrolling [\#1591](https://github.com/Zulko/moviepy/pull/1591)
+- Fixed parsing FFMPEG streams with square brackets [\#1781](https://github.com/Zulko/moviepy/pull/1781)
+- Fixed audio processing for streams with missing `audio_bitrate` [\#1783](https://github.com/Zulko/moviepy/pull/1783)
+- Fixed parsing language from stream output with square brackets [\#1837](https://github.com/Zulko/moviepy/pull/1837)
+
+
+## [v2.0.0.dev2](https://github.com/zulko/moviepy/tree/v2.0.0.dev2) (2020-10-05)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev1...v2.0.0.dev2)
+
+There are still no major breaking changes compared to v1.0.3. Expect them to come in the next dev update.
+Any new changes made to the master branch will now be instantly reflected at https://moviepy.readthedocs.io, which is where documentation for all versions will be in the future. [\#1328](https://github.com/Zulko/moviepy/pull/1328)
+Install with `pip install moviepy --pre --upgrade`.
+
+### Added <!-- for new features -->
+- New `pix_fmt` parameter in `VideoFileClip`, `VideoClip.write_videofile()`, `VideoClip.write_gif()` that allows passing a custom `pix_fmt` parameter such as `"bgr24"` to FFmpeg [\#1237](https://github.com/Zulko/moviepy/pull/1237)
+- New `change_duration` parameter in `Clip.set_fps()` that allows changing the video speed to match the new fps [\#1329](https://github.com/Zulko/moviepy/pull/1329)
+
+### Changed <!-- for changes in existing functionality -->
+- `ffmpeg_parse_infos()` and `VideoFileClip` now have optional `decode_file` parameter that ensures that the detected duration is correct, but may take a long time to run [\#1063](https://github.com/Zulko/moviepy/pull/1063), [\#1222](https://github.com/Zulko/moviepy/pull/1222)
+- `ffmpeg_parse_infos()` and `VideoFileClip` now use `fps` metadata instead of `tbr` to detect a video's fps value [\#1222](https://github.com/Zulko/moviepy/pull/1222)
+- `FFMPEG_AudioReader.close_proc()` -> `FFMPEG_AudioReader.close()` for consistency with `FFMPEG_VideoReader` [\#1220](https://github.com/Zulko/moviepy/pull/1220)
+
+### Fixed <!-- for any bug fixes -->
+- Fixed `ffmpeg_tools.ffmpeg_extract_subclip` creating clips with incorrect duration metadata [\#1317](https://github.com/Zulko/moviepy/pull/1317)
+- `OSError: MoviePy error: failed to read the first frame of video file...` would occasionally occur for no reason [\#1220](https://github.com/Zulko/moviepy/pull/1220)
+- Fixed warnings being suppressed [\#1191](https://github.com/Zulko/moviepy/pull/1191)
+- Fixed `UnicodeDecodeError` crash when file metadata contained non-UTF8 characters [\#959](https://github.com/Zulko/moviepy/pull/959)
+
+
+## [v2.0.0.dev1](https://github.com/zulko/moviepy/tree/v2.0.0.dev1) (2020-06-04)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.3...v2.0.0.dev1)
+
+This development version introduces many bug-fixes and changes. Please note that there may be large backwards-incompatible changes between dev versions! 
+The online documentation has not been updated to reflect the changes in the v2.0.0 branch, so for help on how to use the new features please refer to the docstrings in the source code.
+Install with `pip install moviepy --pre --upgrade`.
+
+### Important Announcements
+- Support removed for Python versions 2.7, 3.4 & 3.5 [\#1103](https://github.com/Zulko/moviepy/pull/1103), [\#1106](https://github.com/Zulko/moviepy/pull/1106)
+- If you were previously setting custom locations for FFmpeg or ImageMagick in ``config_defaults.py`` and MoviePy still cannot autodetect the binaries, you will need to switch to the new method using enviroment variables. [\#1109](https://github.com/Zulko/moviepy/pull/1109)
+- All previously deprecated methods and parameters have been removed [\#1115](https://github.com/Zulko/moviepy/pull/1115)
+
+### Added <!-- for new features -->
+- BitmapClip allows creating of custom frames using strings of letters
+- Clips can now be tested for equality with other clips using `==`. This checks whether every frame of the two clips are identical
+- Support for path-like objects as an option wherever filenames are passed in as arguments [\#1137](https://github.com/Zulko/moviepy/pull/1137)
+- Autodetect ImageMagick executable on Windows [\#1109](https://github.com/Zulko/moviepy/pull/1109)
+- Optionally configure paths to FFmpeg and ImageMagick binaries with environment variables or a ``.env`` file [\#1109](https://github.com/Zulko/moviepy/pull/1109)
+- Optional `encoding` parameter in `SubtitlesClip` [\#1043](https://github.com/Zulko/moviepy/pull/1043)
+- Added new `ffmpeg_stabilize_video()` function in `ffmpeg_tools`
+- Optional `temp_audiofile_path` parameter in `VideoClip.write_videofile()` to specify where the temporary audiofile should be created [\#1144](https://github.com/Zulko/moviepy/pull/1144)
+- `VideoClip.set_layer()` to specify the layer of the clip for use when creating a `CompositeVideoClip` [\#1176](https://github.com/Zulko/moviepy/pull/1176)
+- `ffmpeg_parse_infos` additionally returns `"video_bitrate"` and `"audio_bitrate"` values [\#930](https://github.com/Zulko/moviepy/pull/930)
+- Access to the source video's bitrate in a `VideoFileClip` or `AudioFileClip` through `videoclip.reader.bitrate` and `audioclip.reader.bitrate` [\#930](https://github.com/Zulko/moviepy/pull/930)
+
+### Changed <!-- for changes in existing functionality -->
+- `vfx.scroll` arguments `w` and `h` have had their order swapped. The correct order is now `w, h` but it is preferable to explicitly use keyword arguments
+- Removed extra `.` in the output file name of `ffmpeg_extract_subclip()` when `targetname` is not specified [\#939](https://github.com/Zulko/moviepy/pull/939)
 
 ### Removed <!-- for now removed features -->
 - Support removed for Python versions 2.7, 3.4 & 3.5
+- Setting paths to ImageMagick and FFMpeg binaries in ``config_defaults.py`` is no longer possible [\#1109](https://github.com/Zulko/moviepy/pull/1109)
+- Removed ``config.get_setting()`` and ``config.change_settings()`` functions [\#1109](https://github.com/Zulko/moviepy/pull/1109)
+- All previously deprecated methods and parameters [\#1115](https://github.com/Zulko/moviepy/pull/1115):
+    - `AudioClip.to_audiofile()` -> use `AudioClip.write_audiofile()`
+    - `VideoClip.to_videofile()` -> use `VideoClip.write_videofile()`
+    - `VideoClip.to_images_sequence()` -> use `VideoClip.write_images_sequence()`
+    - `concatenate()` -> use `concatenate_videoclips()`
+    - `verbose` parameter in `AudioClip.write_audiofile()`, `ffmpeg_audiowriter()`, `VideoFileClip()`, `VideoClip.write_videofile()`, `VideoClip.write_images_sequence()`, `ffmpeg_write_video()`, `write_gif()`, `write_gif_with_tempfiles()`, `write_gif_with_image_io()` -> Instead of `verbose=False`, use `logger=None`
+    - `verbose_print()` -> no replacement
+    - `col` parameter in `ColorClip()` -> use `color`
 
 ### Fixed <!-- for any bug fixes -->
-- When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [#890]
+- When using `VideoClip.write_videofile()` with `write_logfile=True`, errors would not be properly reported [\#890](https://github.com/Zulko/moviepy/pull/890)
+- `TextClip.list("color")` now returns a list of bytes, not strings [\#1119](https://github.com/Zulko/moviepy/pull/1119)
+- `TextClip.search("colorname", "color")` does not crash with a TypeError [\#1119](https://github.com/Zulko/moviepy/pull/1119)
+- `vfx.even_size` previously created clips with odd sizes [\#1124](https://github.com/Zulko/moviepy/pull/1124)
+- `IndexError` in `vfx.freeze`, `vfx.time_mirror` and `vfx.time_symmetrize` [\#1124](https://github.com/Zulko/moviepy/pull/1124)
+- Using `rotate()` with a `ColorClip` no longer crashes [\#1139](https://github.com/Zulko/moviepy/pull/1139)
+- `AudioFileClip` would not generate audio identical to the original file [\#1108](https://github.com/Zulko/moviepy/pull/1108)
+- Fixed `TypeError` when using `filename` instead of `txt` parameter in `TextClip` [\#1201](https://github.com/Zulko/moviepy/pull/1201)
+- Several issues resulting from incorrect time values due to floating point errors [\#1195](https://github.com/Zulko/moviepy/pull/1195), for example:
+    - Blank frames at the end of clips [\#210](https://github.com/Zulko/moviepy/pull/210)
+    - Sometimes getting `IndexError: list index out of range` when using `concatenate_videoclips` [\#646](https://github.com/Zulko/moviepy/pull/646)
+- Applying `resize` with a non-constant `newsize` to a clip with a mask would remove the mask [\#1200](https://github.com/Zulko/moviepy/pull/1200)
+- Using `color_gradient()` would crash with `ValueError: The truth value of an array with more than one element is ambiguous` [\#1212](https://github.com/Zulko/moviepy/pull/1212)
+
+
+## [v1.0.3](https://github.com/zulko/moviepy/tree/v1.0.3) (2020-05-07)
+
+[Full Changelog](https://github.com/zulko/moviepy/compare/v1.0.2...v1.0.3)
+
+Bonus release to fix critical error when working with audio: `AttributeError: 'NoneType' object has no attribute 'stdout'` [\#1185](https://github.com/Zulko/moviepy/pull/1185)
 
 
 ## [v1.0.2](https://github.com/zulko/moviepy/tree/v1.0.2) (2020-03-26)

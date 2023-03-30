@@ -1,33 +1,35 @@
+"""GUI matplotlib utility to tune the outputs of a function."""
+
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, Slider
+from matplotlib.widgets import Slider
 
 
-def sliders(f, sliders_properties, wait_for_validation=False):
-    """ A light GUI to manually explore and tune the outputs of 
-        a function.
-        slider_properties is a list of dicts (arguments for Slider )
-        
+def sliders(func, sliders_properties, wait_for_validation=False):
+    """A light GUI to manually explore and tune the outputs of a function.
+
+    ``slider_properties`` is a list of dicts (arguments for Slider)::
+
         def volume(x,y,z):
             return x*y*z
-    
+
         intervals = [ { 'label' :  'width',  'valmin': 1 , 'valmax': 5 },
                   { 'label' :  'height',  'valmin': 1 , 'valmax': 5 },
                   { 'label' :  'depth',  'valmin': 1 , 'valmax': 5 } ]
-        inputExplorer(volume,intervals)
-    """
+        inputExplorer(volume, intervals)
 
-    nVars = len(sliders_properties)
-    slider_width = 1.0 / nVars
+    """
+    n_vars = len(sliders_properties)
+    slider_width = 1.0 / n_vars
 
     # CREATE THE CANVAS
 
     figure, ax = plt.subplots(1)
-    figure.canvas.set_window_title("Inputs for '%s'" % (f.func_name))
+    figure.canvas.set_window_title("Inputs for '%s'" % (func.func_name))
 
     # choose an appropriate height
 
     width, height = figure.get_size_inches()
-    height = min(0.5 * nVars, 8)
+    height = min(0.5 * n_vars, 8)
     figure.set_size_inches(width, height, forward=True)
 
     # hide the axis
@@ -50,12 +52,12 @@ def sliders(f, sliders_properties, wait_for_validation=False):
     # CREATE THE CALLBACK FUNCTIONS
 
     def on_changed(event):
-        res = f(*(s.val for s in sliders))
+        res = func(*(s.val for s in sliders))
         if res is not None:
             print(res)
 
     def on_key_press(event):
-        if event.key is "enter":
+        if event.key == "enter":
             on_changed(event)
 
     figure.canvas.mpl_connect("key_press_event", on_key_press)

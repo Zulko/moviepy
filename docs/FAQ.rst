@@ -3,7 +3,7 @@ FAQ and troubleshooting
 
 This section will fill up as MoviePy advances through the next steps of
 development (currently on the roadmap: MoviePy Studio, MoviePy WebApp, MoviePy OS, MoviePy
-Trust Inc., and the MoviePy Charity Fundation).
+Trust Inc., and the MoviePy Charity Foundation).
 
 Common errors that are not bugs
 --------------------------------
@@ -25,7 +25,7 @@ I can't seem to read any video with MoviePy
 """"""""""""""""""""""""""""""""""""""""""""""
 
 Known reason: you have a deprecated version of FFMPEG, install a recent version from the
-website, not from your OS's repositories ! (see :ref:`install`).
+website, not from your OS's repositories! (see :ref:`install`).
 
 Previewing videos make them slower than they are
 """""""""""""""""""""""""""""""""""""""""""""""""

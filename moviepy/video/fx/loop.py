@@ -1,16 +1,15 @@
-from moviepy.decorators import apply_to_audio, apply_to_mask, requires_duration
+from moviepy.decorators import requires_duration
 
 
 @requires_duration
-@apply_to_mask
-@apply_to_audio
-def loop(self, n=None, duration=None):
+def loop(clip, n=None, duration=None):
     """
     Returns a clip that plays the current clip in an infinite loop.
-    Ideal for clips coming from gifs.
-    
+    Ideal for clips coming from GIFs.
+
     Parameters
-    ------------
+    ----------
+
     n
       Number of times the clip should be played. If `None` the
       the clip will loop indefinitely (i.e. with no set duration).
@@ -18,9 +17,12 @@ def loop(self, n=None, duration=None):
     duration
       Total duration of the clip. Can be specified instead of n.
     """
-    result = self.fl_time(lambda t: t % self.duration)
+    previous_duration = clip.duration
+    clip = clip.time_transform(
+        lambda t: t % previous_duration, apply_to=["mask", "audio"]
+    )
     if n:
-        duration = n * self.duration
+        duration = n * previous_duration
     if duration:
-        result = result.set_duration(duration)
-    return result
+        clip = clip.with_duration(duration)
+    return clip

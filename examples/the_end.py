@@ -1,5 +1,6 @@
-from moviepy.editor import *
+from moviepy import *
 from moviepy.video.tools.drawing import circle
+
 
 clip = (
     VideoFileClip("../../videos/badl-0006.mov", audio=False).subclip(26, 31).add_mask()
@@ -12,15 +13,15 @@ clip.mask.get_frame = lambda t: circle(
     screensize=(clip.w, clip.h),
     center=(clip.w / 2, clip.h / 4),
     radius=max(0, int(800 - 200 * t)),
-    col1=1,
-    col2=0,
+    color=1,
+    bg_color=0,
     blur=4,
 )
 
 
 the_end = TextClip(
-    "The End", font="Amiri-bold", color="white", fontsize=70
-).set_duration(clip.duration)
+    "The End", font="Amiri-bold", color="white", font_size=70
+).with_duration(clip.duration)
 
 final = CompositeVideoClip([the_end.set_pos("center"), clip], size=clip.size)
 

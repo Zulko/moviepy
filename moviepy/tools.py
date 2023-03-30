@@ -1,42 +1,38 @@
-"""
-Misc. useful functions that can be used at many places in the program.
-"""
+"""Misc. useful functions that can be used at many places in the program."""
 import os
 import subprocess as sp
-import sys
 import warnings
 
 import proglog
 
 
-def sys_write_flush(s):
-    """ Writes and flushes without delay a text in the console """
-    # Reason for not using `print` is that in some consoles "print"
-    # commands get delayed, while stdout.flush are instantaneous,
-    # so this method is better at providing feedback.
-    # See https://github.com/Zulko/moviepy/pull/485
-    sys.stdout.write(s)
-    sys.stdout.flush()
+OS_NAME = os.name
 
 
-def verbose_print(verbose, s):
-    """ Only prints s (with sys_write_flush) if verbose is True."""
-    if verbose:
-        sys_write_flush(s)
+def cross_platform_popen_params(popen_params):
+    """Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and
+    will be ready to work without unexpected behaviours in any platform.
+    Currently, the implementation will add to them:
+
+    - ``creationflags=0x08000000``: no extra unwanted window opens on Windows
+      when the child process is created. Only added on Windows.
+    """
+    if OS_NAME == "nt":
+        popen_params["creationflags"] = 0x08000000
+    return popen_params
 
 
-def subprocess_call(cmd, logger="bar", errorprint=True):
-    """ Executes the given subprocess command.
-    
+def subprocess_call(cmd, logger="bar"):
+    """Executes the given subprocess command.
+
     Set logger to None or a custom Proglog logger to avoid printings.
     """
     logger = proglog.default_bar_logger(logger)
-    logger(message='Moviepy - Running:\n>>> "+ " ".join(cmd)')
+    logger(message="MoviePy - Running:\n>>> " + " ".join(cmd))
 
-    popen_params = {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
-
-    if os.name == "nt":
-        popen_params["creationflags"] = 0x08000000
+    popen_params = cross_platform_popen_params(
+        {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
+    )
 
     proc = sp.Popen(cmd, **popen_params)
 
@@ -44,42 +40,41 @@ def subprocess_call(cmd, logger="bar", errorprint=True):
     proc.stderr.close()
 
     if proc.returncode:
-        if errorprint:
-            logger(message="Moviepy - Command returned an error")
+        logger(message="MoviePy - Command returned an error")
         raise IOError(err.decode("utf8"))
     else:
-        logger(message="Moviepy - Command successful")
+        logger(message="MoviePy - Command successful")
 
     del proc
 
 
-def cvsecs(time):
-    """ Will convert any time into seconds. 
-    
-    If the type of `time` is not valid, 
-    it's returned as is. 
+def convert_to_seconds(time):
+    """Will convert any time into seconds.
 
-    Here are the accepted formats::
+    If the type of `time` is not valid,
+    it's returned as is.
 
-    >>> cvsecs(15.4)   # seconds 
-    15.4 
-    >>> cvsecs((1, 21.5))   # (min,sec) 
-    81.5 
-    >>> cvsecs((1, 1, 2))   # (hr, min, sec)  
-    3662  
-    >>> cvsecs('01:01:33.045') 
+    Here are the accepted formats:
+
+    >>> convert_to_seconds(15.4)   # seconds
+    15.4
+    >>> convert_to_seconds((1, 21.5))   # (min,sec)
+    81.5
+    >>> convert_to_seconds((1, 1, 2))   # (hr, min, sec)
+    3662
+    >>> convert_to_seconds('01:01:33.045')
     3693.045
-    >>> cvsecs('01:01:33,5')    # coma works too
+    >>> convert_to_seconds('01:01:33,5')    # coma works too
     3693.5
-    >>> cvsecs('1:33,5')    # only minutes and secs
+    >>> convert_to_seconds('1:33,5')    # only minutes and secs
     99.5
-    >>> cvsecs('33.5')      # only secs
+    >>> convert_to_seconds('33.5')      # only secs
     33.5
     """
     factors = (1, 60, 3600)
 
     if isinstance(time, str):
-        time = [float(f.replace(",", ".")) for f in time.split(":")]
+        time = [float(part.replace(",", ".")) for part in time.split(":")]
 
     if not isinstance(time, (tuple, list)):
         return time
@@ -87,23 +82,22 @@ def cvsecs(time):
     return sum(mult * part for mult, part in zip(factors, reversed(time)))
 
 
-def deprecated_version_of(f, oldname, newname=None):
-    """ Indicates that a function is deprecated and has a new name.
+def deprecated_version_of(func, old_name):
+    """Indicates that a function is deprecated and has a new name.
 
-    `f` is the new function, `oldname` the name of the deprecated
-    function, `newname` the name of `f`, which can be automatically
-    found.
+    `func` is the new function and `old_name` is the name of the deprecated
+    function.
 
     Returns
-    ========
+    -------
 
-    f_deprecated
-      A function that does the same thing as f, but with a docstring
+    deprecated_func
+      A function that does the same thing as `func`, but with a docstring
       and a printed message on call which say that the function is
-      deprecated and that you should use f instead.
+      deprecated and that you should use `func` instead.
 
     Examples
-    =========
+    --------
 
     >>> # The badly named method 'to_file' is replaced by 'write_file'
     >>> class Clip:
@@ -112,32 +106,32 @@ def deprecated_version_of(f, oldname, newname=None):
     >>>
     >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
-
-    if newname is None:
-        newname = f.__name__
+    # Detect new name of func
+    new_name = func.__name__
 
     warning = (
         "The function ``%s`` is deprecated and is kept temporarily "
         "for backwards compatibility.\nPlease use the new name, "
         "``%s``, instead."
-    ) % (oldname, newname)
+    ) % (old_name, new_name)
 
-    def fdepr(*a, **kw):
+    def deprecated_func(*args, **kwargs):
         warnings.warn("MoviePy: " + warning, PendingDeprecationWarning)
-        return f(*a, **kw)
+        return func(*args, **kwargs)
 
-    fdepr.__doc__ = warning
+    deprecated_func.__doc__ = warning
 
-    return fdepr
+    return deprecated_func
 
 
-# non-exhaustive dictionnary to store default informations.
-# any addition is most welcome.
+# Non-exhaustive dictionary to store default information.
+# Any addition is most welcome.
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
 extensions_dict = {
     "mp4": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
+    "mkv": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
     "ogv": {"type": "video", "codec": ["libtheora"]},
     "webm": {"type": "video", "codec": ["libvpx"]},
     "avi": {"type": "video"},
@@ -153,6 +147,14 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
 
 
 def find_extension(codec):
+    """Returns the correspondent file extension for a codec.
+
+    Parameters
+    ----------
+
+    codec : str
+      Video or audio codec name.
+    """
     if codec in extensions_dict:
         # codec is already the extension
         return codec

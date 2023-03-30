@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
 """Image sequencing clip tests meant to be run with pytest."""
+
 import os
-import sys
 
 import pytest
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 
-from .test_helper import TMP_DIR
 
-
-def test_1():
+def test_1(util):
     images = []
     durations = []
 
@@ -22,7 +19,9 @@ def test_1():
 
     with ImageSequenceClip(images, durations=durations) as clip:
         assert clip.duration == sum(durations)
-        clip.write_videofile(os.path.join(TMP_DIR, "ImageSequenceClip1.mp4"), fps=30)
+        clip.write_videofile(
+            os.path.join(util.TMP_DIR, "ImageSequenceClip1.mp4"), fps=30, logger=None
+        )
 
 
 def test_2():

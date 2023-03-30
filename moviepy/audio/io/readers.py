@@ -1,10 +1,12 @@
-import os
+"""MoviePy audio reading with ffmpeg."""
+
 import subprocess as sp
 import warnings
 
 import numpy as np
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
+from moviepy.tools import cross_platform_popen_params
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
@@ -15,7 +17,7 @@ class FFMPEG_AudioReader:
     raw data.
 
     Parameters
-    ------------
+    ----------
 
     filename
       Name of any video or audio file, like ``video.mp4`` or
@@ -23,7 +25,7 @@ class FFMPEG_AudioReader:
 
     buffersize
       The size of the buffer to use. Should be bigger than the buffer
-      used by ``to_audiofile``
+      used by ``write_audiofile``
 
     print_infos
       Print the ffmpeg infos on the file being read (for debugging)
@@ -39,41 +41,46 @@ class FFMPEG_AudioReader:
     """
 
     def __init__(
-        self, filename, buffersize, print_infos=False, fps=44100, nbytes=2, nchannels=2
+        self,
+        filename,
+        buffersize,
+        decode_file=False,
+        print_infos=False,
+        fps=44100,
+        nbytes=2,
+        nchannels=2,
     ):
-
+        # TODO bring FFMPEG_AudioReader more in line with FFMPEG_VideoReader
+        # E.g. here self.pos is still 1-indexed.
+        # (or have them inherit from a shared parent class)
         self.filename = filename
         self.nbytes = nbytes
         self.fps = fps
-        self.f = "s%dle" % (8 * nbytes)
-        self.acodec = "pcm_s%dle" % (8 * nbytes)
+        self.format = "s%dle" % (8 * nbytes)
+        self.codec = "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
-        infos = ffmpeg_parse_infos(filename)
+        infos = ffmpeg_parse_infos(filename, decode_file=decode_file)
         self.duration = infos["duration"]
-        if "video_duration" in infos:
-            self.duration = infos["video_duration"]
-        else:
-            self.duration = infos["duration"]
+        self.bitrate = infos["audio_bitrate"]
         self.infos = infos
         self.proc = None
 
-        self.nframes = int(self.fps * self.duration)
-        self.buffersize = min(self.nframes + 1, buffersize)
+        self.n_frames = int(self.fps * self.duration)
+        self.buffersize = min(self.n_frames + 1, buffersize)
         self.buffer = None
         self.buffer_startframe = 1
         self.initialize()
         self.buffer_around(1)
 
-    def initialize(self, starttime=0):
-        """ Opens the file, creates the pipe. """
+    def initialize(self, start_time=0):
+        """Opens the file, creates the pipe."""
+        self.close()  # if any
 
-        self.close_proc()  # if any
-
-        if starttime != 0:
-            offset = min(1, starttime)
+        if start_time != 0:
+            offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.05f" % (starttime - offset),
+                "%.05f" % (start_time - offset),
                 "-i",
                 self.filename,
                 "-vn",
@@ -84,15 +91,15 @@ class FFMPEG_AudioReader:
             i_arg = ["-i", self.filename, "-vn"]
 
         cmd = (
-            [get_setting("FFMPEG_BINARY")]
+            [FFMPEG_BINARY]
             + i_arg
             + [
                 "-loglevel",
                 "error",
                 "-f",
-                self.f,
+                self.format,
                 "-acodec",
-                self.acodec,
+                self.codec,
                 "-ar",
                 "%d" % self.fps,
                 "-ac",
@@ -101,38 +108,43 @@ class FFMPEG_AudioReader:
             ]
         )
 
-        popen_params = {
-            "bufsize": self.buffersize,
-            "stdout": sp.PIPE,
-            "stderr": sp.PIPE,
-            "stdin": sp.DEVNULL,
-        }
-
-        if os.name == "nt":
-            popen_params["creationflags"] = 0x08000000
+        popen_params = cross_platform_popen_params(
+            {
+                "bufsize": self.buffersize,
+                "stdout": sp.PIPE,
+                "stderr": sp.PIPE,
+                "stdin": sp.DEVNULL,
+            }
+        )
 
         self.proc = sp.Popen(cmd, **popen_params)
 
-        self.pos = np.round(self.fps * starttime)
+        self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
-        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        """TODO: add documentation"""
+        _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
+        """TODO: add documentation"""
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
-        L = self.nchannels * chunksize * self.nbytes
-        s = self.proc.stdout.read(L)
-        dt = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
+        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        data_type = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
         if hasattr(np, "frombuffer"):
-            result = np.frombuffer(s, dtype=dt)
+            result = np.frombuffer(s, dtype=data_type)
         else:
-            result = np.fromstring(s, dtype=dt)
+            result = np.fromstring(s, dtype=data_type)
         result = (1.0 * result / 2 ** (8 * self.nbytes - 1)).reshape(
             (int(len(result) / self.nchannels), self.nchannels)
         )
+
+        # Pad the read chunk with zeros when there isn't enough audio
+        # left to read, so the buffer is always at full length.
+        pad = np.zeros((chunksize - len(result), self.nchannels), dtype=result.dtype)
+        result = np.concatenate([result, pad])
         # self.proc.stdout.flush()
         self.pos = self.pos + chunksize
         return result
@@ -154,16 +166,8 @@ class FFMPEG_AudioReader:
         # last case standing: pos = current pos
         self.pos = pos
 
-    def close_proc(self):
-        if hasattr(self, "proc") and self.proc is not None:
-            self.proc.terminate()
-            for std in [self.proc.stdout, self.proc.stderr]:
-                std.close()
-            self.proc = None
-
     def get_frame(self, tt):
-
-        buffersize = self.buffersize
+        """TODO: add documentation"""
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases
@@ -177,7 +181,7 @@ class FFMPEG_AudioReader:
                 raise IOError(
                     "Error in file %s, " % (self.filename)
                     + "Accessing time t=%.02f-%.02f seconds, " % (tt[0], tt[-1])
-                    + "with clip duration=%d seconds, " % self.duration
+                    + "with clip duration=%f seconds, " % self.duration
                 )
 
             # The np.round in the next line is super-important.
@@ -193,8 +197,6 @@ class FFMPEG_AudioReader:
             try:
                 result = np.zeros((len(tt), self.nchannels))
                 indices = frames - self.buffer_startframe
-                if len(self.buffer) < self.buffersize // 2:
-                    indices = indices - (self.buffersize // 2 - len(self.buffer) + 1)
                 result[in_time] = self.buffer[indices]
                 return result
 
@@ -214,9 +216,8 @@ class FFMPEG_AudioReader:
                 return result
 
         else:
-
             ind = int(self.fps * tt)
-            if ind < 0 or ind > self.nframes:  # out of time: return 0
+            if ind < 0 or ind > self.n_frames:  # out of time: return 0
                 return np.zeros(self.nchannels)
 
             if not (0 <= (ind - self.buffer_startframe) < len(self.buffer)):
@@ -226,20 +227,19 @@ class FFMPEG_AudioReader:
             # read the frame in the buffer
             return self.buffer[ind - self.buffer_startframe]
 
-    def buffer_around(self, framenumber):
+    def buffer_around(self, frame_number):
         """
-        Fills the buffer with frames, centered on ``framenumber``
+        Fills the buffer with frames, centered on ``frame_number``
         if possible
         """
-
         # start-frame for the buffer
-        new_bufferstart = max(0, framenumber - self.buffersize // 2)
+        new_bufferstart = max(0, frame_number - self.buffersize // 2)
 
         if self.buffer is not None:
             current_f_end = self.buffer_startframe + self.buffersize
             if new_bufferstart < current_f_end < new_bufferstart + self.buffersize:
-                # We already have one bit of what must be read
-                conserved = current_f_end - new_bufferstart + 1
+                # We already have part of what must be read
+                conserved = current_f_end - new_bufferstart
                 chunksize = self.buffersize - conserved
                 array = self.read_chunk(chunksize)
                 self.buffer = np.vstack([self.buffer[-conserved:], array])
@@ -252,6 +252,16 @@ class FFMPEG_AudioReader:
 
         self.buffer_startframe = new_bufferstart
 
+    def close(self):
+        """Closes the reader, terminating the subprocess if is still alive."""
+        if self.proc:
+            if self.proc.poll() is None:
+                self.proc.terminate()
+                self.proc.stdout.close()
+                self.proc.stderr.close()
+                self.proc.wait()
+            self.proc = None
+
     def __del__(self):
         # If the garbage collector comes, make sure the subprocess is terminated.
-        self.close_proc()
+        self.close()

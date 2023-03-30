@@ -1,99 +1,128 @@
-""" Misc. bindings to ffmpeg and ImageMagick."""
+"""Miscellaneous bindings to ffmpeg."""
 
 import os
-import subprocess as sp
-import sys
 
-from moviepy.config import get_setting
+from moviepy.config import FFMPEG_BINARY
+from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
 from moviepy.tools import subprocess_call
 
 
-def ffmpeg_movie_from_frames(filename, folder, fps, digits=6, bitrate="v"):
+@convert_path_to_string(("inputfile", "outputfile"))
+@convert_parameter_to_seconds(("start_time", "end_time"))
+def ffmpeg_extract_subclip(
+    inputfile, start_time, end_time, outputfile=None, logger="bar"
+):
+    """Makes a new video file playing video file between two times.
+
+    Parameters
+    ----------
+
+    inputfile : str
+      Path to the file from which the subclip will be extracted.
+
+    start_time : float
+      Moment of the input clip that marks the start of the produced subclip.
+
+    end_time : float
+      Moment of the input clip that marks the end of the produced subclip.
+
+    outputfile : str, optional
+      Path to the output file. Defaults to
+      ``<inputfile_name>SUB<start_time>_<end_time><ext>``.
     """
-    Writes a movie out of the frames (picture files) in a folder.
-    Almost deprecated.
-    """
-    s = "%" + "%02d" % digits + "d.png"
-    cmd = [
-        get_setting("FFMPEG_BINARY"),
-        "-y",
-        "-f",
-        "image2",
-        "-r",
-        "%d" % fps,
-        "-i",
-        os.path.join(folder, folder) + "/" + s,
-        "-b",
-        "%dk" % bitrate,
-        "-r",
-        "%d" % fps,
-        filename,
-    ]
-
-    subprocess_call(cmd)
-
-
-def ffmpeg_extract_subclip(filename, t1, t2, targetname=None):
-    """ Makes a new video file playing video file ``filename`` between
-        the times ``t1`` and ``t2``. """
-    name, ext = os.path.splitext(filename)
-    if not targetname:
-        T1, T2 = [int(1000 * t) for t in [t1, t2]]
-        targetname = "%sSUB%d_%d.%s" % (name, T1, T2, ext)
+    if not outputfile:
+        name, ext = os.path.splitext(inputfile)
+        t1, t2 = [int(1000 * t) for t in [start_time, end_time]]
+        outputfile = "%sSUB%d_%d%s" % (name, t1, t2, ext)
 
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-ss",
-        "%0.2f" % t1,
+        "%0.2f" % start_time,
         "-i",
-        filename,
+        inputfile,
         "-t",
-        "%0.2f" % (t2 - t1),
+        "%0.2f" % (end_time - start_time),
         "-map",
         "0",
         "-vcodec",
         "copy",
         "-acodec",
         "copy",
-        targetname,
+        "-copyts",
+        outputfile,
     ]
+    subprocess_call(cmd, logger=logger)
 
-    subprocess_call(cmd)
 
-
+@convert_path_to_string(("videofile", "audiofile", "outputfile"))
 def ffmpeg_merge_video_audio(
-    video,
-    audio,
-    output,
-    vcodec="copy",
-    acodec="copy",
-    ffmpeg_output=False,
+    videofile,
+    audiofile,
+    outputfile,
+    video_codec="copy",
+    audio_codec="copy",
     logger="bar",
 ):
-    """ merges video file ``video`` and audio file ``audio`` into one
-        movie file ``output``. """
+    """Merges video file and audio file into one movie file.
+
+    Parameters
+    ----------
+
+    videofile : str
+      Path to the video file used in the merge.
+
+    audiofile : str
+      Path to the audio file used in the merge.
+
+    outputfile : str
+      Path to the output file.
+
+    video_codec : str, optional
+      Video codec used by FFmpeg in the merge.
+
+    audio_codec : str, optional
+      Audio codec used by FFmpeg in the merge.
+    """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
-        audio,
+        audiofile,
         "-i",
-        video,
+        videofile,
         "-vcodec",
-        vcodec,
+        video_codec,
         "-acodec",
-        acodec,
-        output,
+        audio_codec,
+        outputfile,
     ]
 
     subprocess_call(cmd, logger=logger)
 
 
-def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
-    """ extract the sound from a video file and save it in ``output`` """
+@convert_path_to_string(("inputfile", "outputfile"))
+def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger="bar"):
+    """Extract the sound from a video file and save it in ``outputfile``.
+
+    Parameters
+    ----------
+
+    inputfile : str
+      The path to the file from which the audio will be extracted.
+
+    outputfile : str
+      The path to the file to which the audio will be stored.
+
+    bitrate : int, optional
+      Bitrate for the new audio file.
+
+    fps : int, optional
+      Frame rate for the new audio file.
+    """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-y",
         "-i",
         inputfile,
@@ -101,21 +130,71 @@ def ffmpeg_extract_audio(inputfile, output, bitrate=3000, fps=44100):
         "%dk" % bitrate,
         "-ar",
         "%d" % fps,
-        output,
+        outputfile,
     ]
-    subprocess_call(cmd)
+    subprocess_call(cmd, logger=logger)
 
 
-def ffmpeg_resize(video, output, size):
-    """ resizes ``video`` to new size ``size`` and write the result
-        in file ``output``. """
+@convert_path_to_string(("inputfile", "outputfile"))
+def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
+    """Resizes a file to new size and write the result in another.
+
+    Parameters
+    ----------
+
+    inputfile : str
+      Path to the file to be resized.
+
+    outputfile : str
+      Path to the output file.
+
+    size : list or tuple
+      New size in format ``[width, height]`` for the output file.
+    """
     cmd = [
-        get_setting("FFMPEG_BINARY"),
+        FFMPEG_BINARY,
         "-i",
-        video,
+        inputfile,
         "-vf",
         "scale=%d:%d" % (size[0], size[1]),
-        output,
+        outputfile,
     ]
 
-    subprocess_call(cmd)
+    subprocess_call(cmd, logger=logger)
+
+
+@convert_path_to_string(("inputfile", "outputfile", "output_dir"))
+def ffmpeg_stabilize_video(
+    inputfile, outputfile=None, output_dir="", overwrite_file=True, logger="bar"
+):
+    """
+    Stabilizes ``filename`` and write the result to ``output``.
+
+    Parameters
+    ----------
+
+    inputfile : str
+      The name of the shaky video.
+
+    outputfile : str, optional
+      The name of new stabilized video. Defaults to appending '_stabilized' to
+      the input file name.
+
+    output_dir : str, optional
+      The directory to place the output video in. Defaults to the current
+      working directory.
+
+    overwrite_file : bool, optional
+      If ``outputfile`` already exists in ``output_dir``, then overwrite
+      ``outputfile`` Defaults to True.
+    """
+    if not outputfile:
+        without_dir = os.path.basename(inputfile)
+        name, ext = os.path.splitext(without_dir)
+        outputfile = f"{name}_stabilized{ext}"
+
+    outputfile = os.path.join(output_dir, outputfile)
+    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
+    if overwrite_file:
+        cmd.append("-y")
+    subprocess_call(cmd, logger=logger)
