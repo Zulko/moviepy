@@ -96,7 +96,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          python -m pip install --upgrade wheel setuptools coveralls
+          python -m pip install --upgrade wheel coveralls
           python -m pip install ".[test]"
 
       - name: Check third party dependencies
