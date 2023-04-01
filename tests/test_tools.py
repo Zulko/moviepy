@@ -100,7 +100,7 @@ def test_deprecated_version_of(old_name):
     ("url", "expected_result"),
     (
         (
-            "http://localhost:8001/media/chaplin.mp4",
+            "http://localhost:8000/media/chaplin.mp4",
             os.path.join("media", "chaplin.mp4"),
         ),
         ("foobarbazimpossiblecode", OSError),
