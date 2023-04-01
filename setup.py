@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """MoviePy setup script."""
 
-import os
 import sys
-from codecs import open
+from pathlib import Path
 
 
 try:
@@ -66,9 +65,7 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = None
-with open(os.path.join("moviepy", "version.py"), "r", "utf-8") as f:
-    __version__ = f.read().split(" ")[2].strip("\n").strip('"')
+__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
 
 
 # Define the requirements for specific execution needs.
@@ -122,8 +119,7 @@ extra_reqs = {
 }
 
 # Load the README.
-with open("README.rst", "r", "utf-8") as file:
-    readme = file.read()
+readme = Path("README.rst").read_text()
 
 setup(
     name="moviepy",
@@ -143,10 +139,11 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Multimedia",
         "Topic :: Multimedia :: Sound/Audio",
         "Topic :: Multimedia :: Sound/Audio :: Analysis",
