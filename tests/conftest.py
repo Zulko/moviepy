@@ -59,7 +59,7 @@ def get_mono_wave(freq=440):
 
 
 @contextlib.contextmanager
-def get_static_files_server(port=8001):
+def get_static_files_server(port=8000):
     my_server = socketserver.TCPServer(("", port), http.server.SimpleHTTPRequestHandler)
     thread = threading.Thread(target=my_server.serve_forever, daemon=True)
     thread.start()
