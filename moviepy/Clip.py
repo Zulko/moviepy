@@ -621,7 +621,7 @@ class Clip:
                 if key.step < 0:
                     # time mirror
                     clip = clip.time_transform(
-                        lambda t: clip.duration - t,
+                        lambda t: clip.duration - t - 1,
                         keep_duration=True,
                         apply_to=apply_to,
                     )
