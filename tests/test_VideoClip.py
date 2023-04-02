@@ -448,6 +448,29 @@ def test_add():
     assert np.array_equal(new_clip[1.1], clip[2.1])
 
 
+def test_slice_tuples():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1, 2:3.2]
+    assert new_clip.duration == 2.2
+    assert np.array_equal(new_clip[1.1], clip[2.1])
+
+
+def test_slice_mirror():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[::-1]
+    assert new_clip.duration == clip.duration
+    assert np.array_equal(new_clip[0], clip[clip.duration])
+
+
+def test_slice_speed():
+    clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
+    clip1 = clip[::0.5]     # 1/2x speed
+    target1 = BitmapClip(
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
+    )
+    assert clip1 == target1
+
+
 def test_mul():
     clip = VideoFileClip("media/fire2.mp4")
     new_clip = clip[0:1] * 2.5

@@ -2,7 +2,9 @@
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
 import copy as _copy
+from functools import reduce
 from numbers import Real
+from operator import add
 
 import numpy as np
 import proglog
@@ -628,7 +630,7 @@ class Clip:
             return clip
         elif isinstance(key, tuple):
             # get a concatenation of subclips
-            return sum(self[k] for k in key)
+            return reduce(add, (self[k] for k in key))
         else:
             return self.get_frame(key)
 
