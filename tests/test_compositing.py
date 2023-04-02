@@ -93,22 +93,44 @@ def test_concatenate_floating_point(util):
     concat.write_videofile(os.path.join(util.TMP_DIR, "concat.mp4"), preset="ultrafast")
 
 
+# def test_blit_with_opacity():
+#     # bitmap.mp4 has one second R, one second G, one second B
+#     clip1 = VideoFileClip("media/bitmap.mp4")
+#     # overlay same clip, shifted by 1 second, at half opacity
+#     clip2 = (
+#         VideoFileClip("media/bitmap.mp4")
+#         .subclip(1, 2)
+#         .with_start(0)
+#         .with_end(2)
+#         .with_opacity(0.5)
+#     )
+#     composite = CompositeVideoClip([clip1, clip2])
+#     bt = ClipPixelTest(composite)
+
+#     bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
+#     bt.expect_color_at(1.5, (0x00, 0x7F, 0x7F))
+#     bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
+
+
 def test_blit_with_opacity():
-    # bitmap.mp4 has one second R, one second G, one second B
-    clip1 = VideoFileClip("media/bitmap.mp4")
-    # overlay same clip, shifted by 1 second, at half opacity
-    clip2 = (
-        VideoFileClip("media/bitmap.mp4")
-        .subclip(1, 2)
-        .with_start(0)
-        .with_end(2)
-        .with_opacity(0.5)
+    # has one second R, one second G, one second B
+    size = (2, 2)
+    clip1 = (
+        ColorClip(size, color=(255, 0, 0), duration=1)
+        + ColorClip(size, color=(0, 255, 0), duration=1)
+        + ColorClip(size, color=(0, 0, 255), duration=1)
     )
+
+    # overlay green at half opacity during first 2 sec
+    clip2 = ColorClip(size, color=(0, 255, 0), duration=2).with_opacity(0.5)
     composite = CompositeVideoClip([clip1, clip2])
     bt = ClipPixelTest(composite)
 
+    # red + 50% green
     bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
-    bt.expect_color_at(1.5, (0x00, 0x7F, 0x7F))
+    # green + 50% green
+    bt.expect_color_at(1.5, (0x00, 0xFF, 0x00))
+    # blue is after 2s, so keep untouched
     bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
 
 
