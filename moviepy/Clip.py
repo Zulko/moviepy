@@ -646,7 +646,5 @@ class Clip:
         if not isinstance(n, Real):
             return NotImplemented
 
-        clip = self.time_transform(
-            lambda t: t % self.duration, apply_to=["mask", "audio"], keep_duration=True
-        )
-        return clip.with_duration(clip.duration * n)
+        from moviepy.video.fx.loop import loop
+        return loop(self, n)
