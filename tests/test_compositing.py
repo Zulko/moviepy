@@ -10,7 +10,6 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, cli
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import slide_in, slide_out
 from moviepy.video.fx.resize import resize
-from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
 

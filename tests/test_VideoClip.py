@@ -464,7 +464,7 @@ def test_slice_mirror():
 
 def test_slice_speed():
     clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
-    clip1 = clip[::0.5]     # 1/2x speed
+    clip1 = clip[::0.5]  # 1/2x speed
     target1 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )

@@ -647,4 +647,5 @@ class Clip:
             return NotImplemented
 
         from moviepy.video.fx.loop import loop
+
         return loop(self, n)

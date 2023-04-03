@@ -6,9 +6,9 @@
 
 import copy as _copy
 import os
-from numbers import Real
 import subprocess as sp
 import tempfile
+from numbers import Real
 
 import numpy as np
 import proglog
@@ -920,20 +920,23 @@ class VideoClip(Clip):
 
     def __or__(self, other):
         """
-        self | other produces a video with self and other placed side by side
-        horizontally 
+        Implement the or (self | other) to produce a video with self and other
+        placed side by side horizontally.
         """
         if isinstance(other, VideoClip):
             from moviepy.video.compositing.CompositeVideoClip import clips_array
+
             return clips_array([[self, other]])
         return super(VideoClip, self).__or__(other)
 
     def __truediv__(self, other):
         """
-        self / other produces a video with self placed on top of other
+        Implement division (self / other) to produce a video with self
+        placed on top of other.
         """
         if isinstance(other, VideoClip):
             from moviepy.video.compositing.CompositeVideoClip import clips_array
+
             return clips_array([[self], [other]])
         return super(VideoClip, self).__or__(other)
 
@@ -941,6 +944,7 @@ class VideoClip(Clip):
         if not isinstance(n, Real):
             return NotImplemented
         from moviepy.video.fx.rotate import rotate
+
         return rotate(self, n)
 
     def __and__(self, mask):
