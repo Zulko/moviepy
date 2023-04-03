@@ -6,6 +6,7 @@
 
 import copy as _copy
 import os
+from numbers import Real
 import subprocess as sp
 import tempfile
 
@@ -935,6 +936,12 @@ class VideoClip(Clip):
             from moviepy.video.compositing.CompositeVideoClip import clips_array
             return clips_array([[self], [other]])
         return super(VideoClip, self).__or__(other)
+
+    def __matmul__(self, n):
+        if not isinstance(n, Real):
+            return NotImplemented
+        from moviepy.video.fx.rotate import rotate
+        return rotate(self, n)
 
     def __and__(self, mask):
         return self.with_mask(mask)

@@ -500,5 +500,13 @@ def test_truediv(util):
     result = clip1 / clip2
     assert result == target
 
+
+def test_matmul(util):
+    clip1 = BitmapClip([["RG"]], fps=1)
+    target = BitmapClip([["R", "G"]], fps=1)
+    result = clip1 @ 270
+    assert result == target
+
+
 if __name__ == "__main__":
     pytest.main()
