@@ -917,6 +917,25 @@ class VideoClip(Clip):
             return concatenate_videoclips([self, other], method=method)
         return super(VideoClip, self).__add__(other)
 
+    def __or__(self, other):
+        """
+        self | other produces a video with self and other placed side by side
+        horizontally 
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+            return clips_array([[self, other]])
+        return super(VideoClip, self).__or__(other)
+
+    def __truediv__(self, other):
+        """
+        self / other produces a video with self placed on top of other
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+            return clips_array([[self], [other]])
+        return super(VideoClip, self).__or__(other)
+
     def __and__(self, mask):
         return self.with_mask(mask)
 

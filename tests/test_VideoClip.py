@@ -485,5 +485,20 @@ def test_and():
     assert clip_with_mask.mask is maskclip
 
 
+def test_or(util):
+    clip1 = BitmapClip([["R"]], fps=1)
+    clip2 = BitmapClip([["G"]], fps=1)
+    target = BitmapClip([["RG"]], fps=1)
+    result = clip1 | clip2
+    assert result == target
+
+
+def test_truediv(util):
+    clip1 = BitmapClip([["R"]], fps=1)
+    clip2 = BitmapClip([["G"]], fps=1)
+    target = BitmapClip([["R", "G"]], fps=1)
+    result = clip1 / clip2
+    assert result == target
+
 if __name__ == "__main__":
     pytest.main()
