@@ -15,24 +15,12 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version: [3.7]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v3
     - uses: s-weigand/setup-conda@v1
       with:
         activate-conda: true
-    # TODO: fix adding the different versions  
-    # Pick the installation of Python Framework build from conda, because they do not support versioning
-    # https://anaconda.org/anaconda/python.app/files
-    #- name: Install conda python version 3.6
-    #  if: matrix.python-version == '3.6'
-    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py36_10.tar.bz2
-    #- name: Install conda python version 3.7
-    #  if: matrix.python-version == '3.7'
-    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py37_10.tar.bz2
-    #- name: Install conda python version 3.8
-    #  if: matrix.python-version == '3.8'
-    #  run: conda install http://repo.continuum.io/pkgs/main/osx-64/python.app-2-py38_10.tar.bz2
     - name: Install pythonw
       run: conda install python.app
     - name: Python Version Info
@@ -65,7 +53,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -130,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
