@@ -11,7 +11,7 @@ import tempfile
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+from imageio.v3 import imread, imsave
 from PIL import Image
 
 from moviepy.Clip import Clip
