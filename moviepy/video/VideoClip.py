@@ -11,7 +11,7 @@ import tempfile
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+from imageio.v3 import imread, imwrite
 from PIL import Image
 
 from moviepy.Clip import Clip
@@ -190,7 +190,7 @@ class VideoClip(Clip):
         else:
             im = im.astype("uint8")
 
-        imsave(filename, im)
+        imwrite(filename, im)
 
     @requires_duration
     @use_clip_fps_by_default

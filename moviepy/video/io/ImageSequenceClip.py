@@ -5,7 +5,7 @@ of image files.
 import os
 
 import numpy as np
-from imageio import imread
+from imageio.v3 import imread
 
 from moviepy.video.VideoClip import VideoClip
 
