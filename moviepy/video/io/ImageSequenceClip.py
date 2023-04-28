@@ -5,7 +5,7 @@ of image files.
 import os
 
 import numpy as np
-from imageio.v3 import imread
+import imageio.v3 as iio
 
 from moviepy.video.VideoClip import VideoClip
 
@@ -62,7 +62,7 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [imread(file, index=0) for file in sequence]
+                    sequence = [iio.imread(file, index=0) for file in sequence]
                     fromfiles = False
                 else:
                     fromfiles = True
@@ -78,14 +78,14 @@ class ImageSequenceClip(VideoClip):
 
         # check that all the images are of the same size
         if isinstance(sequence[0], str):
-            size = imread(sequence[0], index=0).shape
+            size = iio.imread(sequence[0], index=0).shape
         else:
             size = sequence[0].shape
 
         for image in sequence:
             image1 = image
             if isinstance(image, str):
-                image1 = imread(image, index=0)
+                image1 = iio.imread(image, index=0)
             if size != image1.shape:
                 raise Exception(
                     "MoviePy: ImageSequenceClip requires all images to be the same size"
@@ -117,12 +117,12 @@ class ImageSequenceClip(VideoClip):
                 index = find_image_index(t)
 
                 if index != self.last_index:
-                    self.last_image = imread(self.sequence[index], index=0)[:, :, :3]
+                    self.last_image = iio.imread(self.sequence[index], index=0)[:, :, :3]
                     self.last_index = index
 
                 return self.last_image
 
-            if with_mask and (imread(self.sequence[0], index=0).shape[2] == 4):
+            if with_mask and (iio.imread(self.sequence[0], index=0).shape[2] == 4):
                 self.mask = VideoClip(is_mask=True)
                 self.mask.last_index = None
                 self.mask.last_image = None
@@ -130,7 +130,7 @@ class ImageSequenceClip(VideoClip):
                 def mask_make_frame(t):
                     index = find_image_index(t)
                     if index != self.mask.last_index:
-                        frame = imread(self.sequence[index], index=0)[:, :, 3]
+                        frame = iio.imread(self.sequence[index], index=0)[:, :, 3]
                         self.mask.last_image = frame.astype(float) / 255
                         self.mask.last_index = index
 
