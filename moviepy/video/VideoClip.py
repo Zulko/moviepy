@@ -1040,7 +1040,7 @@ class ImageClip(VideoClip):
 
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
-            img = imread(img)
+            img = imread(img, index=0)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
