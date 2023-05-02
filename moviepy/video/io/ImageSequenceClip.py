@@ -43,10 +43,10 @@ class ImageSequenceClip(VideoClip):
     def __init__(
         self,
         sequence,
-        fps=None,
+        fps: int | None = None,
         durations=None,
         with_mask=True,
-        is_mask=False,
+        is_mask: bool = False,
         load_images=False,
     ):
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE

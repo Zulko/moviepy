@@ -226,7 +226,7 @@ def ffmpeg_write_video(
     audiofile=None,
     threads=None,
     ffmpeg_params=None,
-    logger="bar",
+    logger: Logger = "bar",
     pixel_format=None,
 ):
     """Write the clip to a videofile. See VideoClip.write_videofile for details

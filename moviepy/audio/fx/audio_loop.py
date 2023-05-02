@@ -1,9 +1,19 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.audio.AudioClip import concatenate_audioclips
 from moviepy.decorators import audio_video_fx
 
+if TYPE_CHECKING:
+    from moviepy.audio.AudioClip import CompositeAudioClip
+    from moviepy.Clip import Clip
+
 
 @audio_video_fx
-def audio_loop(clip, n_loops=None, duration=None):
+def audio_loop(
+    clip: Clip, n_loops: int | None = None, duration: float | None = None
+) -> CompositeAudioClip:
     """Loops over an audio clip.
 
     Returns an audio clip that plays the given clip either

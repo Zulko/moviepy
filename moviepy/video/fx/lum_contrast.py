@@ -1,4 +1,14 @@
-def lum_contrast(clip, lum=0, contrast=0, contrast_threshold=127):
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
+
+def lum_contrast(
+    clip: VideoClip, lum: int = 0, contrast: int = 0, contrast_threshold: int = 127
+) -> VideoClip:
     """Luminosity-contrast correction of a clip."""
 
     def image_filter(im):

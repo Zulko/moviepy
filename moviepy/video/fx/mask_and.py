@@ -1,9 +1,16 @@
-import numpy as np
+from __future__ import annotations
 
+from typing import TYPE_CHECKING
+import numpy as np
 from moviepy.video.VideoClip import ImageClip
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
 
-def mask_and(clip, other_clip):
+
+def mask_and(
+    clip: VideoClip, other_clip: ImageClip | np.ndarray[..., ...]
+) -> VideoClip:
     """Returns the logical 'and' (minimum pixel color values) between two masks.
 
     The result has the duration of the clip to which has been applied, if it has any.

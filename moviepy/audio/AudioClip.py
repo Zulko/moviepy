@@ -4,16 +4,25 @@
 - Composition: CompositeAudioClip
 """
 
+from __future__ import annotations
+
 import numbers
 import os
+from typing import TYPE_CHECKING
 
 import numpy as np
 import proglog
+from typing_extensions import Literal
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
 from moviepy.Clip import Clip
 from moviepy.decorators import convert_path_to_string, requires_duration
 from moviepy.tools import extensions_dict
+
+if TYPE_CHECKING:
+    from typing import Any, Callable
+
+    from moviepy.types import Logger
 
 
 class AudioClip(Clip):
@@ -62,7 +71,12 @@ class AudioClip(Clip):
 
     """
 
-    def __init__(self, make_frame=None, duration=None, fps=None):
+    def __init__(
+        self,
+        make_frame: Callable[[...], ...] | None = None,
+        duration: float | None = None,
+        fps: int | None = None,
+    ) -> None:
         super().__init__()
 
         if fps is not None:
@@ -84,10 +98,10 @@ class AudioClip(Clip):
         self,
         chunksize=None,
         chunk_duration=None,
-        fps=None,
-        quantize=False,
-        nbytes=2,
-        logger=None,
+        fps: int | None = None,
+        quantize: bool = False,
+        nbytes: Literal[1, 2, 4] = 2,
+        logger: Logger = None,
     ):
         """Iterator that returns the whole sound array of the clip by chunks"""
         if fps is None:
@@ -112,7 +126,12 @@ class AudioClip(Clip):
 
     @requires_duration
     def to_soundarray(
-        self, tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000
+        self,
+        tt=None,
+        fps: int | None = None,
+        quantize: bool = False,
+        nbytes: Literal[1, 2, 4] = 2,
+        buffersize: int = 50000,
     ):
         """
         Transforms the sound into an array that can be played by pygame
@@ -163,7 +182,9 @@ class AudioClip(Clip):
 
         return snd_array
 
-    def max_volume(self, stereo=False, chunksize=50000, logger=None):
+    def max_volume(
+        self, stereo: bool = False, chunksize: int = 50000, logger: Logger = None
+    ):
         """Returns the maximum volume level of the clip."""
         # max volume separated by channels if ``stereo`` and not mono
         stereo = stereo and self.nchannels > 1
@@ -180,15 +201,15 @@ class AudioClip(Clip):
     @convert_path_to_string("filename")
     def write_audiofile(
         self,
-        filename,
-        fps=None,
+        filename: str | os.PathLike[Any],
+        fps: int | None = None,
         nbytes=2,
         buffersize=2000,
         codec=None,
         bitrate=None,
         ffmpeg_params=None,
         write_logfile=False,
-        logger="bar",
+        logger: Logger = "bar",
     ):
         """Writes an audio file from the AudioClip.
 
@@ -278,7 +299,7 @@ class AudioArrayClip(AudioClip):
 
     """
 
-    def __init__(self, array, fps):
+    def __init__(self, array, fps: int) -> None:
         Clip.__init__(self)
         self.array = array
         self.fps = fps
@@ -367,7 +388,7 @@ class CompositeAudioClip(AudioClip):
         return zero + sum(sounds)
 
 
-def concatenate_audioclips(clips):
+def concatenate_audioclips(clips: list[AudioClip]) -> CompositeAudioClip:
     """Concatenates one AudioClip after another, in the order that are passed
     to ``clips`` parameter.
 

@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from moviepy.decorators import (
@@ -5,6 +9,9 @@ from moviepy.decorators import (
     convert_parameter_to_seconds,
     requires_duration,
 )
+
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
 
 
 def _mono_factor_getter(clip_duration):
@@ -22,7 +29,7 @@ def _stereo_factor_getter(clip_duration, nchannels):
 @audio_video_fx
 @requires_duration
 @convert_parameter_to_seconds(["duration"])
-def audio_fadeout(clip, duration):
+def audio_fadeout(clip: Clip, duration: float) -> Clip:
     """Return a sound clip where the sound fades out progressively
     over ``duration`` seconds at the end of the clip.
 

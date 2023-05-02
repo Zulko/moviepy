@@ -1,7 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 import numpy as np
 
 
-def fadein(clip, duration, initial_color=None):
+def fadein(
+    clip: VideoClip, duration: float, initial_color: float | list[int] | None = None
+) -> VideoClip:
     """Makes the clip progressively appear from some color (black by default),
     over ``duration`` seconds at the beginning of the clip. Can be used for
     masks too, where the initial color must be a number between 0 and 1.

@@ -2,6 +2,7 @@
 
 import os
 import subprocess as sp
+from typing import TYPE_CHECKING
 
 import numpy as np
 import proglog
@@ -11,6 +12,9 @@ from moviepy.decorators import requires_duration, use_clip_fps_by_default
 from moviepy.tools import cross_platform_popen_params, subprocess_call
 from moviepy.video.fx.loop import loop as loop_fx
 
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
+    from moviepy.types import Logger
 
 try:
     import imageio
@@ -23,18 +27,18 @@ except ImportError:
 @requires_duration
 @use_clip_fps_by_default
 def write_gif_with_tempfiles(
-    clip,
-    filename,
-    fps=None,
+    clip: Clip,
+    filename: str,
+    fps: int | None = None,
     program="ImageMagick",
     opt="OptimizeTransparency",
     fuzz=1,
     loop=0,
-    dispose=True,
+    dispose: bool = True,
     colors=None,
-    pixel_format=None,
-    logger="bar",
-):
+    pixel_format: str | None = None,
+    logger: Logger = "bar",
+) -> None:
     """Write the VideoClip to a GIF file.
 
 
@@ -190,7 +194,7 @@ def write_gif_with_tempfiles(
 def write_gif(
     clip,
     filename,
-    fps=None,
+    fps: int | None = None,
     with_mask=True,
     program="ImageMagick",
     opt="OptimizeTransparency",
@@ -199,7 +203,7 @@ def write_gif(
     dispose=True,
     colors=None,
     pixel_format=None,
-    logger="bar",
+    logger: Logger = "bar",
 ):
     """Write the VideoClip to a GIF file, without temporary files.
 
@@ -420,7 +424,13 @@ def write_gif(
 
 
 def write_gif_with_image_io(
-    clip, filename, fps=None, opt=0, loop=0, colors=None, logger="bar"
+    clip,
+    filename,
+    fps: int | None = None,
+    opt=0,
+    loop=0,
+    colors=None,
+    logger: Logger = "bar",
 ):
     """Writes the gif with the Python library ImageIO (calls FreeImage)."""
     if colors is None:

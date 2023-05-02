@@ -1,4 +1,29 @@
-def multiply_speed(clip, factor=None, final_duration=None):
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, overload
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+    from moviepy.types import Time
+
+
+@overload
+def multiply_speed(
+    clip: VideoClip, factor: float = ..., final_duration: None = None
+) -> VideoClip:
+    ...
+
+
+@overload
+def multiply_speed(
+    clip: VideoClip, factor: None = None, final_duration: Time = ...
+) -> VideoClip:
+    ...
+
+
+def multiply_speed(
+    clip: VideoClip, factor: float | None = None, final_duration: Time | None = None
+) -> VideoClip:
     """Returns a clip playing the current clip but at a speed multiplied by ``factor``.
 
     Instead of factor one can indicate the desired ``final_duration`` of the clip, and

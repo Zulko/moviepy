@@ -1,12 +1,19 @@
 """Audio preview functions for MoviePy editor."""
 
+from __future__ import annotations
+
 import time
+
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pygame as pg
 
 from moviepy.decorators import requires_duration
 
+if TYPE_CHECKING:
+    from moviepy.audio.AudioClip import AudioClip
+    from moviepy.types import NBytes
 
 pg.init()
 pg.display.set_caption("MoviePy")
@@ -14,8 +21,13 @@ pg.display.set_caption("MoviePy")
 
 @requires_duration
 def preview(
-    clip, fps=22050, buffersize=4000, nbytes=2, audio_flag=None, video_flag=None
-):
+    clip: AudioClip,
+    fps: int = 22050,
+    buffersize: int = 4000,
+    nbytes: NBytes = 2,
+    audio_flag=None,
+    video_flag=None,
+) -> None:
     """
     Plays the sound clip with pygame.
 

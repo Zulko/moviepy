@@ -1,10 +1,19 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 import numpy as np
 
 from moviepy.decorators import requires_duration
 
 
 @requires_duration
-def fadeout(clip, duration, final_color=None):
+def fadeout(
+    clip: VideoClip, duration: float, final_color: float | None = None
+) -> VideoClip:
     """Makes the clip progressively fade to some color (black by default),
     over ``duration`` seconds at the end of the clip. Can be used for masks too,
     where the final color must be a number between 0 and 1.

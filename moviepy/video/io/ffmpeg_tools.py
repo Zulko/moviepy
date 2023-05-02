@@ -1,17 +1,27 @@
 """Miscellaneous bindings to ffmpeg."""
 
+from __future__ import annotations
+
 import os
+from typing import TYPE_CHECKING
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
 from moviepy.tools import subprocess_call
 
+if TYPE_CHECKING:
+    from moviepy.types import Logger
+
 
 @convert_path_to_string(("inputfile", "outputfile"))
 @convert_parameter_to_seconds(("start_time", "end_time"))
 def ffmpeg_extract_subclip(
-    inputfile, start_time, end_time, outputfile=None, logger="bar"
-):
+    inputfile: str,
+    start_time: float,
+    end_time: float,
+    outputfile: str | None = None,
+    logger: Logger = "bar",
+) -> None:
     """Makes a new video file playing video file between two times.
 
     Parameters
@@ -58,13 +68,13 @@ def ffmpeg_extract_subclip(
 
 @convert_path_to_string(("videofile", "audiofile", "outputfile"))
 def ffmpeg_merge_video_audio(
-    videofile,
-    audiofile,
-    outputfile,
-    video_codec="copy",
-    audio_codec="copy",
-    logger="bar",
-):
+    videofile: str,
+    audiofile: str,
+    outputfile: str,
+    video_codec: str = "copy",
+    audio_codec: str = "copy",
+    logger: Logger = "bar",
+) -> None:
     """Merges video file and audio file into one movie file.
 
     Parameters
@@ -103,7 +113,13 @@ def ffmpeg_merge_video_audio(
 
 
 @convert_path_to_string(("inputfile", "outputfile"))
-def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger="bar"):
+def ffmpeg_extract_audio(
+    inputfile: str,
+    outputfile: str,
+    bitrate: int = 3000,
+    fps: int = 44100,
+    logger: Logger = "bar",
+) -> None:
     """Extract the sound from a video file and save it in ``outputfile``.
 
     Parameters
@@ -136,7 +152,7 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
 
 
 @convert_path_to_string(("inputfile", "outputfile"))
-def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
+def ffmpeg_resize(inputfile, outputfile, size, logger: Logger = "bar"):
     """Resizes a file to new size and write the result in another.
 
     Parameters
@@ -165,8 +181,12 @@ def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
 
 @convert_path_to_string(("inputfile", "outputfile", "output_dir"))
 def ffmpeg_stabilize_video(
-    inputfile, outputfile=None, output_dir="", overwrite_file=True, logger="bar"
-):
+    inputfile: str,
+    outputfile: str | None = None,
+    output_dir: str = "",
+    overwrite_file: bool = True,
+    logger: Logger = "bar",
+) -> None:
     """
     Stabilizes ``filename`` and write the result to ``output``.
 

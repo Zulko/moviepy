@@ -1,9 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from moviepy.video.VideoClip import ImageClip
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
 
-def mask_or(clip, other_clip):
+
+def mask_or(clip: VideoClip, other_clip: ImageClip | np.ndarray[..., ...]) -> VideoClip:
     """Returns the logical 'or' (maximum pixel color values) between two masks.
 
     The result has the duration of the clip to which has been applied, if it has any.

@@ -1,9 +1,18 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.decorators import requires_duration
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 
 @requires_duration
-def freeze(clip, t=0, freeze_duration=None, total_duration=None, padding_end=0):
+def freeze(
+    clip: VideoClip, t=0, freeze_duration=None, total_duration=None, padding_end=0
+) -> VideoClip:
     """Momentarily freeze the clip at time t.
 
     Set `t='end'` to freeze the clip at the end (actually it will freeze on the

@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
 
-def supersample(clip, d, n_frames):
+
+def supersample(clip: VideoClip, d, n_frames: int) -> VideoClip:
     """Replaces each frame at time t by the mean of `n_frames` equally spaced frames
     taken in the interval [t-d, t+d]. This results in motion blur.
     """

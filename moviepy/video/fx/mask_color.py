@@ -1,7 +1,20 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 import numpy as np
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
-def mask_color(clip, color=None, threshold=0, stiffness=1):
+    from moviepy.video.VideoClip import VideoClip
+
+
+def mask_color(
+    clip: VideoClip,
+    color: Iterable[int] | None = None,
+    threshold: int = 0,
+    stiffness: int = 1,
+) -> VideoClip:
     """Returns a new clip with a mask for transparency where the original
     clip is of the given color.
 

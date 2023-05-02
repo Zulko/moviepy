@@ -196,7 +196,7 @@ def ipython_display(
     filetype=None,
     maxduration=60,
     t=None,
-    fps=None,
+    fps: int | None = None,
     rd_kwargs=None,
     center=True,
     **html_kwargs,

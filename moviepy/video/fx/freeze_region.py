@@ -1,8 +1,17 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.crop import crop
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
 
-def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
+
+def freeze_region(
+    clip: VideoClip, t=0, region=None, outside_region=None, mask=None
+) -> CompositeVideoClip:
     """Freezes one region of the clip while the rest remains animated.
 
     You can choose one of three methods by providing either `region`,
@@ -29,7 +38,7 @@ def freeze_region(clip, t=0, region=None, outside_region=None, mask=None):
 
     """
     if region is not None:
-        x1, y1, x2, y2 = region
+        x1, y1, *_ = region
         freeze = (
             clip.fx(crop, *region)
             .to_ImageClip(t=t)

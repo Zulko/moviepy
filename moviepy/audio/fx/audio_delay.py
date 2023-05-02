@@ -1,12 +1,21 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.decorators import audio_video_fx
 
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
+
 
 @audio_video_fx
-def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
+def audio_delay(
+    clip: Clip, offset: float = 0.2, n_repeats: int = 8, decay: float = 1
+) -> CompositeAudioClip:
     """Repeats audio certain number of times at constant intervals multiplying
     their volume levels using a linear space in the range 1 to ``decay`` argument
     value.

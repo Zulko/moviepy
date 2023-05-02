@@ -1,14 +1,22 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
+
 def crop(
-    clip,
-    x1=None,
-    y1=None,
-    x2=None,
-    y2=None,
-    width=None,
-    height=None,
-    x_center=None,
-    y_center=None,
-):
+    clip: VideoClip,
+    x1: int | None = None,
+    y1: int | None = None,
+    x2: int | None = None,
+    y2: int | None = None,
+    width: int | None = None,
+    height: int | None = None,
+    x_center: int | None = None,
+    y_center: int | None = None,
+) -> VideoClip:
     """
     Returns a new clip in which just a rectangular subregion of the
     original clip is conserved. x1,y1 indicates the top left corner and

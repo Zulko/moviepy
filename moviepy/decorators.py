@@ -1,22 +1,34 @@
 """Decorators used by moviepy."""
+
+from __future__ import annotations
+
 import inspect
 import os
+from collections.abc import Callable, Sequence
+from typing import TYPE_CHECKING
 
 import decorator
 
 from moviepy.tools import convert_to_seconds
 
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
+    from moviepy.video.VideoClip import VideoClip
+    from moviepy.types import ClipFunc, P, T, VideoClipFunc
+
 
 @decorator.decorator
-def outplace(func, clip, *args, **kwargs):
+def outplace(func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs) -> Clip:
     """Applies ``func(clip.copy(), *args, **kwargs)`` and returns ``clip.copy()``."""
-    new_clip = clip.copy()
-    func(new_clip, *args, **kwargs)
-    return new_clip
+    newClip = clip.copy()
+    func(newClip, *args, **kwargs)
+    return newClip
 
 
 @decorator.decorator
-def convert_masks_to_RGB(func, clip, *args, **kwargs):
+def convert_masks_to_RGB(
+    func: VideoClipFunc[P], clip: VideoClip, *args: P.args, **kwargs: P.kwargs
+) -> VideoClip:
     """If the clip is a mask, convert it to RGB before running the function."""
     if clip.is_mask:
         clip = clip.to_RGB()
@@ -24,27 +36,33 @@ def convert_masks_to_RGB(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
-def apply_to_mask(func, clip, *args, **kwargs):
+def apply_to_mask(
+    func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs
+) -> Clip:
     """Applies the same function ``func`` to the mask of the clip created with
     ``func``.
     """
-    new_clip = func(clip, *args, **kwargs)
-    if getattr(new_clip, "mask", None):
-        new_clip.mask = func(new_clip.mask, *args, **kwargs)
-    return new_clip
+    newClip = func(clip, *args, **kwargs)
+    if getattr(newClip, "mask", None):
+        newClip.mask = func(newClip.mask, *args, **kwargs)
+    return newClip
 
 
 @decorator.decorator
-def apply_to_audio(func, clip, *args, **kwargs):
+def apply_to_audio(
+    func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs
+) -> Clip:
     """Applies the function ``func`` to the audio of the clip created with ``func``."""
-    new_clip = func(clip, *args, **kwargs)
-    if getattr(new_clip, "audio", None):
-        new_clip.audio = func(new_clip.audio, *args, **kwargs)
-    return new_clip
+    newClip = func(clip, *args, **kwargs)
+    if getattr(newClip, "audio", None):
+        newClip.audio = func(newClip.audio, *args, **kwargs)
+    return newClip
 
 
 @decorator.decorator
-def requires_duration(func, clip, *args, **kwargs):
+def requires_duration(
+    func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs
+) -> Clip:
     """Raises an error if the clip has no duration."""
     if clip.duration is None:
         raise ValueError("Attribute 'duration' not set")
@@ -53,7 +71,9 @@ def requires_duration(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
-def requires_fps(func, clip, *args, **kwargs):
+def requires_fps(
+    func: VideoClipFunc[P], clip: VideoClip, *args: P.args, **kwargs: P.kwargs
+) -> VideoClip:
     """Raises an error if the clip has no fps."""
     if not hasattr(clip, "fps") or clip.fps is None:
         raise ValueError("Attribute 'fps' not set")
@@ -62,7 +82,9 @@ def requires_fps(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
-def audio_video_fx(func, clip, *args, **kwargs):
+def audio_video_fx(
+    func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs
+) -> Clip:
     """Use an audio function on a video/audio clip.
 
     This decorator tells that the function func (audioclip -> audioclip)
@@ -70,18 +92,20 @@ def audio_video_fx(func, clip, *args, **kwargs):
     videoclip with unmodified video and modified audio.
     """
     if hasattr(clip, "audio"):
-        new_clip = clip.copy()
+        newClip = clip.copy()
         if clip.audio is not None:
-            new_clip.audio = func(clip.audio, *args, **kwargs)
-        return new_clip
+            newClip.audio = func(clip.audio, *args, **kwargs)
+        return newClip
     else:
         return func(clip, *args, **kwargs)
 
 
-def preprocess_args(fun, varnames):
+def preprocess_args(
+    fun: Callable[P, T], varnames: Sequence[str]
+) -> Callable[[Callable[P, T]], T]:
     """Applies fun to variables in varnames before launching the function."""
 
-    def wrapper(func, *args, **kwargs):
+    def wrapper(func: Callable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:
         names = inspect.getfullargspec(func).args
         new_args = [
             fun(arg) if (name in varnames) and (arg is not None) else arg
@@ -96,18 +120,20 @@ def preprocess_args(fun, varnames):
     return decorator.decorator(wrapper)
 
 
-def convert_parameter_to_seconds(varnames):
+def convert_parameter_to_seconds(varnames: Sequence[str]):
     """Converts the specified variables to seconds."""
     return preprocess_args(convert_to_seconds, varnames)
 
 
-def convert_path_to_string(varnames):
+def convert_path_to_string(varnames: Sequence[str]):
     """Converts the specified variables to a path string."""
     return preprocess_args(os.fspath, varnames)
 
 
 @decorator.decorator
-def add_mask_if_none(func, clip, *args, **kwargs):
+def add_mask_if_none(
+    func: VideoClipFunc[P], clip: VideoClip, *args: P.args, **kwargs: P.kwargs
+) -> VideoClip:
     """Add a mask to the clip if there is none."""
     if clip.mask is None:
         clip = clip.add_mask()
@@ -115,10 +141,12 @@ def add_mask_if_none(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
-def use_clip_fps_by_default(func, clip, *args, **kwargs):
+def useClip_fps_by_default(
+    func: ClipFunc[P], clip: Clip, *args: P.args, **kwargs: P.kwargs
+) -> Clip:
     """Will use ``clip.fps`` if no ``fps=...`` is provided in **kwargs**."""
 
-    def find_fps(fps):
+    def find_fps(fps: int | None) -> int:
         if fps is not None:
             return fps
         elif getattr(clip, "fps", None):

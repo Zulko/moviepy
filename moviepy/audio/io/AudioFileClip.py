@@ -1,8 +1,20 @@
 """Implements AudioFileClip, a class for audio clips creation using audio files."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.audio.io.readers import FFMPEG_AudioReader
 from moviepy.decorators import convert_path_to_string
+
+if TYPE_CHECKING:
+    import os
+    from typing import Any
+
+    import numpy as np
+
+    from moviepy.types import NBytes
 
 
 class AudioFileClip(AudioClip):
@@ -55,9 +67,14 @@ class AudioFileClip(AudioClip):
 
     @convert_path_to_string("filename")
     def __init__(
-        self, filename, decode_file=False, buffersize=200000, nbytes=2, fps=44100
+        self,
+        filename: str | os.PathLike[Any] | np.ndarray[..., ...],
+        decode_file: bool = False,
+        buffersize: int = 200000,
+        nbytes: NBytes = 2,
+        fps: int = 44100,
     ):
-        AudioClip.__init__(self)
+        super().__init__(self)
 
         self.filename = filename
         self.reader = FFMPEG_AudioReader(
@@ -76,7 +93,7 @@ class AudioFileClip(AudioClip):
         self.make_frame = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
 
-    def close(self):
+    def close(self) -> None:
         """Close the internal reader."""
         if self.reader:
             self.reader.close()

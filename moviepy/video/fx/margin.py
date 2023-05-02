@@ -1,19 +1,26 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from moviepy.decorators import apply_to_mask
 from moviepy.video.VideoClip import ImageClip
 
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 
 @apply_to_mask
 def margin(
-    clip,
-    margin_size=None,
-    left=0,
-    right=0,
-    top=0,
-    bottom=0,
-    color=(0, 0, 0),
-    opacity=1.0,
+    clip: VideoClip,
+    margin_size: int | None = None,
+    left: int = 0,
+    right: int = 0,
+    top: int = 0,
+    bottom: int = 0,
+    color: tuple[int, int, int] = (0, 0, 0),
+    opacity: float = 1.0,
 ):
     """
     Draws an external margin all around the frame.
@@ -62,7 +69,7 @@ def margin(
     if isinstance(clip, ImageClip):
         im = make_bg(clip.w, clip.h)
         im[top : top + clip.h, left : left + clip.w] = clip.img
-        return clip.image_transform(lambda pic: im)
+        return clip.image_transform(lambda _: im)
 
     else:
 

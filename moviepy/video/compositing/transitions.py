@@ -2,6 +2,14 @@
 There are available as ``transfx.crossfadein`` etc.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+    from moviepy.types import ScreenSide
+
 from moviepy.decorators import add_mask_if_none, requires_duration
 from moviepy.video.fx.fadein import fadein
 from moviepy.video.fx.fadeout import fadeout
@@ -12,7 +20,7 @@ __all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out"]
 
 @requires_duration
 @add_mask_if_none
-def crossfadein(clip, duration):
+def crossfadein(clip: VideoClip, duration: float) -> VideoClip:
     """Makes the clip appear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
@@ -24,7 +32,7 @@ def crossfadein(clip, duration):
 
 @requires_duration
 @add_mask_if_none
-def crossfadeout(clip, duration):
+def crossfadeout(clip: VideoClip, duration: float) -> VideoClip:
     """Makes the clip disappear progressively, over ``duration`` seconds.
     Only works when the clip is included in a CompositeVideoClip.
     """
@@ -34,7 +42,7 @@ def crossfadeout(clip, duration):
     return new_clip
 
 
-def slide_in(clip, duration, side):
+def slide_in(clip: VideoClip, duration: float, side: ScreenSide) -> VideoClip:
     """Makes the clip arrive from one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,
@@ -82,7 +90,7 @@ def slide_in(clip, duration, side):
 
 
 @requires_duration
-def slide_out(clip, duration, side):
+def slide_out(clip: VideoClip, duration: float, side: ScreenSide) -> VideoClip:
     """Makes the clip go away by one side of the screen.
 
     Only works when the clip is included in a CompositeVideoClip,

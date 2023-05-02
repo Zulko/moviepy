@@ -1,11 +1,25 @@
-def _f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
+
+def _f_accel_decel(
+    t: float,
+    old_duration: float,
+    new_duration: float,
+    abruptness: float = 1.0,
+    soonness: float = 1.0,
+) -> float:
     a = 1.0 + abruptness
 
-    def _f(t):
-        def f1(t):
+    def _f(t: float):
+        def f1(t: float):
             return (0.5) ** (1 - a) * (t**a)
 
-        def f2(t):
+        def f2(t: float):
             return 1 - f1(1 - t)
 
         return (t < 0.5) * f1(t) + (t >= 0.5) * f2(t)
@@ -13,7 +27,12 @@ def _f_accel_decel(t, old_duration, new_duration, abruptness=1.0, soonness=1.0):
     return old_duration * _f((t / new_duration) ** soonness)
 
 
-def accel_decel(clip, new_duration=None, abruptness=1.0, soonness=1.0):
+def accel_decel(
+    clip: VideoClip,
+    new_duration: float | None = None,
+    abruptness: float = 1.0,
+    soonness: float = 1.0,
+) -> None:
     """Accelerates and decelerates a clip, useful for GIF making.
 
     Parameters
