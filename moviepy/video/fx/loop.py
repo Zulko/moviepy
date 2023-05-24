@@ -1,8 +1,17 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 from moviepy.decorators import requires_duration
 
 
 @requires_duration
-def loop(clip, n=None, duration=None):
+def loop(
+    clip: VideoClip, n: int | None = None, duration: float | None = None
+) -> VideoClip:
     """
     Returns a clip that plays the current clip in an infinite loop.
     Ideal for clips coming from GIFs.

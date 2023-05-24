@@ -2,10 +2,15 @@
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
 
+from __future__ import annotations
+
 import copy as _copy
+from collections.abc import Callable, Iterator
+from typing import TYPE_CHECKING
 
 import numpy as np
 import proglog
+from typing_extensions import Concatenate, Literal, Self, TypeAlias
 
 from moviepy.decorators import (
     apply_to_audio,
@@ -15,6 +20,11 @@ from moviepy.decorators import (
     requires_duration,
     use_clip_fps_by_default,
 )
+
+if TYPE_CHECKING:
+    from moviepy.types import Logger, P, T, Time
+
+_ApplyTo: TypeAlias = Literal["audio", "movie"]
 
 
 class Clip:
@@ -43,9 +53,9 @@ class Clip:
     _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
-        self.start = 0
-        self.end = None
-        self.duration = None
+        self.start: float = 0
+        self.end: float | None = None
+        self.duration: float | None = None
 
         self.memoize = False
         self.memoized_t = None
@@ -56,7 +66,7 @@ class Clip:
         return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
-    def get_frame(self, t):
+    def get_frame(self, t: Time) -> np.ndarray[..., ...]:
         """Gets a numpy array representing the RGB picture of the clip,
         or (mono or stereo) value for a sound clip, at time ``t``.
 
@@ -79,7 +89,12 @@ class Clip:
             # print(t)
             return self.make_frame(t)
 
-    def transform(self, func, apply_to=None, keep_duration=True):
+    def transform(
+        self,
+        func: Callable[[Callable[[Time], ...], float], np.ndarray[..., ...]],
+        apply_to: _ApplyTo | list[_ApplyTo] | None = None,
+        keep_duration: bool = True,
+    ) -> Self:
         """General processing of a clip.
 
         Returns a new Clip whose frames are a transformation
@@ -139,7 +154,12 @@ class Clip:
 
         return new_clip
 
-    def time_transform(self, time_func, apply_to=None, keep_duration=False):
+    def time_transform(
+        self,
+        time_func: Callable[[Time], Time],
+        apply_to: _ApplyTo | list[_ApplyTo] | None = None,
+        keep_duration: bool = False,
+    ) -> Self:
         """
         Returns a Clip instance playing the content of the current clip
         but with a modified timeline, time ``t`` being replaced by another
@@ -179,7 +199,9 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def fx(self, func, *args, **kwargs):
+    def fx(
+        self, func: Callable[Concatenate[Self, P], T], *args: P.args, **kwargs: P.kwargs
+    ) -> T:
         """Returns the result of ``func(self, *args, **kwargs)``, for instance
 
         >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
@@ -202,7 +224,7 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
     @outplace
-    def with_start(self, t, change_end=True):
+    def with_start(self, t: Time, change_end: bool = True) -> None:
         """Returns a copy of the clip, with the ``start`` attribute set
         to ``t``, which can be expressed in seconds (15.35), in (min, sec),
         in (hour, min, sec), or as a string: '01:03:05.35'.
@@ -234,7 +256,7 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
     @outplace
-    def with_end(self, t):
+    def with_end(self, t: Time) -> None:
         """Returns a copy of the clip, with the ``end`` attribute set to ``t``,
         which can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
@@ -259,7 +281,7 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["duration"])
     @outplace
-    def with_duration(self, duration, change_end=True):
+    def with_duration(self, duration: float, change_end: bool = True) -> None:
         """Returns a copy of the clip, with the  ``duration`` attribute set to
         ``t``, which can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
@@ -288,7 +310,7 @@ class Clip:
             self.start = self.end - duration
 
     @outplace
-    def with_make_frame(self, make_frame):
+    def with_make_frame(self, make_frame: Callable):
         """Sets a ``make_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
 
@@ -300,7 +322,7 @@ class Clip:
         """
         self.make_frame = make_frame
 
-    def with_fps(self, fps, change_duration=False):
+    def with_fps(self, fps: int, change_duration: bool = False) -> Self:
         """Returns a copy of the clip with a new default fps for functions like
         write_videofile, iterframe, etc.
 
@@ -326,7 +348,7 @@ class Clip:
         return newclip
 
     @outplace
-    def with_is_mask(self, is_mask):
+    def with_is_mask(self, is_mask: bool) -> None:
         """Says whether the clip is a mask or not.
 
         Parameters
@@ -338,7 +360,7 @@ class Clip:
         self.is_mask = is_mask
 
     @outplace
-    def with_memoize(self, memoize):
+    def with_memoize(self, memoize: bool) -> None:
         """Sets whether the clip should keep the last frame read in memory.
 
         Parameters
@@ -350,7 +372,7 @@ class Clip:
         self.memoize = memoize
 
     @convert_parameter_to_seconds(["t"])
-    def is_playing(self, t):
+    def is_playing(self, t: Time | np.ndarray[..., ...]) -> ...:
         """If ``t`` is a time, returns true if t is between the start and the end
         of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
@@ -379,7 +401,7 @@ class Clip:
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
-    def subclip(self, start_time=0, end_time=None):
+    def subclip(self, start_time: Time = 0, end_time: Time | None = None) -> Self:
         """Returns a clip playing the content of the current clip between times
         ``start_time`` and ``end_time``, which can be expressed in seconds
         (15.35), in (min, sec), in (hour, min, sec), or as a string:
@@ -444,7 +466,7 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def cutout(self, start_time, end_time):
+    def cutout(self, start_time: Time, end_time: Time) -> Self:
         """
         Returns a clip playing the content of the current clip but
         skips the extract between ``start_time`` and ``end_time``, which can be
@@ -479,7 +501,13 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
+    def iter_frames(
+        self,
+        fps: int | None = None,
+        with_times: bool = False,
+        logger: Logger = None,
+        dtype: np.dtype | None = None,
+    ) -> Iterator[...]:
         """Iterates over all the frames of the clip.
 
         Returns each frame of the clip as a HxWxN Numpy array,
@@ -533,7 +561,7 @@ class Clip:
             else:
                 yield frame
 
-    def close(self):
+    def close(self) -> None:
         """Release any resources that are in use."""
         #    Implementation note for subclasses:
         #
@@ -545,7 +573,7 @@ class Clip:
         #    * Therefore, should NOT be called by __del__().
         pass
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, Clip):
             return NotImplemented
 
@@ -564,8 +592,8 @@ class Clip:
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, *_) -> None:
         self.close()

@@ -1,12 +1,22 @@
 """MoviePy audio writing with ffmpeg."""
 
+from __future__ import annotations
+
 import subprocess as sp
+from typing import TYPE_CHECKING
 
 import proglog
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
+
+if TYPE_CHECKING:
+    import io
+    from collections.abc import Iterable
+    from moviepy.audio.AudioClip import AudioClip
+    from moviepy.types import Logger, NBytes, NChannels
+    from typing_extensions import Self
 
 
 class FFMPEG_AudioWriter:
@@ -37,15 +47,15 @@ class FFMPEG_AudioWriter:
 
     def __init__(
         self,
-        filename,
-        fps_input,
-        nbytes=2,
-        nchannels=2,
-        codec="libfdk_aac",
-        bitrate=None,
-        input_video=None,
-        logfile=None,
-        ffmpeg_params=None,
+        filename: str,
+        fps_input: int,
+        nbytes: NBytes = 2,
+        nchannels: NChannels = 2,
+        codec: str = "libfdk_aac",
+        bitrate: str | None = None,
+        input_video: str | None = None,
+        logfile: io.RawIOBase | int | None = None,
+        ffmpeg_params: Iterable[str] | None = None,
     ):
         if logfile is None:
             logfile = sp.PIPE
@@ -143,7 +153,7 @@ class FFMPEG_AudioWriter:
 
             raise IOError(error)
 
-    def close(self):
+    def close(self) -> None:
         """Closes the writer, terminating the subprocess if is still alive."""
         if hasattr(self, "proc") and self.proc:
             self.proc.stdin.close()
@@ -155,32 +165,32 @@ class FFMPEG_AudioWriter:
             self.proc.wait()
             self.proc = None
 
-    def __del__(self):
+    def __del__(self) -> None:
         # If the garbage collector comes, make sure the subprocess is terminated.
         self.close()
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.
 
-    def __enter__(self):
+    def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, exc_type, exc_value, traceback):
+    def __exit__(self, *_) -> None:
         self.close()
 
 
 @requires_duration
 def ffmpeg_audiowrite(
-    clip,
-    filename,
-    fps,
-    nbytes,
-    buffersize,
-    codec="libvorbis",
-    bitrate=None,
-    write_logfile=False,
-    ffmpeg_params=None,
-    logger="bar",
-):
+    clip: AudioClip,
+    filename: str,
+    fps: int,
+    nbytes: NBytes,
+    buffersize: int,
+    codec: str = "libvorbis",
+    bitrate: str | None = None,
+    write_logfile: bool = False,
+    ffmpeg_params: Iterable[str] | None = None,
+    logger: Logger = "bar",
+) -> None:
     """
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.

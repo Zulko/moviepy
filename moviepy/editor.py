@@ -16,12 +16,13 @@ import moviepy  # So that we can access moviepy.__all__ later
 from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
+from typing_extensions import NoReturn
 
 try:
     from moviepy.video.io.sliders import sliders
 except ImportError:
 
-    def sliders(*args, **kwargs):
+    def sliders(*_):
         """NOT AVAILABLE: sliders requires matplotlib installed."""
         raise ImportError("sliders requires matplotlib installed")
 
@@ -43,11 +44,11 @@ try:
     from moviepy.video.io.preview import preview, show
 except ImportError:
 
-    def preview(self, *args, **kwargs):
+    def preview(*_) -> NoReturn:
         """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 
-    def show(self, *args, **kwargs):
+    def show(*_) -> NoReturn:
         """NOT AVAILABLE: clip.show requires Pygame installed."""
         raise ImportError("clip.show requires Pygame installed")
 
@@ -59,7 +60,7 @@ try:
     from moviepy.audio.io.preview import preview
 except ImportError:
 
-    def preview(self, *args, **kwargs):
+    def preview(*_) -> NoReturn:
         """NOT AVAILABLE: clip.preview requires Pygame installed."""
         raise ImportError("clip.preview requires Pygame installed")
 

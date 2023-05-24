@@ -1,4 +1,13 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
+
+if TYPE_CHECKING:
+    from typing import Callable
+    from moviepy.video.VideoClip import VideoClip
+    from typing_extensions import NoReturn
 
 
 # ------- CHECKING DEPENDENCIES -----------------------------------------
@@ -13,7 +22,9 @@ except Exception:
 # -----------------------------------------------------------------------
 
 
-def headblur(clip, fx, fy, radius, intensity=None):
+def headblur(
+    clip: VideoClip, fx: Callable, fy: Callable, radius: float, intensity=None
+) -> VideoClip:
     """Returns a filter that will blur a moving part (a head ?) of the frames.
 
     The position of the blur at time t is defined by (fx(t), fy(t)), the radius
@@ -27,7 +38,7 @@ def headblur(clip, fx, fy, radius, intensity=None):
 
     def filter(gf, t):
         im = gf(t).copy()
-        h, w, d = im.shape
+        h, w, _ = im.shape
         x, y = int(fx(t)), int(fy(t))
         x1, x2 = max(0, x - radius), min(x + radius, w)
         y1, y2 = max(0, y - radius), min(y + radius, h)
@@ -50,7 +61,7 @@ def headblur(clip, fx, fy, radius, intensity=None):
 if not headblur_possible:
     doc = headblur.__doc__
 
-    def headblur(clip, fx, fy, r_zone, r_blur=None):
+    def headblur(*_) -> NoReturn:
         """Fallback headblur FX function, used if OpenCV is not installed.
 
         This docstring will be replaced at runtime.

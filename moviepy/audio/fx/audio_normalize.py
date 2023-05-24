@@ -1,9 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.decorators import audio_video_fx
 
+if TYPE_CHECKING:
+    from moviepy.audio.AudioClip import AudioClip
+
 
 @audio_video_fx
-def audio_normalize(clip):
+def audio_normalize(clip: AudioClip) -> AudioClip:
     """Return a clip whose volume is normalized to 0db.
 
     Return an audio (or video) clip whose audio volume is normalized

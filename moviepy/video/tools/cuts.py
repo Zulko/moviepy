@@ -9,7 +9,7 @@ from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_def
 
 @use_clip_fps_by_default
 @convert_parameter_to_seconds(["start_time"])
-def find_video_period(clip, fps=None, start_time=0.3):
+def find_video_period(clip, fps: int | None = None, start_time=0.3):
     """Find the period of a video based on frames correlation.
 
     Parameters
@@ -194,7 +194,13 @@ class FramesMatches(list):
         return FramesMatches(mfs)
 
     @staticmethod
-    def from_clip(clip, distance_threshold, max_duration, fps=None, logger="bar"):
+    def from_clip(
+        clip,
+        distance_threshold,
+        max_duration,
+        fps: int | None = None,
+        logger: Logger = "bar",
+    ):
         """Finds all the frames that look alike in a clip, for instance to make
         a looping GIF.
 
@@ -450,7 +456,11 @@ class FramesMatches(list):
 
 @use_clip_fps_by_default
 def detect_scenes(
-    clip=None, luminosities=None, luminosity_threshold=10, logger="bar", fps=None
+    clip=None,
+    luminosities=None,
+    luminosity_threshold=10,
+    logger: Logger = "bar",
+    fps: int | None = None,
 ):
     """Detects scenes of a clip based on luminosity changes.
 

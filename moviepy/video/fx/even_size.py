@@ -1,8 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
 from moviepy.decorators import apply_to_mask
 
 
 @apply_to_mask
-def even_size(clip):
+def even_size(clip: VideoClip) -> VideoClip:
     """Crops the clip to make dimensions even."""
     w, h = clip.size
     w_even = w % 2 == 0

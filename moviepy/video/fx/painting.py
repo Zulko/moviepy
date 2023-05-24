@@ -1,4 +1,12 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+    from typing_extensions import NoReturn
 
 
 # ------- CHECKING DEPENDENCIES -----------------------------------------
@@ -21,7 +29,9 @@ def to_painting(image, saturation=1.4, black=0.006):
     return np.maximum(0, np.minimum(255, painting)).astype("uint8")
 
 
-def painting(clip, saturation=1.4, black=0.006):
+def painting(
+    clip: VideoClip, saturation: float = 1.4, black: float = 0.006
+) -> VideoClip:
     """
     Transforms any photo into some kind of painting. Saturation
     tells at which point the colors of the result should be
@@ -36,7 +46,7 @@ def painting(clip, saturation=1.4, black=0.006):
 if not painting_possible:
     doc = painting.__doc__
 
-    def painting(clip, saturation=None, black=None):
+    def painting(*_) -> NoReturn:
         """Fallback painting FX function, used if scikit-image and scipy are not
         installed.
 

@@ -26,7 +26,9 @@ except Exception:
 
 @convert_parameter_to_seconds(["t1", "t2"])
 @use_clip_fps_by_default
-def manual_tracking(clip, t1=None, t2=None, fps=None, n_objects=1, savefile=None):
+def manual_tracking(
+    clip, t1=None, t2=None, fps: int | None = None, n_objects=1, savefile=None
+):
     """Manual tracking of objects in videoclips using the mouse.
 
     Allows manual tracking of an object(s) in the video clip between
@@ -172,7 +174,7 @@ def findAround(pic, pat, xy=None, r=None):
     return (x - r + xf, y - r + yf) if (xy and r) else (xf, yf)
 
 
-def autoTrack(clip, pattern, tt=None, fps=None, radius=20, xy0=None):
+def autoTrack(clip, pattern, tt=None, fps: int | None = None, radius=20, xy0=None):
     """Tracks a given pattern (small image array) in a video clip.
 
     Returns ``[(x1, y1), (x2, y2)...]`` where ``(xi, yi)`` are the coordinates

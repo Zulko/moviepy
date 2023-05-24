@@ -1,13 +1,19 @@
 """MoviePy audio reading with ffmpeg."""
 
+from __future__ import annotations
+
 import subprocess as sp
 import warnings
+from typing import TYPE_CHECKING
 
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import cross_platform_popen_params
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
+
+if TYPE_CHECKING:
+    from moviepy.types import NBytes, NChannels
 
 
 class FFMPEG_AudioReader:
@@ -42,14 +48,13 @@ class FFMPEG_AudioReader:
 
     def __init__(
         self,
-        filename,
-        buffersize,
-        decode_file=False,
-        print_infos=False,
-        fps=44100,
-        nbytes=2,
-        nchannels=2,
-    ):
+        filename: str,
+        buffersize: int,
+        decode_file: bool = False,
+        fps: int = 44100,
+        nbytes: NBytes = 2,
+        nchannels: NChannels = 2,
+    ) -> None:
         # TODO bring FFMPEG_AudioReader more in line with FFMPEG_VideoReader
         # E.g. here self.pos is still 1-indexed.
         # (or have them inherit from a shared parent class)
@@ -72,7 +77,7 @@ class FFMPEG_AudioReader:
         self.initialize()
         self.buffer_around(1)
 
-    def initialize(self, start_time=0):
+    def initialize(self, start_time: float = 0) -> None:
         """Opens the file, creates the pipe."""
         self.close()  # if any
 
@@ -121,13 +126,13 @@ class FFMPEG_AudioReader:
 
         self.pos = np.round(self.fps * start_time)
 
-    def skip_chunk(self, chunksize):
+    def skip_chunk(self, chunksize: int) -> None:
         """TODO: add documentation"""
         _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
-    def read_chunk(self, chunksize):
+    def read_chunk(self, chunksize: int) -> None:
         """TODO: add documentation"""
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
@@ -149,7 +154,7 @@ class FFMPEG_AudioReader:
         self.pos = self.pos + chunksize
         return result
 
-    def seek(self, pos):
+    def seek(self, pos: int) -> None:
         """
         Reads a frame at time t. Note for coders: getting an arbitrary
         frame in the video with ffmpeg can be painfully slow if some
@@ -166,7 +171,7 @@ class FFMPEG_AudioReader:
         # last case standing: pos = current pos
         self.pos = pos
 
-    def get_frame(self, tt):
+    def get_frame(self, tt: np.ndarray[..., ...] | ...) -> ...:
         """TODO: add documentation"""
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
@@ -227,7 +232,7 @@ class FFMPEG_AudioReader:
             # read the frame in the buffer
             return self.buffer[ind - self.buffer_startframe]
 
-    def buffer_around(self, frame_number):
+    def buffer_around(self, frame_number: int) -> None:
         """
         Fills the buffer with frames, centered on ``frame_number``
         if possible
@@ -252,7 +257,7 @@ class FFMPEG_AudioReader:
 
         self.buffer_startframe = new_bufferstart
 
-    def close(self):
+    def close(self) -> None:
         """Closes the reader, terminating the subprocess if is still alive."""
         if self.proc:
             if self.proc.poll() is None:
@@ -262,6 +267,6 @@ class FFMPEG_AudioReader:
                 self.proc.wait()
             self.proc = None
 
-    def __del__(self):
+    def __del__(self) -> None:
         # If the garbage collector comes, make sure the subprocess is terminated.
         self.close()

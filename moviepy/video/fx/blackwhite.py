@@ -1,17 +1,29 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
+if TYPE_CHECKING:
+    from typing_extensions import Literal, TypeAlias
+    from moviepy.video.VideoClip import VideoClip
 
-def blackwhite(clip, RGB=None, preserve_luminosity=True):
+    RGB: TypeAlias = Literal["CRT_phosphor"] | list[int] | None
+
+
+def blackwhite(
+    clip: VideoClip, RGB: RGB = None, preserve_luminosity: bool = True
+) -> None:
     """Desaturates the picture, makes it black and white.
     Parameter RGB allows to set weights for the different color
-    channels.
+    channels.s
     If RBG is 'CRT_phosphor' a special set of values is used.
     preserve_luminosity maintains the sum of RGB to 1.
     """
     if RGB is None:
         RGB = [1, 1, 1]
 
-    if RGB == "CRT_phosphor":
+    elif RGB == "CRT_phosphor":
         RGB = [0.2125, 0.7154, 0.0721]
 
     R, G, B = 1.0 * np.array(RGB) / (sum(RGB) if preserve_luminosity else 1)

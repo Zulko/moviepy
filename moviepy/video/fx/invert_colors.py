@@ -1,4 +1,12 @@
-def invert_colors(clip):
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
+
+def invert_colors(clip: VideoClip) -> VideoClip:
     """Returns the color-inversed clip.
 
     The values of all pixels are replaced with (255-v) or (1-v) for masks

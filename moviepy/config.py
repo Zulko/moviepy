@@ -1,8 +1,15 @@
 """Third party programs configuration for MoviePy."""
 
+from __future__ import annotations
+
 import os
 import subprocess as sp
 from pathlib import Path
+from typing import TYPE_CHECKING
+from typing_extensions import Literal
+
+if TYPE_CHECKING:
+    from subprocess import _CMD
 
 from moviepy.tools import cross_platform_popen_params
 
@@ -24,7 +31,7 @@ IMAGEMAGICK_BINARY = os.getenv("IMAGEMAGICK_BINARY", "auto-detect")
 IS_POSIX_OS = os.name == "posix"
 
 
-def try_cmd(cmd):
+def try_cmd(cmd: _CMD) -> tuple[Literal[True], None] | tuple[Literal[False], Exception]:
     """TODO: add documentation"""
     try:
         popen_params = cross_platform_popen_params(
@@ -103,7 +110,7 @@ else:
         )
 
 
-def check():
+def check() -> None:
     """Check if moviepy has found the binaries of FFmpeg and ImageMagick."""
     if try_cmd([FFMPEG_BINARY])[0]:
         print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")

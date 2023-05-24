@@ -1,8 +1,15 @@
+from __future__ import annotations
+
 import math
 import warnings
+from typing import TYPE_CHECKING
 
 import numpy as np
 
+if TYPE_CHECKING:
+    from typing import Callable, Literal
+    from moviepy.types import Time
+    from moviepy.video.VideoClip import VideoClip
 
 try:
     import PIL
@@ -31,15 +38,15 @@ except ImportError:  # pragma: no cover
 
 
 def rotate(
-    clip,
-    angle,
-    unit="deg",
-    resample="bicubic",
-    expand=True,
-    center=None,
-    translate=None,
-    bg_color=None,
-):
+    clip: VideoClip,
+    angle: float | Callable[[Time], float],
+    unit: Literal["deg", "rad"] = "deg",
+    resample: Literal["bicubic", "nearest", "bilinear"] = "bicubic",
+    expand: bool = True,
+    center: tuple[int, int] | None = None,
+    translate: tuple[int, int] | None = None,
+    bg_color: tuple[int, int, int] | None = None,
+) -> VideoClip:
     """
     Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
     If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,

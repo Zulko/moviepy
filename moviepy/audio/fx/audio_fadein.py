@@ -1,6 +1,14 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import numpy as np
 
 from moviepy.decorators import audio_video_fx, convert_parameter_to_seconds
+
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
+    from moviepy.audio.AudioClip import AudioClip
 
 
 def _mono_factor_getter():
@@ -17,7 +25,7 @@ def _stereo_factor_getter(nchannels):
 
 @audio_video_fx
 @convert_parameter_to_seconds(["duration"])
-def audio_fadein(clip, duration):
+def audio_fadein(clip: AudioClip, duration: float) -> Clip:
     """Return an audio (or video) clip that is first mute, then the
     sound arrives progressively over ``duration`` seconds.
 

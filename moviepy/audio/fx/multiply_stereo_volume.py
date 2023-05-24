@@ -1,8 +1,15 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.decorators import audio_video_fx
+
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
 
 
 @audio_video_fx
-def multiply_stereo_volume(clip, left=1, right=1):
+def multiply_stereo_volume(clip: Clip, left: int = 1, right: int = 1) -> Clip:
     """For a stereo audioclip, this function enables to change the volume
     of the left and right channel separately (with the factors `left`
     and `right`). Makes a stereo audio clip in which the volume of left

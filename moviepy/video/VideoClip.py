@@ -4,15 +4,20 @@
 - Static image clips: ImageClip, ColorClip, TextClip,
 """
 
+from __future__ import annotations
+
 import copy as _copy
 import os
 import subprocess as sp
 import tempfile
+from collections.abc import Callable
+from typing import Any, TYPE_CHECKING, overload
 
 import numpy as np
 import proglog
 from imageio import imread, imsave
 from PIL import Image
+from typing_extensions import Literal
 
 from moviepy.Clip import Clip
 from moviepy.config import IMAGEMAGICK_BINARY
@@ -40,6 +45,11 @@ from moviepy.video.io.gif_writers import (
     write_gif_with_tempfiles,
 )
 from moviepy.video.tools.drawing import blit
+
+if TYPE_CHECKING:
+    from moviepy.Clip import Time
+    from moviepy.audio.AudioClip import AudioClip
+    from moviepy.types import Logger
 
 
 class VideoClip(Clip):
@@ -94,12 +104,16 @@ class VideoClip(Clip):
     """
 
     def __init__(
-        self, make_frame=None, is_mask=False, duration=None, has_constant_size=True
-    ):
+        self,
+        make_frame: Callable[[float], ...] | None = None,
+        is_mask: bool = False,
+        duration: float | None = None,
+        has_constant_size: bool = True,
+    ) -> None:
         super().__init__()
-        self.mask = None
-        self.audio = None
-        self.pos = lambda t: (0, 0)
+        self.mask: VideoClip | None = None
+        self.audio: AudioClip | None = None
+        self.pos: Callable[[float], tuple[int, int]] = lambda t: (0, 0)
         self.relative_pos = False
         self.layer = 0
         if make_frame:
@@ -112,28 +126,28 @@ class VideoClip(Clip):
             self.end = duration
 
     @property
-    def w(self):
+    def w(self) -> int:
         """Returns the width of the video."""
         return self.size[0]
 
     @property
-    def h(self):
+    def h(self) -> int:
         """Returns the height of the video."""
         return self.size[1]
 
     @property
-    def aspect_ratio(self):
+    def aspect_ratio(self) -> float:
         """Returns the aspect ratio of the video."""
         return self.w / float(self.h)
 
     @property
     @requires_duration
     @requires_fps
-    def n_frames(self):
+    def n_frames(self) -> int:
         """Returns the number of frames of the video."""
         return int(self.duration * self.fps)
 
-    def __copy__(self):
+    def __copy__(self) -> VideoClip:
         """Mixed copy of the clip.
 
         Returns a shallow copy of the clip whose mask and audio will
@@ -162,7 +176,7 @@ class VideoClip(Clip):
 
     @convert_parameter_to_seconds(["t"])
     @convert_masks_to_RGB
-    def save_frame(self, filename, t=0, with_mask=True):
+    def save_frame(self, filename: str, t: Time = 0, with_mask: bool = True):
         """Save a clip's frame to an image file.
 
         Saves the frame of clip corresponding to time ``t`` in ``filename``.
@@ -198,24 +212,35 @@ class VideoClip(Clip):
     @convert_path_to_string(["filename", "temp_audiofile", "temp_audiofile_path"])
     def write_videofile(
         self,
-        filename,
-        fps=None,
-        codec=None,
+        filename: str,
+        fps: int | None = None,
+        codec: str | None = None,
         bitrate=None,
-        audio=True,
-        audio_fps=44100,
-        preset="medium",
-        audio_nbytes=4,
-        audio_codec=None,
-        audio_bitrate=None,
-        audio_bufsize=2000,
+        audio: bool = True,
+        audio_fps: float = 44100,
+        preset: Literal[
+            "ultrafast",
+            "superfast",
+            "veryfast",
+            "faster",
+            "fast",
+            "medium",
+            "slow",
+            "slower",
+            "veryslow",
+            "placebo",
+        ] = "medium",
+        audio_nbytes: int = 4,
+        audio_codec: str | None = None,
+        audio_bitrate: str | None = None,
+        audio_bufsize: int = 2000,
         temp_audiofile=None,
-        temp_audiofile_path="",
-        remove_temp=True,
-        write_logfile=False,
-        threads=None,
-        ffmpeg_params=None,
-        logger="bar",
+        temp_audiofile_path: os.PathLike[Any] | str = "",
+        remove_temp: bool = True,
+        write_logfile: bool = False,
+        threads: int | None = None,
+        ffmpeg_params: dict[str, Any] | None = None,
+        logger: Logger = "bar",
         pixel_format=None,
     ):
         """Write the clip to a videofile.
@@ -400,8 +425,12 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(
-        self, name_format, fps=None, with_mask=True, logger="bar"
-    ):
+        self,
+        name_format: str,
+        fps: int | None = None,
+        with_mask: bool = True,
+        logger: Logger = "bar",
+    ) -> list[str]:
         """Writes the videoclip to a sequence of image files.
 
         Parameters
@@ -458,18 +487,18 @@ class VideoClip(Clip):
     @convert_path_to_string("filename")
     def write_gif(
         self,
-        filename,
-        fps=None,
-        program="imageio",
-        opt="nq",
-        fuzz=1,
-        loop=0,
-        dispose=False,
+        filename: os.PathLike[Any] | str,
+        fps: int | None = None,
+        program: Literal["imageio", "ImageMagick", "ffmpeg"] = "imageio",
+        opt: Literal["wu", "nq", "optimizeplus", "OptimizeTransparency"] = "nq",
+        fuzz: int = 1,
+        loop: int = 0,
+        dispose: bool = False,
         colors=None,
-        tempfiles=False,
-        logger="bar",
+        tempfiles: bool = False,
+        logger: Logger = "bar",
         pixel_format=None,
-    ):
+    ) -> None:
         """Write the VideoClip to a GIF file.
 
         Converts a VideoClip into an animated GIF using ImageMagick
@@ -605,7 +634,7 @@ class VideoClip(Clip):
 
     # IMAGE FILTERS
 
-    def image_transform(self, image_func, apply_to=None):
+    def image_transform(self, image_func: Callable, apply_to=None):
         """Modifies the images of a clip by replacing the frame `get_frame(t)` by
         another frame,  `image_func(get_frame(t))`.
         """
@@ -794,7 +823,7 @@ class VideoClip(Clip):
         self.audio = audioclip
 
     @outplace
-    def with_mask(self, mask):
+    def with_mask(self, mask: VideoClip) -> None:
         """Set the clip's mask.
 
         Returns a copy of the VideoClip with the mask attribute set to
@@ -805,7 +834,7 @@ class VideoClip(Clip):
 
     @add_mask_if_none
     @outplace
-    def with_opacity(self, opacity):
+    def with_opacity(self, opacity: float):
         """Set the opacity/transparency level of the clip.
 
         Returns a semi-transparent copy of the clip where the mask is
@@ -815,7 +844,11 @@ class VideoClip(Clip):
 
     @apply_to_mask
     @outplace
-    def with_position(self, pos, relative=False):
+    def with_position(
+        self,
+        pos: tuple[int, int] | Callable[[float], tuple[int, int]],
+        relative: bool = False,
+    ) -> None:
         """Set the clip's position in compositions.
 
         Sets the position that the clip will have when included
@@ -843,11 +876,11 @@ class VideoClip(Clip):
         if hasattr(pos, "__call__"):
             self.pos = pos
         else:
-            self.pos = lambda t: pos
+            self.pos = lambda _: pos
 
     @apply_to_mask
     @outplace
-    def with_layer(self, layer):
+    def with_layer(self, layer: int) -> None:
         """Set the clip's layer in compositions. Clips with a greater ``layer``
         attribute will be displayed on top of others.
 
@@ -859,7 +892,9 @@ class VideoClip(Clip):
     # CONVERSIONS TO OTHER TYPES
 
     @convert_parameter_to_seconds(["t"])
-    def to_ImageClip(self, t=0, with_mask=True, duration=None):
+    def to_ImageClip(
+        self, t: Time = 0, with_mask: bool = True, duration: float | None = None
+    ) -> ImageClip:
         """
         Returns an ImageClip made out of the clip's frame at time ``t``,
         which can be expressed in seconds (15.35), in (min, sec),
@@ -927,7 +962,9 @@ class DataVideoClip(VideoClip):
       Number of frames per second in the animation
     """
 
-    def __init__(self, data, data_to_frame, fps, is_mask=False, has_constant_size=True):
+    def __init__(
+        self, data, data_to_frame, fps, is_mask: bool = False, has_constant_size=True
+    ):
         self.data = data
         self.data_to_frame = data_to_frame
         self.fps = fps
@@ -976,7 +1013,7 @@ class UpdatedVideoClip(VideoClip):
 
     """
 
-    def __init__(self, world, is_mask=False, duration=None):
+    def __init__(self, world, is_mask: bool = False, duration=None):
         self.world = world
 
         def make_frame(t):
@@ -1034,9 +1071,14 @@ class ImageClip(VideoClip):
     """
 
     def __init__(
-        self, img, is_mask=False, transparent=True, fromalpha=False, duration=None
+        self,
+        img: np.ndarray[..., ...] | os.PathLike[Any],
+        is_mask: bool = False,
+        transparent: bool = True,
+        fromalpha: bool = False,
+        duration=None,
     ):
-        VideoClip.__init__(self, is_mask=is_mask, duration=duration)
+        super().__init__(self, is_mask=is_mask, duration=duration)
 
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
@@ -1056,7 +1098,7 @@ class ImageClip(VideoClip):
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: img
+        self.make_frame = lambda _: img
         self.size = img.shape[:2][::-1]
         self.img = img
 
@@ -1135,7 +1177,33 @@ class ColorClip(ImageClip):
 
     """
 
-    def __init__(self, size, color=None, is_mask=False, duration=None):
+    @overload
+    def __init__(
+        self,
+        size: tuple[int, int],
+        color: float | None = None,
+        is_mask: Literal[True] = True,
+        duration=None,
+    ) -> None:
+        ...
+
+    @overload
+    def __init__(
+        self,
+        size: tuple[int, int],
+        color: tuple[int, int, int] | None = None,
+        is_mask: Literal[False] = False,
+        duration=None,
+    ) -> None:
+        ...
+
+    def __init__(
+        self,
+        size: tuple[int, int],
+        color: ... = None,
+        is_mask: bool = False,
+        duration=None,
+    ) -> None:
         w, h = size
 
         if is_mask:
@@ -1383,7 +1451,13 @@ class BitmapClip(VideoClip):
 
     @convert_parameter_to_seconds(["duration"])
     def __init__(
-        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
+        self,
+        bitmap_frames,
+        *,
+        fps: int | None = None,
+        duration=None,
+        color_dict=None,
+        is_mask: bool = False,
     ):
         """Creates a VideoClip object from a bitmap representation. Primarily used
         in the test suite.
@@ -1463,7 +1537,7 @@ class BitmapClip(VideoClip):
         )
         self.fps = fps
 
-    def to_bitmap(self, color_dict=None):
+    def to_bitmap(self, color_dict=None) -> list:
         """Returns a valid bitmap list that represents each frame of the clip.
         If `color_dict` is not specified, then it will use the same `color_dict`
         that was used to create the clip.

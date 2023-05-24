@@ -1,9 +1,19 @@
 """Useful utilities working with MoviePy."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ImageClip
 
+if TYPE_CHECKING:
+    from moviepy.Clip import Clip
+
+from typing_extensions import Literal, TypeAlias
+
+_ClipType: TypeAlias = Literal["audio", "video", "image"]
 
 CLIP_TYPES = {
     "audio": AudioFileClip,
@@ -12,7 +22,10 @@ CLIP_TYPES = {
 }
 
 
-def close_all_clips(objects="globals", types=("audio", "video", "image")):
+def close_all_clips(
+    objects: Literal["globals"] | dict[str, Clip] = "globals",
+    types: tuple[_ClipType, ...] = ("audio", "video", "image"),
+) -> None:
     """Closes all clips in a context.
 
     Follows different strategies retrieving the namespace from which the clips

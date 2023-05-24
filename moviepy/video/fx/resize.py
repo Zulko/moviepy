@@ -1,4 +1,13 @@
+from __future__ import annotations
+
 import numbers
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from moviepy.types import Time
+    from moviepy.video.VideoClip import VideoClip
+    from typing_extensions import NoReturn
 
 
 def _get_cv2_resizer():
@@ -118,7 +127,13 @@ if _resizer_data["resizer"] is not None:
     del _resizer_data["error_msgs"]
 
 
-def resize(clip, new_size=None, height=None, width=None, apply_to_mask=True):
+def resize(
+    clip: VideoClip,
+    new_size: tuple[int, int] | float | Callable[[Time], tuple[int, int]] | None = None,
+    height: int | None = None,
+    width: int | None = None,
+    apply_to_mask: bool = True,
+) -> VideoClip:
     """Returns a video clip that is a resized version of the clip.
 
     Parameters
@@ -239,7 +254,7 @@ if resizer is None:
 
     doc = resize.__doc__
 
-    def resize(clip, new_size=None, height=None, width=None):
+    def resize(*_) -> NoReturn:
         """Fallback resize FX function, if OpenCV, Scipy and PIL are not installed.
 
         This docstring will be replaced at runtime.

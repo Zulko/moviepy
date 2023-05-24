@@ -1,9 +1,18 @@
 """Cutting utilities working with audio."""
 
+from typing import TYPE_CHECKING
 import numpy as np
 
+if TYPE_CHECKING:
+    from moviepy.audio.AudioClip import AudioClip
 
-def find_audio_period(clip, min_time=0.1, max_time=2, time_resolution=0.01):
+
+def find_audio_period(
+    clip: AudioClip,
+    min_time: float = 0.1,
+    max_time: float = 2,
+    time_resolution: float = 0.01,
+):
     """Finds the period, in seconds of an audioclip.
 
     Parameters

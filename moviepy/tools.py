@@ -1,15 +1,30 @@
 """Misc. useful functions that can be used at many places in the program."""
+
+from __future__ import annotations
+
 import os
 import subprocess as sp
 import warnings
+from collections.abc import Callable, MutableMapping, Mapping
+from typing import TypeVar, TYPE_CHECKING
 
 import proglog
+from typing_extensions import Literal, NotRequired, ParamSpec, TypedDict
 
+if TYPE_CHECKING:
+    from subprocess import _CMD
+    from moviepy.types import Logger, Time
 
+_P = ParamSpec("_P")
+_T = TypeVar("_T")
+_KT = TypeVar("_KT")
+_VT = TypeVar("_VT")
 OS_NAME = os.name
 
 
-def cross_platform_popen_params(popen_params):
+def cross_platform_popen_params(
+    popen_params: MutableMapping[_KT, _VT]
+) -> Mapping[_KT, _VT]:
     """Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and
     will be ready to work without unexpected behaviours in any platform.
     Currently, the implementation will add to them:
@@ -22,7 +37,7 @@ def cross_platform_popen_params(popen_params):
     return popen_params
 
 
-def subprocess_call(cmd, logger="bar"):
+def subprocess_call(cmd: _CMD, logger: Logger = "bar") -> None:
     """Executes the given subprocess command.
 
     Set logger to None or a custom Proglog logger to avoid printings.
@@ -36,7 +51,7 @@ def subprocess_call(cmd, logger="bar"):
 
     proc = sp.Popen(cmd, **popen_params)
 
-    out, err = proc.communicate()  # proc.wait()
+    _, err = proc.communicate()  # proc.wait()
     proc.stderr.close()
 
     if proc.returncode:
@@ -48,7 +63,7 @@ def subprocess_call(cmd, logger="bar"):
     del proc
 
 
-def convert_to_seconds(time):
+def convert_to_seconds(time: Time) -> float:
     """Will convert any time into seconds.
 
     If the type of `time` is not valid,
@@ -82,7 +97,7 @@ def convert_to_seconds(time):
     return sum(mult * part for mult, part in zip(factors, reversed(time)))
 
 
-def deprecated_version_of(func, old_name):
+def deprecated_version_of(func: Callable[_P, _T], old_name: str) -> Callable[_P, _T]:
     """Indicates that a function is deprecated and has a new name.
 
     `func` is the new function and `old_name` is the name of the deprecated
@@ -115,7 +130,7 @@ def deprecated_version_of(func, old_name):
         "``%s``, instead."
     ) % (old_name, new_name)
 
-    def deprecated_func(*args, **kwargs):
+    def deprecated_func(*args: _P.args, **kwargs: _P.kwargs) -> _T:
         warnings.warn("MoviePy: " + warning, PendingDeprecationWarning)
         return func(*args, **kwargs)
 
@@ -129,7 +144,13 @@ def deprecated_version_of(func, old_name):
 # Note that 'gif' is complicated to place. From a VideoFileClip point of view,
 # it is a video, but from a HTML5 point of view, it is an image.
 
-extensions_dict = {
+
+class ExtensionInfo(TypedDict):
+    type: Literal["audio", "image", "video"]
+    codec: NotRequired[list[str]]
+
+
+extensions_dict: dict[str, ExtensionInfo] = {
     "mp4": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
     "mkv": {"type": "video", "codec": ["libx264", "libmpeg4", "aac"]},
     "ogv": {"type": "video", "codec": ["libtheora"]},
@@ -146,7 +167,7 @@ for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
     extensions_dict[ext] = {"type": "image"}
 
 
-def find_extension(codec):
+def find_extension(codec: str) -> str:
     """Returns the correspondent file extension for a codec.
 
     Parameters

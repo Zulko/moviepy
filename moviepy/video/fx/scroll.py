@@ -1,6 +1,21 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.video.VideoClip import VideoClip
+
+
 def scroll(
-    clip, w=None, h=None, x_speed=0, y_speed=0, x_start=0, y_start=0, apply_to="mask"
-):
+    clip: VideoClip,
+    w: int | None = None,
+    h: int | None = None,
+    x_speed: float = 0,
+    y_speed: float = 0,
+    x_start: float = 0,
+    y_start: float = 0,
+    apply_to: str = "mask",
+) -> VideoClip:
     """
     Scrolls horizontally or vertically a clip, e.g. to make end credits
 
