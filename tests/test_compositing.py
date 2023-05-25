@@ -10,6 +10,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, cli
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import slide_in, slide_out
 from moviepy.video.fx.resize import resize
+from moviepy.video.fx.supersample import supersample
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
@@ -221,6 +222,19 @@ def test_slide_out():
 
             assert n_reds == n_reds_expected
 
+
+@pytest.mark.parametrize(['inputclip'], [
+    [ColorClip((256, 200), color=(255, 0, 0)).with_duration(5)],
+])
+def test_631(inputclip):
+    supersample(concatenate_videoclips([inputclip, inputclip]), 1, 1)
+
+
+@pytest.mark.parametrize(['inputclip'], [
+    [ColorClip((256, 200), color=(255, 0, 0)).with_duration(5)],
+])
+def test_632(inputclip):
+    concatenate_videoclips([inputclip, inputclip]).make_frame(inputclip.duration * 2)
 
 if __name__ == "__main__":
     pytest.main()
