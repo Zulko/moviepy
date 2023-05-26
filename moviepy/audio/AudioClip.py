@@ -259,6 +259,11 @@ class AudioClip(Clip):
             logger=logger,
         )
 
+    def __add__(self, other):
+        if isinstance(other, AudioClip):
+            return concatenate_audioclips([self, other])
+        return super(AudioClip, self).__add__(other)
+
 
 class AudioArrayClip(AudioClip):
     """
