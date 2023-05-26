@@ -264,7 +264,10 @@ def test_oncolor(util):
         clip = ColorClip(size=(100, 60), color=(255, 0, 0), is_mask=True)
 
     with pytest.raises(Exception):
-        clip = ColorClip(size=(100, 60), color=0.4, is_mask=False)
+        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color="black")
 
 
 def test_setaudio(util):

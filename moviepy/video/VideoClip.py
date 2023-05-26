@@ -1190,6 +1190,10 @@ class ColorClip(ImageClip):
                 color = (0, 0, 0)
             elif not hasattr(color, "__getitem__"):
                 raise Exception("Color has to contain RGB of the clip")
+            elif isinstance(color, str):
+                raise Exception(
+                    "Color cannot be string. Color has to contain RGB of the clip"
+                )
             shape = (h, w, len(color))
 
         super().__init__(
