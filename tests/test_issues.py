@@ -233,7 +233,7 @@ def test_issue_334(util):
     avatar.audio = None
     maskclip = ImageClip("media/afterimage.png", is_mask=True, transparent=True)
     avatar.with_mask(maskclip)  # must set maskclip here..
-    concatenated = concatenate_videoclips([avatar] * 3)
+    concatenated = avatar * 3
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
     # TODO: Setting mask here does not work:

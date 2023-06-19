@@ -8,6 +8,7 @@ import copy as _copy
 import os
 import subprocess as sp
 import tempfile
+from numbers import Real
 
 import numpy as np
 import proglog
@@ -913,6 +914,46 @@ class VideoClip(Clip):
         """
         self.audio = self.audio.fx(fun, *args, **kwargs)
 
+    def __add__(self, other):
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.concatenate import concatenate_videoclips
+
+            method = "chain" if self.size == other.size else "compose"
+            return concatenate_videoclips([self, other], method=method)
+        return super(VideoClip, self).__add__(other)
+
+    def __or__(self, other):
+        """
+        Implement the or (self | other) to produce a video with self and other
+        placed side by side horizontally.
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+
+            return clips_array([[self, other]])
+        return super(VideoClip, self).__or__(other)
+
+    def __truediv__(self, other):
+        """
+        Implement division (self / other) to produce a video with self
+        placed on top of other.
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+
+            return clips_array([[self], [other]])
+        return super(VideoClip, self).__or__(other)
+
+    def __matmul__(self, n):
+        if not isinstance(n, Real):
+            return NotImplemented
+        from moviepy.video.fx.rotate import rotate
+
+        return rotate(self, n)
+
+    def __and__(self, mask):
+        return self.with_mask(mask)
+
 
 class DataVideoClip(VideoClip):
     """
@@ -922,7 +963,7 @@ class DataVideoClip(VideoClip):
     Parameters
     ----------
     data
-      A liste of datasets, each dataset being used for one frame of the clip
+      A list of datasets, each dataset being used for one frame of the clip
 
     data_to_frame
       A function d -> video frame, where d is one element of the list `data`
@@ -1153,6 +1194,10 @@ class ColorClip(ImageClip):
                 color = (0, 0, 0)
             elif not hasattr(color, "__getitem__"):
                 raise Exception("Color has to contain RGB of the clip")
+            elif isinstance(color, str):
+                raise Exception(
+                    "Color cannot be string. Color has to contain RGB of the clip"
+                )
             shape = (h, w, len(color))
 
         super().__init__(
