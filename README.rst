@@ -1,5 +1,10 @@
 MoviePy
 =======
+**WARNING!**
+
+The MoviePy project is no longer maintained. More information can be found here https://github.com/Zulko/moviepy/issues/1874
+
+**DO NOT USE FOR PRODUCTION**
 
 .. image:: https://badge.fury.io/py/moviepy.svg
     :target: PyPI_
