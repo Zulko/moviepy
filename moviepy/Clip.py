@@ -144,8 +144,8 @@ class Clip:
     def time_transform(self, time_func, apply_to=None, keep_duration=False):
         """
         Returns a Clip instance playing the content of the current clip
-        but with a modified timeline, time ``t`` being replaced by another
-        time `time_func(t)`.
+        but with a modified timeline, time ``t`` being replaced by the return
+        of `time_func(t)`.
 
         Parameters
         ----------
@@ -351,37 +351,10 @@ class Clip:
         """
         self.memoize = memoize
 
-    @convert_parameter_to_seconds(["t"])
-    def is_playing(self, t):
-        """If ``t`` is a time, returns true if t is between the start and the end
-        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
-        array, returns False if none of the ``t`` is in the clip, else returns a
-        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
-        """
-        if isinstance(t, np.ndarray):
-            # is the whole list of t outside the clip ?
-            tmin, tmax = t.min(), t.max()
-
-            if (self.end is not None) and (tmin >= self.end):
-                return False
-
-            if tmax < self.start:
-                return False
-
-            # If we arrive here, a part of t falls in the clip
-            result = 1 * (t >= self.start)
-            if self.end is not None:
-                result *= t <= self.end
-            return result
-
-        else:
-            return (t >= self.start) and ((self.end is None) or (t < self.end))
-
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
-    def subclip(self, start_time=0, end_time=None):
+    def with_subclip(self, start_time=0, end_time=None):
         """Returns a clip playing the content of the current clip between times
         ``start_time`` and ``end_time``, which can be expressed in seconds
         (15.35), in (min, sec), in (hour, min, sec), or as a string:
@@ -407,7 +380,7 @@ class Clip:
           For instance:
 
           >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.subclip(0, -2)
+          >>> new_clip = clip.with_subclip(0, -2)
 
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
@@ -449,7 +422,7 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def cutout(self, start_time, end_time):
+    def with_cutout(self, start_time, end_time):
         """
         Returns a clip playing the content of the current clip but
         skips the extract between ``start_time`` and ``end_time``, which can be
@@ -538,6 +511,34 @@ class Clip:
             else:
                 yield frame
 
+    @convert_parameter_to_seconds(["t"])
+    def is_playing(self, t):
+        """If ``t`` is a time, returns true if t is between the start and the end
+        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
+        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
+        array, returns False if none of the ``t`` is in the clip, else returns a
+        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
+        """
+        if isinstance(t, np.ndarray):
+            # is the whole list of t outside the clip ?
+            tmin, tmax = t.min(), t.max()
+
+            if (self.end is not None) and (tmin >= self.end):
+                return False
+
+            if tmax < self.start:
+                return False
+
+            # If we arrive here, a part of t falls in the clip
+            result = 1 * (t >= self.start)
+            if self.end is not None:
+                result *= t <= self.end
+            return result
+
+        else:
+            return (t >= self.start) and ((self.end is None) or (t < self.end))
+
+
     def close(self):
         """Release any resources that are in use."""
         #    Implementation note for subclasses:
@@ -584,7 +585,7 @@ class Clip:
 
         Simple slicing is implemented via `subclip`.
         So, ``clip[t_start:t_end]`` is equivalent to
-        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not
+        ``clip.with_subclip(t_start, t_end)``. If ``t_start`` is not
         given, default to ``0``, if ``t_end`` is not given,
         default to ``self.duration``.
 
@@ -609,7 +610,7 @@ class Clip:
         if isinstance(key, slice):
             # support for [start:end:speed] slicing. If speed is negative
             # a time mirror is applied.
-            clip = self.subclip(key.start or 0, key.stop or self.duration)
+            clip = self.with_subclip(key.start or 0, key.stop or self.duration)
 
             if key.step:
                 # change speed of the subclip

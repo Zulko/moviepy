@@ -17,4 +17,4 @@ def make_loopable(clip, overlap_duration):
     clip2 = clip.fx(transfx.crossfadein, overlap_duration).with_start(
         clip.duration - overlap_duration
     )
-    return CompositeVideoClip([clip, clip2]).subclip(overlap_duration, clip.duration)
+    return CompositeVideoClip([clip, clip2]).with_subclip(overlap_duration, clip.duration)

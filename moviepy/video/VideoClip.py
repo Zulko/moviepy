@@ -142,7 +142,7 @@ class VideoClip(Clip):
 
         This method is intensively used to produce new clips every time
         there is an outplace transformation of the clip (clip.resize,
-        clip.subclip, etc.)
+        clip.with_subclip, etc.)
 
         Acts like a deepcopy except for the fact that readers and other
         possible unpickleables objects are not copied.
@@ -318,7 +318,7 @@ class VideoClip(Clip):
         --------
 
         >>> from moviepy import VideoFileClip
-        >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
+        >>> clip = VideoFileClip("myvideo.mp4").with_subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()
 
@@ -593,9 +593,9 @@ class VideoClip(Clip):
         >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
 
         """
-        left = None if (start_time == 0) else self.subclip(0, start_time)
-        center = self.subclip(start_time, end_time).fx(fx, **kwargs)
-        right = None if (end_time is None) else self.subclip(start_time=end_time)
+        left = None if (start_time == 0) else self.with_subclip(0, start_time)
+        center = self.with_subclip(start_time, end_time).fx(fx, **kwargs)
+        right = None if (end_time is None) else self.with_subclip(start_time=end_time)
 
         clips = [clip for clip in [left, center, right] if clip is not None]
 
@@ -701,7 +701,7 @@ class VideoClip(Clip):
         pos = map(int, pos)
         return blit(im_img, picture, pos, mask=im_mask)
 
-    def add_mask(self):
+    def with_add_mask(self):
         """Add a mask VideoClip to the VideoClip.
 
         Returns a copy of the clip with a completely opaque mask
@@ -722,7 +722,7 @@ class VideoClip(Clip):
             mask = VideoClip(is_mask=True, make_frame=make_frame)
             return self.with_mask(mask.with_duration(self.duration))
 
-    def on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
+    def with_on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
         """Place the clip on a colored background.
 
         Returns a clip made of the current clip overlaid on a color
