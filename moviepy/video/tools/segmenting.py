@@ -37,7 +37,7 @@ def find_objects(clip, size_threshold=500, preview=False):
     """
     image = clip.get_frame(0)
     if not clip.mask:  # pragma: no cover
-        clip = clip.add_mask()
+        clip = clip.with_add_mask()
 
     mask = clip.mask.get_frame(0)
     labelled, num_features = ndi.measurements.label(image[:, :, 0])

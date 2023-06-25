@@ -44,7 +44,7 @@ def margin(
       Opacity of the margin. Setting this value to 0 yields transparent margins.
     """
     if (opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
-        clip = clip.add_mask()
+        clip = clip.with_add_mask()
 
     if margin_size is not None:
         left = right = top = bottom = margin_size
