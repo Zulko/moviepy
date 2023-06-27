@@ -13,6 +13,7 @@ from moviepy.audio import fx as afx
 from moviepy.audio.AudioClip import (
     AudioClip,
     CompositeAudioClip,
+    AudioArrayClip,
     concatenate_audioclips,
 )
 from moviepy.audio.io.AudioFileClip import AudioFileClip
@@ -85,6 +86,7 @@ __all__ = [
     "concatenate_videoclips",
     "download_webfile",
     "AudioClip",
+    "AudioArrayClip",
     "CompositeAudioClip",
     "concatenate_audioclips",
     "AudioFileClip",
