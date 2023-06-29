@@ -92,7 +92,7 @@ def test_detect_scenes():
 
 
 def test_find_video_period():
-    clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.5).loop(2)  # fps=25
+    clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.5).loop(2)  # fps=25
 
     # you need to increase the fps to get correct results
     assert round(find_video_period(clip, fps=70), 6) == 0.5
@@ -314,7 +314,7 @@ def test_FramesMatches_select_scenes(
 ):
     video_clip = VideoFileClip(filename)
     if subclip is not None:
-        video_clip = video_clip.subclip(subclip[0], subclip[1])
+        video_clip = video_clip.with_subclip(subclip[0], subclip[1])
     clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
     result = FramesMatches.from_clip(clip, 10, 3, logger=None).select_scenes(
         match_threshold,
@@ -327,7 +327,7 @@ def test_FramesMatches_select_scenes(
 
 
 def test_FramesMatches_write_gifs(util):
-    video_clip = VideoFileClip("media/chaplin.mp4").subclip(0, 0.2)
+    video_clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.2)
     clip = concatenate_videoclips([video_clip.fx(time_mirror), video_clip])
 
     # add matching frame starting at start < clip.start which should be ignored
@@ -1094,7 +1094,7 @@ def test_find_objects(filename, expected_screenpos):
             id="FakeClip",
         ),
         pytest.param(
-            VideoFileClip("media/chaplin.mp4").subclip(0, 1),
+            VideoFileClip("media/chaplin.mp4").with_subclip(0, 1),
             None,
             None,
             None,

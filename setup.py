@@ -3,7 +3,7 @@
 
 import sys
 from pathlib import Path
-
+from moviepy.version import __version__
 
 try:
     from setuptools import find_packages, setup
@@ -65,8 +65,6 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
-
 
 # Define the requirements for specific execution needs.
 requires = [
@@ -75,23 +73,19 @@ requires = [
     "imageio_ffmpeg>=0.2.0",
     "numpy>=1.17.3",
     "proglog<=1.0.0",
-]
-
-optional_reqs = [
     "pygame>=1.9.3",
     "python-dotenv>=0.10",
     "opencv-python",
     "scikit-image",
     "scikit-learn",
     "scipy",
-    "matplotlib",
-    "youtube_dl",
+    "pillow>=9.2.0,<11.0", # We are good at least up to v11
 ]
 
 doc_reqs = [
     "numpydoc<2.0",
-    "Sphinx==3.4.3",
-    "sphinx-rtd-theme==0.5.1",
+    "Sphinx==6.*",
+    "sphinx-rtd-theme==1.2.2",
 ]
 
 test_reqs = [
@@ -112,7 +106,6 @@ lint_reqs = [
 ]
 
 extra_reqs = {
-    "optional": optional_reqs,
     "doc": doc_reqs,
     "test": test_reqs,
     "lint": lint_reqs,

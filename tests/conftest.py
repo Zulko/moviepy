@@ -35,7 +35,7 @@ else:
 
 @functools.lru_cache(maxsize=None)
 def get_video(start_time=0, end_time=1):
-    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(
+    return VideoFileClip("media/big_buck_bunny_432_433.webm").with_subclip(
         start_time, end_time
     )
 

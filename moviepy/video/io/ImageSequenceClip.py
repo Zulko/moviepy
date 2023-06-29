@@ -38,6 +38,11 @@ class ImageSequenceClip(VideoClip):
 
     is_mask
       Will this sequence of pictures be used as an animated mask.
+
+    load_images
+      Specify that all images should be loaded into the RAM. This is only
+      interesting if you have a small number of images that will be used 
+      more than once.
     """
 
     def __init__(

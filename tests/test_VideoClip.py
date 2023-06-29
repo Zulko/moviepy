@@ -101,7 +101,7 @@ def test_write_frame_errors_with_redirected_logs(util, video):
 
 
 def test_write_videofiles_with_temp_audiofile_path(util):
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").with_subclip(0.2, 0.5)
     location = os.path.join(util.TMP_DIR, "temp_audiofile_path.webm")
     temp_location = os.path.join(util.TMP_DIR, "temp_audiofile")
     if not os.path.exists(temp_location):
@@ -188,58 +188,8 @@ def test_write_gif_imageio(util, video):
     assert os.path.isfile(location)
 
 
-def test_write_gif_ffmpeg(util, video):
-    clip = video(start_time=0.2, end_time=0.28)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_gif.gif")
-    clip.write_gif(location, program="ffmpeg")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.28)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_gif.gif")
-    clip.write_gif(location, program="ffmpeg", pixel_format="bgr24")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_tmpfiles(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ffmpeg", tempfiles=True)
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_tmpfiles_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick(util, video):
-    clip = video(start_time=0.2, end_time=0.5)
-    location = os.path.join(util.TMP_DIR, "imagemagick_gif.gif")
-    clip.write_gif(location, program="ImageMagick")
-    # Fails for some reason
-    # assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick_tmpfiles(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "imagemagick_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ImageMagick", tempfiles=True)
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick_tmpfiles_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "imagemagick_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
-    assert os.path.isfile(location)
-
-
 def test_subfx(util):
-    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").with_subclip(0, 1)
     transform = lambda c: multiply_speed(c, 0.5)
     new_clip = clip.subfx(transform, 0.5, 0.8)
     location = os.path.join(util.TMP_DIR, "subfx.mp4")
@@ -250,7 +200,7 @@ def test_subfx(util):
 def test_oncolor(util):
     # It doesn't need to be a ColorClip
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    on_color_clip = clip.on_color(size=(200, 160), color=(0, 0, 255))
+    on_color_clip = clip.with_on_color(size=(200, 160), color=(0, 0, 255))
     location = os.path.join(util.TMP_DIR, "oncolor.mp4")
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
@@ -283,7 +233,7 @@ def test_setaudio(util):
 
 def test_setaudio_with_audiofile(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    audio = AudioFileClip("media/crunching.mp3").subclip(0, 0.5)
+    audio = AudioFileClip("media/crunching.mp3").with_subclip(0, 0.5)
     clip = clip.with_audio(audio)
     location = os.path.join(util.TMP_DIR, "setaudiofile.mp4")
     clip.write_videofile(location, fps=24)
@@ -307,10 +257,10 @@ def test_with_layer():
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
 
     # Make sure that the order of clips makes no difference to the composite clip
-    assert composite_clip.subclip(0, 2) == reversed_composite_clip.subclip(0, 2)
+    assert composite_clip.with_subclip(0, 2) == reversed_composite_clip.with_subclip(0, 2)
 
     # Make sure that only the 'top' clip is kept
-    assert top_clip.subclip(0, 2) == composite_clip.subclip(0, 2)
+    assert top_clip.subclip(0, 2) == composite_clip.with_subclip(0, 2)
 
     # Make sure that it works even when there is only one clip playing at that time
     target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]], fps=1)

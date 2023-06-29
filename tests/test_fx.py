@@ -1382,7 +1382,7 @@ def test_multiply_volume_videoclip():
     start_time, end_time = (0.1, 0.2)
 
     clip = multiply_volume(
-        VideoFileClip("media/chaplin.mp4").subclip(0, 0.3),
+        VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.3),
         0,
         start_time=start_time,
         end_time=end_time,

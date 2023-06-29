@@ -235,7 +235,7 @@ def test_issue_334(util):
     avatar.with_mask(maskclip)  # must set maskclip here..
     concatenated = avatar * 3
 
-    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
+    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").with_subclip(0, 3)
     # TODO: Setting mask here does not work:
     # .with_mask(maskclip).resize(size)])
     final = CompositeVideoClip([tt, concatenated.with_position(posi).fx(resize, size)])
@@ -362,13 +362,13 @@ def test_issue_470(util):
     audio_clip = AudioFileClip("media/crunching.mp3")
 
     # end_time is out of bounds
-    subclip = audio_clip.subclip(start_time=6, end_time=9)
+    subclip = audio_clip.with_subclip(start_time=6, end_time=9)
 
     with pytest.raises(IOError):
         subclip.write_audiofile(wav_filename, write_logfile=True)
 
     # but this one should work..
-    subclip = audio_clip.subclip(start_time=6, end_time=8)
+    subclip = audio_clip.with_subclip(start_time=6, end_time=8)
     subclip.write_audiofile(wav_filename, write_logfile=True)
 
 
@@ -386,7 +386,7 @@ def test_issue_547():
 
 
 def test_issue_636():
-    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 11) as video:
+    with VideoFileClip("media/big_buck_bunny_0_30.webm").with_subclip(0, 11) as video:
         with video.subclip(0, 1) as _:
             pass
 
@@ -395,9 +395,9 @@ def test_issue_655():
     video_file = "media/fire2.mp4"
     for subclip in [(0, 2), (1, 2), (2, 3)]:
         with VideoFileClip(video_file) as v:
-            with v.subclip(1, 2) as _:
+            with v.with_subclip(1, 2) as _:
                 pass
-            next(v.subclip(*subclip).iter_frames())
+            next(v.with_subclip(*subclip).iter_frames())
     assert True
 
 
