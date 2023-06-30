@@ -1400,7 +1400,7 @@ class TextClip(ImageClip):
             # since we have to reference from middle line.
             y += text_height/2
 
-            draw.multiline_text(xy=(x, y), text=text, fill=color, font=pil_font, spacing=interline, align=text_align stroke_width=stroke_width, 
+            draw.multiline_text(xy=(x, y), text=text, fill=color, font=pil_font, spacing=interline, align=text_align, stroke_width=stroke_width, 
                       stroke_fill=stroke_color, anchor="lm")
             
             # We just need the image as a numpy array
