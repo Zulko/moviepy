@@ -1323,7 +1323,7 @@ class TextClip(ImageClip):
 
             if filename:
                 with open(filename, 'r') as file:
-                    text = file.read()
+                    text = file.read().rstrip() # Remove newline at end
 
             if text is None :
                 raise ValueError("No text nor filename provided")
@@ -1398,7 +1398,7 @@ class TextClip(ImageClip):
             # margin (the diff between ascender and top) on any text.
             # That mean our Y is actually not from 0 for top, but need to be increment by half our text height,
             # since we have to reference from middle line.
-            y += text_height/2
+            y += text_height / 2
 
             draw.multiline_text(xy=(x, y), text=text, fill=color, font=pil_font, spacing=interline, align=text_align, stroke_width=stroke_width, 
                       stroke_fill=stroke_color, anchor="lm")
