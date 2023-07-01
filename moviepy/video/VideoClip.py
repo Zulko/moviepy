@@ -543,7 +543,7 @@ class VideoClip(Clip):
         clips = [clip for clip in [left, center, right] if clip is not None]
 
         # beurk, have to find other solution
-        from moviepy.video.compositing.concatenate import concatenate_videoclips
+        from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
         return concatenate_videoclips(clips).with_start(self.start)
 
@@ -855,7 +855,7 @@ class VideoClip(Clip):
 
     def __add__(self, other):
         if isinstance(other, VideoClip):
-            from moviepy.video.compositing.concatenate import concatenate_videoclips
+            from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
             method = "chain" if self.size == other.size else "compose"
             return concatenate_videoclips([self, other], method=method)
@@ -964,6 +964,7 @@ class UpdatedVideoClip(VideoClip):
         self.world = world
 
         def make_frame(t):
+            print(t)
             while self.world.clip_t < t:
                 world.update()
             return world.to_frame()

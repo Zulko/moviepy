@@ -7,7 +7,7 @@ from PIL import Image
 
 import pytest
 
-from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
 from moviepy.video.io.gif_writers import write_gif
 from moviepy.video.io.VideoFileClip import VideoFileClip

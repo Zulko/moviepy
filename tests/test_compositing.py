@@ -6,8 +6,7 @@ import numpy as np
 
 import pytest
 
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array
-from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array, concatenate_videoclips
 from moviepy.video.compositing.transitions import slide_in, slide_out
 from moviepy.video.fx.resize import resize
 from moviepy.video.VideoClip import BitmapClip, ColorClip

@@ -13,7 +13,7 @@ import pytest
 from moviepy.audio.AudioClip import AudioClip, CompositeAudioClip
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.audio.tools.cuts import find_audio_period
-from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 from moviepy.video.fx.loop import loop
 from moviepy.video.fx.time_mirror import time_mirror
 from moviepy.video.io.VideoFileClip import VideoFileClip
