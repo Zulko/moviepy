@@ -33,6 +33,8 @@ from moviepy.video.VideoClip import (
     ImageClip,
     TextClip,
     VideoClip,
+    DataVideoClip,
+    UpdatedVideoClip,
 )
 
 
@@ -75,6 +77,8 @@ del inspect
 __all__ = [
     "__version__",
     "VideoClip",
+    "DataVideoClip",
+    "UpdatedVideoClip",
     "ImageClip",
     "ColorClip",
     "TextClip",
