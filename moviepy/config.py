@@ -19,12 +19,13 @@ except ImportError:
     DOTENV = None
 
 FFMPEG_BINARY = os.getenv("FFMPEG_BINARY", "ffmpeg-imageio")
+FFPLAY_BINARY = os.getenv("FFPLAY_BINARY", "auto-detect")
 
 IS_POSIX_OS = os.name == "posix"
 
 
 def try_cmd(cmd):
-    """TODO: add documentation"""
+    """Verify if the OS support command invocation as expected by moviepy"""
     try:
         popen_params = cross_platform_popen_params(
             {"stdout": sp.PIPE, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
@@ -55,6 +56,22 @@ else:
         raise IOError(
             f"{err} - The path specified for the ffmpeg binary might be wrong"
         )
+    
+
+if FFPLAY_BINARY == "auto-detect":
+    if try_cmd(["ffplay"])[0]:
+        FFPLAY_BINARY = "ffplay"
+    elif not IS_POSIX_OS and try_cmd(["ffplay.exe"])[0]:
+        FFPLAY_BINARY = "ffplay.exe"
+    else:  # pragma: no cover
+        FFPLAY_BINARY = "unset"
+else:
+    success, err = try_cmd([FFPLAY_BINARY])
+    if not success:
+        raise IOError(
+            f"{err} - The path specified for the ffmpeg binary might be wrong"
+        )
+
 
 def check():
     """Check if moviepy has found the binaries for FFmpeg."""
@@ -62,6 +79,11 @@ def check():
         print(f"MoviePy: ffmpeg successfully found in '{FFMPEG_BINARY}'.")
     else:  # pragma: no cover
         print(f"MoviePy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
+
+    if try_cmd([FFPLAY_BINARY])[0]:
+        print(f"MoviePy: ffmpeg successfully found in '{FFPLAY_BINARY}'.")
+    else:  # pragma: no cover
+        print(f"MoviePy: can't find or access ffmpeg in '{FFPLAY_BINARY}'.")
 
     if DOTENV:
         print(f"\n.env file content at {DOTENV}:\n")

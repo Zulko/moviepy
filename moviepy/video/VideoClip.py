@@ -560,7 +560,23 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
     def fill_array(self, pre_array, shape=(0, 0)):
-        """TODO: needs documentation."""
+        """Fills an array to match the specified shape.
+
+        If the `pre_array` is smaller than the desired shape, the missing rows or columns are added with ones to the bottom or right,
+        respectively, until the shape matches. If the `pre_array` is larger than the desired shape, the excess rows or columns are cropped
+        from the bottom or right, respectively, until the shape matches.
+
+        The resulting array with the filled shape is returned.
+
+        Parameters
+        ------------
+        pre_array (numpy.ndarray)
+          The original array to be filled.
+            
+        shape (tuple)
+          The desired shape of the resulting array.
+
+        """
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
         dy = shape[1] - pre_shape[1]
@@ -964,7 +980,6 @@ class UpdatedVideoClip(VideoClip):
         self.world = world
 
         def make_frame(t):
-            print(t)
             while self.world.clip_t < t:
                 world.update()
             return world.to_frame()

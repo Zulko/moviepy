@@ -206,6 +206,12 @@ class AudioClip(Clip):
         nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
 
+        buffersize
+          The sound is not generated all at once, but rather made by bunches
+          of frames (chunks). ``buffersize`` is the size of such a chunk.
+          Try varying it if you meet audio problems (but you shouldn't
+          have to). Default to 2000
+
         codec
           Which audio codec should be used. If None provided, the codec is
           determined based on the extension of the filename. Choose

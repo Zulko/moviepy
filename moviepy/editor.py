@@ -17,6 +17,7 @@ from moviepy import *
 from moviepy.video.io.html_tools import ipython_display
 
 
+
 try:
     from moviepy.video.io.sliders import sliders
 except ImportError:
@@ -40,7 +41,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
-    from moviepy.video.io.preview import preview, show
+    from moviepy.video.io.preview import show, preview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -56,7 +57,7 @@ VideoClip.preview = preview
 VideoClip.show = show
 
 try:
-    from moviepy.audio.io.preview import preview
+    from moviepy.audio.io.ffmpeg_audiopreviewer import ffmpeg_audiopreview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -64,8 +65,8 @@ except ImportError:
         raise ImportError("clip.preview requires Pygame installed")
 
 
-AudioClip.preview = preview
+AudioClip.preview = ffmpeg_audiopreview
 
 __all__ = moviepy.__all__ + ["ipython_display", "sliders"]
 
-del preview, show
+del show, preview, ffmpeg_audiopreview

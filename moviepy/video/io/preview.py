@@ -2,9 +2,8 @@
 
 import threading
 import time
-
 import numpy as np
-import pygame as pg
+from PIL import Image
 
 from moviepy.decorators import (
     convert_masks_to_RGB,
@@ -13,23 +12,12 @@ from moviepy.decorators import (
 )
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-
-pg.init()
-pg.display.set_caption("MoviePy")
-
-
-def imdisplay(imarray, screen=None):
-    """Splashes the given image array on the given pygame screen."""
-    a = pg.surfarray.make_surface(imarray.swapaxes(0, 1))
-    if screen is None:
-        screen = pg.display.set_mode(imarray.shape[:2][::-1])
-    screen.blit(a, (0, 0))
-    pg.display.flip()
+from moviepy.video.io.ffmpeg_previewer import ffmpeg_preview_video
 
 
 @convert_masks_to_RGB
 @convert_parameter_to_seconds(["t"])
-def show(clip, t=0, with_mask=True, interactive=False):
+def show(clip, t=0, with_mask=True):
     """
     Splashes the frame of clip corresponding to time ``t``.
 
@@ -43,10 +31,6 @@ def show(clip, t=0, with_mask=True, interactive=False):
       ``False`` if the clip has a mask but you want to see the clip without
       the mask.
 
-    interactive : bool, optional
-      Displays the image freezed and you can clip in each pixel to see the
-      pixel number and its color.
-
     Examples
     --------
 
@@ -59,22 +43,9 @@ def show(clip, t=0, with_mask=True, interactive=False):
         clip = CompositeVideoClip([clip.with_position((0, 0))])
 
     img = clip.get_frame(t)
-    imdisplay(img)
+    pil_img = Image.fromarray(img)
 
-    if interactive:
-        result = []
-        while True:
-            for event in pg.event.get():
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_ESCAPE:
-                        print("Keyboard interrupt")
-                        return result
-                elif event.type == pg.MOUSEBUTTONDOWN:
-                    x, y = pg.mouse.get_pos()
-                    rgb = img[y, x]
-                    result.append({"position": (x, y), "color": rgb})
-                    print("position, color : ", "%s, %s" % (str((x, y)), str(rgb)))
-            time.sleep(0.03)
+    pil_img.show()
 
 
 @requires_duration
@@ -85,8 +56,7 @@ def preview(
     audio=True,
     audio_fps=22050,
     audio_buffersize=3000,
-    audio_nbytes=2,
-    fullscreen=False,
+    audio_nbytes=2
 ):
     """
     Displays the clip in a window, at the given frames per second (of movie)
@@ -98,7 +68,7 @@ def preview(
     ----------
 
     fps : int, optional
-      Number of frames per seconds in the displayed video.
+      Number of frames per seconds in the displayed video. Default to ``15``.
 
     audio : bool, optional
       ``True`` (default) if you want the clip's audio be played during
@@ -113,9 +83,6 @@ def preview(
     audio_nbytes : int, optional
       The number of bytes used generating the audio sound.
 
-    fullscreen : bool, optional
-      ``True`` if you want the preview to be displayed fullscreen.
-
     Examples
     --------
 
@@ -124,20 +91,15 @@ def preview(
     >>> clip = VideoFileClip("media/chaplin.mp4")
     >>> clip.preview(fps=10, audio=False)
     """
-    if fullscreen:
-        flags = pg.FULLSCREEN
-    else:
-        flags = 0
-
-    # compute and splash the first image
-    screen = pg.display.set_mode(clip.size, flags)
 
     audio = audio and (clip.audio is not None)
+    audio_flag = None
+    video_flag = None
 
     if audio:
         # the sound will be played in parallel. We are not
         # parralellizing it on different CPUs because it seems that
-        # pygame and openCV already use several cpus it seems.
+        # ffplay use several cpus.
 
         # two synchro-flags to tell whether audio and video are ready
         video_flag = threading.Event()
@@ -149,39 +111,5 @@ def preview(
         )
         audiothread.start()
 
-    img = clip.get_frame(0)
-    imdisplay(img, screen)
-    if audio:  # synchronize with audio
-        video_flag.set()  # say to the audio: video is ready
-        audio_flag.wait()  # wait for the audio to be ready
-
-    result = []
-
-    t0 = time.time()
-    for t in np.arange(1.0 / fps, clip.duration - 0.001, 1.0 / fps):
-        img = clip.get_frame(t)
-
-        for event in pg.event.get():
-            if event.type == pg.QUIT or (
-                event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE
-            ):
-                if audio:
-                    video_flag.clear()
-                print("Interrupt")
-                pg.quit()
-                return result
-
-            elif event.type == pg.MOUSEBUTTONDOWN:
-                x, y = pg.mouse.get_pos()
-                rgb = img[y, x]
-                result.append({"time": t, "position": (x, y), "color": rgb})
-                print(
-                    "time, position, color : ",
-                    "%.03f, %s, %s" % (t, str((x, y)), str(rgb)),
-                )
-
-        t1 = time.time()
-        time.sleep(max(0, t - (t1 - t0)))
-        imdisplay(img, screen)
-
-    pg.quit()
+    # passthrough to ffmpeg, passing flag for ffmpeg to set
+    ffmpeg_preview_video(clip=clip, fps=fps, audio_flag=audio_flag, video_flag=video_flag)

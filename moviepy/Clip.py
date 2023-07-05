@@ -78,7 +78,6 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
-            # print(t)
             return self.make_frame(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
