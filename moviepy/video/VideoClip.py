@@ -1153,6 +1153,11 @@ class TextClip(ImageClip):
         Parameters
         ----------
 
+        font
+          Path to the font to use. Must be an OpenType font.
+          See ``TextClip.list('font')`` for the list of fonts you can use on
+          your computer.
+
         text
           A string of the text to write. Can be replaced by argument
           ``filename``.
@@ -1166,11 +1171,6 @@ class TextClip(ImageClip):
           Font size in point. Can be auto-set if method='caption',
           or if method='label' and size is set.
 
-        font
-          Path to the font to use. Must be an OpenType font.
-          See ``TextClip.list('font')`` for the list of fonts you can use on
-          your computer.
-
         size
           Size of the picture in pixels. Can be auto-set if
           method='label' and font_size is set, but mandatory if method='caption'.
@@ -1183,8 +1183,9 @@ class TextClip(ImageClip):
           hexadecimal notation.
 
         color
-          Color of the text. See ``TextClip.list('color')`` for a
-          list of acceptable names.
+          Color of the text. Default to "black". Can be
+          a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+          hexadecimal notation.
 
         
         stroke_color
@@ -1217,6 +1218,9 @@ class TextClip(ImageClip):
         transparent
           ``True`` (default) if you want to take into account the
           transparency in the image.
+
+        duration
+            Duration of the clip
         """
 
         @convert_path_to_string("filename")
