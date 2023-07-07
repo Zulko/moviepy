@@ -1,17 +1,5 @@
 import numpy as np
-
-
-# ------- CHECKING DEPENDENCIES -----------------------------------------
-try:
-    import cv2
-
-    headblur_possible = True
-    if cv2.__version__ >= "3.0.0":
-        cv2.CV_AA = cv2.LINE_AA
-except Exception:
-    headblur_possible = False
-# -----------------------------------------------------------------------
-
+from PIL import Image, ImageDraw, ImageFilter
 
 def headblur(clip, fx, fy, radius, intensity=None):
     """Returns a filter that will blur a moving part (a head ?) of the frames.
@@ -31,31 +19,15 @@ def headblur(clip, fx, fy, radius, intensity=None):
         x, y = int(fx(t)), int(fy(t))
         x1, x2 = max(0, x - radius), min(x + radius, w)
         y1, y2 = max(0, y - radius), min(y + radius, h)
-        region_size = y2 - y1, x2 - x1
 
-        mask = np.zeros(region_size).astype("uint8")
-        cv2.circle(mask, (radius, radius), radius, 255, -1, lineType=cv2.CV_AA)
+        image = Image.fromarray(im)
+        mask = Image.new('RGB', image.size)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse([x1, y1, x2, y2],fill=(255,255,255))
 
-        mask = np.dstack(3 * [(1.0 / 255) * mask])
+        blurred = image.filter(ImageFilter.GaussianBlur(radius=15))
 
-        orig = im[y1:y2, x1:x2]
-        blurred = cv2.blur(orig, (intensity, intensity))
-        im[y1:y2, x1:x2] = mask * blurred + (1 - mask) * orig
-        return im
+        res = np.where(np.array(mask) > 0, np.array(blurred), np.array(image)) 
+        return res
 
     return clip.transform(filter)
-
-
-# ------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------
-if not headblur_possible:
-    doc = headblur.__doc__
-
-    def headblur(clip, fx, fy, r_zone, r_blur=None):
-        """Fallback headblur FX function, used if OpenCV is not installed.
-
-        This docstring will be replaced at runtime.
-        """
-        raise IOError("fx painting needs opencv")
-
-    headblur.__doc__ = doc
-# -----------------------------------------------------------------------
