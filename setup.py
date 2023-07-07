@@ -73,12 +73,7 @@ requires = [
     "imageio_ffmpeg>=0.2.0",
     "numpy>=1.17.3",
     "proglog<=1.0.0",
-    "pygame>=1.9.3",
     "python-dotenv>=0.10",
-    "opencv-python",
-    "scikit-image",
-    "scikit-learn",
-    "scipy",
     "pillow>=9.2.0,<11.0", # We are good at least up to v11
 ]
 
