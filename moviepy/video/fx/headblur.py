@@ -6,9 +6,6 @@ def headblur(clip, fx, fy, radius, intensity=None):
 
     The position of the blur at time t is defined by (fx(t), fy(t)), the radius
     of the blurring by ``radius`` and the intensity of the blurring by ``intensity``.
-
-    Requires OpenCV for the circling and the blurring. Automatically deals with the
-    case where part of the image goes offscreen.
     """
     if intensity is None:
         intensity = int(2 * radius / 3)
