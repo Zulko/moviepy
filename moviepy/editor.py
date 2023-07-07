@@ -4,8 +4,6 @@ for live editing by simply typing:
 
 >>> from moviepy.editor import *
 
-- Starts a pygame session to enable ``clip.show()`` and ``clip.preview()``
-  if pygame is installed
 - Enables ``clip.ipython_display()`` if in an IPython Notebook
 - Allows the use of ``sliders`` if Matplotlib is installed
 """
@@ -31,13 +29,6 @@ except ImportError:
 VideoClip.ipython_display = ipython_display
 AudioClip.ipython_display = ipython_display
 
-
-# -----------------------------------------------------------------
-# Previews: try to import pygame, else make methods which raise
-# exceptions saying to install PyGame
-
-# Hide the welcome message from pygame: https://github.com/pygame/pygame/issues/542
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 
 # Add methods preview and show (only if pygame installed)
 try:
