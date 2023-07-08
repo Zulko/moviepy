@@ -9,7 +9,7 @@ from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
 
 
-class FFMPEG_AudioPreviewer:
+class FFPLAY_AudioPreviewer:
     """
     A class to preview an AudioClip.
 
@@ -104,7 +104,7 @@ class FFMPEG_AudioPreviewer:
 
 
 @requires_duration
-def ffmpeg_audiopreview(
+def ffplay_audiopreview(
     clip,
     fps=None,
     buffersize=2000,
@@ -113,7 +113,7 @@ def ffmpeg_audiopreview(
     video_flag=None
 ):
     """
-    A function that wraps the FFMPEG_AudioPreviewer to preview an AudioClip
+    A function that wraps the FFPLAY_AudioPreviewer to preview an AudioClip
 
     Parameters
     ----------
@@ -144,7 +144,7 @@ def ffmpeg_audiopreview(
         else:
             fps = clip.fps
 
-    with FFMPEG_AudioPreviewer(
+    with FFPLAY_AudioPreviewer(
         fps,
         nbytes,
         clip.nchannels

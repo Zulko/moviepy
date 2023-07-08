@@ -12,8 +12,8 @@ from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
 from moviepy.tools import cross_platform_popen_params
 
 
-class FFMPEG_VideoPreviewer:
-    """A class for FFMPEG-based (ffplay) video preview.
+class FFPLAY_VideoPreviewer:
+    """A class for FFPLAY-based video preview.
 
     Parameters
     ----------
@@ -91,7 +91,7 @@ class FFMPEG_VideoPreviewer:
         self.close()
 
 
-def ffmpeg_preview_video(
+def ffplay_preview_video(
     clip,
     fps,
     pixel_format=None,
@@ -125,7 +125,7 @@ def ffmpeg_preview_video(
         pixel_format = "rgba" if clip.mask is not None else "rgb24"
 
 
-    with FFMPEG_VideoPreviewer(
+    with FFPLAY_VideoPreviewer(
         clip.size,
         fps,
         pixel_format

@@ -48,7 +48,7 @@ VideoClip.preview = preview
 VideoClip.show = show
 
 try:
-    from moviepy.audio.io.ffmpeg_audiopreviewer import ffmpeg_audiopreview
+    from moviepy.audio.io.ffplay_audiopreviewer import ffplay_audiopreview
 except ImportError:
 
     def preview(self, *args, **kwargs):
@@ -56,8 +56,8 @@ except ImportError:
         raise ImportError("clip.preview requires Pygame installed")
 
 
-AudioClip.preview = ffmpeg_audiopreview
+AudioClip.preview = ffplay_audiopreview
 
 __all__ = moviepy.__all__ + ["ipython_display", "sliders"]
 
-del show, preview, ffmpeg_audiopreview
+del show, preview, ffplay_audiopreview

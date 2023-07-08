@@ -12,7 +12,7 @@ from moviepy.decorators import (
 )
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-from moviepy.video.io.ffmpeg_previewer import ffmpeg_preview_video
+from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
 
 @convert_masks_to_RGB
@@ -112,4 +112,4 @@ def preview(
         audiothread.start()
 
     # passthrough to ffmpeg, passing flag for ffmpeg to set
-    ffmpeg_preview_video(clip=clip, fps=fps, audio_flag=audio_flag, video_flag=video_flag)
+    ffplay_preview_video(clip=clip, fps=fps, audio_flag=audio_flag, video_flag=video_flag)
