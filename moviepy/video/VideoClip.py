@@ -460,9 +460,7 @@ class VideoClip(Clip):
         self,
         filename,
         fps=None,
-        opt="nq",
         loop=0,
-        colors=None,
         logger="bar",
     ):
         """Write the VideoClip to a GIF file.
@@ -480,15 +478,8 @@ class VideoClip(Clip):
           isn't provided, then the function will look for the clip's
           ``fps`` attribute (VideoFileClip, for instance, have one).
 
-        opt
-          Optimalization to apply. If program='imageio', opt must be either 'wu'
-          (Wu) or 'nq' (Neuquant).
-
         loop : int, optional
           Repeat the clip using ``loop`` iterations in the resulting GIF.
-
-        colors : int, optional
-          Defines the maximum number of colors that the output image will have.
 
         progress_bar
           If True, displays a progress bar
@@ -512,9 +503,7 @@ class VideoClip(Clip):
             self,
             filename,
             fps=fps,
-            opt=opt,
             loop=loop,
-            colors=colors,
             logger=logger,
         )
 
