@@ -80,7 +80,7 @@ requires = [
 doc_reqs = [
     "numpydoc<2.0",
     "Sphinx==6.*",
-    "sphinx-rtd-theme==1.2.2",
+    "pydata-sphinx-theme==0.13",
 ]
 
 test_reqs = [

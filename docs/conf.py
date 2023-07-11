@@ -5,7 +5,7 @@
 import os
 import sys
 
-import sphinx_rtd_theme
+import pydata_sphinx_theme
 
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -26,10 +26,13 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
     "numpydoc",
+    "sphinx.ext.autosectionlabel",
 ]
 
+autosectionlabel_prefix_document = True
+
 numpydoc_class_members_toctree = False
-numpydoc_show_class_members = False
+numpydoc_show_class_members = True
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -99,8 +102,7 @@ pygments_style = "sphinx"
 
 sys.path.append(os.path.abspath("_themes"))
 # html_theme_path = ['_themes']
-html_theme = "sphinx_rtd_theme"  # formerly 'kr'
-html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
