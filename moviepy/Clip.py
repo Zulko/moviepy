@@ -419,9 +419,9 @@ class Clip:
 
         if (self.duration is not None) and (start_time >= self.duration):
             raise ValueError(
-                "start_time (%.02f) " % start_time
+                f"start_time ({start_time:.02f}) "
                 + "should be smaller than the clip's "
-                + "duration (%.02f)." % self.duration
+                + f"duration ({self.duration:.02f})."
             )
 
         new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])

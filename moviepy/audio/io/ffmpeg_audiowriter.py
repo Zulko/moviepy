@@ -190,7 +190,7 @@ def ffmpeg_audiowrite(
     else:
         logfile = None
     logger = proglog.default_bar_logger(logger)
-    logger(message="MoviePy - Writing audio in %s" % filename)
+    logger(message=f"MoviePy - Writing audio in {filename}")
     writer = FFMPEG_AudioWriter(
         filename,
         fps,

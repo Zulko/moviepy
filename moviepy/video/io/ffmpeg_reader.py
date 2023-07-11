@@ -86,11 +86,11 @@ class FFMPEG_VideoReader:
             offset = min(1, start_time)
             i_arg = [
                 "-ss",
-                "%.06f" % (start_time - offset),
+                f"{start_time - offset:.06f}",
                 "-i",
                 self.filename,
                 "-ss",
-                "%.06f" % offset,
+                f"{offset:.06f}",
             ]
         else:
             i_arg = ["-i", self.filename]

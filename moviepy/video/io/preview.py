@@ -73,7 +73,7 @@ def show(clip, t=0, with_mask=True, interactive=False):
                     x, y = pg.mouse.get_pos()
                     rgb = img[y, x]
                     result.append({"position": (x, y), "color": rgb})
-                    print("position, color : ", "%s, %s" % (str((x, y)), str(rgb)))
+                    print("position, color : ", f"{str((x, y))}, {str(rgb)}")
             time.sleep(0.03)
 
 
@@ -177,7 +177,7 @@ def preview(
                 result.append({"time": t, "position": (x, y), "color": rgb})
                 print(
                     "time, position, color : ",
-                    "%.03f, %s, %s" % (t, str((x, y)), str(rgb)),
+                    f"{t:.03f}, {str((x, y))}, {str(rgb)}",
                 )
 
         t1 = time.time()
