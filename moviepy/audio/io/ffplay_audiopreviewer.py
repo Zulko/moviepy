@@ -2,9 +2,7 @@
 
 import subprocess as sp
 
-import proglog
-
-from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
+from moviepy.config import FFPLAY_BINARY
 from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
 

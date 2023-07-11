@@ -6,8 +6,6 @@
 
 import copy as _copy
 import os
-import subprocess as sp
-import tempfile
 from numbers import Real
 
 import numpy as np
@@ -15,7 +13,10 @@ import proglog
 from imageio import imread, imsave
 from PIL import Image, ImageDraw, ImageFont
 
-from typing import List, Dict
+import threading
+from moviepy.video.io.ffplay_previewer import ffplay_preview_video
+
+from typing import List
 
 from moviepy.Clip import Clip
 from moviepy.decorators import (
@@ -29,11 +30,10 @@ from moviepy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
+
 from moviepy.tools import (
-    cross_platform_popen_params,
     extensions_dict,
     find_extension,
-    subprocess_call,
 )
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import (
@@ -506,6 +506,114 @@ class VideoClip(Clip):
             loop=loop,
             logger=logger,
         )
+
+
+    # ===============================================================
+    # PREVIEW OPERATIONS
+
+    @convert_masks_to_RGB
+    @convert_parameter_to_seconds(["t"])
+    def show(self, t=0, with_mask=True):
+        """
+        Splashes the frame of clip corresponding to time ``t``.
+
+        Parameters
+        ----------
+
+        t : float or tuple or str, optional
+        Time in seconds of the frame to display.
+
+        with_mask : bool, optional
+        ``False`` if the clip has a mask but you want to see the clip without
+        the mask.
+
+        Examples
+        --------
+
+        >>> from moviepy import *
+        >>>
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> clip.show(t=4, interactive=True)
+        """
+        clip = self.copy()
+        if with_mask and (self.mask is not None):
+            # Hate it, but cannot figure a better way with python awful circular dependency
+            from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
+            clip = CompositeVideoClip([self.with_position((0, 0))])
+
+        img = clip.get_frame(t)
+        pil_img = Image.fromarray(img)
+
+        pil_img.show()
+
+
+    @requires_duration
+    @convert_masks_to_RGB
+    def preview(
+        self,
+        fps=15,
+        audio=True,
+        audio_fps=22050,
+        audio_buffersize=3000,
+        audio_nbytes=2
+    ):
+        """
+        Displays the clip in a window, at the given frames per second (of movie)
+        rate. It will avoid that the clip be played faster than normal, but it
+        cannot avoid the clip to be played slower than normal if the computations
+        are complex. In this case, try reducing the ``fps``.
+
+        Parameters
+        ----------
+
+        fps : int, optional
+        Number of frames per seconds in the displayed video. Default to ``15``.
+
+        audio : bool, optional
+        ``True`` (default) if you want the clip's audio be played during
+        the preview.
+
+        audio_fps : int, optional
+        The frames per second to use when generating the audio sound.
+
+        audio_buffersize : int, optional
+        The sized of the buffer used generating the audio sound.
+
+        audio_nbytes : int, optional
+        The number of bytes used generating the audio sound.
+
+        Examples
+        --------
+
+        >>> from moviepy import *
+        >>>
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> clip.preview(fps=10, audio=False)
+        """
+
+        audio = audio and (self.audio is not None)
+        audio_flag = None
+        video_flag = None
+
+        if audio:
+            # the sound will be played in parallel. We are not
+            # parralellizing it on different CPUs because it seems that
+            # ffplay use several cpus.
+
+            # two synchro-flags to tell whether audio and video are ready
+            video_flag = threading.Event()
+            audio_flag = threading.Event()
+            # launch the thread
+            audiothread = threading.Thread(
+                target=self.audio.preview,
+                args=(audio_fps, audio_buffersize, audio_nbytes, audio_flag, video_flag),
+            )
+            audiothread.start()
+
+        # passthrough to ffmpeg, passing flag for ffmpeg to set
+        ffplay_preview_video(clip=self, fps=fps, audio_flag=audio_flag, video_flag=video_flag)
+
 
     # -----------------------------------------------------------------
     # F I L T E R I N G

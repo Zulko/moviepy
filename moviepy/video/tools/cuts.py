@@ -28,7 +28,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Examples
     --------
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> from moviepy.video.tools.cuts import find_video_period
     >>>
     >>> clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 1).loop(2)
@@ -339,7 +339,7 @@ class FramesMatches(list):
         --------
 
         >>> from pprint import pprint
-        >>> from moviepy.editor import *
+        >>> from moviepy import *
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>>
         >>> ch_clip = VideoFileClip("media/chaplin.mp4").with_subclip(1, 4)
@@ -426,7 +426,7 @@ class FramesMatches(list):
 
         >>> import os
         >>> from pprint import pprint
-        >>> from moviepy.editor import *
+        >>> from moviepy import *
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>>
         >>> ch_clip = VideoFileClip("media/chaplin.mp4").with_subclip(1, 4)

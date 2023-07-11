@@ -23,7 +23,7 @@ from moviepy.video import fx as vfx, tools as videotools
 from moviepy.video.compositing import transitions as transfx
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array, concatenate_videoclips
 from moviepy.video.io import ffmpeg_tools
-from moviepy.video.io.downloader import download_webfile
+from moviepy.video.io.display_in_notebook import display_in_notebook
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import (
@@ -53,23 +53,12 @@ for name, function in video_fxs:
 for name, function in audio_fxs:
     setattr(AudioClip, name, function)
 
-
-def preview(self, *args, **kwargs):
-    """NOT AVAILABLE: clip.preview requires importing from moviepy.editor"""
-    raise ImportError("clip.preview requires importing from moviepy.editor")
-
-
-def show(self, *args, **kwargs):
-    """NOT AVAILABLE: clip.show requires importing from moviepy.editor"""
-    raise ImportError("clip.show requires importing from moviepy.editor")
-
-
-VideoClip.preview = preview
-VideoClip.show = show
-AudioClip.preview = preview
+# Add display in notebook to video and audioclip
+VideoClip.display_in_notebook = display_in_notebook
+AudioClip.display_in_notebook = display_in_notebook
 
 # Cleanup namespace
-del audio_fxs, video_fxs, name, function, preview, show
+del audio_fxs, video_fxs, name, function
 del inspect
 
 # Importing with `from moviepy import *` will only import these names
@@ -87,7 +76,6 @@ __all__ = [
     "clips_array",
     "ImageSequenceClip",
     "concatenate_videoclips",
-    "download_webfile",
     "AudioClip",
     "AudioArrayClip",
     "CompositeAudioClip",

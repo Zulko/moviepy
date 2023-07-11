@@ -1,9 +1,9 @@
-"""Implements ``ipython_display``, a function to embed images/videos/audio in the
-IPython Notebook.
+"""Implements ``display_in_notebook``, a function to embed images/videos/audio in the
+Jupyter Notebook.
 """
 
 # Notes:
-# All media are physically embedded in the IPython Notebook
+# All media are physically embedded in the Jupyter Notebook
 # (instead of simple links to the original files)
 # That is because most browsers use a cache system and they won't
 # properly refresh the media when the original files are changed.
@@ -89,7 +89,7 @@ def html_embed(
     Examples
     --------
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> # later ...
     >>> html_embed(clip, width=360)
     >>> html_embed(clip.audio)
@@ -149,7 +149,7 @@ def html_embed(
             raise ValueError(
                 "No file type is known for the provided file. Please provide "
                 "argument `filetype` (one of 'image', 'video', 'sound') to the "
-                "ipython display function."
+                "display_in_notebook function."
             )
 
     if filetype == "video":
@@ -162,7 +162,7 @@ def html_embed(
         except Exception:
             raise ValueError(
                 "This video extension cannot be displayed in the "
-                "IPython Notebook. Allowed extensions: " + allowed_exts
+                "Jupyter Notebook. Allowed extensions: " + allowed_exts
             )
 
     if filetype in ["audio", "video"]:
@@ -172,7 +172,7 @@ def html_embed(
                 (
                     "The duration of video %s (%.1f) exceeds the 'maxduration'"
                     " attribute. You can increase 'maxduration', by passing"
-                    " 'maxduration' parameter to ipython_display function."
+                    " 'maxduration' parameter to display_in_notebook function."
                     " But note that embedding large videos may take all the memory"
                     " away!"
                 )
@@ -191,7 +191,7 @@ def html_embed(
     return result
 
 
-def ipython_display(
+def display_in_notebook(
     clip,
     filetype=None,
     maxduration=60,
@@ -201,7 +201,7 @@ def ipython_display(
     center=True,
     **html_kwargs,
 ):
-    """Displays clip content in an IPython Notebook.
+    """Displays clip content in an Jupyter Notebook.
 
     Remarks: If your browser doesn't support HTML5, this should warn you.
     If nothing is displayed, maybe your file or filename is wrong.
@@ -246,19 +246,19 @@ def ipython_display(
     Examples
     --------
 
-    >>> from moviepy.editor import *
+    >>> from moviepy import *
     >>> # later ...
-    >>> clip.ipython_display(width=360)
-    >>> clip.audio.ipython_display()
+    >>> clip.display_in_notebook(width=360)
+    >>> clip.audio.display_in_notebook()
 
     >>> clip.write_gif("test.gif")
-    >>> ipython_display('test.gif')
+    >>> display_in_notebook('test.gif')
 
     >>> clip.save_frame("first_frame.jpeg")
-    >>> ipython_display("first_frame.jpeg")
+    >>> display_in_notebook("first_frame.jpeg")
     """
     if not ipython_available:
-        raise ImportError("Only works inside an IPython Notebook")
+        raise ImportError("Only works inside an Jupyter Notebook")
 
     if rd_kwargs is None:
         rd_kwargs = {}
