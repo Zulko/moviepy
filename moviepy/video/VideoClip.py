@@ -12,7 +12,7 @@ from numbers import Real
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+import imageio.v3 as iio
 from PIL import Image
 
 from moviepy.Clip import Clip
@@ -191,7 +191,7 @@ class VideoClip(Clip):
         else:
             im = im.astype("uint8")
 
-        imsave(filename, im)
+        iio.imwrite(filename, im)
 
     @requires_duration
     @use_clip_fps_by_default
@@ -1081,7 +1081,7 @@ class ImageClip(VideoClip):
 
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
-            img = imread(img)
+            img = iio.imread(img, index=0)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
