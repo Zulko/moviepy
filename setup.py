@@ -65,7 +65,7 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
+__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1]
 
 
 # Define the requirements for specific execution needs.
