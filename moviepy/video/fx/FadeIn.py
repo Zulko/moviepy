@@ -12,7 +12,7 @@ class FadeIn(Effect):
     masks too, where the initial color must be a number between 0 and 1.
 
     For cross-fading (progressive appearance or disappearance of a clip
-    over another clip, see ``transfx.crossfadein``
+    over another clip, see ``CrossFadeIn``
     """
 
     duration: float

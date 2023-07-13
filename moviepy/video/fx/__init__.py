@@ -4,6 +4,8 @@ from moviepy.video.fx.AccelDecel import AccelDecel
 from moviepy.video.fx.BlackAndWhite import BlackAndWhite
 from moviepy.video.fx.Blink import Blink
 from moviepy.video.fx.Crop import Crop
+from moviepy.video.fx.CrossFadeIn import CrossFadeIn
+from moviepy.video.fx.CrossFadeOut import CrossFadeOut
 from moviepy.video.fx.EvenSize import EvenSize
 from moviepy.video.fx.FadeIn import FadeIn
 from moviepy.video.fx.FadeOut import FadeOut
@@ -27,6 +29,8 @@ from moviepy.video.fx.Painting import Painting
 from moviepy.video.fx.Resize import Resize
 from moviepy.video.fx.Rotate import Rotate
 from moviepy.video.fx.Scroll import Scroll
+from moviepy.video.fx.SlideIn import SlideIn
+from moviepy.video.fx.SlideOut import SlideOut
 from moviepy.video.fx.SuperSample import SuperSample
 from moviepy.video.fx.TimeMirror import TimeMirror
 from moviepy.video.fx.TimeSymmetrize import TimeSymmetrize
@@ -37,6 +41,8 @@ __all__ = (
     "BlackAndWhite",
     "Blink",
     "Crop",
+    "CrossFadeIn",
+    "CrossFadeOut",
     "EvenSize",
     "FadeIn",
     "FadeOut",
@@ -60,6 +66,8 @@ __all__ = (
     "Resize",
     "Rotate",
     "Scroll",
+    "SlideIn",
+    "SlideOut",
     "SuperSample",
     "TimeMirror",
     "TimeSymmetrize",

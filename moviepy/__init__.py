@@ -20,7 +20,6 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.tools import convert_to_seconds
 from moviepy.version import __version__
 from moviepy.video import fx as vfx, tools as videotools
-from moviepy.video.compositing import transitions as transfx
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array, concatenate_videoclips
 from moviepy.video.io import ffmpeg_tools
 from moviepy.video.io.display_in_notebook import display_in_notebook
@@ -44,7 +43,6 @@ from moviepy.video.VideoClip import (
 audio_fxs = inspect.getmembers(afx, inspect.isfunction) + [("Loop", vfx.Loop)]
 video_fxs = (
     inspect.getmembers(vfx, inspect.isfunction)
-    + inspect.getmembers(transfx, inspect.isfunction)
     + audio_fxs
 )
 
@@ -82,9 +80,9 @@ __all__ = [
     "CompositeAudioClip",
     "concatenate_audioclips",
     "AudioFileClip",
+    "Effect",
     "vfx",
     "afx",
-    "transfx",
     "videotools",
     "ffmpeg_tools",
     "convert_to_seconds",
