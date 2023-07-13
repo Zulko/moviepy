@@ -9,6 +9,11 @@ from operator import add
 import numpy as np
 import proglog
 
+from typing import Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.Effect import Effect
+
 from moviepy.decorators import (
     apply_to_audio,
     apply_to_mask,
@@ -180,25 +185,27 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def fx(self, func, *args, **kwargs):
-        """Returns the result of ``func(self, *args, **kwargs)``, for instance
+    def with_effect(self, effects: Union['Effect', List['Effect']]):
+        """Return a copy of the current clip with the effects applied
 
-        >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
+        >>> new_clip = clip.with_effect(vfx.Resize(0.2, method="bilinear"))
 
-        is equivalent to
+        You can also pass multiple effect as a list
 
-        >>> new_clip = resize(clip, 0.2, method="bilinear")
-
-        The motivation of fx is to keep the name of the effect near its
-        parameters when the effects are chained:
-
-        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
-        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
-        >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
+        >>> clip.with_effect([vfx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
-        return func(self, *args, **kwargs)
+        if not isinstance(effects, list) :
+            effects = [effects]
 
+        new_clip = self.copy()
+        for effect in effects :
+            # We always copy effect before using it, see Effect.copy
+            # to see why we need to
+            effect_copy = effect.copy()
+            new_clip = effect_copy.apply(new_clip)
+
+        return new_clip
+    
     @apply_to_mask
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
@@ -288,6 +295,7 @@ class Clip:
                 raise ValueError("Cannot change clip start when new duration is None")
             self.start = self.end - duration
 
+
     @outplace
     def with_make_frame(self, make_frame):
         """Sets a ``make_frame`` attribute for the clip. Useful for setting
@@ -317,9 +325,9 @@ class Clip:
           fps is halved in this mode, the duration will be doubled.
         """
         if change_duration:
-            from moviepy.video.fx.multiply_speed import multiply_speed
+            from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
-            newclip = multiply_speed(self, fps / self.fps)
+            newclip = self.with_effect(MultiplySpeed(fps / self.fps))
         else:
             newclip = self.copy()
 
@@ -649,6 +657,6 @@ class Clip:
         if not isinstance(n, Real):
             return NotImplemented
 
-        from moviepy.video.fx.loop import loop
+        from moviepy.video.fx.Loop import Loop
 
-        return loop(self, n)
+        return self.with_effect(Loop(n))

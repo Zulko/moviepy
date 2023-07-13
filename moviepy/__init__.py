@@ -26,6 +26,7 @@ from moviepy.video.io import ffmpeg_tools
 from moviepy.video.io.display_in_notebook import display_in_notebook
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy import Effect
 from moviepy.video.VideoClip import (
     BitmapClip,
     ColorClip,
@@ -40,7 +41,7 @@ from moviepy.video.VideoClip import (
 # Transforms the effects into Clip methods so that
 # they can be called with clip.resize(width=500) instead of
 # clip.fx(vfx.resize, width=500)
-audio_fxs = inspect.getmembers(afx, inspect.isfunction) + [("loop", vfx.loop)]
+audio_fxs = inspect.getmembers(afx, inspect.isfunction) + [("Loop", vfx.Loop)]
 video_fxs = (
     inspect.getmembers(vfx, inspect.isfunction)
     + inspect.getmembers(transfx, inspect.isfunction)

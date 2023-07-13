@@ -3,8 +3,8 @@ There are available as ``transfx.crossfadein`` etc.
 """
 
 from moviepy.decorators import add_mask_if_none, requires_duration
-from moviepy.video.fx.fadein import fadein
-from moviepy.video.fx.fadeout import fadeout
+from moviepy.video.fx.FadeIn import FadeIn
+from moviepy.video.fx.FadeOut import FadeOut
 
 
 __all__ = ["crossfadein", "crossfadeout", "slide_in", "slide_out"]
@@ -18,7 +18,7 @@ def crossfadein(clip, duration):
     """
     clip.mask.duration = clip.duration
     new_clip = clip.copy()
-    new_clip.mask = clip.mask.fx(fadein, duration)
+    new_clip.mask = clip.mask.with_effect(FadeIn(duration))
     return new_clip
 
 
@@ -30,7 +30,7 @@ def crossfadeout(clip, duration):
     """
     clip.mask.duration = clip.duration
     new_clip = clip.copy()
-    new_clip.mask = clip.mask.fx(fadeout, duration)
+    new_clip.mask = clip.mask.with_effect(FadeOut(duration))
     return new_clip
 
 

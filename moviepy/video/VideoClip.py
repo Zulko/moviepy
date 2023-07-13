@@ -999,9 +999,9 @@ class VideoClip(Clip):
     def __matmul__(self, n):
         if not isinstance(n, Real):
             return NotImplemented
-        from moviepy.video.fx.rotate import rotate
-
-        return rotate(self, n)
+        
+        from moviepy.video.fx.Rotate import Rotate
+        return self.with_effect(Rotate(n))
 
     def __and__(self, mask):
         return self.with_mask(mask)

@@ -1,66 +1,66 @@
 # import every video fx function
 
-from moviepy.video.fx.accel_decel import accel_decel
-from moviepy.video.fx.blackwhite import blackwhite
-from moviepy.video.fx.blink import blink
-from moviepy.video.fx.crop import crop
-from moviepy.video.fx.even_size import even_size
-from moviepy.video.fx.fadein import fadein
-from moviepy.video.fx.fadeout import fadeout
-from moviepy.video.fx.freeze import freeze
-from moviepy.video.fx.freeze_region import freeze_region
-from moviepy.video.fx.gamma_corr import gamma_corr
-from moviepy.video.fx.headblur import headblur
-from moviepy.video.fx.invert_colors import invert_colors
-from moviepy.video.fx.loop import loop
-from moviepy.video.fx.lum_contrast import lum_contrast
-from moviepy.video.fx.make_loopable import make_loopable
-from moviepy.video.fx.margin import margin
-from moviepy.video.fx.mask_and import mask_and
-from moviepy.video.fx.mask_color import mask_color
-from moviepy.video.fx.mask_or import mask_or
-from moviepy.video.fx.mirror_x import mirror_x
-from moviepy.video.fx.mirror_y import mirror_y
-from moviepy.video.fx.multiply_color import multiply_color
-from moviepy.video.fx.multiply_speed import multiply_speed
-from moviepy.video.fx.painting import painting
-from moviepy.video.fx.resize import resize
-from moviepy.video.fx.rotate import rotate
-from moviepy.video.fx.scroll import scroll
-from moviepy.video.fx.supersample import supersample
-from moviepy.video.fx.time_mirror import time_mirror
-from moviepy.video.fx.time_symmetrize import time_symmetrize
+from moviepy.video.fx.AccelDecel import AccelDecel
+from moviepy.video.fx.BlackAndWhite import BlackAndWhite
+from moviepy.video.fx.Blink import Blink
+from moviepy.video.fx.Crop import Crop
+from moviepy.video.fx.EvenSize import EvenSize
+from moviepy.video.fx.FadeIn import FadeIn
+from moviepy.video.fx.FadeOut import FadeOut
+from moviepy.video.fx.Freeze import Freeze
+from moviepy.video.fx.FreezeRegion import FreezeRegion
+from moviepy.video.fx.GammaCorrection import GammaCorrection
+from moviepy.video.fx.HeadBlur import HeadBlur
+from moviepy.video.fx.InvertColors import InvertColors
+from moviepy.video.fx.Loop import Loop
+from moviepy.video.fx.LumContrast import LumContrast
+from moviepy.video.fx.MakeLoopable import MakeLoopable
+from moviepy.video.fx.Margin import Margin
+from moviepy.video.fx.MasksAnd import MasksAnd
+from moviepy.video.fx.MaskColor import MaskColor
+from moviepy.video.fx.MasksOr import MasksOr
+from moviepy.video.fx.MirrorX import MirrorX
+from moviepy.video.fx.MirrorY import MirrorY
+from moviepy.video.fx.MultiplyColor import MultiplyColor
+from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+from moviepy.video.fx.Painting import Painting
+from moviepy.video.fx.Resize import Resize
+from moviepy.video.fx.Rotate import Rotate
+from moviepy.video.fx.Scroll import Scroll
+from moviepy.video.fx.SuperSample import SuperSample
+from moviepy.video.fx.TimeMirror import TimeMirror
+from moviepy.video.fx.TimeSymmetrize import TimeSymmetrize
 
 
 __all__ = (
-    "accel_decel",
-    "blackwhite",
-    "blink",
-    "crop",
-    "even_size",
-    "fadein",
-    "fadeout",
-    "freeze",
-    "freeze_region",
-    "gamma_corr",
-    "headblur",
-    "invert_colors",
-    "loop",
-    "lum_contrast",
-    "make_loopable",
-    "margin",
-    "mask_and",
-    "mask_color",
-    "mask_or",
-    "mirror_x",
-    "mirror_y",
-    "multiply_color",
-    "multiply_speed",
-    "painting",
-    "resize",
-    "rotate",
-    "scroll",
-    "supersample",
-    "time_mirror",
-    "time_symmetrize",
+    "AccelDecel",
+    "BlackAndWhite",
+    "Blink",
+    "Crop",
+    "EvenSize",
+    "FadeIn",
+    "FadeOut",
+    "Freeze",
+    "FreezeRegion",
+    "GammaCorrection",
+    "HeadBlur",
+    "InvertColors",
+    "Loop",
+    "LumContrast",
+    "MakeLoopable",
+    "Margin",
+    "MasksAnd",
+    "MaskColor",
+    "MasksOr",
+    "MirrorX",
+    "MirrorY",
+    "MultiplyColor",
+    "MultiplySpeed",
+    "Painting",
+    "Resize",
+    "Rotate",
+    "Scroll",
+    "SuperSample",
+    "TimeMirror",
+    "TimeSymmetrize",
 )

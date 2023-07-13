@@ -3,7 +3,7 @@ difficult to fill everyone needs in this matter.
 """
 from moviepy.decorators import convert_path_to_string
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.resize import resize
+from moviepy.video.fx.Resize import Resize
 from moviepy.video.VideoClip import ImageClip, TextClip
 
 
@@ -132,7 +132,7 @@ class CreditsClip(TextClip):
         )
 
         # Scale to the required size
-        scaled = resize(both_columns, width=width)
+        scaled = both_columns.with_effect(Resize(width=width))
 
         # Transform the CompositeVideoClip into an ImageClip
 
