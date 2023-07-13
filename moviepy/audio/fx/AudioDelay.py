@@ -1,12 +1,15 @@
 import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
-from moviepy.audio.fx.multiply_volume import multiply_volume
-from moviepy.decorators import audio_video_fx
+from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
+from moviepy.decorators import audio_video_effect
 
+from moviepy.Clip import Clip
+from moviepy.Effect import Effect
+from dataclasses import dataclass
 
-@audio_video_fx
-def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
+@dataclass
+class AudioDelay(Effect) :
     """Repeats audio certain number of times at constant intervals multiplying
     their volume levels using a linear space in the range 1 to ``decay`` argument
     value.
@@ -31,8 +34,8 @@ def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
     --------
 
     >>> from moviepy import *
-    >>> videoclip = AudioFileClip('myaudio.wav').fx(
-    ...     audio_delay, offset=.2, n_repeats=10, decayment=.2
+    >>> videoclip = AudioFileClip('myaudio.wav').with_effect(
+    ...     afx.AudioDelay(offset=.2, n_repeats=10, decayment=.2)
     ... )
 
     >>> # stereo A note
@@ -40,17 +43,22 @@ def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
     ...     [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
     ... ).T
     ... clip = AudioClip(make_frame=make_frame, duration=0.1, fps=44100)
-    ... clip = audio_delay(clip, offset=.2, n_repeats=11, decay=0)
+    ... clip = clip.with_effect(afx.AudioDelay(offset=.2, n_repeats=11, decay=0))
     """
-    decayments = np.linspace(1, max(0, decay), n_repeats + 1)
-    return CompositeAudioClip(
-        [
-            clip.copy(),
-            *[
-                multiply_volume(
-                    clip.with_start((rep + 1) * offset), decayments[rep + 1]
-                )
-                for rep in range(n_repeats)
-            ],
-        ]
-    )
+
+    offset: float = 0.2
+    n_repeats: int = 8
+    decay: float = 1
+    
+    @audio_video_effect
+    def apply(self, clip: Clip) -> Clip:
+        decayments = np.linspace(1, max(0, self.decay), self.n_repeats + 1)
+        return CompositeAudioClip(
+            [
+                clip.copy(),
+                *[
+                    clip.with_start((rep + 1) * self.offset).with_effect(MultiplyVolume(decayments[rep + 1]))
+                    for rep in range(self.n_repeats)
+                ],
+            ]
+        )

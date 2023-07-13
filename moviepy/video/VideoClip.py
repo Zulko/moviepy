@@ -958,14 +958,6 @@ class VideoClip(Clip):
         """
         self.audio = None
 
-    @outplace
-    def afx(self, fun, *args, **kwargs):
-        """Transform the clip's audio.
-
-        Return a new clip whose audio has been transformed by ``fun``.
-        """
-        self.audio = self.audio.fx(fun, *args, **kwargs)
-
     def __add__(self, other):
         if isinstance(other, VideoClip):
             from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
