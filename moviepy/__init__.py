@@ -8,6 +8,7 @@ you can write ``clip.resize(2)``.
 """
 
 import inspect
+import copy
 
 from moviepy.audio import fx as afx
 from moviepy.audio.AudioClip import (
@@ -25,7 +26,7 @@ from moviepy.video.io import ffmpeg_tools
 from moviepy.video.io.display_in_notebook import display_in_notebook
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy import Effect
+from moviepy.Effect import Effect
 from moviepy.video.VideoClip import (
     BitmapClip,
     ColorClip,
@@ -36,29 +37,36 @@ from moviepy.video.VideoClip import (
     UpdatedVideoClip,
 )
 
+import re
 
-# Transforms the effects into Clip methods so that
+
+# Black magic to transforms the effects into Clip methods so that
 # they can be called with clip.resize(width=500) instead of
-# clip.fx(vfx.resize, width=500)
-audio_fxs = inspect.getmembers(afx, inspect.isfunction) + [("Loop", vfx.Loop)]
-video_fxs = (
-    inspect.getmembers(vfx, inspect.isfunction)
-    + audio_fxs
-)
+# clip.with_effect(vfx.Resize(width=500))
+# We use a lot of inspect + closure + setattr + python scope magic 
+audio_fxs = inspect.getmembers(afx, inspect.isclass)
+video_fxs = inspect.getmembers(vfx, inspect.isclass) + audio_fxs
 
-for name, function in video_fxs:
-    setattr(VideoClip, name, function)
+def add_effect_as_method(to_klass, method_name, eklass) :
+    def effect_call(clip, *args, **kwargs):
+        return clip.with_effect(eklass(*args, **kwargs).copy())
+    
+    setattr(to_klass, method_name, effect_call)
 
-for name, function in audio_fxs:
-    setattr(AudioClip, name, function)
+for name, effect_class in video_fxs :
+    camel_name = re.sub('(?!^)([A-Z]+)', r'_\1', name).lower()
+    add_effect_as_method(VideoClip, camel_name, effect_class)
+
+for name, effect_class in audio_fxs :
+    camel_name = re.sub('(?!^)([A-Z]+)', r'_\1', name).lower()
+    add_effect_as_method(AudioClip, camel_name, effect_class)
 
 # Add display in notebook to video and audioclip
 VideoClip.display_in_notebook = display_in_notebook
 AudioClip.display_in_notebook = display_in_notebook
 
 # Cleanup namespace
-del audio_fxs, video_fxs, name, function
-del inspect
+del audio_fxs, video_fxs, inspect, add_effect_as_method
 
 # Importing with `from moviepy import *` will only import these names
 __all__ = [
