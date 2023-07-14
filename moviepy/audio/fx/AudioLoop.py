@@ -18,7 +18,7 @@ class AudioLoop(Effect) :
     >>> from moviepy import *
     >>> videoclip = VideoFileClip('myvideo.mp4')
     >>> music = AudioFileClip('music.ogg')
-    >>> audio = music.with_effect(afx.AudioLoop(duration=videoclip.duration))
+    >>> audio = music.with_effects([afx.AudioLoop(duration=videoclip.duration)])
     >>> videoclip.with_audio(audio)
 
     """

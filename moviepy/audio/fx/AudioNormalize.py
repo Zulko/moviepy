@@ -16,7 +16,7 @@ class AudioNormalize(Effect) :
     --------
 
     >>> from moviepy import *
-    >>> videoclip = VideoFileClip('myvideo.mp4').with_effect(afx.AudioNormalize())
+    >>> videoclip = VideoFileClip('myvideo.mp4').with_effects([afx.AudioNormalize()])
 
     """
     
@@ -26,4 +26,4 @@ class AudioNormalize(Effect) :
         if max_volume == 0:
             return clip
         else:
-            return clip.with_effect(MultiplyVolume(1 / max_volume))
+            return clip.with_effects(MultiplyVolume(1 / max_volume))

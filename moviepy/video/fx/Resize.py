@@ -29,10 +29,10 @@ class Resize(Effect):
         Examples
         --------
 
-        >>> myClip.with_effect(vfx.Resize((460,720))) # New resolution: (460,720)
-        >>> myClip.with_effect(vfx.Resize(0.6)) # width and height multiplied by 0.6
-        >>> myClip.with_effect(vfx.Resize(width=800)) # height computed automatically.
-        >>> myClip.with_effect(vfx.Resize(lambda t : 1+0.02*t)) # slow swelling of the clip
+        >>> myClip.with_effects([vfx.Resize((460,720))]) # New resolution: (460,720)
+        >>> myClip.with_effects([vfx.Resize(0.6)]) # width and height multiplied by 0.6
+        >>> myClip.with_effects([vfx.Resize(width=800)]) # height computed automatically.
+        >>> myClip.with_effects([vfx.Resize(lambda t : 1+0.02*t)]) # slow swelling of the clip
         """
         self.new_size = new_size
         self.height = height
@@ -83,7 +83,7 @@ class Resize(Effect):
                     filter, keep_duration=True, apply_to=(["mask"] if self.apply_to_mask else [])
                 )
                 if self.apply_to_mask and clip.mask is not None:
-                    newclip.mask = newclip.mask.with_effect(Resize(clip.mask, self.new_size, apply_to_mask=False))
+                    newclip.mask = newclip.mask.with_effects([Resize(clip.mask, self.new_size, apply_to_mask=False)])
 
                 return newclip
 
@@ -96,7 +96,7 @@ class Resize(Effect):
                 def func(t):
                     return 1.0 * int(self.height(t)) / h
 
-                return clip.with_effect(Resize(func))
+                return clip.with_effects(Resize(func))
 
             else:
                 new_size = [w * self.height / h, self.height]
@@ -107,7 +107,7 @@ class Resize(Effect):
                 def func(t):
                     return 1.0 * self.width(t) / w
 
-                return clip.with_effect(Resize(func))
+                return clip.with_effects(Resize(func))
 
             else:
                 new_size = [self.width, h * self.width / w]
@@ -128,6 +128,6 @@ class Resize(Effect):
         new_clip = clip.image_transform(image_filter)
 
         if self.apply_to_mask and clip.mask is not None:
-            new_clip.mask = clip.with_effect(Resize(clip.mask, self.new_size, apply_to_mask=False))
+            new_clip.mask = clip.with_effects(Resize(clip.mask, self.new_size, apply_to_mask=False))
 
         return new_clip

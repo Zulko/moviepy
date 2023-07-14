@@ -1,6 +1,5 @@
 from abc import ABCMeta, abstractmethod
 from moviepy.Clip import Clip
-from dataclasses import dataclass
 import copy as _copy
 
 class Effect(metaclass=ABCMeta):

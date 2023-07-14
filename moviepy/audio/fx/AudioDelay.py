@@ -34,16 +34,16 @@ class AudioDelay(Effect) :
     --------
 
     >>> from moviepy import *
-    >>> videoclip = AudioFileClip('myaudio.wav').with_effect(
+    >>> videoclip = AudioFileClip('myaudio.wav').with_effects([
     ...     afx.AudioDelay(offset=.2, n_repeats=10, decayment=.2)
-    ... )
+    ... ])
 
     >>> # stereo A note
     >>> make_frame = lambda t: np.array(
     ...     [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
     ... ).T
     ... clip = AudioClip(make_frame=make_frame, duration=0.1, fps=44100)
-    ... clip = clip.with_effect(afx.AudioDelay(offset=.2, n_repeats=11, decay=0))
+    ... clip = clip.with_effects([afx.AudioDelay(offset=.2, n_repeats=11, decay=0)])
     """
 
     offset: float = 0.2
@@ -57,7 +57,7 @@ class AudioDelay(Effect) :
             [
                 clip.copy(),
                 *[
-                    clip.with_start((rep + 1) * self.offset).with_effect(MultiplyVolume(decayments[rep + 1]))
+                    clip.with_start((rep + 1) * self.offset).with_effects([MultiplyVolume(decayments[rep + 1])])
                     for rep in range(self.n_repeats)
                 ],
             ]

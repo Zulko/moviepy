@@ -20,7 +20,7 @@ class CrossFadeIn(Effect):
             clip = clip.with_add_mask()
 
         clip.mask.duration = clip.duration
-        clip.mask = clip.mask.with_effect(FadeIn(self.duration))
+        clip.mask = clip.mask.with_effects([FadeIn(self.duration)])
         
         return clip
 

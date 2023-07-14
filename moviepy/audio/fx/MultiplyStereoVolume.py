@@ -16,8 +16,8 @@ class MultiplyStereoVolume(Effect) :
 
     >>> from moviepy import AudioFileClip
     >>> music = AudioFileClip('music.ogg')
-    >>> audio_r = music.with_effect(afx.MultiplyStereoVolume(left=0, right=1))  # mute left channel/s
-    >>> audio_h = music.with_effect(afx.MultiplyStereoVolume(left=0.5, right=0.5)))  # half audio
+    >>> audio_r = music.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])  # mute left channel/s
+    >>> audio_h = music.with_effects([afx.MultiplyStereoVolume(left=0.5, right=0.5)])  # half audio
     """
 
     left: float = 1

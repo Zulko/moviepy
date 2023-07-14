@@ -29,7 +29,7 @@ class SlideOut(Effect):
     >>>
     >>> clips = [... make a list of clips]
     >>> slided_clips = [
-    ...     CompositeVideoClip([clip.with_effect(vfx.SlideOut(1, "left"))])
+    ...     CompositeVideoClip([clip.with_effects([vfx.SlideOut(1, "left")])])
     ...     for clip in clips
     ... ]
     >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
@@ -37,7 +37,7 @@ class SlideOut(Effect):
     >>> clip = ColorClip(
     ...     color=(255, 0, 0), duration=1, size=(300, 300)
     ... ).with_fps(60)
-    >>> final_clip = CompositeVideoClip([clip.with_effect(vfx.SlideOut(1, "right"))])
+    >>> final_clip = CompositeVideoClip([clip.with_effects([vfx.SlideOut(1, "right")])])
     """
 
     duration: float

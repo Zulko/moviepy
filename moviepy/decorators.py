@@ -75,22 +75,6 @@ def audio_video_effect(func, effect, clip, *args, **kwargs):
         return clip
     else:
         return func(effect, clip, *args, **kwargs)
-    
-@decorator.decorator
-def audio_video_fx(func, clip, *args, **kwargs):
-    """Use an audio function on a video/audio clip.
-
-    This decorator tells that the function func (audioclip -> audioclip)
-    can be also used on a video clip, at which case it returns a
-    videoclip with unmodified video and modified audio.
-    """
-    if hasattr(clip, "audio"):
-        new_clip = clip.copy()
-        if clip.audio is not None:
-            new_clip.audio = func(clip.audio, *args, **kwargs)
-        return new_clip
-    else:
-        return func(clip, *args, **kwargs)
 
 
 def preprocess_args(fun, varnames):

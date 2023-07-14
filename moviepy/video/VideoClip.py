@@ -16,7 +16,10 @@ from PIL import Image, ImageDraw, ImageFont
 import threading
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
-from typing import List
+from typing import Union, List, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from moviepy.Effect import Effect
 
 from moviepy.Clip import Clip
 from moviepy.decorators import (
@@ -618,7 +621,7 @@ class VideoClip(Clip):
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def subfx(self, fx, start_time=0, end_time=None, **kwargs):
+    def with_sub_effect(self, effects: List['Effect'], start_time=0, end_time=None, **kwargs):
         """Apply a transformation to a part of the clip.
 
         Returns a new clip in which the function ``fun`` (clip->clip)
@@ -630,11 +633,11 @@ class VideoClip(Clip):
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
         >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
+        >>> new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
 
         """
         left = None if (start_time == 0) else self.with_subclip(0, start_time)
-        center = self.with_subclip(start_time, end_time).fx(fx, **kwargs)
+        center = self.with_subclip(start_time, end_time).with_effects(effects, **kwargs)
         right = None if (end_time is None) else self.with_subclip(start_time=end_time)
 
         clips = [clip for clip in [left, center, right] if clip is not None]
@@ -643,6 +646,7 @@ class VideoClip(Clip):
         from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
         return concatenate_videoclips(clips).with_start(self.start)
+
 
     # IMAGE FILTERS
 
@@ -993,7 +997,7 @@ class VideoClip(Clip):
             return NotImplemented
         
         from moviepy.video.fx.Rotate import Rotate
-        return self.with_effect(Rotate(n))
+        return self.with_effects(Rotate(n))
 
     def __and__(self, mask):
         return self.with_mask(mask)

@@ -9,7 +9,7 @@ from operator import add
 import numpy as np
 import proglog
 
-from typing import Union, List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
@@ -185,18 +185,15 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def with_effect(self, effects: Union['Effect', List['Effect']]):
+    def with_effects(self, effects: List['Effect']):
         """Return a copy of the current clip with the effects applied
 
-        >>> new_clip = clip.with_effect(vfx.Resize(0.2, method="bilinear"))
+        >>> new_clip = clip.with_effects([vfx.Resize(0.2, method="bilinear")])
 
         You can also pass multiple effect as a list
 
-        >>> clip.with_effect([vfx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
+        >>> clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
-        if not isinstance(effects, list) :
-            effects = [effects]
-
         new_clip = self.copy()
         for effect in effects :
             # We always copy effect before using it, see Effect.copy
@@ -327,7 +324,7 @@ class Clip:
         if change_duration:
             from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
-            newclip = self.with_effect(MultiplySpeed(fps / self.fps))
+            newclip = self.with_effects(MultiplySpeed(fps / self.fps))
         else:
             newclip = self.copy()
 
@@ -659,4 +656,4 @@ class Clip:
 
         from moviepy.video.fx.Loop import Loop
 
-        return self.with_effect(Loop(n))
+        return self.with_effects(Loop(n))
