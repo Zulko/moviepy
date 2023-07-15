@@ -38,6 +38,38 @@ def try_cmd(cmd):
         return True, None
 
 
+def detect_imagemagick_for_windows():
+    """Detects imagemagick binary for Windows."""
+    try:
+        # When the key does not exist, it will raise OSError.
+        key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, r"SOFTWARE\ImageMagick\Current")
+        imagemagick_dir = Path(wr.QueryValueEx(key, "BinPath")[0])
+        key.Close()
+    except OSError:
+        # Find it under C:\Program Files\ImageMagick-xxx directory.
+        imagemagick_dirs = [
+            d
+            for d in Path(r"C:\Program Files").iterdir()
+            if d.name.startswith("ImageMagick-")
+        ]
+        if not imagemagick_dirs:
+            return "unset"
+
+        # No matter how many versions the user installed, we use the first, because
+        # IMAGEMAGICK_BINARY can be specified through environmental variable.
+        imagemagick_dir = imagemagick_dirs[0]
+
+    # Get convert.exe or magick.exe under the directory.
+    for imagemagick_filename in ["convert.exe", "magick.exe"]:
+        p = imagemagick_dir / imagemagick_filename
+        if p.exists():
+            return str(p)
+
+    # Return unset instead of raising an exception
+    # is to try other ways to detect.
+    return "unset"
+
+
 if FFMPEG_BINARY == "ffmpeg-imageio":
     from imageio.plugins.ffmpeg import get_exe
 
@@ -59,28 +91,7 @@ else:
 
 if IMAGEMAGICK_BINARY == "auto-detect":
     if os.name == "nt":
-        # Try a few different ways of finding the ImageMagick binary on Windows
-        try:
-            key = wr.OpenKey(wr.HKEY_LOCAL_MACHINE, "SOFTWARE\\ImageMagick\\Current")
-            IMAGEMAGICK_BINARY = wr.QueryValueEx(key, "BinPath")[0] + r"\magick.exe"
-            key.Close()
-        except Exception:
-            for imagemagick_filename in ["convert.exe", "magick.exe"]:
-                try:
-                    imagemagick_path = sp.check_output(
-                        r'dir /B /O-N "C:\\Program Files\\ImageMagick-*"',
-                        shell=True,
-                        encoding="utf-8",
-                    ).split("\n")[0]
-                    IMAGEMAGICK_BINARY = sp.check_output(  # pragma: no cover
-                        rf'dir /B /S "C:\Program Files\{imagemagick_path}\\'
-                        f'*{imagemagick_filename}"',
-                        shell=True,
-                        encoding="utf-8",
-                    ).split("\n")[0]
-                    break
-                except Exception:
-                    IMAGEMAGICK_BINARY = "unset"
+        IMAGEMAGICK_BINARY = detect_imagemagick_for_windows()  # pragma: no cover
 
     if IMAGEMAGICK_BINARY in ["unset", "auto-detect"]:
         if try_cmd(["convert"])[0]:
