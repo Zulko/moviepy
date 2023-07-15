@@ -21,6 +21,12 @@ from typing import Union, List, TYPE_CHECKING
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
 
+from moviepy.video.fx.Resize import Resize
+from moviepy.video.fx.Rotate import Rotate
+from moviepy.video.fx.Crop import Crop
+from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
+from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+
 from moviepy.Clip import Clip
 from moviepy.decorators import (
     add_mask_if_none,
@@ -915,6 +921,38 @@ class VideoClip(Clip):
         Note: Only has effect when the clip is used in a CompositeVideoClip.
         """
         self.layer = layer
+
+    def resized(self, new_size=None, height=None, width=None, apply_to_mask=True):
+        """Returns a video clip that is a resized version of the clip.
+        For info on the parameters, please see ``vfx.Resize``
+        """
+        return self.with_effects([Resize(new_size=new_size, height=height, 
+                                    width=width, apply_to_mask=apply_to_mask)])
+        
+    def rotated(self, angle: float, unit: str = "deg", resample: str = "bicubic", 
+                expand: bool = False, center: tuple = None, translate: tuple = None,
+                bg_color: tuple = None) :
+        """Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
+        If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
+        and ``bg_color`` are not ``None``.
+        For info on the parameters, please see ``vfx.Rotate``
+        """
+        return self.with_effects([Rotate(angle=angle, unit=unit, resample=resample,
+                expand=expand, center=center, translate=translate,
+                bg_color=bg_color)])
+
+    def cropped(self, x1: int = None, y1: int = None, x2: int = None, y2: int = None, 
+                width: int = None, height: int = None, x_center: int = None, 
+                y_center: int = None) :
+        """Returns a new clip in which just a rectangular subregion of the
+        original clip is conserved. x1,y1 indicates the top left corner and
+        x2,y2 is the lower right corner of the croped region.
+        All coordinates are in pixels. Float numbers are accepted.
+        For info on the parameters, please see ``vfx.Crop``
+        """
+        return self.with_effects([Crop(x1=x1, y1=y1, x2=x2, y2=y2, 
+                width=width, height=height, x_center=x_center, y_center=y_center)])
+        
 
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES

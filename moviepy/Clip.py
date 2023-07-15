@@ -458,6 +458,21 @@ class Clip:
             return new_clip.with_duration(self.duration - (end_time - start_time))
         else:  # pragma: no cover
             return new_clip
+        
+    def with_multiply_speed(self, factor: float = None, final_duration: float = None) :
+        """Returns a clip playing the current clip but at a speed multiplied by ``factor``.
+        For info on the parameters, please see ``vfx.MultiplySpeed``
+        """
+        from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+        return self.with_effects([MultiplySpeed(factor=factor, final_duration=final_duration)])
+    
+    def with_multiply_volume(self, factor: float, start_time = None, end_time = None) :
+        """Returns a new clip with audio volume multiplied by the value `factor`. 
+        For info on the parameters, please see ``afx.MultiplyVolume``
+        """
+        from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
+        return self.with_effects([MultiplyVolume(factor=factor, start_time=start_time, 
+                                                 end_time=end_time)])
 
     @requires_duration
     @use_clip_fps_by_default

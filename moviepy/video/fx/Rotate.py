@@ -12,8 +12,8 @@ class Rotate(Effect) :
     """
         Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
         If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
-        and ``bg_color`` are not ``None``, the package ``pillow`` must be installed,
-        and there will be black borders. You can make them transparent with:
+        and ``bg_color`` are not ``None``, there will be black borders. 
+        You can make them transparent with:
 
         >>> new_clip = clip.with_add_mask().rotate(72)
 
