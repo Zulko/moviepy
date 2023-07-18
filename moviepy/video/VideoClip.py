@@ -615,7 +615,7 @@ class VideoClip(Clip):
             audio_flag = threading.Event()
             # launch the thread
             audiothread = threading.Thread(
-                target=self.audio.preview,
+                target=self.audio.audiopreview,
                 args=(audio_fps, audio_buffersize, audio_nbytes, audio_flag, video_flag),
             )
             audiothread.start()
