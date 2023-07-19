@@ -2,7 +2,10 @@ MoviePy
 =======
 **WARNING!**
 
-The MoviePy project is no longer maintained. More information can be found here https://github.com/Zulko/moviepy/issues/1874
+The MoviePy project has a small number of contributors and currently struggles with rolling the next release due to a major architecture shift.
+The packages on PyPI are outdated and it's better to install the project from the master branch.
+
+If you want to help the project survive see https://github.com/Zulko/moviepy/issues/1874
 
 **DO NOT USE FOR PRODUCTION**
 
