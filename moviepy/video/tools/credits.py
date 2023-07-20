@@ -132,7 +132,7 @@ class CreditsClip(TextClip):
         )
 
         # Scale to the required size
-        scaled = both_columns.with_effects(Resize(width=width))
+        scaled = both_columns.with_effects([Resize(width=width)])
 
         # Transform the CompositeVideoClip into an ImageClip
 

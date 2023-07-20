@@ -66,7 +66,7 @@ class FFPLAY_VideoPreviewer:
                 ffplay_error = ffplay_error.decode()
 
             error = (
-                f"{err}\n\nMoviePy error: FFPALY encountered the following error while "
+                f"{err}\n\nMoviePy error: FFPLAY encountered the following error while "
                 f"previewing clip :\n\n {ffplay_error}"
             )
 
@@ -94,7 +94,7 @@ class FFPLAY_VideoPreviewer:
 def ffplay_preview_video(
     clip,
     fps,
-    pixel_format=None,
+    pixel_format="rgb24",
     audio_flag=None,
     video_flag=None
 ):
@@ -111,8 +111,14 @@ def ffplay_preview_video(
       Number of frames per seconds in the displayed video.
 
     pixel_format : str, optional
+      Warning: This is not used anywhere in the code and should probably
+      be remove.
+      It is believed pixel format rgb24 does not work properly for now because
+      it require applying mask on CompositeVideoClip and thoses are believed to
+      not be working.
+
       Pixel format for the output video file, ``rgb24`` for normal video, ``rgba`` 
-      if video with mask.
+      if video with mask
 
     audio_flag : Thread.Event, optional
       A thread event that video will wait for. If not provided we ignore audio
@@ -121,9 +127,6 @@ def ffplay_preview_video(
       A thread event that video will set after first frame has been shown. If not
       provided, we simply ignore
     """
-    if not pixel_format:
-        pixel_format = "rgba" if clip.mask is not None else "rgb24"
-
 
     with FFPLAY_VideoPreviewer(
         clip.size,
@@ -134,11 +137,6 @@ def ffplay_preview_video(
         for t, frame in clip.iter_frames(
             with_times=True, fps=fps, dtype="uint8"
         ):
-            if clip.mask is not None:
-                mask = 255 * clip.mask.get_frame(t)
-                if mask.dtype != "uint8":
-                    mask = mask.astype("uint8")
-                frame = np.dstack([frame, mask])
 
             previewer.show_frame(frame)
 

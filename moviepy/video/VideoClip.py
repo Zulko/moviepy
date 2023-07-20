@@ -542,17 +542,21 @@ class VideoClip(Clip):
         >>> from moviepy import *
         >>>
         >>> clip = VideoFileClip("media/chaplin.mp4")
-        >>> clip.show(t=4, interactive=True)
+        >>> clip.show(t=4)
         """
         clip = self.copy()
-        if with_mask and (self.mask is not None):
-            # Hate it, but cannot figure a better way with python awful circular dependency
-            from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-            clip = CompositeVideoClip([self.with_position((0, 0))])
+        # Warning : Comment to fix a bug on preview for compositevideoclip
+        # it broke compositevideoclip and it does nothing on normal clip with alpha
 
-        img = clip.get_frame(t)
-        pil_img = Image.fromarray(img)
+        # if with_mask and (self.mask is not None):
+        #     # Hate it, but cannot figure a better way with python awful circular dependency
+        #     from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
+        #     clip = CompositeVideoClip([self.with_position((0, 0))])
+
+        frame = clip.get_frame(t)
+        pil_img = Image.fromarray(frame)
 
         pil_img.show()
 
@@ -1035,7 +1039,7 @@ class VideoClip(Clip):
             return NotImplemented
         
         from moviepy.video.fx.Rotate import Rotate
-        return self.with_effects(Rotate(n))
+        return self.with_effects([Rotate(n)])
 
     def __and__(self, mask):
         return self.with_mask(mask)
@@ -1348,7 +1352,7 @@ class TextClip(ImageClip):
           the text will be wrapped automagically.
 
         text_align
-          center | left | right. Text align similar to css. Default to ``center``.
+          center | left | right. Text align similar to css. Default to ``left``.
 
         horizontal_align
           center | left | right. Define horizontal align of text bloc in image.
@@ -1522,6 +1526,10 @@ class TextClip(ImageClip):
             
             # Trace the image
             img_mode = "RGBA" if transparent else "RGB"
+
+            if bg_color is None and transparent :
+                bg_color = (0, 0, 0, 0)
+
             img = Image.new(img_mode, (img_width, img_height), color=bg_color)
             pil_font = ImageFont.truetype(font, font_size)
             draw = ImageDraw.Draw(img)

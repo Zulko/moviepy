@@ -26,4 +26,4 @@ class AudioNormalize(Effect) :
         if max_volume == 0:
             return clip
         else:
-            return clip.with_effects(MultiplyVolume(1 / max_volume))
+            return clip.with_effects([MultiplyVolume(1 / max_volume)])

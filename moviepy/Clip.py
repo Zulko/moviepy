@@ -324,7 +324,7 @@ class Clip:
         if change_duration:
             from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
-            newclip = self.with_effects(MultiplySpeed(fps / self.fps))
+            newclip = self.with_effects([MultiplySpeed(fps / self.fps)])
         else:
             newclip = self.copy()
 
@@ -671,4 +671,4 @@ class Clip:
 
         from moviepy.video.fx.Loop import Loop
 
-        return self.with_effects(Loop(n))
+        return self.with_effects([Loop(n)])

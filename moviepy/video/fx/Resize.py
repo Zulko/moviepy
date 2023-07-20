@@ -85,12 +85,12 @@ class Resize(Effect):
                     filter, keep_duration=True, apply_to=(["mask"] if self.apply_to_mask else [])
                 )
                 if self.apply_to_mask and clip.mask is not None:
-                    newclip.mask = newclip.mask.with_effects([Resize(clip.mask, self.new_size, apply_to_mask=False)])
+                    newclip.mask = newclip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
 
                 return newclip
 
             else:
-                new_size = translate_new_size(new_size)
+                self.new_size = translate_new_size(self.new_size)
 
         elif self.height is not None:
             if hasattr(self.height, "__call__"):
@@ -98,10 +98,10 @@ class Resize(Effect):
                 def func(t):
                     return 1.0 * int(self.height(t)) / h
 
-                return clip.with_effects(Resize(func))
+                return clip.with_effects([Resize(func)])
 
             else:
-                new_size = [w * self.height / h, self.height]
+                self.new_size = [w * self.height / h, self.height]
 
         elif self.width is not None:
             if hasattr(self.width, "__call__"):
@@ -109,10 +109,10 @@ class Resize(Effect):
                 def func(t):
                     return 1.0 * self.width(t) / w
 
-                return clip.with_effects(Resize(func))
+                return clip.with_effects([Resize(func)])
 
             else:
-                new_size = [self.width, h * self.width / w]
+                self.new_size = [self.width, h * self.width / w]
         else:
             raise ValueError("You must provide either 'new_size' or 'height' or 'width'")
 
@@ -120,16 +120,16 @@ class Resize(Effect):
         if clip.is_mask:
 
             def image_filter(pic):
-                return 1.0 * self.resizer((255 * pic).astype("uint8"), new_size) / 255.0
+                return 1.0 * self.resizer((255 * pic).astype("uint8"), self.new_size) / 255.0
 
         else:
 
             def image_filter(pic):
-                return self.resizer(pic.astype("uint8"), new_size)
+                return self.resizer(pic.astype("uint8"), self.new_size)
 
         new_clip = clip.image_transform(image_filter)
 
         if self.apply_to_mask and clip.mask is not None:
-            new_clip.mask = clip.with_effects(Resize(clip.mask, self.new_size, apply_to_mask=False))
+            new_clip.mask = clip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
 
         return new_clip
