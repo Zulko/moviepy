@@ -38,7 +38,7 @@ class AccelDecel(Effect):
       videos generated, being the linear function (in red) a combination that
       does not produce any transformation.
 
-      .. image:: /_static/accel_decel-fx-params.png
+      .. image:: /_static/medias/accel_decel-fx-params.png
         :alt: acced_decel FX parameters combinations
     """
     
