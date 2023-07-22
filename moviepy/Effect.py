@@ -3,12 +3,15 @@ from moviepy.Clip import Clip
 import copy as _copy
 
 class Effect(metaclass=ABCMeta):
+    """
+        Base abastract class for all effects.
+    """
 
     def copy(self):
         """Return a shallow copy of an Effect.
 
-        You must *always* copy an ``Effect`` before calling ``Effect.apply``,
-        because some of them will modify their own attributes when calling apply.
+        You must *always* copy an ``Effect`` before applying,
+        because some of them will modify their own attributes when applied.
         For example, setting a previously unset property by using target clip property.
         
         If we was to use the original effect, calling the same effect multiple times
