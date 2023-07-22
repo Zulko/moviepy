@@ -1,10 +1,11 @@
+
 from abc import ABCMeta, abstractmethod
 from moviepy.Clip import Clip
 import copy as _copy
 
 class Effect(metaclass=ABCMeta):
-    """
-        Base abastract class for all effects.
+    """Base abastract class for all effects in MoviePy.
+        Any new effect have to extend this base class.
     """
 
     def copy(self):

@@ -1,3 +1,5 @@
+"""All the visual effects that can be applied to VideoClip."""
+
 # import every video fx function
 
 from moviepy.video.fx.AccelDecel import AccelDecel

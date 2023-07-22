@@ -1,3 +1,5 @@
+"""All the audio effects that can be applied to AudioClip and VideoClip."""
+
 # import every video fx function
 
 from moviepy.audio.fx.AudioDelay import AudioDelay

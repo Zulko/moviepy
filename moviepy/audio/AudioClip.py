@@ -282,24 +282,24 @@ class AudioClip(Clip):
         ----------
 
         fps
-        Frame rate of the sound. 44100 gives top quality, but may cause
-        problems if your computer is not fast enough and your clip is
-        complicated. If the sound jumps during the preview, lower it
-        (11025 is still fine, 5000 is tolerable).
+            Frame rate of the sound. 44100 gives top quality, but may cause
+            problems if your computer is not fast enough and your clip is
+            complicated. If the sound jumps during the preview, lower it
+            (11025 is still fine, 5000 is tolerable).
 
         buffersize
-        The sound is not generated all at once, but rather made by bunches
-        of frames (chunks). ``buffersize`` is the size of such a chunk.
-        Try varying it if you meet audio problems (but you shouldn't
-        have to).
+            The sound is not generated all at once, but rather made by bunches
+            of frames (chunks). ``buffersize`` is the size of such a chunk.
+            Try varying it if you meet audio problems (but you shouldn't
+            have to).
 
         nbytes:
-        Number of bytes to encode the sound: 1 for 8bit sound, 2 for
-        16bit, 4 for 32bit sound. 2 bytes is fine.
+            Number of bytes to encode the sound: 1 for 8bit sound, 2 for
+            16bit, 4 for 32bit sound. 2 bytes is fine.
 
         audio_flag, video_flag:
-        Instances of class threading events that are used to synchronize
-        video and audio during ``VideoClip.preview()``.
+            Instances of class threading events that are used to synchronize
+            video and audio during ``VideoClip.preview()``.
         """
         ffplay_audiopreview(clip=self, fps=fps, buffersize=buffersize, nbytes=nbytes, audio_flag=audio_flag, video_flag=video_flag)
 
