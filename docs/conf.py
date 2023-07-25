@@ -6,12 +6,12 @@ import os
 import sys
 
 import pydata_sphinx_theme
-
+from pygments.styles import get_all_styles
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath("."))
+sys.path.insert(0, os.path.abspath(".."))
 
 # -- General configuration -----------------------------------------------------
 
@@ -22,17 +22,20 @@ sys.path.insert(0, os.path.abspath("."))
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.napoleon",
+
+    "sphinx_design",
+
+    "sphinx.ext.coverage",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "sphinx.ext.autosummary",
-    "numpydoc",
+    
     "sphinx.ext.autosectionlabel",
 ]
 
 autosectionlabel_prefix_document = True
 
-numpydoc_class_members_toctree = False
-numpydoc_show_class_members = True
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
@@ -49,7 +52,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "MoviePy"
-copyright = "2017, Zulko"
+copyright = "2023, Zulko - MIT"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -106,7 +109,16 @@ html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-# html_theme_options = {}
+html_theme_options = {
+    "use_edit_page_button": True,
+}
+
+html_context = {
+    "github_user": "Zulko",
+    "github_repo": "moviepy",
+    "github_version": "master",
+    "doc_path": "docs",
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -120,7 +132,7 @@ html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "_static/logo_small.jpeg"
+html_logo = "_static/medias/logo_small.jpeg"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -131,6 +143,10 @@ html_logo = "_static/logo_small.jpeg"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
+
+html_css_files = [
+    'moviepy.css',
+]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.

@@ -81,6 +81,7 @@ doc_reqs = [
     "numpydoc<2.0",
     "Sphinx==6.*",
     "pydata-sphinx-theme==0.13",
+    "sphinx_design",
 ]
 
 test_reqs = [
