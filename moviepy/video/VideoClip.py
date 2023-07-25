@@ -10,7 +10,7 @@ from numbers import Real
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
+from imageio.v3 import imread, imwrite
 from PIL import Image, ImageDraw, ImageFont
 
 import threading
@@ -199,7 +199,7 @@ class VideoClip(Clip):
         else:
             im = im.astype("uint8")
 
-        imsave(filename, im)
+        imwrite(filename, im)
 
     @requires_duration
     @use_clip_fps_by_default
@@ -556,7 +556,7 @@ class VideoClip(Clip):
         #     clip = CompositeVideoClip([self.with_position((0, 0))])
 
         frame = clip.get_frame(t)
-        pil_img = Image.fromarray(frame)
+        pil_img = Image.fromarray(frame.astype('uint8'))
 
         pil_img.show()
 
@@ -631,7 +631,7 @@ class VideoClip(Clip):
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def with_sub_effect(self, effects: List['Effect'], start_time=0, end_time=None, **kwargs):
+    def with_sub_effects(self, effects: List['Effect'], start_time=0, end_time=None, **kwargs):
         """Apply a transformation to a part of the clip.
 
         Returns a new clip in which the function ``fun`` (clip->clip)
@@ -1035,6 +1035,10 @@ class VideoClip(Clip):
         return super(VideoClip, self).__or__(other)
 
     def __matmul__(self, n):
+        """
+            Implement matrice multiplication (self @ other) to rotate a video
+            by other degrees
+        """
         if not isinstance(n, Real):
             return NotImplemented
         
@@ -1042,6 +1046,10 @@ class VideoClip(Clip):
         return self.with_effects([Rotate(n)])
 
     def __and__(self, mask):
+        """
+            Implement the and (self & other) to produce a video with other
+            used as a mask for self.
+        """
         return self.with_mask(mask)
 
 
