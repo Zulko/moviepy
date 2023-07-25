@@ -23,14 +23,7 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 
 # Arbitrary font used in caption testing.
-if sys.platform in ("win32", "cygwin"):
-    FONT = "Arial"
-    # Even if Windows users install the Liberation fonts, it is called
-    # LiberationMono on Windows, so it doesn't help.
-else:
-    FONT = (
-        "Liberation-Mono"  # This is available in the fonts-liberation package on Linux
-    )
+FONT = "media/doc_medias/example.ttf"
 
 
 @functools.lru_cache(maxsize=None)

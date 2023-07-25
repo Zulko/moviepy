@@ -42,7 +42,7 @@ class SubtitlesClip(VideoClip):
 
     """
 
-    def __init__(self, subtitles, make_textclip=None, encoding=None):
+    def __init__(self, subtitles, font=None, make_textclip=None, encoding=None):
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):
@@ -54,15 +54,19 @@ class SubtitlesClip(VideoClip):
         self.subtitles = subtitles
         self.textclips = dict()
 
+        self.font = font
+
         if make_textclip is None:
+            if self.font is None :
+                raise ValueError('Argument font is required if make_textclip is None.')
 
             def make_textclip(txt):
                 return TextClip(
-                    txt,
-                    font="Georgia-Bold",
+                    font=self.font,
+                    text=txt,
                     font_size=24,
-                    color="white",
-                    stroke_color="black",
+                    color="#ffffff",
+                    stroke_color="#000000",
                     stroke_width=0.5,
                 )
 
