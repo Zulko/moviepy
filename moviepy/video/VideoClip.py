@@ -63,6 +63,15 @@ class VideoClip(Clip):
     is_mask
       `True` if the clip is going to be used as a mask.
 
+    duration
+      Duration of the clip in seconds. If None we got a clip of infinite
+      duration
+
+    has_constant_size
+      Define if clip size is constant or if it may vary with time. Default 
+      to True
+    
+
 
     Attributes
     ----------
@@ -1683,8 +1692,6 @@ class BitmapClip(VideoClip):
         that was used to create the clip.
         """
         color_dict = color_dict or self.color_dict
-
-        print(color_dict)
 
         bitmap = []
         for frame in self.iter_frames():
