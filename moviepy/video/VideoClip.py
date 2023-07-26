@@ -1684,6 +1684,8 @@ class BitmapClip(VideoClip):
         """
         color_dict = color_dict or self.color_dict
 
+        print(color_dict)
+
         bitmap = []
         for frame in self.iter_frames():
             bitmap.append([])

@@ -42,10 +42,9 @@ class Resize(Effect):
 
 
     def resizer(self, pic, new_size):
-            new_size = list(map(int, new_size))[::-1]
-
+            new_size = list(map(int, new_size))
             pil_img = Image.fromarray(pic)
-            resized_pil = pil_img.resize(new_size[::-1], Image.Resampling.LANCZOS)
+            resized_pil = pil_img.resize(new_size, Image.Resampling.LANCZOS)
             return np.array(resized_pil)
 
 
@@ -71,6 +70,7 @@ class Resize(Effect):
                     return translate_new_size(self.new_size(t))
 
                 if clip.is_mask:
+
                     def filter(get_frame, t):
                         return (
                             self.resizer((255 * get_frame(t)).astype("uint8"), get_new_size(t))
@@ -78,6 +78,7 @@ class Resize(Effect):
                         )
 
                 else:
+
                     def filter(get_frame, t):
                         return self.resizer(get_frame(t).astype("uint8"), get_new_size(t))
 
@@ -85,7 +86,7 @@ class Resize(Effect):
                     filter, keep_duration=True, apply_to=(["mask"] if self.apply_to_mask else [])
                 )
                 if self.apply_to_mask and clip.mask is not None:
-                    newclip.mask = newclip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
+                    newclip.mask = clip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
 
                 return newclip
 
@@ -117,6 +118,7 @@ class Resize(Effect):
             raise ValueError("You must provide either 'new_size' or 'height' or 'width'")
 
         # From here, the resizing is constant (not a function of time), size=newsize
+
         if clip.is_mask:
 
             def image_filter(pic):

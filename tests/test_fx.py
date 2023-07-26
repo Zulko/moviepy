@@ -12,47 +12,8 @@ import numpy as np
 
 import pytest
 
-from moviepy import (
-    AudioClip,
-    AudioFileClip,
-    BitmapClip,
-    ColorClip,
-    VideoClip,
-    VideoFileClip,
-)
-from moviepy.audio.fx import (
-    audio_delay,
-    audio_fadein,
-    audio_fadeout,
-    audio_normalize,
-    multiply_stereo_volume,
-    multiply_volume,
-)
+from moviepy import *
 from moviepy.tools import convert_to_seconds
-from moviepy.video.fx import (
-    blackwhite,
-    crop,
-    even_size,
-    fadein,
-    fadeout,
-    freeze,
-    freeze_region,
-    invert_colors,
-    loop,
-    lum_contrast,
-    make_loopable,
-    margin,
-    mask_and,
-    mask_or,
-    mirror_x,
-    mirror_y,
-    multiply_color,
-    multiply_speed,
-    resize,
-    rotate,
-    time_mirror,
-    time_symmetrize,
-)
 
 
 def test_accel_decel():
@@ -87,7 +48,7 @@ def test_blackwhite():
     # for each possible ``preserve_luminosity`` boolean argument value
     for preserve_luminosity in [True, False]:
         # default argument (``RGB=None``)
-        clip_bw = blackwhite(clip, preserve_luminosity=preserve_luminosity)
+        clip_bw = clip.with_effects([vfx.BlackAndWhite(preserve_luminosity=preserve_luminosity)])
 
         bitmap = clip_bw.to_bitmap()
         assert bitmap
@@ -101,11 +62,10 @@ def test_blackwhite():
                     assert char == row[0]  # so are equal
 
         # custom random ``RGB`` argument
-        clip_bw_custom_rgb = blackwhite(
-            clip,
+        clip_bw_custom_rgb = clip.with_effects([vfx.BlackAndWhite(
             RGB=(random.randint(0, 255), 0, 0),
             preserve_luminosity=preserve_luminosity,
-        )
+        )])
         bitmap = clip_bw_custom_rgb.to_bitmap()
         for i, row in enumerate(bitmap[0]):
             for i2, char in enumerate(row):
@@ -117,9 +77,9 @@ def test_blackwhite():
                     assert char == row[1] and char == row[2]
 
         # ``RGB="CRT_phosphor"`` argument
-        clip_bw_crt_phosphor = blackwhite(
-            clip, RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
-        )
+        clip_bw_crt_phosphor = clip.with_effects([vfx.BlackAndWhite(
+            RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+        )])
         bitmap = clip_bw_crt_phosphor.to_bitmap()
         assert bitmap
         for row in bitmap[0]:
@@ -139,7 +99,7 @@ def test_multiply_color():
     color_dict = {"H": (0, 0, 200), "L": (0, 0, 50), "B": (0, 0, 255), "O": (0, 0, 0)}
     clip = BitmapClip([["LLO", "BLO"]], color_dict=color_dict, fps=1)
 
-    clipfx = multiply_color(clip, 4)
+    clipfx = clip.with_effects([vfx.MultiplyColor(4)])
     target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict, fps=1)
     assert target == clipfx
 
@@ -148,45 +108,45 @@ def test_crop():
     # x: 0 -> 4, y: 0 -> 3 inclusive
     clip = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
 
-    clip1 = crop(clip)
+    clip1 = clip.with_effects([vfx.Crop()])
     target1 = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
     assert clip1 == target1
 
-    clip2 = crop(clip, x1=1, y1=1, x2=3, y2=3)
+    clip2 = clip.with_effects([vfx.Crop(x1=1, y1=1, x2=3, y2=3)])
     target2 = BitmapClip([["DC", "DE"]], fps=1)
     assert clip2 == target2
 
-    clip3 = crop(clip, y1=2)
+    clip3 = clip.with_effects([vfx.Crop(y1=2)])
     target3 = BitmapClip([["CDEAB", "BAEDC"]], fps=1)
     assert clip3 == target3
 
-    clip4 = crop(clip, x1=2, width=2)
+    clip4 = clip.with_effects([vfx.Crop(x1=2, width=2)])
     target4 = BitmapClip([["CD", "CB", "EA", "ED"]], fps=1)
     assert clip4 == target4
 
     # TODO x_center=1 does not perform correctly
-    clip5 = crop(clip, x_center=2, y_center=2, width=3, height=3)
+    clip5 = clip.with_effects([vfx.Crop(x_center=2, y_center=2, width=3, height=3)])
     target5 = BitmapClip([["ABC", "EDC", "CDE"]], fps=1)
     assert clip5 == target5
 
-    clip6 = crop(clip, x_center=2, width=2, y1=1, y2=2)
+    clip6 = clip.with_effects([vfx.Crop(x_center=2, width=2, y1=1, y2=2)])
     target6 = BitmapClip([["DC"]], fps=1)
     assert clip6 == target6
 
 
 def test_even_size():
     clip1 = BitmapClip([["ABC", "BCD"]], fps=1)  # Width odd
-    clip1even = even_size(clip1)
+    clip1even = clip1.with_effects([vfx.EvenSize()])
     target1 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip1even == target1
 
     clip2 = BitmapClip([["AB", "BC", "CD"]], fps=1)  # Height odd
-    clip2even = even_size(clip2)
+    clip2even = clip2.with_effects([vfx.EvenSize()])
     target2 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip2even == target2
 
     clip3 = BitmapClip([["ABC", "BCD", "CDE"]], fps=1)  # Width and height odd
-    clip3even = even_size(clip3)
+    clip3even = clip3.with_effects([vfx.EvenSize()])
     target3 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip3even == target3
 
@@ -201,18 +161,18 @@ def test_fadein():
     }
     clip = BitmapClip([["R"], ["G"], ["B"]], color_dict=color_dict, fps=1)
 
-    clip1 = fadein(clip, 1)  # default initial color
+    clip1 = clip.with_effects([vfx.FadeIn(1)])  # default initial color
     target1 = BitmapClip([["I"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip1 == target1
 
-    clip2 = fadein(clip, 1, initial_color=(255, 255, 255))  # different initial color
+    clip2 = clip.with_effects([vfx.FadeIn(1, initial_color=(255, 255, 255))])  # different initial color
     target2 = BitmapClip([["W"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip2 == target2
 
 
 def test_fadeout(util, video):
     clip = video(end_time=0.5)
-    clip1 = fadeout(clip, 0.5)
+    clip1 = clip.with_effects([vfx.FadeOut(0.5)])
     clip1.write_videofile(os.path.join(util.TMP_DIR, "fadeout1.webm"))
 
 
@@ -320,10 +280,10 @@ def test_freeze(t, freeze_duration, total_duration, padding_end, output_frames):
     # freeze clip
     if hasattr(output_frames, "__traceback__"):
         with pytest.raises(output_frames):
-            freeze(clip, **kwargs)
+            clip.with_effects([vfx.Freeze(**kwargs)])
         return
     else:
-        freezed_clip = freeze(clip, **kwargs)
+        freezed_clip = clip.with_effects([vfx.Freeze(**kwargs)])
 
     # assert new duration
     expected_freeze_duration = (
@@ -343,12 +303,12 @@ def test_freeze_region():
     clip = BitmapClip([["AAB", "CCC"], ["BBR", "DDD"], ["CCC", "ABC"]], fps=1)
 
     # Test region
-    clip1 = freeze_region(clip, t=1, region=(2, 0, 3, 1))
+    clip1 = clip.with_effects([vfx.FreezeRegion(t=1, region=(2, 0, 3, 1))])
     target1 = BitmapClip([["AAR", "CCC"], ["BBR", "DDD"], ["CCR", "ABC"]], fps=1)
     assert clip1 == target1
 
     # Test outside_region
-    clip2 = freeze_region(clip, t=1, outside_region=(2, 0, 3, 1))
+    clip2 = clip.with_effects([vfx.FreezeRegion(t=1, outside_region=(2, 0, 3, 1))])
     target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]], fps=1)
     assert clip2 == target2
 
@@ -368,7 +328,7 @@ def test_invert_colors():
         fps=1,
     )
 
-    clip1 = invert_colors(clip)
+    clip1 = clip.with_effects([vfx.InvertColors()])
     target1 = BitmapClip(
         [["CD", "DA"]],
         color_dict={"A": (0, 0, 0), "D": (205, 155, 105), "C": (255, 255, 255)},
@@ -380,42 +340,42 @@ def test_invert_colors():
 def test_loop(util, video):
     clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
 
-    clip1 = loop(clip, n=2)  # loop 2 times
+    clip1 = clip.with_effects([vfx.Loop(n=2)])  # loop 2 times
     target1 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"], ["B"]], fps=1)
     assert clip1 == target1
 
-    clip2 = loop(clip, duration=8)  # loop 8 seconds
+    clip2 = clip.with_effects([vfx.Loop(duration=8)])  # loop 8 seconds
     target2 = BitmapClip(
         [["R"], ["G"], ["B"], ["R"], ["G"], ["B"], ["R"], ["G"]], fps=1
     )
     assert clip2 == target2
 
-    clip3 = loop(clip).with_duration(5)  # infinite loop
+    clip3 = clip.with_effects([vfx.Loop()]).with_duration(5)  # infinite loop
     target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
     assert clip3 == target3
 
     clip = video(start_time=0.2, end_time=0.3)  # 0.1 seconds long
-    clip1 = loop(clip).with_duration(0.5)  # infinite looping
+    clip1 = clip.with_effects([vfx.Loop()]).with_duration(0.5)  # infinite looping
     clip1.write_videofile(os.path.join(util.TMP_DIR, "loop1.webm"))
 
-    clip2 = loop(clip, duration=0.5)  # loop for 1 second
+    clip2 = clip.with_effects([vfx.Loop(duration=0.5)])  # loop for 1 second
     clip2.write_videofile(os.path.join(util.TMP_DIR, "loop2.webm"))
 
-    clip3 = loop(clip, n=3)  # loop 3 times
+    clip3 = clip.with_effects([vfx.Loop(n=3)])  # loop 3 times
     clip3.write_videofile(os.path.join(util.TMP_DIR, "loop3.webm"))
 
     # Test audio looping
     clip = AudioClip(
         lambda t: np.sin(440 * 2 * np.pi * t) * (t % 1) + 0.5, duration=2.5, fps=44100
     )
-    clip1 = clip.loop(2)
+    clip1 = clip.with_effects([vfx.Loop(2)])
     # TODO fix AudioClip.__eq__()
     # assert concatenate_audioclips([clip, clip]) == clip1
 
 
 def test_lum_contrast(util, video):
     clip = video()
-    clip1 = lum_contrast(clip)
+    clip1 = clip.with_effects([vfx.LumContrast()])
     clip1.write_videofile(os.path.join(util.TMP_DIR, "lum_contrast1.webm"))
 
     # what are the correct value ranges for function arguments lum,
@@ -425,8 +385,10 @@ def test_lum_contrast(util, video):
 
 def test_make_loopable(util, video):
     clip = video()
-    clip1 = make_loopable(clip, 0.4)
-    clip1.write_videofile(os.path.join(util.TMP_DIR, "make_loopable1.webm"))
+    clip1 = clip.with_effects([vfx.MakeLoopable(0.4)])
+
+    # We need to set libvpx-vp9 because our test will produce transparency
+    clip1.write_videofile(os.path.join(util.TMP_DIR, "make_loopable1.webm"), codec="libvpx-vp9")
 
 
 @pytest.mark.parametrize(
@@ -530,15 +492,14 @@ def test_margin(ClipClass, margin_size, margins, color, expected_result):
         margins = [0, 0, 0, 0]
     left, right, top, bottom = margins
 
-    new_clip = margin(
-        clip,
+    new_clip = clip.with_effects([vfx.Margin(
         margin_size=margin_size,
         left=left,
         right=right,
         top=top,
         bottom=bottom,
         color=color,
-    )
+    )])
 
     assert new_clip == BitmapClip(expected_result, fps=1)
 
@@ -580,9 +541,9 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = mask_and(
-        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
-    )
+    masked_clip = clip.with_effects([vfx.MasksAnd(
+        mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    )])
 
     assert masked_clip.duration == clip.duration
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
@@ -591,7 +552,7 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
     clip = VideoClip(lambda t: color_frame).with_duration(duration)
     mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
-    masked_clip = mask_and(clip, mask_clip)
+    masked_clip = clip.with_effects([vfx.MasksAnd(mask_clip)])
 
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
@@ -637,9 +598,9 @@ def test_mask_or(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = mask_or(
-        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
-    )
+    masked_clip = clip.with_effects([vfx.MasksOr(
+        mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    )])
 
     assert masked_clip.duration == clip.duration
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
@@ -648,21 +609,21 @@ def test_mask_or(image_from, duration, color, mask_color, expected_color):
     color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
     clip = VideoClip(lambda t: color_frame).with_duration(duration)
     mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
-    masked_clip = mask_or(clip, mask_clip)
+    masked_clip = clip.with_effects([vfx.MasksOr(mask_clip)])
 
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mirror_x():
     clip = BitmapClip([["AB", "CD"]], fps=1)
-    clip1 = mirror_x(clip)
+    clip1 = clip.with_effects([vfx.MirrorX()])
     target = BitmapClip([["BA", "DC"]], fps=1)
     assert clip1 == target
 
 
 def test_mirror_y():
     clip = BitmapClip([["AB", "CD"]], fps=1)
-    clip1 = mirror_y(clip)
+    clip1 = clip.with_effects([vfx.MirrorY()])
     target = BitmapClip([["CD", "AB"]], fps=1)
     assert clip1 == target
 
@@ -671,7 +632,6 @@ def test_painting():
     pass
 
 
-@pytest.mark.parametrize("library", ("PIL", "cv2", "scipy"))
 @pytest.mark.parametrize("apply_to_mask", (True, False))
 @pytest.mark.parametrize(
     (
@@ -751,23 +711,10 @@ def test_painting():
     ),
 )
 def test_resize(
-    library, apply_to_mask, size, duration, new_size, height, width, monkeypatch
+    apply_to_mask, size, duration, new_size, height, width, monkeypatch
 ):
-    """Checks ``resize`` FX behaviours using all argument and third party
-    implementation combinations.
+    """Checks ``resize`` FX behaviours using all argument
     """
-    # mock implementation
-    resize_fx_mod = sys.modules[resize.__module__]
-    resizer_func, error_msgs = {
-        "PIL": resize_fx_mod._get_PIL_resizer,
-        "cv2": resize_fx_mod._get_cv2_resizer,
-        "scipy": resize_fx_mod._get_scipy_resizer,
-    }[library]()
-
-    # if function is not available, skip test for implementation
-    if error_msgs:
-        pytest.skip(error_msgs[0].split(" (")[0])
-    monkeypatch.setattr(resize_fx_mod, "resizer", resizer_func)
 
     # build expected sizes (using `width` or `height` arguments will be proportional
     # to original size)
@@ -809,10 +756,12 @@ def test_resize(
     mask = ColorClip(size=size, color=0, is_mask=True)
     clip = clip.with_mask(mask)
 
+    print("pute0")
+
     # any resizing argument passed, raises `ValueError`
     if expected_new_sizes is None:
         with pytest.raises(ValueError):
-            resized_clip = clip.resize(
+            resized_clip = clip.resized(
                 new_size=new_size,
                 height=height,
                 width=width,
@@ -821,9 +770,12 @@ def test_resize(
         resized_clip = clip
         expected_new_sizes = [size]
     else:
-        resized_clip = clip.resize(
+        print(height)
+        resized_clip = clip.resized(
             new_size=new_size, height=height, width=width, apply_to_mask=apply_to_mask
         )
+
+    print('pute')
 
     # assert new size for each frame
     for t in range(duration):

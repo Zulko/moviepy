@@ -2,6 +2,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.fx.CrossFadeIn import CrossFadeIn
 from dataclasses import dataclass
 
 @dataclass
@@ -20,7 +21,7 @@ class MakeLoopable(Effect) :
 
     def apply(self, clip: Clip) -> Clip:
     
-        clip2 = clip.crossfadein(self.overlap_duration).with_start(
+        clip2 = clip.with_effects([CrossFadeIn(self.overlap_duration)]).with_start(
             clip.duration - self.overlap_duration
         )
         return CompositeVideoClip([clip, clip2]).with_subclip(self.overlap_duration, clip.duration)

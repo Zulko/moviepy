@@ -51,7 +51,7 @@ class Rotate(Effect) :
     angle: float
     unit: str = "deg"
     resample: str = "bicubic"
-    expand: bool = False
+    expand: bool = True
     center: tuple = None
     translate: tuple = None
     bg_color: tuple = None
@@ -86,6 +86,7 @@ class Rotate(Effect) :
                 if (angle == 0) and self.expand:
                     return im
                 if (angle == 90) and self.expand:
+                    print('qaq')
                     transpose = [1, 0] if len(im.shape) == 2 else [1, 0, 2]
                     return np.transpose(im, axes=transpose)[::-1]
                 elif (angle == 270) and self.expand:
