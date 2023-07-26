@@ -2,7 +2,7 @@
 
 import proglog
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
-import imageio
+import imageio.v3 as iio
 
 @requires_duration
 @use_clip_fps_by_default
@@ -14,8 +14,9 @@ def write_gif_with_imageio(
     """
     logger = proglog.default_bar_logger(logger)
 
-    writer = imageio.save(filename, duration=1.0 / fps, loop=loop)
-    logger(message="MoviePy - Building file %s with imageio." % filename)
+    with iio.imopen(filename, 'w', plugin="pillow") as writer:
+        logger(message="MoviePy - Building file %s with imageio." % filename)
+        for frame in clip.iter_frames(fps=fps, logger=logger, dtype="uint8"):
+            writer.write(frame, duration=1000 / fps, loop=loop) # Duration is in ms not s
 
-    for frame in clip.iter_frames(fps=fps, logger=logger, dtype="uint8"):
-        writer.append_data(frame)
+    
