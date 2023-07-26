@@ -10,8 +10,8 @@ import sys
 
 import pytest
 
+from moviepy import *
 import moviepy.tools as tools
-from moviepy.video.io.downloader import download_webfile
 
 
 @pytest.mark.parametrize(
@@ -94,51 +94,6 @@ def test_deprecated_version_of(old_name):
 
     assert len(record) == 1
     assert record[0].message.args[0] == expected_warning_message
-
-
-@pytest.mark.parametrize(
-    ("url", "expected_result"),
-    (
-        (
-            "http://localhost:8000/media/chaplin.mp4",
-            os.path.join("media", "chaplin.mp4"),
-        ),
-        ("foobarbazimpossiblecode", OSError),
-    ),
-)
-def test_download_webfile(static_files_server, util, url, expected_result):
-    filename = os.path.join(util.TMP_DIR, "moviepy_downloader_test.mp4")
-    if os.path.isfile(filename):
-        try:
-            os.remove(filename)
-        except PermissionError:
-            pass
-
-    if hasattr(expected_result, "__traceback__") or len(url) == 11:
-        if not shutil.which("youtube-dl"):
-            with pytest.raises(expected_result):
-                download_webfile(url, filename)
-            assert not os.path.isfile(filename)
-        elif len(url) != 11:
-            with pytest.raises(OSError) as exc:
-                download_webfile(url, filename)
-            assert "Error running youtube-dl." in str(exc.value)
-            assert not os.path.isfile(filename)
-        else:
-            download_webfile(url, filename)
-            assert os.path.isfile(filename)
-    else:
-        # network files
-        with static_files_server():
-            download_webfile(url, filename)
-
-        assert filecmp.cmp(filename, expected_result)
-
-    if os.path.isfile(filename):
-        try:
-            os.remove(filename)
-        except PermissionError:
-            pass
 
 
 @pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
