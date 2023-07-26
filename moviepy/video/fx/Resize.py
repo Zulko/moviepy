@@ -45,7 +45,7 @@ class Resize(Effect):
             new_size = list(map(int, new_size))[::-1]
 
             pil_img = Image.fromarray(pic)
-            resized_pil = pil_img.resize(new_size[::-1], Image.ANTIALIAS)
+            resized_pil = pil_img.resize(new_size[::-1], Image.Resampling.LANCZOS)
             return np.array(resized_pil)
 
 
