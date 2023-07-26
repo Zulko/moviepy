@@ -1191,8 +1191,6 @@ class ImageClip(VideoClip):
     ):
         VideoClip.__init__(self, is_mask=is_mask, duration=duration)
 
-        print(img)
-
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
             img = imread_v2(img) # We use v2 imread cause v3 fail with gif
@@ -1492,6 +1490,7 @@ class TextClip(ImageClip):
                     return min_font_size - 1
 
             try :
+                print("f", font)
                 _ = ImageFont.truetype(font)
             except Exception as e :
                 raise ValueError("Invalid font {}, pillow failed to use it with error {}".format(font, e))

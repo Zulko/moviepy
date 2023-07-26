@@ -20,12 +20,22 @@ class SubtitlesClip(VideoClip):
     ----------
 
     subtitles
-      Either the name of a file as a string or path-like object, or a list
+        Either the name of a file as a string or path-like object, or a list
+
+    font
+        Path to a font file to be used. Optional if make_textclip is provided.
+
+    make_textclip
+        A custom function to use for text clip generation. If None, a TextClip
+        will be generated.
+
+        The function must take a text as argument and return a VideoClip
+        to be used as caption
 
     encoding
-      Optional, specifies srt file encoding.
-      Any standard Python encoding is allowed (listed at
-      https://docs.python.org/3.8/library/codecs.html#standard-encodings)
+        Optional, specifies srt file encoding.
+        Any standard Python encoding is allowed (listed at
+        https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     --------

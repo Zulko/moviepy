@@ -133,8 +133,6 @@ class FFMPEG_VideoWriter:
             cmd.extend(["-pix_fmt", "yuv420p"])
         cmd.extend([filename])
 
-        print(' '.join(cmd))
-
         popen_params = cross_platform_popen_params(
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
         )
