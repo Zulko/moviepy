@@ -78,7 +78,6 @@ class CreditsClip(TextClip):
         self,
         creditfile,
         width,
-        stretch=30,
         color="white",
         stroke_color="black",
         stroke_width=2,
@@ -114,15 +113,15 @@ class CreditsClip(TextClip):
         # Make two columns for the credits
         left, right = [
             TextClip(
-                txt,
+                text=txt,
                 color=color,
                 stroke_color=stroke_color,
                 stroke_width=stroke_width,
                 font=font,
                 font_size=font_size,
-                align=align,
+                text_align=align,
             )
-            for txt, align in [(left, "East"), (right, "West")]
+            for txt, align in [(left, "left"), (right, "right")]
         ]
 
         both_columns = CompositeVideoClip(

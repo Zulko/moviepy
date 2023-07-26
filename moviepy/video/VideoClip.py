@@ -11,6 +11,7 @@ from numbers import Real
 import numpy as np
 import proglog
 from imageio.v3 import imread, imwrite
+from imageio.v2 import imread as imread_v2
 from PIL import Image, ImageDraw, ImageFont
 
 import threading
@@ -1190,9 +1191,11 @@ class ImageClip(VideoClip):
     ):
         VideoClip.__init__(self, is_mask=is_mask, duration=duration)
 
+        print(img)
+
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
-            img = imread(img)
+            img = imread_v2(img) # We use v2 imread cause v3 fail with gif
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
