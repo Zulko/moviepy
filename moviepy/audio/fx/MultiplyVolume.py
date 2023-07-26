@@ -40,18 +40,18 @@ class MultiplyVolume(Effect) :
     """
 
     factor: float
-    start_time = None
-    end_time = None
+    start_time: float = None
+    end_time: float = None
 
     def __post_init__ (self) :
         if self.start_time is not None:
             self.start_time = convert_to_seconds(self.start_time)
 
-        if self.start_time is not None:
+        if self.end_time is not None:
             self.end_time = convert_to_seconds(self.end_time)
 
 
-    def _multiply_volume_in_range(factor, start_time, end_time, nchannels):
+    def _multiply_volume_in_range(self, factor, start_time, end_time, nchannels):
         def factors_filter(factor, t):
             return np.array([factor if start_time <= t_ <= end_time else 1 for t_ in t])
 
