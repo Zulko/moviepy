@@ -2,6 +2,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class SlideOut(Effect):
     """Makes the clip goes away by one side of the screen.
@@ -57,6 +58,3 @@ class SlideOut(Effect):
         }
 
         return clip.with_position(pos_dict[self.side])
-
-    
-

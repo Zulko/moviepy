@@ -2,8 +2,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class TimeSymmetrize(Effect) :
+class TimeSymmetrize(Effect):
     """
     Returns a clip that plays the current clip once forwards and
     then once backwards. This is very practival to make video that
@@ -15,5 +16,5 @@ class TimeSymmetrize(Effect) :
     def apply(self, clip: Clip) -> Clip:
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
-        
+
         return clip + clip[::-1]

@@ -1,7 +1,7 @@
-
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
+
 
 @dataclass
 class EvenSize(Effect):
@@ -29,5 +29,4 @@ class EvenSize(Effect):
             def image_filter(a):
                 return a[:-1, :, :]
 
-        return clip.image_transform(image_filter, apply_to=['mask'])
-        
+        return clip.image_transform(image_filter, apply_to=["mask"])

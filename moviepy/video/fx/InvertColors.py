@@ -2,8 +2,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class InvertColors(Effect) :
+class InvertColors(Effect):
     """Returns the color-inversed clip.
 
     The values of all pixels are replaced with (255-v) or (1-v) for masks

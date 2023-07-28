@@ -7,8 +7,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class AudioFadeIn(Effect) :
+class AudioFadeIn(Effect):
     """Return an audio (or video) clip that is first mute, then the
     sound arrives progressively over ``duration`` seconds.
 
@@ -27,13 +28,11 @@ class AudioFadeIn(Effect) :
 
     duration: float
 
-    def __post_init__ (self) :
+    def __post_init__(self):
         self.duration = convert_to_seconds(self.duration)
-
 
     def _mono_factor_getter(self):
         return lambda t, duration: np.minimum(t / duration, 1)
-
 
     def _stereo_factor_getter(self, nchannels):
         def getter(t, duration):
@@ -41,10 +40,9 @@ class AudioFadeIn(Effect) :
             return np.array([factor for _ in range(nchannels)]).T
 
         return getter
-    
 
     @audio_video_effect
-    def apply(self, clip: Clip) -> Clip: 
+    def apply(self, clip: Clip) -> Clip:
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
 

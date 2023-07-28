@@ -2,6 +2,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class SlideIn(Effect):
     """Makes the clip arrive from one side of the screen.
@@ -53,6 +54,3 @@ class SlideIn(Effect):
         }
 
         return clip.with_position(pos_dict[self.side])
-
-    
-

@@ -7,8 +7,9 @@ from moviepy.Effect import Effect
 from dataclasses import dataclass
 from typing import Union
 
+
 @dataclass
-class MasksOr(Effect) :
+class MasksOr(Effect):
     """Returns the logical 'or' (maximum pixel color values) between two masks.
 
     The result has the duration of the clip to which has been applied, if it has any.
@@ -37,8 +38,12 @@ class MasksOr(Effect) :
             other_clip = self.other_clip.img
 
         if isinstance(self.other_clip, np.ndarray):
-            return clip.image_transform(lambda frame: np.maximum(frame, self.other_clip))
+            return clip.image_transform(
+                lambda frame: np.maximum(frame, self.other_clip)
+            )
         else:
             return clip.transform(
-                lambda get_frame, t: np.maximum(get_frame(t), self.other_clip.get_frame(t))
+                lambda get_frame, t: np.maximum(
+                    get_frame(t), self.other_clip.get_frame(t)
+                )
             )

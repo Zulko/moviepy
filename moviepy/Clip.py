@@ -185,7 +185,7 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def with_effects(self, effects: List['Effect']):
+    def with_effects(self, effects: List["Effect"]):
         """Return a copy of the current clip with the effects applied
 
         >>> new_clip = clip.with_effects([vfx.Resize(0.2, method="bilinear")])
@@ -195,14 +195,14 @@ class Clip:
         >>> clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
         new_clip = self.copy()
-        for effect in effects :
+        for effect in effects:
             # We always copy effect before using it, see Effect.copy
             # to see why we need to
             effect_copy = effect.copy()
             new_clip = effect_copy.apply(new_clip)
 
         return new_clip
-    
+
     @apply_to_mask
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
@@ -291,7 +291,6 @@ class Clip:
             if self.duration is None:
                 raise ValueError("Cannot change clip start when new duration is None")
             self.start = self.end - duration
-
 
     @outplace
     def with_make_frame(self, make_frame):
@@ -458,21 +457,26 @@ class Clip:
             return new_clip.with_duration(self.duration - (end_time - start_time))
         else:  # pragma: no cover
             return new_clip
-        
-    def with_multiply_speed(self, factor: float = None, final_duration: float = None) :
+
+    def with_multiply_speed(self, factor: float = None, final_duration: float = None):
         """Returns a clip playing the current clip but at a speed multiplied by ``factor``.
         For info on the parameters, please see ``vfx.MultiplySpeed``
         """
         from moviepy.video.fx.MultiplySpeed import MultiplySpeed
-        return self.with_effects([MultiplySpeed(factor=factor, final_duration=final_duration)])
-    
-    def with_multiply_volume(self, factor: float, start_time = None, end_time = None) :
-        """Returns a new clip with audio volume multiplied by the value `factor`. 
+
+        return self.with_effects(
+            [MultiplySpeed(factor=factor, final_duration=final_duration)]
+        )
+
+    def with_multiply_volume(self, factor: float, start_time=None, end_time=None):
+        """Returns a new clip with audio volume multiplied by the value `factor`.
         For info on the parameters, please see ``afx.MultiplyVolume``
         """
         from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
-        return self.with_effects([MultiplyVolume(factor=factor, start_time=start_time, 
-                                                 end_time=end_time)])
+
+        return self.with_effects(
+            [MultiplyVolume(factor=factor, start_time=start_time, end_time=end_time)]
+        )
 
     @requires_duration
     @use_clip_fps_by_default
@@ -556,7 +560,6 @@ class Clip:
 
         else:
             return (t >= self.start) and ((self.end is None) or (t < self.end))
-
 
     def close(self):
         """Release any resources that are in use."""

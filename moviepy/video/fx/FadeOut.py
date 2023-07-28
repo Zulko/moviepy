@@ -4,6 +4,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class FadeOut(Effect):
     """Makes the clip progressively fade to some color (black by default),
@@ -13,14 +14,14 @@ class FadeOut(Effect):
     For cross-fading (progressive appearance or disappearance of a clip over another
     clip), see ``CrossFadeOut``
     """
-    
+
     duration: float
     final_color: list = None
 
-    def apply(self, clip: Clip) -> Clip:   
+    def apply(self, clip: Clip) -> Clip:
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
-        
+
         if self.final_color is None:
             self.final_color = 0 if clip.is_mask else [0, 0, 0]
 

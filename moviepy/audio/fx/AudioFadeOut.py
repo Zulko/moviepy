@@ -7,8 +7,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class AudioFadeOut(Effect) :
+class AudioFadeOut(Effect):
     """Return a sound clip where the sound fades out progressively
     over ``duration`` seconds at the end of the clip.
 
@@ -28,13 +29,11 @@ class AudioFadeOut(Effect) :
 
     duration: float
 
-    def __post_init__ (self) :
+    def __post_init__(self):
         self.duration = convert_to_seconds(self.duration)
-
 
     def _mono_factor_getter(self, clip_duration):
         return lambda t, duration: np.minimum(1.0 * (clip_duration - t) / duration, 1)
-
 
     def _stereo_factor_getter(self, clip_duration, nchannels):
         def getter(t, duration):
@@ -42,7 +41,6 @@ class AudioFadeOut(Effect) :
             return np.array([factor for _ in range(nchannels)]).T
 
         return getter
-
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:

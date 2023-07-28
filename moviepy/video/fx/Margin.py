@@ -7,8 +7,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class Margin(Effect) :
+class Margin(Effect):
     """Draws an external margin all around the frame.
 
     Parameters
@@ -44,8 +45,8 @@ class Margin(Effect) :
     bottom: int = 0
     color: tuple = (0, 0, 0)
     opacity: float = 1.0
-    
-    def add_margin (self, clip: Clip) :
+
+    def add_margin(self, clip: Clip):
         if (self.opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
             clip = clip.with_add_mask()
 
@@ -68,6 +69,7 @@ class Margin(Effect) :
             return clip.image_transform(lambda pic: im)
 
         else:
+
             def filter(get_frame, t):
                 pic = get_frame(t)
                 h, w = pic.shape[:2]
@@ -77,12 +79,11 @@ class Margin(Effect) :
 
             return clip.transform(filter)
 
-  
     def apply(self, clip: Clip) -> Clip:
         # We apply once on clip and once on mask if we have one
         clip = self.add_margin(clip=clip)
 
-        if clip.mask :
+        if clip.mask:
             clip.mask = self.add_margin(clip=clip.mask)
 
         return clip

@@ -5,8 +5,9 @@ from moviepy.Effect import Effect
 from moviepy.video.fx.CrossFadeIn import CrossFadeIn
 from dataclasses import dataclass
 
+
 @dataclass
-class MakeLoopable(Effect) :
+class MakeLoopable(Effect):
     """Makes the clip fade in progressively at its own end, this way it can be
     looped indefinitely.
 
@@ -20,8 +21,9 @@ class MakeLoopable(Effect) :
     overlap_duration: float
 
     def apply(self, clip: Clip) -> Clip:
-    
         clip2 = clip.with_effects([CrossFadeIn(self.overlap_duration)]).with_start(
             clip.duration - self.overlap_duration
         )
-        return CompositeVideoClip([clip, clip2]).with_subclip(self.overlap_duration, clip.duration)
+        return CompositeVideoClip([clip, clip2]).with_subclip(
+            self.overlap_duration, clip.duration
+        )

@@ -5,8 +5,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class AudioNormalize(Effect) :
+class AudioNormalize(Effect):
     """Return a clip whose volume is normalized to 0db.
 
     Return an audio (or video) clip whose audio volume is normalized
@@ -19,7 +20,7 @@ class AudioNormalize(Effect) :
     >>> videoclip = VideoFileClip('myvideo.mp4').with_effects([afx.AudioNormalize()])
 
     """
-    
+
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
         max_volume = clip.max_volume()

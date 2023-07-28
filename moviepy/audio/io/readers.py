@@ -148,7 +148,7 @@ class FFMPEG_AudioReader:
         Parameters:
         ------------
           chunksize (float): The desired number of audio frames to read.
-        
+
         """
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))

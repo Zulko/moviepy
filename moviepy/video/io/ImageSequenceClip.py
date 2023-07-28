@@ -41,7 +41,7 @@ class ImageSequenceClip(VideoClip):
 
     load_images
       Specify that all images should be loaded into the RAM. This is only
-      interesting if you have a small number of images that will be used 
+      interesting if you have a small number of images that will be used
       more than once.
     """
 

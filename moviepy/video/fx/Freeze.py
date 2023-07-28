@@ -4,8 +4,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class Freeze(Effect) :
+class Freeze(Effect):
     """Momentarily freeze the clip at time t.
 
     Set `t='end'` to freeze the clip at the end (actually it will freeze on the
@@ -24,7 +25,7 @@ class Freeze(Effect) :
     def apply(self, clip: Clip) -> Clip:
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
-        
+
         if self.t == "end":
             self.t = clip.duration - self.padding_end - 1 / clip.fps
 
@@ -35,7 +36,7 @@ class Freeze(Effect) :
                 )
             self.freeze_duration = self.total_duration - clip.duration
 
-        before = [clip[:self.t]] if (self.t != 0) else []
+        before = [clip[: self.t]] if (self.t != 0) else []
         freeze = [clip.to_ImageClip(self.t).with_duration(self.freeze_duration)]
-        after = [clip[self.t:]] if (self.t != clip.duration) else []
+        after = [clip[self.t :]] if (self.t != clip.duration) else []
         return concatenate_videoclips(before + freeze + after)

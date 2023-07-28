@@ -5,6 +5,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class FadeIn(Effect):
     """Makes the clip progressively appear from some color (black by default),
@@ -19,7 +20,6 @@ class FadeIn(Effect):
     initial_color: list = None
 
     def apply(self, clip: Clip) -> Clip:
-    
         if self.initial_color is None:
             self.initial_color = 0 if clip.is_mask else [0, 0, 0]
 

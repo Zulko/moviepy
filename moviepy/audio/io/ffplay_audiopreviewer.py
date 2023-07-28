@@ -33,12 +33,11 @@ class FFPLAY_AudioPreviewer:
         nbytes=2,
         nchannels=2,
     ):
-        
         # order is important
         cmd = [
             FFPLAY_BINARY,
-            "-autoexit", # If you dont precise, ffplay dont stop at end
-            "-nodisp", # If you dont precise a window is
+            "-autoexit",  # If you dont precise, ffplay dont stop at end
+            "-nodisp",  # If you dont precise a window is
             "-f",
             "s%dle" % (8 * nbytes),
             "-ar",
@@ -56,7 +55,7 @@ class FFPLAY_AudioPreviewer:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
-        """ Send a raw audio frame (a chunck of audio) to ffplay to be played"""
+        """Send a raw audio frame (a chunck of audio) to ffplay to be played"""
         try:
             self.proc.stdin.write(frames_array.tobytes())
         except IOError as err:
@@ -103,12 +102,7 @@ class FFPLAY_AudioPreviewer:
 
 @requires_duration
 def ffplay_audiopreview(
-    clip,
-    fps=None,
-    buffersize=2000,
-    nbytes=2,
-    audio_flag=None,
-    video_flag=None
+    clip, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
 ):
     """
     A function that wraps the FFPLAY_AudioPreviewer to preview an AudioClip
@@ -142,25 +136,19 @@ def ffplay_audiopreview(
         else:
             fps = clip.fps
 
-    with FFPLAY_AudioPreviewer(
-        fps,
-        nbytes,
-        clip.nchannels
-    ) as previewer:
-        
-        
+    with FFPLAY_AudioPreviewer(fps, nbytes, clip.nchannels) as previewer:
         first_frame = True
         for chunk in clip.iter_chunks(
             chunksize=buffersize, quantize=True, nbytes=nbytes, fps=fps
         ):
             # On first frame, wait for video
-            if first_frame :
+            if first_frame:
                 first_frame = False
-            
-                if audio_flag is not None: 
-                    audio_flag.set() # Say to video that audio is ready
+
+                if audio_flag is not None:
+                    audio_flag.set()  # Say to video that audio is ready
 
                 if video_flag is not None:
-                    video_flag.wait() # Wait for video to be ready
+                    video_flag.wait()  # Wait for video to be ready
 
             previewer.write_frames(chunk)

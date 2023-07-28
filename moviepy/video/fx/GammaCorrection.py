@@ -2,8 +2,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class GammaCorrection(Effect) :
+class GammaCorrection(Effect):
     """Gamma-correction of a video clip."""
 
     gamma: float

@@ -5,8 +5,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class Painting(Effect) :
+class Painting(Effect):
     """Transforms any photo into some kind of painting.
 
     Transforms any photo into some kind of painting. Saturation
@@ -31,7 +32,6 @@ class Painting(Effect) :
         image = Image.fromarray(np_image)
         image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
-
         # Convert the image to grayscale
         grayscale_image = image.convert("L")
 
@@ -55,7 +55,7 @@ class Painting(Effect) :
 
         return painting
 
-
     def apply(self, clip: Clip) -> Clip:
-        return clip.image_transform(lambda im: self.to_painting(im, self.saturation, self.black))
-
+        return clip.image_transform(
+            lambda im: self.to_painting(im, self.saturation, self.black)
+        )

@@ -13,7 +13,11 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.tools import convert_to_seconds
 from moviepy.version import __version__
 from moviepy.video import fx as vfx, tools as videotools
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip, clips_array, concatenate_videoclips
+from moviepy.video.compositing.CompositeVideoClip import (
+    CompositeVideoClip,
+    clips_array,
+    concatenate_videoclips,
+)
 from moviepy.video.io import ffmpeg_tools
 from moviepy.video.io.display_in_notebook import display_in_notebook
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip

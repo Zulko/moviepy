@@ -7,8 +7,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class MultiplyVolume(Effect) :
+class MultiplyVolume(Effect):
     """Returns a clip with audio volume multiplied by the
     value `factor`. Can be applied to both audio and video clips.
 
@@ -43,13 +44,12 @@ class MultiplyVolume(Effect) :
     start_time: float = None
     end_time: float = None
 
-    def __post_init__ (self) :
+    def __post_init__(self):
         if self.start_time is not None:
             self.start_time = convert_to_seconds(self.start_time)
 
         if self.end_time is not None:
             self.end_time = convert_to_seconds(self.end_time)
-
 
     def _multiply_volume_in_range(self, factor, start_time, end_time, nchannels):
         def factors_filter(factor, t):
@@ -65,7 +65,6 @@ class MultiplyVolume(Effect) :
             return np.multiply(get_frame(t), factors_filter(factor, t))
 
         return multiply_mono_volume if nchannels == 1 else multiply_stereo_volume
-
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:

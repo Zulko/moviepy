@@ -265,15 +265,10 @@ class AudioClip(Clip):
             ffmpeg_params=ffmpeg_params,
             logger=logger,
         )
-    
+
     @requires_duration
     def audiopreview(
-        self,
-        fps=None,
-        buffersize=2000,
-        nbytes=2,
-        audio_flag=None,
-        video_flag=None
+        self, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
     ):
         """
         Preview an AudioClip using ffplay
@@ -301,7 +296,14 @@ class AudioClip(Clip):
             Instances of class threading events that are used to synchronize
             video and audio during ``VideoClip.preview()``.
         """
-        ffplay_audiopreview(clip=self, fps=fps, buffersize=buffersize, nbytes=nbytes, audio_flag=audio_flag, video_flag=video_flag)
+        ffplay_audiopreview(
+            clip=self,
+            fps=fps,
+            buffersize=buffersize,
+            nbytes=nbytes,
+            audio_flag=audio_flag,
+            video_flag=video_flag,
+        )
 
     def __add__(self, other):
         if isinstance(other, AudioClip):

@@ -1,6 +1,7 @@
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class Blink(Effect):
     """
@@ -20,5 +21,5 @@ class Blink(Effect):
         clip.mask = clip.mask.transform(
             lambda get_frame, t: get_frame(t) * ((t % duration) < self.duration_on)
         )
-        
+
         return clip

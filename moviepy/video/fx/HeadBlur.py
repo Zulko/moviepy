@@ -4,21 +4,21 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class HeadBlur(Effect) :
+class HeadBlur(Effect):
     """Returns a filter that will blur a moving part (a head ?) of the frames.
 
     The position of the blur at time t is defined by (fx(t), fy(t)), the radius
     of the blurring by ``radius`` and the intensity of the blurring by ``intensity``.
     """
-    
+
     fx: callable
     fy: callable
     radius: float
     intensity: float = None
 
     def apply(self, clip: Clip) -> Clip:
-        
         if self.intensity is None:
             self.intensity = int(2 * self.radius / 3)
 
@@ -30,13 +30,13 @@ class HeadBlur(Effect) :
             y1, y2 = max(0, y - self.radius), min(y + self.radius, h)
 
             image = Image.fromarray(im)
-            mask = Image.new('RGB', image.size)
+            mask = Image.new("RGB", image.size)
             draw = ImageDraw.Draw(mask)
-            draw.ellipse([x1, y1, x2, y2],fill=(255,255,255))
+            draw.ellipse([x1, y1, x2, y2], fill=(255, 255, 255))
 
             blurred = image.filter(ImageFilter.GaussianBlur(radius=self.intensity))
 
-            res = np.where(np.array(mask) > 0, np.array(blurred), np.array(image)) 
+            res = np.where(np.array(mask) > 0, np.array(blurred), np.array(image))
             return res
 
         return clip.transform(filter)

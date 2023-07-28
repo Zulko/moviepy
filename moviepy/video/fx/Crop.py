@@ -2,6 +2,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class Crop(Effect):
     x1: int = None
@@ -55,10 +56,16 @@ class Crop(Effect):
             self.y1 = self.y2 - self.height
 
         if self.x_center:
-            self.x1, self.x2 = self.x_center - self.width / 2, self.x_center + self.width / 2
+            self.x1, self.x2 = (
+                self.x_center - self.width / 2,
+                self.x_center + self.width / 2,
+            )
 
         if self.y_center:
-            self.y1, self.y2 = self.y_center - self.height / 2, self.y_center + self.height / 2
+            self.y1, self.y2 = (
+                self.y_center - self.height / 2,
+                self.y_center + self.height / 2,
+            )
 
         self.x1 = self.x1 or 0
         self.y1 = self.y1 or 0
@@ -66,5 +73,8 @@ class Crop(Effect):
         self.y2 = self.y2 or clip.size[1]
 
         return clip.image_transform(
-            lambda frame: frame[int(self.y1) : int(self.y2), int(self.x1) : int(self.x2)], apply_to=["mask"]
+            lambda frame: frame[
+                int(self.y1) : int(self.y2), int(self.x1) : int(self.x2)
+            ],
+            apply_to=["mask"],
         )

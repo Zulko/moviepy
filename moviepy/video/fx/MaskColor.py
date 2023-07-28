@@ -4,8 +4,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class MaskColor(Effect) :
+class MaskColor(Effect):
     """Returns a new clip with a mask for transparency where the original
     clip is of the given color.
 
@@ -28,7 +29,9 @@ class MaskColor(Effect) :
 
         def hill(x):
             if self.threshold:
-                return x**self.stiffness / (self.threshold ** self.stiffness + x ** self.stiffness)
+                return x**self.stiffness / (
+                    self.threshold**self.stiffness + x**self.stiffness
+                )
             else:
                 return 1.0 * (x != 0)
 

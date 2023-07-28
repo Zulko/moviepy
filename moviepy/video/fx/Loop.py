@@ -2,8 +2,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class Loop(Effect) :
+class Loop(Effect):
     """
     Returns a clip that plays the current clip in an infinite loop.
     Ideal for clips coming from GIFs.
@@ -18,14 +19,14 @@ class Loop(Effect) :
     duration
       Total duration of the clip. Can be specified instead of n.
     """
-    
+
     n: int = None
     duration: float = None
-    
+
     def apply(self, clip: Clip) -> Clip:
         if clip.duration is None:
-          raise ValueError("Attribute 'duration' not set")
-    
+            raise ValueError("Attribute 'duration' not set")
+
         previous_duration = clip.duration
         clip = clip.time_transform(
             lambda t: t % previous_duration, apply_to=["mask", "audio"]
@@ -38,4 +39,3 @@ class Loop(Effect) :
             clip = clip.with_duration(self.duration)
 
         return clip
-        

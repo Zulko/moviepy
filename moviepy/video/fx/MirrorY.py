@@ -3,8 +3,9 @@ from moviepy.Effect import Effect
 from dataclasses import dataclass
 from typing import Union, List
 
+
 @dataclass
-class MirrorY(Effect) :
+class MirrorY(Effect):
     """Flips the clip vertically (and its mask too, by default)."""
 
     apply_to: Union[List, str] = "mask"

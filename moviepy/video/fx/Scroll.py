@@ -1,8 +1,17 @@
 from moviepy.Effect import Effect
 
-class Scroll(Effect) :
 
-    def __init__ (self, w=None, h=None, x_speed=0, y_speed=0, x_start=0, y_start=0, apply_to="mask") :
+class Scroll(Effect):
+    def __init__(
+        self,
+        w=None,
+        h=None,
+        x_speed=0,
+        y_speed=0,
+        x_start=0,
+        y_start=0,
+        apply_to="mask",
+    ):
         """
         Scrolls horizontally or vertically a clip, e.g. to make end credits
 
@@ -28,12 +37,11 @@ class Scroll(Effect) :
         self.y_start = y_start
         self.apply_to = apply_to
 
-
-    def apply(self, clip) :
+    def apply(self, clip):
         if self.h is None:
             self.h = clip.h
 
-        if self.w is None :
+        if self.w is None:
             self.w = clip.w
 
         x_max = self.w - 1
@@ -43,5 +51,5 @@ class Scroll(Effect) :
             x = int(max(0, min(x_max, self.x_start + round(self.x_speed * t))))
             y = int(max(0, min(y_max, self.y_start + round(self.y_speed * t))))
             return get_frame(t)[y : y + self.h, x : x + self.w]
-        
+
         return clip.transform(filter, apply_to=self.apply_to)

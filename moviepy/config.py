@@ -56,7 +56,7 @@ else:
         raise IOError(
             f"{err} - The path specified for the ffmpeg binary might be wrong"
         )
-    
+
 
 if FFPLAY_BINARY == "auto-detect":
     if try_cmd(["ffplay"])[0]:

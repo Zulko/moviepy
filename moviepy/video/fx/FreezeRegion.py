@@ -5,6 +5,7 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class FreezeRegion(Effect):
     """Freezes one region of the clip while the rest remains animated.
@@ -38,23 +39,27 @@ class FreezeRegion(Effect):
     outside_region: tuple = None
     mask: Clip = None
 
-    def apply(self, clip: Clip) -> Clip:  
+    def apply(self, clip: Clip) -> Clip:
         if self.region is not None:
-              x1, y1, x2, y2 = self.region
-              freeze = (
-                  clip.with_effects([Crop(*self.region)])
-                  .to_ImageClip(t=self.t)
-                  .with_duration(clip.duration)
-                  .with_position((x1, y1))
-              )
-              return CompositeVideoClip([clip, freeze])
+            x1, y1, x2, y2 = self.region
+            freeze = (
+                clip.with_effects([Crop(*self.region)])
+                .to_ImageClip(t=self.t)
+                .with_duration(clip.duration)
+                .with_position((x1, y1))
+            )
+            return CompositeVideoClip([clip, freeze])
 
         elif self.outside_region is not None:
             x1, y1, x2, y2 = self.outside_region
-            animated_region = clip.with_effects([Crop(*self.outside_region)]).with_position((x1, y1))
+            animated_region = clip.with_effects(
+                [Crop(*self.outside_region)]
+            ).with_position((x1, y1))
             freeze = clip.to_ImageClip(t=self.t).with_duration(clip.duration)
             return CompositeVideoClip([freeze, animated_region])
 
         elif self.mask is not None:
-            freeze = clip.to_ImageClip(t=t).with_duration(clip.duration).with_mask(self.mask)
+            freeze = (
+                clip.to_ImageClip(t=t).with_duration(clip.duration).with_mask(self.mask)
+            )
             return CompositeVideoClip([clip, freeze])

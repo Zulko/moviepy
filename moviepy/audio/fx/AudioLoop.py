@@ -5,8 +5,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class AudioLoop(Effect) :
+class AudioLoop(Effect):
     """Loops over an audio clip.
 
     Returns an audio clip that plays the given clip either
@@ -30,6 +31,8 @@ class AudioLoop(Effect) :
     def apply(self, clip: Clip) -> Clip:
         if self.duration is not None:
             self.n_loops = int(self.duration / clip.duration) + 1
-            return concatenate_audioclips(self.n_loops * [clip]).with_duration(self.duration)
+            return concatenate_audioclips(self.n_loops * [clip]).with_duration(
+                self.duration
+            )
 
         return concatenate_audioclips(self.n_loops * [clip])

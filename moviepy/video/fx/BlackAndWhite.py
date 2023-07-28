@@ -2,6 +2,7 @@ import numpy as np
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
 class BlackAndWhite(Effect):
     """Desaturates the picture, makes it black and white.
@@ -13,7 +14,7 @@ class BlackAndWhite(Effect):
 
     RGB: str = None
     preserve_luminosity: bool = True
-    
+
     def apply(self, clip):
         if self.RGB is None:
             self.RGB = [1, 1, 1]
@@ -21,7 +22,11 @@ class BlackAndWhite(Effect):
         if self.RGB == "CRT_phosphor":
             self.RGB = [0.2125, 0.7154, 0.0721]
 
-        R, G, B = 1.0 * np.array(self.RGB) / (sum(self.RGB) if self.preserve_luminosity else 1)
+        R, G, B = (
+            1.0
+            * np.array(self.RGB)
+            / (sum(self.RGB) if self.preserve_luminosity else 1)
+        )
 
         def filter(im):
             im = R * im[:, :, 0] + G * im[:, :, 1] + B * im[:, :, 2]

@@ -1,11 +1,11 @@
-
 from abc import ABCMeta, abstractmethod
 from moviepy.Clip import Clip
 import copy as _copy
 
+
 class Effect(metaclass=ABCMeta):
     """Base abastract class for all effects in MoviePy.
-        Any new effect have to extend this base class.
+    Any new effect have to extend this base class.
     """
 
     def copy(self):
@@ -14,7 +14,7 @@ class Effect(metaclass=ABCMeta):
         You must *always* copy an ``Effect`` before applying,
         because some of them will modify their own attributes when applied.
         For example, setting a previously unset property by using target clip property.
-        
+
         If we was to use the original effect, calling the same effect multiple times
         could lead to different properties, and different results for equivalent clips.
 
@@ -23,7 +23,6 @@ class Effect(metaclass=ABCMeta):
 
         In a way, copy make the effect himself beeing kind of indempotent."""
         return _copy.copy(self)
-
 
     @abstractmethod
     def apply(self, clip: Clip) -> Clip:
@@ -34,6 +33,6 @@ class Effect(metaclass=ABCMeta):
         clip
             The target clip to apply the effect on.
             (Internally, MoviePy will always pass a copy of the original clip)
-        
+
         """
         pass

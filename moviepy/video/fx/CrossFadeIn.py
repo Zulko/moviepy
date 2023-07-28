@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from moviepy.video.fx.FadeIn import FadeIn
 
+
 @dataclass
 class CrossFadeIn(Effect):
     """Makes the clip appear progressively, over ``duration`` seconds.
@@ -21,6 +22,5 @@ class CrossFadeIn(Effect):
 
         clip.mask.duration = clip.duration
         clip.mask = clip.mask.with_effects([FadeIn(self.duration)])
-        
-        return clip
 
+        return clip

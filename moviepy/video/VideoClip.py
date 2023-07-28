@@ -69,9 +69,9 @@ class VideoClip(Clip):
       duration
 
     has_constant_size
-      Define if clip size is constant or if it may vary with time. Default 
+      Define if clip size is constant or if it may vary with time. Default
       to True
-    
+
 
 
     Attributes
@@ -526,7 +526,6 @@ class VideoClip(Clip):
             logger=logger,
         )
 
-
     # ===============================================================
     # PREVIEW OPERATIONS
 
@@ -566,20 +565,14 @@ class VideoClip(Clip):
         #     clip = CompositeVideoClip([self.with_position((0, 0))])
 
         frame = clip.get_frame(t)
-        pil_img = Image.fromarray(frame.astype('uint8'))
+        pil_img = Image.fromarray(frame.astype("uint8"))
 
         pil_img.show()
-
 
     @requires_duration
     @convert_masks_to_RGB
     def preview(
-        self,
-        fps=15,
-        audio=True,
-        audio_fps=22050,
-        audio_buffersize=3000,
-        audio_nbytes=2
+        self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
     ):
         """
         Displays the clip in a window, at the given frames per second (of movie)
@@ -630,18 +623,27 @@ class VideoClip(Clip):
             # launch the thread
             audiothread = threading.Thread(
                 target=self.audio.audiopreview,
-                args=(audio_fps, audio_buffersize, audio_nbytes, audio_flag, video_flag),
+                args=(
+                    audio_fps,
+                    audio_buffersize,
+                    audio_nbytes,
+                    audio_flag,
+                    video_flag,
+                ),
             )
             audiothread.start()
 
         # passthrough to ffmpeg, passing flag for ffmpeg to set
-        ffplay_preview_video(clip=self, fps=fps, audio_flag=audio_flag, video_flag=video_flag)
-
+        ffplay_preview_video(
+            clip=self, fps=fps, audio_flag=audio_flag, video_flag=video_flag
+        )
 
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def with_sub_effects(self, effects: List['Effect'], start_time=0, end_time=None, **kwargs):
+    def with_sub_effects(
+        self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
+    ):
         """Apply a transformation to a part of the clip.
 
         Returns a new clip in which the function ``fun`` (clip->clip)
@@ -666,7 +668,6 @@ class VideoClip(Clip):
         from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
         return concatenate_videoclips(clips).with_start(self.start)
-
 
     # IMAGE FILTERS
 
@@ -693,7 +694,7 @@ class VideoClip(Clip):
         ------------
         pre_array (numpy.ndarray)
           The original array to be filled.
-            
+
         shape (tuple)
           The desired shape of the resulting array.
 
@@ -940,33 +941,77 @@ class VideoClip(Clip):
         """Returns a video clip that is a resized version of the clip.
         For info on the parameters, please see ``vfx.Resize``
         """
-        return self.with_effects([Resize(new_size=new_size, height=height, 
-                                    width=width, apply_to_mask=apply_to_mask)])
-        
-    def rotated(self, angle: float, unit: str = "deg", resample: str = "bicubic", 
-                expand: bool = False, center: tuple = None, translate: tuple = None,
-                bg_color: tuple = None) :
+        return self.with_effects(
+            [
+                Resize(
+                    new_size=new_size,
+                    height=height,
+                    width=width,
+                    apply_to_mask=apply_to_mask,
+                )
+            ]
+        )
+
+    def rotated(
+        self,
+        angle: float,
+        unit: str = "deg",
+        resample: str = "bicubic",
+        expand: bool = False,
+        center: tuple = None,
+        translate: tuple = None,
+        bg_color: tuple = None,
+    ):
         """Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
         If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
         and ``bg_color`` are not ``None``.
         For info on the parameters, please see ``vfx.Rotate``
         """
-        return self.with_effects([Rotate(angle=angle, unit=unit, resample=resample,
-                expand=expand, center=center, translate=translate,
-                bg_color=bg_color)])
+        return self.with_effects(
+            [
+                Rotate(
+                    angle=angle,
+                    unit=unit,
+                    resample=resample,
+                    expand=expand,
+                    center=center,
+                    translate=translate,
+                    bg_color=bg_color,
+                )
+            ]
+        )
 
-    def cropped(self, x1: int = None, y1: int = None, x2: int = None, y2: int = None, 
-                width: int = None, height: int = None, x_center: int = None, 
-                y_center: int = None) :
+    def cropped(
+        self,
+        x1: int = None,
+        y1: int = None,
+        x2: int = None,
+        y2: int = None,
+        width: int = None,
+        height: int = None,
+        x_center: int = None,
+        y_center: int = None,
+    ):
         """Returns a new clip in which just a rectangular subregion of the
         original clip is conserved. x1,y1 indicates the top left corner and
         x2,y2 is the lower right corner of the croped region.
         All coordinates are in pixels. Float numbers are accepted.
         For info on the parameters, please see ``vfx.Crop``
         """
-        return self.with_effects([Crop(x1=x1, y1=y1, x2=x2, y2=y2, 
-                width=width, height=height, x_center=x_center, y_center=y_center)])
-        
+        return self.with_effects(
+            [
+                Crop(
+                    x1=x1,
+                    y1=y1,
+                    x2=x2,
+                    y2=y2,
+                    width=width,
+                    height=height,
+                    x_center=x_center,
+                    y_center=y_center,
+                )
+            ]
+        )
 
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
@@ -1016,7 +1061,9 @@ class VideoClip(Clip):
 
     def __add__(self, other):
         if isinstance(other, VideoClip):
-            from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
+            from moviepy.video.compositing.CompositeVideoClip import (
+                concatenate_videoclips,
+            )
 
             method = "chain" if self.size == other.size else "compose"
             return concatenate_videoclips([self, other], method=method)
@@ -1046,19 +1093,20 @@ class VideoClip(Clip):
 
     def __matmul__(self, n):
         """
-            Implement matrice multiplication (self @ other) to rotate a video
-            by other degrees
+        Implement matrice multiplication (self @ other) to rotate a video
+        by other degrees
         """
         if not isinstance(n, Real):
             return NotImplemented
-        
+
         from moviepy.video.fx.Rotate import Rotate
+
         return self.with_effects([Rotate(n)])
 
     def __and__(self, mask):
         """
-            Implement the and (self & other) to produce a video with other
-            used as a mask for self.
+        Implement the and (self & other) to produce a video with other
+        used as a mask for self.
         """
         return self.with_mask(mask)
 
@@ -1193,7 +1241,7 @@ class ImageClip(VideoClip):
 
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
-            img = imread_v2(img) # We use v2 imread cause v3 fail with gif
+            img = imread_v2(img)  # We use v2 imread cause v3 fail with gif
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
@@ -1314,280 +1362,410 @@ class ColorClip(ImageClip):
 
 
 class TextClip(ImageClip):
-        """Class for autogenerated text clips.
+    """Class for autogenerated text clips.
 
-        Creates an ImageClip originating from a script-generated text image.
+    Creates an ImageClip originating from a script-generated text image.
 
-        Parameters
-        ----------
+    Parameters
+    ----------
 
-        font
-          Path to the font to use. Must be an OpenType font.
-          See ``TextClip.list('font')`` for the list of fonts you can use on
-          your computer.
+    font
+      Path to the font to use. Must be an OpenType font.
+      See ``TextClip.list('font')`` for the list of fonts you can use on
+      your computer.
 
-        text
-          A string of the text to write. Can be replaced by argument
-          ``filename``.
+    text
+      A string of the text to write. Can be replaced by argument
+      ``filename``.
 
-        filename
-          The name of a file in which there is the text to write,
-          as a string or a path-like object.
-          Can be provided instead of argument ``text``
+    filename
+      The name of a file in which there is the text to write,
+      as a string or a path-like object.
+      Can be provided instead of argument ``text``
 
-        font_size
-          Font size in point. Can be auto-set if method='caption',
-          or if method='label' and size is set.
+    font_size
+      Font size in point. Can be auto-set if method='caption',
+      or if method='label' and size is set.
 
-        size
-          Size of the picture in pixels. Can be auto-set if
-          method='label' and font_size is set, but mandatory if method='caption'.
-          the height can be None for caption if font_size is defined,
-          it will then be auto-determined.
+    size
+      Size of the picture in pixels. Can be auto-set if
+      method='label' and font_size is set, but mandatory if method='caption'.
+      the height can be None for caption if font_size is defined,
+      it will then be auto-determined.
 
-        bg_color
-          Color of the background. Default to None for no background. Can be
-          a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
-          hexadecimal notation.
+    bg_color
+      Color of the background. Default to None for no background. Can be
+      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+      hexadecimal notation.
 
-        color
-          Color of the text. Default to "black". Can be
-          a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
-          hexadecimal notation.
+    color
+      Color of the text. Default to "black". Can be
+      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+      hexadecimal notation.
 
-        
-        stroke_color
-          Color of the stroke (=contour line) of the text. If ``None``,
-          there will be no stroke.
 
-        stroke_width
-          Width of the stroke, in pixels. Can be a float, like 1.5.
+    stroke_color
+      Color of the stroke (=contour line) of the text. If ``None``,
+      there will be no stroke.
 
-        method
-          Either 'label' (default, the picture will be autosized so as to fit
-          exactly the size) or 'caption' (the text will be drawn in a picture
-          with fixed size provided with the ``size`` argument). If `caption`,
-          the text will be wrapped automagically.
+    stroke_width
+      Width of the stroke, in pixels. Can be a float, like 1.5.
 
-        text_align
-          center | left | right. Text align similar to css. Default to ``left``.
+    method
+      Either 'label' (default, the picture will be autosized so as to fit
+      exactly the size) or 'caption' (the text will be drawn in a picture
+      with fixed size provided with the ``size`` argument). If `caption`,
+      the text will be wrapped automagically.
 
-        horizontal_align
-          center | left | right. Define horizontal align of text bloc in image.
-          Default to ``center``.
+    text_align
+      center | left | right. Text align similar to css. Default to ``left``.
 
-        vertical_align
-          center | top | bottom. Define vertical align of text bloc in image. 
-          Default to ``center``.
+    horizontal_align
+      center | left | right. Define horizontal align of text bloc in image.
+      Default to ``center``.
 
-        interline
-          Interline spacing. Default to ``4``.
+    vertical_align
+      center | top | bottom. Define vertical align of text bloc in image.
+      Default to ``center``.
 
-        transparent
-          ``True`` (default) if you want to take into account the
-          transparency in the image.
+    interline
+      Interline spacing. Default to ``4``.
 
-        duration
-            Duration of the clip
-        """
+    transparent
+      ``True`` (default) if you want to take into account the
+      transparency in the image.
 
-        @convert_path_to_string("filename")
-        def __init__(
-            self,
-            font,
-            text=None,
-            filename=None,
-            font_size=None,
-            size=(None, None),
-            color="black",
-            bg_color=None,
-            stroke_color=None,
-            stroke_width=0,
-            method="label",
-            text_align="left",
-            horizontal_align="center",
-            vertical_align="center",
-            interline=4,
-            transparent=True,
-            duration=None
-        ):
-            
-            def break_text (width, text, font, font_size, stroke_width, align, spacing) -> List[str] :
-                """
-                    Break text to never overflow a width
-                """
-                img = Image.new("RGB", (1, 1))
-                font_pil = ImageFont.truetype(font, font_size)
-                draw = ImageDraw.Draw(img)
+    duration
+        Duration of the clip
+    """
 
-                lines = []
-                current_line = ''
-                words = text.split(' ')
-                for word in words:
-                    temp_line = (current_line + ' ' + word if current_line else word)
-                    temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox((0,0), temp_line, font=font_pil, spacing=spacing, 
-                        align=align, stroke_width=stroke_width)
-                    temp_width = temp_right - temp_left
-
-                    if temp_width <= width:
-                        current_line = temp_line
-                    else:
-                        lines.append(current_line)
-                        current_line = word
-
-                if current_line :
-                    lines.append(current_line)
-
-                return lines
-
-            def find_text_size (text, font, font_size, stroke_width, align, spacing, max_width=None, allow_break=False) -> tuple[int, int] :
-                """ 
-                    Find dimensions a text will occupy
-                    return a tuple (width, height)
-                """
-                img = Image.new("RGB", (1, 1))
-                font_pil = ImageFont.truetype(font, font_size)
-                draw = ImageDraw.Draw(img)
-
-                if max_width is None or not allow_break:
-                    left, top, right, bottom = draw.multiline_textbbox((0,0), text, font=font_pil, spacing=spacing, 
-                        align=align, stroke_width=stroke_width, anchor="lm")
-                    
-                    return (int(right - left), int(bottom - top))
-                
-                lines = break_text(width=max_width, text=text, font=font, font_size=font_size, stroke_width=stroke_width,
-                                   align=align, spacing=spacing)
-
-                left, top, right, bottom = draw.multiline_textbbox((0,0), "\n".join(lines), font=font_pil, spacing=spacing, 
-                        align=align, stroke_width=stroke_width, anchor="lm")
-                    
-                return (int(right - left), int(bottom - top))
-
-            def find_optimum_font_size (text, font, stroke_width, align, spacing, width, height=None, allow_break=False) :
-                """
-                    Find the best font size to fit as optimally as possible
-                """
-                max_font_size = width
-                min_font_size = 1
-
-                # Try find best size using bisection
-                while min_font_size < max_font_size:
-                    avg_font_size = int((max_font_size + min_font_size) // 2)
-                    text_width, text_height = find_text_size(text, font, avg_font_size, stroke_width, align, spacing, 
-                                                             max_width=width, allow_break=allow_break)
-
-                    if text_width <= width and (height is None or text_height <= height):
-                        min_font_size = avg_font_size + 1
-                    else:
-                        max_font_size = avg_font_size - 1
-
-                # Check if the last font size tested fits within the given width and height
-                text_width, text_height = find_text_size(text, font, min_font_size, stroke_width, align, spacing,
-                                                         max_width=width, allow_break=allow_break)
-                if text_width <= width and (height is None or text_height <= height):
-                    return min_font_size
-                else:
-                    return min_font_size - 1
-
-            try :
-                print("f", font)
-                _ = ImageFont.truetype(font)
-            except Exception as e :
-                raise ValueError("Invalid font {}, pillow failed to use it with error {}".format(font, e))
-
-            if filename:
-                with open(filename, 'r') as file:
-                    text = file.read().rstrip() # Remove newline at end
-
-            if text is None :
-                raise ValueError("No text nor filename provided")
-            
-            # Compute all img and text sizes if some are missing
-            img_width, img_height = size
-
-            if method == "caption" :
-                if img_width is None :
-                    raise ValueError("Size is mandatory when method is caption")
-            
-                if img_height is None and font_size is None :
-                    raise ValueError("Height is mandatory when method is caption and font size is None")
-
-                if font_size is None :
-                    font_size = find_optimum_font_size(text=text, font=font, stroke_width=stroke_width, align=text_align, 
-                                                       spacing=interline, width=img_width, height=img_height, allow_break=True)
-                
-                if img_height is None :
-                    img_height = find_text_size(text=text, font=font, font_size=font_size, stroke_width=stroke_width,
-                                                align=text_align, spacing=interline, max_width=img_width, allow_break=True)[1]
-
-                # Add line breaks whenever needed
-                text = "\n".join(break_text(width=img_width, text=text, font=font, font_size=font_size, stroke_width=stroke_width, 
-                                            align=text_align, spacing=interline))
-                    
-            elif method == "label" :
-                if font_size is None and img_width is None :
-                    raise ValueError("Font size is mandatory when method is label and size is None")
-            
-                if font_size is None :
-                    font_size = find_optimum_font_size(text=text, font=font, stroke_width=stroke_width, align=text_align, 
-                                                       spacing=interline, width=img_width, height=img_height)
-                    
-                if img_width is None :
-                    img_width = find_text_size(text=text, font=font, font_size=font_size, stroke_width=stroke_width,
-                                                align=text_align, spacing=interline)[0]
-                    
-                if img_height is None :
-                    img_height = find_text_size(text=text, font=font, font_size=font_size, stroke_width=stroke_width,
-                                                align=text_align, spacing=interline, max_width=img_width)[1]
-                                        
-            else :
-                raise ValueError("Method must be either `caption` or `label`.")
-            
-            # Trace the image
-            img_mode = "RGBA" if transparent else "RGB"
-
-            if bg_color is None and transparent :
-                bg_color = (0, 0, 0, 0)
-
-            img = Image.new(img_mode, (img_width, img_height), color=bg_color)
-            pil_font = ImageFont.truetype(font, font_size)
+    @convert_path_to_string("filename")
+    def __init__(
+        self,
+        font,
+        text=None,
+        filename=None,
+        font_size=None,
+        size=(None, None),
+        color="black",
+        bg_color=None,
+        stroke_color=None,
+        stroke_width=0,
+        method="label",
+        text_align="left",
+        horizontal_align="center",
+        vertical_align="center",
+        interline=4,
+        transparent=True,
+        duration=None,
+    ):
+        def break_text(
+            width, text, font, font_size, stroke_width, align, spacing
+        ) -> List[str]:
+            """
+            Break text to never overflow a width
+            """
+            img = Image.new("RGB", (1, 1))
+            font_pil = ImageFont.truetype(font, font_size)
             draw = ImageDraw.Draw(img)
 
-            # Dont need allow break here, because we already breaked in caption
-            text_width, text_height = find_text_size(text=text, font=font, font_size=font_size, stroke_width=stroke_width,
-                                                align=text_align, spacing=interline, max_width=img_width)
-            
-            x = 0
-            if horizontal_align == "right" :
-                x = img_width - text_width
-            elif horizontal_align == "center" :
-                x = (img_width - text_width) / 2
+            lines = []
+            current_line = ""
+            words = text.split(" ")
+            for word in words:
+                temp_line = current_line + " " + word if current_line else word
+                temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
+                    (0, 0),
+                    temp_line,
+                    font=font_pil,
+                    spacing=spacing,
+                    align=align,
+                    stroke_width=stroke_width,
+                )
+                temp_width = temp_right - temp_left
 
-            y = 0
-            if vertical_align == "bottom" :
-                y = img_height - text_height
-            elif vertical_align == "center" :
-                y = (img_height - text_height) / 2
+                if temp_width <= width:
+                    current_line = temp_line
+                else:
+                    lines.append(current_line)
+                    current_line = word
 
+            if current_line:
+                lines.append(current_line)
 
-            # So, pillow multiline support is horrible, in particular multiline_text and multiline_textbbox
-            # are not intuitive at all. They cannot use left top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
-            # as anchor, so we always have to use left middle instead. Else we would always have a useless
-            # margin (the diff between ascender and top) on any text.
-            # That mean our Y is actually not from 0 for top, but need to be increment by half our text height,
-            # since we have to reference from middle line.
-            y += text_height / 2
+            return lines
 
-            draw.multiline_text(xy=(x, y), text=text, fill=color, font=pil_font, spacing=interline, align=text_align, stroke_width=stroke_width, 
-                      stroke_fill=stroke_color, anchor="lm")
-            
-            # We just need the image as a numpy array
-            img_numpy = np.array(img)
+        def find_text_size(
+            text,
+            font,
+            font_size,
+            stroke_width,
+            align,
+            spacing,
+            max_width=None,
+            allow_break=False,
+        ) -> tuple[int, int]:
+            """
+            Find dimensions a text will occupy
+            return a tuple (width, height)
+            """
+            img = Image.new("RGB", (1, 1))
+            font_pil = ImageFont.truetype(font, font_size)
+            draw = ImageDraw.Draw(img)
 
-            ImageClip.__init__(self, img=img_numpy, transparent=transparent, duration=duration)
-            self.text = text
-            self.color = color
-            self.stroke_color = stroke_color
+            if max_width is None or not allow_break:
+                left, top, right, bottom = draw.multiline_textbbox(
+                    (0, 0),
+                    text,
+                    font=font_pil,
+                    spacing=spacing,
+                    align=align,
+                    stroke_width=stroke_width,
+                    anchor="lm",
+                )
+
+                return (int(right - left), int(bottom - top))
+
+            lines = break_text(
+                width=max_width,
+                text=text,
+                font=font,
+                font_size=font_size,
+                stroke_width=stroke_width,
+                align=align,
+                spacing=spacing,
+            )
+
+            left, top, right, bottom = draw.multiline_textbbox(
+                (0, 0),
+                "\n".join(lines),
+                font=font_pil,
+                spacing=spacing,
+                align=align,
+                stroke_width=stroke_width,
+                anchor="lm",
+            )
+
+            return (int(right - left), int(bottom - top))
+
+        def find_optimum_font_size(
+            text,
+            font,
+            stroke_width,
+            align,
+            spacing,
+            width,
+            height=None,
+            allow_break=False,
+        ):
+            """
+            Find the best font size to fit as optimally as possible
+            """
+            max_font_size = width
+            min_font_size = 1
+
+            # Try find best size using bisection
+            while min_font_size < max_font_size:
+                avg_font_size = int((max_font_size + min_font_size) // 2)
+                text_width, text_height = find_text_size(
+                    text,
+                    font,
+                    avg_font_size,
+                    stroke_width,
+                    align,
+                    spacing,
+                    max_width=width,
+                    allow_break=allow_break,
+                )
+
+                if text_width <= width and (height is None or text_height <= height):
+                    min_font_size = avg_font_size + 1
+                else:
+                    max_font_size = avg_font_size - 1
+
+            # Check if the last font size tested fits within the given width and height
+            text_width, text_height = find_text_size(
+                text,
+                font,
+                min_font_size,
+                stroke_width,
+                align,
+                spacing,
+                max_width=width,
+                allow_break=allow_break,
+            )
+            if text_width <= width and (height is None or text_height <= height):
+                return min_font_size
+            else:
+                return min_font_size - 1
+
+        try:
+            print("f", font)
+            _ = ImageFont.truetype(font)
+        except Exception as e:
+            raise ValueError(
+                "Invalid font {}, pillow failed to use it with error {}".format(font, e)
+            )
+
+        if filename:
+            with open(filename, "r") as file:
+                text = file.read().rstrip()  # Remove newline at end
+
+        if text is None:
+            raise ValueError("No text nor filename provided")
+
+        # Compute all img and text sizes if some are missing
+        img_width, img_height = size
+
+        if method == "caption":
+            if img_width is None:
+                raise ValueError("Size is mandatory when method is caption")
+
+            if img_height is None and font_size is None:
+                raise ValueError(
+                    "Height is mandatory when method is caption and font size is None"
+                )
+
+            if font_size is None:
+                font_size = find_optimum_font_size(
+                    text=text,
+                    font=font,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    width=img_width,
+                    height=img_height,
+                    allow_break=True,
+                )
+
+            if img_height is None:
+                img_height = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    max_width=img_width,
+                    allow_break=True,
+                )[1]
+
+            # Add line breaks whenever needed
+            text = "\n".join(
+                break_text(
+                    width=img_width,
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                )
+            )
+
+        elif method == "label":
+            if font_size is None and img_width is None:
+                raise ValueError(
+                    "Font size is mandatory when method is label and size is None"
+                )
+
+            if font_size is None:
+                font_size = find_optimum_font_size(
+                    text=text,
+                    font=font,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    width=img_width,
+                    height=img_height,
+                )
+
+            if img_width is None:
+                img_width = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                )[0]
+
+            if img_height is None:
+                img_height = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    max_width=img_width,
+                )[1]
+
+        else:
+            raise ValueError("Method must be either `caption` or `label`.")
+
+        # Trace the image
+        img_mode = "RGBA" if transparent else "RGB"
+
+        if bg_color is None and transparent:
+            bg_color = (0, 0, 0, 0)
+
+        img = Image.new(img_mode, (img_width, img_height), color=bg_color)
+        pil_font = ImageFont.truetype(font, font_size)
+        draw = ImageDraw.Draw(img)
+
+        # Dont need allow break here, because we already breaked in caption
+        text_width, text_height = find_text_size(
+            text=text,
+            font=font,
+            font_size=font_size,
+            stroke_width=stroke_width,
+            align=text_align,
+            spacing=interline,
+            max_width=img_width,
+        )
+
+        x = 0
+        if horizontal_align == "right":
+            x = img_width - text_width
+        elif horizontal_align == "center":
+            x = (img_width - text_width) / 2
+
+        y = 0
+        if vertical_align == "bottom":
+            y = img_height - text_height
+        elif vertical_align == "center":
+            y = (img_height - text_height) / 2
+
+        # So, pillow multiline support is horrible, in particular multiline_text and multiline_textbbox
+        # are not intuitive at all. They cannot use left top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
+        # as anchor, so we always have to use left middle instead. Else we would always have a useless
+        # margin (the diff between ascender and top) on any text.
+        # That mean our Y is actually not from 0 for top, but need to be increment by half our text height,
+        # since we have to reference from middle line.
+        y += text_height / 2
+
+        draw.multiline_text(
+            xy=(x, y),
+            text=text,
+            fill=color,
+            font=pil_font,
+            spacing=interline,
+            align=text_align,
+            stroke_width=stroke_width,
+            stroke_fill=stroke_color,
+            anchor="lm",
+        )
+
+        # We just need the image as a numpy array
+        img_numpy = np.array(img)
+
+        ImageClip.__init__(
+            self, img=img_numpy, transparent=transparent, duration=duration
+        )
+        self.text = text
+        self.color = color
+        self.stroke_color = stroke_color
 
 
 class BitmapClip(VideoClip):

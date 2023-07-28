@@ -67,8 +67,8 @@ class SubtitlesClip(VideoClip):
         self.font = font
 
         if make_textclip is None:
-            if self.font is None :
-                raise ValueError('Argument font is required if make_textclip is None.')
+            if self.font is None:
+                raise ValueError("Argument font is required if make_textclip is None.")
 
             def make_textclip(txt):
                 return TextClip(

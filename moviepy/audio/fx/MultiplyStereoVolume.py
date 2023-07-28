@@ -4,8 +4,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class MultiplyStereoVolume(Effect) :
+class MultiplyStereoVolume(Effect):
     """For a stereo audioclip, this function enables to change the volume
     of the left and right channel separately (with the factors `left`
     and `right`). Makes a stereo audio clip in which the volume of left
@@ -25,7 +26,6 @@ class MultiplyStereoVolume(Effect) :
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
-
         def stereo_volume(get_frame, t):
             frame = get_frame(t)
             if len(frame) == 1:  # mono

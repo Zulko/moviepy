@@ -25,7 +25,7 @@ class FFPLAY_VideoPreviewer:
       Frames per second in the output video file.
 
     pixel_format : str
-      Pixel format for the output video file, ``rgb24`` for normal video, ``rgba`` 
+      Pixel format for the output video file, ``rgb24`` for normal video, ``rgba``
       if video with mask.
     """
 
@@ -38,7 +38,7 @@ class FFPLAY_VideoPreviewer:
         # order is important
         cmd = [
             FFPLAY_BINARY,
-            "-autoexit", # If you dont precise, ffplay dont stop at end
+            "-autoexit",  # If you dont precise, ffplay dont stop at end
             "-f",
             "rawvideo",
             "-pixel_format",
@@ -92,11 +92,7 @@ class FFPLAY_VideoPreviewer:
 
 
 def ffplay_preview_video(
-    clip,
-    fps,
-    pixel_format="rgb24",
-    audio_flag=None,
-    video_flag=None
+    clip, fps, pixel_format="rgb24", audio_flag=None, video_flag=None
 ):
     """Preview the clip using ffplay. See VideoClip.preview for details
     on the parameters.
@@ -117,7 +113,7 @@ def ffplay_preview_video(
       it require applying mask on CompositeVideoClip and thoses are believed to
       not be working.
 
-      Pixel format for the output video file, ``rgb24`` for normal video, ``rgba`` 
+      Pixel format for the output video file, ``rgb24`` for normal video, ``rgba``
       if video with mask
 
     audio_flag : Thread.Event, optional
@@ -128,26 +124,17 @@ def ffplay_preview_video(
       provided, we simply ignore
     """
 
-    with FFPLAY_VideoPreviewer(
-        clip.size,
-        fps,
-        pixel_format
-    ) as previewer:
+    with FFPLAY_VideoPreviewer(clip.size, fps, pixel_format) as previewer:
         first_frame = True
-        for t, frame in clip.iter_frames(
-            with_times=True, fps=fps, dtype="uint8"
-        ):
-
+        for t, frame in clip.iter_frames(with_times=True, fps=fps, dtype="uint8"):
             previewer.show_frame(frame)
 
             # After first frame is shown, if we have audio/video flag, set video ready and wait for audio
-            if first_frame :
+            if first_frame:
                 first_frame = False
 
-                if video_flag :
+                if video_flag:
                     video_flag.set()  # say to the audio: video is ready
 
-                if audio_flag :
+                if audio_flag:
                     audio_flag.wait()  # wait for the audio to be ready
-
-            

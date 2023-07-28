@@ -8,8 +8,9 @@ from moviepy.Clip import Clip
 from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+
 @dataclass
-class AudioDelay(Effect) :
+class AudioDelay(Effect):
     """Repeats audio certain number of times at constant intervals multiplying
     their volume levels using a linear space in the range 1 to ``decay`` argument
     value.
@@ -49,7 +50,7 @@ class AudioDelay(Effect) :
     offset: float = 0.2
     n_repeats: int = 8
     decay: float = 1
-    
+
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
         decayments = np.linspace(1, max(0, self.decay), self.n_repeats + 1)
@@ -57,7 +58,9 @@ class AudioDelay(Effect) :
             [
                 clip.copy(),
                 *[
-                    clip.with_start((rep + 1) * self.offset).with_effects([MultiplyVolume(decayments[rep + 1])])
+                    clip.with_start((rep + 1) * self.offset).with_effects(
+                        [MultiplyVolume(decayments[rep + 1])]
+                    )
                     for rep in range(self.n_repeats)
                 ],
             ]

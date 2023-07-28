@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from moviepy.video.fx.FadeOut import FadeOut
 
+
 @dataclass
 class CrossFadeOut(Effect):
     """Makes the clip disappear progressively, over ``duration`` seconds.
@@ -21,6 +22,5 @@ class CrossFadeOut(Effect):
 
         clip.mask.duration = clip.duration
         clip.mask = clip.mask.with_effects([FadeOut(self.duration)])
-        
-        return clip
 
+        return clip

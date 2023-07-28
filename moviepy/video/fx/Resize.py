@@ -5,6 +5,7 @@ from moviepy.Effect import Effect
 from dataclasses import dataclass
 from typing import Union
 
+
 @dataclass
 class Resize(Effect):
     """Returns a video clip that is a resized version of the clip.
@@ -40,13 +41,11 @@ class Resize(Effect):
     width: int = None
     apply_to_mask: bool = True
 
-
     def resizer(self, pic, new_size):
-            new_size = list(map(int, new_size))
-            pil_img = Image.fromarray(pic)
-            resized_pil = pil_img.resize(new_size, Image.Resampling.LANCZOS)
-            return np.array(resized_pil)
-
+        new_size = list(map(int, new_size))
+        pil_img = Image.fromarray(pic)
+        resized_pil = pil_img.resize(new_size, Image.Resampling.LANCZOS)
+        return np.array(resized_pil)
 
     def apply(self, clip):
         w, h = clip.size
@@ -73,20 +72,28 @@ class Resize(Effect):
 
                     def filter(get_frame, t):
                         return (
-                            self.resizer((255 * get_frame(t)).astype("uint8"), get_new_size(t))
+                            self.resizer(
+                                (255 * get_frame(t)).astype("uint8"), get_new_size(t)
+                            )
                             / 255.0
                         )
 
                 else:
 
                     def filter(get_frame, t):
-                        return self.resizer(get_frame(t).astype("uint8"), get_new_size(t))
+                        return self.resizer(
+                            get_frame(t).astype("uint8"), get_new_size(t)
+                        )
 
                 newclip = clip.transform(
-                    filter, keep_duration=True, apply_to=(["mask"] if self.apply_to_mask else [])
+                    filter,
+                    keep_duration=True,
+                    apply_to=(["mask"] if self.apply_to_mask else []),
                 )
                 if self.apply_to_mask and clip.mask is not None:
-                    newclip.mask = clip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
+                    newclip.mask = clip.mask.with_effects(
+                        [Resize(self.new_size, apply_to_mask=False)]
+                    )
 
                 return newclip
 
@@ -115,14 +122,20 @@ class Resize(Effect):
             else:
                 self.new_size = [self.width, h * self.width / w]
         else:
-            raise ValueError("You must provide either 'new_size' or 'height' or 'width'")
+            raise ValueError(
+                "You must provide either 'new_size' or 'height' or 'width'"
+            )
 
         # From here, the resizing is constant (not a function of time), size=newsize
 
         if clip.is_mask:
 
             def image_filter(pic):
-                return 1.0 * self.resizer((255 * pic).astype("uint8"), self.new_size) / 255.0
+                return (
+                    1.0
+                    * self.resizer((255 * pic).astype("uint8"), self.new_size)
+                    / 255.0
+                )
 
         else:
 
@@ -132,6 +145,8 @@ class Resize(Effect):
         new_clip = clip.image_transform(image_filter)
 
         if self.apply_to_mask and clip.mask is not None:
-            new_clip.mask = clip.mask.with_effects([Resize(self.new_size, apply_to_mask=False)])
+            new_clip.mask = clip.mask.with_effects(
+                [Resize(self.new_size, apply_to_mask=False)]
+            )
 
         return new_clip
