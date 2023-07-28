@@ -27,7 +27,8 @@ DOC_EXAMPLES_DIR = "docs/_static/code"
 # List of examples script to ignore, mostly scripts that are too long
 DOC_EXAMPLES_IGNORE = ['trailer.py']
 
-scripts = pathlib.Path(DOC_EXAMPLES_DIR).resolve().rglob('*.py')
+scripts = list(pathlib.Path(DOC_EXAMPLES_DIR).resolve().rglob('*.py'))
+scripts = dict(zip(map(str, scripts), scripts)) # This make test name more readable
 
 @pytest.mark.parametrize('script', scripts)
 def test_doc_examples(util, tmp_path, script):
