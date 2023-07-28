@@ -9,5 +9,5 @@ try :
 except :
     print('Cannot write a video without duration')
 
-# By calling with_duration on our clip, we fix the problem!
-my_clip.with_duration(5).write_videofile("result.mp4")
+# By calling with_duration on our clip, we fix the problem! We also need to set fps
+my_clip.with_duration(5).write_videofile("result.mp4", fps=1)

@@ -1,11 +1,11 @@
 from moviepy import *
 
 # We load all the clips we want to compose
-background = VideoFileClip("example2.mp4").with_subclip(0, 10)
-title = TextClip("./example.ttf", text="Big Buck Bunny", font_size=80, color="#fff", text_align="center", duration=3)
-author = TextClip("./example.ttf", text="Blender Foundation", font_size=40, color="#fff", text_align="center", duration=3)
-copyright = TextClip("./example.ttf", text="© CC BY 3.0", font_size=20, color="#fff", text_align="center", duration=3)
-logo = ImageClip("./example2.png", duration=3).resize(height=50)
+background = VideoFileClip("example2.mp4").with_subclip(0, 2)
+title = TextClip("./example.ttf", text="Big Buck Bunny", font_size=80, color="#fff", text_align="center", duration=1)
+author = TextClip("./example.ttf", text="Blender Foundation", font_size=40, color="#fff", text_align="center", duration=1)
+copyright = TextClip("./example.ttf", text="© CC BY 3.0", font_size=20, color="#fff", text_align="center", duration=1)
+logo = ImageClip("./example2.png", duration=1).resized(height=50)
 
 # We want our title to be at the center horizontaly and start at 25% of the video verticaly
 # We can set as "center", "left", "right", "top" and "bottom", and % relative from the clip size

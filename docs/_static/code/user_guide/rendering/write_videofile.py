@@ -20,4 +20,4 @@ final_clip.write_videofile("result24fps.mp4", fps=24)
 # the video quality and it will decrease time for encoding, but increase final file size a lot.
 # Finally, we want ffmpeg to use 4 threads for video encoding. You should probably leave that
 # to default, as ffmpeg is already quite good at using the best setting on his own.
-final_clip.write_videofile("result.webm", codec="libvpx", fps=24, preset="ultrafast", threads=4)
+final_clip.write_videofile("result.webm", codec="libvpx-vp9", fps=24, preset="ultrafast", threads=4)

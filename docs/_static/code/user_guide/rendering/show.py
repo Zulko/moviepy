@@ -9,4 +9,4 @@ myclip.show()
 myclip.show(30)
 
 # We want to see our clip without applying his mask
-myclip.preview(30, with_mask=False)
+myclip.show(30, with_mask=False)

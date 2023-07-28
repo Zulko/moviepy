@@ -6,7 +6,7 @@ from moviepy import *
 
 my_video_clip = VideoFileClip('./example.mp4')
 my_image_clip = ImageClip('./example.png')
-my_audio_clip = AudioClip('./example.mp3')
+my_audio_clip = AudioFileClip('./example.wav')
 
 # We can show any type of clip
 my_video_clip.display_in_notebook() # embeds a video

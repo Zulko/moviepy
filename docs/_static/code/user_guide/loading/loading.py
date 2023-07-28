@@ -13,9 +13,9 @@ make_frame_audio = lambda t: np.sin(440 * 2 * np.pi * t)
 # VIDEO CLIPS`
 clip = VideoClip(make_frame, duration=5) # for custom animations, where make_frame is a function returning an image as numpy array for a given time
 clip = VideoFileClip("example.mp4") # for videos 
-clip = ImageSequenceClip(['example.png', 'example2.png', 'example3.png'], fps=24) # for a list or directory of images to be used as a video sequence
+clip = ImageSequenceClip('example_img_dir', fps=24) # for a list or directory of images to be used as a video sequence
 clip = ImageClip("example.png") # For a picture
-clip = TextClip("Hello!", font="./example.ttf", fontsize=70, color="black") # To create the image of a text
+clip = TextClip(font="./example.ttf", text="Hello!", font_size=70, color="black") # To create the image of a text
 clip = ColorClip(size=(460,380), color=black) # a clip of a single unified color, where color is a RGB tuple/array/list
 
 # AUDIO CLIPS

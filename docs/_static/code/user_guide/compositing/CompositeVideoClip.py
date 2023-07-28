@@ -1,7 +1,7 @@
 from moviepy import *
 # We load all the clips we want to compose
 clip1 = VideoFileClip("example.mp4")
-clip2 = VideoFileClip("example2.mp4").with_subclip(50,60)
+clip2 = VideoFileClip("example2.mp4").with_subclip(0,1)
 clip3 = VideoFileClip("example3.mp4")
 
 # We concatenate them and write theme stacked on top of each other, with clip3 over clip2 over clip1

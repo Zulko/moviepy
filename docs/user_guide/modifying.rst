@@ -84,7 +84,7 @@ For convenience the effects are also dynamically added as method of :py:class:`~
 
 So, you may write something like :
 
-.. literalinclude:: /_static/code/user_guide/effects/using_effects_fx.py
+.. literalinclude:: /_static/code/user_guide/effects/using_effects.py
     :language: python
 
 .. note::
