@@ -16,6 +16,7 @@ import threading
 import numpy as np
 
 import pytest
+import pathlib
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -24,6 +25,9 @@ TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 
 # Arbitrary font used in caption testing.
 FONT = "media/doc_medias/example.ttf"
+
+# Dir for doc examples medias
+DOC_EXAMPLES_MEDIAS_DIR = "media/doc_medias"
 
 
 @functools.lru_cache(maxsize=None)
@@ -142,6 +146,7 @@ def util():
     class MoviepyTestUtils:
         FONT = FONT
         TMP_DIR = TMP_DIR
+        DOC_EXAMPLES_MEDIAS_DIR = DOC_EXAMPLES_MEDIAS_DIR
 
     return MoviepyTestUtils
 
