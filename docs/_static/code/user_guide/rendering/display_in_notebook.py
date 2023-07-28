@@ -14,7 +14,7 @@ my_image_clip.display_in_notebook() # embeds an image
 my_audio_clip.display_in_notebook() # embeds a sound
 
 # We can display only a snaphot of a video
-my_video_clip.display_in_notebook(t=15)
+my_video_clip.display_in_notebook(t=1)
 
 # We can provide any valid HTML5 option as keyword argument
 # For instance, if the clip is too big, we can set width

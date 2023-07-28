@@ -1,7 +1,7 @@
 from moviepy import *
 
 # We load all the clips we want to compose
-background = VideoFileClip("example.mp4").with_subclip(0, 10)
+background = VideoFileClip("long_examples/example2.mp4").with_subclip(0, 10)
 title = TextClip("./example.ttf", text="Big Buck Bunny", font_size=80, color="#fff", text_align="center", duration=3).with_position(("center", "center"))
 
 # We make our final clip through composition
@@ -15,7 +15,7 @@ final_clip.write_videofile("result.mp4")
 # Here we save as MP4, but we set the FPS of the clip to our own, here 24 fps, like cinema
 final_clip.write_videofile("result24fps.mp4", fps=24)
 
-# Now we save as WEBM instead, and we want tu use codec libvpx.
+# Now we save as WEBM instead, and we want tu use codec libvpx-vp9 (usefull when mp4 + transparency).
 # We also want ffmpeg compression optimisation as minimal as possible. This will not change 
 # the video quality and it will decrease time for encoding, but increase final file size a lot.
 # Finally, we want ffmpeg to use 4 threads for video encoding. You should probably leave that
