@@ -3,8 +3,7 @@
 
 import sys
 from pathlib import Path
-from moviepy.version import __version__
-
+import runpy
 try:
     from setuptools import find_packages, setup
     from setuptools.command.test import test as TestCommand
@@ -21,6 +20,8 @@ except ImportError:
             "try again."
         )
 
+
+__version__=runpy.run_path('moviepy/version.py').get('__version__')
 
 class PyTest(TestCommand):
     """Handle test execution from setup."""
