@@ -8,9 +8,10 @@ import sys
 import runpy
 import pathlib
 
-
 from contextlib import contextmanager
 import os
+
+from moviepy.tools import no_display_available
 
 @contextmanager
 def cwd(path):
@@ -25,7 +26,11 @@ def cwd(path):
 DOC_EXAMPLES_DIR = "docs/_static/code"
 
 # List of examples script to ignore, mostly scripts that are too long
-DOC_EXAMPLES_IGNORE = ['trailer.py']
+DOC_EXAMPLES_IGNORE = ['trailer.py', 'display_in_notebook.py']
+
+# If no display, also remove all examples using preview
+if no_display_available():
+    DOC_EXAMPLES_IGNORE.append('preview.py')
 
 scripts = list(pathlib.Path(DOC_EXAMPLES_DIR).resolve().rglob('*.py'))
 scripts = dict(zip(map(str, scripts), scripts)) # This make test name more readable
