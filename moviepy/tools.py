@@ -4,6 +4,7 @@ import subprocess as sp
 import warnings
 
 import proglog
+import platform
 
 
 OS_NAME = os.name
@@ -208,3 +209,23 @@ def close_all_clips(objects="globals", types=("audio", "video", "image")):
     for obj in objects:
         if isinstance(obj, types_tuple):
             obj.close()
+
+
+def no_display_available() -> bool:
+    """Return True if we determine the host system has no graphical environment.
+    This is usefull to remove tests requiring display, like preview
+
+    ..info::
+        Currently this only works for Linux/BSD systems with X11 or wayland.
+        It probably works for SunOS, AIX and CYGWIN
+    """
+    system = platform.system()
+    if system in ['Linux', 'FreeBSD', 'NetBSD', 'OpenBSD', 'SunOS', 'AIX'] :
+        if not 'DISPLAY' in os.environ and not 'WAYLAND_DISPLAY' in os.environ :
+            return True
+    
+    if 'CYGWIN_NT' in system :
+        if not 'DISPLAY' in os.environ and not 'WAYLAND_DISPLAY' in os.environ :
+            return True
+
+    return False
