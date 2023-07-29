@@ -12,5 +12,6 @@ This section explain everything you need to start editing with MoviePy. To go fu
    install
    quick_presentation
    moviepy_10_minutes
+   docker
    FAQ
 

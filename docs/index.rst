@@ -132,7 +132,6 @@ MoviePy is an open source software originally written by Zulko_ and released und
     user_guide/index
     reference/index
     developer_guide/index
-    docker
 
 
 .. _PyPI: https://pypi.python.org/pypi/moviepy

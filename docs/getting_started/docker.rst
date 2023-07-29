@@ -4,24 +4,22 @@ MoviePy Docker
 Prerequisites
 -------------
 
-1. Docker installed `Docker for Mac, Docker for windows, linux, etc <https://www.docker.com/get-docker/>`_
+Docker installed `Docker for Mac, Docker for windows, linux, etc <https://www.docker.com/get-docker/>`_
+
+Build the docker
+-----------------
+1. Move into the moviepy root dir
 2. Build the Dockerfile ::
      
      docker build -t moviepy -f Dockerfile .
 
 
-Steps to run the git repo unittests from docker
+How to run the unittests from docker
 ------------------------------------------------
 
-Get a bash prompt in the moviepy container ::
+Run pytest inside the container with the following command ::
 
-     cd tests
-     docker run -it -v `pwd`:/tests moviepy bash
-
-Run the tests ::
-  
-     cd tests
-     python test_issues.py
+     docker run -w /moviepy -it moviepy python -m pytest
 
 Running your own moviepy script from docker
 --------------------------------------------

@@ -1,4 +1,4 @@
-.. custom module to enable complete documentation of every function
+﻿.. custom module to enable complete documentation of every function
    see https://stackoverflow.com/a/62613202
    
 moviepy.tools
@@ -26,6 +26,7 @@ moviepy.tools
       cross_platform_popen_params
       deprecated_version_of
       find_extension
+      no_display_available
       subprocess_call
    
    

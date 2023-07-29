@@ -12,6 +12,9 @@ RUN apt-get install -y locales && \
 
 ENV LC_ALL C.UTF-8
 
-ADD . /var/src/moviepy/
-RUN cd /var/src/moviepy/ && pip install .
+# Update pip
+RUN pip install --upgrade pip
+
+ADD . /moviepy
+RUN cd /moviepy && pip install . && pip install .[test] && pip install .[doc] && pip install .[lint]
 
