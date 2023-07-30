@@ -109,6 +109,7 @@ html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
+v2_page = 'https://zulko.github.io/moviepy/getting_started/updating_to_v2.html'
 html_theme_options = {
     "use_edit_page_button": True,
     "icon_links": [
@@ -123,6 +124,7 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
+    "announcement": '<p>MoviePy just released v2.0 introducing breaking changes, see <a href="{}">"Updating from v1.X to v2.X"</a> for more info.</p>'.format(v2_page),
 }
 
 html_context = {

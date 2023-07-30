@@ -13,5 +13,6 @@ This section explain everything you need to start editing with MoviePy. To go fu
    quick_presentation
    moviepy_10_minutes
    docker
+   updating_to_v2
    FAQ
 

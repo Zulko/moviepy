@@ -69,6 +69,7 @@ In addition to the ``with_*`` methods, a handful of very common methods are also
 For a list of all those methods, see :py:class:`~moviepy.Clip.Clip` and :py:class:`~moviepy.video.VideoClip.VideoClip`.
 
 
+.. _modifying#effects:
 
 Modify a clip using effects 
 ---------------------------------
