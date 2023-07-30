@@ -111,6 +111,18 @@ html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 # documentation.
 html_theme_options = {
     "use_edit_page_button": True,
+    "icon_links": [
+        {
+            # Label for this link
+            "name": "GitHub",
+            # URL where the link will redirect
+            "url": "https://github.com/Zulko/moviepy/",  # required
+            # Icon class (if "type": "fontawesome"), or path to local image (if "type": "local")
+            "icon": "fa-brands fa-square-github",
+            # The type of image to be used (see below for details)
+            "type": "fontawesome",
+        }
+    ],
 }
 
 html_context = {
