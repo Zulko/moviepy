@@ -14,8 +14,8 @@ MoviePy
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
 
-.. info::
-   MoviePy recently upgraded to v2.0, introducing major breaking changes, for more info, see `the updating guide <https://zulko.github.io/moviepy/getting_started/updating_to_v2.html>`_.
+> [!NOTE]
+> MoviePy recently upgraded to v2.0, introducing major breaking changes, for more info, see `the updating guide <https://zulko.github.io/moviepy/getting_started/updating_to_v2.html>`_.
 
 
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects.
