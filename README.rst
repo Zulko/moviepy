@@ -14,6 +14,10 @@ MoviePy
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
 
+.. info::
+   MoviePy recently upgraded to v2.0, introducing major breaking changes, for more info, see `the updating guide <https://zulko.github.io/moviepy/getting_started/updating_to_v2.html>`_.
+
+
 MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects.
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.7+.
@@ -51,7 +55,7 @@ In this example we open a video file, select the subclip between 10 and 20 secon
 Maintainers wanted!
 -------------------
 
-As there are more and more people seeking support (270 open issues as of Jan. 2021!) and all the MoviePy maintainers seem busy, we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
+MoviePy is always looking for maintainers, and we'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open an issue or contact us directly if you are interested. Thanks!
 
 Installation
 ------------
