@@ -14,35 +14,39 @@ MoviePy
     :target: https://coveralls.io/github/Zulko/moviepy?branch=master
     :alt: Code coverage from coveralls.io
 
-MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects. See the gallery_ for some examples of use.
+MoviePy (full documentation_) is a Python library for video editing: cutting, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects.
 
-MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.6+. Here it is in action in an IPython notebook:
-
-.. image:: https://raw.githubusercontent.com/Zulko/moviepy/master/docs/demo_preview.jpeg
-    :alt: [logo]
-    :align: center
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.7+.
 
 Example
 -------
 
-In this example we open a video file, select the subclip between t=50s and t=60s, add a title at the center of the screen, and write the result to a new file:
+In this example we open a video file, select the subclip between 10 and 20 seconds, add a title at the center of the screen, and write the result to a new file:
 
 .. code:: python
     
+    # Import everything needed to edit video clips
     from moviepy import *
 
-    video = VideoFileClip("myHolidays.mp4").subclip(50,60)
+    # Load file example.mp4 and extract only the subclip from 00:00:10 to 00:00:20
+    clip = VideoFileClip("long_examples/example2.mp4").with_subclip(10, 20)
 
-    # Make the text. Many more options are available.
-    txt_clip = ( TextClip("My Holidays 2013",fontsize=70,color='white')
-                 .with_position('center')
-                 .with_duration(10) )
+    # Reduce the audio volume to 80% of his original volume
+    clip = clip.with_multiply_volume(0.8)
 
-    result = CompositeVideoClip([video, txt_clip]) # Overlay text on video
-    result.write_videofile("myHolidays_edited.webm",fps=25) # Many options...
+    # Generate a text clip. You can customize the font, color, etc.
+    txt_clip = TextClip(font="example.ttf", text="Big Buck Bunny", font_size=70, color='white')
+
+    # Say that you want it to appear for 10s at the center of the screen
+    txt_clip = txt_clip.with_position('center').with_duration(10)
+
+    # Overlay the text clip on the first video clip
+    video = CompositeVideoClip([clip, txt_clip])
+
+    # Write the result to a file (many options available!)
+    video.write_videofile("result.mp4")
+
     
-*Note:* This example uses the new 2.x API, for MoviePy 1.0.3, currently on PyPI, see `this snippet <https://gist.github.com/Zulko/57e6e50debef1834fb9b60700b1b9f99>`_.
-
 
 Maintainers wanted!
 -------------------
@@ -52,51 +56,9 @@ As there are more and more people seeking support (270 open issues as of Jan. 20
 Installation
 ------------
 
-MoviePy depends on the Python modules NumPy_, Imageio_, Decorator_, and Proglog_, which will be automatically installed during MoviePy's installation. The software FFMPEG should be automatically downloaded/installed (by imageio) during your first use of MoviePy (installation will take a few seconds). If you want to use a specific version of FFMPEG, follow the instructions in ``config_defaults.py``. In case of trouble, provide feedback.
+For standard installation, see documentation_install_.
 
-**Installation by hand:** download the sources, either from PyPI_ or, if you want the development version, from GitHub_, unzip everything into one folder, open a terminal and type:
-
-.. code:: bash
-
-    $ (sudo) python setup.py install
-
-**Installation with pip:** if you have ``pip`` installed, just type this in a terminal:
-
-.. code:: bash
-
-    $ (sudo) pip install moviepy
-
-If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above will fail. In this case type this before installing:
-
-.. code:: bash
-
-    $ (sudo) pip install setuptools
-
-
-Optional but useful dependencies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You can install ``moviepy`` with all dependencies via:
-
-.. code:: bash
-
-    $ (sudo) pip install moviepy[optional]
-
-ImageMagick_ is not strictly required, but needed if you want to incorporate texts. It can also be used as a backend for GIFs, though you can also create GIFs with MoviePy without ImageMagick.
-
-Once you have installed ImageMagick, MoviePy will try to autodetect the path to its executable. If it fails, you can still configure it by setting environment variables (see the documentation).
-
-PyGame_ is needed for video and sound previews (not relevant if you intend to work with MoviePy on a server but essential for advanced video editing by hand).
-
-For advanced image processing, you will need one or several of the following packages:
-
-- The Python Imaging Library (PIL) or, even better, its branch Pillow_.
-- Scipy_ (for tracking, segmenting, etc.) can be used to resize video clips if PIL and OpenCV are not installed.
-- `Scikit Image`_ may be needed for some advanced image manipulation.
-- `OpenCV 2.4.6`_ or a more recent version (one that provides the package ``cv2``) may be needed for some advanced image manipulation.
-- `Matplotlib`_
-
-For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
+For contributors installation, see documentation_dev_install_.
 
 
 Documentation
@@ -122,30 +84,7 @@ You can pass additional arguments to the documentation build, such as clean buil
 
 More information is available from the `Sphinx`_ documentation.
 
-New in 1.0.0: Progress bars and messages with Proglog
--------------------------------------------------------
 
-Non-backwards-compatible changes were introduced in 1.0.0 to
-manage progress bars and messages using
-`Proglog <https://github.com/Edinburgh-Genome-Foundry/Proglog>`_, which
-enables to display nice progress bars in the console as well as in
-a Jupyter notebook or any user interface, like a website.
-
-To display notebook friendly progress bars, first install IPyWidgets:
-
-.. code::
-
-    sudo pip install ipywidgets
-    sudo jupyter nbextension enable --py --sys-prefix widgetsnbextension
-
-Then at the beginning of your notebook enter:
-
-.. code:: python
-
-    import proglog
-    proglog.notebook()
-
-Have a look at the Proglog project page for more options.
 
 Contribute
 ----------
@@ -170,8 +109,9 @@ Maintainers
 
 
 .. MoviePy links
-.. _gallery: https://zulko.github.io/moviepy/gallery.html
 .. _documentation: https://zulko.github.io/moviepy/
+.. _documentation_install: https://zulko.github.io/moviepy/getting_started/install.html
+.. _documentation_dev_install: https://zulko.github.io/moviepy/developer_guide/developers_install.rst
 .. _`download MoviePy`: https://github.com/Zulko/moviepy
 .. _`Label Wiki`: https://github.com/Zulko/moviepy/wiki/Label-Wiki
 .. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md
@@ -183,18 +123,6 @@ Maintainers
 .. _Gitter: https://gitter.im/movie-py/Lobby
 
 .. Software, Tools, Libraries
-.. _Pillow: https://pillow.readthedocs.org/en/latest/
-.. _Scipy: https://www.scipy.org/
-.. _`OpenCV 2.4.6`: https://github.com/skvark/opencv-python
-.. _Pygame: https://www.pygame.org/download.shtml
-.. _Numpy: https://www.scipy.org/install.html
-.. _imageio: https://imageio.github.io/
-.. _`Scikit Image`: https://scikit-image.org/docs/stable/install.html
-.. _Decorator: https://pypi.python.org/pypi/decorator
-.. _proglog: https://github.com/Edinburgh-Genome-Foundry/Proglog
-.. _ffmpeg: https://www.ffmpeg.org/download.html
-.. _ImageMagick: https://www.imagemagick.org/script/index.php
-.. _`Matplotlib`: https://matplotlib.org/
 .. _`Sphinx`: https://www.sphinx-doc.org/en/master/setuptools.html
 
 .. People

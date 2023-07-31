@@ -24,13 +24,10 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",
-
     "sphinx_design",
-
     "sphinx.ext.coverage",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    
     "sphinx.ext.autosectionlabel",
 ]
 
@@ -109,7 +106,7 @@ html_theme = "pydata_sphinx_theme"  # formerly 'kr'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-v2_page = 'https://zulko.github.io/moviepy/getting_started/updating_to_v2.html'
+v2_page = "https://zulko.github.io/moviepy/getting_started/updating_to_v2.html"
 html_theme_options = {
     "use_edit_page_button": True,
     "icon_links": [
@@ -124,7 +121,9 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "announcement": '<p>MoviePy just released v2.0 introducing breaking changes, see <a href="{}">"Updating from v1.X to v2.X"</a> for more info.</p>'.format(v2_page),
+    "announcement": '<p>MoviePy v2.0 have introduced breaking changes, see <a href="{}">"Updating from v1.X to v2.X"</a> for more info.</p>'.format(
+        v2_page
+    ),
 }
 
 html_context = {
@@ -159,7 +158,7 @@ html_logo = "_static/medias/logo_small.jpeg"
 html_static_path = ["_static"]
 
 html_css_files = [
-    'moviepy.css',
+    "moviepy.css",
 ]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,

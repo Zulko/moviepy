@@ -4,6 +4,7 @@
 import sys
 from pathlib import Path
 import runpy
+
 try:
     from setuptools import find_packages, setup
     from setuptools.command.test import test as TestCommand
@@ -21,7 +22,8 @@ except ImportError:
         )
 
 
-__version__=runpy.run_path('moviepy/version.py').get('__version__')
+__version__ = runpy.run_path("moviepy/version.py").get("__version__")
+
 
 class PyTest(TestCommand):
     """Handle test execution from setup."""
@@ -75,7 +77,7 @@ requires = [
     "numpy>=1.25.0",
     "proglog<=1.0.0",
     "python-dotenv>=0.10",
-    "pillow>=9.2.0,<11.0", # We are good at least up to v11
+    "pillow>=9.2.0,<11.0",  # We are good at least up to v11
 ]
 
 doc_reqs = [

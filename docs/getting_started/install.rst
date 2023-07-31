@@ -25,7 +25,6 @@ You do need to worry ``ffplay`` if you plan on using video/audio previewing thou
 make sure it is accessible to Python, or look how to set a custom path (see below). 
 
 
-
 Define custom paths to binaries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -84,9 +83,6 @@ To test if FFmpeg and FFplay are found by MoviePy, in a Python console, you can 
     >>> from moviepy.config import check
     >>> check()
 
+
 .. _ffmpeg: https://www.ffmpeg.org/download.html
-.. _imageio: https://imageio.github.io/
-
-
-
 

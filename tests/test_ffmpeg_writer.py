@@ -213,13 +213,7 @@ def test_write_gif(util, clip_class, loop, with_mask):
             ColorClip((1, 1), color=1, is_mask=True).with_fps(fps).with_duration(0.3)
         )
 
-    write_gif_with_imageio(
-        original_clip,
-        filename,
-        fps=fps,
-        logger=None,
-        loop=loop
-    )
+    write_gif_with_imageio(original_clip, filename, fps=fps, logger=None, loop=loop)
 
     final_clip = VideoFileClip(filename)
 

@@ -15,6 +15,5 @@ clip_whisper = clip.with_multiply_volume(0.1)
 
 # This replace the original clip with a copy of it where volume is only 10% of the original
 # If you was to render clip now, the audio would be at 10%
-# The original clip is now lost 
+# The original clip is now lost
 clip = clip.with_multiply_volume(0.1)
-

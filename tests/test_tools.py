@@ -109,7 +109,6 @@ def test_deprecated_version_of(old_name):
         ),
     ),
 )
-
 def test_config(
     util,
     ffmpeg_binary,
@@ -122,7 +121,6 @@ def test_config(
         os.remove(ffmpeg_binary)
     prev_ffmpeg_binary = os.environ.get("FFMPEG_BINARY")
     os.environ["FFMPEG_BINARY"] = ffmpeg_binary
-
 
     if ffmpeg_binary_error is not None:
         with pytest.raises(ffmpeg_binary_error[0]) as exc:

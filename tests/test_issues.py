@@ -232,7 +232,9 @@ def test_issue_334(util):
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").with_subclip(0, 3)
     # TODO: Setting mask here does not work:
     # .with_mask(maskclip).resize(size)])
-    final = CompositeVideoClip([tt, concatenated.with_position(posi).with_effects([vfx.Resize(size)])])
+    final = CompositeVideoClip(
+        [tt, concatenated.with_position(posi).with_effects([vfx.Resize(size)])]
+    )
     final.duration = tt.duration
     final.write_videofile(os.path.join(util.TMP_DIR, "issue_334.mp4"), fps=10)
 
@@ -242,16 +244,16 @@ def test_issue_354():
         clip.duration = 10
         crosstime = 1
 
-        fadecaption = clip.with_effects([vfx.CrossFadeIn(crosstime), vfx.CrossFadeOut(crosstime)])
+        fadecaption = clip.with_effects(
+            [vfx.CrossFadeIn(crosstime), vfx.CrossFadeOut(crosstime)]
+        )
         CompositeVideoClip([clip, fadecaption]).close()
 
 
 def test_issue_359(util):
     with ColorClip((800, 600), color=(255, 0, 0)).with_duration(0.2) as video:
         video.fps = 30
-        video.write_gif(
-            filename=os.path.join(util.TMP_DIR, "issue_359.gif")
-        )
+        video.write_gif(filename=os.path.join(util.TMP_DIR, "issue_359.gif"))
 
 
 def test_issue_407():

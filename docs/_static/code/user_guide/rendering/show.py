@@ -1,6 +1,6 @@
 from moviepy import *
 
-myclip = VideoFileClip('./example.mp4')
+myclip = VideoFileClip("./example.mp4")
 
 # We show the first frame of our clip
 myclip.show()

@@ -220,12 +220,12 @@ def no_display_available() -> bool:
         It probably works for SunOS, AIX and CYGWIN
     """
     system = platform.system()
-    if system in ['Linux', 'FreeBSD', 'NetBSD', 'OpenBSD', 'SunOS', 'AIX'] :
-        if not 'DISPLAY' in os.environ and not 'WAYLAND_DISPLAY' in os.environ :
+    if system in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "SunOS", "AIX"]:
+        if not "DISPLAY" in os.environ and not "WAYLAND_DISPLAY" in os.environ:
             return True
-    
-    if 'CYGWIN_NT' in system :
-        if not 'DISPLAY' in os.environ and not 'WAYLAND_DISPLAY' in os.environ :
+
+    if "CYGWIN_NT" in system:
+        if not "DISPLAY" in os.environ and not "WAYLAND_DISPLAY" in os.environ:
             return True
 
     return False

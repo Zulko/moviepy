@@ -3,9 +3,11 @@ import math
 
 my_clip = VideoFileClip("example.mp4")
 
+
 # You can define a function the classical way
-def accel_x3(time: float) -> float :
+def accel_x3(time: float) -> float:
     return time * 3
+
 
 modified_clip1 = my_clip.time_transform(accel_x3)
 

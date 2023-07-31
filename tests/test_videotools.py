@@ -77,7 +77,11 @@ def test_detect_scenes():
 
 
 def test_find_video_period():
-    clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.5).with_effects([vfx.Loop(2)])  # fps=25
+    clip = (
+        VideoFileClip("media/chaplin.mp4")
+        .with_subclip(0, 0.5)
+        .with_effects([vfx.Loop(2)])
+    )  # fps=25
 
     # you need to increase the fps to get correct results
     assert round(find_video_period(clip, fps=70), 6) == 0.5
@@ -300,7 +304,9 @@ def test_FramesMatches_select_scenes(
     video_clip = VideoFileClip(filename)
     if subclip is not None:
         video_clip = video_clip.with_subclip(subclip[0], subclip[1])
-    clip = concatenate_videoclips([video_clip.with_effects([vfx.TimeMirror()]), video_clip])
+    clip = concatenate_videoclips(
+        [video_clip.with_effects([vfx.TimeMirror()]), video_clip]
+    )
     result = FramesMatches.from_clip(clip, 10, 3, logger=None).select_scenes(
         match_threshold,
         min_time_span,
@@ -313,7 +319,9 @@ def test_FramesMatches_select_scenes(
 
 def test_FramesMatches_write_gifs(util):
     video_clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.2)
-    clip = concatenate_videoclips([video_clip.with_effects([vfx.TimeMirror()]), video_clip])
+    clip = concatenate_videoclips(
+        [video_clip.with_effects([vfx.TimeMirror()]), video_clip]
+    )
 
     # add matching frame starting at start < clip.start which should be ignored
     matching_frames = FramesMatches.from_clip(clip, 10, 3, logger=None)
@@ -1081,9 +1089,9 @@ def test_find_audio_period(mono_wave, stereo_wave, wave_type):
     clip = CompositeAudioClip(
         [
             AudioClip(make_frame=wave1, duration=0.3, fps=22050),
-            AudioClip(make_frame=wave2, duration=0.3, fps=22050).with_effects([
-                afx.MultiplyVolume(0, end_time=0.1)
-            ]),
+            AudioClip(make_frame=wave2, duration=0.3, fps=22050).with_effects(
+                [afx.MultiplyVolume(0, end_time=0.1)]
+            ),
         ]
     )
 

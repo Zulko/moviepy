@@ -48,7 +48,9 @@ def test_blackwhite():
     # for each possible ``preserve_luminosity`` boolean argument value
     for preserve_luminosity in [True, False]:
         # default argument (``RGB=None``)
-        clip_bw = clip.with_effects([vfx.BlackAndWhite(preserve_luminosity=preserve_luminosity)])
+        clip_bw = clip.with_effects(
+            [vfx.BlackAndWhite(preserve_luminosity=preserve_luminosity)]
+        )
 
         bitmap = clip_bw.to_bitmap()
         assert bitmap
@@ -62,10 +64,14 @@ def test_blackwhite():
                     assert char == row[0]  # so are equal
 
         # custom random ``RGB`` argument
-        clip_bw_custom_rgb = clip.with_effects([vfx.BlackAndWhite(
-            RGB=(random.randint(0, 255), 0, 0),
-            preserve_luminosity=preserve_luminosity,
-        )])
+        clip_bw_custom_rgb = clip.with_effects(
+            [
+                vfx.BlackAndWhite(
+                    RGB=(random.randint(0, 255), 0, 0),
+                    preserve_luminosity=preserve_luminosity,
+                )
+            ]
+        )
         bitmap = clip_bw_custom_rgb.to_bitmap()
         for i, row in enumerate(bitmap[0]):
             for i2, char in enumerate(row):
@@ -77,9 +83,13 @@ def test_blackwhite():
                     assert char == row[1] and char == row[2]
 
         # ``RGB="CRT_phosphor"`` argument
-        clip_bw_crt_phosphor = clip.with_effects([vfx.BlackAndWhite(
-            RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
-        )])
+        clip_bw_crt_phosphor = clip.with_effects(
+            [
+                vfx.BlackAndWhite(
+                    RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+                )
+            ]
+        )
         bitmap = clip_bw_crt_phosphor.to_bitmap()
         assert bitmap
         for row in bitmap[0]:
@@ -165,7 +175,9 @@ def test_fadein():
     target1 = BitmapClip([["I"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip1 == target1
 
-    clip2 = clip.with_effects([vfx.FadeIn(1, initial_color=(255, 255, 255))])  # different initial color
+    clip2 = clip.with_effects(
+        [vfx.FadeIn(1, initial_color=(255, 255, 255))]
+    )  # different initial color
     target2 = BitmapClip([["W"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip2 == target2
 
@@ -388,7 +400,9 @@ def test_make_loopable(util, video):
     clip1 = clip.with_effects([vfx.MakeLoopable(0.4)])
 
     # We need to set libvpx-vp9 because our test will produce transparency
-    clip1.write_videofile(os.path.join(util.TMP_DIR, "make_loopable1.webm"), codec="libvpx-vp9")
+    clip1.write_videofile(
+        os.path.join(util.TMP_DIR, "make_loopable1.webm"), codec="libvpx-vp9"
+    )
 
 
 @pytest.mark.parametrize(
@@ -492,14 +506,18 @@ def test_margin(ClipClass, margin_size, margins, color, expected_result):
         margins = [0, 0, 0, 0]
     left, right, top, bottom = margins
 
-    new_clip = clip.with_effects([vfx.Margin(
-        margin_size=margin_size,
-        left=left,
-        right=right,
-        top=top,
-        bottom=bottom,
-        color=color,
-    )])
+    new_clip = clip.with_effects(
+        [
+            vfx.Margin(
+                margin_size=margin_size,
+                left=left,
+                right=right,
+                top=top,
+                bottom=bottom,
+                color=color,
+            )
+        ]
+    )
 
     assert new_clip == BitmapClip(expected_result, fps=1)
 
@@ -541,9 +559,13 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = clip.with_effects([vfx.MasksAnd(
-        mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
-    )])
+    masked_clip = clip.with_effects(
+        [
+            vfx.MasksAnd(
+                mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+            )
+        ]
+    )
 
     assert masked_clip.duration == clip.duration
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
@@ -598,9 +620,13 @@ def test_mask_or(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = clip.with_effects([vfx.MasksOr(
-        mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
-    )])
+    masked_clip = clip.with_effects(
+        [
+            vfx.MasksOr(
+                mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+            )
+        ]
+    )
 
     assert masked_clip.duration == clip.duration
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
@@ -710,11 +736,8 @@ def test_painting():
         ),
     ),
 )
-def test_resize(
-    apply_to_mask, size, duration, new_size, height, width
-):
-    """Checks ``resize`` FX behaviours using all argument
-    """
+def test_resize(apply_to_mask, size, duration, new_size, height, width):
+    """Checks ``resize`` FX behaviours using all argument"""
     # build expected sizes (using `width` or `height` arguments will be proportional
     # to original size)
     if new_size:
@@ -1168,11 +1191,15 @@ def test_multiply_volume_audioclip(
     )
     clip_array = clip.to_soundarray()
 
-    clip_transformed = clip.with_effects([afx.MultiplyVolume(
-        factor,
-        start_time=start_time,
-        end_time=end_time,
-    )])
+    clip_transformed = clip.with_effects(
+        [
+            afx.MultiplyVolume(
+                factor,
+                start_time=start_time,
+                end_time=end_time,
+            )
+        ]
+    )
     clip_transformed_array = clip_transformed.to_soundarray()
 
     assert len(clip_transformed_array)
@@ -1255,11 +1282,19 @@ def test_multiply_volume_audioclip(
 def test_multiply_volume_videoclip():
     start_time, end_time = (0.1, 0.2)
 
-    clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.3).with_effects([afx.MultiplyVolume(
-        0,
-        start_time=start_time,
-        end_time=end_time,
-    )])
+    clip = (
+        VideoFileClip("media/chaplin.mp4")
+        .with_subclip(0, 0.3)
+        .with_effects(
+            [
+                afx.MultiplyVolume(
+                    0,
+                    start_time=start_time,
+                    end_time=end_time,
+                )
+            ]
+        )
+    )
     clip_soundarray = clip.audio.to_soundarray()
 
     assert len(clip_soundarray)
@@ -1279,7 +1314,9 @@ def test_multiply_stereo_volume():
 
     # stereo mute
     clip_left_channel_muted = clip.with_effects([afx.MultiplyStereoVolume(left=0)])
-    clip_right_channel_muted = clip.with_effects([afx.MultiplyStereoVolume(right=0, left=2)])
+    clip_right_channel_muted = clip.with_effects(
+        [afx.MultiplyStereoVolume(right=0, left=2)]
+    )
 
     left_channel_muted = clip_left_channel_muted.to_soundarray()[:, 0]
     right_channel_muted = clip_right_channel_muted.to_soundarray()[:, 1]
@@ -1305,7 +1342,9 @@ def test_multiply_stereo_volume():
 
     # mono doubled
     mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
-    doubled_mono_clip = mono_clip.with_effects([afx.MultiplyStereoVolume(left=None, right=2)]) # using right
+    doubled_mono_clip = mono_clip.with_effects(
+        [afx.MultiplyStereoVolume(left=None, right=2)]
+    )  # using right
     mono_channel_doubled = doubled_mono_clip.to_soundarray()
     d_channel = mono_clip.to_soundarray() * 2
     assert np.array_equal(mono_channel_doubled, d_channel)
@@ -1344,7 +1383,9 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
     clip_array = clip.to_soundarray()
 
     # stereo delayed clip
-    delayed_clip = clip.with_effects([afx.AudioDelay(offset=offset, n_repeats=n_repeats, decay=decay)])
+    delayed_clip = clip.with_effects(
+        [afx.AudioDelay(offset=offset, n_repeats=n_repeats, decay=decay)]
+    )
     delayed_clip_array = delayed_clip.to_soundarray()
 
     # size of chunks with audios

@@ -60,7 +60,7 @@ This is a very classic task, so lets turn our main clip into multiple subclips:
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python   
-    :lines: 13-23
+    :lines: 13-25
 
 
 Here, we use the ``with_subclip`` method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with format ``HH:MM:SS.µS``) for each scene. 
@@ -80,7 +80,7 @@ To do so using MoviePy, you can utilize the ``preview()`` function available for
    
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 26-36
+    :lines: 28-38
 
 by using the preview, you may have noticed that our clips not only contain video, but also audio. This is because when loading a video, you not only load the image, but also the audio tracks that are turned into :py:class:`~moviepy.audio.AudioClip.AudioClip` and 
 added to your video clip.
@@ -98,7 +98,7 @@ To do so, we are going to use the ``with_cutout`` method to remove a portion of 
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 39-52
+    :lines: 41-54
 
 In that particular case we have used the ``with_cutout``, but this is only one of the many clip manipulation method starting by ``with_*``, we will see a few others
 in this tutorial, but we will miss a lot more, if you want an exhaustive list, go see :ref:`reference_manual`.
@@ -119,18 +119,13 @@ We also want to create image clips, for the "Big Buck Bunny" logo and the "Made 
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 54-68
+    :lines: 56-82
 
 As you may see, ``ImageClip`` are quite simple, but ``TextClip`` are rather complicated objects, do not hesitate to go and have a deeper look at the arguments it accept.
 
 .. note::
    In our example we have used the ``resized()`` method to resize our image clips. This method works just like any ``with_*`` method, but because resizing is such a common
    task, the name have been shortened to ``resized()``. The same is true for ``cropped()`` and ``rotated()``.
-
-.. code-block:: python
-
-   slow_motion_video = trimmed_video.fx(vfx.speedx, 0.5)  # Slow down the video by 2x
-   final_video = slow_motion_video.crossfadein(1)         # Add a crossfade transition
 
 Feel free to experiment with different effects and transitions to achieve the desired trailer effect.
 
@@ -145,7 +140,7 @@ To fix that, we need to say when a clip should start and stop in the final clip.
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 71-89
+    :lines: 85-111
 
 .. note::
    By default all clips have a startpoint at ``0``, if a clip has no duration but you set the ``endtime``, then the duration will be calculated for you. The reciprocity is also true.
@@ -165,7 +160,7 @@ So, MoviePy offer a special kind of :py:class:`~moviepy.video.VideoClip.VideoCli
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 92-99
+    :lines: 114-136
 
 
 Step 8: Positionning our clips
@@ -182,7 +177,7 @@ To fix this, we simply have to define the position of our clips in the compositi
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 102-122
+    :lines: 139-174
 
 .. note::
    The position is a tuple with horizontal and vertical position. You can give them as pixels, as strings (``top``, ``left``, ``right``, ``bottom``, ``center``) and even as percentage by providing
@@ -211,7 +206,7 @@ In our case, we will add simple fade-in/out and cross-fade-in/out transitions be
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 125-160
+    :lines: 177-239
 
 Well, this is a lot nicer! For this tutorial we want to keep things simple, so we mostly used transitions, but you can find a lot a differents effects, and even create your own.
 For a deeper presentation, see :py:mod:`moviepy.video.fx`, :py:mod:`moviepy.audio.fx` and :ref:`create_effects`.
@@ -245,7 +240,7 @@ The "apply to all frames" part is done by the ``image_transform`` method. This m
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 163-202
+    :lines: 242-283
 
 
 Step 11: Rendering the final clip to a file
@@ -259,7 +254,7 @@ Again, we will keep things simple and just do video rendering whithout much twea
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
-    :lines: 205-211
+    :lines: 286-307
 
 
 Conclusion

@@ -250,7 +250,9 @@ def test_with_layer():
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
 
     # Make sure that the order of clips makes no difference to the composite clip
-    assert composite_clip.with_subclip(0, 2) == reversed_composite_clip.with_subclip(0, 2)
+    assert composite_clip.with_subclip(0, 2) == reversed_composite_clip.with_subclip(
+        0, 2
+    )
 
     # Make sure that only the 'top' clip is kept
     assert top_clip.with_subclip(0, 2) == composite_clip.with_subclip(0, 2)

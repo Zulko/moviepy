@@ -6,4 +6,4 @@ myclip = VideoFileClip("example.mp4").with_subclip(0, 2)
 myclip.write_gif("result.gif")
 
 # Here we save as GIF, but we set the FPS of our GIF at 10
-myclip.write_gif('result.gif', fps=10)
+myclip.write_gif("result.gif", fps=10)

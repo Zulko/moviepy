@@ -140,7 +140,9 @@ def test_slide_in():
     ).with_fps(fps)
 
     for side in ["left", "right"]:
-        new_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(duration, side)])])
+        new_clip = CompositeVideoClip(
+            [clip.with_effects([vfx.SlideIn(duration, side)])]
+        )
 
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, int(t * 100))
@@ -165,7 +167,9 @@ def test_slide_in():
     ).with_fps(fps)
 
     for side in ["top", "bottom"]:
-        new_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(duration, side)])])
+        new_clip = CompositeVideoClip(
+            [clip.with_effects([vfx.SlideIn(duration, side)])]
+        )
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, int(t * 100))
 
@@ -198,7 +202,9 @@ def test_slide_out():
     ).with_fps(fps)
 
     for side in ["left", "right"]:
-        new_clip = CompositeVideoClip([clip.with_effects([vfx.SlideOut(duration, side)])])
+        new_clip = CompositeVideoClip(
+            [clip.with_effects([vfx.SlideOut(duration, side)])]
+        )
 
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, round(11 - t * 100, 6))
@@ -220,7 +226,9 @@ def test_slide_out():
     ).with_fps(fps)
 
     for side in ["top", "bottom"]:
-        new_clip = CompositeVideoClip([clip.with_effects([vfx.SlideOut(duration, side)])])
+        new_clip = CompositeVideoClip(
+            [clip.with_effects([vfx.SlideOut(duration, side)])]
+        )
         for t in np.arange(0, duration, duration / fps):
             n_reds, n_reds_expected = (0, round(11 - t * 100, 6))
 

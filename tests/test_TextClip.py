@@ -8,6 +8,7 @@ import pytest
 
 from moviepy import *
 
+
 def test_duration(util):
     clip = TextClip(text="hello world", size=(1280, 720), color="white", font=util.FONT)
     clip = clip.with_duration(5)
@@ -61,9 +62,7 @@ def test_text_filename_arguments_consistence(util):
     "method", ("caption", "label"), ids=("method=caption", "method=label")
 )
 def test_no_text_nor_filename_arguments(method, util):
-    expected_error_msg = (
-        "^No text nor filename provided$"
-    )
+    expected_error_msg = "^No text nor filename provided$"
     with pytest.raises(ValueError, match=expected_error_msg):
         TextClip(
             size=(20, 20),
