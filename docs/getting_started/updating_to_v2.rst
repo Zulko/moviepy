@@ -22,6 +22,7 @@ such as previewing or hand editing, because the ``editor`` package was in charge
 easier, at the cost of initializing some complex modules like ``pygame``.
 
 With version 2.0, the ``moviepy.editor`` namespace simply no longer exists. You simply import everything from ``moviepy`` like this: :: 
+    
     from moviepy import * # Simple and nice, the __all__ is set in moviepy so only usefull things will be loaded
     from moviepy import VideoFileClip # You can also import only the things you really need
 

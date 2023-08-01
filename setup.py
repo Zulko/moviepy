@@ -111,7 +111,7 @@ extra_reqs = {
 }
 
 # Load the README.
-readme = Path("README.rst").read_text()
+readme = Path("README.md").read_text()
 
 setup(
     name="moviepy",
