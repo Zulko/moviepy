@@ -109,7 +109,7 @@ in this tutorial, but we will miss a lot more. If you want an exhaustive list, g
 
 
 Step 5: Creating Text/Logo Clips
---------------------------------
+------------------------------------
 
 In addition to videos, we often need to work with images and texts. MoviePy offers some specialized kinds of :py:class:`~moviepy.video.VideoClip.VideoClip` specifically for that purpose: ``ImageClip`` and ``TextClip``.
 
@@ -147,7 +147,7 @@ To fix that, we need to specify when a clip should start and stop in the final c
    So in our case, we either use duration or endtime, depending on what is more practical for each specific case.
 
 Step 7: Seeing how all clips combine
----------------------------------
+--------------------------------------
 
 Now that all our clips are timed, let's get a first idea of how our final clip will look. In video editing, the act of assembling multiple videos into a single one is known as composition.
 So, MoviePy offers a special kind of :py:class:`~moviepy.video.VideoClip.VideoClip` dedicated to the act of combining multiple clips into one, the :py:class:`~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`.
@@ -186,7 +186,7 @@ Now, all our clips are in the right place and timed as expected.
 
 
 Step 9: Adding transitions and effects
--------------------------------------
+--------------------------------------------
 
 So, our clips are timed and placed, but for now, the result is quite raw. It would be nice to have smoother transitions between the clips. 
 In MoviePy, this is achieved through the use of effects.
@@ -220,7 +220,7 @@ For a more in-depth presentation, see :py:mod:`moviepy.video.fx`, :py:mod:`movie
 
 
 Step 10: Modifying the appearance of a clip using filters
------------------------------------------------------
+--------------------------------------------------------------
 
 Finally, to make it more epic, we will apply a custom filter to our Rambo clip to make the image sepia. 
 MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the ``image_transform`` method.
