@@ -1393,6 +1393,12 @@ class TextClip(ImageClip):
       the height can be None for caption if font_size is defined,
       it will then be auto-determined.
 
+    margin
+      Margin to be added arround the text as a tuple of two (symmetrical) or four (asymmetrical).
+      Either ``(horizontal, vertical)`` or ``(left, top, right, bottom)``. 
+      By default no margin (None, None).
+      This is especially usefull for auto-compute size to give the text some extra room.
+
     bg_color
       Color of the background. Default to None for no background. Can be
       a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
@@ -1447,6 +1453,7 @@ class TextClip(ImageClip):
         filename=None,
         font_size=None,
         size=(None, None),
+        margin=(None, None),
         color="black",
         bg_color=None,
         stroke_color=None,
@@ -1703,6 +1710,21 @@ class TextClip(ImageClip):
 
         else:
             raise ValueError("Method must be either `caption` or `label`.")
+        
+        # Compute the margin and apply it
+        if len(margin) == 2 :
+            left_margin = right_margin = int(margin[0] or 0)
+            top_margin = bottom_margin = int(margin[1] or 0)
+        elif len(margin) == 4 :
+            left_margin = int(margin[0] or 0)
+            top_margin = int(margin[1] or 0)
+            right_margin = int(margin[2] or 0)
+            bottom_margin = int(margin[3] or 0)
+        else :
+            raise ValueError('Margin must be a tuple of either 2 or 4 elements.')
+        
+        img_width += left_margin + right_margin
+        img_height += top_margin + bottom_margin
 
         # Trace the image
         img_mode = "RGBA" if transparent else "RGB"
@@ -1727,15 +1749,19 @@ class TextClip(ImageClip):
 
         x = 0
         if horizontal_align == "right":
-            x = img_width - text_width
+            x = img_width - text_width - left_margin - right_margin
         elif horizontal_align == "center":
-            x = (img_width - text_width) / 2
+            x = (img_width - left_margin - right_margin - text_width) / 2
+
+        x += left_margin
 
         y = 0
         if vertical_align == "bottom":
-            y = img_height - text_height
+            y = img_height - text_height - top_margin - bottom_margin
         elif vertical_align == "center":
-            y = (img_height - text_height) / 2
+            y = (img_height - top_margin - bottom_margin - text_height) / 2
+
+        y += top_margin
 
         # So, pillow multiline support is horrible, in particular multiline_text and multiline_textbbox
         # are not intuitive at all. They cannot use left top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
@@ -1744,7 +1770,9 @@ class TextClip(ImageClip):
         # That mean our Y is actually not from 0 for top, but need to be increment by half our text height,
         # since we have to reference from middle line.
         y += text_height / 2
+        print(y)
 
+        print(text_align)
         draw.multiline_text(
             xy=(x, y),
             text=text,
