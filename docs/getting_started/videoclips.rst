@@ -39,7 +39,7 @@ VideoClip
 
     import gizeh
     import moviepy as mpy
-    
+
     WIDTH, HEIGHT = (128, 128)
 
     def make_frame(t):
@@ -94,7 +94,7 @@ ImageClip
 An ImageClip is a video clip that always displays the same image. You can create one as follows: ::
 
     myclip = ImageClip("some_picture.jpeg")
-    myclip = ImageClip(somme_array) # a (height x width x 3) RGB numpy array
+    myclip = ImageClip(some_array) # a (height x width x 3) RGB numpy array
     myclip = some_video_clip.to_ImageClip(t='01:00:00') # frame at t=1 hour.
 
 For more, see :py:class:`~moviepy.video.VideoClip.ImageClip`.

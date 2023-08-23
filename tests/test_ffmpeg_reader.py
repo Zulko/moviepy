@@ -488,7 +488,7 @@ def test_not_default_audio_stream_audio_bitrate():
 
 
 def test_stream_deidentation_not_raises_error():
-    """Test libavformat reduced streams identation to 2 spaces.
+    """Test libavformat reduced streams indentation to 2 spaces.
 
     See https://github.com/FFmpeg/FFmpeg/commit/b7251aed
     """
