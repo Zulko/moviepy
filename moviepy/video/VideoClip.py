@@ -210,6 +210,7 @@ class VideoClip(Clip):
         audio_codec=None,
         audio_bitrate=None,
         audio_bufsize=2000,
+        audio_ffmpeg_params=None,
         temp_audiofile=None,
         temp_audiofile_path="",
         remove_temp=True,
@@ -286,6 +287,11 @@ class VideoClip(Clip):
           Will determine the size/quality of audio in the output file.
           Note that it mainly an indicative goal, the bitrate won't
           necessarily be the this in the final file.
+
+        audio_ffmpeg_params
+          Any additional ffmpeg audio parameters you would like to specify
+          as a list of terms, like ['-af', 'acrusher=.1:1:64:0:log',
+          '-option2' 'value2' ]
 
         preset
           Sets the time that FFMPEG will spend optimizing the compression.
@@ -372,6 +378,7 @@ class VideoClip(Clip):
                 audio_nbytes,
                 audio_bufsize,
                 audio_codec,
+                ffmpeg_params=audio_ffmpeg_params,
                 bitrate=audio_bitrate,
                 write_logfile=write_logfile,
                 logger=logger,
