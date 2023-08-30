@@ -5,7 +5,7 @@ Audio in MoviePy
 
 This section shows how to use MoviePy to create and edit audio clips.
 
-Note that when you cut, mix or concatenate video clips in MoviePy the audio is automatically handled and you need to worry about it. This section is of interest if you just want to edit audiofiles or you want custom audio clips for your videos.
+Note that when you cut, mix or concatenate video clips in MoviePy the audio is automatically handled and you don't need to worry about it. This section is of interest if you just want to edit audiofiles or you want custom audio clips for your videos.
 
 What audioclips are made of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

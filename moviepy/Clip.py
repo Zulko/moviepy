@@ -1,8 +1,10 @@
 """Implements the central object of MoviePy, the Clip, and all the methods that
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
-
 import copy as _copy
+from functools import reduce
+from numbers import Real
+from operator import add
 
 import numpy as np
 import proglog
@@ -43,7 +45,6 @@ class Clip:
     _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
-
         self.start = 0
         self.end = None
         self.duration = None
@@ -375,7 +376,6 @@ class Clip:
             return result
 
         else:
-
             return (t >= self.start) and ((self.end is None) or (t < self.end))
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
@@ -389,6 +389,9 @@ class Clip:
 
         The ``mask`` and ``audio`` of the resulting subclip will be subclips of
         ``mask`` and ``audio`` the original clip, if they exist.
+
+        It's equivalent to slice the clip as a sequence, like
+        ``clip[t_start:t_end]``.
 
         Parameters
         ----------
@@ -424,11 +427,9 @@ class Clip:
         new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])
 
         if (end_time is None) and (self.duration is not None):
-
             end_time = self.duration
 
         elif (end_time is not None) and (end_time < 0):
-
             if self.duration is None:
                 raise ValueError(
                     (
@@ -439,11 +440,9 @@ class Clip:
                 )
 
             else:
-
                 end_time = self.duration + end_time
 
         if end_time is not None:
-
             new_clip.duration = end_time - start_time
             new_clip.end = new_clip.start + new_clip.duration
 
@@ -568,10 +567,88 @@ class Clip:
 
         return True
 
-    # Support the Context Manager protocol, to ensure that resources are cleaned up.
-
     def __enter__(self):
+        """
+        Support the Context Manager protocol,
+        to ensure that resources are cleaned up.
+        """
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
+
+    def __getitem__(self, key):
+        """
+        Support extended slice and index operations over
+        a clip object.
+
+        Simple slicing is implemented via `subclip`.
+        So, ``clip[t_start:t_end]`` is equivalent to
+        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not
+        given, default to ``0``, if ``t_end`` is not given,
+        default to ``self.duration``.
+
+        The slice object optionally support a third argument as
+        a ``speed`` coefficient (that could be negative),
+        ``clip[t_start:t_end:speed]``.
+
+        For example ``clip[::-1]`` returns a reversed (a time_mirror fx)
+        the video and ``clip[:5:2]`` returns the segment from 0 to 5s
+        accelerated to 2x (ie. resulted duration would be 2.5s)
+
+        In addition, a tuple of slices is supported, resulting in the concatenation
+        of each segment. For example ``clip[(:1, 2:)]`` return a clip
+        with the segment from 1 to 2s removed.
+
+        If ``key`` is not a slice or tuple, we assume it's a time
+        value (expressed in any format supported by `cvsec`)
+        and return the frame at that time, passing the key
+        to ``get_frame``.
+        """
+        apply_to = ["mask", "audio"]
+        if isinstance(key, slice):
+            # support for [start:end:speed] slicing. If speed is negative
+            # a time mirror is applied.
+            clip = self.subclip(key.start or 0, key.stop or self.duration)
+
+            if key.step:
+                # change speed of the subclip
+                factor = abs(key.step)
+                if factor != 1:
+                    # change speed
+                    clip = clip.time_transform(
+                        lambda t: factor * t, apply_to=apply_to, keep_duration=True
+                    )
+                    clip = clip.with_duration(1.0 * clip.duration / factor)
+                if key.step < 0:
+                    # time mirror
+                    clip = clip.time_transform(
+                        lambda t: clip.duration - t - 1,
+                        keep_duration=True,
+                        apply_to=apply_to,
+                    )
+            return clip
+        elif isinstance(key, tuple):
+            # get a concatenation of subclips
+            return reduce(add, (self[k] for k in key))
+        else:
+            return self.get_frame(key)
+
+    def __del__(self):
+        # WARNING: as stated in close() above, if we call close, it closes clips even
+        # if shallow copies are still in used, leading to some bugs: https://github.com/Zulko/moviepy/issues/1994
+        # so don't call self.close() here, rather do it manually in the code.
+        pass
+
+    def __add__(self, other):
+        # concatenate. implemented in specialized classes
+        return NotImplemented
+
+    def __mul__(self, n):
+        # loop n times where N is a real
+        if not isinstance(n, Real):
+            return NotImplemented
+
+        from moviepy.video.fx.loop import loop
+
+        return loop(self, n)

@@ -362,7 +362,10 @@ def test_FramesMatches_write_gifs(util):
         assert isinstance(end, int)
         assert isinstance(end, int)
 
-    shutil.rmtree(gifs_dir)
+    try:
+        shutil.rmtree(gifs_dir)
+    except PermissionError:
+        pass
 
 
 @pytest.mark.parametrize(
@@ -651,7 +654,6 @@ def test_color_gradient(
         assert np.array_equal(result, expected_result)
 
         if shape == "radial":
-
             circle_result = circle(
                 size,
                 p1,

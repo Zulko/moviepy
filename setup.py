@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """MoviePy setup script."""
 
-import os
 import sys
-from codecs import open
+from pathlib import Path
 
 
 try:
@@ -66,9 +65,7 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = None
-with open(os.path.join("moviepy", "version.py"), "r", "utf-8") as f:
-    __version__ = f.read().split(" ")[2].strip("\n").strip('"')
+__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
 
 
 # Define the requirements for specific execution needs.
@@ -76,7 +73,7 @@ requires = [
     "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
-    "numpy>=1.17.3,<=1.20",
+    "numpy>=1.17.3",
     "proglog<=1.0.0",
 ]
 
@@ -104,14 +101,14 @@ test_reqs = [
 ]
 
 lint_reqs = [
-    "black>=20.8b1",
-    "flake8>3.7.0,<4.0.0",
+    "black>=22.3.0",
+    "flake8>=4.0.1",
     "flake8-absolute-import>=1.0",
-    "flake8-docstrings>=1.5.0",
-    "flake8-rst-docstrings>=0.0.14",
-    "flake8-implicit-str-concat==0.2.0",
-    "isort>=5.7.0",
-    "pre-commit>=2.9.3",
+    "flake8-docstrings>=1.6.0",
+    "flake8-rst-docstrings>=0.2.5",
+    "flake8-implicit-str-concat==0.3.0",
+    "isort>=5.10.1",
+    "pre-commit>=2.19.0",
 ]
 
 extra_reqs = {
@@ -122,8 +119,7 @@ extra_reqs = {
 }
 
 # Load the README.
-with open("README.rst", "r", "utf-8") as file:
-    readme = file.read()
+readme = Path("README.rst").read_text()
 
 setup(
     name="moviepy",
@@ -132,6 +128,9 @@ setup(
     description="Video editing with Python",
     long_description=readme,
     url="https://zulko.github.io/moviepy/",
+    project_urls={
+        "Source": "https://github.com/Zulko/moviepy",
+    },
     license="MIT License",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -140,10 +139,11 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Multimedia",
         "Topic :: Multimedia :: Sound/Audio",
         "Topic :: Multimedia :: Sound/Audio :: Analysis",

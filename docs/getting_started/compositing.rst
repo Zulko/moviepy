@@ -18,7 +18,7 @@ Before starting, note that video clips generally carry an audio track and a mask
 Stacking and concatenating clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to them side by side in a single larger clip).
+Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to put them side by side in a single larger clip).
 
 Concatenation is done with the function ``concatenate_videoclips``: ::
 

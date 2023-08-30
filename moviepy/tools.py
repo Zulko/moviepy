@@ -28,7 +28,7 @@ def subprocess_call(cmd, logger="bar"):
     Set logger to None or a custom Proglog logger to avoid printings.
     """
     logger = proglog.default_bar_logger(logger)
-    logger(message="Moviepy - Running:\n>>> " + " ".join(cmd))
+    logger(message="MoviePy - Running:\n>>> " + " ".join(cmd))
 
     popen_params = cross_platform_popen_params(
         {"stdout": sp.DEVNULL, "stderr": sp.PIPE, "stdin": sp.DEVNULL}
@@ -40,10 +40,10 @@ def subprocess_call(cmd, logger="bar"):
     proc.stderr.close()
 
     if proc.returncode:
-        logger(message="Moviepy - Command returned an error")
+        logger(message="MoviePy - Command returned an error")
         raise IOError(err.decode("utf8"))
     else:
-        logger(message="Moviepy - Command successful")
+        logger(message="MoviePy - Command successful")
 
     del proc
 

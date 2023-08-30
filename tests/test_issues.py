@@ -233,7 +233,7 @@ def test_issue_334(util):
     avatar.audio = None
     maskclip = ImageClip("media/afterimage.png", is_mask=True, transparent=True)
     avatar.with_mask(maskclip)  # must set maskclip here..
-    concatenated = concatenate_videoclips([avatar] * 3)
+    concatenated = avatar * 3
 
     tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
     # TODO: Setting mask here does not work:
@@ -245,7 +245,6 @@ def test_issue_334(util):
 
 def test_issue_354():
     with ImageClip("media/python_logo.png") as clip:
-
         clip.duration = 10
         crosstime = 1
 
@@ -293,7 +292,7 @@ def test_issue_368(util):
 
         classifier = svm.SVC(gamma=2, C=1)
         # the varying weights make the points appear one after the other
-        weights = np.minimum(1, np.maximum(0, t ** 2 + 10 - np.arange(50)))
+        weights = np.minimum(1, np.maximum(0, t**2 + 10 - np.arange(50)))
         classifier.fit(X, Y, sample_weight=weights)
         Z = classifier.decision_function(np.c_[xx.ravel(), yy.ravel()])
         Z = Z.reshape(xx.shape)

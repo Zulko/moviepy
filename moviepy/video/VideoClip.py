@@ -8,6 +8,7 @@ import copy as _copy
 import os
 import subprocess as sp
 import tempfile
+from numbers import Real
 
 import numpy as np
 import proglog
@@ -333,7 +334,6 @@ class VideoClip(Clip):
         logger = proglog.default_bar_logger(logger)
 
         if codec is None:
-
             try:
                 codec = extensions_dict[ext]["codec"][0]
             except KeyError:
@@ -370,7 +370,7 @@ class VideoClip(Clip):
 
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
-        logger(message="Moviepy - Building video %s." % filename)
+        logger(message="MoviePy - Building video %s." % filename)
         if make_audio:
             self.audio.write_audiofile(
                 audiofile,
@@ -402,7 +402,7 @@ class VideoClip(Clip):
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
                 os.remove(audiofile)
-        logger(message="Moviepy - video ready %s" % filename)
+        logger(message="MoviePy - video ready %s" % filename)
 
     @requires_duration
     @use_clip_fps_by_default
@@ -448,7 +448,7 @@ class VideoClip(Clip):
         """
         logger = proglog.default_bar_logger(logger)
         # Fails on GitHub macos CI
-        # logger(message="Moviepy - Writing frames %s." % name_format)
+        # logger(message="MoviePy - Writing frames %s." % name_format)
 
         timings = np.arange(0, self.duration, 1.0 / fps)
 
@@ -457,7 +457,7 @@ class VideoClip(Clip):
             name = name_format % i
             filenames.append(name)
             self.save_frame(name, t, with_mask=with_mask)
-        # logger(message="Moviepy - Done writing frames %s." % name_format)
+        # logger(message="MoviePy - Done writing frames %s." % name_format)
 
         return filenames
 
@@ -917,6 +917,46 @@ class VideoClip(Clip):
         """
         self.audio = self.audio.fx(fun, *args, **kwargs)
 
+    def __add__(self, other):
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.concatenate import concatenate_videoclips
+
+            method = "chain" if self.size == other.size else "compose"
+            return concatenate_videoclips([self, other], method=method)
+        return super(VideoClip, self).__add__(other)
+
+    def __or__(self, other):
+        """
+        Implement the or (self | other) to produce a video with self and other
+        placed side by side horizontally.
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+
+            return clips_array([[self, other]])
+        return super(VideoClip, self).__or__(other)
+
+    def __truediv__(self, other):
+        """
+        Implement division (self / other) to produce a video with self
+        placed on top of other.
+        """
+        if isinstance(other, VideoClip):
+            from moviepy.video.compositing.CompositeVideoClip import clips_array
+
+            return clips_array([[self], [other]])
+        return super(VideoClip, self).__or__(other)
+
+    def __matmul__(self, n):
+        if not isinstance(n, Real):
+            return NotImplemented
+        from moviepy.video.fx.rotate import rotate
+
+        return rotate(self, n)
+
+    def __and__(self, mask):
+        return self.with_mask(mask)
+
 
 class DataVideoClip(VideoClip):
     """
@@ -926,7 +966,7 @@ class DataVideoClip(VideoClip):
     Parameters
     ----------
     data
-      A liste of datasets, each dataset being used for one frame of the clip
+      A list of datasets, each dataset being used for one frame of the clip
 
     data_to_frame
       A function d -> video frame, where d is one element of the list `data`
@@ -1051,7 +1091,6 @@ class ImageClip(VideoClip):
             img = imread(img)
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
-
             if img.shape[2] == 4:
                 if fromalpha:
                     img = 1.0 * img[:, :, 3] / 255
@@ -1158,6 +1197,10 @@ class ColorClip(ImageClip):
                 color = (0, 0, 0)
             elif not hasattr(color, "__getitem__"):
                 raise Exception("Color has to contain RGB of the clip")
+            elif isinstance(color, str):
+                raise Exception(
+                    "Color cannot be string. Color has to contain RGB of the clip"
+                )
             shape = (h, w, len(color))
 
         super().__init__(
@@ -1251,7 +1294,6 @@ class TextClip(ImageClip):
         remove_temp=True,
         print_cmd=False,
     ):
-
         if text is not None:
             if temptxt is None:
                 temptxt_fd, temptxt = tempfile.mkstemp(suffix=".txt")
@@ -1261,9 +1303,13 @@ class TextClip(ImageClip):
                     os.write(temptxt_fd, text)
                 os.close(temptxt_fd)
             text = "@" + temptxt
-        else:
+        elif filename is not None:
             # use a file instead of a text.
-            text = "@%" + filename
+            text = "@" + filename
+        else:
+            raise ValueError(
+                "You must provide either 'text' or 'filename' arguments to TextClip"
+            )
 
         if size is not None:
             size = (
@@ -1356,7 +1402,7 @@ class TextClip(ImageClip):
             # The first 5 lines are header information, not colors, so ignore
             return [line.split(" ")[0] for line in lines[5:]]
         else:
-            raise Exception("Moviepy Error: Argument must equal 'font' or 'color'")
+            raise Exception("MoviePy Error: Argument must equal 'font' or 'color'")
 
     @staticmethod
     def search(string, arg):

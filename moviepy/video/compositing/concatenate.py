@@ -102,7 +102,7 @@ def concatenate_videoclips(
         )
     else:
         raise Exception(
-            "Moviepy Error: The 'method' argument of "
+            "MoviePy Error: The 'method' argument of "
             "concatenate_videoclips must be 'chain' or 'compose'"
         )
 

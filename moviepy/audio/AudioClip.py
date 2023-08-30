@@ -19,7 +19,7 @@ from moviepy.tools import extensions_dict
 class AudioClip(Clip):
     """Base class for audio clips.
 
-    See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.
+    See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.
 
     An AudioClip is a Clip with a ``make_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
@@ -259,6 +259,11 @@ class AudioClip(Clip):
             logger=logger,
         )
 
+    def __add__(self, other):
+        if isinstance(other, AudioClip):
+            return concatenate_audioclips([self, other])
+        return super(AudioClip, self).__add__(other)
+
 
 class AudioArrayClip(AudioClip):
     """
@@ -279,7 +284,6 @@ class AudioArrayClip(AudioClip):
     """
 
     def __init__(self, array, fps):
-
         Clip.__init__(self)
         self.array = array
         self.fps = fps

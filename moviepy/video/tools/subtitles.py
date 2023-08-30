@@ -43,7 +43,6 @@ class SubtitlesClip(VideoClip):
     """
 
     def __init__(self, subtitles, make_textclip=None, encoding=None):
-
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):

@@ -30,6 +30,6 @@ clip = ColorClip((600, 400), color=(255, 100, 0), duration=2)
 #### Specifications
 
   - Python Version:
-  - Moviepy Version:
+  - MoviePy Version:
   - Platform Name:
   - Platform Version:

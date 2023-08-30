@@ -264,7 +264,10 @@ def test_oncolor(util):
         clip = ColorClip(size=(100, 60), color=(255, 0, 0), is_mask=True)
 
     with pytest.raises(Exception):
-        clip = ColorClip(size=(100, 60), color=0.4, is_mask=False)
+        clip = ColorClip(size=(100, 60), color=0.4, ismask=False)
+
+    with pytest.raises(Exception):
+        clip = ColorClip(size=(100, 60), color="black")
 
 
 def test_setaudio(util):
@@ -439,6 +442,73 @@ def test_afterimage(util):
 
     filename = os.path.join(util.TMP_DIR, "afterimage.mp4")
     final_clip.write_videofile(filename, fps=30, logger=None)
+
+
+def test_add():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1] + clip[2:3.2]
+    assert new_clip.duration == 2.2
+    assert np.array_equal(new_clip[1.1], clip[2.1])
+
+
+def test_slice_tuples():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1, 2:3.2]
+    assert new_clip.duration == 2.2
+    assert np.array_equal(new_clip[1.1], clip[2.1])
+
+
+def test_slice_mirror():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[::-1]
+    assert new_clip.duration == clip.duration
+    assert np.array_equal(new_clip[0], clip[clip.duration])
+
+
+def test_slice_speed():
+    clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
+    clip1 = clip[::0.5]  # 1/2x speed
+    target1 = BitmapClip(
+        [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
+    )
+    assert clip1 == target1
+
+
+def test_mul():
+    clip = VideoFileClip("media/fire2.mp4")
+    new_clip = clip[0:1] * 2.5
+    assert new_clip.duration == 2.5
+    assert np.array_equal(new_clip[1.1], clip[0.1])
+
+
+def test_and():
+    clip = VideoFileClip("media/fire2.mp4")
+    maskclip = ImageClip("media/afterimage.png", is_mask=True, transparent=True)
+    clip_with_mask = clip & maskclip
+    assert clip_with_mask.mask is maskclip
+
+
+def test_or(util):
+    clip1 = BitmapClip([["R"]], fps=1)
+    clip2 = BitmapClip([["G"]], fps=1)
+    target = BitmapClip([["RG"]], fps=1)
+    result = clip1 | clip2
+    assert result == target
+
+
+def test_truediv(util):
+    clip1 = BitmapClip([["R"]], fps=1)
+    clip2 = BitmapClip([["G"]], fps=1)
+    target = BitmapClip([["R", "G"]], fps=1)
+    result = clip1 / clip2
+    assert result == target
+
+
+def test_matmul(util):
+    clip1 = BitmapClip([["RG"]], fps=1)
+    target = BitmapClip([["R", "G"]], fps=1)
+    result = clip1 @ 270
+    assert result == target
 
 
 if __name__ == "__main__":

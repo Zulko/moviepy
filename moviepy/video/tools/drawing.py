@@ -165,7 +165,7 @@ def color_gradient(
             vector = np.array(vector[::-1])
 
         norm = np.linalg.norm(vector)
-        n_vec = vector / norm ** 2  # norm 1/norm(vector)
+        n_vec = vector / norm**2  # norm 1/norm(vector)
 
         p1 = p1 + offset * vector
         arr = (M - p1).dot(n_vec) / (1 - offset)
