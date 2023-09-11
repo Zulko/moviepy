@@ -27,6 +27,7 @@ from moviepy.audio.fx import (
     audio_normalize,
     multiply_stereo_volume,
     multiply_volume,
+    time_stretch,
 )
 from moviepy.tools import convert_to_seconds
 from moviepy.video.fx import (
@@ -1438,6 +1439,16 @@ def test_multiply_stereo_volume():
     mono_channel_doubled = doubled_mono_clip.to_soundarray()
     d_channel = mono_clip.to_soundarray() * 2
     assert np.array_equal(mono_channel_doubled, d_channel)
+
+
+def test_time_stretch():
+    clip = AudioFileClip("media/crunching.mp3")
+
+    clip1 = time_stretch.time_stretch(clip, factor=0.5)
+    assert math.isclose(clip1.duration, 2 * clip.duration, abs_tol=0.1)
+
+    clip2 = time_stretch.time_stretch(clip, factor=1.5)
+    assert math.isclose(1.5 * clip2.duration, clip.duration, abs_tol=0.1)
 
 
 @pytest.mark.parametrize(
