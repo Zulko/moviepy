@@ -157,3 +157,46 @@ class ImageSequenceClip(VideoClip):
 
         self.make_frame = make_frame
         self.size = make_frame(0).shape[:2][::-1]
+
+
+
+
+    @classmethod
+    def from_images_and_times(cls, images, durations, fps=60, with_mask=True, is_mask=False):
+        """
+        Create a video clip from a list of images and corresponding durations.
+
+        Parameters:
+        - images: List of image file paths or Numpy arrays representing images.
+        - durations: List of durations (in seconds) for each image.
+        - fps: Frames per second for the video.
+        - with_mask: Should the alpha layer of PNG images be considered as a mask?
+        - is_mask: Will this sequence of pictures be used as an animated mask?
+
+        Returns:
+        - An ImageSequenceClip instance representing the video.
+        """
+        # Check if the number of images and durations match
+        if len(images) != len(durations):
+            raise ValueError("Number of images and durations must be the same.")
+
+        # Convert durations to frame numbers
+        frame_durations = [int(time * fps) for time in durations]
+
+        # Initialize the list of frames
+        frames = []
+
+        for image in images:
+            # Load the image if it's a file path
+            if isinstance(image, str):
+                image = imread(image)
+
+            # Append the same image for the specified number of frames
+            frames.extend([image] * frame_durations.pop(0))
+
+        # Create an ImageSequenceClip instance
+        video = cls(frames, fps=fps, with_mask=with_mask, is_mask=is_mask)
+
+        return video
+    
+
