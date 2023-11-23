@@ -72,9 +72,8 @@ class SubtitlesClip(VideoClip):
         self.end = self.duration
 
         def add_textclip_if_none(t):
-            """Will generate a textclip if it hasn't been generated asked
-            to generate it yet. If there is no subtitle to show at t, return
-            false.
+            """Will generate a textclip if it hasn't been generated yet.
+            If there is no subtitle to show at t, return false.
             """
             sub = [
                 ((text_start, text_end), text)
