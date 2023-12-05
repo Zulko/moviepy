@@ -216,7 +216,7 @@ def ffmpeg_audiowrite(
             if filename in AUDIOS_TO_STOP:
                 logger(
                     message="""MoviePy -process stoped in ffmpeg_audiowrite
-                with -> utls.stop_processing_video()"""
+                with -> utils.stop_processing_video()"""
                 )
                 AUDIOS_TO_STOP.pop(AUDIOS_TO_STOP.index(filename))
                 return
