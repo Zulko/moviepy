@@ -5,13 +5,13 @@ from moviepy import VideoFileClip
 from moviepy.utils import stop_processing_video
 
 
-def edit_video(name):
+def edit_video(output):
     """Just to start some process"""
     vid = VideoFileClip("media/sintel_with_14_chapters.mp4")
-    vid.write_videofile(name)
+    vid.write_videofile(output)
 
 
-vid1_filename = "first_vid.mp4"
+vid1_filename = "examples/first_vid.mp4"
 vid2_filename = "second_vid.mp4"
 vid3_filename = "third_vid.mp4"
 

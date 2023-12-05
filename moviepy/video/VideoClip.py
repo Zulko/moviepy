@@ -396,6 +396,9 @@ class VideoClip(Clip):
                 message=f"""MoviePy - The process of making the video
             ({filename}) was canceled -> utls.stop_processing_video()"""
             )
+            if os.path.exists(filename):
+                os.remove(filename)
+                os.remove(audiofile)
             return
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
