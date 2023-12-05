@@ -12,6 +12,9 @@ from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import cross_platform_popen_params
 
 
+VIDEOS_TO_STOP = [None]
+
+
 class FFMPEG_VideoWriter:
     """A class for FFMPEG-based video writing.
 
@@ -232,6 +235,8 @@ def ffmpeg_write_video(
     """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
     """
+    global VIDEOS_TO_STOP
+
     logger = proglog.default_bar_logger(logger)
 
     if write_logfile:
@@ -257,6 +262,17 @@ def ffmpeg_write_video(
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
+            if VIDEOS_TO_STOP[0] is not None:
+                if filename in VIDEOS_TO_STOP:
+                    logger(
+                        message="""MoviePy - process stoped in ffmpeg_write_video with
+                            -> utls.stop_processing_video()."""
+                    )
+                    VIDEOS_TO_STOP.pop(VIDEOS_TO_STOP.index(filename))
+                    return "canceled"
+                if len(VIDEOS_TO_STOP) == 1:
+                    VIDEOS_TO_STOP[0] = None
+
             if with_mask:
                 mask = 255 * clip.mask.get_frame(t)
                 if mask.dtype != "uint8":
