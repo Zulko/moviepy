@@ -5,13 +5,13 @@ repos:
       - id: black
         language_version: python3.10
         files: \.py$
-  # - repo: https://github.com/PyCQA/isort
-  #   rev: 5.10.1
-  #   hooks:
-  #     - id: isort
-  #       args:
-  #         - '--filter-files'
-  #       files: \.py$
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.11.5
+    hooks:
+      - id: isort
+        args:
+          - '--filter-files'
+        files: \.py$
   - repo: https://github.com/PyCQA/flake8
     rev: 4.0.1
     hooks:
