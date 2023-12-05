@@ -62,7 +62,7 @@ docs/build/
 
 # Environments
 .env
-.venv/
+.venv
 env/
 venv/
 ENV/

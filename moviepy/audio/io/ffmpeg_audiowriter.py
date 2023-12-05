@@ -213,9 +213,7 @@ def ffmpeg_audiowrite(
         writer.write_frames(chunk)
 
         if AUDIOS_TO_STOP[0] is not None:
-            # print(filename)
             if filename in AUDIOS_TO_STOP:
-                print("ss")
                 logger(
                     message="""MoviePy -process stoped in ffmpeg_audiowrite
                 with -> utls.stop_processing_video()"""
