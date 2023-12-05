@@ -62,8 +62,9 @@ def stop_processing_video(filename: str):
     >>> t.start()
     >>> stop_processing_video('somename.mp4')
     """
+    temp_audio = filename.split(".")[0] + "TEMP_MPY_wvf_snd.mp3"
+    ffmpeg_audiowriter.AUDIOS_TO_STOP.append(temp_audio)
+    ffmpeg_audiowriter.AUDIOS_TO_STOP[0] = True
+
     ffmpeg_writer.VIDEOS_TO_STOP[0] = True
     ffmpeg_writer.VIDEOS_TO_STOP.append(filename)
-
-    ffmpeg_audiowriter.AUDIOS_TO_STOP.append(filename)
-    ffmpeg_audiowriter.AUDIOS_TO_STOP[0] = True

@@ -266,7 +266,7 @@ def ffmpeg_write_video(
                 if filename in VIDEOS_TO_STOP:
                     logger(
                         message="""MoviePy - process stoped in ffmpeg_write_video with
-                            -> utls.stop_processing_video()."""
+                    -> utls.stop_processing_video()."""
                     )
                     VIDEOS_TO_STOP.pop(VIDEOS_TO_STOP.index(filename))
                     return "canceled"

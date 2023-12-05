@@ -393,8 +393,8 @@ class VideoClip(Clip):
         )
         if status == "canceled":
             logger(
-                message=f"""MoviePy - The process of making thevideo
-                    ({filename}) was canceled -> utls.stop_processing_video()"""
+                message=f"""MoviePy - The process of making the video
+            ({filename}) was canceled -> utls.stop_processing_video()"""
             )
             return
         if remove_temp and make_audio:
