@@ -636,7 +636,8 @@ class Clip:
 
     def __del__(self):
         # WARNING: as stated in close() above, if we call close, it closes clips even
-        # if shallow copies are still in used, leading to some bugs: https://github.com/Zulko/moviepy/issues/1994
+        # if shallow copies are still in used, leading to some bugs:
+        # https://github.com/Zulko/moviepy/issues/1994
         # so don't call self.close() here, rather do it manually in the code.
         pass
 
