@@ -398,7 +398,7 @@ class VideoClip(Clip):
             )
             if os.path.exists(filename):
                 os.remove(filename)
-                os.remove(audiofile)
+
             return
         if remove_temp and make_audio:
             if os.path.exists(audiofile):

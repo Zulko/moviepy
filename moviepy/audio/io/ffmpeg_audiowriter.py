@@ -1,5 +1,6 @@
 """MoviePy audio writing with ffmpeg."""
 
+import os
 import subprocess as sp
 
 import proglog
@@ -219,6 +220,8 @@ def ffmpeg_audiowrite(
                 with -> utils.stop_processing_video()"""
                 )
                 AUDIOS_TO_STOP.pop(AUDIOS_TO_STOP.index(filename))
+                if os.path.exists(filename):
+                    os.remove(filename)
                 return
             if len(AUDIOS_TO_STOP) == 1:
                 AUDIOS_TO_STOP[0] = None
