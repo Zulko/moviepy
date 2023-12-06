@@ -222,9 +222,9 @@ def ffmpeg_audiowrite(
                 AUDIOS_TO_STOP.pop(AUDIOS_TO_STOP.index(filename))
                 if os.path.exists(filename):
                     os.remove(filename)
+                if len(AUDIOS_TO_STOP) == 1:
+                    AUDIOS_TO_STOP[0] = None
                 return
-            if len(AUDIOS_TO_STOP) == 1:
-                AUDIOS_TO_STOP[0] = None
 
     writer.close()
 
