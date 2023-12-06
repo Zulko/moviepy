@@ -1,5 +1,6 @@
 """MoviePy audio writing with ffmpeg."""
 
+import os
 import subprocess as sp
 
 import proglog
@@ -7,6 +8,9 @@ import proglog
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
+
+
+AUDIOS_TO_STOP = [None]
 
 
 class FFMPEG_AudioWriter:
@@ -185,6 +189,8 @@ def ffmpeg_audiowrite(
     A function that wraps the FFMPEG_AudioWriter to write an AudioClip
     to a file.
     """
+    global AUDIOS_TO_STOP
+
     if write_logfile:
         logfile = open(filename + ".log", "w+")
     else:
@@ -206,6 +212,19 @@ def ffmpeg_audiowrite(
         chunksize=buffersize, quantize=True, nbytes=nbytes, fps=fps, logger=logger
     ):
         writer.write_frames(chunk)
+
+        if AUDIOS_TO_STOP[0] is not None:
+            if filename in AUDIOS_TO_STOP:
+                logger(
+                    message="""MoviePy -process stoped in ffmpeg_audiowrite
+                with -> utils.stop_processing_video()"""
+                )
+                AUDIOS_TO_STOP.pop(AUDIOS_TO_STOP.index(filename))
+                if os.path.exists(filename):
+                    os.remove(filename)
+                if len(AUDIOS_TO_STOP) == 1:
+                    AUDIOS_TO_STOP[0] = None
+                return
 
     writer.close()
 

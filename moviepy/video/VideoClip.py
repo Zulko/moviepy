@@ -377,7 +377,7 @@ class VideoClip(Clip):
                 logger=logger,
             )
 
-        ffmpeg_write_video(
+        status = ffmpeg_write_video(
             self,
             filename,
             fps,
@@ -391,7 +391,15 @@ class VideoClip(Clip):
             logger=logger,
             pixel_format=pixel_format,
         )
+        if status == "canceled":
+            logger(
+                message=f"""MoviePy - The process of making the video
+            ({filename}) was canceled -> utls.stop_processing_video()"""
+            )
+            if os.path.exists(filename):
+                os.remove(filename)
 
+            return
         if remove_temp and make_audio:
             if os.path.exists(audiofile):
                 os.remove(audiofile)
