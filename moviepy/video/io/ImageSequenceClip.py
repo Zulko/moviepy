@@ -85,7 +85,7 @@ class ImageSequenceClip(VideoClip):
             size = sequence[0].shape
 
         def load_and_check_image_size(image):
-            if not isinstance(image, str):
+            if isinstance(image, str):
                 image = imread(image)
             if size != image.shape:
                 raise Exception(
