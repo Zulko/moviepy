@@ -3,6 +3,7 @@ of image files.
 """
 
 import os
+import concurrent.futures
 
 import numpy as np
 from imageio import imread
@@ -62,7 +63,8 @@ class ImageSequenceClip(VideoClip):
         if isinstance(sequence, list):
             if isinstance(sequence[0], str):
                 if load_images:
-                    sequence = [imread(file) for file in sequence]
+                    with concurrent.futures.ThreadPoolExecutor() as executor:
+                        sequence = list(executor.map(imread, sequence))
                     fromfiles = False
                 else:
                     fromfiles = True
@@ -82,14 +84,26 @@ class ImageSequenceClip(VideoClip):
         else:
             size = sequence[0].shape
 
-        for image in sequence:
-            image1 = image
-            if isinstance(image, str):
-                image1 = imread(image)
-            if size != image1.shape:
+        def load_and_check_image_size(image):
+            if not isinstance(image, str):
+                image = imread(image)
+            if size != image.shape:
                 raise Exception(
                     "MoviePy: ImageSequenceClip requires all images to be the same size"
                 )
+
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            # Create a future object for each image in the sequence
+            futures = [
+                executor.submit(load_and_check_image_size, img_path)
+                for img_path in sequence
+            ]
+
+            # Wait for all futures to complete
+            concurrent.futures.wait(futures)
+
+            # Get the results from each future
+            [future.result() for future in futures]
 
         self.fps = fps
         if fps is not None:
