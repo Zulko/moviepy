@@ -1,19 +1,18 @@
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.3.0
+    rev: 23.12.1
     hooks:
       - id: black
-        language_version: python3.6
         files: \.py$
   - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+    rev: 5.13.2
     hooks:
       - id: isort
         args:
           - '--filter-files'
         files: \.py$
   - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
+    rev: 7.0.0
     hooks:
       - id: flake8
         additional_dependencies:
