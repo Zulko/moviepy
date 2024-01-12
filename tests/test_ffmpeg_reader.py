@@ -290,6 +290,22 @@ def test_ffmpeg_parse_video_rotation():
     assert d["video_size"] == [1920, 1080]
 
 
+@pytest.mark.parametrize(
+    "target_resolution,expected_size",
+    [
+        (None, (314, 273)),
+        ((100, None), (100, 86)),
+        ((None, 100), (115, 100)),
+        ((None, None), (314, 273)),
+    ],
+)
+def test_video_target_resolution(target_resolution, expected_size):
+    clip = VideoFileClip(
+        "media/pigs_in_a_polka.gif", target_resolution=target_resolution
+    )
+    assert clip.size == expected_size
+
+
 def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
     clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
