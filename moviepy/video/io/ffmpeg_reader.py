@@ -43,13 +43,16 @@ class FFMPEG_VideoReader:
         if self.rotation in [90, 270]:
             self.size = [self.size[1], self.size[0]]
 
-        if target_resolution:
+        if target_resolution and target_resolution != (None, None):
             if None in target_resolution:
-                ratio = 1
-                for idx, target in enumerate(target_resolution):
-                    if target:
-                        ratio = target / self.size[idx]
-                self.size = (int(self.size[0] * ratio), int(self.size[1] * ratio))
+                first, second = target_resolution
+                if first:
+                    ratio = first / self.size[0]
+                    second = int(self.size[1] * ratio)
+                else:
+                    ratio = second / self.size[1]
+                    first = int(self.size[0] * ratio)
+                self.size = (first, second)
             else:
                 self.size = target_resolution
         self.resize_algo = resize_algo
