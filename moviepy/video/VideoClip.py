@@ -218,6 +218,8 @@ class VideoClip(Clip):
         ffmpeg_params=None,
         logger="bar",
         pixel_format=None,
+        imagefile=None,
+        position=(0,0),
     ):
         """Write the clip to a videofile.
 
@@ -390,6 +392,8 @@ class VideoClip(Clip):
             ffmpeg_params=ffmpeg_params,
             logger=logger,
             pixel_format=pixel_format,
+            imagefile=imagefile,
+            position = position
         )
 
         if remove_temp and make_audio:
