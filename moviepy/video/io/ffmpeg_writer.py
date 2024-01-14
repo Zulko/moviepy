@@ -88,6 +88,8 @@ class FFMPEG_VideoWriter:
         threads=None,
         ffmpeg_params=None,
         pixel_format=None,
+        imagefile = None,
+        position = (0, 0)
     ):
         if logfile is None:
             logfile = sp.PIPE
@@ -262,6 +264,20 @@ def ffmpeg_write_video(
                 if mask.dtype != "uint8":
                     mask = mask.astype("uint8")
                 frame = np.dstack([frame, mask])
+
+            if imagefile:
+
+                import cv2
+                img = cv2.imread(imagefile, cv2.IMREAD_UNCHANGED)
+                resized_img = cv2.resize(img, (int(img.shape[1] / 1), int(img.shape[0] / 1)))
+                mask = resized_img[:, :, 3] / 255.0
+                x_position, y_position = position
+                frame = frame.copy()
+                for c in range(0, 3):
+                    frame[y_position:y_position + resized_img.shape[0], x_position:x_position + resized_img.shape[1], c] = \
+                        frame[y_position:y_position + resized_img.shape[0], x_position:x_position + resized_img.shape[1], c] * (1 - mask) + \
+                        resized_img[:, :, c] * mask
+
 
             writer.write_frame(frame)
 
