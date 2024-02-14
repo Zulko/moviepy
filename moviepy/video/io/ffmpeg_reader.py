@@ -249,6 +249,13 @@ class FFMPEG_VideoReader:
         # are getting the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001)
 
+    @property
+    def lastread(self):
+        """Support old name of the "last_read" attribute, which may be used
+        by existing libraries, such as scenedetect.
+        """
+        return self.last_read
+
     def close(self, delete_last_read=True):
         """Closes the reader terminating the process, if is still open."""
         if self.proc:
