@@ -120,7 +120,14 @@ class FFMPEG_VideoWriter:
         ]
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
-        cmd.extend(["-vcodec", codec, "-preset", preset])
+
+        if (codec == "h264_nvenc") :
+            cmd.extend(["-c:v", codec])
+        else :
+            cmd.extend(["-vcodec", codec])
+
+        cmd.extend(["-preset", preset])
+
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
         if bitrate is not None:
@@ -129,8 +136,9 @@ class FFMPEG_VideoWriter:
         if threads is not None:
             cmd.extend(["-threads", str(threads)])
 
-        if (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
+        if (codec == "libx264" or codec == "h264_nvenc") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
             cmd.extend(["-pix_fmt", "yuv420p"])
+
         cmd.extend([filename])
 
         popen_params = cross_platform_popen_params(
