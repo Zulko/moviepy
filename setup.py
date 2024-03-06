@@ -3,7 +3,7 @@
 
 import sys
 from pathlib import Path
-
+import runpy
 
 try:
     from setuptools import find_packages, setup
@@ -20,6 +20,9 @@ except ImportError:
             "Install setuptools with $ (sudo) pip install setuptools and "
             "try again."
         )
+
+
+__version__ = runpy.run_path("moviepy/version.py").get("__version__")
 
 
 class PyTest(TestCommand):
@@ -65,33 +68,23 @@ if "build_docs" in sys.argv:
 
     cmdclass["build_docs"] = BuildDoc
 
-__version__ = Path("moviepy/version.py").read_text().strip().split('"')[1][:-1]
-
 
 # Define the requirements for specific execution needs.
 requires = [
     "decorator>=4.0.2,<6.0",
     "imageio>=2.5,<3.0",
     "imageio_ffmpeg>=0.2.0",
-    "numpy>=1.17.3",
+    "numpy>=1.25.0",
     "proglog<=1.0.0",
-]
-
-optional_reqs = [
-    "pygame>=1.9.3",
     "python-dotenv>=0.10",
-    "opencv-python",
-    "scikit-image",
-    "scikit-learn",
-    "scipy",
-    "matplotlib",
-    "youtube_dl",
+    "pillow>=9.2.0,<11.0",  # We are good at least up to v11
 ]
 
 doc_reqs = [
     "numpydoc<2.0",
-    "Sphinx==3.4.3",
-    "sphinx-rtd-theme==0.5.1",
+    "Sphinx==6.*",
+    "pydata-sphinx-theme==0.13",
+    "sphinx_design",
 ]
 
 test_reqs = [
@@ -101,25 +94,24 @@ test_reqs = [
 ]
 
 lint_reqs = [
-    "black>=22.3.0",
-    "flake8>=4.0.1",
+    "black>=23.7.0",
+    "flake8>=6.0.0",
     "flake8-absolute-import>=1.0",
-    "flake8-docstrings>=1.6.0",
-    "flake8-rst-docstrings>=0.2.5",
-    "flake8-implicit-str-concat==0.3.0",
-    "isort>=5.10.1",
-    "pre-commit>=2.19.0",
+    "flake8-docstrings>=1.7.0",
+    "flake8-rst-docstrings>=0.3",
+    "flake8-implicit-str-concat==0.4.0",
+    "isort>=5.12",
+    "pre-commit>=3.3",
 ]
 
 extra_reqs = {
-    "optional": optional_reqs,
     "doc": doc_reqs,
     "test": test_reqs,
     "lint": lint_reqs,
 }
 
 # Load the README.
-readme = Path("README.rst").read_text()
+readme = Path("README.md").read_text()
 
 setup(
     name="moviepy",
@@ -127,6 +119,7 @@ setup(
     author="Zulko 2017",
     description="Video editing with Python",
     long_description=readme,
+    long_description_content_type="text/markdown",
     url="https://zulko.github.io/moviepy/",
     project_urls={
         "Source": "https://github.com/Zulko/moviepy",

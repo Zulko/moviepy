@@ -32,7 +32,6 @@ jobs:
         echo $PYTHONHOME
     - name: Install dependencies
       run: |
-        brew install imagemagick
         # needed for installing matplotlib
         brew install pkg-config
         python -m pip install --upgrade wheel setuptools coveralls
@@ -61,38 +60,6 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Get ImageMagick installer from cache
-        id: imagemagick-installer-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ImageMagick.exe
-          key: ${{ runner.os }}-latest
-
-      - name: Download ImageMagick installer
-        shell: cmd
-        if: steps.imagemagick-installer-cache.outputs.cache-hit != 'true'
-        run: |
-          python3 scripts/get-latest-imagemagick-win.py >im-url.txt
-          set /p IMAGEMAGICK_URL= <im-url.txt
-          rm im-url.txt
-          echo %IMAGEMAGICK_URL%
-          curl %IMAGEMAGICK_URL% -o ImageMagick.exe
-
-      - name: Install ImageMagick
-        id: imagemagick-install
-        shell: cmd
-        run: |
-          set IMAGEMAGICK_INSTALL_DIR=%CD%\imagemagick
-          mkdir %IMAGEMAGICK_INSTALL_DIR%
-          echo %IMAGEMAGICK_INSTALL_DIR%
-
-          ImageMagick.exe /SILENT /SP /DIR=%IMAGEMAGICK_INSTALL_DIR%
-          dir imagemagick
-
-          move imagemagick\ffmpeg.exe ffmpeg.exe
-          move imagemagick\magick.exe convert.exe
 
       - name: Install Python dependencies
         run: |
@@ -147,12 +114,6 @@ jobs:
         if: ${{ matrix.python-version != '3.7' }}
         run: |
           python -m pip install ".[test, optional, doc]"
-
-      - name: Configure ImageMagick policy
-        run: |
-          cat /etc/ImageMagick-6/policy.xml \
-          | sed 's/none/read,write/g' \
-          | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: PyTest
         run: |

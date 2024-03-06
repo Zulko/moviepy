@@ -91,7 +91,7 @@ class FFMPEG_AudioWriter:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
-        """TODO: add documentation"""
+        """Send the audio frame (a chunck of ``AudioClip``) to ffmpeg for writting"""
         try:
             self.proc.stdin.write(frames_array.tobytes())
         except IOError as err:

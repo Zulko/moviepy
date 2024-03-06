@@ -221,7 +221,6 @@ def ffmpeg_write_video(
     codec="libx264",
     bitrate=None,
     preset="medium",
-    with_mask=False,
     write_logfile=False,
     audiofile=None,
     threads=None,
@@ -240,7 +239,7 @@ def ffmpeg_write_video(
         logfile = None
     logger(message="MoviePy - Writing video %s\n" % filename)
     if not pixel_format:
-        pixel_format = "rgba" if with_mask else "rgb24"
+        pixel_format = "rgba" if clip.mask is not None else "rgb24"
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
@@ -257,7 +256,7 @@ def ffmpeg_write_video(
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"
         ):
-            if with_mask:
+            if clip.mask is not None:
                 mask = 255 * clip.mask.get_frame(t)
                 if mask.dtype != "uint8":
                     mask = mask.astype("uint8")
