@@ -119,6 +119,7 @@ setup(
     author="Zulko 2017",
     description="Video editing with Python",
     long_description=readme,
+    long_description_content_type="text/markdown",
     url="https://zulko.github.io/moviepy/",
     project_urls={
         "Source": "https://github.com/Zulko/moviepy",
