@@ -4,7 +4,7 @@ from moviepy import VideoFileClip, clips_array, vfx
 clip1 = VideoFileClip("example.mp4").with_effects([vfx.Margin(10)])  # add 10px contour
 clip2 = clip1.with_effects([vfx.MirrorX()])  # Flip horizontaly
 clip3 = clip1.with_effects([vfx.MirrorY()])  # Flip verticaly
-clip4 = clip1.resized(0.60)  # downsize to 60% of original
+clip4 = clip1.resized(0.6)  # downsize to 60% of original
 
 # The form of the final clip will depend of the shape of the array
 # We want our clip to be our 4 videos, 2x2, so we make an array of 2x2
