@@ -221,7 +221,6 @@ def ffmpeg_write_video(
     codec="libx264",
     bitrate=None,
     preset="medium",
-    with_mask=False,
     write_logfile=False,
     audiofile=None,
     threads=None,
@@ -240,7 +239,7 @@ def ffmpeg_write_video(
         logfile = None
     logger(message="MoviePy - Writing video %s\n" % filename)
     if not pixel_format:
-        pixel_format = "rgba" if with_mask else "rgb24"
+        pixel_format = "rgb24"
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
