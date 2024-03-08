@@ -226,7 +226,7 @@ def ffmpeg_write_video(
     threads=None,
     ffmpeg_params=None,
     logger="bar",
-    pixel_format=None,
+    pixel_format="rgb24",
 ):
     """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
@@ -238,8 +238,6 @@ def ffmpeg_write_video(
     else:
         logfile = None
     logger(message="MoviePy - Writing video %s\n" % filename)
-    if not pixel_format:
-        pixel_format = "rgb24"
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
