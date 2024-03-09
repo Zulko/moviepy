@@ -1,4 +1,5 @@
 """Decorators used by moviepy."""
+
 import inspect
 import os
 
@@ -88,7 +89,11 @@ def preprocess_args(preprocess_func, varnames):
 
         def wrapper(func, *args, **kwargs):
             new_args = [
-                preprocess_func(arg) if (name in varnames) and (arg is not None) else arg
+                (
+                    preprocess_func(arg)
+                    if (name in varnames) and (arg is not None)
+                    else arg
+                )
                 for (arg, name) in zip(args, argnames)
             ]
             new_kwargs = {
