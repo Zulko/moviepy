@@ -182,14 +182,12 @@ class FFMPEG_VideoWriter:
                 )
 
             elif "bitrate not specified" in ffmpeg_error:
-
                 error += (
                     "\n\nThe video export failed, possibly because the bitrate "
                     "specified was too high or too low for the video codec."
                 )
 
             elif "Invalid encoder type" in ffmpeg_error:
-
                 error += (
                     "\n\nThe video export failed because the codec "
                     "or file extension you provided is not suitable for video"
@@ -240,7 +238,7 @@ def ffmpeg_write_video(
         logfile = open(filename + ".log", "w+")
     else:
         logfile = None
-    logger(message="Moviepy - Writing video %s\n" % filename)
+    logger(message="MoviePy - Writing video %s\n" % filename)
     if not pixel_format:
         pixel_format = "rgba" if with_mask else "rgb24"
     with FFMPEG_VideoWriter(
@@ -269,7 +267,7 @@ def ffmpeg_write_video(
 
     if write_logfile:
         logfile.close()
-    logger(message="Moviepy - Done !")
+    logger(message="MoviePy - Done !")
 
 
 def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):

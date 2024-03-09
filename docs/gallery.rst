@@ -6,7 +6,7 @@ Gallery
 
 Here are a few projects using MoviePy. The gallery will fill up as more people start using MoviePy (which is currently one year old). If you have a nice project using MoviePy let us know!
 
-Videos edited with Moviepy
+Videos edited with MoviePy
 ---------------------------
 
 

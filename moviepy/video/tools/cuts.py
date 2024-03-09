@@ -254,7 +254,6 @@ class FramesMatches(list):
         matching_frames = []  # the final result.
 
         for t, frame in clip.iter_frames(with_times=True, logger=logger):
-
             flat_frame = 1.0 * frame.flatten()
             F_norm_sq = dot_product(flat_frame, flat_frame)
             F_norm = np.sqrt(F_norm_sq)
@@ -367,7 +366,6 @@ class FramesMatches(list):
         result = []
         min_start = 0
         for start, ends_distances in starts_ends:
-
             if start < min_start:
                 continue
 

@@ -1,10 +1,7 @@
-from moviepy.decorators import apply_to_mask, requires_duration
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.fx.time_mirror import time_mirror
+from moviepy.decorators import requires_duration
 
 
 @requires_duration
-@apply_to_mask
 def time_symmetrize(clip):
     """
     Returns a clip that plays the current clip once forwards and
@@ -13,4 +10,4 @@ def time_symmetrize(clip):
     This effect is automatically applied to the clip's mask and audio
     if they exist.
     """
-    return concatenate_videoclips([clip, clip.fx(time_mirror)])
+    return clip + clip[::-1]
