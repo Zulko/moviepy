@@ -1,4 +1,5 @@
 """Implements all the functions to read a video or a picture using ffmpeg."""
+
 import os
 import re
 import subprocess as sp
@@ -80,7 +81,28 @@ class FFMPEG_VideoReader:
         Sets self.pos to the appropriate value (1 if start_time == 0 because
         it pre-reads the first frame).
         """
-        self.close(delete_lastread=False)  # if any
+        self.close(delete_last_read=False)  # if any
+
+        # self.pos represents the (0-indexed) index of the frame that is next in line
+        # to be read by self.read_frame().
+        # Eg when self.pos is 1, the 2nd frame will be read next.
+        self.pos = self.get_frame_number(start_time)
+
+        # Getting around a difference between ffmpeg and moviepy seeking:
+        # "moviepy seek" means "get the frame displayed at time t"
+        #   Hence given a 29.97 FPS video, seeking to .01s means "get frame 0".
+        # "ffmpeg seek" means "skip all frames until you reach time t".
+        #   This time, seeking to .01s means "get frame 1". Surprise!
+        #
+        # (In 30fps, timestamps like 2.0s, 3.5s will give the same frame output
+        # under both rules, for the timestamp can be represented exactly in
+        # decimal.)
+        #
+        # So we'll subtract an epsilon from the timestamp given to ffmpeg.
+        if self.pos != 0:
+            start_time = self.pos * (1 / self.fps) - 0.00001
+        else:
+            start_time = 0.0
 
         if start_time != 0:
             offset = min(1, start_time)
@@ -123,12 +145,7 @@ class FFMPEG_VideoReader:
             }
         )
         self.proc = sp.Popen(cmd, **popen_params)
-
-        # self.pos represents the (0-indexed) index of the frame that is next in line
-        # to be read by self.read_frame().
-        # Eg when self.pos is 1, the 2nd frame will be read next.
-        self.pos = self.get_frame_number(start_time)
-        self.lastread = self.read_frame()
+        self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames"""
@@ -143,7 +160,7 @@ class FFMPEG_VideoReader:
         """
         Reads the next frame from the file.
         Note that upon (re)initialization, the first frame will already have been read
-        and stored in ``self.lastread``.
+        and stored in ``self.last_read``.
         """
         w, h = self.size
         nbytes = self.depth * w * h
@@ -218,7 +235,7 @@ class FFMPEG_VideoReader:
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            return self.lastread
+            return self.last_read
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
@@ -233,7 +250,14 @@ class FFMPEG_VideoReader:
         # are getting the nth frame by writing get_frame(n/fps).
         return int(self.fps * t + 0.00001)
 
-    def close(self, delete_lastread=True):
+    @property
+    def lastread(self):
+        """Support old name of the "last_read" attribute, which may be used
+        by existing libraries, such as scenedetect.
+        """
+        return self.last_read
+
+    def close(self, delete_last_read=True):
         """Closes the reader terminating the process, if is still open."""
         if self.proc:
             if self.proc.poll() is None:
@@ -242,7 +266,7 @@ class FFMPEG_VideoReader:
                 self.proc.stderr.close()
                 self.proc.wait()
             self.proc = None
-        if delete_lastread and hasattr(self, "last_read"):
+        if delete_last_read and hasattr(self, "last_read"):
             del self.last_read
 
     def __del__(self):
@@ -451,12 +475,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[
-                        f"default_{stream_type_lower}_input_number"
-                    ] = input_number
-                    self.result[
-                        f"default_{stream_type_lower}_stream_number"
-                    ] = stream_number
+                    self.result[f"default_{stream_type_lower}_input_number"] = (
+                        input_number
+                    )
+                    self.result[f"default_{stream_type_lower}_stream_number"] = (
+                        stream_number
+                    )
 
                 # exit chapter
                 if self._current_chapter:
