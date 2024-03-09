@@ -1,6 +1,7 @@
 """Implements the central object of MoviePy, the Clip, and all the methods that
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
+
 import copy as _copy
 from functools import reduce
 from numbers import Real

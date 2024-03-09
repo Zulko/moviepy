@@ -1,4 +1,5 @@
 """Video file clip tests meant to be run with pytest."""
+
 import copy
 import os
 
