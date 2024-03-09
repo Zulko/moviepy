@@ -1,6 +1,7 @@
 """Contains different functions to make end and opening credits, even though it is
 difficult to fill everyone needs in this matter.
 """
+
 from moviepy.decorators import convert_path_to_string
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.resize import resize
