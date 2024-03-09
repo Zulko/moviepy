@@ -1,4 +1,5 @@
 """Implements all the functions to read a video or a picture using ffmpeg."""
+
 import os
 import re
 import subprocess as sp
@@ -444,7 +445,8 @@ class FFmpegInfosParser:
                     "stream_number": stream_number,
                     "stream_type": stream_type_lower,
                     "language": language,
-                    "default": (stream_type_lower not in self._default_streams) and line.endswith("(default)"),
+                    "default": (stream_type_lower not in self._default_streams)
+                    and line.endswith("(default)"),
                 }
 
                 # for default streams, set their numbers globally, so it's
@@ -475,9 +477,7 @@ class FFmpegInfosParser:
 
                 # parse relevant data by stream type
                 try:
-                    stream_data = self.parse_data_by_stream_type(
-                        stream_type, line
-                    )
+                    stream_data = self.parse_data_by_stream_type(stream_type, line)
                 except NotImplementedError as exc:
                     warnings.warn(
                         f"{str(exc)}\nffmpeg output:\n\n{self.infos}", UserWarning
@@ -563,8 +563,12 @@ class FFmpegInfosParser:
 
         # set some global info based on the defaults
         for stream_type_lower, stream_data in self._default_streams.items():
-            self.result[f"default_{stream_type_lower}_input_number"] = stream_data["input_number"]
-            self.result[f"default_{stream_type_lower}_stream_number"] = stream_data["stream_number"]
+            self.result[f"default_{stream_type_lower}_input_number"] = stream_data[
+                "input_number"
+            ]
+            self.result[f"default_{stream_type_lower}_stream_number"] = stream_data[
+                "stream_number"
+            ]
 
             if stream_type_lower == "audio":
                 self.result["audio_found"] = True
