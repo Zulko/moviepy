@@ -1,6 +1,7 @@
-from moviepy import *
 from moviepy.video.tools.drawing import circle
-
+from moviepy.editor import VideoFileClip
+from moviepy.video.VideoClip import TextClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 clip = (
     VideoFileClip("../../videos/badl-0006.mov", audio=False).subclip(26, 31).add_mask()
