@@ -317,7 +317,8 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
         # replace by x*1000/1001 (very common case for the fps).
 
         def get_tbr():
-            match = re.search("( [0-9]*.| )[0-9]* tbr", line)
+            # match = re.search("( [0-9]*.| )[0-9]* tbr", line) # old
+            match = re.search("([0-9]+\.?[0-9]*)\s*k\s*tbr", line) # new
 
             # Sometimes comes as e.g. 12k. We need to replace that with 12000.
             s_tbr = line[match.start():match.end()].split(' ')[1]
