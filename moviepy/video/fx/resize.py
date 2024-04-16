@@ -34,7 +34,7 @@ except ImportError:
                 newshape = (newsize[0],newsize[1])
                 
             pilim = Image.fromarray(pic)
-            resized_pil = pilim.resize(newsize[::-1], Image.ANTIALIAS)
+            resized_pil = pilim.resize(newsize[::-1], Image.LANCZOS)
             #arr = np.fromstring(resized_pil.tostring(), dtype='uint8')
             #arr.reshape(newshape)
             return np.array(resized_pil)
