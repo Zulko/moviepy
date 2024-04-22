@@ -362,6 +362,9 @@ class VideoClip(Clip):
                 name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext,
             )
 
+        if fps is None:
+            fps = fps.self
+
         # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
         # enough_cpu = (multiprocessing.cpu_count() > 1)
         logger(message="MoviePy - Building video %s." % filename)
@@ -398,7 +401,6 @@ class VideoClip(Clip):
         logger(message="MoviePy - video ready %s" % filename)
 
     @requires_duration
-    @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(
         self, name_format, fps=None, with_mask=True, logger="bar"
