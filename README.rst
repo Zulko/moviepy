@@ -152,7 +152,7 @@ Contribute
 
 MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on GitHub_, where everyone is welcome to contribute, ask for help or simply give feedback. Please read our `Contributing Guidelines`_ for more information about how to contribute!
 
-You can also discuss the project on Reddit_ or Gitter_. These are preferred over GitHub issues for usage questions and examples.
+You can also discuss the project on Gitter_. These are preferred over GitHub issues for usage questions and examples.
 
 
 Maintainers
@@ -177,7 +177,6 @@ Maintainers
 .. _Contributing Guidelines: https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md
 
 .. Websites, Platforms
-.. _Reddit: https://www.reddit.com/r/moviepy/
 .. _PyPI: https://pypi.python.org/pypi/moviepy
 .. _GitHub: https://github.com/Zulko/moviepy
 .. _Gitter: https://gitter.im/movie-py/Lobby
