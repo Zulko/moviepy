@@ -8,7 +8,7 @@ import proglog
 
 from moviepy.config import FFMPEG_BINARY, IMAGEMAGICK_BINARY
 from moviepy.decorators import requires_duration, use_clip_fps_by_default
-from moviepy.tools import cross_platform_popen_params, subprocess_call
+from moviepy.tools import cross_platform_popen_params, dash_escape, subprocess_call
 from moviepy.video.fx.loop import loop as loop_fx
 
 
@@ -153,7 +153,7 @@ def write_gif_with_tempfiles(
             "-r",
             str(fps),
             "-i",
-            file_root + "_GIFTEMP%04d.png",
+            dash_escape(file_root) + "_GIFTEMP%04d.png",
             "-r",
             str(fps),
             filename,
@@ -328,7 +328,7 @@ def write_gif(
                 (pixel_format),
                 "-r",
                 "%.02f" % fps,
-                filename,
+                dash_escape(filename),
             ],
             **popen_params,
         )

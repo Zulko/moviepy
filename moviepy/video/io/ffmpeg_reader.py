@@ -7,7 +7,7 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import convert_to_seconds, cross_platform_popen_params
+from moviepy.tools import convert_to_seconds, cross_platform_popen_params, dash_escape
 
 
 class FFMPEG_VideoReader:
@@ -790,7 +790,7 @@ def ffmpeg_parse_infos(
       https://github.com/Zulko/moviepy/pull/1222).
     """
     # Open the file in a pipe, read output
-    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]
+    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", dash_escape(filename)]
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 

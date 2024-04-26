@@ -168,3 +168,26 @@ def find_extension(codec):
         "specify a temp_audiofile with the right extension "
         "in write_videofile."
     )
+
+
+def dash_escape(path):
+    """Makes paths that start with dash '-' intertreptable as command line arguments
+
+    Returns
+    -------
+
+    - ./path if path starts with dash '-'
+    - path otherwise
+
+    Examples
+    --------
+    >>> dash_escape('-filenamethatstartswithdash-.mp4')
+    './-filenamethatstartswithdash-.mp4'
+    >>> dash_escape('-path/that/starts/with/dash.mp4')
+    './-path/that/starts/with/dash-.mp4'
+    >>> dash_escape('file-name-.mp4')
+    'file-name-.mp4'
+    >>> dash_escape('/absolute/path/to/-file.mp4')
+    '/absolute/path/to/-file.mp4'
+    """
+    return "./" * (path[0] == "-") + path
