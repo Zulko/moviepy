@@ -184,7 +184,7 @@ def dash_escape(path):
     >>> dash_escape('-filenamethatstartswithdash-.mp4')
     './-filenamethatstartswithdash-.mp4'
     >>> dash_escape('-path/that/starts/with/dash.mp4')
-    './-path/that/starts/with/dash-.mp4'
+    './-path/that/starts/with/dash.mp4'
     >>> dash_escape('file-name-.mp4')
     'file-name-.mp4'
     >>> dash_escape('/absolute/path/to/-file.mp4')
