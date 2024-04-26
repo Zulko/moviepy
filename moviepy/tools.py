@@ -190,4 +190,4 @@ def dash_escape(path):
     >>> dash_escape('/absolute/path/to/-file.mp4')
     '/absolute/path/to/-file.mp4'
     """
-    return "./" * (path[0] == "-") + path
+    return "./" + path if path.startswith("-") else path
