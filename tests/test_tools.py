@@ -329,5 +329,19 @@ def test_decorators_argument_converters_consistency(
                 assert function_data["function_arguments"]
 
 
+@pytest.mark.parametrize(
+    "given, expected",
+    [
+        ("-filenamethatstartswithdash-.mp4", "./-filenamethatstartswithdash-.mp4"),
+        ("-path/that/starts/with/dash.mp4", "./-path/that/starts/with/dash.mp4"),
+        ("file-name-.mp4", "file-name-.mp4"),
+        ("/absolute/path/to/-file.mp4", "/absolute/path/to/-file.mp4"),
+    ],
+)
+def test_dash_escape(given, expected):
+    """Test the dash_escape function outputs correct paths as per the docstring."""
+    assert tools.dash_escape(given) == expected
+
+
 if __name__ == "__main__":
     pytest.main()
