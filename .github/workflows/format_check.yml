@@ -12,18 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     name: Black
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
       - name: Black
-        uses: psf/black@22.3.0  # already includes args "--check --diff"
+        uses: psf/black@24.4.2  # already includes args "--check --diff"
   flake8:
     runs-on: ubuntu-latest
     name: Flake8
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.9'
       - name: Install dependencies
@@ -42,9 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     name: isort
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.9'
       - name: Install dependencies
