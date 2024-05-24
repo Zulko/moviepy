@@ -17,8 +17,8 @@ jobs:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
-    - uses: actions/checkout@v3
-    - uses: s-weigand/setup-conda@v1
+    - uses: actions/checkout@v4.1.6
+    - uses: s-weigand/setup-conda@v1.2.2
       with:
         activate-conda: true
     - name: Install pythonw
@@ -56,15 +56,15 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Get ImageMagick installer from cache
         id: imagemagick-installer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.0.2
         with:
           path: |
             ImageMagick.exe
@@ -121,9 +121,9 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
