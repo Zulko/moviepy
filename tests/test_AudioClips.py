@@ -162,7 +162,7 @@ def test_concatenate_audioclip_with_audiofileclip(util, stereo_wave):
 
 
 def test_concatenate_audiofileclips(util):
-    clip1 = AudioFileClip("media/crunching.mp3").subclip(1, 4)
+    clip1 = AudioFileClip("media/crunching.mp3").with_subclip(1, 4)
 
     # Checks it works with videos as well
     clip2 = AudioFileClip("media/big_buck_bunny_432_433.webm")
