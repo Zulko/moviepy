@@ -1,6 +1,7 @@
 """Implements the central object of MoviePy, the Clip, and all the methods that
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
+
 import copy as _copy
 from functools import reduce
 from numbers import Real
@@ -635,8 +636,9 @@ class Clip:
             return self.get_frame(key)
 
     def __del__(self):
-        # WARNING: as stated in close() above, if we call close, it closes clips even
-        # if shallow copies are still in used, leading to some bugs: https://github.com/Zulko/moviepy/issues/1994
+        # WARNING: as stated in close() above, if we call close, it closes clips
+        # even if shallow copies are still in used, leading to some bugs, see:
+        # https://github.com/Zulko/moviepy/issues/1994
         # so don't call self.close() here, rather do it manually in the code.
         pass
 
