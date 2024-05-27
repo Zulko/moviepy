@@ -1,61 +1,64 @@
+# Partially based on
+# https://github.com/github/gitignore/blob/main/Python.gitignore
+
+# OS-specific
+.DS_Store
+
+# IDEs
+.idea
+.project
+.pydevproject
+.sublime-project
+.vscode
+
+# Python dev tooling
+.mr.developer.cfg
+.python-version
+
+# Cache, temp. files
+__pycache__/
+.cache/
 *.py[cod]
+*~
 
 # C extensions
 *.so
 
-# Packages
-*.egg
-*.egg-info
-*.tar.gz
-dist
-build
-eggs
-.eggs
-parts
-bin
-var
-sdist
-develop-eggs
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
 .installed.cfg
-lib
-lib64
-__pycache__
-.cache/
-.vscode
+*.egg
 
-# Sublime
-.sublime-project
+# System misc.
+bin
+*.tar.gz
 
 # Installer logs
 pip-log.txt
 
 # Unit test / coverage reports
+.tox/
 .coverage
-.tox
 nosetests.xml
+
+# Media files for testing
+tests/media/
 
 # Translations
 *.mo
 
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Temp files
-*~
-
-# Pipy codes
-.pypirc
-
-# Mac
-.DS_Store
-
-# JetBrains
-.idea
-
-# Tests
-tests/media
-
 # Documentation
 docs/build/
+
+# Publishing
+.pypirc
