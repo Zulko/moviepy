@@ -9,6 +9,7 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.compositing.concatenate import concatenate_videoclips
 from moviepy.video.compositing.transitions import crossfadein, crossfadeout
 from moviepy.video.fx.resize import resize
+from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
 
@@ -399,6 +400,15 @@ def test_issue_655():
                 pass
             next(v.subclip(*subclip).iter_frames())
     assert True
+
+
+def test_issue_2160():
+    os.chdir("media")
+    try:
+        d = ffmpeg_parse_infos("-filenamethatstartswithdash-.mp4")
+        assert d["video_found"]
+    finally:  # change back to working directory even if test fails
+        os.chdir("..")
 
 
 if __name__ == "__main__":

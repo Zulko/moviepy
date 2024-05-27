@@ -6,7 +6,7 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY
-from moviepy.tools import cross_platform_popen_params
+from moviepy.tools import cross_platform_popen_params, dash_escape
 from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
@@ -82,13 +82,13 @@ class FFMPEG_AudioReader:
                 "-ss",
                 "%.05f" % (start_time - offset),
                 "-i",
-                self.filename,
+                dash_escape(self.filename),
                 "-vn",
                 "-ss",
                 "%.05f" % offset,
             ]
         else:
-            i_arg = ["-i", self.filename, "-vn"]
+            i_arg = ["-i", dash_escape(self.filename), "-vn"]
 
         cmd = (
             [FFMPEG_BINARY]

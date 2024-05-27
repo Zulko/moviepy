@@ -4,7 +4,7 @@ import os
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
-from moviepy.tools import subprocess_call
+from moviepy.tools import dash_escape, subprocess_call
 
 
 @convert_path_to_string(("inputfile", "outputfile"))
@@ -41,7 +41,7 @@ def ffmpeg_extract_subclip(
         "-ss",
         "%0.2f" % start_time,
         "-i",
-        inputfile,
+        dash_escape(inputfile),
         "-t",
         "%0.2f" % (end_time - start_time),
         "-map",
@@ -51,7 +51,7 @@ def ffmpeg_extract_subclip(
         "-acodec",
         "copy",
         "-copyts",
-        outputfile,
+        dash_escape(outputfile),
     ]
     subprocess_call(cmd, logger=logger)
 
@@ -89,14 +89,14 @@ def ffmpeg_merge_video_audio(
         FFMPEG_BINARY,
         "-y",
         "-i",
-        audiofile,
+        dash_escape(audiofile),
         "-i",
-        videofile,
+        dash_escape(videofile),
         "-vcodec",
         video_codec,
         "-acodec",
         audio_codec,
-        outputfile,
+        dash_escape(outputfile),
     ]
 
     subprocess_call(cmd, logger=logger)
@@ -125,12 +125,12 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
         FFMPEG_BINARY,
         "-y",
         "-i",
-        inputfile,
+        dash_escape(inputfile),
         "-ab",
         "%dk" % bitrate,
         "-ar",
         "%d" % fps,
-        outputfile,
+        dash_escape(outputfile),
     ]
     subprocess_call(cmd, logger=logger)
 
@@ -154,10 +154,10 @@ def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
     cmd = [
         FFMPEG_BINARY,
         "-i",
-        inputfile,
+        dash_escape(inputfile),
         "-vf",
         "scale=%d:%d" % (size[0], size[1]),
-        outputfile,
+        dash_escape(outputfile),
     ]
 
     subprocess_call(cmd, logger=logger)
@@ -194,7 +194,14 @@ def ffmpeg_stabilize_video(
         outputfile = f"{name}_stabilized{ext}"
 
     outputfile = os.path.join(output_dir, outputfile)
-    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
+    cmd = [
+        FFMPEG_BINARY,
+        "-i",
+        dash_escape(inputfile),
+        "-vf",
+        "deshake",
+        dash_escape(outputfile),
+    ]
     if overwrite_file:
         cmd.append("-y")
     subprocess_call(cmd, logger=logger)
