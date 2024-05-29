@@ -131,7 +131,13 @@ class FFMPEG_AudioReader:
         """TODO: add documentation"""
         # chunksize is not being autoconverted from float to int
         chunksize = int(round(chunksize))
-        s = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
+        L = self.nchannels * chunksize * self.nbytes
+        out, err = self.proc.communicate(timeout=15)
+        if err == b'':
+            s = out
+        else:
+            raise ValueError("Error occurred: {}".format(err[:200]))
+        # s = self.proc.stdout.read(L)
         data_type = {1: "int8", 2: "int16", 4: "int32"}[self.nbytes]
         if hasattr(np, "frombuffer"):
             result = np.frombuffer(s, dtype=data_type)

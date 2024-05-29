@@ -101,6 +101,7 @@ class VideoFileClip(VideoClip):
         # Make a reader
         if not pixel_format:
             pixel_format = "rgba" if has_mask else "rgb24"
+        self.reader = None
         self.reader = FFMPEG_VideoReader(
             filename,
             decode_file=decode_file,
