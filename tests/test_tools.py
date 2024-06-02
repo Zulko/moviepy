@@ -145,7 +145,7 @@ def test_download_webfile(static_files_server, util, url, expected_result):
 @pytest.mark.parametrize(
     ("ffmpeg_binary", "ffmpeg_binary_error"),
     (
-        pytest.param("ffmpeg-imageio", None, id="FFMPEG_BINARY=ffmpeg-imageio"),
+        pytest.param("auto-detect", None, id="FFMPEG_BINARY=auto-detect"),
         pytest.param("auto-detect", None, id="FFMPEG_BINARY=auto-detect"),
         pytest.param(
             "foobarbazimpossible",
