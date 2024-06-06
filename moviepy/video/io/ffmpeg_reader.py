@@ -387,6 +387,12 @@ class FFmpegInfosParser:
             elif not self._inside_file_metadata and line.startswith("  Metadata:"):
                 # enter "  Metadata:" group
                 self._inside_file_metadata = True
+            elif line.startswith("      displaymatrix:"):
+                pattern = r'\b\d+\.\d+\b'
+                display_matrix_matches = re.findall(pattern, line)
+                if display_matrix_matches:
+                    video_rotation = float(display_matrix_matches[0])
+                    self.result["video_rotation"] = int(video_rotation)
             elif line.startswith("  Duration:"):
                 # exit "  Metadata:" group
                 self._inside_file_metadata = False
