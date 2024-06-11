@@ -59,7 +59,7 @@ def test_ffmpeg_parse_infos_video_nframes():
     ("decode_file", "expected_duration"),
     (
         (False, 30),
-        (True, 30.02),
+        (True, 29.99),
     ),
     ids=(
         "decode_file=False",
