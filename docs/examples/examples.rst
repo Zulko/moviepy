@@ -3,7 +3,7 @@
 Example Scripts
 ===============
 
-Here are a few example scripts to get you started. Most are quite old now and will be soon replaced.
+Here are a few example scripts to get you started. Most are quite old now and will soon be replaced.
 
 
 .. toctree::
