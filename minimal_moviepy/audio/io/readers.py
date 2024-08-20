@@ -4,7 +4,7 @@ import warnings
 
 import numpy as np
 
-from minimal_moviepy.compat import DEVNULL, PY3
+from subprocess import DEVNULL
 from minimal_moviepy.config import get_setting
 from minimal_moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 

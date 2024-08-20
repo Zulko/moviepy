@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-moviepy = {editable = true, path = "."}
+minimal_moviepy = {editable = true, path = "."}
 
 [dev-packages]
 pytest = "*"

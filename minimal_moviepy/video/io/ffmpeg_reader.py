@@ -13,7 +13,7 @@ import warnings
 
 import numpy as np
 
-from minimal_moviepy.compat import DEVNULL, PY3
+from subprocess import DEVNULL
 from minimal_moviepy.config import get_setting  # ffmpeg, ffmpeg.exe, etc...
 from minimal_moviepy.tools import cvsecs
 

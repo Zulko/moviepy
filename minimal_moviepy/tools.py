@@ -2,7 +2,6 @@
 Misc. useful functions that can be used at many places in the program.
 """
 import sys
-import warnings
 
 
 def sys_write_flush(s):
@@ -19,15 +18,6 @@ def verbose_print(verbose, s):
     """ Only prints s (with sys_write_flush) if verbose is True."""
     if verbose:
         sys_write_flush(s)
-        
-
-def is_string(obj):
-    """ Returns true if s is string or string-like object,
-    compatible with Python 2 and Python 3."""
-    try:
-        return isinstance(obj, basestring)
-    except NameError:
-        return isinstance(obj, str)
 
 
 def cvsecs(time):
@@ -55,7 +45,7 @@ def cvsecs(time):
     """
     factors = (1, 60, 3600)
     
-    if is_string(time):     
+    if isinstance(time, str):     
         time = [float(f.replace(',', '.')) for f in time.split(':')]
 
     if not isinstance(time, (tuple, list)):
