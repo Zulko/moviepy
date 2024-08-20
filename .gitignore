@@ -59,3 +59,6 @@ tests/media
 
 # Documentation
 docs/build/
+
+# Virtual enviroment
+.venv/

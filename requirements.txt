@@ -1,0 +1,4 @@
+numpy==1.24.3
+decorator
+imageio
+imageio_ffmpeg

@@ -18,47 +18,47 @@ except ImportError:
             '\nInstall ez_setup ([sudo] pip install ez_setup) and try again.')
 
 
-class PyTest(TestCommand):
-    """Handle test execution from setup."""
+# class PyTest(TestCommand):
+#     """Handle test execution from setup."""
 
-    user_options = [('pytest-args=', 'a', "Arguments to pass into pytest")]
+#     user_options = [('pytest-args=', 'a', "Arguments to pass into pytest")]
 
-    def initialize_options(self):
-        """Initialize the PyTest options."""
-        TestCommand.initialize_options(self)
-        self.pytest_args = ""
+#     def initialize_options(self):
+#         """Initialize the PyTest options."""
+#         TestCommand.initialize_options(self)
+#         self.pytest_args = ""
 
-    def finalize_options(self):
-        """Finalize the PyTest options."""
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
+#     def finalize_options(self):
+#         """Finalize the PyTest options."""
+#         TestCommand.finalize_options(self)
+#         self.test_args = []
+#         self.test_suite = True
 
-    def run_tests(self):
-        """Run the PyTest testing suite."""
-        try:
-            import pytest
-        except ImportError:
-            raise ImportError('Running tests requires additional dependencies.'
-                '\nPlease run (pip install moviepy[test])')
+#     def run_tests(self):
+#         """Run the PyTest testing suite."""
+#         try:
+#             import pytest
+#         except ImportError:
+#             raise ImportError('Running tests requires additional dependencies.'
+#                 '\nPlease run (pip install moviepy[test])')
 
-        errno = pytest.main(self.pytest_args.split(" "))
-        sys.exit(errno)
+#         errno = pytest.main(self.pytest_args.split(" "))
+#         sys.exit(errno)
 
 
-cmdclass = {'test': PyTest} # Define custom commands.
+# cmdclass = {'test': PyTest} # Define custom commands.
 
-if 'build_docs' in sys.argv:
-    try:
-        from sphinx.setup_command import BuildDoc
-    except ImportError:
-        raise ImportError('Running the documenation builds has additional'
-            ' dependencies. Please run (pip install moviepy[docs])')
+# if 'build_docs' in sys.argv:
+#     try:
+#         from sphinx.setup_command import BuildDoc
+#     except ImportError:
+#         raise ImportError('Running the documenation builds has additional'
+#             ' dependencies. Please run (pip install moviepy[docs])')
 
-    cmdclass['build_docs'] = BuildDoc
+    # cmdclass['build_docs'] = BuildDoc
 
 __version__ = None # Explicitly set version to quieten static code checkers.
-exec(open('moviepy/version.py').read()) # loads __version__
+exec(open('minimal_moviepy/version.py').read()) # loads __version__
 
 # Define the requirements for specific execution needs.
 requires = [
@@ -66,49 +66,48 @@ requires = [
     "imageio>=2.5,<3.0; python_version>='3.4'",
     "imageio>=2.0,<2.5; python_version<'3.4'",
     "imageio_ffmpeg>=0.2.0; python_version>='3.4'",
-    'tqdm>=4.11.2,<5.0',
-    "numpy>=1.17.3; python_version!='2.7'",
-    "numpy; python_version>='2.7'",
-    'requests>=2.8.1,<3.0',
-    'proglog<=1.0.0'
+    # 'tqdm>=4.11.2,<5.0',
+    "numpy>=1.17.3,<=1.24.3; python_version!='2.7'",
+    # 'requests>=2.8.1,<3.0',
+    # 'proglog<=1.0.0'
     ]
 
-optional_reqs = [
-        "opencv-python>=3.0,<4.0; python_version!='2.7'",
-        "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
-        "scikit-learn; python_version>='3.4'",
-        "scipy>=0.19.0,<1.5; python_version!='3.3'",
-        "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
-        "youtube_dl"
-        ]
+# optional_reqs = [
+#         "opencv-python>=3.0,<4.0; python_version!='2.7'",
+#         "scikit-image>=0.13.0,<1.0; python_version>='3.4'",
+#         "scikit-learn; python_version>='3.4'",
+#         "scipy>=0.19.0,<1.5; python_version!='3.3'",
+#         "matplotlib>=2.0.0,<3.0; python_version>='3.4'",
+#         "youtube_dl"
+#         ]
 
-doc_reqs = [
-        "pygame>=1.9.3,<2.0; python_version<'3.8'",
-        'numpydoc>=0.6.0,<1.0',
-        'sphinx_rtd_theme>=0.1.10b0,<1.0', 
-        'Sphinx>=1.5.2,<2.0',
-    ]
+# doc_reqs = [
+#         "pygame>=1.9.3,<2.0; python_version<'3.8'",
+#         'numpydoc>=0.6.0,<1.0',
+#         'sphinx_rtd_theme>=0.1.10b0,<1.0', 
+#         'Sphinx>=1.5.2,<2.0',
+#     ]
 
-test_reqs = [
-        'coverage<5.0',
-        'coveralls>=1.1,<2.0',
-        'pytest-cov>=2.5.1,<3.0',
-        'pytest>=3.0.0,<4.0',
-        'requests>=2.8.1,<3.0'
-    ]
+# test_reqs = [
+#         'coverage<5.0',
+#         'coveralls>=1.1,<2.0',
+#         'pytest-cov>=2.5.1,<3.0',
+#         'pytest>=3.0.0,<4.0',
+#         'requests>=2.8.1,<3.0'
+#     ]
 
-extra_reqs = {
-    "optional": optional_reqs,
-    "doc": doc_reqs,
-    "test": test_reqs
-    }
+# extra_reqs = {
+#     "optional": optional_reqs,
+#     "doc": doc_reqs,
+#     "test": test_reqs
+#     }
 
 # Load the README.
 with open('README.rst', 'r', 'utf-8') as f:
     readme = f.read()
 
 setup(
-    name='moviepy',
+    name='minimal_moviepy',
     version=__version__,
     author='Zulko 2017',
     description='Video editing with Python',
@@ -135,14 +134,14 @@ setup(
     ],
     keywords='video editing audio compositing ffmpeg',
     packages=find_packages(exclude=['docs', 'tests']),
-    cmdclass=cmdclass,
+    # cmdclass=cmdclass,
     command_options={
         'build_docs': {
             'build_dir': ('setup.py', './docs/build'),
             'config_dir': ('setup.py', './docs'),
             'version': ('setup.py', __version__.rsplit('.', 2)[0]),
             'release': ('setup.py', __version__)}},
-    tests_require=test_reqs,
+    # tests_require=test_reqs,
     install_requires=requires,
-    extras_require=extra_reqs,
+    # extras_require=extra_reqs,
 )
