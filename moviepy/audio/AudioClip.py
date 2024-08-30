@@ -230,7 +230,7 @@ class AudioClip(Clip):
 
         """
         if not fps:
-            if not self.fps:
+            if hasattr(self, "fps"):
                 fps = 44100
             else:
                 fps = self.fps
