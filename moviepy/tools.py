@@ -136,7 +136,7 @@ extensions_dict = {
     "ogv": {"type": "video", "codec": ["libtheora"]},
     "webm": {"type": "video", "codec": ["libvpx"]},
     "avi": {"type": "video"},
-    "mov": {"type": "video"},
+    "mov": {"type": "video", "codec": ["libx264", "prores"]},
     "ogg": {"type": "audio", "codec": ["libvorbis"]},
     "mp3": {"type": "audio", "codec": ["libmp3lame"]},
     "wav": {"type": "audio", "codec": ["pcm_s16le", "pcm_s24le", "pcm_s32le"]},
