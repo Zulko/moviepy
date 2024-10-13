@@ -28,7 +28,7 @@ class FFMPEG_VideoReader:
     def __init__(self, filename, print_infos=False, bufsize = None,
                  pix_fmt="rgb24", check_duration=True,
                  target_resolution=None, resize_algo='bicubic',
-                 fps_source='tbr'):
+                 fps_source='tbr',decoder=None):
 
         self.filename = filename
         self.proc = None
@@ -51,6 +51,7 @@ class FFMPEG_VideoReader:
             else:
                 self.size = target_resolution
         self.resize_algo = resize_algo
+        self.decoder = decoder
 
         self.duration = infos['video_duration']
         self.ffmpeg_duration = infos['duration']
@@ -78,13 +79,20 @@ class FFMPEG_VideoReader:
 
         self.close() # if any
 
+        i_arg = ['-c:v', self.decoder] if self.decoder else []
+
         if starttime != 0 :
             offset = min(1, starttime)
-            i_arg = ['-ss', "%.06f" % (starttime - offset),
+            i_arg = (
+                i_arg 
+                + [
+                    '-ss', "%.06f" % (starttime - offset),
                      '-i', self.filename,
-                     '-ss', "%.06f" % offset]
+                     '-ss', "%.06f" % offset
+                ]
+            )
         else:
-            i_arg = [ '-i', self.filename]
+            i_arg = i_arg + [ '-i', self.filename]
 
         cmd = ([get_setting("FFMPEG_BINARY")] + i_arg +
                ['-loglevel', 'error',
