@@ -126,6 +126,7 @@ class VideoFileClip(VideoClip):
         self.rotation = self.reader.rotation
 
         self.filename = filename
+        self.decoder = decoder
 
         if has_mask:
             self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
