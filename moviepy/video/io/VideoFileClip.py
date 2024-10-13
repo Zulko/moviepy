@@ -52,6 +52,11 @@ class VideoFileClip(VideoClip):
       can be set to 'fps', which may be helpful if importing slow-motion videos
       that get messed up otherwise.
 
+    decoder:
+       The decoder used to decode the video file. FFmpeg's native VPx decoders 
+       don't decode alpha. You have to use the libvpx decoder. Set this to 
+       'libvpx-vp9' if you want to preserve transparency in .webm video.
+
 
     Attributes
     -----------
@@ -79,7 +84,7 @@ class VideoFileClip(VideoClip):
                  audio=True, audio_buffersize=200000,
                  target_resolution=None, resize_algorithm='bicubic',
                  audio_fps=44100, audio_nbytes=2, verbose=False,
-                 fps_source='tbr'):
+                 fps_source='tbr', decoder=None):
 
         VideoClip.__init__(self)
 
@@ -88,7 +93,8 @@ class VideoFileClip(VideoClip):
         self.reader = FFMPEG_VideoReader(filename, pix_fmt=pix_fmt,
                                          target_resolution=target_resolution,
                                          resize_algo=resize_algorithm,
-                                         fps_source=fps_source)
+                                         fps_source=fps_source,
+                                         decoder=decoder)
 
         # Make some of the reader's attributes accessible from the clip
         self.duration = self.reader.duration
@@ -99,6 +105,7 @@ class VideoFileClip(VideoClip):
         self.rotation = self.reader.rotation
 
         self.filename = self.reader.filename
+        self.decoder = self.reader.decoder
 
         if has_mask:
 
