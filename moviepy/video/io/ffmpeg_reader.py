@@ -25,6 +25,7 @@ class FFMPEG_VideoReader:
         target_resolution=None,
         resize_algo="bicubic",
         fps_source="fps",
+        decoder=None,
     ):
         self.filename = filename
         self.proc = None
@@ -54,6 +55,7 @@ class FFMPEG_VideoReader:
             else:
                 self.size = target_resolution
         self.resize_algo = resize_algo
+        self.decoder = decoder
 
         self.duration = infos["video_duration"]
         self.ffmpeg_duration = infos["duration"]
@@ -83,18 +85,23 @@ class FFMPEG_VideoReader:
         """
         self.close(delete_lastread=False)  # if any
 
+        i_arg = ['-c:v', self.decoder] if self.decoder else []
+
         if start_time != 0:
             offset = min(1, start_time)
-            i_arg = [
-                "-ss",
-                "%.06f" % (start_time - offset),
-                "-i",
-                self.filename,
-                "-ss",
-                "%.06f" % offset,
-            ]
+            i_arg = (
+                i_arg 
+                + [
+                    "-ss",
+                    "%.06f" % (start_time - offset),
+                    "-i",
+                    self.filename,
+                    "-ss",
+                    "%.06f" % offset,
+                ]
+            )
         else:
-            i_arg = ["-i", self.filename]
+            i_arg = i_arg + ["-i", self.filename]
 
         cmd = (
             [FFMPEG_BINARY]

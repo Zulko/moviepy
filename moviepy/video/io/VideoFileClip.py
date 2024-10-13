@@ -56,6 +56,11 @@ class VideoFileClip(VideoClip):
       'rgb24' will be used as the default format unless ``has_mask`` is set
       as ``True``, then 'rgba' will be used.
 
+    decoder:
+       The decoder used to decode the video file. FFmpeg's native VPx decoders 
+       don't decode alpha. You have to use the libvpx decoder. Set this to 
+       'libvpx-vp9' if you want to preserve transparency in .webm video.
+
 
     Attributes
     ----------
@@ -95,6 +100,7 @@ class VideoFileClip(VideoClip):
         audio_nbytes=2,
         fps_source="fps",
         pixel_format=None,
+        decoder=None,
     ):
         VideoClip.__init__(self)
 
@@ -108,6 +114,7 @@ class VideoFileClip(VideoClip):
             target_resolution=target_resolution,
             resize_algo=resize_algorithm,
             fps_source=fps_source,
+            decoder=decoder,
         )
 
         # Make some of the reader's attributes accessible from the clip
