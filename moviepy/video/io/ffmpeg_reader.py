@@ -1,4 +1,5 @@
 """Implements all the functions to read a video or a picture using ffmpeg."""
+
 import os
 import re
 import subprocess as sp
@@ -451,12 +452,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[
-                        f"default_{stream_type_lower}_input_number"
-                    ] = input_number
-                    self.result[
-                        f"default_{stream_type_lower}_stream_number"
-                    ] = stream_number
+                    self.result[f"default_{stream_type_lower}_input_number"] = (
+                        input_number
+                    )
+                    self.result[f"default_{stream_type_lower}_stream_number"] = (
+                        stream_number
+                    )
 
                 # exit chapter
                 if self._current_chapter:

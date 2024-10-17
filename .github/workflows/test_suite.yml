@@ -1,5 +1,7 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# This workflow installs Python dependencies, runs tests and lints
+# using a variety of Python versions.
+# For more information see:
+# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
 name: Run Test Suite
 
@@ -10,19 +12,21 @@ on:
   pull_request:
 
 jobs:
-  # Uses Python Framework build because on macos matplotlib requires it
+  # Uses Python Framework build because on macOS, Matplotlib requires it
   macos:
     runs-on: macos-latest
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
-    - uses: actions/checkout@v3
-    - uses: s-weigand/setup-conda@v1
+    - uses: actions/checkout@v4.1.6
+    - uses: s-weigand/setup-conda@v1.2.2
       with:
         activate-conda: true
+
     - name: Install pythonw
       run: conda install python.app
+
     - name: Python Version Info
       run: |
         pythonw --version
@@ -30,6 +34,7 @@ jobs:
         pythonw -m site --user-site
         echo $PYTHONPATH
         echo $PYTHONHOME
+
     - name: Install dependencies
       run: |
         brew install imagemagick
@@ -56,15 +61,15 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Get ImageMagick installer from cache
         id: imagemagick-installer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4.0.2
         with:
           path: |
             ImageMagick.exe
@@ -121,9 +126,10 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.6
+
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: ${{ matrix.python-version }}
 

@@ -1,9 +1,4 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-name: "CodeQL"
+name: Code scanning with CodeQL
 
 on:
   push:
@@ -18,7 +13,6 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -30,7 +24,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4.1.6
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
