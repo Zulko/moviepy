@@ -1,0 +1,17 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: MoviePy Fork by Anjali0909
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - family-names: Badlani
+    given-names: Anjali
+license: MIT
+repository-code: https://github.com/Anjali0909/moviepy
+version: 1.0.3  
+url: https://github.com/Anjali0909/moviepy
+date-released: 2024-11-13 
