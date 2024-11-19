@@ -1,4 +1,14 @@
-import numpy as np
+"""Audio volume multiplication effect for use with moviepy's audio clips.
+
+This module provides a function to adjust the volume of an audio clip by multiplying
+the volume by a specified factor. The volume can be multiplied for a specific time
+range or for the entire duration of the clip.
+"""
+
+try:
+    import numpy as np
+except ImportError as exc:
+    raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
 
 from moviepy.decorators import audio_video_fx, convert_parameter_to_seconds
 

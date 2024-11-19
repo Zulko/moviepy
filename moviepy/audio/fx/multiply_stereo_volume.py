@@ -1,3 +1,11 @@
+"""Audio stereo volume multiplication effect for use with moviepy's audio clips.
+
+This module provides a function to adjust the volume of the left and right channels
+independently in a stereo audio clip. The function allows for separate volume control
+for each channel, which is useful for creating effects like stereo panning or
+adjusting the balance between the left and right channels.
+"""
+
 from moviepy.decorators import audio_video_fx
 
 

@@ -7,8 +7,17 @@ from functools import reduce
 from numbers import Real
 from operator import add
 
-import numpy as np
-import proglog
+try:
+    import numpy as np
+except ImportError as exc:
+    raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
+
+try:
+    import proglog
+except ImportError as exc:
+    raise ImportError(
+        "MoviePy requires proglog. Please install it with pip install proglog"
+    ) from exc
 
 from moviepy.decorators import (
     apply_to_audio,
@@ -20,6 +29,7 @@ from moviepy.decorators import (
 )
 
 
+# pylint: disable=too-many-instance-attributes
 class Clip:
     """Base class of all clips (VideoClips and AudioClips).
 
@@ -73,14 +83,12 @@ class Clip:
         if self.memoize:
             if t == self.memoized_t:
                 return self.memoized_frame
-            else:
-                frame = self.make_frame(t)
-                self.memoized_t = t
-                self.memoized_frame = frame
-                return frame
-        else:
-            # print(t)
-            return self.make_frame(t)
+            frame = self.make_frame(t)
+            self.memoized_t = t
+            self.memoized_frame = frame
+            return frame
+        # print(t)
+        return self.make_frame(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """General processing of a clip.
@@ -376,8 +384,7 @@ class Clip:
                 result *= t <= self.end
             return result
 
-        else:
-            return (t >= self.start) and ((self.end is None) or (t < self.end))
+        return (t >= self.start) and ((self.end is None) or (t < self.end))
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
@@ -420,9 +427,9 @@ class Clip:
 
         if (self.duration is not None) and (start_time >= self.duration):
             raise ValueError(
-                "start_time (%.02f) " % start_time
-                + "should be smaller than the clip's "
-                + "duration (%.02f)." % self.duration
+                f"start_time ({start_time:.02f}) "
+                f"should be smaller than the clip's "
+                f"duration ({self.duration:.02f})."
             )
 
         new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])
@@ -433,15 +440,11 @@ class Clip:
         elif (end_time is not None) and (end_time < 0):
             if self.duration is None:
                 raise ValueError(
-                    (
-                        "Subclip with negative times (here %s)"
-                        " can only be extracted from clips with a ``duration``"
-                    )
-                    % (str((start_time, end_time)))
+                    f"Subclip with negative times (here {(start_time, end_time)})"
+                    f" can only be extracted from clips with a ``duration``"
                 )
 
-            else:
-                end_time = self.duration + end_time
+            end_time = self.duration + end_time
 
         if end_time is not None:
             new_clip.duration = end_time - start_time
@@ -480,8 +483,8 @@ class Clip:
 
         if self.duration is not None:
             return new_clip.with_duration(self.duration - (end_time - start_time))
-        else:  # pragma: no cover
-            return new_clip
+
+        return new_clip # pragma: no cover
 
     @requires_duration
     @use_clip_fps_by_default
@@ -629,11 +632,10 @@ class Clip:
                         apply_to=apply_to,
                     )
             return clip
-        elif isinstance(key, tuple):
+        if isinstance(key, tuple):
             # get a concatenation of subclips
             return reduce(add, (self[k] for k in key))
-        else:
-            return self.get_frame(key)
+        return self.get_frame(key)
 
     def __del__(self):
         # WARNING: as stated in close() above, if we call close, it closes clips

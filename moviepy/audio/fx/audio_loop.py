@@ -1,3 +1,10 @@
+"""Audio loop effect for use with moviepy's audio clips.
+
+This module provides a function to create a loop effect by repeating an audio clip
+multiple times or for a specified duration. The loop can be customized by setting
+the number of loops or specifying the duration.
+"""
+
 from moviepy.audio.AudioClip import concatenate_audioclips
 from moviepy.decorators import audio_video_fx
 

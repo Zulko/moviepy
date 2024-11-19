@@ -1,4 +1,15 @@
-import numpy as np
+"""Audio fade-out effect for use with moviepy's audio clips.
+
+This module provides a function to create a fade-out effect where audio gradually
+decreases from full volume to silence over a specified duration at the end of a clip.
+The effect can be applied to both mono and stereo audio clips, and supports time
+specifications in various formats through the convert_parameter_to_seconds decorator.
+"""
+
+try:
+    import numpy as np
+except ImportError as exc:
+    raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
 
 from moviepy.decorators import (
     audio_video_fx,
