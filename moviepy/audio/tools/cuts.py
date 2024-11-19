@@ -1,6 +1,9 @@
 """Cutting utilities working with audio."""
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError as exc:
+    raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
 
 
 def find_audio_period(clip, min_time=0.1, max_time=2, time_resolution=0.01):

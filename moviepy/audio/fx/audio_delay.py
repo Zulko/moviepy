@@ -1,4 +1,15 @@
-import numpy as np
+"""Audio delay effect for use with moviepy's audio clips.
+
+This module provides a function to create an echo/delay effect by repeating
+an audio clip multiple times with decreasing volume. The delay effect can be
+customized by adjusting the time offset between repeats, number of repeats,
+and volume decay factor.
+"""
+
+try:
+    import numpy as np
+except ImportError as exc:
+    raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.audio.fx.multiply_volume import multiply_volume

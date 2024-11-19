@@ -1,3 +1,11 @@
+"""Audio normalization effect for use with moviepy's audio clips.
+
+This module provides a function to normalize the volume of an audio clip so that
+the maximum volume is at 0db, the maximum achievable volume. The normalization
+ensures that the loudest parts of the audio are not distorted when played at
+full volume.
+"""
+
 from moviepy.audio.fx.multiply_volume import multiply_volume
 from moviepy.decorators import audio_video_fx
 
@@ -21,5 +29,4 @@ def audio_normalize(clip):
         # Nothing to normalize.
         # Avoids a divide by zero error.
         return clip.copy()
-    else:
-        return multiply_volume(clip, 1 / max_volume)
+    return multiply_volume(clip, 1 / max_volume)
