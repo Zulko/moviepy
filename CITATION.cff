@@ -1,0 +1,20 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: MoviePy
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Hasnain
+    family-names: Mohi Ud Din
+repository-code: 'https://github.com/hasnainmohiuddin/moviepy'
+abstract: >-
+  MoviePy is a Python library for video editing: cutting,
+  concatenations, title insertions, video compositing, video
+  processing, and creation of custom effects.
+license: MIT
+version: 1.0.0
+date-released: '2024-11-13'

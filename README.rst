@@ -43,6 +43,18 @@ In this example we open a video file, select the subclip between t=50s and t=60s
     
 *Note:* This example uses the new 2.x API, for MoviePy 1.0.3, currently on PyPI, see `this snippet <https://gist.github.com/Zulko/57e6e50debef1834fb9b60700b1b9f99>`_.
 
+Features
+--------
+
+- Video editing capabilities: cutting, concatenation, title insertions, and more.
+- Support for various audio and video formats, including GIF.
+- Cross-platform compatibility (Windows, Mac, Linux).
+- Easy-to-use API for video processing and custom effects.
+
+Changelog
+---------
+
+For a detailed list of changes, please refer to the [CHANGELOG.md](CHANGELOG.md) file.
 
 Maintainers wanted!
 -------------------
@@ -72,7 +84,6 @@ If you have neither ``setuptools`` nor ``ez_setup`` installed, the command above
 
     $ (sudo) pip install setuptools
 
-
 Optional but useful dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -97,7 +108,6 @@ For advanced image processing, you will need one or several of the following pac
 - `Matplotlib`_
 
 For instance, using the method ``clip.resize`` requires that at least one of Scipy, PIL, Pillow or OpenCV is installed.
-
 
 Documentation
 -------------
@@ -147,16 +157,15 @@ Then at the beginning of your notebook enter:
 
 Have a look at the Proglog project page for more options.
 
-Contribute
-----------
+Contributing Guidelines
+-----------------------
 
 MoviePy is open-source software originally written by Zulko_ and released under the MIT licence. The project is hosted on GitHub_, where everyone is welcome to contribute, ask for help or simply give feedback. Please read our `Contributing Guidelines`_ for more information about how to contribute!
 
 You can also discuss the project on Reddit_ or Gitter_. These are preferred over GitHub issues for usage questions and examples.
 
-
-Maintainers
------------
+Acknowledgments
+---------------
 
 - Zulko_ (owner)
 - `@tburrows13`_
@@ -168,6 +177,10 @@ Maintainers
 - `@ryanfox`_
 - `@mondeja`_
 
+License
+-------
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 .. MoviePy links
 .. _gallery: https://zulko.github.io/moviepy/gallery.html
