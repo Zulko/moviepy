@@ -8,7 +8,9 @@ Each function can be applied either by importing it directly from this module
 or by using the fx method on an audio clip instance.
 """
 
-# import every video fx function
+from typing import Tuple  # Add type imports first
+
+# Audio effects imports sorted alphabetically
 from moviepy.audio.fx.audio_delay import audio_delay
 from moviepy.audio.fx.audio_fadein import audio_fadein
 from moviepy.audio.fx.audio_fadeout import audio_fadeout
@@ -18,7 +20,7 @@ from moviepy.audio.fx.multiply_stereo_volume import multiply_stereo_volume
 from moviepy.audio.fx.multiply_volume import multiply_volume
 
 
-__all__ = (
+__all__: Tuple[str, ...] = (
     "audio_delay",
     "audio_fadein",
     "audio_fadeout",

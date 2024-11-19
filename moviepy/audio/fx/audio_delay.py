@@ -53,13 +53,13 @@ def audio_delay(clip, offset=0.2, n_repeats=8, decay=1):
     ... clip = AudioClip(make_frame=make_frame, duration=0.1, fps=44100)
     ... clip = audio_delay(clip, offset=.2, n_repeats=11, decay=0)
     """
-    decayments = np.linspace(1, max(0, decay), n_repeats + 1)
+    decay_factors = np.linspace(1, max(0, decay), n_repeats + 1)
     return CompositeAudioClip(
         [
             clip.copy(),
             *[
                 multiply_volume(
-                    clip.with_start((rep + 1) * offset), decayments[rep + 1]
+                    clip.with_start((rep + 1) * offset), decay_factors[rep + 1]
                 )
                 for rep in range(n_repeats)
             ],

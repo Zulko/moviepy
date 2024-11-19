@@ -6,19 +6,41 @@ be applied to both mono and stereo audio clips, and supports time specifications
 in various formats through the convert_parameter_to_seconds decorator.
 """
 
+from typing import Callable, Union
+
 try:
     import numpy as np
+    from numpy.typing import NDArray
 except ImportError as exc:
     raise ImportError("MoviePy requires numpy. Please install it with pip install numpy") from exc
 
 from moviepy.decorators import audio_video_fx, convert_parameter_to_seconds
 
 
-def _mono_factor_getter():
+def _create_mono_fade_factor() -> Callable[[float, float], float]:
+    """Create a fade factor function for mono audio.
+    
+    Returns
+    -------
+    Callable[[float, float], float]
+        A function that takes time and duration and returns a fade factor.
+    """
     return lambda t, duration: np.minimum(t / duration, 1)
 
 
-def _stereo_factor_getter(nchannels):
+def _create_stereo_fade_factor(nchannels: int) -> Callable[[float, float], NDArray]:
+    """Create a fade factor function for stereo/multi-channel audio.
+    
+    Parameters
+    ----------
+    nchannels : int
+        Number of audio channels.
+
+    Returns
+    -------
+    Callable[[float, float], NDArray]
+        A function that takes time and duration and returns an array of fade factors.
+    """
     def getter(t, duration):
         factor = np.minimum(t / duration, 1)
         return np.array([factor for _ in range(nchannels)]).T
@@ -45,9 +67,9 @@ def audio_fadein(clip, duration):
     >>> clip.fx(audio_fadein, "00:00:06")
     """
     get_factor = (
-        _mono_factor_getter()
+        _create_mono_fade_factor()
         if clip.nchannels == 1
-        else _stereo_factor_getter(clip.nchannels)
+        else _create_mono_fade_factor(clip.nchannels)
     )
 
     return clip.transform(
