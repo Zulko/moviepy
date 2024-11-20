@@ -6,9 +6,14 @@ import copy as _copy
 from functools import reduce
 from numbers import Real
 from operator import add
+from typing import TYPE_CHECKING, List
 
 import numpy as np
 import proglog
+
+
+if TYPE_CHECKING:
+    from moviepy.Effect import Effect
 
 from moviepy.decorators import (
     apply_to_audio,
@@ -79,7 +84,6 @@ class Clip:
                 self.memoized_frame = frame
                 return frame
         else:
-            # print(t)
             return self.make_frame(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
@@ -145,8 +149,8 @@ class Clip:
     def time_transform(self, time_func, apply_to=None, keep_duration=False):
         """
         Returns a Clip instance playing the content of the current clip
-        but with a modified timeline, time ``t`` being replaced by another
-        time `time_func(t)`.
+        but with a modified timeline, time ``t`` being replaced by the return
+        of `time_func(t)`.
 
         Parameters
         ----------
@@ -182,24 +186,23 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def fx(self, func, *args, **kwargs):
-        """Returns the result of ``func(self, *args, **kwargs)``, for instance
+    def with_effects(self, effects: List["Effect"]):
+        """Return a copy of the current clip with the effects applied
 
-        >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
+        >>> new_clip = clip.with_effects([vfx.Resize(0.2, method="bilinear")])
 
-        is equivalent to
+        You can also pass multiple effect as a list
 
-        >>> new_clip = resize(clip, 0.2, method="bilinear")
-
-        The motivation of fx is to keep the name of the effect near its
-        parameters when the effects are chained:
-
-        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
-        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
-        >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
+        >>> clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
-        return func(self, *args, **kwargs)
+        new_clip = self.copy()
+        for effect in effects:
+            # We always copy effect before using it, see Effect.copy
+            # to see why we need to
+            effect_copy = effect.copy()
+            new_clip = effect_copy.apply(new_clip)
+
+        return new_clip
 
     @apply_to_mask
     @apply_to_audio
@@ -319,9 +322,9 @@ class Clip:
           fps is halved in this mode, the duration will be doubled.
         """
         if change_duration:
-            from moviepy.video.fx.multiply_speed import multiply_speed
+            from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
-            newclip = multiply_speed(self, fps / self.fps)
+            newclip = self.with_effects([MultiplySpeed(fps / self.fps)])
         else:
             newclip = self.copy()
 
@@ -352,37 +355,10 @@ class Clip:
         """
         self.memoize = memoize
 
-    @convert_parameter_to_seconds(["t"])
-    def is_playing(self, t):
-        """If ``t`` is a time, returns true if t is between the start and the end
-        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
-        array, returns False if none of the ``t`` is in the clip, else returns a
-        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
-        """
-        if isinstance(t, np.ndarray):
-            # is the whole list of t outside the clip ?
-            tmin, tmax = t.min(), t.max()
-
-            if (self.end is not None) and (tmin >= self.end):
-                return False
-
-            if tmax < self.start:
-                return False
-
-            # If we arrive here, a part of t falls in the clip
-            result = 1 * (t >= self.start)
-            if self.end is not None:
-                result *= t <= self.end
-            return result
-
-        else:
-            return (t >= self.start) and ((self.end is None) or (t < self.end))
-
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
-    def subclip(self, start_time=0, end_time=None):
+    def with_subclip(self, start_time=0, end_time=None):
         """Returns a clip playing the content of the current clip between times
         ``start_time`` and ``end_time``, which can be expressed in seconds
         (15.35), in (min, sec), in (hour, min, sec), or as a string:
@@ -408,7 +384,7 @@ class Clip:
           For instance:
 
           >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.subclip(0, -2)
+          >>> new_clip = clip.with_subclip(0, -2)
 
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
@@ -450,7 +426,7 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def cutout(self, start_time, end_time):
+    def with_cutout(self, start_time, end_time):
         """
         Returns a clip playing the content of the current clip but
         skips the extract between ``start_time`` and ``end_time``, which can be
@@ -482,6 +458,26 @@ class Clip:
             return new_clip.with_duration(self.duration - (end_time - start_time))
         else:  # pragma: no cover
             return new_clip
+
+    def with_multiply_speed(self, factor: float = None, final_duration: float = None):
+        """Returns a clip playing the current clip but at a speed multiplied
+        by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.
+        """
+        from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+
+        return self.with_effects(
+            [MultiplySpeed(factor=factor, final_duration=final_duration)]
+        )
+
+    def with_multiply_volume(self, factor: float, start_time=None, end_time=None):
+        """Returns a new clip with audio volume multiplied by the value `factor`.
+        For info on the parameters, please see ``afx.MultiplyVolume``
+        """
+        from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
+
+        return self.with_effects(
+            [MultiplyVolume(factor=factor, start_time=start_time, end_time=end_time)]
+        )
 
     @requires_duration
     @use_clip_fps_by_default
@@ -539,6 +535,33 @@ class Clip:
             else:
                 yield frame
 
+    @convert_parameter_to_seconds(["t"])
+    def is_playing(self, t):
+        """If ``t`` is a time, returns true if t is between the start and the end
+        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
+        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
+        array, returns False if none of the ``t`` is in the clip, else returns a
+        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
+        """
+        if isinstance(t, np.ndarray):
+            # is the whole list of t outside the clip ?
+            tmin, tmax = t.min(), t.max()
+
+            if (self.end is not None) and (tmin >= self.end):
+                return False
+
+            if tmax < self.start:
+                return False
+
+            # If we arrive here, a part of t falls in the clip
+            result = 1 * (t >= self.start)
+            if self.end is not None:
+                result *= t <= self.end
+            return result
+
+        else:
+            return (t >= self.start) and ((self.end is None) or (t < self.end))
+
     def close(self):
         """Release any resources that are in use."""
         #    Implementation note for subclasses:
@@ -585,7 +608,7 @@ class Clip:
 
         Simple slicing is implemented via `subclip`.
         So, ``clip[t_start:t_end]`` is equivalent to
-        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not
+        ``clip.with_subclip(t_start, t_end)``. If ``t_start`` is not
         given, default to ``0``, if ``t_end`` is not given,
         default to ``self.duration``.
 
@@ -610,7 +633,7 @@ class Clip:
         if isinstance(key, slice):
             # support for [start:end:speed] slicing. If speed is negative
             # a time mirror is applied.
-            clip = self.subclip(key.start or 0, key.stop or self.duration)
+            clip = self.with_subclip(key.start or 0, key.stop or self.duration)
 
             if key.step:
                 # change speed of the subclip
@@ -651,6 +674,6 @@ class Clip:
         if not isinstance(n, Real):
             return NotImplemented
 
-        from moviepy.video.fx.loop import loop
+        from moviepy.video.fx.Loop import Loop
 
-        return loop(self, n)
+        return self.with_effects([Loop(n)])

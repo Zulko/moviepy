@@ -52,7 +52,7 @@ def test_copied_videofileclip_write_videofile(util):
     input_video_filepath = "media/big_buck_bunny_432_433.webm"
     output_video_filepath = os.path.join(util.TMP_DIR, "copied_videofileclip.mp4")
 
-    clip = VideoFileClip(input_video_filepath).subclip(0, 1)
+    clip = VideoFileClip(input_video_filepath).with_subclip(0, 1)
     copied_clip = clip.copy()
 
     copied_clip.write_videofile(output_video_filepath)

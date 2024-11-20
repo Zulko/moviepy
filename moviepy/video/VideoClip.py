@@ -6,17 +6,23 @@
 
 import copy as _copy
 import os
-import subprocess as sp
-import tempfile
+import threading
 from numbers import Real
+from typing import TYPE_CHECKING, List
 
 import numpy as np
 import proglog
-from imageio import imread, imsave
-from PIL import Image
+from imageio.v2 import imread as imread_v2
+from imageio.v3 import imwrite
+from PIL import Image, ImageDraw, ImageFont
+
+from moviepy.video.io.ffplay_previewer import ffplay_preview_video
+
+
+if TYPE_CHECKING:
+    from moviepy.Effect import Effect
 
 from moviepy.Clip import Clip
-from moviepy.config import IMAGEMAGICK_BINARY
 from moviepy.decorators import (
     add_mask_if_none,
     apply_to_mask,
@@ -28,18 +34,12 @@ from moviepy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
-from moviepy.tools import (
-    cross_platform_popen_params,
-    extensions_dict,
-    find_extension,
-    subprocess_call,
-)
+from moviepy.tools import extensions_dict, find_extension
+from moviepy.video.fx.Crop import Crop
+from moviepy.video.fx.Resize import Resize
+from moviepy.video.fx.Rotate import Rotate
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
-from moviepy.video.io.gif_writers import (
-    write_gif,
-    write_gif_with_image_io,
-    write_gif_with_tempfiles,
-)
+from moviepy.video.io.gif_writers import write_gif_with_imageio
 from moviepy.video.tools.drawing import blit
 
 
@@ -54,6 +54,15 @@ class VideoClip(Clip):
 
     is_mask
       `True` if the clip is going to be used as a mask.
+
+    duration
+      Duration of the clip in seconds. If None we got a clip of infinite
+      duration
+
+    has_constant_size
+      Define if clip size is constant or if it may vary with time. Default
+      to True
+
 
 
     Attributes
@@ -142,7 +151,7 @@ class VideoClip(Clip):
 
         This method is intensively used to produce new clips every time
         there is an outplace transformation of the clip (clip.resize,
-        clip.subclip, etc.)
+        clip.with_subclip, etc.)
 
         Acts like a deepcopy except for the fact that readers and other
         possible unpickleables objects are not copied.
@@ -191,7 +200,7 @@ class VideoClip(Clip):
         else:
             im = im.astype("uint8")
 
-        imsave(filename, im)
+        imwrite(filename, im)
 
     @requires_duration
     @use_clip_fps_by_default
@@ -318,7 +327,7 @@ class VideoClip(Clip):
         --------
 
         >>> from moviepy import VideoFileClip
-        >>> clip = VideoFileClip("myvideo.mp4").subclip(100,120)
+        >>> clip = VideoFileClip("myvideo.mp4").with_subclip(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()
 
@@ -461,20 +470,12 @@ class VideoClip(Clip):
         self,
         filename,
         fps=None,
-        program="imageio",
-        opt="nq",
-        fuzz=1,
         loop=0,
-        dispose=False,
-        colors=None,
-        tempfiles=False,
         logger="bar",
-        pixel_format=None,
     ):
         """Write the VideoClip to a GIF file.
 
-        Converts a VideoClip into an animated GIF using ImageMagick
-        or ffmpeg.
+        Converts a VideoClip into an animated GIF using imageio
 
         Parameters
         ----------
@@ -487,33 +488,11 @@ class VideoClip(Clip):
           isn't provided, then the function will look for the clip's
           ``fps`` attribute (VideoFileClip, for instance, have one).
 
-        program
-          Software to use for the conversion, either 'imageio' (this will use
-          the library FreeImage through ImageIO), or 'ImageMagick', or 'ffmpeg'.
-
-        opt
-          Optimalization to apply. If program='imageio', opt must be either 'wu'
-          (Wu) or 'nq' (Neuquant). If program='ImageMagick',
-          either 'optimizeplus' or 'OptimizeTransparency'.
-
-        fuzz
-          (ImageMagick only) Compresses the GIF by considering that
-          the colors that are less than fuzz% different are in fact
-          the same.
-
-        tempfiles
-          Writes every frame to a file instead of passing them in the RAM.
-          Useful on computers with little RAM. Can only be used with
-          ImageMagick' or 'ffmpeg'.
+        loop : int, optional
+          Repeat the clip using ``loop`` iterations in the resulting GIF.
 
         progress_bar
           If True, displays a progress bar
-
-        pixel_format
-          Pixel format for the output gif file. If is not specified
-          'rgb24' will be used as the default format unless ``clip.mask``
-          exist, then 'rgba' will be used. This option is only going to
-          be accepted if ``program=ffmpeg`` or when ``tempfiles=True``
 
 
         Notes
@@ -530,55 +509,129 @@ class VideoClip(Clip):
         # A little sketchy at the moment, maybe move all that in write_gif,
         #  refactor a little... we will see.
 
-        if program == "imageio":
-            write_gif_with_image_io(
-                self,
-                filename,
-                fps=fps,
-                opt=opt,
-                loop=loop,
-                colors=colors,
-                logger=logger,
+        write_gif_with_imageio(
+            self,
+            filename,
+            fps=fps,
+            loop=loop,
+            logger=logger,
+        )
+
+    # ===============================================================
+    # PREVIEW OPERATIONS
+
+    @convert_masks_to_RGB
+    @convert_parameter_to_seconds(["t"])
+    def show(self, t=0, with_mask=True):
+        """Splashes the frame of clip corresponding to time ``t``.
+
+        Parameters
+        ----------
+
+        t : float or tuple or str, optional
+        Time in seconds of the frame to display.
+
+        with_mask : bool, optional
+        ``False`` if the clip has a mask but you want to see the clip without
+        the mask.
+
+        Examples
+        --------
+
+        >>> from moviepy import *
+        >>>
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> clip.show(t=4)
+        """
+        clip = self.copy()
+
+        # Warning : Comment to fix a bug on preview for compositevideoclip
+        # it broke compositevideoclip and it does nothing on normal clip with alpha
+
+        # if with_mask and (self.mask is not None):
+        #   # Hate it, but cannot figure a better way with python awful circular
+        #   # dependency
+        #   from mpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+        #   clip = CompositeVideoClip([self.with_position((0, 0))])
+
+        frame = clip.get_frame(t)
+        pil_img = Image.fromarray(frame.astype("uint8"))
+
+        pil_img.show()
+
+    @requires_duration
+    @convert_masks_to_RGB
+    def preview(
+        self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
+    ):
+        """Displays the clip in a window, at the given frames per second.
+
+        It will avoid that the clip be played faster than normal, but it
+        cannot avoid the clip to be played slower than normal if the computations
+        are complex. In this case, try reducing the ``fps``.
+
+        Parameters
+        ----------
+
+        fps : int, optional
+        Number of frames per seconds in the displayed video. Default to ``15``.
+
+        audio : bool, optional
+        ``True`` (default) if you want the clip's audio be played during
+        the preview.
+
+        audio_fps : int, optional
+        The frames per second to use when generating the audio sound.
+
+        audio_buffersize : int, optional
+        The sized of the buffer used generating the audio sound.
+
+        audio_nbytes : int, optional
+        The number of bytes used generating the audio sound.
+
+        Examples
+        --------
+
+        >>> from moviepy import *
+        >>> clip = VideoFileClip("media/chaplin.mp4")
+        >>> clip.preview(fps=10, audio=False)
+        """
+        audio = audio and (self.audio is not None)
+        audio_flag = None
+        video_flag = None
+
+        if audio:
+            # the sound will be played in parallel. We are not
+            # parralellizing it on different CPUs because it seems that
+            # ffplay use several cpus.
+
+            # two synchro-flags to tell whether audio and video are ready
+            video_flag = threading.Event()
+            audio_flag = threading.Event()
+            # launch the thread
+            audiothread = threading.Thread(
+                target=self.audio.audiopreview,
+                args=(
+                    audio_fps,
+                    audio_buffersize,
+                    audio_nbytes,
+                    audio_flag,
+                    video_flag,
+                ),
             )
-        elif tempfiles:
-            # convert imageio opt variable to something that can be used with
-            # ImageMagick
-            opt = "optimizeplus" if opt == "nq" else "OptimizeTransparency"
-            write_gif_with_tempfiles(
-                self,
-                filename,
-                fps=fps,
-                program=program,
-                opt=opt,
-                fuzz=fuzz,
-                loop=loop,
-                dispose=dispose,
-                colors=colors,
-                logger=logger,
-                pixel_format=pixel_format,
-            )
-        else:
-            # convert imageio opt variable to something that can be used with
-            # ImageMagick
-            opt = "optimizeplus" if opt == "nq" else "OptimizeTransparency"
-            write_gif(
-                self,
-                filename,
-                fps=fps,
-                program=program,
-                opt=opt,
-                fuzz=fuzz,
-                loop=loop,
-                dispose=dispose,
-                colors=colors,
-                logger=logger,
-                pixel_format=pixel_format,
-            )
+            audiothread.start()
+
+        # passthrough to ffmpeg, passing flag for ffmpeg to set
+        ffplay_preview_video(
+            clip=self, fps=fps, audio_flag=audio_flag, video_flag=video_flag
+        )
 
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def subfx(self, fx, start_time=0, end_time=None, **kwargs):
+    def with_sub_effects(
+        self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
+    ):
         """Apply a transformation to a part of the clip.
 
         Returns a new clip in which the function ``fun`` (clip->clip)
@@ -590,17 +643,17 @@ class VideoClip(Clip):
 
         >>> # The scene between times t=3s and t=6s in ``clip`` will be
         >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.subapply(lambda c:c.multiply_speed(0.5) , 3,6)
+        >>> new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
 
         """
-        left = None if (start_time == 0) else self.subclip(0, start_time)
-        center = self.subclip(start_time, end_time).fx(fx, **kwargs)
-        right = None if (end_time is None) else self.subclip(start_time=end_time)
+        left = None if (start_time == 0) else self.with_subclip(0, start_time)
+        center = self.with_subclip(start_time, end_time).with_effects(effects, **kwargs)
+        right = None if (end_time is None) else self.with_subclip(start_time=end_time)
 
         clips = [clip for clip in [left, center, right] if clip is not None]
 
         # beurk, have to find other solution
-        from moviepy.video.compositing.concatenate import concatenate_videoclips
+        from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
         return concatenate_videoclips(clips).with_start(self.start)
 
@@ -617,7 +670,24 @@ class VideoClip(Clip):
     # C O M P O S I T I N G
 
     def fill_array(self, pre_array, shape=(0, 0)):
-        """TODO: needs documentation."""
+        """Fills an array to match the specified shape.
+
+        If the `pre_array` is smaller than the desired shape, the missing rows
+        or columns are added with ones to the bottom or right, respectively,
+        until the shape matches. If the `pre_array` is larger than the desired
+        shape, the excess rows or columns are cropped from the bottom or right,
+        respectively, until the shape matches.
+
+        The resulting array with the filled shape is returned.
+
+        Parameters
+        ----------
+        pre_array (numpy.ndarray)
+          The original array to be filled.
+
+        shape (tuple)
+          The desired shape of the resulting array.
+        """
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
         dy = shape[1] - pre_shape[1]
@@ -701,7 +771,7 @@ class VideoClip(Clip):
         pos = map(int, pos)
         return blit(im_img, picture, pos, mask=im_mask)
 
-    def add_mask(self):
+    def with_add_mask(self):
         """Add a mask VideoClip to the VideoClip.
 
         Returns a copy of the clip with a completely opaque mask
@@ -722,7 +792,7 @@ class VideoClip(Clip):
             mask = VideoClip(is_mask=True, make_frame=make_frame)
             return self.with_mask(mask.with_duration(self.duration))
 
-    def on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
+    def with_on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
         """Place the clip on a colored background.
 
         Returns a clip made of the current clip overlaid on a color
@@ -856,6 +926,82 @@ class VideoClip(Clip):
         """
         self.layer = layer
 
+    def resized(self, new_size=None, height=None, width=None, apply_to_mask=True):
+        """Returns a video clip that is a resized version of the clip.
+        For info on the parameters, please see ``vfx.Resize``
+        """
+        return self.with_effects(
+            [
+                Resize(
+                    new_size=new_size,
+                    height=height,
+                    width=width,
+                    apply_to_mask=apply_to_mask,
+                )
+            ]
+        )
+
+    def rotated(
+        self,
+        angle: float,
+        unit: str = "deg",
+        resample: str = "bicubic",
+        expand: bool = False,
+        center: tuple = None,
+        translate: tuple = None,
+        bg_color: tuple = None,
+    ):
+        """Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
+        If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
+        and ``bg_color`` are not ``None``.
+        For info on the parameters, please see ``vfx.Rotate``
+        """
+        return self.with_effects(
+            [
+                Rotate(
+                    angle=angle,
+                    unit=unit,
+                    resample=resample,
+                    expand=expand,
+                    center=center,
+                    translate=translate,
+                    bg_color=bg_color,
+                )
+            ]
+        )
+
+    def cropped(
+        self,
+        x1: int = None,
+        y1: int = None,
+        x2: int = None,
+        y2: int = None,
+        width: int = None,
+        height: int = None,
+        x_center: int = None,
+        y_center: int = None,
+    ):
+        """Returns a new clip in which just a rectangular subregion of the
+        original clip is conserved. x1,y1 indicates the top left corner and
+        x2,y2 is the lower right corner of the croped region.
+        All coordinates are in pixels. Float numbers are accepted.
+        For info on the parameters, please see ``vfx.Crop``
+        """
+        return self.with_effects(
+            [
+                Crop(
+                    x1=x1,
+                    y1=y1,
+                    x2=x2,
+                    y2=y2,
+                    width=width,
+                    height=height,
+                    x_center=x_center,
+                    y_center=y_center,
+                )
+            ]
+        )
+
     # --------------------------------------------------------------
     # CONVERSIONS TO OTHER TYPES
 
@@ -902,17 +1048,11 @@ class VideoClip(Clip):
         """
         self.audio = None
 
-    @outplace
-    def afx(self, fun, *args, **kwargs):
-        """Transform the clip's audio.
-
-        Return a new clip whose audio has been transformed by ``fun``.
-        """
-        self.audio = self.audio.fx(fun, *args, **kwargs)
-
     def __add__(self, other):
         if isinstance(other, VideoClip):
-            from moviepy.video.compositing.concatenate import concatenate_videoclips
+            from moviepy.video.compositing.CompositeVideoClip import (
+                concatenate_videoclips,
+            )
 
             method = "chain" if self.size == other.size else "compose"
             return concatenate_videoclips([self, other], method=method)
@@ -941,13 +1081,22 @@ class VideoClip(Clip):
         return super(VideoClip, self).__or__(other)
 
     def __matmul__(self, n):
+        """
+        Implement matrice multiplication (self @ other) to rotate a video
+        by other degrees
+        """
         if not isinstance(n, Real):
             return NotImplemented
-        from moviepy.video.fx.rotate import rotate
 
-        return rotate(self, n)
+        from moviepy.video.fx.Rotate import Rotate
+
+        return self.with_effects([Rotate(n)])
 
     def __and__(self, mask):
+        """
+        Implement the and (self & other) to produce a video with other
+        used as a mask for self.
+        """
         return self.with_mask(mask)
 
 
@@ -1081,7 +1230,7 @@ class ImageClip(VideoClip):
 
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
-            img = imread(img)
+            img = imread_v2(img)  # We use v2 imread cause v3 fail with gif
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
@@ -1205,10 +1354,14 @@ class TextClip(ImageClip):
     """Class for autogenerated text clips.
 
     Creates an ImageClip originating from a script-generated text image.
-    Requires ImageMagick.
 
     Parameters
     ----------
+
+    font
+      Path to the font to use. Must be an OpenType font.
+      See ``TextClip.list('font')`` for the list of fonts you can use on
+      your computer.
 
     text
       A string of the text to write. Can be replaced by argument
@@ -1217,24 +1370,35 @@ class TextClip(ImageClip):
     filename
       The name of a file in which there is the text to write,
       as a string or a path-like object.
-      Can be provided instead of argument ``txt``
+      Can be provided instead of argument ``text``
+
+    font_size
+      Font size in point. Can be auto-set if method='caption',
+      or if method='label' and size is set.
 
     size
       Size of the picture in pixels. Can be auto-set if
-      method='label', but mandatory if method='caption'.
-      the height can be None, it will then be auto-determined.
+      method='label' and font_size is set, but mandatory if method='caption'.
+      the height can be None for caption if font_size is defined,
+      it will then be auto-determined.
+
+    margin
+      Margin to be added arround the text as a tuple of two (symmetrical) or
+      four (asymmetrical). Either ``(horizontal, vertical)`` or
+      ``(left, top, right, bottom)``. By default no margin (None, None).
+      This is especially usefull for auto-compute size to give the text some
+      extra room.
 
     bg_color
-      Color of the background. See ``TextClip.list('color')``
-      for a list of acceptable names.
+      Color of the background. Default to None for no background. Can be
+      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+      hexadecimal notation.
 
     color
-      Color of the text. See ``TextClip.list('color')`` for a
-      list of acceptable names.
+      Color of the text. Default to "black". Can be
+      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+      hexadecimal notation.
 
-    font
-      Name of the font to use. See ``TextClip.list('font')`` for
-      the list of fonts you can use on your computer.
 
     stroke_color
       Color of the stroke (=contour line) of the text. If ``None``,
@@ -1247,167 +1411,374 @@ class TextClip(ImageClip):
       Either 'label' (default, the picture will be autosized so as to fit
       exactly the size) or 'caption' (the text will be drawn in a picture
       with fixed size provided with the ``size`` argument). If `caption`,
-      the text will be wrapped automagically (sometimes it is buggy, not
-      my fault, complain to the ImageMagick crew) and can be aligned or
-      centered (see parameter ``align``).
+      the text will be wrapped automagically.
 
-    kerning
-      Changes the default spacing between letters. For
-      instance ``kerning=-1`` will make the letters 1 pixel nearer from
-      ach other compared to the default spacing.
+    text_align
+      center | left | right. Text align similar to css. Default to ``left``.
 
-    align
-      center | East | West | South | North . Will only work if ``method``
-      is set to ``caption``
+    horizontal_align
+      center | left | right. Define horizontal align of text bloc in image.
+      Default to ``center``.
+
+    vertical_align
+      center | top | bottom. Define vertical align of text bloc in image.
+      Default to ``center``.
+
+    interline
+      Interline spacing. Default to ``4``.
 
     transparent
       ``True`` (default) if you want to take into account the
       transparency in the image.
+
+    duration
+        Duration of the clip
     """
 
     @convert_path_to_string("filename")
     def __init__(
         self,
+        font,
         text=None,
         filename=None,
-        size=None,
-        color="black",
-        bg_color="transparent",
         font_size=None,
-        font="Courier",
+        size=(None, None),
+        margin=(None, None),
+        color="black",
+        bg_color=None,
         stroke_color=None,
-        stroke_width=1,
+        stroke_width=0,
         method="label",
-        kerning=None,
-        align="center",
-        interline=None,
-        tempfilename=None,
-        temptxt=None,
+        text_align="left",
+        horizontal_align="center",
+        vertical_align="center",
+        interline=4,
         transparent=True,
-        remove_temp=True,
-        print_cmd=False,
+        duration=None,
     ):
-        if text is not None:
-            if temptxt is None:
-                temptxt_fd, temptxt = tempfile.mkstemp(suffix=".txt")
-                try:  # only in Python3 will this work
-                    os.write(temptxt_fd, bytes(text, "UTF8"))
-                except TypeError:  # oops, fall back to Python2
-                    os.write(temptxt_fd, text)
-                os.close(temptxt_fd)
-            text = "@" + temptxt
-        elif filename is not None:
-            # use a file instead of a text.
-            text = "@" + filename
-        else:
-            raise ValueError(
-                "You must provide either 'text' or 'filename' arguments to TextClip"
-            )
+        def break_text(
+            width, text, font, font_size, stroke_width, align, spacing
+        ) -> List[str]:
+            """Break text to never overflow a width"""
+            img = Image.new("RGB", (1, 1))
+            font_pil = ImageFont.truetype(font, font_size)
+            draw = ImageDraw.Draw(img)
 
-        if size is not None:
-            size = (
-                "" if size[0] is None else str(size[0]),
-                "" if size[1] is None else str(size[1]),
-            )
+            lines = []
+            current_line = ""
+            words = text.split(" ")
+            for word in words:
+                temp_line = current_line + " " + word if current_line else word
+                temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
+                    (0, 0),
+                    temp_line,
+                    font=font_pil,
+                    spacing=spacing,
+                    align=align,
+                    stroke_width=stroke_width,
+                )
+                temp_width = temp_right - temp_left
 
-        cmd = [
-            IMAGEMAGICK_BINARY,
-            "-background",
-            bg_color,
-            "-fill",
-            color,
-            "-font",
+                if temp_width <= width:
+                    current_line = temp_line
+                else:
+                    lines.append(current_line)
+                    current_line = word
+
+            if current_line:
+                lines.append(current_line)
+
+            return lines
+
+        def find_text_size(
+            text,
             font,
-        ]
+            font_size,
+            stroke_width,
+            align,
+            spacing,
+            max_width=None,
+            allow_break=False,
+        ) -> tuple[int, int]:
+            """Find dimensions a text will occupy, return a tuple (width, height)"""
+            img = Image.new("RGB", (1, 1))
+            font_pil = ImageFont.truetype(font, font_size)
+            draw = ImageDraw.Draw(img)
 
-        if font_size is not None:
-            cmd += ["-pointsize", "%d" % font_size]
-        if kerning is not None:
-            cmd += ["-kerning", "%0.1f" % kerning]
-        if stroke_color is not None:
-            cmd += ["-stroke", stroke_color, "-strokewidth", "%.01f" % stroke_width]
-        if size is not None:
-            cmd += ["-size", "%sx%s" % (size[0], size[1])]
-        if align is not None:
-            cmd += ["-gravity", align]
-        if interline is not None:
-            cmd += ["-interline-spacing", "%d" % interline]
+            if max_width is None or not allow_break:
+                left, top, right, bottom = draw.multiline_textbbox(
+                    (0, 0),
+                    text,
+                    font=font_pil,
+                    spacing=spacing,
+                    align=align,
+                    stroke_width=stroke_width,
+                    anchor="lm",
+                )
 
-        if tempfilename is None:
-            tempfile_fd, tempfilename = tempfile.mkstemp(suffix=".png")
-            os.close(tempfile_fd)
+                return (int(right - left), int(bottom - top))
 
-        cmd += [
-            "%s:%s" % (method, text),
-            "-type",
-            "truecolormatte",
-            "PNG32:%s" % tempfilename,
-        ]
+            lines = break_text(
+                width=max_width,
+                text=text,
+                font=font,
+                font_size=font_size,
+                stroke_width=stroke_width,
+                align=align,
+                spacing=spacing,
+            )
 
-        if print_cmd:
-            print(" ".join(cmd))
+            left, top, right, bottom = draw.multiline_textbbox(
+                (0, 0),
+                "\n".join(lines),
+                font=font_pil,
+                spacing=spacing,
+                align=align,
+                stroke_width=stroke_width,
+                anchor="lm",
+            )
+
+            return (int(right - left), int(bottom - top))
+
+        def find_optimum_font_size(
+            text,
+            font,
+            stroke_width,
+            align,
+            spacing,
+            width,
+            height=None,
+            allow_break=False,
+        ):
+            """Find the best font size to fit as optimally as possible"""
+            max_font_size = width
+            min_font_size = 1
+
+            # Try find best size using bisection
+            while min_font_size < max_font_size:
+                avg_font_size = int((max_font_size + min_font_size) // 2)
+                text_width, text_height = find_text_size(
+                    text,
+                    font,
+                    avg_font_size,
+                    stroke_width,
+                    align,
+                    spacing,
+                    max_width=width,
+                    allow_break=allow_break,
+                )
+
+                if text_width <= width and (height is None or text_height <= height):
+                    min_font_size = avg_font_size + 1
+                else:
+                    max_font_size = avg_font_size - 1
+
+            # Check if the last font size tested fits within the given width and height
+            text_width, text_height = find_text_size(
+                text,
+                font,
+                min_font_size,
+                stroke_width,
+                align,
+                spacing,
+                max_width=width,
+                allow_break=allow_break,
+            )
+            if text_width <= width and (height is None or text_height <= height):
+                return min_font_size
+            else:
+                return min_font_size - 1
 
         try:
-            subprocess_call(cmd, logger=None)
-        except (IOError, OSError) as err:
-            error = (
-                f"MoviePy Error: creation of {filename} failed because of the "
-                f"following error:\n\n{err}.\n\n."
-                "This error can be due to the fact that ImageMagick "
-                "is not installed on your computer, or (for Windows "
-                "users) that you didn't specify the path to the "
-                "ImageMagick binary. Check the documentation."
+            print("f", font)
+            _ = ImageFont.truetype(font)
+        except Exception as e:
+            raise ValueError(
+                "Invalid font {}, pillow failed to use it with error {}".format(font, e)
             )
-            raise IOError(error)
 
-        ImageClip.__init__(self, tempfilename, transparent=transparent)
+        if filename:
+            with open(filename, "r") as file:
+                text = file.read().rstrip()  # Remove newline at end
+
+        if text is None:
+            raise ValueError("No text nor filename provided")
+
+        # Compute all img and text sizes if some are missing
+        img_width, img_height = size
+
+        if method == "caption":
+            if img_width is None:
+                raise ValueError("Size is mandatory when method is caption")
+
+            if img_height is None and font_size is None:
+                raise ValueError(
+                    "Height is mandatory when method is caption and font size is None"
+                )
+
+            if font_size is None:
+                font_size = find_optimum_font_size(
+                    text=text,
+                    font=font,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    width=img_width,
+                    height=img_height,
+                    allow_break=True,
+                )
+
+            if img_height is None:
+                img_height = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    max_width=img_width,
+                    allow_break=True,
+                )[1]
+
+            # Add line breaks whenever needed
+            text = "\n".join(
+                break_text(
+                    width=img_width,
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                )
+            )
+
+        elif method == "label":
+            if font_size is None and img_width is None:
+                raise ValueError(
+                    "Font size is mandatory when method is label and size is None"
+                )
+
+            if font_size is None:
+                font_size = find_optimum_font_size(
+                    text=text,
+                    font=font,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    width=img_width,
+                    height=img_height,
+                )
+
+            if img_width is None:
+                img_width = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                )[0]
+
+            if img_height is None:
+                img_height = find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    max_width=img_width,
+                )[1]
+
+        else:
+            raise ValueError("Method must be either `caption` or `label`.")
+
+        # Compute the margin and apply it
+        if len(margin) == 2:
+            left_margin = right_margin = int(margin[0] or 0)
+            top_margin = bottom_margin = int(margin[1] or 0)
+        elif len(margin) == 4:
+            left_margin = int(margin[0] or 0)
+            top_margin = int(margin[1] or 0)
+            right_margin = int(margin[2] or 0)
+            bottom_margin = int(margin[3] or 0)
+        else:
+            raise ValueError("Margin must be a tuple of either 2 or 4 elements.")
+
+        img_width += left_margin + right_margin
+        img_height += top_margin + bottom_margin
+
+        # Trace the image
+        img_mode = "RGBA" if transparent else "RGB"
+
+        if bg_color is None and transparent:
+            bg_color = (0, 0, 0, 0)
+
+        img = Image.new(img_mode, (img_width, img_height), color=bg_color)
+        pil_font = ImageFont.truetype(font, font_size)
+        draw = ImageDraw.Draw(img)
+
+        # Dont need allow break here, because we already breaked in caption
+        text_width, text_height = find_text_size(
+            text=text,
+            font=font,
+            font_size=font_size,
+            stroke_width=stroke_width,
+            align=text_align,
+            spacing=interline,
+            max_width=img_width,
+        )
+
+        x = 0
+        if horizontal_align == "right":
+            x = img_width - text_width - left_margin - right_margin
+        elif horizontal_align == "center":
+            x = (img_width - left_margin - right_margin - text_width) / 2
+
+        x += left_margin
+
+        y = 0
+        if vertical_align == "bottom":
+            y = img_height - text_height - top_margin - bottom_margin
+        elif vertical_align == "center":
+            y = (img_height - top_margin - bottom_margin - text_height) / 2
+
+        y += top_margin
+
+        # So, pillow multiline support is horrible, in particular multiline_text
+        # and multiline_textbbox are not intuitive at all. They cannot use left
+        # top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
+        # as anchor, so we always have to use left middle instead. Else we would
+        # always have a useless margin (the diff between ascender and top) on any
+        # text. That mean our Y is actually not from 0 for top, but need to be
+        # increment by half our text height, since we have to reference from
+        # middle line.
+        y += text_height / 2
+        print(y)
+
+        print(text_align)
+        draw.multiline_text(
+            xy=(x, y),
+            text=text,
+            fill=color,
+            font=pil_font,
+            spacing=interline,
+            align=text_align,
+            stroke_width=stroke_width,
+            stroke_fill=stroke_color,
+            anchor="lm",
+        )
+
+        # We just need the image as a numpy array
+        img_numpy = np.array(img)
+
+        ImageClip.__init__(
+            self, img=img_numpy, transparent=transparent, duration=duration
+        )
         self.text = text
         self.color = color
         self.stroke_color = stroke_color
-
-        if remove_temp:
-            if tempfilename is not None and os.path.exists(tempfilename):
-                os.remove(tempfilename)
-            if temptxt is not None and os.path.exists(temptxt):
-                os.remove(temptxt)
-
-    @staticmethod
-    def list(arg):
-        """Returns a list of all valid entries for the ``font`` or ``color`` argument of
-        ``TextClip``.
-        """
-        popen_params = cross_platform_popen_params(
-            {"stdout": sp.PIPE, "stderr": sp.DEVNULL, "stdin": sp.DEVNULL}
-        )
-
-        process = sp.Popen(
-            [IMAGEMAGICK_BINARY, "-list", arg], encoding="utf-8", **popen_params
-        )
-        result = process.communicate()[0]
-        lines = result.splitlines()
-
-        if arg == "font":
-            # Slice removes first 8 characters: "  Font: "
-            return [line[8:] for line in lines if line.startswith("  Font:")]
-        elif arg == "color":
-            # Each line is of the format "aqua  srgb(0,255,255)  SVG" so split
-            # on space and take the first item to get the color name.
-            # The first 5 lines are header information, not colors, so ignore
-            return [line.split(" ")[0] for line in lines[5:]]
-        else:
-            raise Exception("MoviePy Error: Argument must equal 'font' or 'color'")
-
-    @staticmethod
-    def search(string, arg):
-        """Returns the of all valid entries which contain ``string`` for the
-        argument ``arg`` of ``TextClip``, for instance
-
-        >>> # Find all the available fonts which contain "Courier"
-        >>> print(TextClip.search('Courier', 'font'))
-        """
-        string = string.lower()
-        names_list = TextClip.list(arg)
-        return [name for name in names_list if string in name.lower()]
 
 
 class BitmapClip(VideoClip):

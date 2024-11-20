@@ -56,6 +56,9 @@ class VideoFileClip(VideoClip):
       'rgb24' will be used as the default format unless ``has_mask`` is set
       as ``True``, then 'rgba' will be used.
 
+    is_mask
+      `True` if the clip is going to be used as a mask.
+
 
     Attributes
     ----------
@@ -95,8 +98,9 @@ class VideoFileClip(VideoClip):
         audio_nbytes=2,
         fps_source="fps",
         pixel_format=None,
+        is_mask=False,
     ):
-        VideoClip.__init__(self)
+        VideoClip.__init__(self, is_mask=is_mask)
 
         # Make a reader
         if not pixel_format:

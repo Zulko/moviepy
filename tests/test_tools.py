@@ -1,7 +1,6 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 
 import contextlib
-import filecmp
 import importlib
 import io
 import os
@@ -11,7 +10,6 @@ import sys
 import pytest
 
 import moviepy.tools as tools
-from moviepy.video.io.downloader import download_webfile
 
 
 @pytest.mark.parametrize(
@@ -96,51 +94,6 @@ def test_deprecated_version_of(old_name):
     assert record[0].message.args[0] == expected_warning_message
 
 
-@pytest.mark.parametrize(
-    ("url", "expected_result"),
-    (
-        (
-            "http://localhost:8000/media/chaplin.mp4",
-            os.path.join("media", "chaplin.mp4"),
-        ),
-        ("foobarbazimpossiblecode", OSError),
-    ),
-)
-def test_download_webfile(static_files_server, util, url, expected_result):
-    filename = os.path.join(util.TMP_DIR, "moviepy_downloader_test.mp4")
-    if os.path.isfile(filename):
-        try:
-            os.remove(filename)
-        except PermissionError:
-            pass
-
-    if hasattr(expected_result, "__traceback__") or len(url) == 11:
-        if not shutil.which("youtube-dl"):
-            with pytest.raises(expected_result):
-                download_webfile(url, filename)
-            assert not os.path.isfile(filename)
-        elif len(url) != 11:
-            with pytest.raises(OSError) as exc:
-                download_webfile(url, filename)
-            assert "Error running youtube-dl." in str(exc.value)
-            assert not os.path.isfile(filename)
-        else:
-            download_webfile(url, filename)
-            assert os.path.isfile(filename)
-    else:
-        # network files
-        with static_files_server():
-            download_webfile(url, filename)
-
-        assert filecmp.cmp(filename, expected_result)
-
-    if os.path.isfile(filename):
-        try:
-            os.remove(filename)
-        except PermissionError:
-            pass
-
-
 @pytest.mark.skipif(os.name != "posix", reason="Doesn't works in Windows")
 @pytest.mark.parametrize(
     ("ffmpeg_binary", "ffmpeg_binary_error"),
@@ -154,55 +107,10 @@ def test_download_webfile(static_files_server, util, url, expected_result):
         ),
     ),
 )
-@pytest.mark.parametrize(
-    (
-        "imagemagick_binary",
-        "imagemagick_binary_error",
-        "imagemagick_binary_isfile",
-        "imagemagick_binary_isdir",
-    ),
-    (
-        pytest.param(
-            "auto-detect",
-            None,
-            False,
-            False,
-            id="IMAGEMAGICK_BINARY=auto-detect",
-        ),
-        pytest.param(
-            "foobarbazimpossible",
-            (IOError, "ImageMagick binary cannot be found"),
-            False,
-            False,
-            id="IMAGEMAGICK_BINARY=foobarbazimpossiblefile",
-        ),
-        pytest.param(
-            "foobarbazimpossiblefile",
-            (
-                IOError,
-                "The path specified for the ImageMagick binary might be wrong",
-            ),
-            True,
-            False,
-            id="IMAGEMAGICK_BINARY=foobarbazimpossible(file)",
-        ),
-        pytest.param(
-            "foobarbazimpossibledir",
-            (IOError, "is not a file"),
-            False,
-            True,
-            id="IMAGEMAGICK_BINARY=foobarbazimpossible(dir)",
-        ),
-    ),
-)
 def test_config(
     util,
     ffmpeg_binary,
     ffmpeg_binary_error,
-    imagemagick_binary,
-    imagemagick_binary_error,
-    imagemagick_binary_isfile,
-    imagemagick_binary_isdir,
 ):
     if "moviepy.config" in sys.modules:
         del sys.modules["moviepy.config"]
@@ -212,35 +120,13 @@ def test_config(
     prev_ffmpeg_binary = os.environ.get("FFMPEG_BINARY")
     os.environ["FFMPEG_BINARY"] = ffmpeg_binary
 
-    prev_imagemagick_binary = os.environ.get("IMAGEMAGICK_BINARY")
-    if imagemagick_binary_isfile:
-        imagemagick_binary = os.path.join(util.TMP_DIR, imagemagick_binary)
-        with open(imagemagick_binary, "w") as f:
-            f.write("foo")
-    elif imagemagick_binary_isdir:
-        imagemagick_binary = os.path.join(util.TMP_DIR, imagemagick_binary)
-        if os.path.isdir(imagemagick_binary):
-            shutil.rmtree(imagemagick_binary)
-        os.mkdir(imagemagick_binary)
-    os.environ["IMAGEMAGICK_BINARY"] = imagemagick_binary
-
     if ffmpeg_binary_error is not None:
         with pytest.raises(ffmpeg_binary_error[0]) as exc:
             importlib.import_module("moviepy.config")
         assert ffmpeg_binary_error[1] in str(exc.value)
-    else:
-        if imagemagick_binary_error is not None:
-            with pytest.raises(imagemagick_binary_error[0]) as exc:
-                importlib.import_module("moviepy.config")
-            assert imagemagick_binary_error[1] in str(exc.value)
-        else:
-            importlib.import_module("moviepy.config")
 
     if prev_ffmpeg_binary is not None:
         os.environ["FFMPEG_BINARY"] = prev_ffmpeg_binary
-
-    if prev_imagemagick_binary is not None:
-        os.environ["IMAGEMAGICK_BINARY"] = prev_imagemagick_binary
 
     if "moviepy.config" in sys.modules:
         del sys.modules["moviepy.config"]
@@ -267,7 +153,6 @@ def test_config_check():
     output = stdout.getvalue()
 
     assert "MoviePy: ffmpeg successfully found in" in output
-    assert "MoviePy: ImageMagick successfully found in" in output
 
     if dotenv_module:
         assert os.path.isfile(".env")

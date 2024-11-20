@@ -47,7 +47,7 @@ jobs:
       - name: Show Flake8 version
         run: flake8 --version
       - name: Run Flake8
-        run: flake8 -v --show-source moviepy setup.py scripts docs/conf.py examples tests
+        run: flake8 -v --show-source moviepy setup.py docs/conf.py examples tests
 
   isort:
     name: isort import sorter
