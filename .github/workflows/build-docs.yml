@@ -3,7 +3,7 @@ name: Build and Deploy Sphinx Documentation
 on:
   push:
     branches:
-      - main  # Change to your default branch if needed
+      - master  # Change to your default branch if needed
 
 jobs:
   build:
