@@ -28,6 +28,8 @@ class MultiplyStereoVolume(Effect):
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
+
         def stereo_volume(get_frame, t):
             frame = get_frame(t)
             if len(frame) == 1:  # mono

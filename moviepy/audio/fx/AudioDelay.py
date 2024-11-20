@@ -53,6 +53,7 @@ class AudioDelay(Effect):
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         decayments = np.linspace(1, max(0, self.decay), self.n_repeats + 1)
         return CompositeAudioClip(
             [

@@ -70,6 +70,7 @@ class MultiplyVolume(Effect):
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.start_time is None and self.end_time is None:
             return clip.transform(
                 lambda get_frame, t: self.factor * get_frame(t),

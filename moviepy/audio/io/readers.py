@@ -37,7 +37,6 @@ class FFMPEG_AudioReader:
     nbytes
       Desired number of bytes (1,2,4) in the signal that will be
       received from ffmpeg
-
     """
 
     def __init__(
@@ -122,25 +121,21 @@ class FFMPEG_AudioReader:
         self.pos = np.round(self.fps * start_time)
 
     def skip_chunk(self, chunksize):
-        """
-        This method skips a chunk of audio data by reading and discarding
-        the specified number of frames from the audio stream. The audio
-        stream is read from the `proc` stdout. After skipping the chunk, the
-        `pos` attribute is updated accordingly.
+        """Skip a chunk of audio data by reading and discarding the specified number of
+        frames from the audio stream. The audio stream is read from the `proc` stdout.
+        After skipping the chunk, the `pos` attribute is updated accordingly.
 
         Parameters
-        -----------
-
-         chunksize (int): The number of audio frames to skip.
-
+        ----------
+        chunksize (int):
+          The number of audio frames to skip.
         """
         _ = self.proc.stdout.read(self.nchannels * chunksize * self.nbytes)
         self.proc.stdout.flush()
         self.pos = self.pos + chunksize
 
     def read_chunk(self, chunksize):
-        """
-        Reads a chunk of audio data from the audio stream.
+        """Read a chunk of audio data from the audio stream.
 
         This method reads a chunk of audio data from the audio stream. The
         specified number of frames, given by `chunksize`, is read from the
@@ -150,9 +145,10 @@ class FFMPEG_AudioReader:
         portion is padded with zeros, ensuring that the returned array has
         the desired length. The `pos` attribute is updated accordingly.
 
-        Parameters:
-        ------------
-          chunksize (float): The desired number of audio frames to read.
+        Parameters
+        ----------
+        chunksize (float):
+          The desired number of audio frames to read.
 
         """
         # chunksize is not being autoconverted from float to int
@@ -196,12 +192,12 @@ class FFMPEG_AudioReader:
         """Retrieves the audio frame(s) corresponding to the given timestamp(s).
 
         Parameters
-        -----------
-
-        tt (float or numpy.ndarray): The timestamp(s) at which to retrieve the
-        audio frame(s). If `tt` is a single float value, the frame corresponding
-        to that timestamp is returned. If `tt` is a NumPy array of timestamps,
-        an array of frames corresponding to each timestamp is returned.
+        ----------
+        tt (float or numpy.ndarray):
+          The timestamp(s) at which to retrieve the audio frame(s).
+          If `tt` is a single float value, the frame corresponding to that
+          timestamp is returned. If `tt` is a NumPy array of timestamps, an
+          array of frames corresponding to each timestamp is returned.
         """
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in
@@ -263,10 +259,7 @@ class FFMPEG_AudioReader:
             return self.buffer[ind - self.buffer_startframe]
 
     def buffer_around(self, frame_number):
-        """
-        Fills the buffer with frames, centered on ``frame_number``
-        if possible
-        """
+        """Fills the buffer with frames, centered on ``frame_number``if possible"""
         # start-frame for the buffer
         new_bufferstart = max(0, frame_number - self.buffersize // 2)
 

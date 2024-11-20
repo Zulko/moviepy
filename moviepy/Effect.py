@@ -33,7 +33,7 @@ class Effect(metaclass=ABCMeta):
         """Apply the current effect on a clip
 
         Parameters
-        --------------
+        ----------
         clip
             The target clip to apply the effect on.
             (Internally, MoviePy will always pass a copy of the original clip)

@@ -29,6 +29,7 @@ class AudioLoop(Effect):
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.duration is not None:
             self.n_loops = int(self.duration / clip.duration) + 1
             return concatenate_audioclips(self.n_loops * [clip]).with_duration(

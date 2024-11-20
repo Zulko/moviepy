@@ -43,6 +43,7 @@ class AudioFadeIn(Effect):
 
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
 
