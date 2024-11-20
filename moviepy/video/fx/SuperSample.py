@@ -16,6 +16,8 @@ class SuperSample(Effect):
     n_frames: int
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
+
         def filter(get_frame, t):
             timings = np.linspace(t - self.d, t + self.d, self.n_frames)
             frame_average = np.mean(

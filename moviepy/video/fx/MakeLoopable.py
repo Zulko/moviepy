@@ -21,6 +21,7 @@ class MakeLoopable(Effect):
     overlap_duration: float
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         clip2 = clip.with_effects([CrossFadeIn(self.overlap_duration)]).with_start(
             clip.duration - self.overlap_duration
         )

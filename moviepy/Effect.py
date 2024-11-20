@@ -1,3 +1,5 @@
+"""Defines the base class for all effects in MoviePy."""
+
 import copy as _copy
 from abc import ABCMeta, abstractmethod
 
@@ -5,7 +7,7 @@ from moviepy.Clip import Clip
 
 
 class Effect(metaclass=ABCMeta):
-    """Base abastract class for all effects in MoviePy.
+    """Base abstract class for all effects in MoviePy.
     Any new effect have to extend this base class.
     """
 
@@ -22,7 +24,8 @@ class Effect(metaclass=ABCMeta):
         By using copy, we ensure we can use the same effect object multiple times while
         maintaining the same behavior/result.
 
-        In a way, copy make the effect himself beeing kind of indempotent."""
+        In a way, copy makes the effect himself being kind of idempotent.
+        """
         return _copy.copy(self)
 
     @abstractmethod

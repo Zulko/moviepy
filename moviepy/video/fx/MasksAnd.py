@@ -33,6 +33,7 @@ class MasksAnd(Effect):
     other_clip: Union[Clip, np.ndarray]
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         # to ensure that 'and' of two ImageClips will be an ImageClip
         if isinstance(self.other_clip, ImageClip):
             self.other_clip = self.other_clip.img

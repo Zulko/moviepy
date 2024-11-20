@@ -57,6 +57,7 @@ class Painting(Effect):
         return painting
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         return clip.image_transform(
             lambda im: self.to_painting(im, self.saturation, self.black)
         )

@@ -17,6 +17,7 @@ class MultiplySpeed(Effect):
     final_duration: float = None
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.final_duration:
             self.factor = 1.0 * clip.duration / self.final_duration
 

@@ -18,6 +18,7 @@ class BlackAndWhite(Effect):
     preserve_luminosity: bool = True
 
     def apply(self, clip):
+        """Apply the effect to the clip."""
         if self.RGB is None:
             self.RGB = [1, 1, 1]
 

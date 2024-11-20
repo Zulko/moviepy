@@ -38,6 +38,7 @@ class Scroll(Effect):
         self.apply_to = apply_to
 
     def apply(self, clip):
+        """Apply the effect to the clip."""
         if self.h is None:
             self.h = clip.h
 

@@ -120,7 +120,6 @@ def ffplay_preview_video(
       A thread event that video will set after first frame has been shown. If not
       provided, we simply ignore
     """
-
     with FFPLAY_VideoPreviewer(clip.size, fps, pixel_format) as previewer:
         first_frame = True
         for t, frame in clip.iter_frames(with_times=True, fps=fps, dtype="uint8"):

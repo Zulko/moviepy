@@ -13,6 +13,8 @@ class LumContrast(Effect):
     contrast_threshold: float = 127
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
+
         def image_filter(im):
             im = 1.0 * im  # float conversion
             corrected = (

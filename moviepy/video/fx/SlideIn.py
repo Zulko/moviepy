@@ -46,6 +46,7 @@ class SlideIn(Effect):
     side: str
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         w, h = clip.size
         pos_dict = {
             "left": lambda t: (min(0, w * (t / self.duration - 1)), "center"),

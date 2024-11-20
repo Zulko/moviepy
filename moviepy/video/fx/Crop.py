@@ -45,6 +45,7 @@ class Crop(Effect):
     """
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.width and self.x1 is not None:
             self.x2 = self.x1 + self.width
         elif self.width and self.x2 is not None:

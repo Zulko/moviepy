@@ -21,6 +21,7 @@ class HeadBlur(Effect):
     intensity: float = None
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.intensity is None:
             self.intensity = int(2 * self.radius / 3)
 

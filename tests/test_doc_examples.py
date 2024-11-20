@@ -1,5 +1,6 @@
 """Try to run all the documentation examples with runpy and check they dont raise
-exception"""
+exceptions.
+"""
 
 import os
 import pathlib

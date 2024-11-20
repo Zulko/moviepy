@@ -58,6 +58,7 @@ class Rotate(Effect):
     bg_color: tuple = None
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         try:
             resample = {
                 "bilinear": Image.BILINEAR,

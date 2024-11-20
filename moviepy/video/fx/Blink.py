@@ -15,6 +15,7 @@ class Blink(Effect):
     duration_off: float
 
     def apply(self, clip):
+        """Apply the effect to the clip."""
         if clip.mask is None:
             clip = clip.with_add_mask()
 

@@ -9,6 +9,7 @@ class EvenSize(Effect):
     """Crops the clip to make dimensions even."""
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         w, h = clip.size
         w_even = w % 2 == 0
         h_even = h % 2 == 0

@@ -20,6 +20,7 @@ class FadeIn(Effect):
     initial_color: list = None
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.initial_color is None:
             self.initial_color = 0 if clip.is_mask else [0, 0, 0]
 

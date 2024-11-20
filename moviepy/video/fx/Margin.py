@@ -46,6 +46,7 @@ class Margin(Effect):
     opacity: float = 1.0
 
     def add_margin(self, clip: Clip):
+        """Add margins to the clip."""
         if (self.opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
             clip = clip.with_add_mask()
 
@@ -79,6 +80,7 @@ class Margin(Effect):
             return clip.transform(filter)
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         # We apply once on clip and once on mask if we have one
         clip = self.add_margin(clip=clip)
 

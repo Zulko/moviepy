@@ -26,6 +26,7 @@ class MaskColor(Effect):
     stiffness: float = 1
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         color = np.array(self.color)
 
         def hill(x):

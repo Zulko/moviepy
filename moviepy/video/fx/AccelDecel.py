@@ -65,6 +65,7 @@ class AccelDecel(Effect):
         return old_duration * _f((t / new_duration) ** soonness)
 
     def apply(self, clip):
+        """Apply the effect to the clip."""
         if self.new_duration is None:
             self.new_duration = clip.duration
 

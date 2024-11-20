@@ -40,6 +40,7 @@ class FreezeRegion(Effect):
     mask: Clip = None
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if self.region is not None:
             x1, y1, _x2, _y2 = self.region
             freeze = (

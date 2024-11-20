@@ -523,8 +523,7 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     @convert_parameter_to_seconds(["t"])
     def show(self, t=0, with_mask=True):
-        """
-        Splashes the frame of clip corresponding to time ``t``.
+        """Splashes the frame of clip corresponding to time ``t``.
 
         Parameters
         ----------
@@ -565,9 +564,9 @@ class VideoClip(Clip):
     def preview(
         self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
     ):
-        """
-        Displays the clip in a window, at the given frames per second (of movie)
-        rate. It will avoid that the clip be played faster than normal, but it
+        """Displays the clip in a window, at the given frames per second.
+
+        It will avoid that the clip be played faster than normal, but it
         cannot avoid the clip to be played slower than normal if the computations
         are complex. In this case, try reducing the ``fps``.
 
@@ -594,11 +593,9 @@ class VideoClip(Clip):
         --------
 
         >>> from moviepy import *
-        >>>
         >>> clip = VideoFileClip("media/chaplin.mp4")
         >>> clip.preview(fps=10, audio=False)
         """
-
         audio = audio and (self.audio is not None)
         audio_flag = None
         video_flag = None
@@ -690,7 +687,6 @@ class VideoClip(Clip):
 
         shape (tuple)
           The desired shape of the resulting array.
-
         """
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
@@ -1463,9 +1459,7 @@ class TextClip(ImageClip):
         def break_text(
             width, text, font, font_size, stroke_width, align, spacing
         ) -> List[str]:
-            """
-            Break text to never overflow a width
-            """
+            """Break text to never overflow a width"""
             img = Image.new("RGB", (1, 1))
             font_pil = ImageFont.truetype(font, font_size)
             draw = ImageDraw.Draw(img)
@@ -1506,10 +1500,7 @@ class TextClip(ImageClip):
             max_width=None,
             allow_break=False,
         ) -> tuple[int, int]:
-            """
-            Find dimensions a text will occupy
-            return a tuple (width, height)
-            """
+            """Find dimensions a text will occupy, return a tuple (width, height)"""
             img = Image.new("RGB", (1, 1))
             font_pil = ImageFont.truetype(font, font_size)
             draw = ImageDraw.Draw(img)
@@ -1559,9 +1550,7 @@ class TextClip(ImageClip):
             height=None,
             allow_break=False,
         ):
-            """
-            Find the best font size to fit as optimally as possible
-            """
+            """Find the best font size to fit as optimally as possible"""
             max_font_size = width
             min_font_size = 1
 

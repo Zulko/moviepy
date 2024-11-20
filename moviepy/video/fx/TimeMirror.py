@@ -13,6 +13,7 @@ class TimeMirror(Effect):
     """
 
     def apply(self, clip: Clip) -> Clip:
+        """Apply the effect to the clip."""
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
 

@@ -50,6 +50,7 @@ class Resize(Effect):
         return np.array(resized_pil)
 
     def apply(self, clip):
+        """Apply the effect to the clip."""
         w, h = clip.size
 
         if self.new_size is not None:
