@@ -1,11 +1,11 @@
 """Misc. useful functions that can be used at many places in the program."""
 
 import os
+import platform
 import subprocess as sp
 import warnings
 
 import proglog
-import platform
 
 
 OS_NAME = os.name

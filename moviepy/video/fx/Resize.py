@@ -1,9 +1,11 @@
 import numbers
-from PIL import Image
-import numpy as np
-from moviepy.Effect import Effect
 from dataclasses import dataclass
 from typing import Union
+
+import numpy as np
+from PIL import Image
+
+from moviepy.Effect import Effect
 
 
 @dataclass

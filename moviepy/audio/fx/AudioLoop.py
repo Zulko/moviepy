@@ -1,9 +1,9 @@
-from moviepy.audio.AudioClip import concatenate_audioclips
-from moviepy.decorators import audio_video_effect
-
-from moviepy.Clip import Clip
-from moviepy.Effect import Effect
 from dataclasses import dataclass
+
+from moviepy.audio.AudioClip import concatenate_audioclips
+from moviepy.Clip import Clip
+from moviepy.decorators import audio_video_effect
+from moviepy.Effect import Effect
 
 
 @dataclass

@@ -6,28 +6,23 @@
 
 import copy as _copy
 import os
+import threading
 from numbers import Real
+from typing import TYPE_CHECKING, List, Union
 
 import numpy as np
 import proglog
-from imageio.v3 import imread, imwrite
 from imageio.v2 import imread as imread_v2
+from imageio.v3 import imread, imwrite
 from PIL import Image, ImageDraw, ImageFont
 
-import threading
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
-from typing import Union, List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
 
-from moviepy.video.fx.Resize import Resize
-from moviepy.video.fx.Rotate import Rotate
-from moviepy.video.fx.Crop import Crop
 from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
-from moviepy.video.fx.MultiplySpeed import MultiplySpeed
-
 from moviepy.Clip import Clip
 from moviepy.decorators import (
     add_mask_if_none,
@@ -40,15 +35,13 @@ from moviepy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
-
-from moviepy.tools import (
-    extensions_dict,
-    find_extension,
-)
+from moviepy.tools import extensions_dict, find_extension
+from moviepy.video.fx.Crop import Crop
+from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+from moviepy.video.fx.Resize import Resize
+from moviepy.video.fx.Rotate import Rotate
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
-from moviepy.video.io.gif_writers import (
-    write_gif_with_imageio,
-)
+from moviepy.video.io.gif_writers import write_gif_with_imageio
 from moviepy.video.tools.drawing import blit
 
 

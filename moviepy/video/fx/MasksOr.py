@@ -1,11 +1,11 @@
-import numpy as np
+from dataclasses import dataclass
+from typing import Union
 
-from moviepy.video.VideoClip import ImageClip
+import numpy as np
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
-from dataclasses import dataclass
-from typing import Union
+from moviepy.video.VideoClip import ImageClip
 
 
 @dataclass

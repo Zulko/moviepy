@@ -1,9 +1,9 @@
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from dataclasses import dataclass
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 from moviepy.video.fx.CrossFadeIn import CrossFadeIn
-from dataclasses import dataclass
 
 
 @dataclass

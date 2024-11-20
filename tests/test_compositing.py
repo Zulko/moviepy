@@ -1,8 +1,11 @@
 """Compositing tests for use with pytest."""
 
 import os
+
 import numpy as np
+
 import pytest
+
 from moviepy import *
 
 

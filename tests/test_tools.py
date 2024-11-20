@@ -10,8 +10,8 @@ import sys
 
 import pytest
 
-from moviepy import *
 import moviepy.tools as tools
+from moviepy import *
 
 
 @pytest.mark.parametrize(

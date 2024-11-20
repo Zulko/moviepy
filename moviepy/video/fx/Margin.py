@@ -1,11 +1,11 @@
+from dataclasses import dataclass
+
 import numpy as np
 
-from moviepy.decorators import apply_to_mask
-from moviepy.video.VideoClip import ImageClip
-
 from moviepy.Clip import Clip
+from moviepy.decorators import apply_to_mask
 from moviepy.Effect import Effect
-from dataclasses import dataclass
+from moviepy.video.VideoClip import ImageClip
 
 
 @dataclass

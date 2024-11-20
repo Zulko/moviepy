@@ -1,11 +1,11 @@
+from dataclasses import dataclass
+
 import numpy as np
 
-from moviepy.decorators import audio_video_effect
-from moviepy.tools import convert_to_seconds
-
 from moviepy.Clip import Clip
+from moviepy.decorators import audio_video_effect
 from moviepy.Effect import Effect
-from dataclasses import dataclass
+from moviepy.tools import convert_to_seconds
 
 
 @dataclass

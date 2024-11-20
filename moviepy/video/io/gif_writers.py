@@ -1,8 +1,9 @@
 """MoviePy video GIFs writing."""
 
-import proglog
-from moviepy.decorators import requires_duration, use_clip_fps_by_default
 import imageio.v3 as iio
+import proglog
+
+from moviepy.decorators import requires_duration, use_clip_fps_by_default
 
 
 @requires_duration

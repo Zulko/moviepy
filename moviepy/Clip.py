@@ -6,11 +6,11 @@ import copy as _copy
 from functools import reduce
 from numbers import Real
 from operator import add
+from typing import TYPE_CHECKING, List
 
 import numpy as np
 import proglog
 
-from typing import List, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from moviepy.Effect import Effect

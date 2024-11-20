@@ -1,8 +1,9 @@
 """Main video composition interface of MoviePy."""
 
+from functools import reduce
+
 import numpy as np
 from PIL import Image
-from functools import reduce
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip

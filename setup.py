@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 """MoviePy setup script."""
 
+import runpy
 import sys
 from pathlib import Path
-import runpy
+
 
 try:
     from setuptools import find_packages, setup

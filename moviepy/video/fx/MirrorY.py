@@ -1,7 +1,8 @@
+from dataclasses import dataclass
+from typing import List, Union
+
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
-from dataclasses import dataclass
-from typing import Union, List
 
 
 @dataclass

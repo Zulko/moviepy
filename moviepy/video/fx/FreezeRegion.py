@@ -1,9 +1,9 @@
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.Crop import Crop
+from dataclasses import dataclass
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
-from dataclasses import dataclass
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+from moviepy.video.fx.Crop import Crop
 
 
 @dataclass

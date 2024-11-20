@@ -7,6 +7,7 @@ import http.server
 import importlib
 import inspect
 import io
+import pathlib
 import pkgutil
 import socketserver
 import sys
@@ -16,7 +17,6 @@ import threading
 import numpy as np
 
 import pytest
-import pathlib
 
 from moviepy.video.io.VideoFileClip import VideoFileClip
 

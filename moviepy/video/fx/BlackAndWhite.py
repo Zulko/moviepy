@@ -1,6 +1,8 @@
-import numpy as np
-from moviepy.Effect import Effect
 from dataclasses import dataclass
+
+import numpy as np
+
+from moviepy.Effect import Effect
 
 
 @dataclass

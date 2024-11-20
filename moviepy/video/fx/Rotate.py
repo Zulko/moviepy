@@ -1,11 +1,12 @@
 import math
 import warnings
+from dataclasses import dataclass
 
 import numpy as np
 from PIL import Image
+
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
-from dataclasses import dataclass
 
 
 @dataclass

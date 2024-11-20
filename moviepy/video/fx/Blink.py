@@ -1,5 +1,6 @@
-from moviepy.Effect import Effect
 from dataclasses import dataclass
+
+from moviepy.Effect import Effect
 
 
 @dataclass

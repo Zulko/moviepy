@@ -1,12 +1,12 @@
+from dataclasses import dataclass
+
 import numpy as np
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
-from moviepy.decorators import audio_video_effect
-
 from moviepy.Clip import Clip
+from moviepy.decorators import audio_video_effect
 from moviepy.Effect import Effect
-from dataclasses import dataclass
 
 
 @dataclass

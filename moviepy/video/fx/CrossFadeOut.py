@@ -1,7 +1,7 @@
-from moviepy.Clip import Clip
-from moviepy.Effect import Effect
 from dataclasses import dataclass
 
+from moviepy.Clip import Clip
+from moviepy.Effect import Effect
 from moviepy.video.fx.FadeOut import FadeOut
 
 

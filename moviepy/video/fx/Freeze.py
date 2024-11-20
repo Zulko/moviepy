@@ -1,8 +1,8 @@
-from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
+from dataclasses import dataclass
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
-from dataclasses import dataclass
+from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
 
 @dataclass

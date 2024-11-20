@@ -1,13 +1,12 @@
 """Try to run all the documentation examples with runpy and check they dont raise exception"""
 
 import os
-import pytest
-import shutil
-import runpy
 import pathlib
-
+import runpy
+import shutil
 from contextlib import contextmanager
-import os
+
+import pytest
 
 from moviepy.tools import no_display_available
 

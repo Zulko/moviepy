@@ -20,8 +20,8 @@ from moviepy.video.fx.Loop import Loop
 from moviepy.video.fx.LumContrast import LumContrast
 from moviepy.video.fx.MakeLoopable import MakeLoopable
 from moviepy.video.fx.Margin import Margin
-from moviepy.video.fx.MasksAnd import MasksAnd
 from moviepy.video.fx.MaskColor import MaskColor
+from moviepy.video.fx.MasksAnd import MasksAnd
 from moviepy.video.fx.MasksOr import MasksOr
 from moviepy.video.fx.MirrorX import MirrorX
 from moviepy.video.fx.MirrorY import MirrorY

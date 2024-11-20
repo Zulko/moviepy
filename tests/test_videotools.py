@@ -11,7 +11,6 @@ import numpy as np
 import pytest
 
 from moviepy import *
-
 from moviepy.audio.tools.cuts import find_audio_period
 from moviepy.video.tools.credits import CreditsClip
 from moviepy.video.tools.cuts import (
@@ -22,6 +21,7 @@ from moviepy.video.tools.cuts import (
 )
 from moviepy.video.tools.drawing import circle, color_gradient, color_split
 from moviepy.video.tools.interpolators import Interpolator, Trajectory
+
 
 try:
     importlib.import_module("ipython.display")
