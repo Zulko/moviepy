@@ -11,6 +11,7 @@ import numpy as np
 import proglog
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
+from moviepy.audio.io.ffplay_audiopreviewer import ffplay_audiopreview
 from moviepy.Clip import Clip
 from moviepy.decorators import convert_path_to_string, requires_duration
 from moviepy.tools import extensions_dict
@@ -206,6 +207,12 @@ class AudioClip(Clip):
         nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
 
+        buffersize
+          The sound is not generated all at once, but rather made by bunches
+          of frames (chunks). ``buffersize`` is the size of such a chunk.
+          Try varying it if you meet audio problems (but you shouldn't
+          have to). Default to 2000
+
         codec
           Which audio codec should be used. If None provided, the codec is
           determined based on the extension of the filename. Choose
@@ -257,6 +264,45 @@ class AudioClip(Clip):
             write_logfile=write_logfile,
             ffmpeg_params=ffmpeg_params,
             logger=logger,
+        )
+
+    @requires_duration
+    def audiopreview(
+        self, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
+    ):
+        """
+        Preview an AudioClip using ffplay
+
+        Parameters
+        ----------
+
+        fps
+            Frame rate of the sound. 44100 gives top quality, but may cause
+            problems if your computer is not fast enough and your clip is
+            complicated. If the sound jumps during the preview, lower it
+            (11025 is still fine, 5000 is tolerable).
+
+        buffersize
+            The sound is not generated all at once, but rather made by bunches
+            of frames (chunks). ``buffersize`` is the size of such a chunk.
+            Try varying it if you meet audio problems (but you shouldn't
+            have to).
+
+        nbytes:
+            Number of bytes to encode the sound: 1 for 8bit sound, 2 for
+            16bit, 4 for 32bit sound. 2 bytes is fine.
+
+        audio_flag, video_flag:
+            Instances of class threading events that are used to synchronize
+            video and audio during ``VideoClip.preview()``.
+        """
+        ffplay_audiopreview(
+            clip=self,
+            fps=fps,
+            buffersize=buffersize,
+            nbytes=nbytes,
+            audio_flag=audio_flag,
+            video_flag=video_flag,
         )
 
     def __add__(self, other):

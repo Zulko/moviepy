@@ -37,7 +37,6 @@ jobs:
 
     - name: Install dependencies
       run: |
-        brew install imagemagick
         # needed for installing matplotlib
         brew install pkg-config
         python -m pip install --upgrade wheel setuptools coveralls
@@ -153,12 +152,6 @@ jobs:
         if: ${{ matrix.python-version != '3.7' }}
         run: |
           python -m pip install ".[test, optional, doc]"
-
-      - name: Configure ImageMagick policy
-        run: |
-          cat /etc/ImageMagick-6/policy.xml \
-          | sed 's/none/read,write/g' \
-          | sudo tee /etc/ImageMagick-6/policy.xml
 
       - name: PyTest
         run: |

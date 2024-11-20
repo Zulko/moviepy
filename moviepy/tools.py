@@ -5,6 +5,7 @@ import subprocess as sp
 import warnings
 
 import proglog
+import platform
 
 
 OS_NAME = os.name
@@ -169,3 +170,63 @@ def find_extension(codec):
         "specify a temp_audiofile with the right extension "
         "in write_videofile."
     )
+
+
+def close_all_clips(objects="globals", types=("audio", "video", "image")):
+    """Closes all clips in a context.
+
+    Follows different strategies retrieving the namespace from which the clips
+    to close will be retrieved depending on the ``objects`` argument, and filtering
+    by type of clips depending on the ``types`` argument.
+
+    Parameters
+    ----------
+
+    objects : str or dict, optional
+      - If is a string an the value is ``"globals"``, will close all the clips
+        contained by the ``globals()`` namespace.
+      - If is a dictionary, the values of the dictionary could be clips to close,
+        useful if you want to use ``locals()``.
+
+    types : Iterable, optional
+      Set of types of clips to close, being "audio", "video" or "image" the supported
+      values.
+    """
+    from moviepy.audio.io.AudioFileClip import AudioFileClip
+    from moviepy.video.io.VideoFileClip import VideoFileClip
+    from moviepy.video.VideoClip import ImageClip
+
+    CLIP_TYPES = {
+        "audio": AudioFileClip,
+        "video": VideoFileClip,
+        "image": ImageClip,
+    }
+
+    if objects == "globals":  # pragma: no cover
+        objects = globals()
+    if hasattr(objects, "values"):
+        objects = objects.values()
+    types_tuple = tuple(CLIP_TYPES[key] for key in types)
+    for obj in objects:
+        if isinstance(obj, types_tuple):
+            obj.close()
+
+
+def no_display_available() -> bool:
+    """Return True if we determine the host system has no graphical environment.
+    This is usefull to remove tests requiring display, like preview
+
+    ..info::
+        Currently this only works for Linux/BSD systems with X11 or wayland.
+        It probably works for SunOS, AIX and CYGWIN
+    """
+    system = platform.system()
+    if system in ["Linux", "FreeBSD", "NetBSD", "OpenBSD", "SunOS", "AIX"]:
+        if not "DISPLAY" in os.environ and not "WAYLAND_DISPLAY" in os.environ:
+            return True
+
+    if "CYGWIN_NT" in system:
+        if not "DISPLAY" in os.environ and not "WAYLAND_DISPLAY" in os.environ:
+            return True
+
+    return False

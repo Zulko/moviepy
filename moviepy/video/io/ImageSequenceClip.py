@@ -5,7 +5,7 @@ of image files.
 import os
 
 import numpy as np
-from imageio import imread
+from imageio.v2 import imread
 
 from moviepy.video.VideoClip import VideoClip
 
@@ -38,6 +38,11 @@ class ImageSequenceClip(VideoClip):
 
     is_mask
       Will this sequence of pictures be used as an animated mask.
+
+    load_images
+      Specify that all images should be loaded into the RAM. This is only
+      interesting if you have a small number of images that will be used
+      more than once.
     """
 
     def __init__(
@@ -103,6 +108,9 @@ class ImageSequenceClip(VideoClip):
         self.duration = sum(durations)
         self.end = self.duration
         self.sequence = sequence
+
+        if fps is None:
+            self.fps = self.duration / len(sequence)
 
         def find_image_index(t):
             return max(

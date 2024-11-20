@@ -194,9 +194,9 @@ def test_clip_subclip(duration, start_time, end_time, expected_duration):
 
     if hasattr(expected_duration, "__traceback__"):
         with pytest.raises(expected_duration):
-            clip.subclip(start_time=start_time, end_time=end_time)
+            clip.with_subclip(start_time=start_time, end_time=end_time)
     else:
-        sub_clip = clip.subclip(start_time=start_time, end_time=end_time)
+        sub_clip = clip.with_subclip(start_time=start_time, end_time=end_time)
         assert sub_clip.duration == expected_duration
 
 
@@ -232,7 +232,7 @@ def test_clip_subclip(duration, start_time, end_time, expected_duration):
 )
 def test_clip_cutout(start_time, end_time, expected_frames):
     clip = BitmapClip([["RR", "RR"], ["GG", "GG"], ["BB", "BB"]], fps=1)
-    new_clip = clip.cutout(start_time, end_time)
+    new_clip = clip.with_cutout(start_time, end_time)
 
     assert new_clip == BitmapClip(expected_frames, fps=1)
 
