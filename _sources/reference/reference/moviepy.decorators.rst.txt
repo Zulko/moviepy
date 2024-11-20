@@ -1,0 +1,36 @@
+﻿.. custom module to enable complete documentation of every function
+   see https://stackoverflow.com/a/62613202
+   
+moviepy.decorators
+==================
+
+
+.. automodule:: moviepy.decorators
+
+   
+
+   
+   
+   
+
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      convert_parameter_to_seconds
+      convert_path_to_string
+      preprocess_args
+   
+   
+
+
+   
+   
+   
+
+
+

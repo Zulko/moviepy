@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.io.ffmpeg_writer &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/io/ffmpeg_writer';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.io.ffmpeg_writer</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for moviepy.video.io.ffmpeg_writer</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">On the long term this will implement several methods to make videos</span>
+<span class="sd">out of VideoClips</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">proglog</span> <span class="kn">import</span> <span class="n">proglog</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+
+
+<div class="viewcode-block" id="FFMPEG_VideoWriter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter.html#moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_VideoWriter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for FFMPEG-based video writing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename : str</span>
+<span class="sd">      Any filename like ``&quot;video.mp4&quot;`` etc. but if you want to avoid</span>
+<span class="sd">      complications it is recommended to use the generic extension ``&quot;.avi&quot;``</span>
+<span class="sd">      for all your videos.</span>
+
+<span class="sd">    size : tuple or list</span>
+<span class="sd">      Size of the output video in pixels (width, height).</span>
+
+<span class="sd">    fps : int</span>
+<span class="sd">      Frames per second in the output video file.</span>
+
+<span class="sd">    codec : str, optional</span>
+<span class="sd">      FFMPEG codec. It seems that in terms of quality the hierarchy is</span>
+<span class="sd">      &#39;rawvideo&#39; = &#39;png&#39; &gt; &#39;mpeg4&#39; &gt; &#39;libx264&#39;</span>
+<span class="sd">      &#39;png&#39; manages the same lossless quality as &#39;rawvideo&#39; but yields</span>
+<span class="sd">      smaller files. Type ``ffmpeg -codecs`` in a terminal to get a list</span>
+<span class="sd">      of accepted codecs.</span>
+
+<span class="sd">      Note for default &#39;libx264&#39;: by default the pixel format yuv420p</span>
+<span class="sd">      is used. If the video dimensions are not both even (e.g. 720x405)</span>
+<span class="sd">      another pixel format is used, and this can cause problem in some</span>
+<span class="sd">      video readers.</span>
+
+<span class="sd">    audiofile : str, optional</span>
+<span class="sd">      The name of an audio file that will be incorporated to the video.</span>
+
+<span class="sd">    preset : str, optional</span>
+<span class="sd">      Sets the time that FFMPEG will take to compress the video. The slower,</span>
+<span class="sd">      the better the compression rate. Possibilities are: ``&quot;ultrafast&quot;``,</span>
+<span class="sd">      ``&quot;superfast&quot;``, ``&quot;veryfast&quot;``, ``&quot;faster&quot;``, ``&quot;fast&quot;``,  ``&quot;medium&quot;``</span>
+<span class="sd">      (default), ``&quot;slow&quot;``, ``&quot;slower&quot;``, ``&quot;veryslow&quot;``, ``&quot;placebo&quot;``.</span>
+
+<span class="sd">    bitrate : str, optional</span>
+<span class="sd">      Only relevant for codecs which accept a bitrate. &quot;5000k&quot; offers</span>
+<span class="sd">      nice results in general.</span>
+
+<span class="sd">    with_mask : bool, optional</span>
+<span class="sd">      Set to ``True`` if there is a mask in the video to be encoded.</span>
+
+<span class="sd">    pixel_format : str, optional</span>
+<span class="sd">      Optional: Pixel format for the output video file. If is not specified</span>
+<span class="sd">      ``&quot;rgb24&quot;`` will be used as the default format unless ``with_mask`` is</span>
+<span class="sd">      set as ``True``, then ``&quot;rgba&quot;`` will be used.</span>
+
+<span class="sd">    logfile : int, optional</span>
+<span class="sd">      File descriptor for logging output. If not defined, ``subprocess.PIPE``</span>
+<span class="sd">      will be used. Defined using another value, the log level of the ffmpeg</span>
+<span class="sd">      command will be &quot;info&quot;, otherwise &quot;error&quot;.</span>
+
+<span class="sd">    threads : int, optional</span>
+<span class="sd">      Number of threads used to write the output with ffmpeg.</span>
+
+<span class="sd">    ffmpeg_params : list, optional</span>
+<span class="sd">      Additional parameters passed to ffmpeg command.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">size</span><span class="p">,</span>
+        <span class="n">fps</span><span class="p">,</span>
+        <span class="n">codec</span><span class="o">=</span><span class="s2">&quot;libx264&quot;</span><span class="p">,</span>
+        <span class="n">audiofile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+        <span class="n">bitrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">with_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">logfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">threads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">ffmpeg_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">logfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logfile</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="n">logfile</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">with_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+
+        <span class="c1"># order is important</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
+            <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-loglevel&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;error&quot;</span> <span class="k">if</span> <span class="n">logfile</span> <span class="o">==</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span> <span class="k">else</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rawvideo&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;rawvideo&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">x</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span>
+            <span class="n">pixel_format</span><span class="p">,</span>
+            <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;</span><span class="si">%.02f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fps</span><span class="p">,</span>
+            <span class="s2">&quot;-an&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">audiofile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audiofile</span><span class="p">,</span> <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="n">codec</span><span class="p">,</span> <span class="s2">&quot;-preset&quot;</span><span class="p">,</span> <span class="n">preset</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">ffmpeg_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ffmpeg_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bitrate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">threads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-threads&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">threads</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">codec</span> <span class="o">==</span> <span class="s2">&quot;libx264&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span> <span class="s2">&quot;yuv420p&quot;</span><span class="p">])</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">filename</span><span class="p">])</span>
+
+        <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">logfile</span><span class="p">,</span> <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FFMPEG_VideoWriter.write_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter.html#moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter.write_frame">[docs]</a>    <span class="k">def</span> <span class="nf">write_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_array</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes one frame in the file.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">img_array</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+        <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ffmpeg_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">ffmpeg_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ffmpeg_error</span> <span class="o">=</span> <span class="n">ffmpeg_error</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># The error was redirected to a logfile with `write_logfile=True`,</span>
+                <span class="c1"># so read the error from that file instead</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">ffmpeg_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="n">error</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">MoviePy error: FFMPEG encountered the following error while &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;writing file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s2">:</span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">ffmpeg_error</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">&quot;Unknown encoder&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The video export failed because FFMPEG didn&#39;t find the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;specified codec for video encoding </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">codec</span><span class="si">}</span><span class="s2">. &quot;</span>
+                    <span class="s2">&quot;Please install this codec or change the codec when calling &quot;</span>
+                    <span class="s2">&quot;write_videofile.</span><span class="se">\n</span><span class="s2">For instance:</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;  &gt;&gt;&gt; clip.write_videofile(&#39;myvid.webm&#39;, codec=&#39;libvpx&#39;)&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="s2">&quot;incorrect codec parameters ?&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The video export failed, possibly because the codec &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;specified for the video </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">codec</span><span class="si">}</span><span class="s2"> is not compatible with &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;the given extension </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ext</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Please specify a valid &#39;codec&#39; argument in write_videofile.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;This would be &#39;libx264&#39; or &#39;mpeg4&#39; for mp4, &quot;</span>
+                    <span class="s2">&quot;&#39;libtheora&#39; for ogv, &#39;libvpx for webm.</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="s2">&quot;Another possible reason is that the audio codec was not &quot;</span>
+                    <span class="s2">&quot;compatible with the video codec. For instance, the video &quot;</span>
+                    <span class="s2">&quot;extensions &#39;ogv&#39; and &#39;webm&#39; only allow &#39;libvorbis&#39; (default) as a&quot;</span>
+                    <span class="s2">&quot;video codec.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="s2">&quot;bitrate not specified&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The video export failed, possibly because the bitrate &quot;</span>
+                    <span class="s2">&quot;specified was too high or too low for the video codec.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="s2">&quot;Invalid encoder type&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
+                <span class="n">error</span> <span class="o">+=</span> <span class="p">(</span>
+                    <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The video export failed because the codec &quot;</span>
+                    <span class="s2">&quot;or file extension you provided is not suitable for video&quot;</span>
+                <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FFMPEG_VideoWriter.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter.html#moviepy.video.io.ffmpeg_writer.FFMPEG_VideoWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the writer, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="c1"># Support the Context Manager protocol, to ensure that resources are cleaned up.</span>
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ffmpeg_write_video"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_writer.ffmpeg_write_video.html#moviepy.video.io.ffmpeg_writer.ffmpeg_write_video">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_write_video</span><span class="p">(</span>
+    <span class="n">clip</span><span class="p">,</span>
+    <span class="n">filename</span><span class="p">,</span>
+    <span class="n">fps</span><span class="p">,</span>
+    <span class="n">codec</span><span class="o">=</span><span class="s2">&quot;libx264&quot;</span><span class="p">,</span>
+    <span class="n">bitrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+    <span class="n">write_logfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">audiofile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">threads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">ffmpeg_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+    <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write the clip to a videofile. See VideoClip.write_videofile for details</span>
+<span class="sd">    on the parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">write_logfile</span><span class="p">:</span>
+        <span class="n">logfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logfile</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;MoviePy - Writing video </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
+        <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+    <span class="k">with</span> <span class="n">FFMPEG_VideoWriter</span><span class="p">(</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">fps</span><span class="p">,</span>
+        <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span>
+        <span class="n">preset</span><span class="o">=</span><span class="n">preset</span><span class="p">,</span>
+        <span class="n">bitrate</span><span class="o">=</span><span class="n">bitrate</span><span class="p">,</span>
+        <span class="n">logfile</span><span class="o">=</span><span class="n">logfile</span><span class="p">,</span>
+        <span class="n">audiofile</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span>
+        <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
+        <span class="n">ffmpeg_params</span><span class="o">=</span><span class="n">ffmpeg_params</span><span class="p">,</span>
+        <span class="n">pixel_format</span><span class="o">=</span><span class="n">pixel_format</span><span class="p">,</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">clip</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">(</span>
+            <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">with_times</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint8&quot;</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;uint8&quot;</span><span class="p">:</span>
+                    <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">frame</span><span class="p">,</span> <span class="n">mask</span><span class="p">])</span>
+
+            <span class="n">writer</span><span class="o">.</span><span class="n">write_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">write_logfile</span><span class="p">:</span>
+        <span class="n">logfile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;MoviePy - Done !&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ffmpeg_write_image"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_writer.ffmpeg_write_image.html#moviepy.video.io.ffmpeg_writer.ffmpeg_write_image">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_write_image</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">logfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes an image (HxWx3 or HxWx4 numpy array) to a file, using ffmpeg.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename : str</span>
+<span class="sd">        Path to the output file.</span>
+
+<span class="sd">    image : np.ndarray</span>
+<span class="sd">        Numpy array with the image data.</span>
+
+<span class="sd">    logfile : bool, optional</span>
+<span class="sd">        Writes the ffmpeg output inside a logging file (``True``) or not</span>
+<span class="sd">        (``False``).</span>
+
+<span class="sd">    pixel_format : str, optional</span>
+<span class="sd">        Pixel format for ffmpeg. If not defined, it will be discovered checking</span>
+<span class="sd">        if the image data contains an alpha channel (``&quot;rgba&quot;``) or not</span>
+<span class="sd">        (``&quot;rgb24&quot;``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;uint8&quot;</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
+        <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
+        <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">x</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rawvideo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span>
+        <span class="n">pixel_format</span><span class="p">,</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">logfile</span><span class="p">:</span>
+        <span class="n">log_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">log_file</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span>
+
+    <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">log_file</span><span class="p">,</span> <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
+    <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">MoviePy error: FFMPEG encountered the following error while &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;writing file </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2"> with command </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">:</span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="k">del</span> <span class="n">proc</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

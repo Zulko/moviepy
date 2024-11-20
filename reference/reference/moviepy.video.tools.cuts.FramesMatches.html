@@ -1,0 +1,871 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>moviepy.video.tools.cuts.FramesMatches &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.video.tools.cuts.FramesMatches';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="moviepy.video.tools.cuts.detect_scenes" href="moviepy.video.tools.cuts.detect_scenes.html" />
+    <link rel="prev" title="moviepy.video.tools.cuts.FramesMatch" href="moviepy.video.tools.cuts.FramesMatch.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="moviepy.html">moviepy</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.Clip.html">moviepy.Clip</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.Clip.Clip.html">moviepy.Clip.Clip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moviepy.Effect.html">moviepy.Effect</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.AudioClip.html">moviepy.audio.AudioClip</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioArrayClip.html">moviepy.audio.AudioClip.AudioArrayClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioClip.html">moviepy.audio.AudioClip.AudioClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.CompositeAudioClip.html">moviepy.audio.AudioClip.CompositeAudioClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.concatenate_audioclips.html">moviepy.audio.AudioClip.concatenate_audioclips</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.fx.html">moviepy.audio.fx</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioDelay.html">moviepy.audio.fx.AudioDelay</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioFadeIn.html">moviepy.audio.fx.AudioFadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioFadeOut.html">moviepy.audio.fx.AudioFadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioLoop.html">moviepy.audio.fx.AudioLoop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioNormalize.html">moviepy.audio.fx.AudioNormalize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.MultiplyStereoVolume.html">moviepy.audio.fx.MultiplyStereoVolume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.MultiplyVolume.html">moviepy.audio.fx.MultiplyVolume</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.io.html">moviepy.audio.io</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.AudioFileClip.html">moviepy.audio.io.AudioFileClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffmpeg_audiowriter.html">moviepy.audio.io.ffmpeg_audiowriter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffplay_audiopreviewer.html">moviepy.audio.io.ffplay_audiopreviewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.readers.html">moviepy.audio.io.readers</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.tools.html">moviepy.audio.tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.tools.cuts.html">moviepy.audio.tools.cuts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.config.html">moviepy.config</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.config.check.html">moviepy.config.check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.config.try_cmd.html">moviepy.config.try_cmd</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.decorators.html">moviepy.decorators</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.convert_parameter_to_seconds.html">moviepy.decorators.convert_parameter_to_seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.convert_path_to_string.html">moviepy.decorators.convert_path_to_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.preprocess_args.html">moviepy.decorators.preprocess_args</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.find_extension.html">moviepy.tools.find_extension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.no_display_available.html">moviepy.tools.no_display_available</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.subprocess_call.html">moviepy.tools.subprocess_call</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.video.html">moviepy.video</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.VideoClip.html">moviepy.video.VideoClip</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.BitmapClip.html">moviepy.video.VideoClip.BitmapClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.ColorClip.html">moviepy.video.VideoClip.ColorClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.DataVideoClip.html">moviepy.video.VideoClip.DataVideoClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.ImageClip.html">moviepy.video.VideoClip.ImageClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.TextClip.html">moviepy.video.VideoClip.TextClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.UpdatedVideoClip.html">moviepy.video.VideoClip.UpdatedVideoClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.VideoClip.html">moviepy.video.VideoClip.VideoClip</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.compositing.html">moviepy.video.compositing</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.compositing.CompositeVideoClip.html">moviepy.video.compositing.CompositeVideoClip</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.fx.html">moviepy.video.fx</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.AccelDecel.html">moviepy.video.fx.AccelDecel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.BlackAndWhite.html">moviepy.video.fx.BlackAndWhite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Blink.html">moviepy.video.fx.Blink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Crop.html">moviepy.video.fx.Crop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.CrossFadeIn.html">moviepy.video.fx.CrossFadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.CrossFadeOut.html">moviepy.video.fx.CrossFadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.EvenSize.html">moviepy.video.fx.EvenSize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FadeIn.html">moviepy.video.fx.FadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FadeOut.html">moviepy.video.fx.FadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Freeze.html">moviepy.video.fx.Freeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FreezeRegion.html">moviepy.video.fx.FreezeRegion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.GammaCorrection.html">moviepy.video.fx.GammaCorrection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.HeadBlur.html">moviepy.video.fx.HeadBlur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.InvertColors.html">moviepy.video.fx.InvertColors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Loop.html">moviepy.video.fx.Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.LumContrast.html">moviepy.video.fx.LumContrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MakeLoopable.html">moviepy.video.fx.MakeLoopable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Margin.html">moviepy.video.fx.Margin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MaskColor.html">moviepy.video.fx.MaskColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MasksAnd.html">moviepy.video.fx.MasksAnd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MasksOr.html">moviepy.video.fx.MasksOr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MirrorX.html">moviepy.video.fx.MirrorX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MirrorY.html">moviepy.video.fx.MirrorY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MultiplyColor.html">moviepy.video.fx.MultiplyColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MultiplySpeed.html">moviepy.video.fx.MultiplySpeed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Painting.html">moviepy.video.fx.Painting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Resize.html">moviepy.video.fx.Resize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Rotate.html">moviepy.video.fx.Rotate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Scroll.html">moviepy.video.fx.Scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SlideIn.html">moviepy.video.fx.SlideIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SlideOut.html">moviepy.video.fx.SlideOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SuperSample.html">moviepy.video.fx.SuperSample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.TimeMirror.html">moviepy.video.fx.TimeMirror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.TimeSymmetrize.html">moviepy.video.fx.TimeSymmetrize</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.io.html">moviepy.video.io</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ImageSequenceClip.html">moviepy.video.io.ImageSequenceClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.VideoFileClip.html">moviepy.video.io.VideoFileClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.display_in_notebook.html">moviepy.video.io.display_in_notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_reader.html">moviepy.video.io.ffmpeg_reader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.html">moviepy.video.io.ffmpeg_tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_writer.html">moviepy.video.io.ffmpeg_writer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffplay_previewer.html">moviepy.video.io.ffplay_previewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.gif_writers.html">moviepy.video.io.gif_writers</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="moviepy.video.tools.html">moviepy.video.tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.credits.html">moviepy.video.tools.credits</a></li>
+<li class="toctree-l4 current active"><a class="reference internal" href="moviepy.video.tools.cuts.html">moviepy.video.tools.cuts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.drawing.html">moviepy.video.tools.drawing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.interpolators.html">moviepy.video.tools.interpolators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.subtitles.html">moviepy.video.tools.subtitles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Api Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    
+    
+    <li class="breadcrumb-item"><a href="moviepy.video.tools.cuts.html" class="nav-link">moviepy.video.tools.cuts</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.tools.cuts.FramesMatches</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="moviepy-video-tools-cuts-framesmatches">
+<h1>moviepy.video.tools.cuts.FramesMatches<a class="headerlink" href="#moviepy-video-tools-cuts-framesmatches" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.video.tools.cuts.</span></span><span class="sig-name descname"><span class="pre">FramesMatches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches" title="Permalink to this definition">#</a></dt>
+<dd><p>Frames matches inside a set of frames.</p>
+<p>You can instantiate it passing a list of FramesMatch objects or
+using the class methods <code class="docutils literal notranslate"><span class="pre">load</span></code> and <code class="docutils literal notranslate"><span class="pre">from_clip</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lst</strong> (<em>list</em>) – Iterable of FramesMatch objects.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.best">
+<span class="sig-name descname"><span class="pre">best</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.best"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.best" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a new instance of FramesMatches object or a FramesMatch
+from the current class instance given different conditions.</p>
+<p>By default returns the first FramesMatch that the current instance
+stores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of matches to retrieve from the current FramesMatches object.
+Only has effect when <code class="docutils literal notranslate"><span class="pre">percent=None</span></code>.</p></li>
+<li><p><strong>percent</strong> (<em>float</em><em>, </em><em>optional</em>) – Percent of the current match to retrieve.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FramesMatch or FramesMatches</strong> – greater than 1 returns a FramesMatches object, otherwise a
+FramesMatch.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>If the number of matches to retrieve is</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">condition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a FramesMatches object obtained by filtering out the
+FramesMatch which do not satistify a condition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>condition</strong> (<em>func</em>) – Function which takes a FrameMatch object as parameter and returns a
+bool.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_matches</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.from_clip">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_clip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_duration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bar'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.from_clip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.from_clip" title="Permalink to this definition">#</a></dt>
+<dd><p>Finds all the frames that look alike in a clip, for instance to make
+a looping GIF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clip</strong> (<a class="reference internal" href="moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><em>moviepy.video.VideoClip.VideoClip</em></a>) – A MoviePy video clip.</p></li>
+<li><p><strong>distance_threshold</strong> (<em>float</em>) – Distance above which a match is rejected.</p></li>
+<li><p><strong>max_duration</strong> (<em>float</em>) – Maximal duration (in seconds) between two matching frames.</p></li>
+<li><p><strong>fps</strong> (<em>int</em><em>, </em><em>optional</em>) – Frames per second (default will be <code class="docutils literal notranslate"><span class="pre">clip.fps</span></code>).</p></li>
+<li><p><strong>logger</strong> (<em>str</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code> for progress bar or <code class="docutils literal notranslate"><span class="pre">None</span></code> or any Proglog logger.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>All pairs of frames with <code class="docutils literal notranslate"><span class="pre">end_time</span> <span class="pre">-</span> <span class="pre">start_time</span> <span class="pre">&lt;</span> <span class="pre">max_duration</span></code>
+and whose distance is under <code class="docutils literal notranslate"><span class="pre">distance_threshold</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#moviepy.video.tools.cuts.FramesMatches" title="moviepy.video.tools.cuts.FramesMatches">FramesMatches</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>We find all matching frames in a given video and turn the best match
+with a duration of 1.5 seconds or more into a GIF:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;foo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matches</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_duration</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># will take time</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">)</span><span class="o">.</span><span class="n">best</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="n">best</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;foo.gif&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.load">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.load" title="Permalink to this definition">#</a></dt>
+<dd><p>Load a FramesMatches object from a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the file to use loading a FramesMatches object.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matching_frames</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;somefile&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.save" title="Permalink to this definition">#</a></dt>
+<dd><p>Save a FramesMatches object to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to the file in which will be dumped the FramesMatches object data.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.select_scenes">
+<span class="sig-name descname"><span class="pre">select_scenes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">match_threshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_time_span</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomatch_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.select_scenes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.select_scenes" title="Permalink to this definition">#</a></dt>
+<dd><p>Select the scenes at which a video clip can be reproduced as the
+smoothest possible way, mainly oriented for the creation of GIF images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>match_threshold</strong> (<em>float</em>) – Maximum distance possible between frames. The smaller, the
+better-looping the GIFs are.</p></li>
+<li><p><strong>min_time_span</strong> (<em>float</em>) – Minimum duration for a scene. Only matches with a duration longer
+than the value passed to this parameters will be extracted.</p></li>
+<li><p><strong>nomatch_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum distance possible between frames. If is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then it is
+chosen equal to <code class="docutils literal notranslate"><span class="pre">match_threshold</span></code>.</p></li>
+<li><p><strong>time_distance</strong> (<em>float</em><em>, </em><em>optional</em>) – Minimum time offset possible between matches.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FramesMatches</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>New instance of the class with the selected scenes.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mirror_and_clip</span> <span class="o">=</span> <span class="p">[</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">TimeMirror</span><span class="p">()]),</span> <span class="n">ch_clip</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">mirror_and_clip</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">[(1.0000, 4.0000, 0.0000, 0.0000),</span>
+<span class="go"> (1.1600, 3.8400, 0.0000, 0.0000),</span>
+<span class="go"> (1.2800, 3.7200, 0.0000, 0.0000),</span>
+<span class="go"> (1.4000, 3.6000, 0.0000, 0.0000)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.tools.cuts.FramesMatches.write_gifs">
+<span class="sig-name descname"><span class="pre">write_gifs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gifs_dir</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/tools/cuts.html#FramesMatches.write_gifs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.tools.cuts.FramesMatches.write_gifs" title="Permalink to this definition">#</a></dt>
+<dd><p>Extract the matching frames represented by the instance from a clip
+and write them as GIFs in a directory, one GIF for each matching frame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>clip</strong> (<a class="reference internal" href="moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><em>video.VideoClip.VideoClip</em></a>) – A video clip whose frames scenes you want to obtain as GIF images.</p></li>
+<li><p><strong>gif_dir</strong> (<em>str</em>) – Directory in which the GIF images will be written.</p></li>
+<li><p><strong>kwargs</strong> – Passed as <code class="docutils literal notranslate"><span class="pre">clip.write_gif</span></code> optional arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">time_mirror</span><span class="p">(),</span> <span class="n">ch_clip</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">write_gifs</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="go">MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
+<span class="go">MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
+<span class="go">MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
+<span class="go">MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="moviepy.video.tools.cuts.FramesMatch.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">moviepy.video.tools.cuts.FramesMatch</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="moviepy.video.tools.cuts.detect_scenes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">moviepy.video.tools.cuts.detect_scenes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches"><code class="docutils literal notranslate"><span class="pre">FramesMatches</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.best"><code class="docutils literal notranslate"><span class="pre">FramesMatches.best()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.filter"><code class="docutils literal notranslate"><span class="pre">FramesMatches.filter()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.from_clip"><code class="docutils literal notranslate"><span class="pre">FramesMatches.from_clip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.load"><code class="docutils literal notranslate"><span class="pre">FramesMatches.load()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.save"><code class="docutils literal notranslate"><span class="pre">FramesMatches.save()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.select_scenes"><code class="docutils literal notranslate"><span class="pre">FramesMatches.select_scenes()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.tools.cuts.FramesMatches.write_gifs"><code class="docutils literal notranslate"><span class="pre">FramesMatches.write_gifs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.video.tools.cuts.FramesMatches.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/reference/reference/moviepy.video.tools.cuts.FramesMatches.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

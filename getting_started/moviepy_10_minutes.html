@@ -1,0 +1,1013 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny” &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/moviepy_10_minutes';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MoviePy Docker" href="docker.html" />
+    <link rel="prev" title="Quick presentation" href="quick_presentation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">MoviePy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="updating_to_v2.html">Updating from v1.X to v2.X</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ and troubleshooting</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Getting started with MoviePy</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="moviepy-in-10-minutes-creating-a-trailer-from-big-buck-bunny">
+<span id="moviepy-10-minutes"></span><h1>MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”<a class="headerlink" href="#moviepy-in-10-minutes-creating-a-trailer-from-big-buck-bunny" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tutorial aims to be a simple and short introduction for new users wishing to use MoviePy. For a more in-depth exploration of the concepts seen in this tutorial, see <a class="reference internal" href="../user_guide/index.html#user-guide"><span class="std std-ref">The MoviePy User Guide</span></a>.</p>
+</div>
+<p>In this tutorial, you will learn the basics of how to use the MoviePy library in just 10 minutes. As an example project for this tutorial, we will create the following trailer for the movie <a class="reference external" href="https://peach.blender.org/">“Big Buck Bunny.”</a>.</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
+   <video controls>
+      <source src="/_static/medias/moviepy_10_minutes/tailer_bbb.mp4" type="video/mp4">
+      <p>Your browser does not support HTML5 video in MP4 format.</p>
+   </video>
+</div><section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<p>Before we start, make sure you have MoviePy installed. You can install it using pip:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>moviepy
+</pre></div>
+</div>
+<p>Also, we will need to gather a few resources such as the original movie, font files, images, etc.
+To make it easy, we have prepared a template project you can download directly:</p>
+<ol class="arabic simple">
+<li><p>Download <a class="reference download internal" download="" href="../_downloads/6cdf6df1cdd6ff82115103c53eafc77b/moviepy_10_minutes.zip"><code class="xref download docutils literal notranslate"><span class="pre">the</span> <span class="pre">project</span> <span class="pre">template</span></code></a> and unzip it.</p></li>
+<li><p>Take a look at the resources inside the folder to familiarize yourself.</p></li>
+<li><p>Create a Python script file named <code class="docutils literal notranslate"><span class="pre">trailer.py</span></code> in the project directory.</p></li>
+</ol>
+<p>Now, you are ready to proceed to the next steps.</p>
+</section>
+<section id="step-1-import-moviepy-and-load-the-video">
+<h2>Step 1: Import MoviePy and Load the Video<a class="headerlink" href="#step-1-import-moviepy-and-load-the-video" title="Permalink to this heading">#</a></h2>
+<p>Let’s start by importing the necessary modules and loading the “Big Buck Bunny” video into our Python program:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;./result.mp4&quot;</span><span class="p">)</span>
+<span class="c1"># Lets import moviepy, lets also import numpy we will use it a some point</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1">#################</span>
+<span class="c1"># VIDEO LOADING #</span>
+<span class="c1">#################</span>
+<span class="c1"># We load our video</span>
+<span class="n">video</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./resources/bbb.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you see, loading a video file is really easy, but MoviePy isn’t limited to video. It can handle images, audio, texts, and even custom animations.</p>
+<p>No matter the kind of resources, ultimately any clip will be either a <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element, and an <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element.</p>
+<p>In this tutorial, we will only see a few of those, but if you want to explore more, you can find an exhaustive list in the user guide about <a class="reference internal" href="../user_guide/loading.html#loading"><span class="std std-ref">Loading resources as clips</span></a>.</p>
+</section>
+<section id="step-2-extract-the-best-scenes">
+<h2>Step 2: Extract the Best Scenes<a class="headerlink" href="#step-2-extract-the-best-scenes" title="Permalink to this heading">#</a></h2>
+<p>To create our trailer, we will focus on presenting the main characters, so we need to extract parts of the movie.
+This is a very classic task, so let’s turn our main clip into multiple subclips:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#####################</span>
+<span class="c1"># SCENES EXTRACTION #</span>
+<span class="c1">#####################</span>
+<span class="c1"># We extract the scenes we want to use</span>
+
+<span class="c1"># First the characters</span>
+<span class="n">intro_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">bird_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">bunny_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span>
+    <span class="s2">&quot;00:03:34.75&quot;</span><span class="p">,</span> <span class="s2">&quot;00:03:56&quot;</span>
+<span class="p">)</span>  <span class="c1"># we can also use string notation with format HH:MM:SS.uS</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="s2">&quot;04:41.5&quot;</span><span class="p">,</span> <span class="s2">&quot;04:44.70&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here, we use the <code class="docutils literal notranslate"><span class="pre">with_subclip</span></code> method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format <code class="docutils literal notranslate"><span class="pre">HH:MM:SS.µS</span></code>) for each scene.
+The extracted clips are stored in their respective variables (<code class="docutils literal notranslate"><span class="pre">intro_clip</span></code>, <code class="docutils literal notranslate"><span class="pre">bird_clip</span></code>, etc.).</p>
+</section>
+<section id="step-3-take-a-first-look-with-preview">
+<h2>Step 3: Take a First Look with Preview<a class="headerlink" href="#step-3-take-a-first-look-with-preview" title="Permalink to this heading">#</a></h2>
+<p>When editing videos, it’s often essential to preview the clips to ensure they meet our vision. This allows you to watch the segment you’re working on and make any necessary adjustments for the perfect result.</p>
+<p>To do so using MoviePy, you can utilize the <code class="docutils literal notranslate"><span class="pre">preview()</span></code> function available for each clip (the complementary <code class="docutils literal notranslate"><span class="pre">audio_preview()</span></code> is also available for <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that you will need <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> installed and accessible to MoviePy for preview to work. You can check if <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> is available by running the command <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-c</span> <span class="pre">&quot;from</span> <span class="pre">moviepy.config</span> <span class="pre">import</span> <span class="pre">check;check()&quot;</span></code>.
+If not, please see <a class="reference internal" href="install.html#install-binaries"><span class="std std-ref">Installation of additional binaries</span></a>.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#####################</span>
+<span class="c1"># SCENES PREVIEWING #</span>
+<span class="c1">#####################</span>
+<span class="c1"># Now, lets have a first look at our clips</span>
+<span class="c1"># Warning: you need ffplay installed for preview to work</span>
+<span class="c1"># We set a low fps so our machine can render in real time without slowing down</span>
+<span class="n">intro_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">bird_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">bunny_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">rodents_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">rambo_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By using the preview, you may have noticed that our clips not only contain video but also audio. This is because when loading a video, you not only load the image but also the audio tracks that are turned into <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> and
+added to your video clip.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When previewing, you may encounter video slowing or video/audio shifting. This is not a bug; it’s due to the fact that your computer cannot render the preview in real-time.
+In such a case, the best course of action is to set the <code class="docutils literal notranslate"><span class="pre">fps</span></code> parameter for the <code class="docutils literal notranslate"><span class="pre">preview()</span></code> at a lower value to make things easier on your machine.</p>
+</div>
+</section>
+<section id="step-4-modify-a-clip-by-cutting-out-a-part-of-it">
+<h2>Step 4: Modify a Clip by Cutting Out a Part of It<a class="headerlink" href="#step-4-modify-a-clip-by-cutting-out-a-part-of-it" title="Permalink to this heading">#</a></h2>
+<p>After previewing the clips, we notice that the rodents’ scene is a bit long. Let’s modify the clip by removing a specific part. It would be nice to remove parts of the scene that we don’t need. This is also quite a common task in video-editing.
+To do so, we are going to use the <code class="docutils literal notranslate"><span class="pre">with_cutout</span></code> method to remove a portion of the clip between <code class="docutils literal notranslate"><span class="pre">00:06:00</span></code> to <code class="docutils literal notranslate"><span class="pre">00:10:00</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##############################</span>
+<span class="c1"># CLIPS MODIFICATION CUTTING #</span>
+<span class="c1">##############################</span>
+<span class="c1"># Well, looking at the rodent scene it is a bit long isn&#39;t?</span>
+<span class="c1"># Let&#39;s see how we modify the clip with one of the many clip manipulation method starting by with_*</span>
+<span class="c1"># in that case by removing of the clip the part between 00:06:00 to 00:10:00 of the clip, using with_cutout</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">rodents_clip</span><span class="o">.</span><span class="n">with_cutout</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Note: You may have noticed that we have reassign rodents_clip, this is because all with_* methods return a modified *copy* of the</span>
+<span class="c1"># original clip instead of modifying it directly. In MoviePy any function starting by with_* is out-place instead of in-place</span>
+<span class="c1"># meaning it does not modify the original data, but instead copy it and modify/return the copy</span>
+
+<span class="c1"># Lets check the result</span>
+<span class="n">rodents_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In that particular case, we have used the <code class="docutils literal notranslate"><span class="pre">with_cutout</span></code>, but this is only one of the many clip manipulation methods starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code>. We will see a few others
+in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see <a class="reference internal" href="../reference/index.html#reference-manual"><span class="std std-ref">Api Reference</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may have noticed that we have reassigned the <code class="docutils literal notranslate"><span class="pre">rodents_clip</span></code> variable instead of just calling a method on it.
+This is because in MoviePy, any function starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code> is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy.
+So you need to store the result of the method and, if necessary, reassign the original variable to update your clip.</p>
+</div>
+</section>
+<section id="step-5-creating-text-logo-clips">
+<h2>Step 5: Creating Text/Logo Clips<a class="headerlink" href="#step-5-creating-text-logo-clips" title="Permalink to this heading">#</a></h2>
+<p>In addition to videos, we often need to work with images and texts. MoviePy offers some specialized kinds of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> specifically for that purpose: <code class="docutils literal notranslate"><span class="pre">ImageClip</span></code> and <code class="docutils literal notranslate"><span class="pre">TextClip</span></code>.</p>
+<p>In our case, we want to create text clips to add text overlays between the video clips. We’ll define the font, text content, font size, and color for each text clip.
+We also want to create image clips for the “Big Buck Bunny” logo and the “Made with MoviePy” logo and resize them as needed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">############################</span>
+<span class="c1"># TEXT/LOGO CLIPS CREATION #</span>
+<span class="c1">############################</span>
+<span class="c1"># Lets create the texts to put between our clips</span>
+<span class="n">font</span> <span class="o">=</span> <span class="s2">&quot;./resources/font/font.ttf&quot;</span>
+<span class="n">intro_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;The Blender Foundation and</span><span class="se">\n</span><span class="s2">Peach Project presents&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">,</span>
+    <span class="n">text_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">bird_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;An unlucky bird&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">)</span>
+<span class="n">bunny_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;A (slightly overweight) bunny&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span>
+<span class="p">)</span>
+<span class="n">rodents_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;And three rodent pests&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span>
+<span class="p">)</span>
+<span class="n">revenge_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Revenge is coming...&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span>
+<span class="p">)</span>
+<span class="n">made_with_text</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Made with&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">)</span>
+
+<span class="c1"># We will also need the big buck bunny logo, so lets load it and resize it</span>
+<span class="n">logo_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;./resources/logo_bbb.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">moviepy_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;./resources/logo_moviepy.png&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, <code class="docutils literal notranslate"><span class="pre">ImageClip</span></code> is quite simple, but <code class="docutils literal notranslate"><span class="pre">TextClip</span></code> is a rather complicated object. Don’t hesitate to explore the arguments it accepts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In our example, we have used the <code class="docutils literal notranslate"><span class="pre">resized()</span></code> method to resize our image clips. This method works just like any <code class="docutils literal notranslate"><span class="pre">with_*</span></code> method, but because resizing is such a common
+task, the name has been shortened to <code class="docutils literal notranslate"><span class="pre">resized()</span></code>. The same is true for <code class="docutils literal notranslate"><span class="pre">cropped()</span></code> and <code class="docutils literal notranslate"><span class="pre">rotated()</span></code>.</p>
+</div>
+<p>Feel free to experiment with different effects and transitions to achieve the desired trailer effect.</p>
+</section>
+<section id="step-6-timing-the-clips">
+<h2>Step 6: Timing the clips<a class="headerlink" href="#step-6-timing-the-clips" title="Permalink to this heading">#</a></h2>
+<p>We have all the clips we need, but if we were to combine all those clips into a single one using composition (we will see that in the next step), all our clips would start at the same time and play on top of each other, which is obviously not what we want.
+Also, some video clips, like the images and texts, have no endpoint/duration at creation (except if you have provided a duration parameter), which means trying to render them will throw an error as it would result in an infinite video.</p>
+<p>To fix that, we need to specify when a clip should start and stop in the final clip. So, let’s start by indicating when each clip must start and end with the appropriate with_* methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">################</span>
+<span class="c1"># CLIPS TIMING #</span>
+<span class="c1">################</span>
+<span class="c1"># We have all the clips we need, but if we was to turn all thoses clips into a single one with composition (we will see that during next step)</span>
+<span class="c1"># all our clips would start at the same time and play on top of each other, which is obviously not what we want.</span>
+<span class="c1"># To fix that, we need to say when a clip should start and stop in the final clip.</span>
+<span class="c1"># So, lets start by telling when each clip must start and end with appropriate with_* methods</span>
+<span class="n">intro_text</span> <span class="o">=</span> <span class="n">intro_text</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span>
+    <span class="mi">3</span>
+<span class="p">)</span>  <span class="c1"># Intro for 6 seconds, start after 3 seconds</span>
+<span class="n">logo_clip</span> <span class="o">=</span> <span class="n">logo_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">intro_text</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span>
+    <span class="n">intro_text</span><span class="o">.</span><span class="n">end</span>
+<span class="p">)</span>  <span class="c1"># Logo start 2 second after intro text and stop with it</span>
+<span class="n">bird_clip</span> <span class="o">=</span> <span class="n">bird_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span>
+    <span class="n">intro_clip</span><span class="o">.</span><span class="n">end</span>
+<span class="p">)</span>  <span class="c1"># Make bird clip start after intro, duration already known</span>
+<span class="n">bird_text</span> <span class="o">=</span> <span class="n">bird_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">bird_clip</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span>
+    <span class="n">bird_clip</span><span class="o">.</span><span class="n">end</span>
+<span class="p">)</span>  <span class="c1"># Make text synchro with clip</span>
+<span class="n">bunny_clip</span> <span class="o">=</span> <span class="n">bunny_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">bird_clip</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c1"># Make bunny clip follow bird clip</span>
+<span class="n">bunny_text</span> <span class="o">=</span> <span class="n">bunny_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">bunny_clip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">rodents_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">bunny_clip</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<span class="n">rodents_text</span> <span class="o">=</span> <span class="n">rodents_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">rodents_clip</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">rodents_clip</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">revenge_text</span> <span class="o">=</span> <span class="n">revenge_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">rambo_clip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="mf">1.5</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">made_with_text</span> <span class="o">=</span> <span class="n">made_with_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">rambo_clip</span><span class="o">.</span><span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">moviepy_clip</span> <span class="o">=</span> <span class="n">moviepy_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">made_with_text</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, all clips have a start point at <code class="docutils literal notranslate"><span class="pre">0</span></code>. If a clip has no duration but you set the <code class="docutils literal notranslate"><span class="pre">endtime</span></code>, then the duration will be calculated for you. The reciprocity is also true.</p>
+<p>So in our case, we either use duration or endtime, depending on what is more practical for each specific case.</p>
+</div>
+</section>
+<section id="step-7-seeing-how-all-clips-combine">
+<h2>Step 7: Seeing how all clips combine<a class="headerlink" href="#step-7-seeing-how-all-clips-combine" title="Permalink to this heading">#</a></h2>
+<p>Now that all our clips are timed, let’s get a first idea of how our final clip will look. In video editing, the act of assembling multiple videos into a single one is known as composition.
+So, MoviePy offers a special kind of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> dedicated to the act of combining multiple clips into one, the <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a>.</p>
+<p><a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a> takes an array of clips as input and will play them on top of each other at render time, starting and stopping each clip at its start and end points.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If possible, <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a> will extract endpoint and size from the biggest/last ending clip. If a clip in the list has no duration, then you will have to manually set the duration of <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a> before rendering.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">########################</span>
+<span class="c1"># CLIPS TIMING PREVIEW #</span>
+<span class="c1">########################</span>
+<span class="c1"># Lets make a first compositing of thoses clips into one single clip and do a quick preview to see if everything is synchro</span>
+
+<span class="n">quick_compo</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">intro_clip</span><span class="p">,</span>
+        <span class="n">intro_text</span><span class="p">,</span>
+        <span class="n">logo_clip</span><span class="p">,</span>
+        <span class="n">bird_clip</span><span class="p">,</span>
+        <span class="n">bird_text</span><span class="p">,</span>
+        <span class="n">bunny_clip</span><span class="p">,</span>
+        <span class="n">bunny_text</span><span class="p">,</span>
+        <span class="n">rodents_clip</span><span class="p">,</span>
+        <span class="n">rodents_text</span><span class="p">,</span>
+        <span class="n">rambo_clip</span><span class="p">,</span>
+        <span class="n">revenge_text</span><span class="p">,</span>
+        <span class="n">made_with_text</span><span class="p">,</span>
+        <span class="n">moviepy_clip</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">quick_compo</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-8-positioning-our-clips">
+<h2>Step 8: Positioning our clips<a class="headerlink" href="#step-8-positioning-our-clips" title="Permalink to this heading">#</a></h2>
+<p>By looking at this first preview, we see that our clips are pretty well timed, but that the positions of our texts and logo are not satisfying.</p>
+<p>This is because, for now, we have only specified when our clips should appear, and not the position at which they should appear. By default, all clips are positioned from the top left of the video, at <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code>.</p>
+<p>All our clips do not have the same sizes (the texts and images are smaller than the videos), and the <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a> takes the size of the biggest clip (so in our case, the size of the videos),
+so the texts and images are all in the top left portion of the clip.</p>
+<p>To fix this, we simply have to define the position of our clips in the composition with the method <code class="docutils literal notranslate"><span class="pre">with_position</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">######################</span>
+<span class="c1"># CLIPS POSITIONNING #</span>
+<span class="c1">######################</span>
+<span class="c1"># Now that we have set the timing of our different clips, we need to make sure they are in the right position</span>
+<span class="c1"># We will keep things simple, and almost always set center center for every texts</span>
+<span class="n">bird_text</span> <span class="o">=</span> <span class="n">bird_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">))</span>
+<span class="n">bunny_text</span> <span class="o">=</span> <span class="n">bunny_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">))</span>
+<span class="n">rodents_text</span> <span class="o">=</span> <span class="n">rodents_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">))</span>
+<span class="n">revenge_text</span> <span class="o">=</span> <span class="n">revenge_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">))</span>
+
+<span class="c1"># For the logos and intro/end, we will use pixel position instead of center</span>
+<span class="n">top</span> <span class="o">=</span> <span class="n">intro_clip</span><span class="o">.</span><span class="n">h</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">intro_text</span> <span class="o">=</span> <span class="n">intro_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+<span class="n">logo_clip</span> <span class="o">=</span> <span class="n">logo_clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span>
+<span class="n">made_with_text</span> <span class="o">=</span> <span class="n">made_with_text</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+<span class="n">moviepy_clip</span> <span class="o">=</span> <span class="n">moviepy_clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="mi">360</span><span class="p">))</span>
+
+<span class="c1"># Lets take another look to check positions</span>
+<span class="n">quick_compo</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">intro_clip</span><span class="p">,</span>
+        <span class="n">intro_text</span><span class="p">,</span>
+        <span class="n">logo_clip</span><span class="p">,</span>
+        <span class="n">bird_clip</span><span class="p">,</span>
+        <span class="n">bird_text</span><span class="p">,</span>
+        <span class="n">bunny_clip</span><span class="p">,</span>
+        <span class="n">bunny_text</span><span class="p">,</span>
+        <span class="n">rodents_clip</span><span class="p">,</span>
+        <span class="n">rodents_text</span><span class="p">,</span>
+        <span class="n">rambo_clip</span><span class="p">,</span>
+        <span class="n">revenge_text</span><span class="p">,</span>
+        <span class="n">made_with_text</span><span class="p">,</span>
+        <span class="n">moviepy_clip</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">quick_compo</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The position is a tuple with horizontal and vertical position. You can give them as pixels, as strings (<code class="docutils literal notranslate"><span class="pre">top</span></code>, <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, <code class="docutils literal notranslate"><span class="pre">bottom</span></code>, <code class="docutils literal notranslate"><span class="pre">center</span></code>), and even as a percentage by providing
+a float and passing the argument <code class="docutils literal notranslate"><span class="pre">relative=True</span></code>.</p>
+</div>
+<p>Now, all our clips are in the right place and timed as expected.</p>
+</section>
+<section id="step-9-adding-transitions-and-effects">
+<h2>Step 9: Adding transitions and effects<a class="headerlink" href="#step-9-adding-transitions-and-effects" title="Permalink to this heading">#</a></h2>
+<p>So, our clips are timed and placed, but for now, the result is quite raw. It would be nice to have smoother transitions between the clips.
+In MoviePy, this is achieved through the use of effects.</p>
+<p>Effects play a crucial role in enhancing the visual and auditory appeal of your video clips. Effects are applied to clips to create transitions, transformations, or modifications, resulting in better-looking videos.
+Whether you want to add smooth transitions between clips, alter visual appearance, or manipulate audio properties, MoviePy comes with many existing effects to help you bring your creative vision to life with ease.</p>
+<p>You can find these effects under the namespace <code class="docutils literal notranslate"><span class="pre">vfx</span></code> for video effects and <code class="docutils literal notranslate"><span class="pre">afx</span></code> for audio effects.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can use audio effects on both audio and video clips because when applying audio effects to a video clip, the effect will actually be applied to the video clip’s embedded audio clip instead.</p>
+</div>
+<p>Using an effect is very simple. You just have to call the method <code class="docutils literal notranslate"><span class="pre">with_effects</span></code> on your clip and pass an array of effect objects to apply.</p>
+<p>In our case, we will add simple fade-in/out and cross-fade-in/out transitions between our clips, as well as slow down the <code class="docutils literal notranslate"><span class="pre">rambo_clip</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">################################</span>
+<span class="c1"># CLIPS TRANSITION AND EFFECTS #</span>
+<span class="c1">################################</span>
+<span class="c1"># Now that our clip are timed and positionned, lets add some transition to make it more natural</span>
+<span class="c1"># To do so we use the with_effects method and the video effects in vfx</span>
+<span class="c1"># We call with_effects on our clip and pass him an array of effect objects to apply</span>
+<span class="c1"># We&#39;ll keep it simple, nothing fancy just cross fading</span>
+<span class="n">intro_text</span> <span class="o">=</span> <span class="n">intro_text</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+<span class="n">logo_clip</span> <span class="o">=</span> <span class="n">logo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
+<span class="n">bird_text</span> <span class="o">=</span> <span class="n">bird_text</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
+<span class="n">bunny_text</span> <span class="o">=</span> <span class="n">bunny_text</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
+<span class="n">rodents_text</span> <span class="o">=</span> <span class="n">rodents_text</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Also add cross fading on video clips and video clips audio</span>
+<span class="c1"># See how video effects are under vfx and audio ones under afx</span>
+<span class="n">intro_clip</span> <span class="o">=</span> <span class="n">intro_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">FadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">bird_clip</span> <span class="o">=</span> <span class="n">bird_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">FadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">bunny_clip</span> <span class="o">=</span> <span class="n">bunny_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">FadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">rodents_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">FadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># Just fade in, rambo clip will do the cross fade</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+<span class="p">)</span>
+
+<span class="c1"># Effects are not only for transition, they can also change a clip timing or apparence</span>
+<span class="c1"># To show that, lets also modify the Rambo-like part of our clip to be in slow motion</span>
+<span class="c1"># PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_multiply_speed</span>
+<span class="c1"># the others are with_multiply_volume, resized, croped and rotated</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
+
+<span class="c1"># Because we modified timing of rambo_clip with our MultiplySpeed effect, we must re-assign the following clips timing</span>
+<span class="n">made_with_text</span> <span class="o">=</span> <span class="n">made_with_text</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">rambo_clip</span><span class="o">.</span><span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">moviepy_clip</span> <span class="o">=</span> <span class="n">moviepy_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">made_with_text</span><span class="o">.</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s have a last look at the result to make sure everything is working as expected</span>
+<span class="n">quick_comp</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">intro_clip</span><span class="p">,</span>
+        <span class="n">intro_text</span><span class="p">,</span>
+        <span class="n">logo_clip</span><span class="p">,</span>
+        <span class="n">bird_clip</span><span class="p">,</span>
+        <span class="n">bird_text</span><span class="p">,</span>
+        <span class="n">bunny_clip</span><span class="p">,</span>
+        <span class="n">bunny_text</span><span class="p">,</span>
+        <span class="n">rodents_clip</span><span class="p">,</span>
+        <span class="n">rodents_text</span><span class="p">,</span>
+        <span class="n">rambo_clip</span><span class="p">,</span>
+        <span class="n">revenge_text</span><span class="p">,</span>
+        <span class="n">made_with_text</span><span class="p">,</span>
+        <span class="n">moviepy_clip</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">quick_comp</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Well, this looks a lot nicer! For this tutorial, we want to keep things simple, so we mostly used transitions. However, you can find many different effects and even create your own.
+For a more in-depth presentation, see <a class="reference internal" href="../reference/reference/moviepy.video.fx.html#module-moviepy.video.fx" title="moviepy.video.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code></a>, <a class="reference internal" href="../reference/reference/moviepy.audio.fx.html#module-moviepy.audio.fx" title="moviepy.audio.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.audio.fx</span></code></a>, and <a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Looking at the result, you may notice that crossfading makes clips go from transparent to opaque, and reciprocally, and wonder how it works.</p>
+<p>We won’t get into details, but know that in MoviePy, you can declare some sections of a video clip to be transparent by using masks. Masks are nothing more than
+special kinds of video clips that are made of values ranging from <code class="docutils literal notranslate"><span class="pre">0</span></code> for a transparent pixel to <code class="docutils literal notranslate"><span class="pre">1</span></code> for a fully opaque one.</p>
+<p>For more info, see <a class="reference internal" href="../user_guide/loading.html#loading-masks"><span class="std std-ref">Mask clips</span></a>.</p>
+</div>
+</section>
+<section id="step-10-modifying-the-appearance-of-a-clip-using-filters">
+<h2>Step 10: Modifying the appearance of a clip using filters<a class="headerlink" href="#step-10-modifying-the-appearance-of-a-clip-using-filters" title="Permalink to this heading">#</a></h2>
+<p>Finally, to make it more epic, we will apply a custom filter to our Rambo clip to make the image sepia.
+MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the <code class="docutils literal notranslate"><span class="pre">image_transform</span></code> method.</p>
+<p>To understand how filters work, you first need to understand that in MoviePy, a clip frame is nothing more than a numpy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">HxWx3</span></code>.
+This means we can modify how a frame looks like by applying simple math operations. Doing that on all the frames allows us to apply a filter to our clip!</p>
+<p>The “apply to all frames” part is done by the <code class="docutils literal notranslate"><span class="pre">image_transform</span></code> method. This method takes a callback function as an argument, and at render time, it will trigger the callback for each frame of the clip, passing the current frame.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is a bit of an advanced usage, and the example involves matrix multiplication. If this is too much for you, you can simply ignore it until you really need to make custom filters,
+then go look for a more detailed explanation on how to do filtering (<a class="reference internal" href="../user_guide/modifying.html#modifying-filters"><span class="std std-ref">Modify a clip apparence and timing using filters</span></a>) and create custom effects (<a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>) in the user guide.</p>
+<p>What you need to remember is just that we can apply filters on images. Here we do it mathematically, but you could very well use a library such as Pillow (provided it can understand numpy images) to do the maths for you!</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">###############</span>
+<span class="c1"># CLIP FILTER #</span>
+<span class="c1">###############</span>
+<span class="c1"># Lets finish by modifying our rambo clip to make it sepia</span>
+
+
+<span class="c1"># We will start by defining a function that turn a numpy image into sepia</span>
+<span class="c1"># It takes the image as numpy array in entry and return the modified image as output</span>
+<span class="k">def</span> <span class="nf">sepia_fitler</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+    <span class="c1"># Sepia filter transformation matrix</span>
+    <span class="c1"># Sepia transform works by applying to each pixel of the image the following rules</span>
+    <span class="c1"># res_R = (R * .393) + (G *.769) + (B * .189)</span>
+    <span class="c1"># res_G = (R * .349) + (G *.686) + (B * .168)</span>
+    <span class="c1"># res_B = (R * .272) + (G *.534) + (B * .131)</span>
+    <span class="c1">#</span>
+    <span class="c1"># With numpy we can do that very efficiently by multiplying the image matrix by a transformation matrix</span>
+    <span class="n">sepia_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+        <span class="p">[[</span><span class="mf">0.393</span><span class="p">,</span> <span class="mf">0.769</span><span class="p">,</span> <span class="mf">0.189</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.349</span><span class="p">,</span> <span class="mf">0.686</span><span class="p">,</span> <span class="mf">0.168</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.272</span><span class="p">,</span> <span class="mf">0.534</span><span class="p">,</span> <span class="mf">0.131</span><span class="p">]]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Convert the image to float32 format for matrix multiplication</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="c1"># Apply the sepia transformation</span>
+    <span class="c1"># .T is needed because multiplying matrix of shape (n,m) * (m,k) result in a matrix of shape (n,k)</span>
+    <span class="c1"># what we want is (n,m), so we must transpose matrix (m,k) to (k,m)</span>
+    <span class="n">sepia_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">sepia_matrix</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># Because final result can be &gt; 255, we limit the result to range [0, 255]</span>
+    <span class="n">sepia_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">sepia_image</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+
+    <span class="c1"># Convert the image back to uint8 format, because we need integer not float</span>
+    <span class="n">sepia_image</span> <span class="o">=</span> <span class="n">sepia_image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sepia_image</span>
+
+
+<span class="c1"># Now, we simply apply the filter to our clip by calling image_transform, which will call our filter on every frame</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">sepia_fitler</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s see how our filter look</span>
+<span class="n">rambo_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="step-11-rendering-the-final-clip-to-a-file">
+<h2>Step 11: Rendering the final clip to a file<a class="headerlink" href="#step-11-rendering-the-final-clip-to-a-file" title="Permalink to this heading">#</a></h2>
+<p>So, our final clip is ready, and we have made all the cutting and modifications we want. We are now ready to save the final result into a file. In video editing, this operation
+is known as rendering.</p>
+<p>Again, we will keep things simple and just do video rendering without much tweaking. In most cases, MoviePy and FFMPEG automatically find the best settings. Take a look at the <code class="docutils literal notranslate"><span class="pre">write_videofile</span></code> doc for more info.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##################</span>
+<span class="c1"># CLIP RENDERING #</span>
+<span class="c1">##################</span>
+<span class="c1"># Everything is good and ready, we can finally render our clip into a file</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">intro_clip</span><span class="p">,</span>
+        <span class="n">intro_text</span><span class="p">,</span>
+        <span class="n">logo_clip</span><span class="p">,</span>
+        <span class="n">bird_clip</span><span class="p">,</span>
+        <span class="n">bird_text</span><span class="p">,</span>
+        <span class="n">bunny_clip</span><span class="p">,</span>
+        <span class="n">bunny_text</span><span class="p">,</span>
+        <span class="n">rodents_clip</span><span class="p">,</span>
+        <span class="n">rodents_text</span><span class="p">,</span>
+        <span class="n">rambo_clip</span><span class="p">,</span>
+        <span class="n">revenge_text</span><span class="p">,</span>
+        <span class="n">made_with_text</span><span class="p">,</span>
+        <span class="n">moviepy_clip</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;./result.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this heading">#</a></h2>
+<p>Congratulations! You have successfully created a trailer for the movie “Big Buck Bunny” using the MoviePy library. This tutorial covered the basics of MoviePy, including loading videos, trimming scenes, adding effects and transitions, overlaying text, and even a little bit of filtering.</p>
+<p>If you want to dig deeper into MoviePy, we encourage you to try and experiment with this base example by using different effects, transitions, and audio elements to make your trailer truly captivating.
+We also encourage you to go and read the <a class="reference internal" href="../user_guide/index.html#user-guide"><span class="std std-ref">The MoviePy User Guide</span></a>, as well as looking directly at the <a class="reference internal" href="../reference/index.html#reference-manual"><span class="std std-ref">Api Reference</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="quick_presentation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Quick presentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="docker.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MoviePy Docker</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-import-moviepy-and-load-the-video">Step 1: Import MoviePy and Load the Video</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-extract-the-best-scenes">Step 2: Extract the Best Scenes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-take-a-first-look-with-preview">Step 3: Take a First Look with Preview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-modify-a-clip-by-cutting-out-a-part-of-it">Step 4: Modify a Clip by Cutting Out a Part of It</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-5-creating-text-logo-clips">Step 5: Creating Text/Logo Clips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-6-timing-the-clips">Step 6: Timing the clips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-7-seeing-how-all-clips-combine">Step 7: Seeing how all clips combine</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-8-positioning-our-clips">Step 8: Positioning our clips</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-9-adding-transitions-and-effects">Step 9: Adding transitions and effects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-10-modifying-the-appearance-of-a-clip-using-filters">Step 10: Modifying the appearance of a clip using filters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-11-rendering-the-final-clip-to-a-file">Step 11: Rendering the final clip to a file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/getting_started/moviepy_10_minutes.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/getting_started/moviepy_10_minutes.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

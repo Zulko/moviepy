@@ -1,229 +1,483 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.tools.subtitles &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.tools.subtitles &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/tools/subtitles';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../../../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>moviepy.video.tools.subtitles</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.tools.subtitles</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for moviepy.video.tools.subtitles</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot; Experimental module for subtitles support. &quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Experimental module for subtitles support.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_path_to_string</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">convert_to_seconds</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">VideoClip</span>
 
 
-<div class="viewcode-block" id="SubtitlesClip"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.subtitles.SubtitlesClip">[docs]</a><span class="k">class</span> <span class="nc">SubtitlesClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; A Clip that serves as &quot;subtitle track&quot; in videos.</span>
-<span class="sd">    </span>
+<div class="viewcode-block" id="SubtitlesClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.subtitles.SubtitlesClip.html#moviepy.video.tools.subtitles.SubtitlesClip">[docs]</a><span class="k">class</span> <span class="nc">SubtitlesClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Clip that serves as &quot;subtitle track&quot; in videos.</span>
+
 <span class="sd">    One particularity of this class is that the images of the</span>
 <span class="sd">    subtitle texts are not generated beforehand, but only if</span>
 <span class="sd">    needed.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ==========</span>
+<span class="sd">    ----------</span>
 
 <span class="sd">    subtitles</span>
-<span class="sd">      Either the name of a file, or a list</span>
+<span class="sd">        Either the name of a file as a string or path-like object, or a list</span>
+
+<span class="sd">    font</span>
+<span class="sd">        Path to a font file to be used. Optional if make_textclip is provided.</span>
+
+<span class="sd">    make_textclip</span>
+<span class="sd">        A custom function to use for text clip generation. If None, a TextClip</span>
+<span class="sd">        will be generated.</span>
+
+<span class="sd">        The function must take a text as argument and return a VideoClip</span>
+<span class="sd">        to be used as caption</span>
+
+<span class="sd">    encoding</span>
+<span class="sd">        Optional, specifies srt file encoding.</span>
+<span class="sd">        Any standard Python encoding is allowed (listed at</span>
+<span class="sd">        https://docs.python.org/3.8/library/codecs.html#standard-encodings)</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">    =========</span>
-<span class="sd">    </span>
+<span class="sd">    --------</span>
+
 <span class="sd">    &gt;&gt;&gt; from moviepy.video.tools.subtitles import SubtitlesClip</span>
 <span class="sd">    &gt;&gt;&gt; from moviepy.video.io.VideoFileClip import VideoFileClip</span>
-<span class="sd">    &gt;&gt;&gt; generator = lambda txt: TextClip(txt, font=&#39;Georgia-Regular&#39;, fontsize=24, color=&#39;white&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; generator = lambda text: TextClip(text, font=&#39;Georgia-Regular&#39;,</span>
+<span class="sd">    ...                                   font_size=24, color=&#39;white&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; sub = SubtitlesClip(&quot;subtitles.srt&quot;, generator)</span>
+<span class="sd">    &gt;&gt;&gt; sub = SubtitlesClip(&quot;subtitles.srt&quot;, generator, encoding=&#39;utf-8&#39;)</span>
 <span class="sd">    &gt;&gt;&gt; myvideo = VideoFileClip(&quot;myvideo.avi&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; final = CompositeVideoClip([clip, subtitles])</span>
 <span class="sd">    &gt;&gt;&gt; final.write_videofile(&quot;final.mp4&quot;, fps=myvideo.fps)</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subtitles</span><span class="p">,</span> <span class="n">make_textclip</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subtitles</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">make_textclip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">has_constant_size</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subtitles</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">subtitles</span> <span class="o">=</span> <span class="n">file_to_subtitles</span><span class="p">(</span><span class="n">subtitles</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">subtitles</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># `subtitles` is a string or path-like object</span>
+            <span class="n">subtitles</span> <span class="o">=</span> <span class="n">file_to_subtitles</span><span class="p">(</span><span class="n">subtitles</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
 
-        <span class="c1">#subtitles = [(map(cvsecs, tt),txt) for tt, txt in subtitles]</span>
+        <span class="c1"># subtitles = [(map(convert_to_seconds, times), text)</span>
+        <span class="c1">#              for times, text in subtitles]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span> <span class="o">=</span> <span class="n">subtitles</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="o">=</span> <span class="n">font</span>
+
         <span class="k">if</span> <span class="n">make_textclip</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">make_textclip</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">txt</span><span class="p">:</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Georgia-Bold&#39;</span><span class="p">,</span>
-                                        <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
-                                        <span class="n">stroke_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">stroke_width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">font</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Argument font is required if make_textclip is None.&quot;</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">make_textclip</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">TextClip</span><span class="p">(</span>
+                    <span class="n">font</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">font</span><span class="p">,</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span>
+                    <span class="n">font_size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="p">,</span>
+                    <span class="n">stroke_color</span><span class="o">=</span><span class="s2">&quot;#000000&quot;</span><span class="p">,</span>
+                    <span class="n">stroke_width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">make_textclip</span> <span class="o">=</span> <span class="n">make_textclip</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">tb</span> <span class="k">for</span> <span class="p">((</span><span class="n">ta</span><span class="p">,</span><span class="n">tb</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">tb</span> <span class="k">for</span> <span class="p">((</span><span class="n">ta</span><span class="p">,</span> <span class="n">tb</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+
         <span class="k">def</span> <span class="nf">add_textclip_if_none</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot; Will generate a textclip if it hasn&#39;t been generated asked</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Will generate a textclip if it hasn&#39;t been generated asked</span>
 <span class="sd">            to generate it yet. If there is no subtitle to show at t, return</span>
-<span class="sd">            false. &quot;&quot;&quot;</span>
-            <span class="n">sub</span> <span class="o">=</span><span class="p">[((</span><span class="n">ta</span><span class="p">,</span><span class="n">tb</span><span class="p">),</span><span class="n">txt</span><span class="p">)</span> <span class="k">for</span> <span class="p">((</span><span class="n">ta</span><span class="p">,</span><span class="n">tb</span><span class="p">),</span><span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-                   <span class="k">if</span> <span class="p">(</span><span class="n">ta</span><span class="o">&lt;=</span><span class="n">t</span><span class="o">&lt;</span><span class="n">tb</span><span class="p">)]</span>
+<span class="sd">            false.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">sub</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">((</span><span class="n">text_start</span><span class="p">,</span> <span class="n">text_end</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">((</span><span class="n">text_start</span><span class="p">,</span> <span class="n">text_end</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">text_start</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">text_end</span><span class="p">)</span>
+            <span class="p">]</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">sub</span><span class="p">:</span>
-                <span class="n">sub</span> <span class="o">=</span> <span class="p">[((</span><span class="n">ta</span><span class="p">,</span><span class="n">tb</span><span class="p">),</span><span class="n">txt</span><span class="p">)</span> <span class="k">for</span> <span class="p">((</span><span class="n">ta</span><span class="p">,</span><span class="n">tb</span><span class="p">),</span><span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span> <span class="k">if</span>
-                       <span class="p">(</span><span class="n">ta</span><span class="o">&lt;=</span><span class="n">t</span><span class="o">&lt;</span><span class="n">tb</span><span class="p">)]</span>
+                <span class="n">sub</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">((</span><span class="n">text_start</span><span class="p">,</span> <span class="n">text_end</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="p">((</span><span class="n">text_start</span><span class="p">,</span> <span class="n">text_end</span><span class="p">),</span> <span class="n">text</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">text_start</span> <span class="o">&lt;=</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">text_end</span><span class="p">)</span>
+                <span class="p">]</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">sub</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">False</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -234,75 +488,72 @@
 
         <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">add_textclip_if_none</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]]]))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
 
         <span class="k">def</span> <span class="nf">make_mask_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">add_textclip_if_none</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span>
-                    <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]]))</span>
-        
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]])</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
-        <span class="n">hasmask</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_textclip</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_mask_frame</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">hasmask</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="n">hasmask</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_textclip</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_mask_frame</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">hasmask</span> <span class="k">else</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="SubtitlesClip.in_subclip"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.subtitles.SubtitlesClip.in_subclip">[docs]</a>    <span class="k">def</span> <span class="nf">in_subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_start</span><span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a sequence of [(t1,t2), txt] covering all the given subclip</span>
-<span class="sd">        from t_start to t_end. The first and last times will be cropped so as</span>
-<span class="sd">        to be exactly t_start and t_end if possible. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SubtitlesClip.in_subclip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.subtitles.SubtitlesClip.html#moviepy.video.tools.subtitles.SubtitlesClip.in_subclip">[docs]</a>    <span class="k">def</span> <span class="nf">in_subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a sequence of [(t1,t2), text] covering all the given subclip</span>
+<span class="sd">        from start_time to end_time. The first and last times will be cropped so as</span>
+<span class="sd">        to be exactly start_time and end_time if possible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">is_in_subclip</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">is_in_subclip</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">t_start</span><span class="o">&lt;=</span><span class="n">t1</span><span class="o">&lt;</span><span class="n">t_end</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t_start</span><span class="o">&lt;</span> <span class="n">t2</span> <span class="o">&lt;=</span><span class="n">t_end</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">&lt;=</span> <span class="n">t1</span> <span class="o">&lt;</span> <span class="n">end_time</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">&lt;</span> <span class="n">t2</span> <span class="o">&lt;=</span> <span class="n">end_time</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">def</span> <span class="nf">try_cropping</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t_start</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">t_end</span><span class="p">))</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="n">try_cropping</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span> <span class="k">for</span> <span class="p">((</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span>
-                                               <span class="k">if</span> <span class="n">is_in_subclip</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">)]</span></div>
-    
 
+        <span class="k">def</span> <span class="nf">try_cropping</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">start_time</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span>
+
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">(</span><span class="n">try_cropping</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span>
+            <span class="k">for</span> <span class="p">((</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">),</span> <span class="n">txt</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span>
+            <span class="k">if</span> <span class="n">is_in_subclip</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+        <span class="p">]</span></div>
 
     <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">)</span>
-    
-
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
 
-    
-
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">def</span> <span class="nf">to_srt</span><span class="p">(</span><span class="n">sub_element</span><span class="p">):</span>
-            <span class="p">(</span><span class="n">ta</span><span class="p">,</span> <span class="n">tb</span><span class="p">),</span> <span class="n">txt</span> <span class="o">=</span> <span class="n">sub_element</span>
-            <span class="n">fta</span> <span class="o">=</span> <span class="n">cvsecs</span><span class="p">(</span><span class="n">ta</span><span class="p">)</span>
-            <span class="n">ftb</span> <span class="o">=</span> <span class="n">cvsecs</span><span class="p">(</span><span class="n">tb</span><span class="p">)</span>
-            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">fta</span><span class="p">,</span> <span class="n">ftb</span><span class="p">,</span> <span class="n">txt</span><span class="p">)</span>
-        
-        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">to_srt</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">)</span>
-    
+            <span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">),</span> <span class="n">text</span> <span class="o">=</span> <span class="n">sub_element</span>
+            <span class="n">formatted_start_time</span> <span class="o">=</span> <span class="n">convert_to_seconds</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
+            <span class="n">formatted_end_time</span> <span class="o">=</span> <span class="n">convert_to_seconds</span><span class="p">(</span><span class="n">end_time</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">formatted_start_time</span><span class="p">,</span> <span class="n">formatted_end_time</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">to_srt</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SubtitlesClip.match_expr"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.subtitles.SubtitlesClip.html#moviepy.video.tools.subtitles.SubtitlesClip.match_expr">[docs]</a>    <span class="k">def</span> <span class="nf">match_expr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Matches a regular expression against the subtitles of the clip.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">SubtitlesClip</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">sub</span> <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">sub</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="p">[]]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="SubtitlesClip.write_srt"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.subtitles.SubtitlesClip.html#moviepy.video.tools.subtitles.SubtitlesClip.write_srt">[docs]</a>    <span class="k">def</span> <span class="nf">write_srt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes an ``.srt`` file with the content of the clip.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div></div>
 
 
-    <span class="k">def</span> <span class="nf">match_expr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">):</span>
+<div class="viewcode-block" id="file_to_subtitles"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.subtitles.file_to_subtitles.html#moviepy.video.tools.subtitles.file_to_subtitles">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">file_to_subtitles</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a srt file into subtitles.</span>
 
-        <span class="k">return</span> <span class="n">SubtitlesClip</span><span class="p">([</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtitles</span>
-                              <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">!=</span> <span class="p">[]])</span>
-    
-
-    <span class="k">def</span> <span class="nf">write_srt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="file_to_subtitles"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.subtitles.file_to_subtitles">[docs]</a><span class="k">def</span> <span class="nf">file_to_subtitles</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Converts a srt file into subtitles.</span>
-
-<span class="sd">    The returned list is of the form ``[((ta,tb),&#39;some text&#39;),...]``</span>
+<span class="sd">    The returned list is of the form ``[((start_time,end_time),&#39;some text&#39;),...]``</span>
 <span class="sd">    and can be fed to SubtitlesClip.</span>
 
 <span class="sd">    Only works for &#39;.srt&#39; format for the moment.</span>
@@ -310,56 +561,81 @@
     <span class="n">times_texts</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">current_times</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">current_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">times</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;([0-9]*:[0-9]*:[0-9]*,[0-9]*)&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">times</span><span class="p">:</span>
-                <span class="n">current_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">cvsecs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
-                <span class="n">times_texts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_times</span><span class="p">,</span> <span class="n">current_text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)))</span>
+                <span class="n">current_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">times_texts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_times</span><span class="p">,</span> <span class="n">current_text</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)))</span>
                 <span class="n">current_times</span><span class="p">,</span> <span class="n">current_text</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
             <span class="k">elif</span> <span class="n">current_times</span><span class="p">:</span>
                 <span class="n">current_text</span> <span class="o">+=</span> <span class="n">line</span>
     <span class="k">return</span> <span class="n">times_texts</span></div>
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-   
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

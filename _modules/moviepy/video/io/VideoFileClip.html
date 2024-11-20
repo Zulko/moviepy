@@ -1,175 +1,390 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.io.VideoFileClip &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.io.VideoFileClip &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/io/VideoFileClip';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../../../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>moviepy.video.io.VideoFileClip</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.io.VideoFileClip</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for moviepy.video.io.VideoFileClip</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="sd">&quot;&quot;&quot;Implements VideoFileClip, a class for video clips creation using video files.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_path_to_string</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
 
 
-<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A video clip originating from a movie file. For instance: ::</span>
 
 <span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;myHolidays.mp4&quot;)</span>
@@ -179,16 +394,17 @@
 
 
 <span class="sd">    Parameters</span>
-<span class="sd">    ------------</span>
+<span class="sd">    ----------</span>
 
 <span class="sd">    filename:</span>
-<span class="sd">      The name of the video file. It can have any extension supported</span>
-<span class="sd">      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
+<span class="sd">      The name of the video file, as a string or a path-like object.</span>
+<span class="sd">      It can have any extension supported by ffmpeg:</span>
+<span class="sd">      .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
 
 <span class="sd">    has_mask:</span>
 <span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
 <span class="sd">      Video files rarely contain masks, but some video codecs enable</span>
-<span class="sd">      that. For istance if you have a MoviePy VideoClip with a mask you</span>
+<span class="sd">      that. For instance if you have a MoviePy VideoClip with a mask you</span>
 <span class="sd">      can save it to a videofile with a mask. (see also</span>
 <span class="sd">      ``VideoClip.write_videofile`` for more details).</span>
 
@@ -197,7 +413,7 @@
 <span class="sd">      wish to read the audio.</span>
 
 <span class="sd">    target_resolution:</span>
-<span class="sd">      Set to (desired_height, desired_width) to have ffmpeg resize the frames</span>
+<span class="sd">      Set to (desired_width, desired_height) to have ffmpeg resize the frames</span>
 <span class="sd">      before returning them. This is much faster than streaming in high-res</span>
 <span class="sd">      and then resizing. If either dimension is None, the frames are resized</span>
 <span class="sd">      by keeping the existing aspect ratio.</span>
@@ -208,47 +424,72 @@
 <span class="sd">      https://ffmpeg.org/ffmpeg-scaler.html</span>
 
 <span class="sd">    fps_source:</span>
-<span class="sd">      The fps value to collect from the metadata. Set by default to &#39;tbr&#39;, but</span>
-<span class="sd">      can be set to &#39;fps&#39;, which may be helpful if importing slow-motion videos</span>
-<span class="sd">      that get messed up otherwise.</span>
+<span class="sd">      The fps value to collect from the metadata. Set by default to &#39;fps&#39;, but</span>
+<span class="sd">      can be set to &#39;tbr&#39;, which may be helpful if you are finding that it is reading</span>
+<span class="sd">      the incorrect fps from the file.</span>
+
+<span class="sd">    pixel_format</span>
+<span class="sd">      Optional: Pixel format for the video to read. If is not specified</span>
+<span class="sd">      &#39;rgb24&#39; will be used as the default format unless ``has_mask`` is set</span>
+<span class="sd">      as ``True``, then &#39;rgba&#39; will be used.</span>
+
+<span class="sd">    is_mask</span>
+<span class="sd">      `True` if the clip is going to be used as a mask.</span>
 
 
 <span class="sd">    Attributes</span>
-<span class="sd">    -----------</span>
+<span class="sd">    ----------</span>
 
 <span class="sd">    filename:</span>
 <span class="sd">      Name of the original video file.</span>
 
 <span class="sd">    fps:</span>
 <span class="sd">      Frames per second in the original file.</span>
-<span class="sd">    </span>
-<span class="sd">    </span>
+
+
 <span class="sd">    Read docs for Clip() and VideoClip() for other, more generic, attributes.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Lifetime</span>
 <span class="sd">    --------</span>
-<span class="sd">    </span>
-<span class="sd">    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call</span>
-<span class="sd">    close() afterwards, or the subresources will not be cleaned up until the process ends.</span>
-<span class="sd">    </span>
-<span class="sd">    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  </span>
+
+<span class="sd">    Note that this creates subprocesses and locks files. If you construct one</span>
+<span class="sd">    of these instances, you must call close() afterwards, or the subresources</span>
+<span class="sd">    will not be cleaned up until the process ends.</span>
+
+<span class="sd">    If copies are made, and close() is called on one, it may cause methods on</span>
+<span class="sd">    the other copies to fail.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">audio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">audio_buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span>
-                 <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resize_algorithm</span><span class="o">=</span><span class="s1">&#39;bicubic&#39;</span><span class="p">,</span>
-                 <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">fps_source</span><span class="o">=</span><span class="s1">&#39;tbr&#39;</span><span class="p">):</span>
-
-        <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">decode_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">has_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">audio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">audio_buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span>
+        <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">resize_algorithm</span><span class="o">=</span><span class="s2">&quot;bicubic&quot;</span><span class="p">,</span>
+        <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>
+        <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">fps_source</span><span class="o">=</span><span class="s2">&quot;fps&quot;</span><span class="p">,</span>
+        <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="n">is_mask</span><span class="p">)</span>
 
         <span class="c1"># Make a reader</span>
-        <span class="n">pix_fmt</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="n">pix_fmt</span><span class="p">,</span>
-                                         <span class="n">target_resolution</span><span class="o">=</span><span class="n">target_resolution</span><span class="p">,</span>
-                                         <span class="n">resize_algo</span><span class="o">=</span><span class="n">resize_algorithm</span><span class="p">,</span>
-                                         <span class="n">fps_source</span><span class="o">=</span><span class="n">fps_source</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
+            <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">,</span>
+            <span class="n">decode_file</span><span class="o">=</span><span class="n">decode_file</span><span class="p">,</span>
+            <span class="n">pixel_format</span><span class="o">=</span><span class="n">pixel_format</span><span class="p">,</span>
+            <span class="n">target_resolution</span><span class="o">=</span><span class="n">target_resolution</span><span class="p">,</span>
+            <span class="n">resize_algo</span><span class="o">=</span><span class="n">resize_algorithm</span><span class="p">,</span>
+            <span class="n">fps_source</span><span class="o">=</span><span class="n">fps_source</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make some of the reader&#39;s attributes accessible from the clip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
@@ -258,30 +499,46 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">rotation</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
 
         <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,:</span><span class="mi">3</span><span class="p">]</span>
-            <span class="n">mask_mf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoClip</span><span class="p">(</span><span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="n">mask_mf</span><span class="p">)</span>
-                         <span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
+            <span class="k">def</span> <span class="nf">mask_make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">255.0</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span>
+                <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="n">mask_make_frame</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
 
         <span class="k">else</span><span class="p">:</span>
-
             <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
         <span class="c1"># Make a reader for the audio, if any.</span>
-        <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s1">&#39;audio_found&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;audio_found&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span>
+                <span class="n">filename</span><span class="p">,</span>
+                <span class="n">buffersize</span><span class="o">=</span><span class="n">audio_buffersize</span><span class="p">,</span>
+                <span class="n">fps</span><span class="o">=</span><span class="n">audio_fps</span><span class="p">,</span>
+                <span class="n">nbytes</span><span class="o">=</span><span class="n">audio_nbytes</span><span class="p">,</span>
+            <span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
-                                       <span class="n">buffersize</span><span class="o">=</span><span class="n">audio_buffersize</span><span class="p">,</span>
-                                       <span class="n">fps</span><span class="o">=</span><span class="n">audio_fps</span><span class="p">,</span>
-                                       <span class="n">nbytes</span><span class="o">=</span><span class="n">audio_nbytes</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Implements ``copy.deepcopy(clip)`` behaviour as ``copy.copy(clip)``.</span>
 
-<div class="viewcode-block" id="VideoFileClip.close"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Close the internal reader. &quot;&quot;&quot;</span>
+<span class="sd">        VideoFileClip class instances can&#39;t be deeply copied because the locked Thread</span>
+<span class="sd">        of ``proc`` isn&#39;t pickleable. Without this override, calls to</span>
+<span class="sd">        ``copy.deepcopy(clip)`` would raise a ``TypeError``:</span>
+
+<span class="sd">        ```</span>
+<span class="sd">        TypeError: cannot pickle &#39;_thread.lock&#39; object</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="VideoFileClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the internal reader.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
@@ -290,47 +547,72 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
             <span class="k">pass</span></div></div>
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-   
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

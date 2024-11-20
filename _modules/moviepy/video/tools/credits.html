@@ -1,204 +1,421 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.tools.credits &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.tools.credits &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/tools/credits';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../../../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>moviepy.video.tools.credits</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.tools.credits</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for moviepy.video.tools.credits</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module contains different functions to make end and opening</span>
-<span class="sd">credits, even though it is difficult to fill everyone needs in this</span>
-<span class="sd">matter.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Contains different functions to make end and opening credits, even though it is</span>
+<span class="sd">difficult to fill everyone needs in this matter.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_path_to_string</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.resize</span> <span class="kn">import</span> <span class="n">resize</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.fx.Resize</span> <span class="kn">import</span> <span class="n">Resize</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">TextClip</span>
 
 
-<div class="viewcode-block" id="credits1"><a class="viewcode-back" href="../../../../ref/videotools.html#moviepy.video.tools.credits.credits1">[docs]</a><span class="k">def</span> <span class="nf">credits1</span><span class="p">(</span><span class="n">creditfile</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">stroke_color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
-             <span class="n">stroke_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Impact-Normal&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">gap</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CreditsClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.credits.CreditsClip.html#moviepy.video.tools.credits.CreditsClip">[docs]</a><span class="k">class</span> <span class="nc">CreditsClip</span><span class="p">(</span><span class="n">TextClip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Credits clip.</span>
 
 <span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
-<span class="sd">    </span>
+<span class="sd">    ----------</span>
+
 <span class="sd">    creditfile</span>
-<span class="sd">      A text file whose content must be as follows: ::</span>
-<span class="sd">        </span>
+<span class="sd">      A string or path like object pointing to a text file</span>
+<span class="sd">      whose content must be as follows: ::</span>
+
 <span class="sd">        # This is a comment</span>
 <span class="sd">        # The next line says : leave 4 blank lines</span>
 <span class="sd">        .blank 4</span>
-<span class="sd">        </span>
+
 <span class="sd">        ..Executive Story Editor</span>
 <span class="sd">        MARCEL DURAND</span>
-<span class="sd">        </span>
+
 <span class="sd">        ..Associate Producers</span>
 <span class="sd">        MARTIN MARCEL</span>
 <span class="sd">        DIDIER MARTIN</span>
-<span class="sd">        </span>
+
 <span class="sd">        ..Music Supervisor</span>
 <span class="sd">        JEAN DIDIER</span>
-<span class="sd">    </span>
+
+
 <span class="sd">    width</span>
 <span class="sd">      Total width of the credits text in pixels</span>
-<span class="sd">      </span>
+
 <span class="sd">    gap</span>
 <span class="sd">      Horizontal gap in pixels between the jobs and the names</span>
-<span class="sd">    </span>
+
 <span class="sd">    color</span>
 <span class="sd">      Color of the text. See ``TextClip.list(&#39;color&#39;)``</span>
 <span class="sd">      for a list of acceptable names.</span>
@@ -207,7 +424,7 @@
 <span class="sd">      Name of the font to use. See ``TextClip.list(&#39;font&#39;)`` for</span>
 <span class="sd">      the list of fonts you can use on your computer.</span>
 
-<span class="sd">    fontsize</span>
+<span class="sd">    font_size</span>
 <span class="sd">      Size of font to use</span>
 
 <span class="sd">    stroke_color</span>
@@ -216,105 +433,153 @@
 
 <span class="sd">    stroke_width</span>
 <span class="sd">      Width of the stroke, in pixels. Can be a float, like 1.5.</span>
-<span class="sd">    </span>
-<span class="sd">        </span>
+
+<span class="sd">    bg_color</span>
+<span class="sd">      Color of the background. If ``None``, the background will be transparent.</span>
+
 <span class="sd">    Returns</span>
-<span class="sd">    ---------</span>
-<span class="sd">    </span>
+<span class="sd">    -------</span>
+
 <span class="sd">    image</span>
 <span class="sd">      An ImageClip instance that looks like this and can be scrolled</span>
-<span class="sd">      to make some credits:</span>
+<span class="sd">      to make some credits: ::</span>
 
 <span class="sd">          Executive Story Editor    MARCEL DURAND</span>
 <span class="sd">             Associate Producers    MARTIN MARCEL</span>
 <span class="sd">                                    DIDIER MARTIN</span>
 <span class="sd">                Music Supervisor    JEAN DIDIER</span>
-<span class="sd">              </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># PARSE THE TXT FILE</span>
-    <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">oneline</span> <span class="o">=</span> <span class="kc">True</span>
-    
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">creditfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">)):</span>
-                <span class="c1"># exclude blank lines or comments</span>
-                <span class="k">continue</span>
-            <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;.blank&#39;</span><span class="p">):</span>
-                <span class="c1"># ..blank n  </span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])):</span>
-                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">):</span>
-                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">l</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="s1">&#39;&#39;</span><span class="p">])</span>
-                <span class="n">oneline</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">elif</span> <span class="n">oneline</span><span class="p">:</span>
-                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
-                <span class="n">oneline</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">])</span>
-       
-    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">texts</span><span class="p">))</span>
-    
-    <span class="c1"># MAKE TWO COLUMNS FOR THE CREDITS    </span>
-    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">[</span><span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">stroke_color</span><span class="o">=</span><span class="n">stroke_color</span><span class="p">,</span>
-                            <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
-                            <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="n">al</span><span class="p">)</span>
-                   <span class="k">for</span> <span class="n">txt</span><span class="p">,</span> <span class="n">al</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;East&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="s1">&#39;West&#39;</span><span class="p">)]]</span>
+    <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;creditfile&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">creditfile</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+        <span class="n">stroke_color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span>
+        <span class="n">stroke_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">font</span><span class="o">=</span><span class="s2">&quot;Impact-Normal&quot;</span><span class="p">,</span>
+        <span class="n">font_size</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+        <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">gap</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Parse the .txt file</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">one_line</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="mi">0</span><span class="p">))],</span>
-                            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
-                            <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    
-    <span class="c1"># SCALE TO THE REQUIRED SIZE</span>
-    
-    <span class="n">scaled</span> <span class="o">=</span> <span class="n">resize</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
-    
-    <span class="c1"># TRANSFORM THE WHOLE CREDIT CLIP INTO AN ImageCLip</span>
-    
-    <span class="n">imclip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-    <span class="n">amask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">imclip</span><span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">amask</span><span class="p">)</span></div>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">creditfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;#&quot;</span><span class="p">)):</span>
+                    <span class="c1"># exclude blank lines or comments</span>
+                    <span class="k">continue</span>
+                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.blank&quot;</span><span class="p">):</span>
+                    <span class="c1"># ..blank n</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])):</span>
+                        <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">):</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">line</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="s2">&quot;&quot;</span><span class="p">])</span>
+                    <span class="n">one_line</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">elif</span> <span class="n">one_line</span><span class="p">:</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">])</span>
+                    <span class="n">one_line</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">texts</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">])</span>
+
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">texts</span><span class="p">))</span>
+
+        <span class="c1"># Make two columns for the credits</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">TextClip</span><span class="p">(</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="n">stroke_color</span><span class="o">=</span><span class="n">stroke_color</span><span class="p">,</span>
+                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
+                <span class="n">text_align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">txt</span><span class="p">,</span> <span class="n">align</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">left</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">),</span> <span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)]</span>
+        <span class="p">]</span>
+
+        <span class="n">both_columns</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="mi">0</span><span class="p">))],</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">right</span><span class="o">.</span><span class="n">w</span> <span class="o">+</span> <span class="n">gap</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">h</span><span class="p">),</span>
+            <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Scale to the required size</span>
+        <span class="n">scaled</span> <span class="o">=</span> <span class="n">both_columns</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">Resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)])</span>
+
+        <span class="c1"># Transform the CompositeVideoClip into an ImageClip</span>
+
+        <span class="c1"># Calls ImageClip.__init__()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TextClip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="n">scaled</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-   
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

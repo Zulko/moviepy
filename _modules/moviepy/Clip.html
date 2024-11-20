@@ -1,244 +1,455 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.Clip &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.Clip &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/Clip';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-        
-      <li>moviepy.Clip</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.Clip</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for moviepy.Clip</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module implements the central object of MoviePy, the Clip, and</span>
-<span class="sd">all the methods that are common to the two subclasses of Clip, VideoClip</span>
-<span class="sd">and AudioClip.</span>
+<span></span><span class="sd">&quot;&quot;&quot;Implements the central object of MoviePy, the Clip, and all the methods that</span>
+<span class="sd">are common to the two subclasses of Clip, VideoClip and AudioClip.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">copy</span> <span class="k">as</span> <span class="nn">_copy</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">add</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">List</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">proglog</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="p">(</span><span class="n">apply_to_audio</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="p">,</span>
-                                <span class="n">convert_to_seconds</span><span class="p">,</span> <span class="n">outplace</span><span class="p">,</span>
-                                <span class="n">requires_duration</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Clip"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip">[docs]</a><span class="k">class</span> <span class="nc">Clip</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">apply_to_audio</span><span class="p">,</span>
+    <span class="n">apply_to_mask</span><span class="p">,</span>
+    <span class="n">convert_parameter_to_seconds</span><span class="p">,</span>
+    <span class="n">outplace</span><span class="p">,</span>
+    <span class="n">requires_duration</span><span class="p">,</span>
+    <span class="n">use_clip_fps_by_default</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="sd">     Base class of all clips (VideoClips and AudioClips).</span>
 
+<div class="viewcode-block" id="Clip"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip">[docs]</a><span class="k">class</span> <span class="nc">Clip</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class of all clips (VideoClips and AudioClips).</span>
 
-<span class="sd">     Attributes</span>
-<span class="sd">     -----------</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
 
-<span class="sd">     start:</span>
-<span class="sd">       When the clip is included in a composition, time of the</span>
-<span class="sd">       composition at which the clip starts playing (in seconds).</span>
+<span class="sd">    start : float</span>
+<span class="sd">      When the clip is included in a composition, time of the</span>
+<span class="sd">      composition at which the clip starts playing (in seconds).</span>
 
-<span class="sd">     end:</span>
-<span class="sd">       When the clip is included in a composition, time of the</span>
-<span class="sd">       composition at which the clip stops playing (in seconds).</span>
+<span class="sd">    end : float</span>
+<span class="sd">      When the clip is included in a composition, time of the</span>
+<span class="sd">      composition at which the clip stops playing (in seconds).</span>
 
-<span class="sd">     duration:</span>
-<span class="sd">       Duration of the clip (in seconds). Some clips are infinite, in</span>
-<span class="sd">       this case their duration will be ``None``.</span>
+<span class="sd">    duration : float</span>
+<span class="sd">      Duration of the clip (in seconds). Some clips are infinite, in</span>
+<span class="sd">      this case their duration will be ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-<span class="sd">     &quot;&quot;&quot;</span>
-   
     <span class="c1"># prefix for all temporary video and audio files.</span>
-    <span class="c1"># You can overwrite it with </span>
+    <span class="c1"># You can overwrite it with</span>
     <span class="c1"># &gt;&gt;&gt; Clip._TEMP_FILES_PREFIX = &quot;temp_&quot;</span>
 
-    <span class="n">_TEMP_FILES_PREFIX</span> <span class="o">=</span> <span class="s1">&#39;TEMP_MPY_&#39;</span>
+    <span class="n">_TEMP_FILES_PREFIX</span> <span class="o">=</span> <span class="s2">&quot;TEMP_MPY_&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">memoize</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memoized_t</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">memoize_frame</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">memoized_frame</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Clip.copy"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Shallow copy of the clip. </span>
-<span class="sd">        </span>
-<span class="sd">        Returns a shallow copy of the clip whose mask and audio will</span>
-<span class="sd">        be shallow copies of the clip&#39;s mask and audio if they exist.</span>
+<div class="viewcode-block" id="Clip.copy"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allows the usage of ``.copy()`` in clips as chained methods invocation.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<span class="sd">        This method is intensively used to produce new clips every time</span>
-<span class="sd">        there is an outplace transformation of the clip (clip.resize,</span>
-<span class="sd">        clip.subclip, etc.)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">newclip</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">):</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">):</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="n">newclip</span></div>
-
-<div class="viewcode-block" id="Clip.get_frame"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.get_frame">[docs]</a>    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="Clip.get_frame"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.get_frame">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
     <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets a numpy array representing the RGB picture of the clip at time t</span>
-<span class="sd">        or (mono or stereo) value for a sound clip</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets a numpy array representing the RGB picture of the clip,</span>
+<span class="sd">        or (mono or stereo) value for a sound clip, at time ``t``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        t : float or tuple or str</span>
+<span class="sd">          Moment of the clip whose frame will be returned.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Coming soon: smart error handling for debugging at this point</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">memoize</span><span class="p">:</span>
@@ -252,82 +463,84 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Clip.fl"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.fl">[docs]</a>    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; General processing of a clip.</span>
+<div class="viewcode-block" id="Clip.transform"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;General processing of a clip.</span>
 
 <span class="sd">        Returns a new Clip whose frames are a transformation</span>
-<span class="sd">        (through function ``fun``) of the frames of the current clip.</span>
+<span class="sd">        (through function ``func``) of the frames of the current clip.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
+<span class="sd">        ----------</span>
 
-<span class="sd">        fun</span>
+<span class="sd">        func : function</span>
 <span class="sd">          A function with signature (gf,t -&gt; frame) where ``gf`` will</span>
 <span class="sd">          represent the current clip&#39;s ``get_frame`` method,</span>
 <span class="sd">          i.e. ``gf`` is a function (t-&gt;image). Parameter `t` is a time</span>
 <span class="sd">          in seconds, `frame` is a picture (=Numpy array) which will be</span>
 <span class="sd">          returned by the transformed clip (see examples below).</span>
 
-<span class="sd">        apply_to</span>
+<span class="sd">        apply_to : {&quot;mask&quot;, &quot;audio&quot;, [&quot;mask&quot;, &quot;audio&quot;]}, optional</span>
 <span class="sd">          Can be either ``&#39;mask&#39;``, or ``&#39;audio&#39;``, or</span>
 <span class="sd">          ``[&#39;mask&#39;,&#39;audio&#39;]``.</span>
-<span class="sd">          Specifies if the filter ``fl`` should also be applied to the</span>
+<span class="sd">          Specifies if the filter should also be applied to the</span>
 <span class="sd">          audio or the mask of the clip, if any.</span>
 
-<span class="sd">        keep_duration</span>
+<span class="sd">        keep_duration : bool, optional</span>
 <span class="sd">          Set to True if the transformation does not change the</span>
 <span class="sd">          ``duration`` of the clip.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        In the following ``newclip`` a 100 pixels-high clip whose video</span>
+<span class="sd">        In the following ``new_clip`` a 100 pixels-high clip whose video</span>
 <span class="sd">        content scrolls from the top to the bottom of the frames of</span>
-<span class="sd">        ``clip``.</span>
+<span class="sd">        ``clip`` at 50 pixels per second.</span>
 
-<span class="sd">        &gt;&gt;&gt; fl = lambda gf,t : gf(t)[int(t):int(t)+50, :]</span>
-<span class="sd">        &gt;&gt;&gt; newclip = clip.fl(fl, apply_to=&#39;mask&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]</span>
+<span class="sd">        &gt;&gt;&gt; new_clip = clip.transform(filter, apply_to=&#39;mask&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">apply_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">apply_to</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="c1">#mf = copy(self.make_frame)</span>
-        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_make_frame</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">fun</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+        <span class="c1"># mf = copy(self.make_frame)</span>
+        <span class="n">new_clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_make_frame</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">keep_duration</span><span class="p">:</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">new_clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">new_clip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">apply_to</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">apply_to</span> <span class="o">=</span> <span class="p">[</span><span class="n">apply_to</span><span class="p">]</span>
 
-        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">apply_to</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> 
-            <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>    
-                <span class="n">new_a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span><span class="p">)</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">new_a</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">apply_to</span><span class="p">:</span>
+            <span class="n">attribute_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">new_clip</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attribute_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_attribute_value</span> <span class="o">=</span> <span class="n">attribute_value</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+                    <span class="n">func</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span>
+                <span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">new_clip</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">new_attribute_value</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">newclip</span></div>
+        <span class="k">return</span> <span class="n">new_clip</span></div>
 
-<div class="viewcode-block" id="Clip.fl_time"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.fl_time">[docs]</a>    <span class="k">def</span> <span class="nf">fl_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Clip.time_transform"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform">[docs]</a>    <span class="k">def</span> <span class="nf">time_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a Clip instance playing the content of the current clip</span>
-<span class="sd">        but with a modified timeline, time ``t`` being replaced by another</span>
-<span class="sd">        time `t_func(t)`.</span>
+<span class="sd">        but with a modified timeline, time ``t`` being replaced by the return</span>
+<span class="sd">        of `time_func(t)`.</span>
 
 <span class="sd">        Parameters</span>
-<span class="sd">        -----------</span>
+<span class="sd">        ----------</span>
 
-<span class="sd">        t_func:</span>
-<span class="sd">          A function ``t-&gt; new_t``</span>
+<span class="sd">        time_func : function</span>
+<span class="sd">          A function ``t -&gt; new_t``.</span>
 
-<span class="sd">        apply_to:</span>
+<span class="sd">        apply_to : {&quot;mask&quot;, &quot;audio&quot;, [&quot;mask&quot;, &quot;audio&quot;]}, optional</span>
 <span class="sd">          Can be either &#39;mask&#39;, or &#39;audio&#39;, or [&#39;mask&#39;,&#39;audio&#39;].</span>
-<span class="sd">          Specifies if the filter ``fl`` should also be applied to the</span>
+<span class="sd">          Specifies if the filter ``transform`` should also be applied to the</span>
 <span class="sd">          audio or the mask of the clip, if any.</span>
 
-<span class="sd">        keep_duration:</span>
+<span class="sd">        keep_duration : bool, optional</span>
 <span class="sd">          ``False`` (default) if the transformation modifies the</span>
 <span class="sd">          ``duration`` of the clip.</span>
 
@@ -335,160 +548,378 @@
 <span class="sd">        --------</span>
 
 <span class="sd">        &gt;&gt;&gt; # plays the clip (and its mask and sound) twice faster</span>
-<span class="sd">        &gt;&gt;&gt; newclip = clip.fl_time(lambda: 2*t, apply_to=[&#39;mask&#39;, &#39;audio&#39;])</span>
+<span class="sd">        &gt;&gt;&gt; new_clip = clip.time_transform(lambda t: 2*t, apply_to=[&#39;mask&#39;, &#39;audio&#39;])</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; # plays the clip starting at t=3, and backwards:</span>
-<span class="sd">        &gt;&gt;&gt; newclip = clip.fl_time(lambda: 3-t)</span>
+<span class="sd">        &gt;&gt;&gt; new_clip = clip.time_transform(lambda t: 3-t)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">apply_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">apply_to</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl</span><span class="p">(</span><span class="k">lambda</span> <span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">gf</span><span class="p">(</span><span class="n">t_func</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span> <span class="n">apply_to</span><span class="p">,</span>
-                       <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">time_func</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span>
+            <span class="n">apply_to</span><span class="p">,</span>
+            <span class="n">keep_duration</span><span class="o">=</span><span class="n">keep_duration</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Clip.fx"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.fx">[docs]</a>    <span class="k">def</span> <span class="nf">fx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Clip.with_effects"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_effects">[docs]</a>    <span class="k">def</span> <span class="nf">with_effects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">effects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Effect&quot;</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy of the current clip with the effects applied</span>
 
-<span class="sd">        Returns the result of ``func(self, *args, **kwargs)``.</span>
-<span class="sd">        for instance</span>
+<span class="sd">        &gt;&gt;&gt; new_clip = clip.with_effects([vfx.Resize(0.2, method=&quot;bilinear&quot;)])</span>
 
-<span class="sd">        &gt;&gt;&gt; newclip = clip.fx(resize, 0.2, method=&#39;bilinear&#39;)</span>
+<span class="sd">        You can also pass multiple effect as a list</span>
 
-<span class="sd">        is equivalent to</span>
-
-<span class="sd">        &gt;&gt;&gt; newclip = resize(clip, 0.2, method=&#39;bilinear&#39;)</span>
-
-<span class="sd">        The motivation of fx is to keep the name of the effect near its</span>
-<span class="sd">        parameters, when the effects are chained:</span>
-
-<span class="sd">        &gt;&gt;&gt; from moviepy.video.fx import volumex, resize, mirrorx</span>
-<span class="sd">        &gt;&gt;&gt; clip.fx( volumex, 0.5).fx( resize, 0.3).fx( mirrorx )</span>
-<span class="sd">        &gt;&gt;&gt; # Is equivalent, but clearer than</span>
-<span class="sd">        &gt;&gt;&gt; resize( volumex( mirrorx( clip ), 0.5), 0.3)</span>
-
+<span class="sd">        &gt;&gt;&gt; clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">effect</span> <span class="ow">in</span> <span class="n">effects</span><span class="p">:</span>
+            <span class="c1"># We always copy effect before using it, see Effect.copy</span>
+            <span class="c1"># to see why we need to</span>
+            <span class="n">effect_copy</span> <span class="o">=</span> <span class="n">effect</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_clip</span> <span class="o">=</span> <span class="n">effect_copy</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">new_clip</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">new_clip</span></div>
 
-
-
-<div class="viewcode-block" id="Clip.set_start"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_start">[docs]</a>    <span class="nd">@apply_to_mask</span>
+<div class="viewcode-block" id="Clip.with_start"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_start">[docs]</a>    <span class="nd">@apply_to_mask</span>
     <span class="nd">@apply_to_audio</span>
-    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a copy of the clip, with the ``start`` attribute set</span>
+    <span class="k">def</span> <span class="nf">with_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the clip, with the ``start`` attribute set</span>
 <span class="sd">        to ``t``, which can be expressed in seconds (15.35), in (min, sec),</span>
 <span class="sd">        in (hour, min, sec), or as a string: &#39;01:03:05.35&#39;.</span>
 
-
-<span class="sd">        If ``change_end=True`` and the clip has a ``duration`` attribute,</span>
-<span class="sd">        the ``end`` atrribute of the clip will be updated to</span>
-<span class="sd">        ``start+duration``.</span>
-
-<span class="sd">        If ``change_end=False`` and the clip has a ``end`` attribute,</span>
-<span class="sd">        the ``duration`` attribute of the clip will be updated to</span>
-<span class="sd">        ``end-start``</span>
-
 <span class="sd">        These changes are also applied to the ``audio`` and ``mask``</span>
 <span class="sd">        clips of the current clip, if they exist.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        t : float or tuple or str</span>
+<span class="sd">          New ``start`` attribute value for the clip.</span>
+
+<span class="sd">        change_end : bool optional</span>
+<span class="sd">          Indicates if the ``end`` attribute value must be changed accordingly,</span>
+<span class="sd">          if possible. If ``change_end=True`` and the clip has a ``duration``</span>
+<span class="sd">          attribute, the ``end`` attribute of the clip will be updated to</span>
+<span class="sd">          ``start + duration``. If ``change_end=False`` and the clip has a</span>
+<span class="sd">          ``end`` attribute, the ``duration`` attribute of the clip will be</span>
+<span class="sd">          updated to ``end - start``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">t</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">change_end</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span></div>
 
-
-
-<div class="viewcode-block" id="Clip.set_end"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_end">[docs]</a>    <span class="nd">@apply_to_mask</span>
+<div class="viewcode-block" id="Clip.with_end"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_end">[docs]</a>    <span class="nd">@apply_to_mask</span>
     <span class="nd">@apply_to_audio</span>
-    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a copy of the clip, with the ``end`` attribute set to</span>
-<span class="sd">        ``t``, which can be expressed in seconds (15.35), in (min, sec),</span>
-<span class="sd">        in (hour, min, sec), or as a string: &#39;01:03:05.35&#39;.</span>
-<span class="sd">        Also sets the duration of the mask and audio, if any,</span>
-<span class="sd">        of the returned clip.</span>
+    <span class="k">def</span> <span class="nf">with_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the clip, with the ``end`` attribute set to ``t``,</span>
+<span class="sd">        which can be expressed in seconds (15.35), in (min, sec), in</span>
+<span class="sd">        (hour, min, sec), or as a string: &#39;01:03:05.35&#39;. Also sets the duration</span>
+<span class="sd">        of the mask and audio, if any, of the returned clip.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        t : float or tuple or str</span>
+<span class="sd">          New ``end`` attribute value for the clip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">t</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span> <span class="o">-</span> <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span></div>
 
-
-
-<div class="viewcode-block" id="Clip.set_duration"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_duration">[docs]</a>    <span class="nd">@apply_to_mask</span>
+<div class="viewcode-block" id="Clip.with_duration"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_duration">[docs]</a>    <span class="nd">@apply_to_mask</span>
     <span class="nd">@apply_to_audio</span>
-    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
+    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;duration&quot;</span><span class="p">])</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a copy of the clip, with the  ``duration`` attribute</span>
-<span class="sd">        set to ``t``, which can be expressed in seconds (15.35), in (min, sec),</span>
-<span class="sd">        in (hour, min, sec), or as a string: &#39;01:03:05.35&#39;.</span>
-<span class="sd">        Also sets the duration of the mask and audio, if any, of the</span>
-<span class="sd">        returned clip.</span>
-<span class="sd">        If change_end is False, the start attribute of the clip will</span>
-<span class="sd">        be modified in function of the duration and the preset end</span>
-<span class="sd">        of the clip.</span>
+    <span class="k">def</span> <span class="nf">with_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the clip, with the  ``duration`` attribute set to</span>
+<span class="sd">        ``t``, which can be expressed in seconds (15.35), in (min, sec), in</span>
+<span class="sd">        (hour, min, sec), or as a string: &#39;01:03:05.35&#39;. Also sets the duration</span>
+<span class="sd">        of the mask and audio, if any, of the returned clip.</span>
+
+<span class="sd">        If ``change_end is False``, the start attribute of the clip will be</span>
+<span class="sd">        modified in function of the duration and the preset end of the clip.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        duration : float</span>
+<span class="sd">          New duration attribute value for the clip.</span>
+
+<span class="sd">        change_end : bool, optional</span>
+<span class="sd">          If ``True``, the ``end`` attribute value of the clip will be adjusted</span>
+<span class="sd">          accordingly to the new duration using ``clip.start + duration``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
 
         <span class="k">if</span> <span class="n">change_end</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">duration</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Cannot change clip start when new&quot;</span>
-                                <span class="s2">&quot;duration is None&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="n">t</span></div>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot change clip start when new duration is None&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">-</span> <span class="n">duration</span></div>
 
-
-<div class="viewcode-block" id="Clip.set_make_frame"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_make_frame">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_make_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets a ``make_frame`` attribute for the clip. Useful for setting</span>
+<div class="viewcode-block" id="Clip.with_make_frame"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_make_frame">[docs]</a>    <span class="nd">@outplace</span>
+    <span class="k">def</span> <span class="nf">with_make_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets a ``make_frame`` attribute for the clip. Useful for setting</span>
 <span class="sd">        arbitrary/complicated videoclips.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        make_frame : function</span>
+<span class="sd">          New frame creator function for the clip.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span></div>
 
-<div class="viewcode-block" id="Clip.set_fps"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_fps">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_fps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a copy of the clip with a new default fps for functions like</span>
-<span class="sd">        write_videofile, iterframe, etc. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span></div>
+<div class="viewcode-block" id="Clip.with_fps"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_fps">[docs]</a>    <span class="k">def</span> <span class="nf">with_fps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">change_duration</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a copy of the clip with a new default fps for functions like</span>
+<span class="sd">        write_videofile, iterframe, etc.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
 
-<div class="viewcode-block" id="Clip.set_ismask"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_ismask">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_ismask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ismask</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Says wheter the clip is a mask or not (ismask is a boolean)&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span> <span class="o">=</span> <span class="n">ismask</span></div>
+<span class="sd">        fps : int</span>
+<span class="sd">          New ``fps`` attribute value for the clip.</span>
 
-<div class="viewcode-block" id="Clip.set_memoize"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.set_memoize">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">set_memoize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memoize</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Sets wheter the clip should keep the last frame read in memory &quot;&quot;&quot;</span>
+<span class="sd">        change_duration : bool, optional</span>
+<span class="sd">          If ``change_duration=True``, then the video speed will change to</span>
+<span class="sd">          match the new fps (conserving all frames 1:1). For example, if the</span>
+<span class="sd">          fps is halved in this mode, the duration will be doubled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">change_duration</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">moviepy.video.fx.MultiplySpeed</span> <span class="kn">import</span> <span class="n">MultiplySpeed</span>
+
+            <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="n">fps</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="n">newclip</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
+        <span class="k">return</span> <span class="n">newclip</span></div>
+
+<div class="viewcode-block" id="Clip.with_is_mask"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_is_mask">[docs]</a>    <span class="nd">@outplace</span>
+    <span class="k">def</span> <span class="nf">with_is_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_mask</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Says whether the clip is a mask or not.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        is_mask : bool</span>
+<span class="sd">          New ``is_mask`` attribute value for the clip.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_mask</span> <span class="o">=</span> <span class="n">is_mask</span></div>
+
+<div class="viewcode-block" id="Clip.with_memoize"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_memoize">[docs]</a>    <span class="nd">@outplace</span>
+    <span class="k">def</span> <span class="nf">with_memoize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memoize</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets whether the clip should keep the last frame read in memory.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        memoize : bool</span>
+<span class="sd">          Indicates if the clip should keep the last frame read in memory.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">memoize</span> <span class="o">=</span> <span class="n">memoize</span></div>
 
-<div class="viewcode-block" id="Clip.is_playing"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.is_playing">[docs]</a>    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t&#39;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">is_playing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Clip.with_subclip"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_subclip">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;end_time&quot;</span><span class="p">])</span>
+    <span class="nd">@apply_to_mask</span>
+    <span class="nd">@apply_to_audio</span>
+    <span class="k">def</span> <span class="nf">with_subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a clip playing the content of the current clip between times</span>
+<span class="sd">        ``start_time`` and ``end_time``, which can be expressed in seconds</span>
+<span class="sd">        (15.35), in (min, sec), in (hour, min, sec), or as a string:</span>
+<span class="sd">        &#39;01:03:05.35&#39;.</span>
 
-<span class="sd">        If t is a time, returns true if t is between the start and</span>
-<span class="sd">        the end of the clip. t can be expressed in seconds (15.35),</span>
-<span class="sd">        in (min, sec), in (hour, min, sec), or as a string: &#39;01:03:05.35&#39;.</span>
-<span class="sd">        If t is a numpy array, returns False if none of the t is in</span>
-<span class="sd">        theclip, else returns a vector [b_1, b_2, b_3...] where b_i</span>
-<span class="sd">        is true iff tti is in the clip.</span>
+<span class="sd">        The ``mask`` and ``audio`` of the resulting subclip will be subclips of</span>
+<span class="sd">        ``mask`` and ``audio`` the original clip, if they exist.</span>
+
+<span class="sd">        It&#39;s equivalent to slice the clip as a sequence, like</span>
+<span class="sd">        ``clip[t_start:t_end]``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        start_time : float or tuple or str, optional</span>
+<span class="sd">          Moment that will be chosen as the beginning of the produced clip. If</span>
+<span class="sd">          is negative, it is reset to ``clip.duration + start_time``.</span>
+
+<span class="sd">        end_time : float or tuple or str, optional</span>
+<span class="sd">          Moment that will be chosen as the end of the produced clip. If not</span>
+<span class="sd">          provided, it is assumed to be the duration of the clip (potentially</span>
+<span class="sd">          infinite). If is negative, it is reset to ``clip.duration + end_time``.</span>
+<span class="sd">          For instance:</span>
+
+<span class="sd">          &gt;&gt;&gt; # cut the last two seconds of the clip:</span>
+<span class="sd">          &gt;&gt;&gt; new_clip = clip.with_subclip(0, -2)</span>
+
+<span class="sd">          If ``end_time`` is provided or if the clip has a duration attribute,</span>
+<span class="sd">          the duration of the returned clip is set automatically.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Make this more Python-like, a negative value means to move</span>
+            <span class="c1"># backward from the end of the clip</span>
+            <span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">start_time</span>  <span class="c1"># Remember start_time is negative</span>
 
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;start_time (</span><span class="si">%.02f</span><span class="s2">) &quot;</span> <span class="o">%</span> <span class="n">start_time</span>
+                <span class="o">+</span> <span class="s2">&quot;should be smaller than the clip&#39;s &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;duration (</span><span class="si">%.02f</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+            <span class="p">)</span>
+
+        <span class="n">new_clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[])</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">end_time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="s2">&quot;Subclip with negative times (here </span><span class="si">%s</span><span class="s2">)&quot;</span>
+                        <span class="s2">&quot; can only be extracted from clips with a ``duration``&quot;</span>
+                    <span class="p">)</span>
+                    <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">)))</span>
+                <span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">end_time</span>
+
+        <span class="k">if</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="n">new_clip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">duration</span>
+
+        <span class="k">return</span> <span class="n">new_clip</span></div>
+
+<div class="viewcode-block" id="Clip.with_cutout"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_cutout">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;end_time&quot;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">with_cutout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a clip playing the content of the current clip but</span>
+<span class="sd">        skips the extract between ``start_time`` and ``end_time``, which can be</span>
+<span class="sd">        expressed in seconds (15.35), in (min, sec), in (hour, min, sec),</span>
+<span class="sd">        or as a string: &#39;01:03:05.35&#39;.</span>
+
+<span class="sd">        If the original clip has a ``duration`` attribute set,</span>
+<span class="sd">        the duration of the returned clip  is automatically computed as</span>
+<span class="sd">        `` duration - (end_time - start_time)``.</span>
+
+<span class="sd">        The resulting clip&#39;s ``audio`` and ``mask`` will also be cutout</span>
+<span class="sd">        if they exist.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        start_time : float or tuple or str</span>
+<span class="sd">          Moment from which frames will be ignored in the resulting output.</span>
+
+<span class="sd">        end_time : float or tuple or str</span>
+<span class="sd">          Moment until which frames will be ignored in the resulting output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">),</span>
+            <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="s2">&quot;mask&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="k">return</span> <span class="n">new_clip</span></div>
+
+<div class="viewcode-block" id="Clip.with_multiply_speed"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_multiply_speed">[docs]</a>    <span class="k">def</span> <span class="nf">with_multiply_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">final_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a clip playing the current clip but at a speed multiplied</span>
+<span class="sd">        by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">moviepy.video.fx.MultiplySpeed</span> <span class="kn">import</span> <span class="n">MultiplySpeed</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="n">factor</span><span class="p">,</span> <span class="n">final_duration</span><span class="o">=</span><span class="n">final_duration</span><span class="p">)]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Clip.with_multiply_volume"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_multiply_volume">[docs]</a>    <span class="k">def</span> <span class="nf">with_multiply_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new clip with audio volume multiplied by the value `factor`.</span>
+<span class="sd">        For info on the parameters, please see ``afx.MultiplyVolume``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">moviepy.audio.fx.MultiplyVolume</span> <span class="kn">import</span> <span class="n">MultiplyVolume</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="n">factor</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="n">end_time</span><span class="p">)]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Clip.iter_frames"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.iter_frames">[docs]</a>    <span class="nd">@requires_duration</span>
+    <span class="nd">@use_clip_fps_by_default</span>
+    <span class="k">def</span> <span class="nf">iter_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_times</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Iterates over all the frames of the clip.</span>
+
+<span class="sd">        Returns each frame of the clip as a HxWxN Numpy array,</span>
+<span class="sd">        where N=1 for mask clips and N=3 for RGB clips.</span>
+
+<span class="sd">        This function is not really meant for video editing. It provides an</span>
+<span class="sd">        easy way to do frame-by-frame treatment of a video, for fields like</span>
+<span class="sd">        science, computer vision...</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        fps : int, optional</span>
+<span class="sd">          Frames per second for clip iteration. Is optional if the clip already</span>
+<span class="sd">          has a ``fps`` attribute.</span>
+
+<span class="sd">        with_times : bool, optional</span>
+<span class="sd">          Ff ``True`` yield tuples of ``(t, frame)`` where ``t`` is the current</span>
+<span class="sd">          time for the frame, otherwise only a ``frame`` object.</span>
+
+<span class="sd">        logger : str, optional</span>
+<span class="sd">          Either ``&quot;bar&quot;`` for progress bar or ``None`` or any Proglog logger.</span>
+
+<span class="sd">        dtype : type, optional</span>
+<span class="sd">          Type to cast Numpy array frames. Use ``dtype=&quot;uint8&quot;`` when using the</span>
+<span class="sd">          pictures to write video, images...</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; # prints the maximum of red that is contained</span>
+<span class="sd">        &gt;&gt;&gt; # on the first line of each frame of the clip.</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy import VideoFileClip</span>
+<span class="sd">        &gt;&gt;&gt; myclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print ( [frame[0,:,0].max()</span>
+<span class="sd">                     for frame in myclip.iter_frames()])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">frame_index</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">iter_bar</span><span class="p">(</span>
+            <span class="n">frame_index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="n">fps</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="c1"># int is used to ensure that floating point errors are rounded</span>
+            <span class="c1"># down to the nearest integer</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">frame_index</span> <span class="o">/</span> <span class="n">fps</span>
+
+            <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">):</span>
+                <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">with_times</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">frame</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">frame</span></div>
+
+<div class="viewcode-block" id="Clip.is_playing"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.is_playing">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">is_playing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;If ``t`` is a time, returns true if t is between the start and the end</span>
+<span class="sd">        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in</span>
+<span class="sd">        (hour, min, sec), or as a string: &#39;01:03:05.35&#39;. If ``t`` is a numpy</span>
+<span class="sd">        array, returns False if none of the ``t`` is in the clip, else returns a</span>
+<span class="sd">        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="c1"># is the whole list of t outside the clip ?</span>
             <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -502,146 +933,14 @@
             <span class="c1"># If we arrive here, a part of t falls in the clip</span>
             <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">*=</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">*=</span> <span class="n">t</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span>
             <span class="k">return</span> <span class="n">result</span>
 
         <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="ow">and</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">))</span></div>
 
-            <span class="k">return</span><span class="p">((</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span> <span class="ow">and</span>
-                   <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">t</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">)))</span></div>
-
-
-<div class="viewcode-block" id="Clip.subclip"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.subclip">[docs]</a>    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;t_start&#39;</span><span class="p">,</span> <span class="s1">&#39;t_end&#39;</span><span class="p">])</span>
-    <span class="nd">@apply_to_mask</span>
-    <span class="nd">@apply_to_audio</span>
-    <span class="k">def</span> <span class="nf">subclip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_end</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a clip playing the content of the current clip</span>
-<span class="sd">        between times ``t_start`` and ``t_end``, which can be expressed</span>
-<span class="sd">        in seconds (15.35), in (min, sec), in (hour, min, sec), or as a</span>
-<span class="sd">        string: &#39;01:03:05.35&#39;.</span>
-<span class="sd">        If ``t_end`` is not provided, it is assumed to be the duration</span>
-<span class="sd">        of the clip (potentially infinite).</span>
-<span class="sd">        If ``t_end`` is a negative value, it is reset to</span>
-<span class="sd">        ``clip.duration + t_end. ``. For instance: ::</span>
-
-<span class="sd">            &gt;&gt;&gt; # cut the last two seconds of the clip:</span>
-<span class="sd">            &gt;&gt;&gt; newclip = clip.subclip(0,-2)</span>
-
-<span class="sd">        If ``t_end`` is provided or if the clip has a duration attribute,</span>
-<span class="sd">        the duration of the returned clip is set automatically.</span>
-
-<span class="sd">        The ``mask`` and ``audio`` of the resulting subclip will be</span>
-<span class="sd">        subclips of ``mask`` and ``audio`` the original clip, if</span>
-<span class="sd">        they exist.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">t_start</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="c1"># Make this more Python-like, a negative value means to move</span>
-            <span class="c1"># backward from the end of the clip</span>
-            <span class="n">t_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">t_start</span>   <span class="c1"># Remember t_start is negative</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_start</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;t_start (</span><span class="si">%.02f</span><span class="s2">) &quot;</span> <span class="o">%</span> <span class="n">t_start</span> <span class="o">+</span>
-                             <span class="s2">&quot;should be smaller than the clip&#39;s &quot;</span> <span class="o">+</span>
-                             <span class="s2">&quot;duration (</span><span class="si">%.02f</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
-
-        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="n">t_start</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[])</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="n">t_end</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-
-            <span class="n">t_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
-
-        <span class="k">elif</span> <span class="p">(</span><span class="n">t_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">t_end</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: subclip with negative times (here </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">((</span><span class="n">t_start</span><span class="p">,</span> <span class="n">t_end</span><span class="p">)))</span>
-                      <span class="o">+</span> <span class="s2">&quot; can only be extracted from clips with a ``duration``&quot;</span><span class="p">)</span>
-
-            <span class="k">else</span><span class="p">:</span>
-
-                <span class="n">t_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">t_end</span>
-
-        <span class="k">if</span> <span class="n">t_end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-            <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">t_end</span> <span class="o">-</span> <span class="n">t_start</span>
-            <span class="n">newclip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">newclip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">newclip</span><span class="o">.</span><span class="n">duration</span>
-
-        <span class="k">return</span> <span class="n">newclip</span></div>
-
-
-<div class="viewcode-block" id="Clip.cutout"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.cutout">[docs]</a>    <span class="nd">@apply_to_mask</span>
-    <span class="nd">@apply_to_audio</span>
-    <span class="nd">@convert_to_seconds</span><span class="p">([</span><span class="s1">&#39;ta&#39;</span><span class="p">,</span> <span class="s1">&#39;tb&#39;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">cutout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">tb</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a clip playing the content of the current clip but</span>
-<span class="sd">        skips the extract between ``ta`` and ``tb``, which can be</span>
-<span class="sd">        expressed in seconds (15.35), in (min, sec), in (hour, min, sec),</span>
-<span class="sd">        or as a string: &#39;01:03:05.35&#39;.</span>
-<span class="sd">        If the original clip has a ``duration`` attribute set,</span>
-<span class="sd">        the duration of the returned clip  is automatically computed as</span>
-<span class="sd">        `` duration - (tb - ta)``.</span>
-
-<span class="sd">        The resulting clip&#39;s ``audio`` and ``mask`` will also be cutout</span>
-<span class="sd">        if they exist.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">fl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span> <span class="o">&gt;=</span> <span class="n">ta</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">tb</span> <span class="o">-</span> <span class="n">ta</span><span class="p">)</span>
-        <span class="n">newclip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fl_time</span><span class="p">(</span><span class="n">fl</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-            <span class="k">return</span> <span class="n">newclip</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="p">(</span><span class="n">tb</span> <span class="o">-</span> <span class="n">ta</span><span class="p">))</span>
-
-        <span class="k">else</span><span class="p">:</span>
-
-            <span class="k">return</span> <span class="n">newclip</span></div>
-
-<div class="viewcode-block" id="Clip.iter_frames"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.iter_frames">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="nd">@use_clip_fps_by_default</span>
-    <span class="k">def</span> <span class="nf">iter_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_times</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                    <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Iterates over all the frames of the clip.</span>
-
-<span class="sd">        Returns each frame of the clip as a HxWxN np.array,</span>
-<span class="sd">        where N=1 for mask clips and N=3 for RGB clips.</span>
-
-<span class="sd">        This function is not really meant for video editing.</span>
-<span class="sd">        It provides an easy way to do frame-by-frame treatment of</span>
-<span class="sd">        a video, for fields like science, computer vision...</span>
-
-<span class="sd">        The ``fps`` (frames per second) parameter is optional if the</span>
-<span class="sd">        clip already has a ``fps`` attribute.</span>
-
-<span class="sd">        Use dtype=&quot;uint8&quot; when using the pictures to write video, images...</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        ---------</span>
-
-<span class="sd">        &gt;&gt;&gt; # prints the maximum of red that is contained</span>
-<span class="sd">        &gt;&gt;&gt; # on the first line of each frame of the clip.</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy.editor import VideoFileClip</span>
-<span class="sd">        &gt;&gt;&gt; myclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; print ( [frame[0,:,0].max()</span>
-<span class="sd">                     for frame in myclip.iter_frames()])</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">iter_bar</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mf">1.0</span><span class="o">/</span><span class="n">fps</span><span class="p">)):</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">):</span>
-                <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">with_times</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">t</span><span class="p">,</span> <span class="n">frame</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">frame</span></div>
-
-<div class="viewcode-block" id="Clip.close"><a class="viewcode-back" href="../../ref/Clip.html#moviepy.audio.AudioClip.Clip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">            Release any resources that are in use.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
+<div class="viewcode-block" id="Clip.close"><a class="viewcode-back" href="../../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Release any resources that are in use.&quot;&quot;&quot;</span>
         <span class="c1">#    Implementation note for subclasses:</span>
         <span class="c1">#</span>
         <span class="c1">#    * Memory-based resources can be left to the garbage-collector.</span>
@@ -652,52 +951,173 @@
         <span class="c1">#    * Therefore, should NOT be called by __del__().</span>
         <span class="k">pass</span></div>
 
-    <span class="c1"># Support the Context Manager protocol, to ensure that resources are cleaned up.</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Clip</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="c1"># Make sure that the total number of frames is the same</span>
+        <span class="n">self_length</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+        <span class="n">other_length</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">fps</span>
+        <span class="k">if</span> <span class="n">self_length</span> <span class="o">!=</span> <span class="n">other_length</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Make sure that each frame is the same</span>
+        <span class="k">for</span> <span class="n">frame1</span><span class="p">,</span> <span class="n">frame2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">(),</span> <span class="n">other</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">frame1</span><span class="p">,</span> <span class="n">frame2</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Support the Context Manager protocol,</span>
+<span class="sd">        to ensure that resources are cleaned up.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Support extended slice and index operations over</span>
+<span class="sd">        a clip object.</span>
+
+<span class="sd">        Simple slicing is implemented via `subclip`.</span>
+<span class="sd">        So, ``clip[t_start:t_end]`` is equivalent to</span>
+<span class="sd">        ``clip.with_subclip(t_start, t_end)``. If ``t_start`` is not</span>
+<span class="sd">        given, default to ``0``, if ``t_end`` is not given,</span>
+<span class="sd">        default to ``self.duration``.</span>
+
+<span class="sd">        The slice object optionally support a third argument as</span>
+<span class="sd">        a ``speed`` coefficient (that could be negative),</span>
+<span class="sd">        ``clip[t_start:t_end:speed]``.</span>
+
+<span class="sd">        For example ``clip[::-1]`` returns a reversed (a time_mirror fx)</span>
+<span class="sd">        the video and ``clip[:5:2]`` returns the segment from 0 to 5s</span>
+<span class="sd">        accelerated to 2x (ie. resulted duration would be 2.5s)</span>
+
+<span class="sd">        In addition, a tuple of slices is supported, resulting in the concatenation</span>
+<span class="sd">        of each segment. For example ``clip[(:1, 2:)]`` return a clip</span>
+<span class="sd">        with the segment from 1 to 2s removed.</span>
+
+<span class="sd">        If ``key`` is not a slice or tuple, we assume it&#39;s a time</span>
+<span class="sd">        value (expressed in any format supported by `cvsec`)</span>
+<span class="sd">        and return the frame at that time, passing the key</span>
+<span class="sd">        to ``get_frame``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">apply_to</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mask&quot;</span><span class="p">,</span> <span class="s2">&quot;audio&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">slice</span><span class="p">):</span>
+            <span class="c1"># support for [start:end:speed] slicing. If speed is negative</span>
+            <span class="c1"># a time mirror is applied.</span>
+            <span class="n">clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">start</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">stop</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">step</span><span class="p">:</span>
+                <span class="c1"># change speed of the subclip</span>
+                <span class="n">factor</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">factor</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="c1"># change speed</span>
+                    <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="n">apply_to</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span>
+                    <span class="p">)</span>
+                    <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">/</span> <span class="n">factor</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># time mirror</span>
+                    <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span>
+                        <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">apply_to</span><span class="o">=</span><span class="n">apply_to</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="k">return</span> <span class="n">clip</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="c1"># get a concatenation of subclips</span>
+            <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">add</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">key</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># WARNING: as stated in close() above, if we call close, it closes clips</span>
+        <span class="c1"># even if shallow copies are still in used, leading to some bugs, see:</span>
+        <span class="c1"># https://github.com/Zulko/moviepy/issues/1994</span>
+        <span class="c1"># so don&#39;t call self.close() here, rather do it manually in the code.</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="c1"># concatenate. implemented in specialized classes</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="c1"># loop n times where N is a real</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+        <span class="kn">from</span> <span class="nn">moviepy.video.fx.Loop</span> <span class="kn">import</span> <span class="n">Loop</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">Loop</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span></div>
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-   
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

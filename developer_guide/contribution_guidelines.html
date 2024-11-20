@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MoviePy’s Contribution Guidelines &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_guide/contribution_guidelines';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Installation for MoviePy developers" href="developers_install.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="developers_install.html">Installation for MoviePy developers</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MoviePy’s Contribution Guidelines</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">The MoviePy Developers Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">MoviePy’s Contribution Guidelines</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="moviepy-s-contribution-guidelines">
+<span id="contribution-guidelines"></span><h1>MoviePy’s Contribution Guidelines<a class="headerlink" href="#moviepy-s-contribution-guidelines" title="Permalink to this heading">#</a></h1>
+<section id="communication-on-github">
+<h2>Communication on GitHub<a class="headerlink" href="#communication-on-github" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Keep messages on GitHub issues and pull requests on-topic and to the point. Be aware that each comment triggers a notification which gets sent out to a number of people.</dt><dd><ul>
+<li><p>Opinions are OK.</p></li>
+<li><p>For longer or more in-depth discussions, use the <a class="reference external" href="https://gitter.im/Movie-py">MoviePy Gitter</a>. If these discussions lead to a decision, like a merge/reject, please leave a message on the relevant MoviePy issue to document the outcome of the discussion/the reason for the decision.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Do not push any commit that changes the API without prior discussion.</p></li>
+</ul>
+</section>
+<section id="preparing-for-development">
+<h2>Preparing for development<a class="headerlink" href="#preparing-for-development" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Fork the official MoviePy repository to your own GitHub account:
+Use the “Fork” button in the top right corner of the GitHub interface while viewing <a class="reference external" href="https://github.com/Zulko/moviepy">the official MoviePy</a> repository.</p></li>
+<li><p>Use your fork as the basis for cloning the repository to your local machine: <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">URL_TO_YOUR_FORK</span></code>
+You can get the appropriate URL (SSH- or HTTPS-based) by using the green “Code” button located at the top right of the repository view while looking at your fork. By default, Git refers to any remote you clone from – i.e. in this case your fork on GitHub – as <code class="docutils literal notranslate"><span class="pre">origin</span></code>.</p></li>
+<li><p>Enter your local clone and add the official MoviePy repository as a second remote, with alias <code class="docutils literal notranslate"><span class="pre">upstream</span></code>:
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">upstream</span> <span class="pre">git&#64;github.com:Zulko/moviepy.git</span></code> (using SSL) _or_
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">upstream</span> <span class="pre">https://github.com/Zulko/moviepy.git</span></code> (using HTTPS).</p></li>
+<li><p>Install the library inside a <a class="reference external" href="https://docs.python.org/3/tutorial/venv.html">virtual environment</a> with all dependencies included using <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">&quot;.[optional,doc,test,lint]&quot;</span></code></p></li>
+<li><p>Configure pre-commit hooks running <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pre-commit</span> <span class="pre">install</span></code></p></li>
+</ul>
+</section>
+<section id="coding-conventions-code-quality">
+<h2>Coding conventions, code quality<a class="headerlink" href="#coding-conventions-code-quality" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Respect <a class="reference external" href="https://www.python.org/dev/peps/pep-0008/">PEP8</a> conventions.</p></li>
+<li><p>Add just the “right” amount of comments. Try to write auto-documented code with very explicit variable names.</p></li>
+<li><p>If you introduce new functionality or fix a bug, document it in the docstring or with code comments.</p></li>
+<li><p>MoviePy’s team adopted <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to run code checks using black, flake8 and isort, so make sure that you’ve configured the pre-commit hooks with <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code>.</p></li>
+</ul>
+</section>
+<section id="standard-contribution-workflow">
+<h2>Standard contribution workflow<a class="headerlink" href="#standard-contribution-workflow" title="Permalink to this heading">#</a></h2>
+<section id="local-development">
+<h3>Local development<a class="headerlink" href="#local-development" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Keep your local <code class="docutils literal notranslate"><span class="pre">master</span></code> branch up-to-date with the official repo’s master by periodically fetching/pulling it:
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">pull</span> <span class="pre">upstream</span> <span class="pre">master</span></code></p></li>
+<li><p>Never make changes on <code class="docutils literal notranslate"><span class="pre">master</span></code> directly, but branch off into separate develop branches:
+<code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">--branch</span> <span class="pre">YOUR_DEVELOP_BRANCH</span></code>
+Ideally, these are given names which function as keywords for what you are working on, and are prefixed with <code class="docutils literal notranslate"><span class="pre">fix_</span></code> (for bug fixes), <code class="docutils literal notranslate"><span class="pre">feature_</span></code> or something similarly appropriate and descriptive.</p></li>
+<li><p>Base any changes you submit on the most recent <code class="docutils literal notranslate"><span class="pre">master</span></code>.</p></li>
+</ul>
+<p>More detailed explanation of the last point:</p>
+<p>It is likely that the official repo’s <code class="docutils literal notranslate"><span class="pre">master</span></code> branch will move on (get updated, have other PRs merged into it) while you are working on your changes. Before creating a pull request, you will have to make sure your changes are not based on outdated code. For this reason, it makes sense to avoid falling “too much behind” while developing by rebasing your local <code class="docutils literal notranslate"><span class="pre">master</span></code> branch at intervals. Make sure your <code class="docutils literal notranslate"><span class="pre">master</span></code> branch is in sync with the official <code class="docutils literal notranslate"><span class="pre">master</span></code> branch (as per the first point), then, while checked into your develop branch, run: <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">rebase</span> <span class="pre">master</span></code></p>
+<p>If you <strong>haven’t rebased before</strong>, make sure to <strong>familiarise yourself</strong> with the concept.</p>
+</section>
+<section id="submitting-pull-requests">
+<h3>Submitting Pull Requests<a class="headerlink" href="#submitting-pull-requests" title="Permalink to this heading">#</a></h3>
+<p>You do not have to have finished your feature or bug fix before submitting a PR; just mention that it still is a work in progress.</p>
+<p>Before submitting PRs:</p>
+<ul class="simple">
+<li><p>run the test suite over your code to expose any problems: <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">pytest</span></code></p></li>
+<li><p>push your local develop branch to your GitHub fork <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">YOUR_DEVELOP_BRANCH</span></code></p></li>
+</ul>
+<p>When you now look at your forked repo on your GitHub account, you will see GitHub suggest branches for sending pull requests to the official <code class="docutils literal notranslate"><span class="pre">Zulko/moviepy</span></code> repository.</p>
+<p>Once you open a PR, you will be presented with a template which you are asked to fill out. You are encouraged to add any additional information which helps provide further context to your changes, and to link to any issues or PRs which your pull request references or is informed by.</p>
+<p>On submitting your PR, an automated test suite runs over your submission, which might take a few minutes to complete. In a next step, a MoviePy maintainer will review your code and, if necessary, help you to get it merge-ready.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="developers_install.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation for MoviePy developers</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#communication-on-github">Communication on GitHub</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preparing-for-development">Preparing for development</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-conventions-code-quality">Coding conventions, code quality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-contribution-workflow">Standard contribution workflow</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#local-development">Local development</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submitting-pull-requests">Submitting Pull Requests</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/developer_guide/contribution_guidelines.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/developer_guide/contribution_guidelines.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

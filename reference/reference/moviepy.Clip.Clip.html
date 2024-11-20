@@ -1,0 +1,1042 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>moviepy.Clip.Clip &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.Clip.Clip';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="moviepy.Effect" href="moviepy.Effect.html" />
+    <link rel="prev" title="moviepy.Clip" href="moviepy.Clip.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="moviepy.html">moviepy</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.Clip.html">moviepy.Clip</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">moviepy.Clip.Clip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="moviepy.Effect.html">moviepy.Effect</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.AudioClip.html">moviepy.audio.AudioClip</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioArrayClip.html">moviepy.audio.AudioClip.AudioArrayClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioClip.html">moviepy.audio.AudioClip.AudioClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.CompositeAudioClip.html">moviepy.audio.AudioClip.CompositeAudioClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.concatenate_audioclips.html">moviepy.audio.AudioClip.concatenate_audioclips</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.fx.html">moviepy.audio.fx</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioDelay.html">moviepy.audio.fx.AudioDelay</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioFadeIn.html">moviepy.audio.fx.AudioFadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioFadeOut.html">moviepy.audio.fx.AudioFadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioLoop.html">moviepy.audio.fx.AudioLoop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.AudioNormalize.html">moviepy.audio.fx.AudioNormalize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.MultiplyStereoVolume.html">moviepy.audio.fx.MultiplyStereoVolume</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.MultiplyVolume.html">moviepy.audio.fx.MultiplyVolume</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.io.html">moviepy.audio.io</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.AudioFileClip.html">moviepy.audio.io.AudioFileClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffmpeg_audiowriter.html">moviepy.audio.io.ffmpeg_audiowriter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffplay_audiopreviewer.html">moviepy.audio.io.ffplay_audiopreviewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.readers.html">moviepy.audio.io.readers</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.tools.html">moviepy.audio.tools</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.tools.cuts.html">moviepy.audio.tools.cuts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.config.html">moviepy.config</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.config.check.html">moviepy.config.check</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.config.try_cmd.html">moviepy.config.try_cmd</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.decorators.html">moviepy.decorators</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.convert_parameter_to_seconds.html">moviepy.decorators.convert_parameter_to_seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.convert_path_to_string.html">moviepy.decorators.convert_path_to_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.preprocess_args.html">moviepy.decorators.preprocess_args</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.find_extension.html">moviepy.tools.find_extension</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.no_display_available.html">moviepy.tools.no_display_available</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.subprocess_call.html">moviepy.tools.subprocess_call</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.video.html">moviepy.video</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.VideoClip.html">moviepy.video.VideoClip</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.BitmapClip.html">moviepy.video.VideoClip.BitmapClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.ColorClip.html">moviepy.video.VideoClip.ColorClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.DataVideoClip.html">moviepy.video.VideoClip.DataVideoClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.ImageClip.html">moviepy.video.VideoClip.ImageClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.TextClip.html">moviepy.video.VideoClip.TextClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.UpdatedVideoClip.html">moviepy.video.VideoClip.UpdatedVideoClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.VideoClip.VideoClip.html">moviepy.video.VideoClip.VideoClip</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.compositing.html">moviepy.video.compositing</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.compositing.CompositeVideoClip.html">moviepy.video.compositing.CompositeVideoClip</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.fx.html">moviepy.video.fx</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.AccelDecel.html">moviepy.video.fx.AccelDecel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.BlackAndWhite.html">moviepy.video.fx.BlackAndWhite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Blink.html">moviepy.video.fx.Blink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Crop.html">moviepy.video.fx.Crop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.CrossFadeIn.html">moviepy.video.fx.CrossFadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.CrossFadeOut.html">moviepy.video.fx.CrossFadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.EvenSize.html">moviepy.video.fx.EvenSize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FadeIn.html">moviepy.video.fx.FadeIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FadeOut.html">moviepy.video.fx.FadeOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Freeze.html">moviepy.video.fx.Freeze</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.FreezeRegion.html">moviepy.video.fx.FreezeRegion</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.GammaCorrection.html">moviepy.video.fx.GammaCorrection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.HeadBlur.html">moviepy.video.fx.HeadBlur</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.InvertColors.html">moviepy.video.fx.InvertColors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Loop.html">moviepy.video.fx.Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.LumContrast.html">moviepy.video.fx.LumContrast</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MakeLoopable.html">moviepy.video.fx.MakeLoopable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Margin.html">moviepy.video.fx.Margin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MaskColor.html">moviepy.video.fx.MaskColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MasksAnd.html">moviepy.video.fx.MasksAnd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MasksOr.html">moviepy.video.fx.MasksOr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MirrorX.html">moviepy.video.fx.MirrorX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MirrorY.html">moviepy.video.fx.MirrorY</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MultiplyColor.html">moviepy.video.fx.MultiplyColor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.MultiplySpeed.html">moviepy.video.fx.MultiplySpeed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Painting.html">moviepy.video.fx.Painting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Resize.html">moviepy.video.fx.Resize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Rotate.html">moviepy.video.fx.Rotate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.Scroll.html">moviepy.video.fx.Scroll</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SlideIn.html">moviepy.video.fx.SlideIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SlideOut.html">moviepy.video.fx.SlideOut</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.SuperSample.html">moviepy.video.fx.SuperSample</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.TimeMirror.html">moviepy.video.fx.TimeMirror</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.fx.TimeSymmetrize.html">moviepy.video.fx.TimeSymmetrize</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.io.html">moviepy.video.io</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-15"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ImageSequenceClip.html">moviepy.video.io.ImageSequenceClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.VideoFileClip.html">moviepy.video.io.VideoFileClip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.display_in_notebook.html">moviepy.video.io.display_in_notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_reader.html">moviepy.video.io.ffmpeg_reader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.html">moviepy.video.io.ffmpeg_tools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_writer.html">moviepy.video.io.ffmpeg_writer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffplay_previewer.html">moviepy.video.io.ffplay_previewer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.gif_writers.html">moviepy.video.io.gif_writers</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.video.tools.html">moviepy.video.tools</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-16"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.credits.html">moviepy.video.tools.credits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.cuts.html">moviepy.video.tools.cuts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.drawing.html">moviepy.video.tools.drawing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.interpolators.html">moviepy.video.tools.interpolators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.video.tools.subtitles.html">moviepy.video.tools.subtitles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Api Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
+    
+    
+    <li class="breadcrumb-item"><a href="moviepy.Clip.html" class="nav-link">moviepy.Clip</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.Clip.Clip</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="moviepy-clip-clip">
+<h1>moviepy.Clip.Clip<a class="headerlink" href="#moviepy-clip-clip" title="Permalink to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.Clip.</span></span><span class="sig-name descname"><span class="pre">Clip</span></span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip" title="Permalink to this definition">#</a></dt>
+<dd><p>Base class of all clips (VideoClips and AudioClips).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.start">
+<span class="sig-name descname"><span class="pre">start</span></span><a class="headerlink" href="#moviepy.Clip.Clip.start" title="Permalink to this definition">#</a></dt>
+<dd><p>When the clip is included in a composition, time of the
+composition at which the clip starts playing (in seconds).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.end">
+<span class="sig-name descname"><span class="pre">end</span></span><a class="headerlink" href="#moviepy.Clip.Clip.end" title="Permalink to this definition">#</a></dt>
+<dd><p>When the clip is included in a composition, time of the
+composition at which the clip stops playing (in seconds).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.duration">
+<span class="sig-name descname"><span class="pre">duration</span></span><a class="headerlink" href="#moviepy.Clip.Clip.duration" title="Permalink to this definition">#</a></dt>
+<dd><p>Duration of the clip (in seconds). Some clips are infinite, in
+this case their duration will be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.close" title="Permalink to this definition">#</a></dt>
+<dd><p>Release any resources that are in use.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.copy" title="Permalink to this definition">#</a></dt>
+<dd><p>Allows the usage of <code class="docutils literal notranslate"><span class="pre">.copy()</span></code> in clips as chained methods invocation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.get_frame">
+<span class="sig-name descname"><span class="pre">get_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.get_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.get_frame" title="Permalink to this definition">#</a></dt>
+<dd><p>Gets a numpy array representing the RGB picture of the clip,
+or (mono or stereo) value for a sound clip, at time <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – Moment of the clip whose frame will be returned.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.is_playing">
+<span class="sig-name descname"><span class="pre">is_playing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.is_playing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.is_playing" title="Permalink to this definition">#</a></dt>
+<dd><p>If <code class="docutils literal notranslate"><span class="pre">t</span></code> is a time, returns true if t is between the start and the end
+of the clip. <code class="docutils literal notranslate"><span class="pre">t</span></code> can be expressed in seconds (15.35), in (min, sec), in
+(hour, min, sec), or as a string: ‘01:03:05.35’. If <code class="docutils literal notranslate"><span class="pre">t</span></code> is a numpy
+array, returns False if none of the <code class="docutils literal notranslate"><span class="pre">t</span></code> is in the clip, else returns a
+vector [b_1, b_2, b_3…] where b_i is true if tti is in the clip.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.iter_frames">
+<span class="sig-name descname"><span class="pre">iter_frames</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.iter_frames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.iter_frames" title="Permalink to this definition">#</a></dt>
+<dd><p>Iterates over all the frames of the clip.</p>
+<p>Returns each frame of the clip as a HxWxN Numpy array,
+where N=1 for mask clips and N=3 for RGB clips.</p>
+<p>This function is not really meant for video editing. It provides an
+easy way to do frame-by-frame treatment of a video, for fields like
+science, computer vision…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fps</strong> (<em>int</em><em>, </em><em>optional</em>) – Frames per second for clip iteration. Is optional if the clip already
+has a <code class="docutils literal notranslate"><span class="pre">fps</span></code> attribute.</p></li>
+<li><p><strong>with_times</strong> (<em>bool</em><em>, </em><em>optional</em>) – Ff <code class="docutils literal notranslate"><span class="pre">True</span></code> yield tuples of <code class="docutils literal notranslate"><span class="pre">(t,</span> <span class="pre">frame)</span></code> where <code class="docutils literal notranslate"><span class="pre">t</span></code> is the current
+time for the frame, otherwise only a <code class="docutils literal notranslate"><span class="pre">frame</span></code> object.</p></li>
+<li><p><strong>logger</strong> (<em>str</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code> for progress bar or <code class="docutils literal notranslate"><span class="pre">None</span></code> or any Proglog logger.</p></li>
+<li><p><strong>dtype</strong> (<em>type</em><em>, </em><em>optional</em>) – Type to cast Numpy array frames. Use <code class="docutils literal notranslate"><span class="pre">dtype=&quot;uint8&quot;</span></code> when using the
+pictures to write video, images…</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># prints the maximum of red that is contained</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># on the first line of each frame of the clip.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="go">             for frame in myclip.iter_frames()])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.time_transform">
+<span class="sig-name descname"><span class="pre">time_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.time_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.time_transform" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a Clip instance playing the content of the current clip
+but with a modified timeline, time <code class="docutils literal notranslate"><span class="pre">t</span></code> being replaced by the return
+of <cite>time_func(t)</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>time_func</strong> (<em>function</em>) – A function <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">-&gt;</span> <span class="pre">new_t</span></code>.</p></li>
+<li><p><strong>apply_to</strong> (<em>{&quot;mask&quot;</em><em>, </em><em>&quot;audio&quot;</em><em>, </em><em>[</em><em>&quot;mask&quot;</em><em>, </em><em>&quot;audio&quot;</em><em>]</em><em>}</em><em>, </em><em>optional</em>) – Can be either ‘mask’, or ‘audio’, or [‘mask’,’audio’].
+Specifies if the filter <code class="docutils literal notranslate"><span class="pre">transform</span></code> should also be applied to the
+audio or the mask of the clip, if any.</p></li>
+<li><p><strong>keep_duration</strong> (<em>bool</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">False</span></code> (default) if the transformation modifies the
+<code class="docutils literal notranslate"><span class="pre">duration</span></code> of the clip.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip (and its mask and sound) twice faster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip starting at t=3, and backwards:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.transform" title="Permalink to this definition">#</a></dt>
+<dd><p>General processing of a clip.</p>
+<p>Returns a new Clip whose frames are a transformation
+(through function <code class="docutils literal notranslate"><span class="pre">func</span></code>) of the frames of the current clip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<em>function</em>) – A function with signature (gf,t -&gt; frame) where <code class="docutils literal notranslate"><span class="pre">gf</span></code> will
+represent the current clip’s <code class="docutils literal notranslate"><span class="pre">get_frame</span></code> method,
+i.e. <code class="docutils literal notranslate"><span class="pre">gf</span></code> is a function (t-&gt;image). Parameter <cite>t</cite> is a time
+in seconds, <cite>frame</cite> is a picture (=Numpy array) which will be
+returned by the transformed clip (see examples below).</p></li>
+<li><p><strong>apply_to</strong> (<em>{&quot;mask&quot;</em><em>, </em><em>&quot;audio&quot;</em><em>, </em><em>[</em><em>&quot;mask&quot;</em><em>, </em><em>&quot;audio&quot;</em><em>]</em><em>}</em><em>, </em><em>optional</em>) – Can be either <code class="docutils literal notranslate"><span class="pre">'mask'</span></code>, or <code class="docutils literal notranslate"><span class="pre">'audio'</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">['mask','audio']</span></code>.
+Specifies if the filter should also be applied to the
+audio or the mask of the clip, if any.</p></li>
+<li><p><strong>keep_duration</strong> (<em>bool</em><em>, </em><em>optional</em>) – Set to True if the transformation does not change the
+<code class="docutils literal notranslate"><span class="pre">duration</span></code> of the clip.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>In the following <code class="docutils literal notranslate"><span class="pre">new_clip</span></code> a 100 pixels-high clip whose video
+content scrolls from the top to the bottom of the frames of
+<code class="docutils literal notranslate"><span class="pre">clip</span></code> at 50 pixels per second.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">get_frame</span><span class="p">,</span><span class="n">t</span> <span class="p">:</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="mi">50</span><span class="p">,</span> <span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="s1">&#39;mask&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_cutout">
+<span class="sig-name descname"><span class="pre">with_cutout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_cutout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_cutout" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a clip playing the content of the current clip but
+skips the extract between <code class="docutils literal notranslate"><span class="pre">start_time</span></code> and <code class="docutils literal notranslate"><span class="pre">end_time</span></code>, which can be
+expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
+or as a string: ‘01:03:05.35’.</p>
+<p>If the original clip has a <code class="docutils literal notranslate"><span class="pre">duration</span></code> attribute set,
+the duration of the returned clip  is automatically computed as
+`` duration - (end_time - start_time)``.</p>
+<p>The resulting clip’s <code class="docutils literal notranslate"><span class="pre">audio</span></code> and <code class="docutils literal notranslate"><span class="pre">mask</span></code> will also be cutout
+if they exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – Moment from which frames will be ignored in the resulting output.</p></li>
+<li><p><strong>end_time</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – Moment until which frames will be ignored in the resulting output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_duration">
+<span class="sig-name descname"><span class="pre">with_duration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_duration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_duration" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a copy of the clip, with the  <code class="docutils literal notranslate"><span class="pre">duration</span></code> attribute set to
+<code class="docutils literal notranslate"><span class="pre">t</span></code>, which can be expressed in seconds (15.35), in (min, sec), in
+(hour, min, sec), or as a string: ‘01:03:05.35’. Also sets the duration
+of the mask and audio, if any, of the returned clip.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">change_end</span> <span class="pre">is</span> <span class="pre">False</span></code>, the start attribute of the clip will be
+modified in function of the duration and the preset end of the clip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>duration</strong> (<em>float</em>) – New duration attribute value for the clip.</p></li>
+<li><p><strong>change_end</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute value of the clip will be adjusted
+accordingly to the new duration using <code class="docutils literal notranslate"><span class="pre">clip.start</span> <span class="pre">+</span> <span class="pre">duration</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_effects">
+<span class="sig-name descname"><span class="pre">with_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><span class="pre">Effect</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_effects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_effects" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a copy of the current clip with the effects applied</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;bilinear&quot;</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>You can also pass multiple effect as a list</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">VolumeX</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">Mirrorx</span><span class="p">()])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_end">
+<span class="sig-name descname"><span class="pre">with_end</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_end" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a copy of the clip, with the <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute set to <code class="docutils literal notranslate"><span class="pre">t</span></code>,
+which can be expressed in seconds (15.35), in (min, sec), in
+(hour, min, sec), or as a string: ‘01:03:05.35’. Also sets the duration
+of the mask and audio, if any, of the returned clip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – New <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute value for the clip.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_fps">
+<span class="sig-name descname"><span class="pre">with_fps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_fps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_fps" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a copy of the clip with a new default fps for functions like
+write_videofile, iterframe, etc.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fps</strong> (<em>int</em>) – New <code class="docutils literal notranslate"><span class="pre">fps</span></code> attribute value for the clip.</p></li>
+<li><p><strong>change_duration</strong> (<em>bool</em><em>, </em><em>optional</em>) – If <code class="docutils literal notranslate"><span class="pre">change_duration=True</span></code>, then the video speed will change to
+match the new fps (conserving all frames 1:1). For example, if the
+fps is halved in this mode, the duration will be doubled.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_is_mask">
+<span class="sig-name descname"><span class="pre">with_is_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_is_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_is_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Says whether the clip is a mask or not.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_mask</strong> (<em>bool</em>) – New <code class="docutils literal notranslate"><span class="pre">is_mask</span></code> attribute value for the clip.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_make_frame">
+<span class="sig-name descname"><span class="pre">with_make_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">make_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_make_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_make_frame" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets a <code class="docutils literal notranslate"><span class="pre">make_frame</span></code> attribute for the clip. Useful for setting
+arbitrary/complicated videoclips.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>make_frame</strong> (<em>function</em>) – New frame creator function for the clip.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_memoize">
+<span class="sig-name descname"><span class="pre">with_memoize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memoize</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_memoize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_memoize" title="Permalink to this definition">#</a></dt>
+<dd><p>Sets whether the clip should keep the last frame read in memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>memoize</strong> (<em>bool</em>) – Indicates if the clip should keep the last frame read in memory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_multiply_speed">
+<span class="sig-name descname"><span class="pre">with_multiply_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_multiply_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_multiply_speed" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a clip playing the current clip but at a speed multiplied
+by <code class="docutils literal notranslate"><span class="pre">factor</span></code>. For info on the parameters, please see <code class="docutils literal notranslate"><span class="pre">vfx.MultiplySpeed</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_multiply_volume">
+<span class="sig-name descname"><span class="pre">with_multiply_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_multiply_volume"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_multiply_volume" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a new clip with audio volume multiplied by the value <cite>factor</cite>.
+For info on the parameters, please see <code class="docutils literal notranslate"><span class="pre">afx.MultiplyVolume</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_start">
+<span class="sig-name descname"><span class="pre">with_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">change_end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_start" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a copy of the clip, with the <code class="docutils literal notranslate"><span class="pre">start</span></code> attribute set
+to <code class="docutils literal notranslate"><span class="pre">t</span></code>, which can be expressed in seconds (15.35), in (min, sec),
+in (hour, min, sec), or as a string: ‘01:03:05.35’.</p>
+<p>These changes are also applied to the <code class="docutils literal notranslate"><span class="pre">audio</span></code> and <code class="docutils literal notranslate"><span class="pre">mask</span></code>
+clips of the current clip, if they exist.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>t</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – New <code class="docutils literal notranslate"><span class="pre">start</span></code> attribute value for the clip.</p></li>
+<li><p><strong>change_end</strong> (<em>bool optional</em>) – Indicates if the <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute value must be changed accordingly,
+if possible. If <code class="docutils literal notranslate"><span class="pre">change_end=True</span></code> and the clip has a <code class="docutils literal notranslate"><span class="pre">duration</span></code>
+attribute, the <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute of the clip will be updated to
+<code class="docutils literal notranslate"><span class="pre">start</span> <span class="pre">+</span> <span class="pre">duration</span></code>. If <code class="docutils literal notranslate"><span class="pre">change_end=False</span></code> and the clip has a
+<code class="docutils literal notranslate"><span class="pre">end</span></code> attribute, the <code class="docutils literal notranslate"><span class="pre">duration</span></code> attribute of the clip will be
+updated to <code class="docutils literal notranslate"><span class="pre">end</span> <span class="pre">-</span> <span class="pre">start</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.Clip.Clip.with_subclip">
+<span class="sig-name descname"><span class="pre">with_subclip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/Clip.html#Clip.with_subclip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.Clip.Clip.with_subclip" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a clip playing the content of the current clip between times
+<code class="docutils literal notranslate"><span class="pre">start_time</span></code> and <code class="docutils literal notranslate"><span class="pre">end_time</span></code>, which can be expressed in seconds
+(15.35), in (min, sec), in (hour, min, sec), or as a string:
+‘01:03:05.35’.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mask</span></code> and <code class="docutils literal notranslate"><span class="pre">audio</span></code> of the resulting subclip will be subclips of
+<code class="docutils literal notranslate"><span class="pre">mask</span></code> and <code class="docutils literal notranslate"><span class="pre">audio</span></code> the original clip, if they exist.</p>
+<p>It’s equivalent to slice the clip as a sequence, like
+<code class="docutils literal notranslate"><span class="pre">clip[t_start:t_end]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_time</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – Moment that will be chosen as the beginning of the produced clip. If
+is negative, it is reset to <code class="docutils literal notranslate"><span class="pre">clip.duration</span> <span class="pre">+</span> <span class="pre">start_time</span></code>.</p></li>
+<li><p><strong>end_time</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em><em>, </em><em>optional</em>) – <p>Moment that will be chosen as the end of the produced clip. If not
+provided, it is assumed to be the duration of the clip (potentially
+infinite). If is negative, it is reset to <code class="docutils literal notranslate"><span class="pre">clip.duration</span> <span class="pre">+</span> <span class="pre">end_time</span></code>.
+For instance:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># cut the last two seconds of the clip:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">end_time</span></code> is provided or if the clip has a duration attribute,
+the duration of the returned clip is set automatically.</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="moviepy.Clip.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">moviepy.Clip</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="moviepy.Effect.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">moviepy.Effect</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip"><code class="docutils literal notranslate"><span class="pre">Clip</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.start"><code class="docutils literal notranslate"><span class="pre">Clip.start</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.end"><code class="docutils literal notranslate"><span class="pre">Clip.end</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.duration"><code class="docutils literal notranslate"><span class="pre">Clip.duration</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.close"><code class="docutils literal notranslate"><span class="pre">Clip.close()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.copy"><code class="docutils literal notranslate"><span class="pre">Clip.copy()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.get_frame"><code class="docutils literal notranslate"><span class="pre">Clip.get_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.is_playing"><code class="docutils literal notranslate"><span class="pre">Clip.is_playing()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.iter_frames"><code class="docutils literal notranslate"><span class="pre">Clip.iter_frames()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.time_transform"><code class="docutils literal notranslate"><span class="pre">Clip.time_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.transform"><code class="docutils literal notranslate"><span class="pre">Clip.transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_cutout"><code class="docutils literal notranslate"><span class="pre">Clip.with_cutout()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_duration"><code class="docutils literal notranslate"><span class="pre">Clip.with_duration()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_effects"><code class="docutils literal notranslate"><span class="pre">Clip.with_effects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_end"><code class="docutils literal notranslate"><span class="pre">Clip.with_end()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_fps"><code class="docutils literal notranslate"><span class="pre">Clip.with_fps()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_is_mask"><code class="docutils literal notranslate"><span class="pre">Clip.with_is_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_make_frame"><code class="docutils literal notranslate"><span class="pre">Clip.with_make_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_memoize"><code class="docutils literal notranslate"><span class="pre">Clip.with_memoize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_multiply_speed"><code class="docutils literal notranslate"><span class="pre">Clip.with_multiply_speed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_multiply_volume"><code class="docutils literal notranslate"><span class="pre">Clip.with_multiply_volume()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_start"><code class="docutils literal notranslate"><span class="pre">Clip.with_start()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.Clip.Clip.with_subclip"><code class="docutils literal notranslate"><span class="pre">Clip.with_subclip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.Clip.Clip.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/reference/reference/moviepy.Clip.Clip.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

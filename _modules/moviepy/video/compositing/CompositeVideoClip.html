@@ -1,192 +1,417 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.compositing.CompositeVideoClip &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>moviepy.video.compositing.CompositeVideoClip &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script src="../../../../_static/jquery.js"></script>
-        <script src="../../../../_static/underscore.js"></script>
-        <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/compositing/CompositeVideoClip';</script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../../../../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../../../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
-      <li>moviepy.video.compositing.CompositeVideoClip</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-      </li>
-    
-  </ul>
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.compositing.CompositeVideoClip</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <h1>Source code for moviepy.video.compositing.CompositeVideoClip</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;Main video composition interface of MoviePy.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">CompositeAudioClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ColorClip</span><span class="p">,</span> <span class="n">VideoClip</span>
 
-<span class="c1">#  CompositeVideoClip</span>
 
-<div class="viewcode-block" id="CompositeVideoClip"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot; </span>
-<span class="sd">    </span>
+<div class="viewcode-block" id="CompositeVideoClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A VideoClip made of other videoclips displayed together. This is the</span>
 <span class="sd">    base class for most compositions.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
 <span class="sd">    size</span>
-<span class="sd">      The size (height x width) of the final clip.</span>
+<span class="sd">      The size (width, height) of the final clip.</span>
 
 <span class="sd">    clips</span>
-<span class="sd">      A list of videoclips. Each clip of the list will</span>
-<span class="sd">      be displayed below the clips appearing after it in the list.</span>
+<span class="sd">      A list of videoclips.</span>
+
+<span class="sd">      Clips with a higher ``layer`` attribute will be displayed</span>
+<span class="sd">      on top of other clips in a lower layer.</span>
+<span class="sd">      If two or more clips share the same ``layer``,</span>
+<span class="sd">      then the one appearing latest in ``clips`` will be displayed</span>
+<span class="sd">      on top (i.e. it has the higher layer).</span>
+
 <span class="sd">      For each clip:</span>
-<span class="sd">       </span>
+
 <span class="sd">      - The attribute ``pos`` determines where the clip is placed.</span>
 <span class="sd">          See ``VideoClip.set_pos``</span>
 <span class="sd">      - The mask of the clip determines which parts are visible.</span>
-<span class="sd">        </span>
+
 <span class="sd">      Finally, if all the clips in the list have their ``duration``</span>
 <span class="sd">      attribute set, then the duration of the composite video clip</span>
 <span class="sd">      is computed automatically</span>
@@ -199,34 +424,33 @@
 <span class="sd">      Set to True if the first clip in the list should be used as the</span>
 <span class="sd">      &#39;background&#39; on which all other clips are blitted. That first clip must</span>
 <span class="sd">      have the same size as the final clip. If it has no transparency, the final</span>
-<span class="sd">      clip will have no mask. </span>
-<span class="sd">    </span>
+<span class="sd">      clip will have no mask.</span>
+
 <span class="sd">    The clip with the highest FPS will be the FPS of the composite clip.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bgclip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">ismask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bgclip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">size</span> <span class="o">=</span> <span class="n">clips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
 
-        
         <span class="k">if</span> <span class="n">use_bgclip</span> <span class="ow">and</span> <span class="p">(</span><span class="n">clips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">transparent</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">transparent</span> <span class="o">=</span> <span class="p">(</span><span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
-        
-        <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">bg_color</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">ismask</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">transparent</span> <span class="o">=</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span>
 
-        <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bg_color</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">is_mask</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span> <span class="k">if</span> <span class="n">fpss</span> <span class="k">else</span> <span class="kc">None</span>
 
         <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ismask</span> <span class="o">=</span> <span class="n">ismask</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_mask</span> <span class="o">=</span> <span class="n">is_mask</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="n">bg_color</span>
 
@@ -236,12 +460,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">created_bg</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">bg</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bg</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="n">is_mask</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">created_bg</span> <span class="o">=</span> <span class="kc">True</span>
 
-        
+        <span class="c1"># order self.clips by layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">clip</span><span class="p">:</span> <span class="n">clip</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+
         <span class="c1"># compute duration</span>
-        <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
+        <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
         <span class="k">if</span> <span class="kc">None</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ends</span><span class="p">:</span>
             <span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
@@ -254,31 +480,42 @@
 
         <span class="c1"># compute mask if necessary</span>
         <span class="k">if</span> <span class="n">transparent</span><span class="p">:</span>
-            <span class="n">maskclips</span> <span class="o">=</span> <span class="p">[(</span><span class="n">c</span><span class="o">.</span><span class="n">mask</span> <span class="k">if</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span>
-                          <span class="n">c</span><span class="o">.</span><span class="n">add_mask</span><span class="p">()</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
-                          <span class="o">.</span><span class="n">set_end</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                          <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
+            <span class="n">maskclips</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="k">if</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_add_mask</span><span class="p">()</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">change_end</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">with_layer</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">layer</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span>
+            <span class="p">]</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">maskclips</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                               <span class="n">bg_color</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+                <span class="n">maskclips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="mf">0.0</span>
+            <span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-            <span class="sd">&quot;&quot;&quot; The clips playing at time `t` are blitted over one</span>
-<span class="sd">                another. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CompositeVideoClip.make_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.make_frame">[docs]</a>    <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The clips playing at time `t` are blitted over one another.&quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
 
-            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_clips</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">blit_on</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">f</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">frame_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="n">im_mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">frame_mask</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">im_mask</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
+        <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_clips</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">blit_on</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CompositeVideoClip.playing_clips"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">[docs]</a>    <span class="k">def</span> <span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns a list of the clips in the composite clips that are</span>
-<span class="sd">            actually playing at the given time `t`. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompositeVideoClip.close"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeVideoClip.playing_clips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">[docs]</a>    <span class="k">def</span> <span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the clips in the composite clips that are</span>
+<span class="sd">        actually playing at the given time `t`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">clip</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="CompositeVideoClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the instance, releasing all the resources.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_bg</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="p">:</span>
             <span class="c1"># Only close the background clip if it was locally created.</span>
             <span class="c1"># Otherwise, it remains the job of whoever created it.</span>
@@ -289,90 +526,250 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="kc">None</span></div></div>
 
 
+<div class="viewcode-block" id="clips_array"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.clips_array.html#moviepy.video.compositing.CompositeVideoClip.clips_array">[docs]</a><span class="k">def</span> <span class="nf">clips_array</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">rows_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols_heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a matrix whose rows are clips, creates a CompositeVideoClip where</span>
+<span class="sd">    all clips are placed side by side horizontally for each clip in each row</span>
+<span class="sd">    and one row on top of the other for each row. So given next matrix of clips</span>
+<span class="sd">    with same size:</span>
 
-<span class="k">def</span> <span class="nf">clips_array</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">rows_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                <span class="n">bg_color</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="sd">    ```python</span>
+<span class="sd">    clips_array([[clip1, clip2, clip3], [clip4, clip5, clip6]])</span>
+<span class="sd">    ```</span>
 
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    the result will be a CompositeVideoClip with a layout displayed like:</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    ┏━━━━━━━┳━━━━━━━┳━━━━━━━┓</span>
+<span class="sd">    ┃       ┃       ┃       ┃</span>
+<span class="sd">    ┃ clip1 ┃ clip2 ┃ clip3 ┃</span>
+<span class="sd">    ┃       ┃       ┃       ┃</span>
+<span class="sd">    ┣━━━━━━━╋━━━━━━━╋━━━━━━━┫</span>
+<span class="sd">    ┃       ┃       ┃       ┃</span>
+<span class="sd">    ┃ clip4 ┃ clip5 ┃ clip6 ┃</span>
+<span class="sd">    ┃       ┃       ┃       ┃</span>
+<span class="sd">    ┗━━━━━━━┻━━━━━━━┻━━━━━━━┛</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    If some clips doesn&#39;t fulfill the space required by the rows or columns</span>
+<span class="sd">    in which are placed, that space will be filled by the color defined in</span>
+<span class="sd">    ``bg_color``.</span>
+
+<span class="sd">    array</span>
+<span class="sd">      Matrix of clips included in the returned composited video clip.</span>
 
 <span class="sd">    rows_widths</span>
-<span class="sd">      widths of the different rows in pixels. If None, is set automatically.</span>
+<span class="sd">      Widths of the different rows in pixels. If ``None``, is set automatically.</span>
 
-<span class="sd">    cols_widths</span>
-<span class="sd">      widths of the different colums in pixels. If None, is set automatically.</span>
+<span class="sd">    cols_heights</span>
+<span class="sd">      Heights of the different columns in pixels. If ``None``, is set automatically.</span>
 
-<span class="sd">    cols_widths</span>
-<span class="sd">    </span>
 <span class="sd">    bg_color</span>
-<span class="sd">       Fill color for the masked and unfilled regions. Set to None for these</span>
-<span class="sd">       regions to be transparent (will be slower).</span>
-
+<span class="sd">       Fill color for the masked and unfilled regions. Set to ``None`` for these</span>
+<span class="sd">       regions to be transparent (processing will be slower).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
     <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-    <span class="n">sizes_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">array</span><span class="p">])</span>
-    
+    <span class="n">sizes_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">line</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">array</span><span class="p">])</span>
+
     <span class="c1"># find row width and col_widths automatically if not provided</span>
     <span class="k">if</span> <span class="n">rows_widths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">rows_widths</span> <span class="o">=</span> <span class="n">sizes_array</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cols_widths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">cols_widths</span> <span class="o">=</span> <span class="n">sizes_array</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    
-    <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">cols_widths</span><span class="p">))</span> 
-    <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">rows_widths</span><span class="p">))</span>
-    
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cw</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xx</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">cols_widths</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">rw</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">yy</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rows_widths</span><span class="p">)):</span>
+        <span class="n">rows_widths</span> <span class="o">=</span> <span class="n">sizes_array</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cols_heights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">cols_heights</span> <span class="o">=</span> <span class="n">sizes_array</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># compute start positions of X for rows and Y for columns</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">cols_heights</span><span class="p">))</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">rows_widths</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">cols_heights</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">rw</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ys</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">rows_widths</span><span class="p">)):</span>
             <span class="n">clip</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
             <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">&lt;</span> <span class="n">cw</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">h</span> <span class="o">&lt;</span> <span class="n">rw</span><span class="p">):</span>
-                <span class="n">clip</span> <span class="o">=</span> <span class="p">(</span><span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)],</span>
-                                          <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">cw</span><span class="p">,</span><span class="n">rw</span><span class="p">),</span>
-                                          <span class="n">bg_color</span> <span class="o">=</span> <span class="n">bg_color</span><span class="p">)</span><span class="o">.</span>
-                                     <span class="n">set_duration</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
-                
-            <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
-                 
-    <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">yy</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
+            <span class="c1"># if clip not fulfill row width or column height</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">w</span> <span class="o">&lt;</span> <span class="n">ch</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">h</span> <span class="o">&lt;</span> <span class="n">rw</span><span class="p">):</span>
+                <span class="n">clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">rw</span><span class="p">),</span> <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+            <span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="concatenate_videoclips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips.html#moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips">[docs]</a><span class="k">def</span> <span class="nf">concatenate_videoclips</span><span class="p">(</span>
+    <span class="n">clips</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="n">transition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenates several video clips.</span>
+
+<span class="sd">    Returns a video clip made by clip by concatenating several video clips.</span>
+<span class="sd">    (Concatenated means that they will be played one after another).</span>
+
+<span class="sd">    There are two methods:</span>
+
+<span class="sd">    - method=&quot;chain&quot;: will produce a clip that simply outputs</span>
+<span class="sd">      the frames of the successive clips, without any correction if they are</span>
+<span class="sd">      not of the same size of anything. If none of the clips have masks the</span>
+<span class="sd">      resulting clip has no mask, else the mask is a concatenation of masks</span>
+<span class="sd">      (using completely opaque for clips that don&#39;t have masks, obviously).</span>
+<span class="sd">      If you have clips of different size and you want to write directly the</span>
+<span class="sd">      result of the concatenation to a file, use the method &quot;compose&quot; instead.</span>
+
+<span class="sd">    - method=&quot;compose&quot;, if the clips do not have the same resolution, the final</span>
+<span class="sd">      resolution will be such that no clip has to be resized.</span>
+<span class="sd">      As a consequence the final clip has the height of the highest clip and the</span>
+<span class="sd">      width of the widest clip of the list. All the clips with smaller dimensions</span>
+<span class="sd">      will appear centered. The border will be transparent if mask=True, else it</span>
+<span class="sd">      will be of the color specified by ``bg_color``.</span>
+
+<span class="sd">    The clip with the highest FPS will be the FPS of the result clip.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    clips</span>
+<span class="sd">      A list of video clips which must all have their ``duration``</span>
+<span class="sd">      attributes set.</span>
+<span class="sd">    method</span>
+<span class="sd">      &quot;chain&quot; or &quot;compose&quot;: see above.</span>
+<span class="sd">    transition</span>
+<span class="sd">      A clip that will be played between each two clips of the list.</span>
+
+<span class="sd">    bg_color</span>
+<span class="sd">      Only for method=&#39;compose&#39;. Color of the background.</span>
+<span class="sd">      Set to None for a transparent clip</span>
+
+<span class="sd">    padding</span>
+<span class="sd">      Only for method=&#39;compose&#39;. Duration during two consecutive clips.</span>
+<span class="sd">      Note that for negative padding, a clip will partly play at the same</span>
+<span class="sd">      time as the clip it follows (negative padding is cool for clips who fade</span>
+<span class="sd">      in on one another). A non-null padding automatically sets the method to</span>
+<span class="sd">      `compose`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">transition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clip_transition_pairs</span> <span class="o">=</span> <span class="p">[[</span><span class="n">v</span><span class="p">,</span> <span class="n">transition</span><span class="p">]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">clips</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">clip_transition_pairs</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">clips</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">transition</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">timings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">])</span>
+
+    <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">]</span>
+
+    <span class="n">w</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">)</span>
+
+    <span class="n">timings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">timings</span> <span class="o">+</span> <span class="n">padding</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">timings</span><span class="p">)))</span>
+    <span class="n">timings</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="n">padding</span>  <span class="c1"># Last element is the duration of the whole</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;chain&quot;</span><span class="p">:</span>
+
+        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">timings</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">clips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">timings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+        <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">or</span> <span class="n">ColorClip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
+            <span class="k">return</span> <span class="n">mask</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">is_mask</span><span class="o">=</span><span class="n">is_mask</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="n">make_frame</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">]):</span>
+            <span class="n">masks</span> <span class="o">=</span> <span class="p">[</span><span class="n">get_mask</span><span class="p">(</span><span class="n">clip</span><span class="p">)</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span><span class="p">]</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">masks</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;compose&quot;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">timings</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span>
+            <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">,</span>
+            <span class="n">is_mask</span><span class="o">=</span><span class="n">is_mask</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="s2">&quot;MoviePy Error: The &#39;method&#39; argument of &quot;</span>
+            <span class="s2">&quot;concatenate_videoclips must be &#39;chain&#39; or &#39;compose&#39;&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">result</span><span class="o">.</span><span class="n">timings</span> <span class="o">=</span> <span class="n">timings</span>
+
+    <span class="n">result</span><span class="o">.</span><span class="n">start_times</span> <span class="o">=</span> <span class="n">timings</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timings</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">timings</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">audio_t</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">clip</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span> <span class="n">timings</span><span class="p">)</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">audio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="p">]</span>
+    <span class="k">if</span> <span class="n">audio_t</span><span class="p">:</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">CompositeAudioClip</span><span class="p">([</span><span class="n">a</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">audio_t</span><span class="p">])</span>
+
+    <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span> <span class="k">if</span> <span class="n">fpss</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">result</span></div>
 </pre></div>
 
-           </div>
-           
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-  
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
   </div>
   
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
 
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
     
-   
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>

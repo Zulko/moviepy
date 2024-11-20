@@ -1,0 +1,741 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Modifying clips and apply effects &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/modifying';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating your own effects" href="create_effects.html" />
+    <link rel="prev" title="Loading resources as clips" href="loading.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="loading.html">Loading resources as clips</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Modifying clips and apply effects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_effects.html">Creating your own effects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compositing.html">Compositing multiple clips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Previewing and saving video clips</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">The MoviePy User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Modifying clips and apply effects</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="modifying-clips-and-apply-effects">
+<span id="modifying"></span><h1>Modifying clips and apply effects<a class="headerlink" href="#modifying-clips-and-apply-effects" title="Permalink to this heading">#</a></h1>
+<p>Of course, once you will have loaded a <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a> the next step of action will be to modify it to be able to integrate it in your final video.</p>
+<dl class="simple">
+<dt>To modify a clip, there is three main courses of actions :</dt><dd><ul class="simple">
+<li><p>The built-in methods of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> or <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> modifying the properties of the object.</p></li>
+<li><p>The already-implemented effects of MoviePy you can apply on clips, usually affecting the clip by applying filters on each frame of the clip at rendering time.</p></li>
+<li><p>The transformation filters that you can apply using <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform" title="moviepy.Clip.Clip.transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">transform()</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+<section id="how-modifications-are-applied-to-a-clip">
+<h2>How modifications are applied to a clip ?<a class="headerlink" href="#how-modifications-are-applied-to-a-clip" title="Permalink to this heading">#</a></h2>
+<section id="clip-copy-during-modification">
+<h3>Clip copy during modification<a class="headerlink" href="#clip-copy-during-modification" title="Permalink to this heading">#</a></h3>
+<p>The first thing you must know is that when modifying a clip, MoviePy <strong>will never modify that clip directly</strong>.
+Instead it will return <strong>a modified copy of the original</strong> and let the original untouched. This is known as out-place instead of in-place behavior.</p>
+<p>To illustrate :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import everything needed to edit video clips</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Load example.mp4</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+
+<span class="c1"># This does nothing, as multiply_volume will return a copy of clip which you will loose immediatly as you dont store it</span>
+<span class="c1"># If you was to render clip now, the audio would still be at full volume</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># This create a copy of clip in clip_whisper with a volume of only 10% the original, but does not modify the original clip</span>
+<span class="c1"># If you was to render clip right now, the audio would still be at full volume</span>
+<span class="c1"># If you was to render clip_whisper, the audio would be a 10% of the original volume</span>
+<span class="n">clip_whisper</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># This replace the original clip with a copy of it where volume is only 10% of the original</span>
+<span class="c1"># If you was to render clip now, the audio would be at 10%</span>
+<span class="c1"># The original clip is now lost</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is an important point to understand, because it is one of the most recurrent source of bug for newcomers.</p>
+</section>
+<section id="memory-consumption-of-effect-and-modifications">
+<h3>Memory consumption of effect and modifications<a class="headerlink" href="#memory-consumption-of-effect-and-modifications" title="Permalink to this heading">#</a></h3>
+<p>When applying an effect or modification, it does not immediately apply the effect to all the frames of the clip, but only to the first frame: all the other frames will only be modified when required (that is, when you will write the whole clip to a file of when you will preview it).</p>
+<p>It means that creating a new clip is neither time nor memory hungry, all the computation happen during the final rendering.</p>
+</section>
+<section id="time-representations-in-moviepy">
+<h3>Time representations in MoviePy<a class="headerlink" href="#time-representations-in-moviepy" title="Permalink to this heading">#</a></h3>
+<p>Many methods that we will see accept duration or timepoint as arguments. For instance <code class="xref py py-meth docutils literal notranslate"><span class="pre">clip.with_subclip(t_start,</span> <span class="pre">t_end)</span></code> which cuts the clip between two timepoints.</p>
+<p>MoviePy usually accept duration and timepoint as either :</p>
+<ul class="simple">
+<li><p>a number of seconds as a <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">tuple</span></code> with <code class="docutils literal notranslate"><span class="pre">(minutes,</span> <span class="pre">seconds)</span></code> or <code class="docutils literal notranslate"><span class="pre">(hours,</span> <span class="pre">minutes,</span> <span class="pre">seconds)</span></code>.</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">string</span></code> such as <code class="docutils literal notranslate"><span class="pre">'00:03:50.54'</span></code>.</p></li>
+</ul>
+<p>Also, you can usually provide negative times, indicating a time from the end of the clip. For example, <code class="docutils literal notranslate"><span class="pre">clip.with_subclip(-20,</span> <span class="pre">-10)</span></code> cuts the clip between 20s before the end and 10s before the end.</p>
+</section>
+</section>
+<section id="modify-a-clip-using-the-with-methods">
+<h2>Modify a clip using the <code class="docutils literal notranslate"><span class="pre">with_*</span></code> methods<a class="headerlink" href="#modify-a-clip-using-the-with-methods" title="Permalink to this heading">#</a></h2>
+<p>The first way to modify a clip is by modifying internal properties of your object, thus modifying his behavior.</p>
+<p>Thoses methods usually starts with the prefix <code class="docutils literal notranslate"><span class="pre">with_</span></code> or <code class="docutils literal notranslate"><span class="pre">without_</span></code>, indicating that they will return a copy of the clip with the properties modified.</p>
+<p>So, you may write something like :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># stop the clip after 5 sec</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">without_audio</span><span class="p">()</span>  <span class="c1"># remove the audio of the clip</span>
+</pre></div>
+</div>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">with_*</span></code> methods, a handful of very common methods are also accessible under shorter name, thoses are:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.resized" title="moviepy.video.VideoClip.VideoClip.resized"><code class="xref py py-meth docutils literal notranslate"><span class="pre">resized()</span></code></a></p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">crop()</span></code></p></li>
+<li><p><code class="xref py py-meth docutils literal notranslate"><span class="pre">rotate()</span></code></p></li>
+</ul>
+<p>For a list of all those methods, see <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>.</p>
+</section>
+<section id="modify-a-clip-using-effects">
+<span id="modifying-effects"></span><h2>Modify a clip using effects<a class="headerlink" href="#modify-a-clip-using-effects" title="Permalink to this heading">#</a></h2>
+<p>The second way to modify a clip is by using effects that will modify the frames of the clip (which internally are no more than <a class="reference external" href="https://numpy.org">numpy arrays</a>)  by applying some sort of functions on them.</p>
+<p>MoviePy come with many effects implemented in <a class="reference internal" href="../reference/reference/moviepy.video.fx.html#module-moviepy.video.fx" title="moviepy.video.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code></a> for visual effects and <a class="reference internal" href="../reference/reference/moviepy.audio.fx.html#module-moviepy.audio.fx" title="moviepy.audio.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.audio.fx</span></code></a> for audio effects.
+For practicality, these two modules are loaded in MoviePy as <code class="docutils literal notranslate"><span class="pre">vfx</span></code> and <code class="docutils literal notranslate"><span class="pre">afx</span></code>, letting you import them as <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">moviepy</span> <span class="pre">import</span> <span class="pre">vfx,</span> <span class="pre">afx</span></code>.</p>
+<p>To use thoses effects, you simply need to instanciate them as object and apply them on your <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a> using method <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_effects" title="moviepy.Clip.Clip.with_effects"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_effects()</span></code></a>, with a list of <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effect</span></code></a> objects you want to apply.</p>
+<p>For convenience the effects are also dynamically added as method of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code>  classes at runtime, letting you call them as simple method of your clip.</p>
+<p>So, you may write something like :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># resize clip to be 460px in width, keeping aspect ratio</span>
+
+<span class="c1"># fx method return a copy of the clip, so we can easily chain them</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)]</span>
+<span class="p">)</span>  <span class="c1"># double the speed and half the audio volume</span>
+
+<span class="c1"># because effects are added to Clip at runtime, you can also call them directly from your clip as methods</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplyColor</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>  <span class="c1"># darken the clip</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>MoviePy effects are automatically applied to both the sound and the mask of the clip if it is relevant, so that you don’t have to worry about modifying these.</p>
+</div>
+<p>For a list of those effects, see <a class="reference internal" href="../reference/reference/moviepy.video.fx.html#module-moviepy.video.fx" title="moviepy.video.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.audio.fx.html#module-moviepy.audio.fx" title="moviepy.audio.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.audio.fx</span></code></a>.</p>
+<p>In addition to the effects already provided by MoviePy, you can obviously <a class="reference internal" href="create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a> and use them the same way.</p>
+</section>
+<section id="modify-a-clip-apparence-and-timing-using-filters">
+<span id="modifying-filters"></span><h2>Modify a clip apparence and timing using filters<a class="headerlink" href="#modify-a-clip-apparence-and-timing-using-filters" title="Permalink to this heading">#</a></h2>
+<p>In addition to modify a clip properties and using effects, you can also modify the apparence or timing of a clip by using your own custom <em>filters</em> with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">image_transform()</span></code>, and more generally with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform" title="moviepy.Clip.Clip.transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">transform()</span></code></a>.</p>
+<p>All thoses methods works by taking as first parameter a callback function that will receive either a clip frame, a timepoint, or both, and return a modified version of thoses.</p>
+<section id="modify-only-the-timing-of-a-clip">
+<h3>Modify only the timing of a Clip<a class="headerlink" href="#modify-only-the-timing-of-a-clip" title="Permalink to this heading">#</a></h3>
+<p>You can change the timeline of the clip with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_transform(your_filter)</span></code></a>.
+Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function taking clip time as a parameter and returning a new time :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+
+
+<span class="c1"># You can define a function the classical way</span>
+<span class="k">def</span> <span class="nf">accel_x3</span><span class="p">(</span><span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">time</span> <span class="o">*</span> <span class="mi">3</span>
+
+
+<span class="n">modified_clip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="n">accel_x3</span><span class="p">)</span>
+
+<span class="c1"># Of you can also use lambda function</span>
+<span class="n">modified_clip2</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now the clip <code class="docutils literal notranslate"><span class="pre">modified_clip1</span></code> plays three times faster than <code class="docutils literal notranslate"><span class="pre">my_clip</span></code>, while <code class="docutils literal notranslate"><span class="pre">modified_clip2</span></code> will be oscillating between 00:00:00 to 00:00:02 of <code class="docutils literal notranslate"><span class="pre">my_clip</span></code>. Note that in the last case you have created a clip of infinite duration (which is not a problem for the moment).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a> will only modify the clip main frame, without modifying clip audio or mask for <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>.</p>
+<p>If you wish to also modify audio and/or mask you can provide the parameter <code class="docutils literal notranslate"><span class="pre">apply_to</span></code> with either <code class="docutils literal notranslate"><span class="pre">'audio'</span></code>, <code class="docutils literal notranslate"><span class="pre">'mask'</span></code>, or <code class="docutils literal notranslate"><span class="pre">['audio',</span> <span class="pre">'mask']</span></code>.</p>
+</div>
+</section>
+<section id="modifying-only-the-apparence-of-a-clip">
+<h3>Modifying only the apparence of a Clip<a class="headerlink" href="#modifying-only-the-apparence-of-a-clip" title="Permalink to this heading">#</a></h3>
+<p>For <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>, you can change the apparence of the clip with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.image_transform" title="moviepy.video.VideoClip.VideoClip.image_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">image_transform(your_filter)</span></code></a>.
+Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function, taking clip frame (a numpy array) as a parameter and returning the transformed frame :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+
+
+<span class="n">modified_clip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">invert_green_blue</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now the clip <code class="docutils literal notranslate"><span class="pre">modified_clip1</span></code> will have his green and blue canals inverted.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can define if transformation should be applied to audio and mask same as for <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sometimes need to treat clip frames and mask frames in a different way. To distinguish between the two, you can always look at their shape, clips are <code class="docutils literal notranslate"><span class="pre">H*W*3</span></code>, and masks <code class="docutils literal notranslate"><span class="pre">H*W</span></code>.</p>
+</div>
+</section>
+<section id="modifying-both-the-apparence-and-the-timing-of-a-clip">
+<h3>Modifying both the apparence and the timing of a Clip<a class="headerlink" href="#modifying-both-the-apparence-and-the-timing-of-a-clip" title="Permalink to this heading">#</a></h3>
+<p>Finally, you may want to process the clip by taking into account both the time and the frame picture, for example to apply visual effects variating with time.
+This is possible with the method <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform" title="moviepy.Clip.Clip.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform(your_filter)</span></code></a>.
+Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function taking two parameters, and returning a new frame picture. Where first argument is a <code class="docutils literal notranslate"><span class="pre">get_frame</span></code> method (i.e. a function <code class="docutils literal notranslate"><span class="pre">get_frame(time)</span></code> which given a time returns the clip’s frame at that time), and the second argument is the time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function returns a &#39;region&#39; of the current frame.</span>
+<span class="sd">    The position of this region depends on the time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">frame_region</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mi">360</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">frame_region</span>
+
+
+<span class="n">modified_clip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">scroll</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will scroll down the clip, with a constant height of 360 pixels.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can define if transformation should be applied to audio and mask same as for <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When programming a new effect, whenever it is possible, prefer using <code class="docutils literal notranslate"><span class="pre">time_transform</span></code> and <code class="docutils literal notranslate"><span class="pre">image_transform</span></code> instead of <code class="docutils literal notranslate"><span class="pre">transform</span></code> when implementing new effects.
+The reason is that, though they both internally relly on <code class="docutils literal notranslate"><span class="pre">transform</span></code> when these effects are applied to <code class="docutils literal notranslate"><span class="pre">ImageClip</span></code> objects, MoviePy will recognize they only need to be applied once instead of on each frame, resulting in faster renderings.</p>
+</div>
+<p>To keep things simple, we have only addressed the case of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>, but know that the same principle applies to <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a>, except that instead of a picture frame, you will have an audio frame, which is also a numpy array.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="loading.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Loading resources as clips</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="create_effects.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Creating your own effects</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-modifications-are-applied-to-a-clip">How modifications are applied to a clip ?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-copy-during-modification">Clip copy during modification</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-consumption-of-effect-and-modifications">Memory consumption of effect and modifications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-representations-in-moviepy">Time representations in MoviePy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-a-clip-using-the-with-methods">Modify a clip using the <code class="docutils literal notranslate"><span class="pre">with_*</span></code> methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-a-clip-using-effects">Modify a clip using effects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-a-clip-apparence-and-timing-using-filters">Modify a clip apparence and timing using filters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modify-only-the-timing-of-a-clip">Modify only the timing of a Clip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modifying-only-the-apparence-of-a-clip">Modifying only the apparence of a Clip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modifying-both-the-apparence-and-the-timing-of-a-clip">Modifying both the apparence and the timing of a Clip</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/user_guide/modifying.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user_guide/modifying.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

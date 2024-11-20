@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.audio.io.readers &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/audio/io/readers';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.audio.io.readers</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for moviepy.audio.io.readers</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;MoviePy audio reading with ffmpeg.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
+
+
+<div class="viewcode-block" id="FFMPEG_AudioReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_AudioReader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to read the audio in either video files or audio files</span>
+<span class="sd">    using ffmpeg. ffmpeg will read any audio and transform them into</span>
+<span class="sd">    raw data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    filename</span>
+<span class="sd">      Name of any video or audio file, like ``video.mp4`` or</span>
+<span class="sd">      ``sound.wav`` etc.</span>
+
+<span class="sd">    buffersize</span>
+<span class="sd">      The size of the buffer to use. Should be bigger than the buffer</span>
+<span class="sd">      used by ``write_audiofile``</span>
+
+<span class="sd">    print_infos</span>
+<span class="sd">      Print the ffmpeg infos on the file being read (for debugging)</span>
+
+<span class="sd">    fps</span>
+<span class="sd">      Desired frames per second in the decoded signal that will be</span>
+<span class="sd">      received from ffmpeg</span>
+
+<span class="sd">    nbytes</span>
+<span class="sd">      Desired number of bytes (1,2,4) in the signal that will be</span>
+<span class="sd">      received from ffmpeg</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">filename</span><span class="p">,</span>
+        <span class="n">buffersize</span><span class="p">,</span>
+        <span class="n">decode_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">print_infos</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span>
+        <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">nchannels</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># TODO bring FFMPEG_AudioReader more in line with FFMPEG_VideoReader</span>
+        <span class="c1"># E.g. here self.pos is still 1-indexed.</span>
+        <span class="c1"># (or have them inherit from a shared parent class)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">=</span> <span class="n">nbytes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;s</span><span class="si">%d</span><span class="s2">le&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">nbytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">codec</span> <span class="o">=</span> <span class="s2">&quot;pcm_s</span><span class="si">%d</span><span class="s2">le&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">nbytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="n">nchannels</span>
+        <span class="n">infos</span> <span class="o">=</span> <span class="n">ffmpeg_parse_infos</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">decode_file</span><span class="o">=</span><span class="n">decode_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bitrate</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;audio_bitrate&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infos</span> <span class="o">=</span> <span class="n">infos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">buffersize</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_around</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.initialize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens the file, creates the pipe.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># if any</span>
+
+        <span class="k">if</span> <span class="n">start_time</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
+            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">%.05f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">-</span> <span class="n">offset</span><span class="p">),</span>
+                <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="s2">&quot;-vn&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">%.05f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">offset</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;-vn&quot;</span><span class="p">]</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">i_arg</span>
+            <span class="o">+</span> <span class="p">[</span>
+                <span class="s2">&quot;-loglevel&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;error&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span>
+                <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">codec</span><span class="p">,</span>
+                <span class="s2">&quot;-ar&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
+                <span class="s2">&quot;-ac&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">,</span>
+                <span class="s2">&quot;-&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;bufsize&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">,</span>
+                <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">start_time</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.skip_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.skip_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">skip_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Skip a chunk of audio data by reading and discarding the specified number of</span>
+<span class="sd">        frames from the audio stream. The audio stream is read from the `proc` stdout.</span>
+<span class="sd">        After skipping the chunk, the `pos` attribute is updated accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        chunksize (int):</span>
+<span class="sd">          The number of audio frames to skip.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">*</span> <span class="n">chunksize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">chunksize</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.read_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.read_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a chunk of audio data from the audio stream.</span>
+
+<span class="sd">        This method reads a chunk of audio data from the audio stream. The</span>
+<span class="sd">        specified number of frames, given by `chunksize`, is read from the</span>
+<span class="sd">        `proc` stdout. The audio data is returned as a NumPy array, where</span>
+<span class="sd">        each row corresponds to a frame and each column corresponds to a</span>
+<span class="sd">        channel. If there is not enough audio left to read, the remaining</span>
+<span class="sd">        portion is padded with zeros, ensuring that the returned array has</span>
+<span class="sd">        the desired length. The `pos` attribute is updated accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        chunksize (float):</span>
+<span class="sd">          The desired number of audio frames to read.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># chunksize is not being autoconverted from float to int</span>
+        <span class="n">chunksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">chunksize</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">*</span> <span class="n">chunksize</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbytes</span><span class="p">)</span>
+        <span class="n">data_type</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;int8&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;int16&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;int32&quot;</span><span class="p">}[</span><span class="bp">self</span><span class="o">.</span><span class="n">nbytes</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="s2">&quot;frombuffer&quot;</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">data_type</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">result</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nbytes</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Pad the read chunk with zeros when there isn&#39;t enough audio</span>
+        <span class="c1"># left to read, so the buffer is always at full length.</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">chunksize</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">result</span><span class="p">,</span> <span class="n">pad</span><span class="p">])</span>
+        <span class="c1"># self.proc.stdout.flush()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">chunksize</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.seek"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a frame at time t. Note for coders: getting an arbitrary</span>
+<span class="sd">        frame in the video with ffmpeg can be painfully slow if some</span>
+<span class="sd">        decoding has to be done. This function tries to avoid fectching</span>
+<span class="sd">        arbitrary frames whenever possible, by moving between adjacent</span>
+<span class="sd">        frames.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&gt;</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">1000000</span><span class="p">)):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">pos</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">:</span>
+            <span class="c1"># print pos</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">skip_chunk</span><span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
+        <span class="c1"># last case standing: pos = current pos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.get_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve the audio frame(s) corresponding to the given timestamp(s).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tt (float or numpy.ndarray):</span>
+<span class="sd">          The timestamp(s) at which to retrieve the audio frame(s).</span>
+<span class="sd">          If `tt` is a single float value, the frame corresponding to that</span>
+<span class="sd">          timestamp is returned. If `tt` is a NumPy array of timestamps, an</span>
+<span class="sd">          array of frames corresponding to each timestamp is returned.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c1"># lazy implementation, but should not cause problems in</span>
+            <span class="c1"># 99.99 %  of the cases</span>
+
+            <span class="c1"># elements of t that are actually in the range of the</span>
+            <span class="c1"># audio file.</span>
+            <span class="n">in_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">tt</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tt</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+            <span class="c1"># Check that the requested time is in the valid range</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_time</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+                    <span class="s2">&quot;Error in file </span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;Accessing time t=</span><span class="si">%.02f</span><span class="s2">-</span><span class="si">%.02f</span><span class="s2"> seconds, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="o">+</span> <span class="s2">&quot;with clip duration=</span><span class="si">%f</span><span class="s2"> seconds, &quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+                <span class="p">)</span>
+
+            <span class="c1"># The np.round in the next line is super-important.</span>
+            <span class="c1"># Removing it results in artifacts in the noise.</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">tt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)[</span><span class="n">in_time</span><span class="p">]</span>
+            <span class="n">fr_min</span><span class="p">,</span> <span class="n">fr_max</span> <span class="o">=</span> <span class="n">frames</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">frames</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">fr_min</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer_around</span><span class="p">(</span><span class="n">fr_min</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">fr_max</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer_around</span><span class="p">(</span><span class="n">fr_max</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">tt</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">))</span>
+                <span class="n">indices</span> <span class="o">=</span> <span class="n">frames</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">in_time</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+            <span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">&quot;Error in file </span><span class="si">%s</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">&quot;At time t=</span><span class="si">%.02f</span><span class="s2">-</span><span class="si">%.02f</span><span class="s2"> seconds, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="o">+</span> <span class="s2">&quot;indices wanted: </span><span class="si">%d</span><span class="s2">-</span><span class="si">%d</span><span class="s2">, &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">indices</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+                    <span class="o">+</span> <span class="s2">&quot;but len(buffer)=</span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">))</span>
+                    <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">),</span>
+                    <span class="ne">UserWarning</span><span class="p">,</span>
+                <span class="p">)</span>
+
+                <span class="c1"># repeat the last frame instead</span>
+                <span class="n">indices</span><span class="p">[</span><span class="n">indices</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">in_time</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">tt</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ind</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span><span class="p">:</span>  <span class="c1"># out of time: return 0</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">0</span> <span class="o">&lt;=</span> <span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)):</span>
+                <span class="c1"># out of the buffer: recenter the buffer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer_around</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span>
+
+            <span class="c1"># read the frame in the buffer</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.buffer_around"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.buffer_around">[docs]</a>    <span class="k">def</span> <span class="nf">buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill the buffer with frames, centered on frame_number if possible.&quot;&quot;&quot;</span>
+        <span class="c1"># start-frame for the buffer</span>
+        <span class="n">new_bufferstart</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame_number</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">current_f_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span>
+            <span class="k">if</span> <span class="n">new_bufferstart</span> <span class="o">&lt;</span> <span class="n">current_f_end</span> <span class="o">&lt;</span> <span class="n">new_bufferstart</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">:</span>
+                <span class="c1"># We already have part of what must be read</span>
+                <span class="n">conserved</span> <span class="o">=</span> <span class="n">current_f_end</span> <span class="o">-</span> <span class="n">new_bufferstart</span>
+                <span class="n">chunksize</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span> <span class="o">-</span> <span class="n">conserved</span>
+                <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="o">-</span><span class="n">conserved</span><span class="p">:],</span> <span class="n">array</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">new_bufferstart</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">new_bufferstart</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span> <span class="o">=</span> <span class="n">new_bufferstart</span></div>
+
+<div class="viewcode-block" id="FFMPEG_AudioReader.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the reader, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># If the garbage collector comes, make sure the subprocess is terminated.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

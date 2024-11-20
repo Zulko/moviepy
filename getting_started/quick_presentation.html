@@ -1,194 +1,412 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Quick presentation &#8212; MoviePy  documentation</title>
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quick presentation &mdash; MoviePy 1.0.2 documentation</title>
   
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
 
   
-  
-  
-  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/moviepy.css" />
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
 
-    
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/quick_presentation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Mixing clips" href="compositing.html" />
-    <link rel="prev" title="Getting started with MoviePy" href="getting_started.html" /> 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../index.html" class="icon icon-home"> MoviePy
-          
-
-          
-            
-            <img src="../_static/logo_small.jpeg" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                1
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Quick presentation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#do-i-need-moviepy">Do I need MoviePy ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#advantages-and-limitations">Advantages and limitations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#example-code">Example code</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#how-moviepy-works">How MoviePy works</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#basic-concepts">Basic concepts</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="compositing.html">Mixing clips</a></li>
-<li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="working_with_matplotlib.html">Working with <cite>matplotlib</cite></a></li>
-<li class="toctree-l2"><a class="reference internal" href="audioclips.html">Audio in MoviePy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="videoclips.html">Creating and exporting video clips</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../docker.html">Moviepy Docker</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced_tools/advanced_tools.html">Advanced tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a></li>
-</ul>
-
-            
-          
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">MoviePy</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
-        
-      <li>Quick presentation</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            <a href="../_sources/getting_started/quick_presentation.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
+    <link rel="next" title="MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”" href="moviepy_10_minutes.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
-  <hr/>
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-            
-  <div class="section" id="quick-presentation">
-<span id="id1"></span><h1>Quick presentation<a class="headerlink" href="#quick-presentation" title="Permalink to this headline">¶</a></h1>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quick presentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moviepy_10_minutes.html">MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">MoviePy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="updating_to_v2.html">Updating from v1.X to v2.X</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ and troubleshooting</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Getting started with MoviePy</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Quick presentation</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="quick-presentation">
+<span id="id1"></span><h1>Quick presentation<a class="headerlink" href="#quick-presentation" title="Permalink to this heading">#</a></h1>
 <p>This section explains when MoviePy can be used and how it works.</p>
-<div class="section" id="do-i-need-moviepy">
-<h2>Do I need MoviePy ?<a class="headerlink" href="#do-i-need-moviepy" title="Permalink to this headline">¶</a></h2>
+<section id="do-i-need-moviepy">
+<h2>Do I need MoviePy?<a class="headerlink" href="#do-i-need-moviepy" title="Permalink to this heading">#</a></h2>
 <p>Here are a few reasons why you may want to edit videos in Python:</p>
 <ul class="simple">
 <li><p>You have many videos to process or to compose in a complicated way.</p></li>
-<li><p>You want to automatize the creation of videos or GIFs on a web server (Django, Flask, etc.)</p></li>
-<li><p>You want to automatize tedious tasks, like title insertions tracking objects, cuting scenes, making end credits, subtitles, etc…</p></li>
+<li><p>You want to automate the creation of videos or GIFs on a web server (Django, Flask, etc.)</p></li>
+<li><p>You want to automate tedious tasks, like title insertions tracking objects, cutting scenes, making end credits, subtitles, etc…</p></li>
 <li><p>You want to code your own video effects to do something no existing video editor can.</p></li>
 <li><p>You want to create animations from images generated by another python library (Matplotlib, Mayavi, Gizeh, scikit-images…)</p></li>
 </ul>
@@ -197,104 +415,188 @@
 <li><p>You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use <a class="reference external" href="https://imageio.github.io/">imageio</a>, <a class="reference external" href="http://opencv.org/">OpenCV</a> or SimpleCV, these are libraries that specialize in these tasks.</p></li>
 <li><p>You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (or <code class="docutils literal notranslate"><span class="pre">avconv</span></code> or <code class="docutils literal notranslate"><span class="pre">mencoder</span></code>…) it will be faster more memory-efficient than going through MoviePy.</p></li>
 </ul>
-</div>
-<div class="section" id="advantages-and-limitations">
-<h2>Advantages and limitations<a class="headerlink" href="#advantages-and-limitations" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="advantages-and-limitations">
+<h2>Advantages and limitations<a class="headerlink" href="#advantages-and-limitations" title="Permalink to this heading">#</a></h2>
 <p>MoviePy has been developed with the following goals in mind:</p>
 <ul class="simple">
-<li><p><strong>Simple an intuitive</strong>. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.</p></li>
+<li><p><strong>Simple and intuitive</strong>. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.</p></li>
 <li><p><strong>Flexible</strong>. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.</p></li>
 <li><p><strong>Portable</strong>. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.</p></li>
 </ul>
 <p>For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you’ll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (&gt;100), but this will be fixed in future versions.</p>
-</div>
-<div class="section" id="example-code">
-<h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this headline">¶</a></h2>
-<p>In a typical MoviePy script, you load video or audio files, modify them, put them together, and write the final result to a new video file. As an example, let us load a video of my last holidays, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import everything needed to edit video clips</span>
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+</section>
+<section id="example-code">
+<h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this heading">#</a></h2>
+<p>In a typical MoviePy script, you load video or audio files, modify them, put them together, and write the final result to a new video file. As an example, let us load a video, lower the volume, add a title in the center of the video for the first ten seconds, and write the result in a file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import everything needed to edit video clips</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="c1"># Load myHolidays.mp4 and select the subclip 00:00:50 - 00:00:60</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myHolidays.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="c1"># Load file example.mp4 and extract only the subclip from 00:00:10 to 00:00:20</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 
-<span class="c1"># Reduce the audio volume (volume x 0.8)</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="c1"># Reduce the audio volume to 80% of his original volume</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
 
 <span class="c1"># Generate a text clip. You can customize the font, color, etc.</span>
-<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="s2">&quot;My Holidays 2013&quot;</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="s2">&quot;example.ttf&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Big Buck Bunny&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span>
+<span class="p">)</span>
 
-<span class="c1"># Say that you want it to appear 10s at the center of the screen</span>
-<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">txt_clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># Say that you want it to appear for 10s at the center of the screen</span>
+<span class="n">txt_clip</span> <span class="o">=</span> <span class="n">txt_clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># Overlay the text clip on the first video clip</span>
 <span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="p">,</span> <span class="n">txt_clip</span><span class="p">])</span>
 
-<span class="c1"># Write the result to a file (many options available !)</span>
-<span class="n">video</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;myHolidays_edited.webm&quot;</span><span class="p">)</span>
+<span class="c1"># Write the result to a file (many options available!)</span>
+<span class="n">video</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result.mp4&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="how-moviepy-works">
-<h2>How MoviePy works<a class="headerlink" href="#how-moviepy-works" title="Permalink to this headline">¶</a></h2>
-<p>MoviePy uses the software <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> to read and to export video and audio files. It also (optionally) uses ImageMagick to generate texts and write GIF files. The processing of the different media is ensured by Python’s fast numerical library Numpy. Advanced effects and enhancements use some of Python’s numerous image processing libraries (PIL, Scikit-image, scipy, etc.).</p>
+</section>
+<section id="how-moviepy-works">
+<h2>How MoviePy works<a class="headerlink" href="#how-moviepy-works" title="Permalink to this heading">#</a></h2>
+<p>MoviePy uses the software <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> to read and to export video and audio files. It also (optionally) uses <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> to allow for video previewing.</p>
+<p>Internally, the representation and manipulation of the different media is done using Python’s fast numerical library Numpy. Advanced effects and enhancements also use <code class="docutils literal notranslate"><span class="pre">pillow</span></code> library.</p>
 <a class="reference internal image-reference" href="../_images/explanations.jpeg"><img alt="../_images/explanations.jpeg" class="align-center" src="../_images/explanations.jpeg" style="width: 570px;" /></a>
-</div>
-<div class="section" id="basic-concepts">
-<h2>Basic concepts<a class="headerlink" href="#basic-concepts" title="Permalink to this headline">¶</a></h2>
-<p>The central objects of MoviePy are <em>clips</em>, which can be <code class="docutils literal notranslate"><span class="pre">AudioClips</span></code> or <code class="docutils literal notranslate"><span class="pre">VideoClips</span></code>. They can be modified (cut, slowed down, darkened…) or put mixed with clips to form new clips, they can be previewed (using either PyGame or the IPython Notebook) and rendered to a file (as a MP4, a GIF, a MP3, etc.). <code class="docutils literal notranslate"><span class="pre">VideoClips</span></code> for instance can be created from a video file, an image, a text, or a custom animation. They can have an audio track (which is an <code class="docutils literal notranslate"><span class="pre">AudioClip</span></code>) and a mask (a special <code class="docutils literal notranslate"><span class="pre">VideoClip</span></code> indicating which parts of the clip to hide when the clip is mixed with other clips). See <a class="reference internal" href="videoclips.html#videoclips"><span class="std std-ref">Creating and exporting video clips</span></a> and <a class="reference internal" href="compositing.html#compositevideoclips"><span class="std std-ref">Mixing clips</span></a> for more details.</p>
-<p>A clip can be modified using one of moviepy’s numerous effects (like in <code class="docutils literal notranslate"><span class="pre">clip.resize(width=&quot;360&quot;)</span></code>, <code class="docutils literal notranslate"><span class="pre">clip.subclip(t1,t2)</span></code>, or <code class="docutils literal notranslate"><span class="pre">clip.fx(vfx.black_white)</span></code>) or using a user-implemented effect. MoviePy implements many functions (like <code class="docutils literal notranslate"><span class="pre">clip.fl</span></code>, <code class="docutils literal notranslate"><span class="pre">clip.fx</span></code>, etc.) which make it very easy to code your own effect in a few lines. See <a class="reference internal" href="effects.html#effects"><span class="std std-ref">Clips transformations and effects</span></a> for more.</p>
-<p>You will also find a few advanced goodies in <code class="docutils literal notranslate"><span class="pre">moviepy.video.tools</span></code> to track objects in a video, draw simple shapes and color gradients (very useful for masks), generate subtitles and end credits, etc. See <a class="reference internal" href="../advanced_tools/advanced_tools.html#advancedtools"><span class="std std-ref">Advanced tools</span></a> for a description of these.</p>
-<p>Finally, although MoviePy has no graphical user interface, there are many ways to preview a clip which allow you to fine-tune your scripts and be sure that everything is perfect when you render you video in high quality. See <a class="reference internal" href="efficient_moviepy.html#efficient"><span class="std std-ref">How to be efficient with MoviePy</span></a>.</p>
-</div>
-</div>
+</section>
+<section id="the-central-concept-the-clips">
+<h2>The central concept, the clips<a class="headerlink" href="#the-central-concept-the-clips" title="Permalink to this heading">#</a></h2>
+<p>The central object of MoviePy is the <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">the</span> <span class="pre">clips</span></code></a>, with either <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element. Clips really are the base unit of MoviePy, everything you do is with and on them.</p>
+<p>Clips can be created from more than just videos or audios though. They can also be created from an image, a text, a custom animation, a folder of images, and even a simple lambda function !</p>
+<p>To create your final video, what you will do is essentially :</p>
+<ol class="arabic simple">
+<li><p>Load different resources as clips (see <a class="reference internal" href="../user_guide/loading.html#loading"><span class="std std-ref">Loading resources as clips</span></a>)</p></li>
+<li><p>Modify them (see <a class="reference internal" href="../user_guide/modifying.html#modifying"><span class="std std-ref">Modifying clips and apply effects</span></a>)</p></li>
+<li><p>Mixing them into one final clip (see <a class="reference internal" href="../user_guide/compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>)</p></li>
+<li><p>Render them into a file (see <a class="reference internal" href="../user_guide/rendering.html#rendering"><span class="std std-ref">Previewing and saving video clips</span></a>)</p></li>
+</ol>
+<p>Of course, MoviePy offer multiple handy solution and tools to facilitate all thoses steps, and let you add new ones by writing your own effects (see <a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>) !</p>
+</section>
+</section>
 
 
-           </div>
-           
-          </div>
-          <footer>
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="install.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="moviepy_10_minutes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MoviePy in 10 Minutes: Creating a Trailer from “Big Buck Bunny”</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#do-i-need-moviepy">Do I need MoviePy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-and-limitations">Advantages and limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-code">Example code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-moviepy-works">How MoviePy works</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-central-concept-the-clips">The central concept, the clips</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/getting_started/quick_presentation.rst">
+      <i class="fa-solid fa-pencil"></i>
       
-        <a href="compositing.html" class="btn btn-neutral float-right" title="Mixing clips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+        
+          Edit on GitHub
+        
       
-        <a href="getting_started.html" class="btn btn-neutral float-left" title="Getting started with MoviePy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/getting_started/quick_presentation.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
       
     </div>
   
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2017, Zulko
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
   
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
   
-  
-    
-   
+</div>
 
-</body>
+  </footer>
+  </body>
 </html>
