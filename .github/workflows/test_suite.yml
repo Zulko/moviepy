@@ -17,7 +17,7 @@ jobs:
     runs-on: macos-12
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v4.1.6
     - uses: s-weigand/setup-conda@v1.2.2
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4.1.6

@@ -3,8 +3,6 @@
 import os
 import pytest
 import shutil
-import subprocess
-import sys
 import runpy
 import pathlib
 
@@ -40,6 +38,8 @@ scripts = dict(zip(map(str, scripts), scripts))  # This make test name more read
 
 @pytest.mark.parametrize("script", scripts)
 def test_doc_examples(util, tmp_path, script):
+    if os.path.basename(script) == "preview.py":
+        pytest.skip("Skipping preview.py because no display is available")
     print("Try script: ", script)
 
     if os.path.basename(script) in DOC_EXAMPLES_IGNORE:
