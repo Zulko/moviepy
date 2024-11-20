@@ -14,7 +14,7 @@ insertions, video compositing (a.k.a. non-linear editing), video
 processing, and creation of custom effects.
 
 MoviePy can read and write all the most common audio and video formats,
-including GIF, and runs on Windows/Mac/Linux, with Python 3.7+.
+including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
 
 # Example
 
