@@ -104,6 +104,7 @@ GitHub issues for usage questions and examples.
 # Maintainers
 
 -   [Zulko](https://github.com/Zulko) (owner)
+-   [@osaajani](https://github.com/OsaAjani) led the development of v2 ([MR](https://github.com/Zulko/moviepy/pull/2024))
 -   [@tburrows13](https://github.com/tburrows13)
 -   [@mgaitan](https://github.com/mgaitan)
 -   [@earney](https://github.com/earney)
