@@ -6,20 +6,10 @@ from moviepy.Effect import Effect
 
 @dataclass
 class Crop(Effect):
-    x1: int = None
-    y1: int = None
-    x2: int = None
-    y2: int = None
-    width: int = None
-    height: int = None
-    x_center: int = None
-    y_center: int = None
-
-    """
-    Returns a new clip in which just a rectangular subregion of the
-    original clip is conserved. x1,y1 indicates the top left corner and
-    x2,y2 is the lower right corner of the croped region.
-    All coordinates are in pixels. Float numbers are accepted.
+    """Effect to crop a clip to get a new clip in which just a rectangular
+    subregion of the original clip is conserved. `x1,y1` indicates the top left
+    corner and `x2,y2` is the lower right corner of the cropped region. All
+    coordinates are in pixels. Float numbers are accepted.
 
     To crop an arbitrary rectangle:
 
@@ -43,6 +33,15 @@ class Crop(Effect):
     >>> Crop(x_center=300, width=400, y1=100, y2=600)
 
     """
+
+    x1: int = None
+    y1: int = None
+    x2: int = None
+    y2: int = None
+    width: int = None
+    height: int = None
+    x_center: int = None
+    y_center: int = None
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""

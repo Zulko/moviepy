@@ -681,7 +681,7 @@ class VideoClip(Clip):
         The resulting array with the filled shape is returned.
 
         Parameters
-        ------------
+        ----------
         pre_array (numpy.ndarray)
           The original array to be filled.
 

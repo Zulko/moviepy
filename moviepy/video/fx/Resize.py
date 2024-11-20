@@ -10,7 +10,7 @@ from moviepy.Effect import Effect
 
 @dataclass
 class Resize(Effect):
-    """Returns a video clip that is a resized version of the clip.
+    """Effect returning a video clip that is a resized version of the clip.
 
     Parameters
     ----------
@@ -44,6 +44,7 @@ class Resize(Effect):
     apply_to_mask: bool = True
 
     def resizer(self, pic, new_size):
+        """Resize the image using PIL."""
         new_size = list(map(int, new_size))
         pil_img = Image.fromarray(pic)
         resized_pil = pil_img.resize(new_size, Image.Resampling.LANCZOS)

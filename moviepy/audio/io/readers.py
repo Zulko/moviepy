@@ -11,8 +11,7 @@ from moviepy.video.io.ffmpeg_reader import ffmpeg_parse_infos
 
 
 class FFMPEG_AudioReader:
-    """
-    A class to read the audio in either video files or audio files
+    """A class to read the audio in either video files or audio files
     using ffmpeg. ffmpeg will read any audio and transform them into
     raw data.
 
@@ -172,8 +171,7 @@ class FFMPEG_AudioReader:
         return result
 
     def seek(self, pos):
-        """
-        Reads a frame at time t. Note for coders: getting an arbitrary
+        """Read a frame at time t. Note for coders: getting an arbitrary
         frame in the video with ffmpeg can be painfully slow if some
         decoding has to be done. This function tries to avoid fectching
         arbitrary frames whenever possible, by moving between adjacent
@@ -189,7 +187,7 @@ class FFMPEG_AudioReader:
         self.pos = pos
 
     def get_frame(self, tt):
-        """Retrieves the audio frame(s) corresponding to the given timestamp(s).
+        """Retrieve the audio frame(s) corresponding to the given timestamp(s).
 
         Parameters
         ----------
@@ -259,7 +257,7 @@ class FFMPEG_AudioReader:
             return self.buffer[ind - self.buffer_startframe]
 
     def buffer_around(self, frame_number):
-        """Fills the buffer with frames, centered on ``frame_number``if possible"""
+        """Fill the buffer with frames, centered on frame_number if possible."""
         # start-frame for the buffer
         new_bufferstart = max(0, frame_number - self.buffersize // 2)
 

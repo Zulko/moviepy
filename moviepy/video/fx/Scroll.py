@@ -2,6 +2,24 @@ from moviepy.Effect import Effect
 
 
 class Scroll(Effect):
+    """Effect that scrolls horizontally or vertically a clip, e.g. to make end credits
+
+    Parameters
+    ----------
+    w, h
+      The width and height of the final clip. Default to clip.w and clip.h
+
+    x_speed, y_speed
+      The speed of the scroll in the x and y directions.
+
+    x_start, y_start
+      The starting position of the scroll in the x and y directions.
+
+
+    apply_to
+      Whether to apply the effect to the mask too.
+    """
+
     def __init__(
         self,
         w=None,
@@ -12,23 +30,7 @@ class Scroll(Effect):
         y_start=0,
         apply_to="mask",
     ):
-        """
-        Scrolls horizontally or vertically a clip, e.g. to make end credits
 
-        Parameters
-        ----------
-
-        w, h
-        The width and height of the final clip. Default to clip.w and clip.h
-
-        x_speed, y_speed
-
-        x_start, y_start
-
-
-        apply_to
-
-        """
         self.w = w
         self.h = h
         self.x_speed = x_speed
