@@ -7,10 +7,8 @@ import http.server
 import importlib
 import inspect
 import io
-import pathlib
 import pkgutil
 import socketserver
-import sys
 import tempfile
 import threading
 

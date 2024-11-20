@@ -5,9 +5,6 @@
 import os
 import sys
 
-import pydata_sphinx_theme
-from pygments.styles import get_all_styles
-
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -116,15 +113,17 @@ html_theme_options = {
             "name": "GitHub",
             # URL where the link will redirect
             "url": "https://github.com/Zulko/moviepy/",  # required
-            # Icon class (if "type": "fontawesome"), or path to local image (if "type": "local")
+            # Icon class (if "type": "fontawesome"), or path to local image (if
+            # "type": "local")
             "icon": "fa-brands fa-square-github",
             # The type of image to be used (see below for details)
             "type": "fontawesome",
         }
     ],
-    "announcement": '<p>MoviePy v2.0 have introduced breaking changes, see <a href="{}">"Updating from v1.X to v2.X"</a> for more info.</p>'.format(
-        v2_page
-    ),
+    "announcement": f"""
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="{v2_page}">Updating from v1.X to v2.X</a> for more info.</p>
+    """,
 }
 
 html_context = {

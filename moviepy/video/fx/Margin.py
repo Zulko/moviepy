@@ -3,7 +3,6 @@ from dataclasses import dataclass
 import numpy as np
 
 from moviepy.Clip import Clip
-from moviepy.decorators import apply_to_mask
 from moviepy.Effect import Effect
 from moviepy.video.VideoClip import ImageClip
 

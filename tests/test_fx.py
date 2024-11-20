@@ -1,12 +1,10 @@
 """MoviePy video and audio effects tests."""
 
 import decimal
-import importlib
 import math
 import numbers
 import os
 import random
-import sys
 
 import numpy as np
 

@@ -1,7 +1,6 @@
 """Tool tests meant to be run with pytest. Taken from PR #121 (grimley517)."""
 
 import contextlib
-import filecmp
 import importlib
 import io
 import os
@@ -11,7 +10,6 @@ import sys
 import pytest
 
 import moviepy.tools as tools
-from moviepy import *
 
 
 @pytest.mark.parametrize(

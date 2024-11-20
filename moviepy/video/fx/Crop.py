@@ -35,8 +35,7 @@ class Crop(Effect):
 
     Crop a rectangle centered in x,y=(300,400), width=50, height=150 :
 
-    >>> Crop(x_center=300 , y_center=400, 
-            width=50, height=150)
+    >>> Crop(x_center=300, y_center=400, width=50, height=150)
 
     Any combination of the above should work, like for this rectangle
     centered in x=300, with explicit y-boundaries:

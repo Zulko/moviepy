@@ -343,7 +343,8 @@ class FramesMatches(list):
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>>
         >>> ch_clip = VideoFileClip("media/chaplin.mp4").with_subclip(1, 4)
-        >>> clip = concatenate_videoclips([ch_clip.with_effects([vfx.TimeMirror()]), ch_clip])
+        >>> mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]
+        >>> clip = concatenate_videoclips(mirror_and_clip)
         >>>
         >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
         ...     1, 2, nomatch_threshold=0,

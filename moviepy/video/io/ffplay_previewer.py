@@ -5,10 +5,7 @@ out of VideoClips
 
 import subprocess as sp
 
-import numpy as np
-from proglog import proglog
-
-from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
+from moviepy.config import FFPLAY_BINARY
 from moviepy.tools import cross_platform_popen_params
 
 
@@ -129,7 +126,8 @@ def ffplay_preview_video(
         for t, frame in clip.iter_frames(with_times=True, fps=fps, dtype="uint8"):
             previewer.show_frame(frame)
 
-            # After first frame is shown, if we have audio/video flag, set video ready and wait for audio
+            # After first frame is shown, if we have audio/video flag, set video ready
+            # and wait for audio
             if first_frame:
                 first_frame = False
 

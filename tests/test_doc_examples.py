@@ -1,4 +1,5 @@
-"""Try to run all the documentation examples with runpy and check they dont raise exception"""
+"""Try to run all the documentation examples with runpy and check they dont raise
+exception"""
 
 import os
 import pathlib

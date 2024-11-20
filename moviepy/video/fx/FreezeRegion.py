@@ -41,7 +41,7 @@ class FreezeRegion(Effect):
 
     def apply(self, clip: Clip) -> Clip:
         if self.region is not None:
-            x1, y1, x2, y2 = self.region
+            x1, y1, _x2, _y2 = self.region
             freeze = (
                 clip.with_effects([Crop(*self.region)])
                 .to_ImageClip(t=self.t)
@@ -60,6 +60,8 @@ class FreezeRegion(Effect):
 
         elif self.mask is not None:
             freeze = (
-                clip.to_ImageClip(t=t).with_duration(clip.duration).with_mask(self.mask)
+                clip.to_ImageClip(t=self.t)
+                .with_duration(clip.duration)
+                .with_mask(self.mask)
             )
             return CompositeVideoClip([clip, freeze])

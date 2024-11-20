@@ -32,12 +32,14 @@ class MultiplyVolume(Effect):
 
     >>> from moviepy import AudioFileClip
     >>>
-    >>> music = AudioFileClip('music.ogg')
-    >>> doubled_audio_clip = clip.with_effects([afx.MultiplyVolume(2)])  # doubles audio volume
-    >>> half_audio_clip = clip.with_effects([afx.MultiplyVolume(0.5)])  # half audio
-    >>>
-    >>> # silenced clip during one second at third
-    >>> silenced_clip = clip.with_effects([afx.MultiplyVolume(0, start_time=2, end_time=3)])
+    >>> music = AudioFileClip("music.ogg")
+    >>> # doubles audio volume
+    >>> doubled_audio_clip = music.with_effects([afx.MultiplyVolume(2)])
+    >>> # halves audio volume
+    >>> half_audio_clip = music.with_effects([afx.MultiplyVolume(0.5)])
+    >>> # silences clip during one second at third
+    >>> effect = afx.MultiplyVolume(0, start_time=2, end_time=3)
+    >>> silenced_clip = clip.with_effects([effect])
     """
 
     factor: float

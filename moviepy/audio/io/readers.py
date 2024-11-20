@@ -123,8 +123,10 @@ class FFMPEG_AudioReader:
 
     def skip_chunk(self, chunksize):
         """
-        This method skips a chunk of audio data by reading and discarding the specified number of frames from the audio stream.
-        The audio stream is read from the `proc` stdout. After skipping the chunk, the `pos` attribute is updated accordingly.
+        This method skips a chunk of audio data by reading and discarding
+        the specified number of frames from the audio stream. The audio
+        stream is read from the `proc` stdout. After skipping the chunk, the
+        `pos` attribute is updated accordingly.
 
         Parameters
         -----------
@@ -140,10 +142,13 @@ class FFMPEG_AudioReader:
         """
         Reads a chunk of audio data from the audio stream.
 
-        This method reads a chunk of audio data from the audio stream. The specified number of frames, given by `chunksize`,
-        is read from the `proc` stdout. The audio data is returned as a NumPy array, where each row corresponds to a frame and
-        each column corresponds to a channel. If there is not enough audio left to read, the remaining portion is padded with
-        zeros, ensuring that the returned array has the desired length. The `pos` attribute is updated accordingly.
+        This method reads a chunk of audio data from the audio stream. The
+        specified number of frames, given by `chunksize`, is read from the
+        `proc` stdout. The audio data is returned as a NumPy array, where
+        each row corresponds to a frame and each column corresponds to a
+        channel. If there is not enough audio left to read, the remaining
+        portion is padded with zeros, ensuring that the returned array has
+        the desired length. The `pos` attribute is updated accordingly.
 
         Parameters:
         ------------
@@ -193,9 +198,10 @@ class FFMPEG_AudioReader:
         Parameters
         -----------
 
-            tt (float or numpy.ndarray): The timestamp(s) at which to retrieve the audio frame(s).
-            If `tt` is a single float value, the frame corresponding to that timestamp is returned.
-            If `tt` is a NumPy array of timestamps, an array of frames corresponding to each timestamp is returned.
+        tt (float or numpy.ndarray): The timestamp(s) at which to retrieve the
+        audio frame(s). If `tt` is a single float value, the frame corresponding
+        to that timestamp is returned. If `tt` is a NumPy array of timestamps,
+        an array of frames corresponding to each timestamp is returned.
         """
         if isinstance(tt, np.ndarray):
             # lazy implementation, but should not cause problems in

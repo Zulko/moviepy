@@ -35,7 +35,7 @@ class MasksOr(Effect):
     def apply(self, clip: Clip) -> Clip:
         # to ensure that 'or' of two ImageClips will be an ImageClip
         if isinstance(self.other_clip, ImageClip):
-            other_clip = self.other_clip.img
+            self.other_clip = self.other_clip.img
 
         if isinstance(self.other_clip, np.ndarray):
             return clip.image_transform(

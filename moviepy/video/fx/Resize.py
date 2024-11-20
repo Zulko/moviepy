@@ -35,7 +35,7 @@ class Resize(Effect):
     >>> myClip.with_effects([vfx.Resize((460,720))]) # New resolution: (460,720)
     >>> myClip.with_effects([vfx.Resize(0.6)]) # width and height multiplied by 0.6
     >>> myClip.with_effects([vfx.Resize(width=800)]) # height computed automatically.
-    >>> myClip.with_effects([vfx.Resize(lambda t : 1+0.02*t)]) # slow swelling of the clip
+    >>> myClip.with_effects([vfx.Resize(lambda t : 1+0.02*t)]) # slow clip swelling
     """
 
     new_size: Union[tuple, float, callable] = None

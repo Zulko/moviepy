@@ -8,12 +8,12 @@ import copy as _copy
 import os
 import threading
 from numbers import Real
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List
 
 import numpy as np
 import proglog
 from imageio.v2 import imread as imread_v2
-from imageio.v3 import imread, imwrite
+from imageio.v3 import imwrite
 from PIL import Image, ImageDraw, ImageFont
 
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
@@ -22,7 +22,6 @@ from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
 
-from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
 from moviepy.Clip import Clip
 from moviepy.decorators import (
     add_mask_if_none,
@@ -37,7 +36,6 @@ from moviepy.decorators import (
 )
 from moviepy.tools import extensions_dict, find_extension
 from moviepy.video.fx.Crop import Crop
-from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 from moviepy.video.fx.Resize import Resize
 from moviepy.video.fx.Rotate import Rotate
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
@@ -552,10 +550,10 @@ class VideoClip(Clip):
         # it broke compositevideoclip and it does nothing on normal clip with alpha
 
         # if with_mask and (self.mask is not None):
-        #     # Hate it, but cannot figure a better way with python awful circular dependency
-        #     from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-
-        #     clip = CompositeVideoClip([self.with_position((0, 0))])
+        #   # Hate it, but cannot figure a better way with python awful circular
+        #   # dependency
+        #   from mpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+        #   clip = CompositeVideoClip([self.with_position((0, 0))])
 
         frame = clip.get_frame(t)
         pil_img = Image.fromarray(frame.astype("uint8"))
@@ -677,9 +675,11 @@ class VideoClip(Clip):
     def fill_array(self, pre_array, shape=(0, 0)):
         """Fills an array to match the specified shape.
 
-        If the `pre_array` is smaller than the desired shape, the missing rows or columns are added with ones to the bottom or right,
-        respectively, until the shape matches. If the `pre_array` is larger than the desired shape, the excess rows or columns are cropped
-        from the bottom or right, respectively, until the shape matches.
+        If the `pre_array` is smaller than the desired shape, the missing rows
+        or columns are added with ones to the bottom or right, respectively,
+        until the shape matches. If the `pre_array` is larger than the desired
+        shape, the excess rows or columns are cropped from the bottom or right,
+        respectively, until the shape matches.
 
         The resulting array with the filled shape is returned.
 
@@ -1387,10 +1387,11 @@ class TextClip(ImageClip):
       it will then be auto-determined.
 
     margin
-      Margin to be added arround the text as a tuple of two (symmetrical) or four (asymmetrical).
-      Either ``(horizontal, vertical)`` or ``(left, top, right, bottom)``. 
-      By default no margin (None, None).
-      This is especially usefull for auto-compute size to give the text some extra room.
+      Margin to be added arround the text as a tuple of two (symmetrical) or
+      four (asymmetrical). Either ``(horizontal, vertical)`` or
+      ``(left, top, right, bottom)``. By default no margin (None, None).
+      This is especially usefull for auto-compute size to give the text some
+      extra room.
 
     bg_color
       Color of the background. Default to None for no background. Can be
@@ -1703,19 +1704,19 @@ class TextClip(ImageClip):
 
         else:
             raise ValueError("Method must be either `caption` or `label`.")
-        
+
         # Compute the margin and apply it
-        if len(margin) == 2 :
+        if len(margin) == 2:
             left_margin = right_margin = int(margin[0] or 0)
             top_margin = bottom_margin = int(margin[1] or 0)
-        elif len(margin) == 4 :
+        elif len(margin) == 4:
             left_margin = int(margin[0] or 0)
             top_margin = int(margin[1] or 0)
             right_margin = int(margin[2] or 0)
             bottom_margin = int(margin[3] or 0)
-        else :
-            raise ValueError('Margin must be a tuple of either 2 or 4 elements.')
-        
+        else:
+            raise ValueError("Margin must be a tuple of either 2 or 4 elements.")
+
         img_width += left_margin + right_margin
         img_height += top_margin + bottom_margin
 
@@ -1756,12 +1757,14 @@ class TextClip(ImageClip):
 
         y += top_margin
 
-        # So, pillow multiline support is horrible, in particular multiline_text and multiline_textbbox
-        # are not intuitive at all. They cannot use left top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
-        # as anchor, so we always have to use left middle instead. Else we would always have a useless
-        # margin (the diff between ascender and top) on any text.
-        # That mean our Y is actually not from 0 for top, but need to be increment by half our text height,
-        # since we have to reference from middle line.
+        # So, pillow multiline support is horrible, in particular multiline_text
+        # and multiline_textbbox are not intuitive at all. They cannot use left
+        # top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
+        # as anchor, so we always have to use left middle instead. Else we would
+        # always have a useless margin (the diff between ascender and top) on any
+        # text. That mean our Y is actually not from 0 for top, but need to be
+        # increment by half our text height, since we have to reference from
+        # middle line.
         y += text_height / 2
         print(y)
 

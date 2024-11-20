@@ -460,8 +460,8 @@ class Clip:
             return new_clip
 
     def with_multiply_speed(self, factor: float = None, final_duration: float = None):
-        """Returns a clip playing the current clip but at a speed multiplied by ``factor``.
-        For info on the parameters, please see ``vfx.MultiplySpeed``
+        """Returns a clip playing the current clip but at a speed multiplied
+        by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.
         """
         from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 

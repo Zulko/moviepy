@@ -6,10 +6,6 @@ from pathlib import Path
 
 from moviepy.tools import cross_platform_popen_params
 
-
-if os.name == "nt":
-    import winreg as wr
-
 try:
     from dotenv import find_dotenv, load_dotenv
 
