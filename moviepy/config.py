@@ -6,6 +6,7 @@ from pathlib import Path
 
 from moviepy.tools import cross_platform_popen_params
 
+
 try:
     from dotenv import find_dotenv, load_dotenv
 
