@@ -7,7 +7,7 @@
 > MoviePy recently upgraded to v2.0, introducing major
 breaking changes. For more info on how to update your code for v2.0, see [this guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
 
-MoviePy (full [documentation](https://zulko.github.io/moviepy/)) is a
+MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a
 Python library for video editing: cuts, concatenations, title
 insertions, video compositing (a.k.a. non-linear editing), video
 processing, and creation of custom effects.
@@ -46,17 +46,11 @@ video.write_videofile("result.mp4")
 
 # Installation
 
-Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html).
-
-For development, clone that repo locally and install with `pip install -e .`
-
-[documentation_dev_install](https://zulko.github.io/moviepy/developer_guide/developers_install.rst).
+Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
 
 # Documentation
 
-The online documentation is automatically built at every push to the master branch.
-
-To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
+The online documentation is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
 
 # Contribute
 
