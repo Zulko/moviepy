@@ -5,16 +5,15 @@
 
 > [!NOTE] 
 > MoviePy recently upgraded to v2.0, introducing major
-breaking changes, for more info, see [the updating
-guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
+breaking changes. For more info on how to update your code for v2.0, see [this guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
 
 MoviePy (full [documentation](https://zulko.github.io/moviepy/)) is a
-Python library for video editing: cutting, concatenations, title
+Python library for video editing: cuts, concatenations, title
 insertions, video compositing (a.k.a. non-linear editing), video
 processing, and creation of custom effects.
 
 MoviePy can read and write all the most common audio and video formats,
-including GIF, and runs on Windows/Mac/Linux, with Python 3.7+.
+including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
 
 # Example
 
@@ -26,17 +25,17 @@ result to a new file:
 # Import everything needed to edit video clips
 from moviepy import *
 
-# Load file example.mp4 and extract only the subclip from 00:00:10 to 00:00:20
+# Load file example.mp4 and keep only the subclip from 00:00:10 to 00:00:20
 clip = VideoFileClip("long_examples/example2.mp4").with_subclip(10, 20)
 
-# Reduce the audio volume to 80% of his original volume
+# Reduce the audio volume to 80% of its original volume
 clip = clip.with_multiply_volume(0.8)
 
 # Generate a text clip. You can customize the font, color, etc.
 txt_clip = TextClip(font="example.ttf", text="Big Buck Bunny", font_size=70, color='white')
 
-# Say that you want it to appear for 10s at the center of the screen
-txt_clip = txt_clip.with_position('center').with_duration(10)
+#The text clip should appear for 10s at the center of the screen
+txt_clip = txt_clip.with_duration(10).with_position('center')
 
 # Overlay the text clip on the first video clip
 video = CompositeVideoClip([clip, txt_clip])
@@ -45,61 +44,28 @@ video = CompositeVideoClip([clip, txt_clip])
 video.write_videofile("result.mp4")
 ```
 
-# Maintainers wanted!
-
-MoviePy is always looking for maintainers, and we'd love to hear about
-developers interested in giving a hand and solving some of the issues
-(especially the ones that affect you) or reviewing pull requests. Open
-an issue or contact us directly if you are interested. Thanks!
-
 # Installation
 
-For standard installation, see
-[documentation_install](https://zulko.github.io/moviepy/getting_started/install.html).
+Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html).
 
-For contributors installation, see
+For development, clone that repo locally and install with `pip install -e .`
+
 [documentation_dev_install](https://zulko.github.io/moviepy/developer_guide/developers_install.rst).
 
 # Documentation
 
-Building the documentation has additional dependencies that require
-installation.
+The online documentation is automatically built at every push to the master branch.
 
-``` bash
-$ (sudo) pip install moviepy[doc]
-```
-
-The documentation can be generated and viewed via:
-
-``` bash
-$ python setup.py build_docs
-```
-
-You can pass additional arguments to the documentation build, such as
-clean build:
-
-``` bash
-$ python setup.py build_docs -E
-```
-
-More information is available from the
-[Sphinx](https://www.sphinx-doc.org/en/master/setuptools.html)
-documentation.
+To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
 
 # Contribute
 
 MoviePy is open-source software originally written by
 [Zulko](https://github.com/Zulko) and released under the MIT licence.
 The project is hosted on [GitHub](https://github.com/Zulko/moviepy),
-where everyone is welcome to contribute, ask for help or simply give
-feedback. Please read our [Contributing
-Guidelines](https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md)
-for more information about how to contribute!
-
-You can also discuss the project on
-[Reddit](https://www.reddit.com/r/moviepy/) or
-[Gitter](https://gitter.im/movie-py/Lobby). These are preferred over
-GitHub issues for usage questions and examples.
+where everyone is welcome to contribute and open issues or give feedback Please read our [Contributing
+Guidelines](https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md).
+To ask for help or simply discuss usage and examples, use [our Reddit channel](https://www.reddit.com/r/moviepy/).
 
 # Maintainers
 
@@ -113,3 +79,10 @@ GitHub issues for usage questions and examples.
 -   [@keikoro](https://github.com/keikoro)
 -   [@ryanfox](https://github.com/ryanfox)
 -   [@mondeja](https://github.com/mondeja)
+
+# Maintainers wanted!
+
+MoviePy is always looking for maintainers, and we'd love to hear about
+developers interested in giving a hand and solving some of the issues
+(especially the ones that affect you) or reviewing pull requests. Open
+an issue or contact us directly if you are interested. Thanks!
