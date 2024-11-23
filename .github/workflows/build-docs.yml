@@ -34,7 +34,7 @@ jobs:
 
     - name: Build v1.0.3 documentation
       run: |
-        git checkout 1.0.3
+        git checkout v1.0.3
         cd docs
         make html
         mkdir -p ../build/html/v1.0.3
