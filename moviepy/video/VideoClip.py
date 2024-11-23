@@ -850,7 +850,7 @@ class VideoClip(Clip):
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip.
         """
-        if mask == "auto":  
+        if mask == "auto":
             if self.has_constant_size:
                 mask = ColorClip(self.size, 1.0, is_mask=True)
                 return self.with_mask(mask.with_duration(self.duration))
@@ -858,7 +858,7 @@ class VideoClip(Clip):
                 def frame_function(t):
                     return np.ones(self.get_frame(t).shape[:2], dtype=float)
 
-        mask = VideoClip(is_mask=True, frame_function=frame_function)
+                mask = VideoClip(is_mask=True, frame_function=frame_function)
         self.mask = mask
     
     @outplace
