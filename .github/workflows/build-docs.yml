@@ -36,6 +36,8 @@ jobs:
       run: |
         git stash
         git checkout v1.0.3
+        pip install -e .
+        pip install -e .[doc]
         cd docs
         make html
         mkdir -p ../build/html/v1.0.3
