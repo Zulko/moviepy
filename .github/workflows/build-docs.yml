@@ -22,7 +22,7 @@ jobs:
       run: |
         git fetch --tags
         git checkout v1.0.3
-        pip install "jinja2<3" "MarkupSafe<2"
+        pip install "jinja2<3" "MarkupSafe<2" "alabaster==0.7.12"
         pip install -e .
         pip install -e ".[doc]"
         
