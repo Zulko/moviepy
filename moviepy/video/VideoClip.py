@@ -8,7 +8,7 @@ import copy as _copy
 import os
 import threading
 from numbers import Real
-from typing import TYPE_CHECKING, List, Union
+from typing import TYPE_CHECKING, List, Union, Callable
 
 import numpy as np
 import proglog
@@ -771,7 +771,7 @@ class VideoClip(Clip):
         pos = map(int, pos)
         return blit(im_img, picture, pos, mask=im_mask)
 
-    def with_background_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
+    def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
         """Place the clip on a colored background.
 
         Returns a clip made of the current clip overlaid on a color
@@ -802,10 +802,10 @@ class VideoClip(Clip):
         if pos is None:
             pos = "center"
 
-        if col_opacity is not None:
+        if opacity is not None:
             colorclip = ColorClip(
                 size, color=color, duration=self.duration
-            ).with_opacity(col_opacity)
+            ).with_opacity(opacity)
             result = CompositeVideoClip([colorclip, self.with_position(pos)])
         else:
             result = CompositeVideoClip(
@@ -825,13 +825,13 @@ class VideoClip(Clip):
         return result
 
     @outplace
-    def with_updated_frame_function(self, mf):
+    def with_updated_frame_function(self, frame_function: Callable[[float], np.ndarray]):
         """Change the clip's ``get_frame``.
 
         Returns a copy of the VideoClip instance, with the frame_function
         attribute set to `mf`.
         """
-        self.frame_function = mf
+        self.frame_function = frame_function
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
@@ -853,7 +853,6 @@ class VideoClip(Clip):
         if mask == "auto":
             if self.has_constant_size:
                 mask = ColorClip(self.size, 1.0, is_mask=True)
-                return self.with_mask(mask.with_duration(self.duration))
             else:
                 def frame_function(t):
                     return np.ones(self.get_frame(t).shape[:2], dtype=float)
