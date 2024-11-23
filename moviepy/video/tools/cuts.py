@@ -31,7 +31,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
     >>> from moviepy import *
     >>> from moviepy.video.tools.cuts import find_video_period
     >>>
-    >>> clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 1).loop(2)
+    >>> clip = VideoFileClip("media/chaplin.mp4").subclipped(0, 1).loop(2)
     >>> round(videotools.find_video_period(clip, fps=80), 6)
     1
     """
@@ -237,7 +237,7 @@ class FramesMatches(list):
         ...     clip, distance_threshold=10, max_duration=3,  # will take time
         ... )
         >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
-        >>> clip.with_subclip(best.start_time, best.end_time).write_gif("foo.gif")
+        >>> clip.subclipped(best.start_time, best.end_time).write_gif("foo.gif")
         """
         N_pixels = clip.w * clip.h * 3
 
@@ -342,7 +342,7 @@ class FramesMatches(list):
         >>> from moviepy import *
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>>
-        >>> ch_clip = VideoFileClip("media/chaplin.mp4").with_subclip(1, 4)
+        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
         >>> mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]
         >>> clip = concatenate_videoclips(mirror_and_clip)
         >>>
@@ -430,7 +430,7 @@ class FramesMatches(list):
         >>> from moviepy import *
         >>> from moviepy.video.tools.cuts import FramesMatches
         >>>
-        >>> ch_clip = VideoFileClip("media/chaplin.mp4").with_subclip(1, 4)
+        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
         >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
         >>>
         >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
@@ -446,7 +446,7 @@ class FramesMatches(list):
         """
         for start, end, _, _ in self:
             name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)
-            clip.with_subclip(start, end).write_gif(name, **kwargs)
+            clip.subclipped(start, end).write_gif(name, **kwargs)
 
 
 @use_clip_fps_by_default

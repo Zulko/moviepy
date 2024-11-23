@@ -110,7 +110,7 @@ def convert_path_to_string(varnames):
 def add_mask_if_none(func, clip, *args, **kwargs):
     """Add a mask to the clip if there is none."""
     if clip.mask is None:
-        clip = clip.with_add_mask()
+        clip = clip.with_mask()
     return func(clip, *args, **kwargs)
 
 

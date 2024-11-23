@@ -25,6 +25,6 @@ class MakeLoopable(Effect):
         clip2 = clip.with_effects([CrossFadeIn(self.overlap_duration)]).with_start(
             clip.duration - self.overlap_duration
         )
-        return CompositeVideoClip([clip, clip2]).with_subclip(
+        return CompositeVideoClip([clip, clip2]).subclipped(
             self.overlap_duration, clip.duration
         )

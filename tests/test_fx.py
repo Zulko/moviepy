@@ -1082,8 +1082,8 @@ def test_audio_normalize():
 
 def test_audio_normalize_muted():
     z_array = np.array([0.0])
-    make_frame = lambda t: z_array
-    clip = AudioClip(make_frame, duration=1, fps=44100)
+    frame_function = lambda t: z_array
+    clip = AudioClip(frame_function, duration=1, fps=44100)
     clip = clip.with_effects([afx.AudioNormalize()])
     assert np.array_equal(clip.to_soundarray(), z_array)
 
@@ -1173,17 +1173,17 @@ def test_multiply_volume_audioclip(
     end_time,
 ):
     if sound_type == "stereo":
-        make_frame = lambda t: np.array(
+        frame_function = lambda t: np.array(
             [
                 np.sin(440 * 2 * np.pi * t),
                 np.sin(160 * 2 * np.pi * t),
             ]
         ).T.copy(order="C")
     else:
-        make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
+        frame_function = lambda t: [np.sin(440 * 2 * np.pi * t)]
 
     clip = AudioClip(
-        make_frame,
+        frame_function,
         duration=duration if duration else 0.1,
         fps=22050,
     )
@@ -1282,7 +1282,7 @@ def test_multiply_volume_videoclip():
 
     clip = (
         VideoFileClip("media/chaplin.mp4")
-        .with_subclip(0, 0.3)
+        .subclipped(0, 0.3)
         .with_effects(
             [
                 afx.MultiplyVolume(
@@ -1374,7 +1374,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
 
     # stereo audio clip
     clip = AudioClip(
-        make_frame=stereo_wave(left_freq=440, right_freq=880),
+        frame_function=stereo_wave(left_freq=440, right_freq=880),
         duration=duration,
         fps=44100,
     )
@@ -1448,11 +1448,11 @@ def test_audio_fadein(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadein_duration
 ):
     if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
+        frame_function = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = mono_wave(440)
+        frame_function = mono_wave(440)
 
-    clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
+    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
     new_clip = clip.with_effects([afx.AudioFadeIn(fadein_duration)])
 
     # first frame is muted
@@ -1474,7 +1474,7 @@ def test_audio_fadein(
     start_times = np.arange(0, fadein_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.with_subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         possible_value = (i + 1) / n_parts
         assert round(subclip_max_volume, 2) in [
@@ -1488,7 +1488,7 @@ def test_audio_fadein(
     start_times = np.arange(fadein_duration, clip_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.with_subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         assert round(subclip_max_volume, 4) == 1
 
@@ -1509,11 +1509,11 @@ def test_audio_fadeout(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadeout_duration
 ):
     if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
+        frame_function = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = mono_wave(440)
+        frame_function = mono_wave(440)
 
-    clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
+    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
     new_clip = clip.with_effects([afx.AudioFadeOut(fadeout_duration)])
 
     fadeout_duration = convert_to_seconds(fadeout_duration)
@@ -1530,7 +1530,7 @@ def test_audio_fadeout(
     )
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.with_subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         possible_value = 1 - i * 0.1
         assert round(subclip_max_volume, 2) in [
@@ -1544,7 +1544,7 @@ def test_audio_fadeout(
     start_times = np.arange(0, clip_duration - fadeout_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.with_subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         assert round(subclip_max_volume, 4) == 1
 

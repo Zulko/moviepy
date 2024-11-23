@@ -79,7 +79,7 @@ def test_detect_scenes():
 def test_find_video_period():
     clip = (
         VideoFileClip("media/chaplin.mp4")
-        .with_subclip(0, 0.5)
+        .subclipped(0, 0.5)
         .with_effects([vfx.Loop(2)])
     )  # fps=25
 
@@ -303,7 +303,7 @@ def test_FramesMatches_select_scenes(
 ):
     video_clip = VideoFileClip(filename)
     if subclip is not None:
-        video_clip = video_clip.with_subclip(subclip[0], subclip[1])
+        video_clip = video_clip.subclipped(subclip[0], subclip[1])
     clip = concatenate_videoclips(
         [video_clip.with_effects([vfx.TimeMirror()]), video_clip]
     )
@@ -318,7 +318,7 @@ def test_FramesMatches_select_scenes(
 
 
 def test_FramesMatches_write_gifs(util):
-    video_clip = VideoFileClip("media/chaplin.mp4").with_subclip(0, 0.2)
+    video_clip = VideoFileClip("media/chaplin.mp4").subclipped(0, 0.2)
     clip = concatenate_videoclips(
         [video_clip.with_effects([vfx.TimeMirror()]), video_clip]
     )
@@ -1043,7 +1043,7 @@ def test_Trajectory_from_to_file(util):
             id="FakeClip",
         ),
         pytest.param(
-            VideoFileClip("media/chaplin.mp4").with_subclip(0, 1),
+            VideoFileClip("media/chaplin.mp4").subclipped(0, 1),
             None,
             None,
             None,
@@ -1088,8 +1088,8 @@ def test_find_audio_period(mono_wave, stereo_wave, wave_type):
         wave2 = stereo_wave(left_freq=100, right_freq=200)
     clip = CompositeAudioClip(
         [
-            AudioClip(make_frame=wave1, duration=0.3, fps=22050),
-            AudioClip(make_frame=wave2, duration=0.3, fps=22050).with_effects(
+            AudioClip(frame_function=wave1, duration=0.3, fps=22050),
+            AudioClip(frame_function=wave2, duration=0.3, fps=22050).with_effects(
                 [afx.MultiplyVolume(0, end_time=0.1)]
             ),
         ]

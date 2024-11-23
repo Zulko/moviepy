@@ -4,16 +4,16 @@ import numpy as np
 # Define some constants for later use
 black = (255, 255, 255)  # RGB for black
 # Random noise image of 200x100
-make_frame = lambda t: np.random.randint(low=0, high=255, size=(100, 200, 3))
+frame_function = lambda t: np.random.randint(low=0, high=255, size=(100, 200, 3))
 # A note by producing a sinewave of 440 Hz
-make_frame_audio = lambda t: np.sin(440 * 2 * np.pi * t)
+frame_function_audio = lambda t: np.sin(440 * 2 * np.pi * t)
 
 # Now lets see how to load different type of resources !
 
 # VIDEO CLIPS`
 clip = VideoClip(
-    make_frame, duration=5
-)  # for custom animations, where make_frame is a function returning an image as numpy array for a given time
+    frame_function, duration=5
+)  # for custom animations, where frame_function is a function returning an image as numpy array for a given time
 clip = VideoFileClip("example.mp4")  # for videos
 clip = ImageSequenceClip(
     "example_img_dir", fps=24
@@ -31,5 +31,5 @@ clip = AudioFileClip(
     "example.wav"
 )  # for audio files, but also videos where you only want the keep the audio track
 clip = AudioClip(
-    make_frame_audio, duration=3
-)  # for custom audio, where make_frame is a function returning a float (or tuple for stereo) for a given time
+    frame_function_audio, duration=3
+)  # for custom audio, where frame_function is a function returning a float (or tuple for stereo) for a given time

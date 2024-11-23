@@ -48,7 +48,7 @@ class Margin(Effect):
     def add_margin(self, clip: Clip):
         """Add margins to the clip."""
         if (self.opacity != 1.0) and (clip.mask is None) and not (clip.is_mask):
-            clip = clip.with_add_mask()
+            clip = clip.with_mask()
 
         if self.margin_size is not None:
             self.left = self.right = self.top = self.bottom = self.margin_size

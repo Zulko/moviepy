@@ -2,7 +2,7 @@ from moviepy import *
 
 # We load all the clips we want to compose
 clip1 = VideoFileClip("example.mp4")
-clip2 = VideoFileClip("example2.mp4").with_subclip(0, 1)
+clip2 = VideoFileClip("example2.mp4").subclipped(0, 1)
 
 # Clip2 will be on top of clip1 for 1s
 clip1 = clip1.with_end(2)

@@ -16,7 +16,7 @@ class ClipPixelTest:
         self.clip = clip
 
     def expect_color_at(self, ts, expected, xy=[0, 0]):
-        frame = self.clip.make_frame(ts)
+        frame = self.clip.frame_function(ts)
         r, g, b = expected
         actual = frame[xy[1]][xy[0]]
         diff = abs(actual[0] - r) + abs(actual[1] - g) + abs(actual[2] - b)

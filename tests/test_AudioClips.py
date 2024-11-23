@@ -162,7 +162,7 @@ def test_concatenate_audioclip_with_audiofileclip(util, stereo_wave):
 
 
 def test_concatenate_audiofileclips(util):
-    clip1 = AudioFileClip("media/crunching.mp3").with_subclip(1, 4)
+    clip1 = AudioFileClip("media/crunching.mp3").subclipped(1, 4)
 
     # Checks it works with videos as well
     clip2 = AudioFileClip("media/big_buck_bunny_432_433.webm")
@@ -186,7 +186,7 @@ def test_audioclip_mono_max_volume(mono_wave):
 @pytest.mark.parametrize(("nchannels"), (2, 4, 8, 16))
 @pytest.mark.parametrize(("channel_muted"), ("left", "right"))
 def test_audioclip_stereo_max_volume(nchannels, channel_muted):
-    def make_frame(t):
+    def frame_function(t):
         frame = []
         # build channels (one of each pair muted)
         for i in range(int(nchannels / 2)):
@@ -200,7 +200,7 @@ def test_audioclip_stereo_max_volume(nchannels, channel_muted):
                 frame.append(np.sin(t * 0))
         return np.array(frame).T
 
-    clip = AudioClip(make_frame, fps=44100, duration=1)
+    clip = AudioClip(frame_function, fps=44100, duration=1)
     max_volume = clip.max_volume(stereo=True)
     # if `stereo == True`, `AudioClip.max_volume` returns a Numpy array`
     assert isinstance(max_volume, np.ndarray)

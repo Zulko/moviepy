@@ -16,7 +16,7 @@ class Rotate(Effect):
     and ``bg_color`` are not ``None``, there will be black borders.
     You can make them transparent with:
 
-    >>> new_clip = clip.with_add_mask().rotate(72)
+    >>> new_clip = clip.with_mask().rotate(72)
 
     Parameters
     ----------

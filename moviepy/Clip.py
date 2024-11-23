@@ -79,12 +79,12 @@ class Clip:
             if t == self.memoized_t:
                 return self.memoized_frame
             else:
-                frame = self.make_frame(t)
+                frame = self.frame_function(t)
                 self.memoized_t = t
                 self.memoized_frame = frame
                 return frame
         else:
-            return self.make_frame(t)
+            return self.frame_function(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """General processing of a clip.
@@ -126,8 +126,8 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        # mf = copy(self.make_frame)
-        new_clip = self.with_make_frame(lambda t: func(self.get_frame, t))
+        # mf = copy(self.frame_function)
+        new_clip = self.with_updated_frame_function(lambda t: func(self.get_frame, t))
 
         if not keep_duration:
             new_clip.duration = None
@@ -294,17 +294,17 @@ class Clip:
             self.start = self.end - duration
 
     @outplace
-    def with_make_frame(self, make_frame):
-        """Sets a ``make_frame`` attribute for the clip. Useful for setting
+    def with_updated_frame_function(self, frame_function):
+        """Sets a ``frame_function`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
 
         Parameters
         ----------
 
-        make_frame : function
+        frame_function : function
           New frame creator function for the clip.
         """
-        self.make_frame = make_frame
+        self.frame_function = frame_function
 
     def with_fps(self, fps, change_duration=False):
         """Returns a copy of the clip with a new default fps for functions like
@@ -358,7 +358,7 @@ class Clip:
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
-    def with_subclip(self, start_time=0, end_time=None):
+    def subclipped(self, start_time=0, end_time=None):
         """Returns a clip playing the content of the current clip between times
         ``start_time`` and ``end_time``, which can be expressed in seconds
         (15.35), in (min, sec), in (hour, min, sec), or as a string:
@@ -384,7 +384,7 @@ class Clip:
           For instance:
 
           >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.with_subclip(0, -2)
+          >>> new_clip = clip.subclipped(0, -2)
 
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
@@ -426,7 +426,7 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def with_cutout(self, start_time, end_time):
+    def with_section_cut_out(self, start_time, end_time):
         """
         Returns a clip playing the content of the current clip but
         skips the extract between ``start_time`` and ``end_time``, which can be
@@ -459,7 +459,7 @@ class Clip:
         else:  # pragma: no cover
             return new_clip
 
-    def with_multiply_speed(self, factor: float = None, final_duration: float = None):
+    def with_speed_scaled(self, factor: float = None, final_duration: float = None):
         """Returns a clip playing the current clip but at a speed multiplied
         by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.
         """
@@ -469,7 +469,7 @@ class Clip:
             [MultiplySpeed(factor=factor, final_duration=final_duration)]
         )
 
-    def with_multiply_volume(self, factor: float, start_time=None, end_time=None):
+    def with_volume_scaled(self, factor: float, start_time=None, end_time=None):
         """Returns a new clip with audio volume multiplied by the value `factor`.
         For info on the parameters, please see ``afx.MultiplyVolume``
         """
@@ -608,7 +608,7 @@ class Clip:
 
         Simple slicing is implemented via `subclip`.
         So, ``clip[t_start:t_end]`` is equivalent to
-        ``clip.with_subclip(t_start, t_end)``. If ``t_start`` is not
+        ``clip.subclipped(t_start, t_end)``. If ``t_start`` is not
         given, default to ``0``, if ``t_end`` is not given,
         default to ``self.duration``.
 
@@ -633,7 +633,7 @@ class Clip:
         if isinstance(key, slice):
             # support for [start:end:speed] slicing. If speed is negative
             # a time mirror is applied.
-            clip = self.with_subclip(key.start or 0, key.stop or self.duration)
+            clip = self.subclipped(key.start or 0, key.stop or self.duration)
 
             if key.step:
                 # change speed of the subclip
