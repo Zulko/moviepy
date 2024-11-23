@@ -38,12 +38,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -e .
         pip install -e .[doc]
-        cp -r build/html/* ../build/html/
 
     - name: Build current documentation
       run: |
         cd docs
         make html
+        cp -r build/html/* ../build/html/
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
