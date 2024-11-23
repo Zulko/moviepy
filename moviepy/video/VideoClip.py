@@ -8,7 +8,7 @@ import copy as _copy
 import os
 import threading
 from numbers import Real
-from typing import TYPE_CHECKING, List, Union, Callable
+from typing import TYPE_CHECKING, Callable, List, Union
 
 import numpy as np
 import proglog
