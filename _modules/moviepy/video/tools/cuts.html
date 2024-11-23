@@ -1,0 +1,956 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviepy.video.tools.cuts &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/moviepy/video/tools/cuts';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../../../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../user_guide/index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.tools.cuts</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <h1>Source code for moviepy.video.tools.cuts</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Contains everything that can help automate the cuts in MoviePy.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span>
+
+
+<div class="viewcode-block" id="find_video_period"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.find_video_period.html#moviepy.video.tools.cuts.find_video_period">[docs]</a><span class="nd">@use_clip_fps_by_default</span>
+<span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;start_time&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">find_video_period</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the period of a video based on frames correlation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    clip : moviepy.Clip.Clip</span>
+<span class="sd">      Clip for which the video period will be computed.</span>
+
+<span class="sd">    fps : int, optional</span>
+<span class="sd">      Number of frames per second used computing the period. Higher values will</span>
+<span class="sd">      produce more accurate periods, but the execution time will be longer.</span>
+
+<span class="sd">    start_time : float, optional</span>
+<span class="sd">      First timeframe used to calculate the period of the clip.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+
+<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
+<span class="sd">    &gt;&gt;&gt; from moviepy.video.tools.cuts import find_video_period</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(0, 1).loop(2)</span>
+<span class="sd">    &gt;&gt;&gt; round(videotools.find_video_period(clip, fps=80), 6)</span>
+<span class="sd">    1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="n">timings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fps</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">corrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">corrcoef</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">frame</span><span class="p">(</span><span class="n">t</span><span class="p">))[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">timings</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">timings</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">corrs</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="FramesMatch"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatch.html#moviepy.video.tools.cuts.FramesMatch">[docs]</a><span class="k">class</span> <span class="nc">FramesMatch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frames match inside a set of frames.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    start_time : float</span>
+<span class="sd">      Starting time.</span>
+
+<span class="sd">    end_time : float</span>
+<span class="sd">      End time.</span>
+
+<span class="sd">    min_distance : float</span>
+<span class="sd">      Lower bound on the distance between the first and last frames</span>
+
+<span class="sd">    max_distance : float</span>
+<span class="sd">      Upper bound on the distance between the first and last frames</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span> <span class="o">=</span> <span class="n">min_distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span> <span class="o">=</span> <span class="n">max_distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_span</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">other</span><span class="o">.</span><span class="n">start_time</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">end_time</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">min_distance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span>
+            <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">max_distance</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FramesMatches"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches">[docs]</a><span class="k">class</span> <span class="nc">FramesMatches</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frames matches inside a set of frames.</span>
+
+<span class="sd">    You can instantiate it passing a list of FramesMatch objects or</span>
+<span class="sd">    using the class methods ``load`` and ``from_clip``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    lst : list</span>
+<span class="sd">      Iterable of FramesMatch objects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+        <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">max_distance</span><span class="p">))</span>
+
+<div class="viewcode-block" id="FramesMatches.best"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.best">[docs]</a>    <span class="k">def</span> <span class="nf">best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new instance of FramesMatches object or a FramesMatch</span>
+<span class="sd">        from the current class instance given different conditions.</span>
+
+<span class="sd">        By default returns the first FramesMatch that the current instance</span>
+<span class="sd">        stores.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        n : int, optional</span>
+<span class="sd">          Number of matches to retrieve from the current FramesMatches object.</span>
+<span class="sd">          Only has effect when ``percent=None``.</span>
+
+<span class="sd">        percent : float, optional</span>
+<span class="sd">          Percent of the current match to retrieve.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        FramesMatch or FramesMatches : If the number of matches to retrieve is</span>
+<span class="sd">          greater than 1 returns a FramesMatches object, otherwise a</span>
+<span class="sd">          FramesMatch.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">percent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">*</span> <span class="n">percent</span> <span class="o">/</span> <span class="mi">100</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">[:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="FramesMatches.filter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a FramesMatches object obtained by filtering out the</span>
+<span class="sd">        FramesMatch which do not satistify a condition.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        condition : func</span>
+<span class="sd">          Function which takes a FrameMatch object as parameter and returns a</span>
+<span class="sd">          bool.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; # Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
+<span class="sd">        &gt;&gt;&gt; new_matches = matches.filter( lambda match: match.time_span &gt; 1)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FramesMatches.save"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save a FramesMatches object to a file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        filename : str</span>
+<span class="sd">          Path to the file in which will be dumped the FramesMatches object data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">,</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]),</span>
+            <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%.03f</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="FramesMatches.load"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.load">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a FramesMatches object from a file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        filename : str</span>
+<span class="sd">          Path to the file to use loading a FramesMatches object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; matching_frames = FramesMatches.load(&quot;somefile&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">mfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">FramesMatch</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="n">mfs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FramesMatches.from_clip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.from_clip">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="p">,</span> <span class="n">max_duration</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds all the frames that look alike in a clip, for instance to make</span>
+<span class="sd">        a looping GIF.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        clip : moviepy.video.VideoClip.VideoClip</span>
+<span class="sd">          A MoviePy video clip.</span>
+
+<span class="sd">        distance_threshold : float</span>
+<span class="sd">          Distance above which a match is rejected.</span>
+
+<span class="sd">        max_duration : float</span>
+<span class="sd">          Maximal duration (in seconds) between two matching frames.</span>
+
+<span class="sd">        fps : int, optional</span>
+<span class="sd">          Frames per second (default will be ``clip.fps``).</span>
+
+<span class="sd">        logger : str, optional</span>
+<span class="sd">          Either ``&quot;bar&quot;`` for progress bar or ``None`` or any Proglog logger.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        FramesMatches</span>
+<span class="sd">            All pairs of frames with ``end_time - start_time &lt; max_duration``</span>
+<span class="sd">            and whose distance is under ``distance_threshold``.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        We find all matching frames in a given video and turn the best match</span>
+<span class="sd">        with a duration of 1.5 seconds or more into a GIF:</span>
+
+<span class="sd">        &gt;&gt;&gt; from moviepy import VideoFileClip</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;foo.mp4&quot;).resize(width=200)</span>
+<span class="sd">        &gt;&gt;&gt; matches = FramesMatches.from_clip(</span>
+<span class="sd">        ...     clip, distance_threshold=10, max_duration=3,  # will take time</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; best = matches.filter(lambda m: m.time_span &gt; 1.5).best()</span>
+<span class="sd">        &gt;&gt;&gt; clip.with_subclip(best.start_time, best.end_time).write_gif(&quot;foo.gif&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">N_pixels</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="mi">3</span>
+
+        <span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">F1</span> <span class="o">*</span> <span class="n">F2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">N_pixels</span>
+
+        <span class="n">frame_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># will store the frames and their mutual distances</span>
+
+        <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+            <span class="n">uv</span> <span class="o">=</span> <span class="n">dot_product</span><span class="p">(</span><span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="s2">&quot;frame&quot;</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
+            <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="s2">&quot;|F|sq&quot;</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;|F|sq&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u</span> <span class="o">+</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">uv</span><span class="p">)</span>
+
+        <span class="n">matching_frames</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># the final result.</span>
+
+        <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">clip</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">(</span><span class="n">with_times</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">):</span>
+            <span class="n">flat_frame</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">frame</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">F_norm_sq</span> <span class="o">=</span> <span class="n">dot_product</span><span class="p">(</span><span class="n">flat_frame</span><span class="p">,</span> <span class="n">flat_frame</span><span class="p">)</span>
+            <span class="n">F_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">F_norm_sq</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">t2</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">frame_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="c1"># forget old frames, add &#39;t&#39; to the others frames</span>
+                <span class="c1"># check for early rejections based on differing norms</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_duration</span><span class="p">:</span>
+                    <span class="n">frame_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;|F|&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">F_norm</span><span class="p">),</span>
+                        <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;|F|&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">F_norm</span><span class="p">,</span>
+                    <span class="p">}</span>
+                    <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;rejected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance_threshold</span>
+                    <span class="p">)</span>
+
+            <span class="n">t_F</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">frame_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+            <span class="n">frame_dict</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;frame&quot;</span><span class="p">:</span> <span class="n">flat_frame</span><span class="p">,</span> <span class="s2">&quot;|F|sq&quot;</span><span class="p">:</span> <span class="n">F_norm_sq</span><span class="p">,</span> <span class="s2">&quot;|F|&quot;</span><span class="p">:</span> <span class="n">F_norm</span><span class="p">}</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">t_F</span><span class="p">):</span>
+                <span class="c1"># Compare F(t) to all the previous frames</span>
+
+                <span class="k">if</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;rejected&quot;</span><span class="p">]:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">dist</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+                <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span>
+                <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;rejected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span> <span class="o">&gt;=</span> <span class="n">distance_threshold</span>
+
+                <span class="k">for</span> <span class="n">t3</span> <span class="ow">in</span> <span class="n">t_F</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:]:</span>
+                    <span class="c1"># For all the next times t3, use d(F(t), F(end_time)) to</span>
+                    <span class="c1"># update the bounds on d(F(t), F(t3)). See if you can</span>
+                    <span class="c1"># conclude on whether F(t) and F(t3) match.</span>
+                    <span class="n">t3t</span><span class="p">,</span> <span class="n">t2t3</span> <span class="o">=</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t3</span><span class="p">][</span><span class="n">t</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="n">t3</span><span class="p">]</span>
+                    <span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">],</span> <span class="n">dist</span> <span class="o">+</span> <span class="n">t2t3</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
+                    <span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">],</span> <span class="n">dist</span> <span class="o">-</span> <span class="n">t2t3</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">],</span> <span class="n">t2t3</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">dist</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">distance_threshold</span><span class="p">:</span>
+                        <span class="n">t3t</span><span class="p">[</span><span class="s2">&quot;rejected&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="c1"># Store all the good matches (end_time,t)</span>
+            <span class="n">matching_frames</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;min&quot;</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">t1</span> <span class="ow">in</span> <span class="n">frame_dict</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">t1</span> <span class="o">!=</span> <span class="n">t</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="n">t</span><span class="p">][</span><span class="s2">&quot;rejected&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">([</span><span class="n">FramesMatch</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">matching_frames</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="FramesMatches.select_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.select_scenes">[docs]</a>    <span class="k">def</span> <span class="nf">select_scenes</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">match_threshold</span><span class="p">,</span> <span class="n">min_time_span</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_distance</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the scenes at which a video clip can be reproduced as the</span>
+<span class="sd">        smoothest possible way, mainly oriented for the creation of GIF images.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        match_threshold : float</span>
+<span class="sd">          Maximum distance possible between frames. The smaller, the</span>
+<span class="sd">          better-looping the GIFs are.</span>
+
+<span class="sd">        min_time_span : float</span>
+<span class="sd">          Minimum duration for a scene. Only matches with a duration longer</span>
+<span class="sd">          than the value passed to this parameters will be extracted.</span>
+
+<span class="sd">        nomatch_threshold : float, optional</span>
+<span class="sd">          Minimum distance possible between frames. If is ``None``, then it is</span>
+<span class="sd">          chosen equal to ``match_threshold``.</span>
+
+<span class="sd">        time_distance : float, optional</span>
+<span class="sd">          Minimum time offset possible between matches.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+
+<span class="sd">        FramesMatches : New instance of the class with the selected scenes.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; from pprint import pprint</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]</span>
+<span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips(mirror_and_clip)</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
+<span class="sd">        ...     1, 2, nomatch_threshold=0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; print(result)</span>
+<span class="sd">        [(1.0000, 4.0000, 0.0000, 0.0000),</span>
+<span class="sd">         (1.1600, 3.8400, 0.0000, 0.0000),</span>
+<span class="sd">         (1.2800, 3.7200, 0.0000, 0.0000),</span>
+<span class="sd">         (1.4000, 3.6000, 0.0000, 0.0000)]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">nomatch_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nomatch_threshold</span> <span class="o">=</span> <span class="n">match_threshold</span>
+
+        <span class="n">dict_starts</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[])</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">dict_starts</span><span class="p">[</span><span class="n">start</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">])</span>
+
+        <span class="n">starts_ends</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dict_starts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">min_start</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">ends_distances</span> <span class="ow">in</span> <span class="n">starts_ends</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">min_start</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">ends</span> <span class="o">=</span> <span class="p">[</span><span class="n">end</span> <span class="k">for</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ends_distances</span><span class="p">]</span>
+            <span class="n">great_matches</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ends_distances</span>
+                <span class="k">if</span> <span class="n">max_distance</span> <span class="o">&lt;</span> <span class="n">match_threshold</span>
+            <span class="p">]</span>
+
+            <span class="n">great_long_matches</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span> <span class="ow">in</span> <span class="n">great_matches</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">min_time_span</span>
+            <span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">great_long_matches</span><span class="p">:</span>
+                <span class="k">continue</span>  <span class="c1"># No GIF can be made starting at this time</span>
+
+            <span class="n">poor_matches</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">end</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ends_distances</span>
+                <span class="k">if</span> <span class="n">min_distance</span> <span class="o">&gt;</span> <span class="n">nomatch_threshold</span>
+            <span class="p">}</span>
+            <span class="n">short_matches</span> <span class="o">=</span> <span class="p">{</span><span class="n">end</span> <span class="k">for</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">ends</span> <span class="k">if</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.6</span><span class="p">}</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">poor_matches</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">short_matches</span><span class="p">):</span>
+                <span class="k">continue</span>
+
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">end</span> <span class="k">for</span> <span class="p">(</span><span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">)</span> <span class="ow">in</span> <span class="n">great_long_matches</span><span class="p">)</span>
+            <span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">great_long_matches</span> <span class="k">if</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">end</span>
+            <span class="p">)</span>
+
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FramesMatch</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">))</span>
+            <span class="n">min_start</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">time_distance</span>
+
+        <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FramesMatches.write_gifs"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.write_gifs">[docs]</a>    <span class="k">def</span> <span class="nf">write_gifs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="n">gifs_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract the matching frames represented by the instance from a clip</span>
+<span class="sd">        and write them as GIFs in a directory, one GIF for each matching frame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        clip : video.VideoClip.VideoClip</span>
+<span class="sd">          A video clip whose frames scenes you want to obtain as GIF images.</span>
+
+<span class="sd">        gif_dir : str</span>
+<span class="sd">          Directory in which the GIF images will be written.</span>
+
+<span class="sd">        kwargs</span>
+<span class="sd">          Passed as ``clip.write_gif`` optional arguments.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; from pprint import pprint</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
+<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
+<span class="sd">        ...     1, 2, nomatch_threshold=0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt;</span>
+<span class="sd">        &gt;&gt;&gt; os.mkdir(&quot;foo&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; result.write_gifs(clip, &quot;foo&quot;)</span>
+<span class="sd">        MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
+<span class="sd">        MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
+<span class="sd">        MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
+<span class="sd">        MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%08d</span><span class="s2">_</span><span class="si">%08d</span><span class="s2">.gif&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gifs_dir</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">start</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">end</span><span class="p">)</span>
+            <span class="n">clip</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="detect_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.detect_scenes.html#moviepy.video.tools.cuts.detect_scenes">[docs]</a><span class="nd">@use_clip_fps_by_default</span>
+<span class="k">def</span> <span class="nf">detect_scenes</span><span class="p">(</span>
+    <span class="n">clip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">luminosities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">luminosity_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects scenes of a clip based on luminosity changes.</span>
+
+<span class="sd">    Note that for large clip this may take some time.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    tuple : cuts, luminosities</span>
+<span class="sd">      cuts is a series of cuts [(0,t1), (t1,t2),...(...,tf)]</span>
+<span class="sd">      luminosities are the luminosities computed for each</span>
+<span class="sd">      frame of the clip.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    clip : video.VideoClip.VideoClip, optional</span>
+<span class="sd">      A video clip. Can be None if a list of luminosities is</span>
+<span class="sd">      provided instead. If provided, the luminosity of each</span>
+<span class="sd">      frame of the clip will be computed. If the clip has no</span>
+<span class="sd">      &#39;fps&#39; attribute, you must provide it.</span>
+
+<span class="sd">    luminosities : list, optional</span>
+<span class="sd">      A list of luminosities, e.g. returned by detect_scenes</span>
+<span class="sd">      in a previous run.</span>
+
+<span class="sd">    luminosity_threshold : float, optional</span>
+<span class="sd">      Determines a threshold above which the &#39;luminosity jumps&#39;</span>
+<span class="sd">      will be considered as scene changes. A scene change is defined</span>
+<span class="sd">      as a change between 2 consecutive frames that is larger than</span>
+<span class="sd">      (avg * thr) where avg is the average of the absolute changes</span>
+<span class="sd">      between consecutive frames.</span>
+
+<span class="sd">    logger : str, optional</span>
+<span class="sd">      Either ``&quot;bar&quot;`` for progress bar or ``None`` or any Proglog logger.</span>
+
+<span class="sd">    fps : int, optional</span>
+<span class="sd">      Frames per second value. Must be provided if you provide</span>
+<span class="sd">      no clip or a clip without fps attribute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">luminosities</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">luminosities</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">clip</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint32&quot;</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="n">luminosities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">luminosities</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">clip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">luminosities</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">fps</span><span class="p">)</span>
+    <span class="n">luminosity_diffs</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">luminosities</span><span class="p">))</span>
+    <span class="n">avg</span> <span class="o">=</span> <span class="n">luminosity_diffs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">luminosity_jumps</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">luminosity_diffs</span> <span class="o">&gt;</span> <span class="n">luminosity_threshold</span> <span class="o">*</span> <span class="n">avg</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">timings</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">fps</span><span class="p">)</span> <span class="o">*</span> <span class="n">luminosity_jumps</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">end</span><span class="p">]</span>
+    <span class="n">cuts</span> <span class="o">=</span> <span class="p">[(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span> <span class="k">for</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">timings</span><span class="p">,</span> <span class="n">timings</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+    <span class="k">return</span> <span class="n">cuts</span><span class="p">,</span> <span class="n">luminosities</span></div>
+</pre></div>
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

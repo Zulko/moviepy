@@ -1,0 +1,754 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Previewing and saving video clips &#8212; MoviePy  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/moviepy.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/rendering';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Api Reference" href="../reference/index.html" />
+    <link rel="prev" title="Compositing multiple clips" href="compositing.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">
+    <p>MoviePy v2.0 have introduced breaking changes,
+    see <a href="https://zulko.github.io/moviepy/getting_started/updating_to_v2.html">Updating from v1.X to v2.X</a> for more info.</p>
+    </div>
+  </div>
+
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  <div class="navbar-header-items__start">
+    
+      <div class="navbar-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_small.jpeg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo_small.jpeg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+    
+  </div>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/index.html">
+                        Getting started with MoviePy
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="index.html">
+                        The MoviePy User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../reference/index.html">
+                        Api Reference
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../developer_guide/index.html">
+                        The MoviePy Developers Guide
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/Zulko/moviepy/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-square-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="loading.html">Loading resources as clips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifying.html">Modifying clips and apply effects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_effects.html">Creating your own effects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compositing.html">Compositing multiple clips</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Previewing and saving video clips</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumbs">
+  <ul class="bd-breadcrumbs" role="navigation" aria-label="Breadcrumb">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">The MoviePy User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Previewing and saving video clips</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="previewing-and-saving-video-clips">
+<span id="rendering"></span><h1>Previewing and saving video clips<a class="headerlink" href="#previewing-and-saving-video-clips" title="Permalink to this heading">#</a></h1>
+<p>Once you are down working with your clips, the last step will be to export the result into a video/image file, or sometimes to simply preview it in order to verify everything is working as expected.</p>
+<section id="previewing-a-clip">
+<h2>Previewing a clip<a class="headerlink" href="#previewing-a-clip" title="Permalink to this heading">#</a></h2>
+<p>When you are working with a clip, you will frequently need to have a peak at what your clip looks like, either to verify that everything is working as intended, or to check how things looks.</p>
+<p>To do so you could render your entire clip into a file, but that’s a pretty long task, and you only need a quick look, so a better solution exists: previewing.</p>
+<section id="preview-a-clip-as-a-video">
+<h3>Preview a clip as a video<a class="headerlink" href="#preview-a-clip-as-a-video" title="Permalink to this heading">#</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>You must have <code class="docutils literal notranslate"><span class="pre">FFPLAY</span></code> installed and accessible to MoviePy to be able to use <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code>.
+If you’r not sure, take a look <a class="reference internal" href="../getting_started/install.html#install-binaries"><span class="std std-ref">Installation of additional binaries</span></a></p>
+</div>
+<p>The first thing you can do is to preview your clip as a video, by calling method <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code> on your clip:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Keep only 0 to 1 sec</span>
+
+<span class="c1"># We preview our clip as a video, inheriting FPS and audio of the original clip</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
+
+<span class="c1"># We preview our clip as video, but with a custom FPS for video and audio</span>
+<span class="c1"># making it less consuming for our computer</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">audio_fps</span><span class="o">=</span><span class="mi">11000</span><span class="p">)</span>
+
+<span class="c1"># Now we preview without audio</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You will probably frequently want to preview only a small portion of your clip, though <code class="docutils literal notranslate"><span class="pre">preview</span></code> do not offer such capabilities, you can easily emulate such behavior by using <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_subclip" title="moviepy.Clip.Clip.with_subclip"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_subclip()</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is quite frequent for a clip preview to be out of sync, or to play slower than it should. It means that your computer is not powerful enough to render the clip in real time.</p>
+<p>Don’t hesitate to play with the options of preview: for instance, lower the fps of the sound (11000 Hz is still fine) and the video. Also, downsizing your video with resize can help.</p>
+</div>
+<p>For more info, see <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A quite similar function is also available for <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-func docutils literal notranslate"><span class="pre">AudioClip()</span></code></a>, see <a class="reference internal" href="../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.ffplay_audiopreview.html#moviepy.audio.io.ffplay_audiopreviewer.ffplay_audiopreview" title="moviepy.audio.io.ffplay_audiopreviewer.ffplay_audiopreview"><code class="xref py py-func docutils literal notranslate"><span class="pre">ffplay_audiopreview()</span></code></a>.</p>
+</div>
+</section>
+<section id="preview-just-one-frame-of-a-clip">
+<h3>Preview just one frame of a clip<a class="headerlink" href="#preview-just-one-frame-of-a-clip" title="Permalink to this heading">#</a></h3>
+<p>In a lot of situation, you dont really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.</p>
+<p>To do so, you can use the method <code class="xref py py-func docutils literal notranslate"><span class="pre">show()</span></code> on your clip, passing the frame time as an argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span>
+
+<span class="c1"># We show the first frame of our clip</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># We show the frame at point 00:00:01.5 of our clip</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+
+<span class="c1"># We want to see our clip without applying his mask</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Contrary to video previewing, show does not require <code class="docutils literal notranslate"><span class="pre">ffplay</span></code>, but use <code class="docutils literal notranslate"><span class="pre">pillow</span></code> <code class="docutils literal notranslate"><span class="pre">Image.show</span></code> function.</p>
+<p>For more info, see <code class="xref py py-func docutils literal notranslate"><span class="pre">show()</span></code>.</p>
+</section>
+<section id="showing-a-clip-in-jupyter-notebook">
+<h3>Showing a clip in Jupyter Notebook<a class="headerlink" href="#showing-a-clip-in-jupyter-notebook" title="Permalink to this heading">#</a></h3>
+<p>If you work with a <a class="reference external" href="https://jupyter.org/">Jupyter Notebook</a>, it can be very practical to display your clip the notebook. To do so, you can use the method <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> on your clip.</p>
+<a class="reference internal image-reference" href="../_images/demo_preview.jpeg"><img alt="../_images/demo_preview.jpeg" class="align-center" src="../_images/demo_preview.jpeg" style="width: 500px;" /></a>
+<p>With <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> you can embed videos, images and sounds, either from a file or directly from a clip:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># ...</span>
+<span class="c1"># ... some jupyter specifics stuff</span>
+<span class="c1"># ...</span>
+
+<span class="n">my_video_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span>
+<span class="n">my_image_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;./example.png&quot;</span><span class="p">)</span>
+<span class="n">my_audio_clip</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;./example.wav&quot;</span><span class="p">)</span>
+
+<span class="c1"># We can show any type of clip</span>
+<span class="n">my_video_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">()</span>  <span class="c1"># embeds a video</span>
+<span class="n">my_image_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">()</span>  <span class="c1"># embeds an image</span>
+<span class="n">my_audio_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">()</span>  <span class="c1"># embeds a sound</span>
+
+<span class="c1"># We can display only a snaphot of a video</span>
+<span class="n">my_video_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># We can provide any valid HTML5 option as keyword argument</span>
+<span class="c1"># For instance, if the clip is too big, we can set width</span>
+<span class="n">my_video_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+
+<span class="c1"># We can also make it loop, for example to check if a GIF is</span>
+<span class="c1"># looping as expected</span>
+<span class="n">my_video_clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">(</span><span class="n">autoplay</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Know that <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> will only work if it is on the last line a the notebook cell.</p>
+<p>Also, note that <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> actually embeds the clips physically in your notebook. The advantage is that you can move the notebook or put it online and the videos will work.
+The drawback is that the file size of the notebook can become very large. Depending on your browser, re-computing and displaying at video many times can take some place in the cache and the RAM (it will only be a problem for intensive uses).
+Restarting your browser solves the problem.</p>
+</div>
+<p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a>.</p>
+</section>
+</section>
+<section id="save-your-clip-into-a-file">
+<h2>Save your clip into a file<a class="headerlink" href="#save-your-clip-into-a-file" title="Permalink to this heading">#</a></h2>
+<p>Once you are satisfied with how your clip looks, you can save it into a file, a step known in video edition as rendering. MoviePy offer various way to save your clip.</p>
+<section id="video-files-mp4-webm-ogv">
+<h3>Video files (.mp4, .webm, .ogv…)<a class="headerlink" href="#video-files-mp4-webm-ogv" title="Permalink to this heading">#</a></h3>
+<p>The obvious first choice will be to write your clip to a video file, which you can do with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_videofile()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># We load all the clips we want to compose</span>
+<span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="s2">&quot;./example.ttf&quot;</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Big Buck Bunny&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">,</span>
+    <span class="n">text_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">duration</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">))</span>
+
+<span class="c1"># We make our final clip through composition</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">background</span><span class="p">,</span> <span class="n">title</span><span class="p">])</span>
+
+<span class="c1"># And finally we can write the result into a file</span>
+
+<span class="c1"># Here we just save as MP4, inheriting FPS, etc. from final_clip</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result.mp4&quot;</span><span class="p">)</span>
+
+<span class="c1"># Here we save as MP4, but we set the FPS of the clip to our own, here 24 fps, like cinema</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result24fps.mp4&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+
+<span class="c1"># Now we save as WEBM instead, and we want tu use codec libvpx-vp9 (usefull when mp4 + transparency).</span>
+<span class="c1"># We also want ffmpeg compression optimisation as minimal as possible. This will not change</span>
+<span class="c1"># the video quality and it will decrease time for encoding, but increase final file size a lot.</span>
+<span class="c1"># Finally, we want ffmpeg to use 4 threads for video encoding. You should probably leave that</span>
+<span class="c1"># to default, as ffmpeg is already quite good at using the best setting on his own.</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span>
+    <span class="s2">&quot;result.webm&quot;</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s2">&quot;libvpx-vp9&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;ultrafast&quot;</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>MoviePy can find the a default codec name for the most common file extensions. If you want to use exotic formats or if you are not happy with the defaults you can provide the codec with <code class="docutils literal notranslate"><span class="pre">codec='mpeg4'</span></code> for instance.</p>
+<p>There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.), and we will not go in details into each. So, for more info, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_videofile()</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Though you are encouraged to play with settings of <code class="docutils literal notranslate"><span class="pre">write_videofile</span></code>, know that lowering the optimization preset, or increasing the number of threads will not necessarly
+improve the rendering time, as the bottleneck may be on MoviePy computation of each frame and not in ffmpeg encoding.</p>
+<p>Also, know that it is possible to pass additional parameters to ffmpeg command line invoked by MoviePy by using the <code class="docutils literal notranslate"><span class="pre">ffmpeg_params</span></code> argument.</p>
+</div>
+<p>Sometimes it is impossible for MoviePy to guess the <code class="docutils literal notranslate"><span class="pre">duration</span></code> attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have <em>a priori</em> an infinite duration). Then, the <code class="docutils literal notranslate"><span class="pre">duration</span></code> must be set manually with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_duration" title="moviepy.Clip.Clip.with_duration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_duration()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># By default an ImageClip has no duration</span>
+<span class="n">my_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;example.png&quot;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="c1"># This will fail! We cannot write a clip with no duration!</span>
+    <span class="n">my_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result.mp4&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot write a video without duration&quot;</span><span class="p">)</span>
+
+<span class="c1"># By calling with_duration on our clip, we fix the problem! We also need to set fps</span>
+<span class="n">my_clip</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result.mp4&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A quite similar function is also available for <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-func docutils literal notranslate"><span class="pre">AudioClip()</span></code></a>, see <code class="xref py py-func docutils literal notranslate"><span class="pre">write_audiofile()</span></code>.</p>
+</div>
+</section>
+<section id="export-a-single-frame-of-the-clip">
+<h3>Export a single frame of the clip<a class="headerlink" href="#export-a-single-frame-of-the-clip" title="Permalink to this heading">#</a></h3>
+<p>As for previewing, sometimes you will need to export only one frame of a clip, for example to create the preview image of a video. You can do so with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.save_frame" title="moviepy.video.VideoClip.VideoClip.save_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_frame()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># We load all the clips we want to compose</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s2">&quot;result.png&quot;</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Save frame at 1 sec</span>
+</pre></div>
+</div>
+<p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.save_frame" title="moviepy.video.VideoClip.VideoClip.save_frame"><code class="xref py py-func docutils literal notranslate"><span class="pre">save_frame()</span></code></a>.</p>
+</section>
+<section id="animated-gifs">
+<h3>Animated GIFs<a class="headerlink" href="#animated-gifs" title="Permalink to this heading">#</a></h3>
+<p>In addition to writing video files, MoviePy also let you write GIF file with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif" title="moviepy.video.VideoClip.VideoClip.write_gif"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_gif()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Here we just save as GIF</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;result.gif&quot;</span><span class="p">)</span>
+
+<span class="c1"># Here we save as GIF, but we set the FPS of our GIF at 10</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;result.gif&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif" title="moviepy.video.VideoClip.VideoClip.write_gif"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_gif()</span></code></a>.</p>
+</section>
+<section id="export-all-the-clip-as-images-in-a-directory">
+<h3>Export all the clip as images in a directory<a class="headerlink" href="#export-all-the-clip-as-images-in-a-directory" title="Permalink to this heading">#</a></h3>
+<p>Lastly, you may wish to export an entire clip as an image sequence (multiple images in one directory, one image per frame). You can do so with the function <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="moviepy.video.VideoClip.VideoClip.write_images_sequence"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_images_sequence()</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
+
+<span class="c1"># Here we just save in dir output with filename being his index (start at 0, then +1 for each frame)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;./output&quot;</span><span class="p">)</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">write_images_sequence</span><span class="p">(</span><span class="s2">&quot;./output/</span><span class="si">%d</span><span class="s2">.jpg&quot;</span><span class="p">)</span>
+
+<span class="c1"># We set the FPS of our GIF at 10, and we leftpad name with 0 up to 4 digits</span>
+<span class="n">myclip</span><span class="o">.</span><span class="n">write_images_sequence</span><span class="p">(</span><span class="s2">&quot;./output/</span><span class="si">%04d</span><span class="s2">.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="moviepy.video.VideoClip.VideoClip.write_images_sequence"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_images_sequence()</span></code></a>.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="compositing.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Compositing multiple clips</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../reference/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Api Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#previewing-a-clip">Previewing a clip</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preview-a-clip-as-a-video">Preview a clip as a video</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preview-just-one-frame-of-a-clip">Preview just one frame of a clip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#showing-a-clip-in-jupyter-notebook">Showing a clip in Jupyter Notebook</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#save-your-clip-into-a-file">Save your clip into a file</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#video-files-mp4-webm-ogv">Video files (.mp4, .webm, .ogv…)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#export-a-single-frame-of-the-clip">Export a single frame of the clip</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#animated-gifs">Animated GIFs</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#export-all-the-clip-as-images-in-a-directory">Export all the clip as images in a directory</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/user_guide/rendering.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/user_guide/rendering.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner"></div>
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2024, Zulko - MIT.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://sphinx-doc.org/">Sphinx</a> 6.2.1.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.13.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

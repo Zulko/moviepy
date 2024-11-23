@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Mixing clips &mdash; MoviePy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Clips transformations and effects" href="effects.html" />
+    <link rel="prev" title="Quick presentation" href="quick_presentation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../_static/logo_small.jpeg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started with MoviePy</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="quick_presentation.html">Quick presentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mixing clips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#stacking-and-concatenating-clips">Stacking and concatenating clips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">CompositeVideoClips</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#starting-and-stopping-times">Starting and stopping times</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#positioning-clips">Positioning clips</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="effects.html">Clips transformations and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efficient_moviepy.html">How to be efficient with MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="working_with_matplotlib.html">Working with <cite>matplotlib</cite></a></li>
+<li class="toctree-l2"><a class="reference internal" href="audioclips.html">Audio in MoviePy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="videoclips.html">Creating and exporting video clips</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MoviePy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="getting_started.html">Getting started with MoviePy</a> &raquo;</li>
+        
+      <li>Mixing clips</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/getting_started/compositing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mixing-clips">
+<span id="compositevideoclips"></span><h1>Mixing clips<a class="headerlink" href="#mixing-clips" title="Permalink to this headline">¶</a></h1>
+<p>Video composition, also known as non-linear editing, is the fact of playing several clips together in a new clip. This video is a good example of what compositing you can do with MoviePy:</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left:15%;">
+<iframe type="text/html" src="https://youtube.com/embed/rIehsqqYFEM?rel=0" frameborder="0"
+style="position: absolute; top: 0; bottom: 10; width: 70%; height: 100%; ">
+</iframe>
+</div><p>Before starting, note that video clips generally carry an audio track and a mask, which are also clips. When you compose these clips together, the soundtrack and mask of the final clip are automatically generated by putting together the soundtracks and masks of the clips. So most of the time you don’t need to worry about mixing the audio and masks.</p>
+<div class="section" id="stacking-and-concatenating-clips">
+<h2>Stacking and concatenating clips<a class="headerlink" href="#stacking-and-concatenating-clips" title="Permalink to this headline">¶</a></h2>
+<p>Two simple ways of putting clips together is to concatenate them (to play them one after the other in a single long clip) or to stack them (to them side by side in a single larger clip).</p>
+<p>Concatenation is done with the function <code class="docutils literal notranslate"><span class="pre">concatenate_videoclips</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">concatenate_videoclips</span>
+<span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo3.mp4&quot;</span><span class="p">)</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_concatenation.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">final_clip</span></code> is a clip that plays the clips 1, 2, and 3 one after the other. Note that the clips do not need to be the same size. If they arent’s they will all appear centered in a clip large enough to contain the biggest of them, with optionnally a color of your choosing to fill the borders. You have many other options there (see the doc of the function). You can for instance play a transition clip between the clips with the option <code class="docutils literal notranslate"><span class="pre">transition=my_clip</span></code>.</p>
+<p>Stacking is done with <code class="docutils literal notranslate"><span class="pre">clip_array</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">clips_array</span><span class="p">,</span> <span class="n">vfx</span>
+<span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">margin</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># add 10px contour</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">mirror_x</span><span class="p">)</span>
+<span class="n">clip3</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">mirror_y</span><span class="p">)</span>
+<span class="n">clip4</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.60</span><span class="p">)</span> <span class="c1"># downsize 60%</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">clips_array</span><span class="p">([[</span><span class="n">clip1</span><span class="p">,</span> <span class="n">clip2</span><span class="p">],</span>
+                          <span class="p">[</span><span class="n">clip3</span><span class="p">,</span> <span class="n">clip4</span><span class="p">]])</span>
+<span class="n">final_clip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">480</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_stack.mp4&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You obtain a clip which looks like this:</p>
+<div class="figure align-center">
+<img alt="../_images/stacked.jpeg" src="../_images/stacked.jpeg" />
+</div>
+</div>
+<div class="section" id="id1">
+<h2>CompositeVideoClips<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>CompositeVideoClip</cite> class provides a very flexible way to compose clips, but is more complex than <code class="docutils literal notranslate"><span class="pre">concatenate_videoclips</span></code> and <code class="docutils literal notranslate"><span class="pre">clips_array</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">video</span></code> plays <code class="docutils literal notranslate"><span class="pre">clip1</span></code>, and <code class="docutils literal notranslate"><span class="pre">clip2</span></code> <em>on top of</em> <code class="docutils literal notranslate"><span class="pre">clip1</span></code>, and <code class="docutils literal notranslate"><span class="pre">clip3</span></code> on top of <code class="docutils literal notranslate"><span class="pre">clip1</span></code>, and <code class="docutils literal notranslate"><span class="pre">clip2</span></code>. For instance, if <code class="docutils literal notranslate"><span class="pre">clip2</span></code> and <code class="docutils literal notranslate"><span class="pre">clip3</span></code> have the same size as <code class="docutils literal notranslate"><span class="pre">clip1</span></code>, then only <code class="docutils literal notranslate"><span class="pre">clip3</span></code>, which is on top, will be visible in the video… unless  <code class="docutils literal notranslate"><span class="pre">clip3</span></code> and <code class="docutils literal notranslate"><span class="pre">clip2</span></code> have masks which hide parts of them. Note that by default the composition has the size of its first clip (as it is generally a <em>background</em>). But sometimes you will want to make your clips <em>float</em> in a bigger composition, so you will specify the size of the final composition as follows</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span><span class="n">clip2</span><span class="p">,</span><span class="n">clip3</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">720</span><span class="p">,</span><span class="mi">460</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="section" id="starting-and-stopping-times">
+<h3>Starting and stopping times<a class="headerlink" href="#starting-and-stopping-times" title="Permalink to this headline">¶</a></h3>
+<p>In a CompositionClip, all the clips start to play at a time that is specified by the <code class="docutils literal notranslate"><span class="pre">clip.start</span></code> attribute. You can set this starting time as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clip1</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># start after 5 seconds</span>
+</pre></div>
+</div>
+<p>So for instance your composition will look like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span> <span class="c1"># starts at t=0</span>
+                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="c1"># start at t=5s</span>
+                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span> <span class="c1"># start at t=9s</span>
+</pre></div>
+</div>
+<p>In the example above, maybe <code class="docutils literal notranslate"><span class="pre">clip2</span></code> will start before <code class="docutils literal notranslate"><span class="pre">clip1</span></code> is over. In this case you can make <code class="docutils literal notranslate"><span class="pre">clip2</span></code> appear with a <em>fade-in</em> effect of one second:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span> <span class="c1"># starts at t=0</span>
+                            <span class="n">clip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">crossfadein</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+                            <span class="n">clip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="o">.</span><span class="n">crossfadein</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="positioning-clips">
+<h3>Positioning clips<a class="headerlink" href="#positioning-clips" title="Permalink to this headline">¶</a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">clip2</span></code> and <code class="docutils literal notranslate"><span class="pre">clip3</span></code> are smaller than <code class="docutils literal notranslate"><span class="pre">clip1</span></code>, you can decide where they will appear in the composition by setting their position. Here we indicate the coordinates of the top-left pixel of the clips:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">video</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span>
+                           <span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">)),</span>
+                           <span class="n">clip3</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="mi">90</span><span class="p">,</span><span class="mi">100</span><span class="p">))])</span>
+</pre></div>
+</div>
+<p>There are many ways to specify the position:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c1"># x=45, y=150 , in pixels</span>
+
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">)</span> <span class="c1"># automatically centered</span>
+
+<span class="c1"># clip2 is horizontally centered, and at the top of the picture</span>
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">))</span>
+
+<span class="c1"># clip2 is vertically centered, at the left of the picture</span>
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="s2">&quot;left&quot;</span><span class="p">,</span><span class="s2">&quot;center&quot;</span><span class="p">))</span>
+
+<span class="c1"># clip2 is at 40% of the width, 70% of the height of the screen:</span>
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">((</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># clip2&#39;s position is horizontally centered, and moving down !</span>
+<span class="n">clip2</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="o">+</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>When indicating the position keep in mind that the <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate has its zero at the top of the picture:</p>
+<div class="figure">
+<img alt="../_images/videoWH.jpeg" src="../_images/videoWH.jpeg" />
+</div>
+<div class="section" id="compositing-audio-clips">
+<h4>Compositing audio clips<a class="headerlink" href="#compositing-audio-clips" title="Permalink to this headline">¶</a></h4>
+<p>When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don’t need to worry about compositing these tracks yourself.</p>
+<p>If you want to make a custom audiotrack from several audio sources: audioc clips can be mixed together with <code class="docutils literal notranslate"><span class="pre">CompositeAudioClip</span></code> and <code class="docutils literal notranslate"><span class="pre">concatenate_audioclips</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># ... make some audio clips aclip1, aclip2, aclip3</span>
+<span class="n">concat</span> <span class="o">=</span> <span class="n">concatenate_audioclips</span><span class="p">([</span><span class="n">aclip1</span><span class="p">,</span> <span class="n">aclip2</span><span class="p">,</span> <span class="n">aclip3</span><span class="p">])</span>
+<span class="n">compo</span> <span class="o">=</span> <span class="n">CompositeAudioClip</span><span class="p">([</span><span class="n">aclip1</span><span class="o">.</span><span class="n">volumex</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+                            <span class="n">aclip2</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="c1"># start at t=5s</span>
+                            <span class="n">aclip3</span><span class="o">.</span><span class="n">set_start</span><span class="p">(</span><span class="mi">9</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="effects.html" class="btn btn-neutral float-right" title="Clips transformations and effects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quick_presentation.html" class="btn btn-neutral float-left" title="Quick presentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017, Zulko.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
