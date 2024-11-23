@@ -3,9 +3,7 @@
 
 [![MoviePy page on the Python Package Index](https://badge.fury.io/py/moviepy.svg)](https://pypi.org/project/moviepy/) [![Discuss MoviePy on Gitter](https://img.shields.io/gitter/room/movie-py/gitter?color=46BC99&logo=gitter)](Gitter_) [![Build status on gh-actions](https://img.shields.io/github/actions/workflow/status/Zulko/moviepy/test_suite.yml?logo=github)](https://github.com/Zulko/moviepy/actions/workflows/test_suite.yml) [![Code coverage from coveralls.io](https://img.shields.io/coveralls/github/Zulko/moviepy/master?logo=coveralls)](https://coveralls.io/github/Zulko/moviepy?branch=master)
 
-> [!NOTE] 
-> MoviePy recently upgraded to v2.0, introducing major
-breaking changes. For more info on how to update your code for v2.0, see [this guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
+> **New release!** MoviePy recently upgraded to v2.0, introducing major breaking changes. You can consult the last v1 docs [here](https://zulko.github.io/moviepy/v1.0.3/) but beware that v1 is no longer maintained. For more info on how to update your code from v1 to v2, see [this guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
 
 MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a
 Python library for video editing: cuts, concatenations, title
