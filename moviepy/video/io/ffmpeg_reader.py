@@ -35,8 +35,10 @@ class FFMPEG_VideoReader:
             decode_file=decode_file,
             print_infos=print_infos,
         )
-        self.fps = infos["video_fps"]
-        self.size = infos["video_size"]
+        # If framerate is unavailable, assume 1.0 FPS to avoid divide-by-zero errors.
+        self.fps = infos.get("video_fps", 1.0)
+        # If frame size is unavailable, set 1x1 divide-by-zero errors.
+        self.size = infos.get("video_size", (1, 1))
 
         # ffmpeg automatically rotates videos if rotation information is
         # available, so exchange width and height
@@ -55,10 +57,10 @@ class FFMPEG_VideoReader:
                 self.size = target_resolution
         self.resize_algo = resize_algo
 
-        self.duration = infos["video_duration"]
-        self.ffmpeg_duration = infos["duration"]
-        self.n_frames = infos["video_n_frames"]
-        self.bitrate = infos["video_bitrate"]
+        self.duration = infos.get("video_duration", 0.0)
+        self.ffmpeg_duration = infos.get("duration", 0.0)
+        self.n_frames = infos.get("video_n_frames", 0)
+        self.bitrate = infos.get("video_bitrate", 0)
 
         self.infos = infos
 
@@ -556,8 +558,11 @@ class FFmpegInfosParser:
         # last input file, must be included in self.result
         if self._current_input_file:
             self._current_input_file["streams"].append(self._current_stream)
-            # include their chapters, if there are
-            if len(input_chapters) == self._current_input_file["input_number"] + 1:
+            # include their chapters, if there are any
+            if (
+                "input_number" in self._current_input_file
+                and len(input_chapters) == self._current_input_file["input_number"] + 1
+            ):
                 self._current_input_file["chapters"] = input_chapters[
                     self._current_input_file["input_number"]
                 ]
@@ -565,13 +570,13 @@ class FFmpegInfosParser:
 
         # some video duration utilities
         if self.result["video_found"] and self.check_duration:
-            self.result["video_n_frames"] = int(
-                self.result["duration"] * self.result["video_fps"]
-            )
             self.result["video_duration"] = self.result["duration"]
+            self.result["video_n_frames"] = int(
+                self.result["duration"] * self.result.get("video_fps", 0)
+            )
         else:
-            self.result["video_n_frames"] = 1
-            self.result["video_duration"] = None
+            self.result["video_n_frames"] = 0
+            self.result["video_duration"] = 0.0
         # We could have also recomputed duration from the number of frames, as follows:
         # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
 
