@@ -37,7 +37,7 @@ jobs:
         git stash
         git checkout v1.0.3
         pip install -e .
-        pip install jinja2<3
+        pip install "jinja2<3"
         pip uninstall sphinx-design pydata-sphinx-theme
         pip install -e ".[doc]"
         
