@@ -859,7 +859,7 @@ class VideoClip(Clip):
 
                 mask = VideoClip(is_mask=True, frame_function=frame_function)
         self.mask = mask
-    
+
     @outplace
     def without_mask(self):
         """Remove the clip's mask."""
