@@ -24,13 +24,25 @@ jobs:
         pip install -e .
         pip install -e .[doc]
 
-    - name: Build documentation
+    - name: Fetch all tags
+      run: git fetch --tags
+
+    - name: Build current documentation
       run: |
         cd docs
-        make html  # This should be adjusted to match your build process (e.g., `make html` or `sphinx-build`)
+        make html
+
+    - name: Build v1.0.3 documentation
+      run: |
+        git checkout 1.0.3
+        cd docs
+        make html
+        mkdir -p ../build/html/v1.0.3
+        cp -r build/html/* ../build/html/v1.0.3/
+        git checkout -
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html/  # Ensure this matches the output directory
+        publish_dir: ./build/html/  # Adjusted path since we're copying docs to root build directory
