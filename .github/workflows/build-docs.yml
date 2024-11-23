@@ -37,7 +37,8 @@ jobs:
         git stash
         git checkout v1.0.3
         pip install -e .
-        pip install -e .[doc]
+        pip install -e ".[doc]"
+        pip install jinja2 < 3
         cd docs
         make html
         mkdir -p ../build/html/v1.0.3
