@@ -236,7 +236,7 @@ def test_setaudio_with_audiofile(util):
 def test_setopacity(util, video):
     clip = video(start_time=0.2, end_time=0.6)
     clip = clip.with_opacity(0.5)
-    clip = clip.with_background_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)
+    clip = clip.with_background_color(size=(1000, 1000), color=(0, 0, 255), opacity=0.8)
     location = os.path.join(util.TMP_DIR, "setopacity.mp4")
     clip.write_videofile(location)
     assert os.path.isfile(location)
@@ -250,9 +250,7 @@ def test_with_layer_index():
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
 
     # Make sure that the order of clips makes no difference to the composite clip
-    assert composite_clip.subclipped(0, 2) == reversed_composite_clip.subclipped(
-        0, 2
-    )
+    assert composite_clip.subclipped(0, 2) == reversed_composite_clip.subclipped(0, 2)
 
     # Make sure that only the 'top' clip is kept
     assert top_clip.subclipped(0, 2) == composite_clip.subclipped(0, 2)

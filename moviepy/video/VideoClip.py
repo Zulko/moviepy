@@ -791,7 +791,7 @@ class VideoClip(Clip):
         pos
           Position of the clip in the final clip. 'center' is the default
 
-        col_opacity
+        opacity
           Parameter in 0..1 indicating the opacity of the colored
           background.
         """
@@ -825,7 +825,9 @@ class VideoClip(Clip):
         return result
 
     @outplace
-    def with_updated_frame_function(self, frame_function: Callable[[float], np.ndarray]):
+    def with_updated_frame_function(
+        self, frame_function: Callable[[float], np.ndarray]
+    ):
         """Change the clip's ``get_frame``.
 
         Returns a copy of the VideoClip instance, with the frame_function
@@ -854,6 +856,7 @@ class VideoClip(Clip):
             if self.has_constant_size:
                 mask = ColorClip(self.size, 1.0, is_mask=True)
             else:
+
                 def frame_function(t):
                     return np.ones(self.get_frame(t).shape[:2], dtype=float)
 
