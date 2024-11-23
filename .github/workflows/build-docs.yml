@@ -20,6 +20,7 @@ jobs:
 
     - name: Build v1.0.3 documentation
       run: |
+        git fetch --tags
         git checkout v1.0.3
         pip install -e .
         pip install -e ".[doc]"
@@ -29,16 +30,15 @@ jobs:
         mkdir -p ../build/html/v1.0.3
         cp -r build/html/* ../build/html/v1.0.3/
         git stash
-        git checkout -
 
     - name: Install dependencies
       run: |
+        git checkout master  
         python -m pip install --upgrade pip
         pip install -e .
         pip install -e .[doc]
 
-    - name: Fetch all tags
-      run: git fetch --tags
+
 
     - name: Build current documentation
       run: |
