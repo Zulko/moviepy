@@ -129,7 +129,7 @@ class FFMPEG_VideoReader:
         # to be read by self.read_frame().
         # Eg when self.pos is 1, the 2nd frame will be read next.
         self.pos = self.get_frame_number(start_time)
-        self.lastread = self.read_frame()
+        self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames"""
@@ -144,7 +144,7 @@ class FFMPEG_VideoReader:
         """
         Reads the next frame from the file.
         Note that upon (re)initialization, the first frame will already have been read
-        and stored in ``self.lastread``.
+        and stored in ``self.last_read``.
         """
         w, h = self.size
         nbytes = self.depth * w * h
@@ -219,12 +219,17 @@ class FFMPEG_VideoReader:
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            return self.lastread
+            return self.last_read
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
             result = self.read_frame()
             return result
+
+    @property
+    def lastread(self):
+        """Alias of `self.last_read` for backwards compatibility with MoviePy 1.x."""
+        return self.last_read
 
     def get_frame_number(self, t):
         """Helper method to return the frame number at time ``t``"""
