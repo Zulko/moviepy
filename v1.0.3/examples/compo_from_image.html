@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Placing clips according to a picture &mdash; MoviePy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MoviePy logo with a moving shadow" href="logo.html" />
+    <link rel="prev" title="Freezing a movie frame with a painting effect" href="painting_effect.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../_static/logo_small.jpeg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="examples.html">Example Scripts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="moving_letters.html">Text with moving letters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dancing_knights.html">A reconstitution of 15th century dancing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ukulele_concerto.html">A simple music video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_with_sound.html">An example with sound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="star_worms.html">A Star-Wars like opening title</a></li>
+<li class="toctree-l2"><a class="reference internal" href="masked_credits.html">Partially Hidden credits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="painting_effect.html">Freezing a movie frame with a painting effect</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Placing clips according to a picture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logo.html">MoviePy logo with a moving shadow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="headblur.html">Tracking and blurring someone’s face</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quick_recipes.html">Quick recipes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="several_characters.html">Character duplication in a video</a></li>
+<li class="toctree-l2"><a class="reference internal" href="the_end.html">“The End” effect</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ref/ref.html">Reference Manual</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MoviePy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="examples.html">Example Scripts</a> &raquo;</li>
+        
+      <li>Placing clips according to a picture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/examples/compo_from_image.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="placing-clips-according-to-a-picture">
+<h1>Placing clips according to a picture<a class="headerlink" href="#placing-clips-according-to-a-picture" title="Permalink to this headline">¶</a></h1>
+<p>So how do you do some complex compositing like this ?</p>
+<div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;"><iframe type="text/html" src="https://www.youtube.com/embed/1hdgNxX-tas" frameborder="0" style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;" allowfullscreen></iframe></div><p>It takes a lot of bad taste, and a segmenting tool</p>
+<p>In this script we will use this image (generated with Inkscape):</p>
+<div class="figure">
+<img alt="../_images/compo_from_image.jpeg" src="../_images/compo_from_image.jpeg" />
+</div>
+<p>We will find the regions of this image and fit the different clips into these regions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.segmenting</span> <span class="kn">import</span> <span class="n">findObjects</span>
+
+<span class="c1"># Load the image specifying the regions.</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;../../ultracompositing/motif.png&quot;</span><span class="p">)</span>
+
+<span class="c1"># Loacate the regions, return a list of ImageClips</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="n">findObjects</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+
+
+<span class="c1"># Load 7 clips from the US National Parks. Public Domain :D</span>
+<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">22</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span>
+     <span class="p">[</span> <span class="s2">&quot;../../videos/romo_0004.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/apis-0001.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/romo_0001.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/elma_s0003.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/elma_s0002.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/calo-0007.mov&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;../../videos/grsm_0005.mov&quot;</span><span class="p">]]</span>
+
+<span class="c1"># fit each clip into its region</span>
+<span class="n">comp_clips</span> <span class="o">=</span>  <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">set_mask</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">screenpos</span><span class="p">)</span>
+               <span class="k">for</span> <span class="n">c</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">clips</span><span class="p">,</span><span class="n">regions</span><span class="p">)]</span>
+
+<span class="n">cc</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">comp_clips</span><span class="p">,</span><span class="n">im</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+<span class="n">cc</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;../../composition.mp4&quot;</span><span class="p">)</span>
+
+<span class="c1"># Note that this particular composition takes quite a long time of</span>
+<span class="c1"># rendering (about 20s on my computer for just 4s of video).</span>
+</pre></div>
+</div>
+<p>(note that some pictures are distorted here as their size has been modified without care for their aspect ratio. This could be changed with a few more lines.)</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="logo.html" class="btn btn-neutral float-right" title="MoviePy logo with a moving shadow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="painting_effect.html" class="btn btn-neutral float-left" title="Freezing a movie frame with a painting effect" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017, Zulko.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

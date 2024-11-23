@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>moviepy.video.io.VideoFileClip &mdash; MoviePy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../../../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../ref/ref.html">Reference Manual</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">MoviePy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>moviepy.video.io.VideoFileClip</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for moviepy.video.io.VideoFileClip</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
+
+
+<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    A video clip originating from a movie file. For instance: ::</span>
+
+<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;myHolidays.mp4&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; clip.close()</span>
+<span class="sd">        &gt;&gt;&gt; with VideoFileClip(&quot;myMaskVideo.avi&quot;) as clip2:</span>
+<span class="sd">        &gt;&gt;&gt;    pass  # Implicit close called by context manager.</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+
+<span class="sd">    filename:</span>
+<span class="sd">      The name of the video file. It can have any extension supported</span>
+<span class="sd">      by ffmpeg: .ogv, .mp4, .mpeg, .avi, .mov etc.</span>
+
+<span class="sd">    has_mask:</span>
+<span class="sd">      Set this to &#39;True&#39; if there is a mask included in the videofile.</span>
+<span class="sd">      Video files rarely contain masks, but some video codecs enable</span>
+<span class="sd">      that. For istance if you have a MoviePy VideoClip with a mask you</span>
+<span class="sd">      can save it to a videofile with a mask. (see also</span>
+<span class="sd">      ``VideoClip.write_videofile`` for more details).</span>
+
+<span class="sd">    audio:</span>
+<span class="sd">      Set to `False` if the clip doesn&#39;t have any audio or if you do not</span>
+<span class="sd">      wish to read the audio.</span>
+
+<span class="sd">    target_resolution:</span>
+<span class="sd">      Set to (desired_height, desired_width) to have ffmpeg resize the frames</span>
+<span class="sd">      before returning them. This is much faster than streaming in high-res</span>
+<span class="sd">      and then resizing. If either dimension is None, the frames are resized</span>
+<span class="sd">      by keeping the existing aspect ratio.</span>
+
+<span class="sd">    resize_algorithm:</span>
+<span class="sd">      The algorithm used for resizing. Default: &quot;bicubic&quot;, other popular</span>
+<span class="sd">      options include &quot;bilinear&quot; and &quot;fast_bilinear&quot;. For more information, see</span>
+<span class="sd">      https://ffmpeg.org/ffmpeg-scaler.html</span>
+
+<span class="sd">    fps_source:</span>
+<span class="sd">      The fps value to collect from the metadata. Set by default to &#39;tbr&#39;, but</span>
+<span class="sd">      can be set to &#39;fps&#39;, which may be helpful if importing slow-motion videos</span>
+<span class="sd">      that get messed up otherwise.</span>
+
+
+<span class="sd">    Attributes</span>
+<span class="sd">    -----------</span>
+
+<span class="sd">    filename:</span>
+<span class="sd">      Name of the original video file.</span>
+
+<span class="sd">    fps:</span>
+<span class="sd">      Frames per second in the original file.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    Read docs for Clip() and VideoClip() for other, more generic, attributes.</span>
+<span class="sd">    </span>
+<span class="sd">    Lifetime</span>
+<span class="sd">    --------</span>
+<span class="sd">    </span>
+<span class="sd">    Note that this creates subprocesses and locks files. If you construct one of these instances, you must call</span>
+<span class="sd">    close() afterwards, or the subresources will not be cleaned up until the process ends.</span>
+<span class="sd">    </span>
+<span class="sd">    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">has_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">audio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">audio_buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span>
+                 <span class="n">target_resolution</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resize_algorithm</span><span class="o">=</span><span class="s1">&#39;bicubic&#39;</span><span class="p">,</span>
+                 <span class="n">audio_fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">fps_source</span><span class="o">=</span><span class="s1">&#39;tbr&#39;</span><span class="p">):</span>
+
+        <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Make a reader</span>
+        <span class="n">pix_fmt</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">pix_fmt</span><span class="o">=</span><span class="n">pix_fmt</span><span class="p">,</span>
+                                         <span class="n">target_resolution</span><span class="o">=</span><span class="n">target_resolution</span><span class="p">,</span>
+                                         <span class="n">resize_algo</span><span class="o">=</span><span class="n">resize_algorithm</span><span class="p">,</span>
+                                         <span class="n">fps_source</span><span class="o">=</span><span class="n">fps_source</span><span class="p">)</span>
+
+        <span class="c1"># Make some of the reader&#39;s attributes accessible from the clip</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">duration</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">fps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">rotation</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">filename</span>
+
+        <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="n">mask_mf</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,:,</span><span class="mi">3</span><span class="p">]</span><span class="o">/</span><span class="mf">255.0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">VideoClip</span><span class="p">(</span><span class="n">ismask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="n">mask_mf</span><span class="p">)</span>
+                         <span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="c1"># Make a reader for the audio, if any.</span>
+        <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s1">&#39;audio_found&#39;</span><span class="p">]:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span>
+                                       <span class="n">buffersize</span><span class="o">=</span><span class="n">audio_buffersize</span><span class="p">,</span>
+                                       <span class="n">fps</span><span class="o">=</span><span class="n">audio_fps</span><span class="p">,</span>
+                                       <span class="n">nbytes</span><span class="o">=</span><span class="n">audio_nbytes</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VideoFileClip.close"><a class="viewcode-back" href="../../../../ref/VideoClip/VideoClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Close the internal reader. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017, Zulko.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

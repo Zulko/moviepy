@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>moviepy.tools &mdash; MoviePy  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MoviePy
+          
+
+          
+            
+            <img src="../../_static/logo_small.jpeg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Download and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started/getting_started.html">Getting started with MoviePy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples.html">Example Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html">Moviepy Docker</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../opencv_instructions.html">So you want to install OpenCV 2.4.6 ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../FAQ.html">FAQ and troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_tools/advanced_tools.html">Advanced tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ref/ref.html">Reference Manual</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MoviePy</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>moviepy.tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for moviepy.tools</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Misc. useful functions that can be used at many places in the program.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">proglog</span>
+
+<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">DEVNULL</span>
+
+
+
+<span class="k">def</span> <span class="nf">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Writes and flushes without delay a text in the console &quot;&quot;&quot;</span>
+    <span class="c1"># Reason for not using `print` is that in some consoles &quot;print&quot; </span>
+    <span class="c1"># commands get delayed, while stdout.flush are instantaneous, </span>
+    <span class="c1"># so this method is better at providing feedback.</span>
+    <span class="c1"># See https://github.com/Zulko/moviepy/pull/485</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">verbose_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Only prints s (with sys_write_flush) if verbose is True.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">errorprint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Executes the given subprocess command.</span>
+<span class="sd">    </span>
+<span class="sd">    Set logger to None or a custom Proglog logger to avoid printings.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+    <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Moviepy - Running:</span><span class="se">\n</span><span class="s1">&gt;&gt;&gt; &quot;+ &quot; &quot;.join(cmd)&#39;</span><span class="p">)</span>
+
+    <span class="n">popen_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">DEVNULL</span><span class="p">,</span>
+                    <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                    <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="n">DEVNULL</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;nt&quot;</span><span class="p">:</span>
+        <span class="n">popen_params</span><span class="p">[</span><span class="s2">&quot;creationflags&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08000000</span>
+
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
+
+    <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span> <span class="c1"># proc.wait()</span>
+    <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">errorprint</span><span class="p">:</span>
+            <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Moviepy - Command returned an error&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">err</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf8&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s1">&#39;Moviepy - Command successful&#39;</span><span class="p">)</span>
+
+    <span class="k">del</span> <span class="n">proc</span>
+
+<span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns true if s is string or string-like object,</span>
+<span class="sd">    compatible with Python 2 and Python 3.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">basestring</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">cvsecs</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Will convert any time into seconds. </span>
+<span class="sd">    </span>
+<span class="sd">    If the type of `time` is not valid, </span>
+<span class="sd">    it&#39;s returned as is. </span>
+
+<span class="sd">    Here are the accepted formats::</span>
+
+<span class="sd">    &gt;&gt;&gt; cvsecs(15.4)   # seconds </span>
+<span class="sd">    15.4 </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs((1, 21.5))   # (min,sec) </span>
+<span class="sd">    81.5 </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs((1, 1, 2))   # (hr, min, sec)  </span>
+<span class="sd">    3662  </span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33.045&#39;) </span>
+<span class="sd">    3693.045</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;01:01:33,5&#39;)    # coma works too</span>
+<span class="sd">    3693.5</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;1:33,5&#39;)    # only minutes and secs</span>
+<span class="sd">    99.5</span>
+<span class="sd">    &gt;&gt;&gt; cvsecs(&#39;33.5&#39;)      # only secs</span>
+<span class="sd">    33.5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">is_string</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>     
+        <span class="n">time</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">time</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="n">part</span> <span class="k">for</span> <span class="n">mult</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Indicates that a function is deprecated and has a new name.</span>
+
+<span class="sd">    `f` is the new function, `oldname` the name of the deprecated</span>
+<span class="sd">    function, `newname` the name of `f`, which can be automatically</span>
+<span class="sd">    found.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    ========</span>
+
+<span class="sd">    f_deprecated</span>
+<span class="sd">      A function that does the same thing as f, but with a docstring</span>
+<span class="sd">      and a printed message on call which say that the function is</span>
+<span class="sd">      deprecated and that you should use f instead.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    =========</span>
+
+<span class="sd">    &gt;&gt;&gt; # The badly named method &#39;to_file&#39; is replaced by &#39;write_file&#39;</span>
+<span class="sd">    &gt;&gt;&gt; class Clip:</span>
+<span class="sd">    &gt;&gt;&gt;    def write_file(self, some args):</span>
+<span class="sd">    &gt;&gt;&gt;        # blablabla</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; Clip.to_file = deprecated_version_of(Clip.write_file, &#39;to_file&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">newname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">newname</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="n">warning</span><span class="o">=</span> <span class="p">(</span><span class="s2">&quot;The function ``</span><span class="si">%s</span><span class="s2">`` is deprecated and is kept temporarily &quot;</span>
+              <span class="s2">&quot;for backwards compatibility.</span><span class="se">\n</span><span class="s2">Please use the new name, &quot;</span>
+              <span class="s2">&quot;``</span><span class="si">%s</span><span class="s2">``, instead.&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">fdepr</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;MoviePy: &quot;</span> <span class="o">+</span> <span class="n">warning</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+    <span class="n">fdepr</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">warning</span>
+
+    <span class="k">return</span> <span class="n">fdepr</span>
+
+
+<span class="c1"># non-exhaustive dictionnary to store default informations.</span>
+<span class="c1"># any addition is most welcome.</span>
+<span class="c1"># Note that &#39;gif&#39; is complicated to place. From a VideoFileClip point of view,</span>
+<span class="c1"># it is a video, but from a HTML5 point of view, it is an image.</span>
+
+<span class="n">extensions_dict</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;mp4&quot;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;video&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libx264&#39;</span><span class="p">,</span><span class="s1">&#39;libmpeg4&#39;</span><span class="p">,</span> <span class="s1">&#39;aac&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;ogv&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;video&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libtheora&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;webm&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;video&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libvpx&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;avi&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;video&#39;</span><span class="p">},</span>
+                    <span class="s1">&#39;mov&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;video&#39;</span><span class="p">},</span>
+
+                    <span class="s1">&#39;ogg&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;audio&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libvorbis&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;mp3&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;audio&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libmp3lame&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;wav&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;audio&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;pcm_s16le&#39;</span><span class="p">,</span> <span class="s1">&#39;pcm_s24le&#39;</span><span class="p">,</span> <span class="s1">&#39;pcm_s32le&#39;</span><span class="p">]},</span>
+                    <span class="s1">&#39;m4a&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;audio&#39;</span><span class="p">,</span> <span class="s1">&#39;codec&#39;</span><span class="p">:[</span><span class="s1">&#39;libfdk_aac&#39;</span><span class="p">]}</span>
+                  <span class="p">}</span>
+
+<span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;jpeg&quot;</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">,</span> <span class="s2">&quot;bmp&quot;</span><span class="p">,</span> <span class="s2">&quot;tiff&quot;</span><span class="p">]:</span>
+    <span class="n">extensions_dict</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;image&#39;</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">extensions_dict</span><span class="p">:</span>
+        <span class="c1"># codec is already the extension</span>
+        <span class="k">return</span> <span class="n">codec</span>
+
+    <span class="k">for</span> <span class="n">ext</span><span class="p">,</span><span class="n">infos</span> <span class="ow">in</span> <span class="n">extensions_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;codec&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">return</span> <span class="n">ext</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="s2">&quot;The audio_codec you chose is unknown by MoviePy. &quot;</span>
+        <span class="s2">&quot;You should report this. In the meantime, you can &quot;</span>
+        <span class="s2">&quot;specify a temp_audiofile with the right extension &quot;</span>
+        <span class="s2">&quot;in write_videofile.&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2017, Zulko.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
