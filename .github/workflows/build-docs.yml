@@ -18,6 +18,19 @@ jobs:
       with:
         python-version: '3.x'  # Specify Python version as needed
 
+    - name: Build v1.0.3 documentation
+      run: |
+        git checkout v1.0.3
+        pip install -e .
+        pip install -e ".[doc]"
+        
+        cd docs
+        make html
+        mkdir -p ../build/html/v1.0.3
+        cp -r build/html/* ../build/html/v1.0.3/
+        git stash
+        git checkout -
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -31,21 +44,6 @@ jobs:
       run: |
         cd docs
         make html
-
-    - name: Build v1.0.3 documentation
-      run: |
-        git stash
-        git checkout v1.0.3
-        pip install -e .
-        pip install "jinja2<3"
-        pip uninstall sphinx-design pydata-sphinx-theme
-        pip install -e ".[doc]"
-        
-        cd docs
-        make html
-        mkdir -p ../build/html/v1.0.3
-        cp -r build/html/* ../build/html/v1.0.3/
-        git checkout -
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
