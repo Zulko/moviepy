@@ -502,18 +502,18 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
 
         <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
-            <span class="k">def</span> <span class="nf">mask_make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">255.0</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span>
-                <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="n">mask_make_frame</span>
+                <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="n">mask_frame_function</span>
             <span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
         <span class="c1"># Make a reader for the audio, if any.</span>
         <span class="k">if</span> <span class="n">audio</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">infos</span><span class="p">[</span><span class="s2">&quot;audio_found&quot;</span><span class="p">]:</span>

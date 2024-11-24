@@ -402,7 +402,7 @@ document.write(`
         <span class="n">clip2</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_duration</span><span class="p">)])</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span>
             <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap_duration</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="p">,</span> <span class="n">clip2</span><span class="p">])</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="p">,</span> <span class="n">clip2</span><span class="p">])</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">overlap_duration</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
         <span class="p">)</span></div></div>
 </pre></div>

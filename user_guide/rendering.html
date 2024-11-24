@@ -413,7 +413,7 @@ If you’r not sure, take a look <a class="reference internal" href="../getting_
 <p>The first thing you can do is to preview your clip as a video, by calling method <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code> on your clip:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Keep only 0 to 1 sec</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Keep only 0 to 1 sec</span>
 
 <span class="c1"># We preview our clip as a video, inheriting FPS and audio of the original clip</span>
 <span class="n">myclip</span><span class="o">.</span><span class="n">preview</span><span class="p">()</span>
@@ -426,7 +426,7 @@ If you’r not sure, take a look <a class="reference internal" href="../getting_
 <span class="n">myclip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You will probably frequently want to preview only a small portion of your clip, though <code class="docutils literal notranslate"><span class="pre">preview</span></code> do not offer such capabilities, you can easily emulate such behavior by using <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_subclip" title="moviepy.Clip.Clip.with_subclip"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_subclip()</span></code></a>.</p>
+<p>You will probably frequently want to preview only a small portion of your clip, though <code class="docutils literal notranslate"><span class="pre">preview</span></code> do not offer such capabilities, you can easily emulate such behavior by using <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.subclipped" title="moviepy.Clip.Clip.subclipped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subclipped()</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>It is quite frequent for a clip preview to be out of sync, or to play slower than it should. It means that your computer is not powerful enough to render the clip in real time.</p>
@@ -510,7 +510,7 @@ Restarting your browser solves the problem.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
-<span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="n">title</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
     <span class="s2">&quot;./example.ttf&quot;</span><span class="p">,</span>
     <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Big Buck Bunny&quot;</span><span class="p">,</span>
@@ -587,7 +587,7 @@ improve the rendering time, as the bottleneck may be on MoviePy computation of e
 <p>In addition to writing video files, MoviePy also let you write GIF file with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif" title="moviepy.video.VideoClip.VideoClip.write_gif"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_gif()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Here we just save as GIF</span>
 <span class="n">myclip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;result.gif&quot;</span><span class="p">)</span>

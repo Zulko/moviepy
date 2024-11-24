@@ -487,7 +487,7 @@ document.write(`
 <span class="k">def</span> <span class="nf">add_mask_if_none</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a mask to the clip if there is none.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_add_mask</span><span class="p">()</span>
+        <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_mask</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 

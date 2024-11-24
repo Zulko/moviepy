@@ -422,17 +422,17 @@ Instead it will return <strong>a modified copy of the original</strong> and let 
 
 <span class="c1"># This does nothing, as multiply_volume will return a copy of clip which you will loose immediatly as you dont store it</span>
 <span class="c1"># If you was to render clip now, the audio would still be at full volume</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1"># This create a copy of clip in clip_whisper with a volume of only 10% the original, but does not modify the original clip</span>
 <span class="c1"># If you was to render clip right now, the audio would still be at full volume</span>
 <span class="c1"># If you was to render clip_whisper, the audio would be a 10% of the original volume</span>
-<span class="n">clip_whisper</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">clip_whisper</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1"># This replace the original clip with a copy of it where volume is only 10% of the original</span>
 <span class="c1"># If you was to render clip now, the audio would be at 10%</span>
 <span class="c1"># The original clip is now lost</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This is an important point to understand, because it is one of the most recurrent source of bug for newcomers.</p>
@@ -444,14 +444,14 @@ Instead it will return <strong>a modified copy of the original</strong> and let 
 </section>
 <section id="time-representations-in-moviepy">
 <h3>Time representations in MoviePy<a class="headerlink" href="#time-representations-in-moviepy" title="Permalink to this heading">#</a></h3>
-<p>Many methods that we will see accept duration or timepoint as arguments. For instance <code class="xref py py-meth docutils literal notranslate"><span class="pre">clip.with_subclip(t_start,</span> <span class="pre">t_end)</span></code> which cuts the clip between two timepoints.</p>
+<p>Many methods that we will see accept duration or timepoint as arguments. For instance <code class="xref py py-meth docutils literal notranslate"><span class="pre">clip.subclipped(t_start,</span> <span class="pre">t_end)</span></code> which cuts the clip between two timepoints.</p>
 <p>MoviePy usually accept duration and timepoint as either :</p>
 <ul class="simple">
 <li><p>a number of seconds as a <code class="docutils literal notranslate"><span class="pre">float</span></code>.</p></li>
 <li><p>a <code class="docutils literal notranslate"><span class="pre">tuple</span></code> with <code class="docutils literal notranslate"><span class="pre">(minutes,</span> <span class="pre">seconds)</span></code> or <code class="docutils literal notranslate"><span class="pre">(hours,</span> <span class="pre">minutes,</span> <span class="pre">seconds)</span></code>.</p></li>
 <li><p>a <code class="docutils literal notranslate"><span class="pre">string</span></code> such as <code class="docutils literal notranslate"><span class="pre">'00:03:50.54'</span></code>.</p></li>
 </ul>
-<p>Also, you can usually provide negative times, indicating a time from the end of the clip. For example, <code class="docutils literal notranslate"><span class="pre">clip.with_subclip(-20,</span> <span class="pre">-10)</span></code> cuts the clip between 20s before the end and 10s before the end.</p>
+<p>Also, you can usually provide negative times, indicating a time from the end of the clip. For example, <code class="docutils literal notranslate"><span class="pre">clip.subclipped(-20,</span> <span class="pre">-10)</span></code> cuts the clip between 20s before the end and 10s before the end.</p>
 </section>
 </section>
 <section id="modify-a-clip-using-the-with-methods">

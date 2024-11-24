@@ -399,7 +399,7 @@ document.write(`
 
 <span class="sd">    See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.</span>
 
-<span class="sd">    An AudioClip is a Clip with a ``make_frame``  attribute of</span>
+<span class="sd">    An AudioClip is a Clip with a ``frame_function``  attribute of</span>
 <span class="sd">    the form `` t -&gt; [ f_t ]`` for mono sound and</span>
 <span class="sd">    ``t-&gt; [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).</span>
 <span class="sd">    The `f_t` are floats between -1 and 1. These bounds can be</span>
@@ -409,7 +409,7 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 
-<span class="sd">    make_frame</span>
+<span class="sd">    frame_function</span>
 <span class="sd">      A function `t-&gt; frame at time t`. The frame does not mean much</span>
 <span class="sd">      for a sound, it is just a float. What &#39;makes&#39; the sound are</span>
 <span class="sd">      the variations of that float in the time.</span>
@@ -426,28 +426,28 @@ document.write(`
 
 <span class="sd">    &gt;&gt;&gt; # Plays the note A in mono (a sine wave of frequency 440 Hz)</span>
 <span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; make_frame = lambda t: np.sin(440 * 2 * np.pi * t)</span>
-<span class="sd">    &gt;&gt;&gt; clip = AudioClip(make_frame, duration=5, fps=44100)</span>
+<span class="sd">    &gt;&gt;&gt; frame_function = lambda t: np.sin(440 * 2 * np.pi * t)</span>
+<span class="sd">    &gt;&gt;&gt; clip = AudioClip(frame_function, duration=5, fps=44100)</span>
 <span class="sd">    &gt;&gt;&gt; clip.preview()</span>
 
 <span class="sd">    &gt;&gt;&gt; # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)</span>
-<span class="sd">    &gt;&gt;&gt; make_frame = lambda t: np.array([</span>
+<span class="sd">    &gt;&gt;&gt; frame_function = lambda t: np.array([</span>
 <span class="sd">    ...     np.sin(440 * 2 * np.pi * t),</span>
 <span class="sd">    ...     np.sin(880 * 2 * np.pi * t)</span>
 <span class="sd">    ... ]).T.copy(order=&quot;C&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; clip = AudioClip(make_frame, duration=3, fps=44100)</span>
+<span class="sd">    &gt;&gt;&gt; clip = AudioClip(frame_function, duration=3, fps=44100)</span>
 <span class="sd">    &gt;&gt;&gt; clip.preview()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
 
-        <span class="k">if</span> <span class="n">make_frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
+        <span class="k">if</span> <span class="n">frame_function</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">frame_function</span>
             <span class="n">frame0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">frame0</span><span class="p">,</span> <span class="s2">&quot;__iter__&quot;</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">frame0</span><span class="p">))</span>
@@ -712,7 +712,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="n">fps</span>
 
-        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Complicated, but must be able to handle the case where t</span>
 <span class="sd">            is a list of the form sin(t).</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -729,7 +729,7 @@ document.write(`
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">frame_function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span></div>
 
 
@@ -777,7 +777,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ending times for all clips in the composition.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CompositeAudioClip.make_frame"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip.make_frame">[docs]</a>    <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeAudioClip.frame_function"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip.frame_function">[docs]</a>    <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Renders a frame for the composition for the time ``t``.&quot;&quot;&quot;</span>
         <span class="n">played_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
 

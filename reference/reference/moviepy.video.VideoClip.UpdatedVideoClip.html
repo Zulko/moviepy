@@ -546,12 +546,12 @@ document.write(`
 <dl class="py class">
 <dt class="sig sig-object py" id="moviepy.video.VideoClip.UpdatedVideoClip">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.video.VideoClip.</span></span><span class="sig-name descname"><span class="pre">UpdatedVideoClip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">world</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#UpdatedVideoClip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.UpdatedVideoClip" title="Permalink to this definition">#</a></dt>
-<dd><p>Class of clips whose make_frame requires some objects to
+<dd><p>Class of clips whose frame_function requires some objects to
 be updated. Particularly practical in science where some
 algorithm needs to make some steps before a new frame can
 be generated.</p>
-<p>UpdatedVideoClips have the following make_frame:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<p>UpdatedVideoClips have the following frame_function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">clip_t</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
 <span class="gp">&gt;&gt;&gt; </span>        <span class="n">world</span><span class="o">.</span><span class="n">update</span><span class="p">()</span> <span class="c1"># updates, and increases world.clip_t</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">world</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>

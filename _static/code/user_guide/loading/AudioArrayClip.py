@@ -12,7 +12,7 @@ note_size = int(note_duration * sample_rate)
 total_size = note_size * len(notes)
 
 
-def make_frame(t, note_frequency):
+def frame_function(t, note_frequency):
     return np.sin(note_frequency * 2 * np.pi * t)
 
 
@@ -24,7 +24,7 @@ audio_array = np.zeros((total_size, 2))
 i = 0
 for note, frequency in notes.items():
     for _ in range(note_size):
-        audio_array[i][0] = make_frame(times[i], frequency)
+        audio_array[i][0] = frame_function(times[i], frequency)
         i += 1
 
 # Create an AudioArrayClip from the audio samples

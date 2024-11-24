@@ -394,7 +394,7 @@ document.write(`
 <div class="viewcode-block" id="Blink.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Blink.html#moviepy.video.fx.Blink.Blink.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_add_mask</span><span class="p">()</span>
+            <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_mask</span><span class="p">()</span>
 
         <span class="n">duration</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration_on</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration_off</span>
         <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>

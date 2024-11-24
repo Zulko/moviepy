@@ -63,7 +63,7 @@ This is a very classic task, so let's turn our main clip into multiple subclips:
    :lines: 13-25
 
 
-Here, we use the ``with_subclip`` method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format ``HH:MM:SS.µS``) for each scene.
+Here, we use the ``subclipped`` method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format ``HH:MM:SS.µS``) for each scene.
 The extracted clips are stored in their respective variables (``intro_clip``, ``bird_clip``, etc.).
 
 Step 3: Take a First Look with Preview
@@ -93,13 +93,13 @@ Step 4: Modify a Clip by Cutting Out a Part of It
 --------------------------------------------------
 
 After previewing the clips, we notice that the rodents' scene is a bit long. Let's modify the clip by removing a specific part. It would be nice to remove parts of the scene that we don't need. This is also quite a common task in video-editing.
-To do so, we are going to use the ``with_cutout`` method to remove a portion of the clip between ``00:06:00`` to ``00:10:00``.
+To do so, we are going to use the ``with_section_cut_out`` method to remove a portion of the clip between ``00:06:00`` to ``00:10:00``.
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
    :language: python
    :lines: 41-54
 
-In that particular case, we have used the ``with_cutout``, but this is only one of the many clip manipulation methods starting with ``with_*``. We will see a few others
+In that particular case, we have used the ``with_section_cut_out``, but this is only one of the many clip manipulation methods starting with ``with_*``. We will see a few others
 in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see :ref:`reference_manual`.
 
 .. note::

@@ -433,10 +433,10 @@ document.write(`
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Load file example.mp4 and extract only the subclip from 00:00:10 to 00:00:20</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
 
 <span class="c1"># Reduce the audio volume to 80% of his original volume</span>
-<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
 
 <span class="c1"># Generate a text clip. You can customize the font, color, etc.</span>
 <span class="n">txt_clip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>

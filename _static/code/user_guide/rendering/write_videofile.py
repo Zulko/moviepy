@@ -1,7 +1,7 @@
 from moviepy import *
 
 # We load all the clips we want to compose
-background = VideoFileClip("long_examples/example2.mp4").with_subclip(0, 10)
+background = VideoFileClip("long_examples/example2.mp4").subclipped(0, 10)
 title = TextClip(
     "./example.ttf",
     text="Big Buck Bunny",

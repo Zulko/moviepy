@@ -2,7 +2,7 @@ from moviepy import *
 
 # We load all the clips we want to compose
 clip1 = VideoFileClip("example.mp4")
-clip2 = VideoFileClip("example2.mp4").with_subclip(0, 1)
+clip2 = VideoFileClip("example2.mp4").subclipped(0, 1)
 clip3 = VideoFileClip("example3.mp4")
 
 # We want to stop clip1 after 1s

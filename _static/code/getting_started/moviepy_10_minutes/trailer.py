@@ -16,13 +16,13 @@ video = VideoFileClip("./resources/bbb.mp4")
 # We extract the scenes we want to use
 
 # First the characters
-intro_clip = video.with_subclip(1, 11)
-bird_clip = video.with_subclip(16, 20)
-bunny_clip = video.with_subclip(37, 55)
-rodents_clip = video.with_subclip(
+intro_clip = video.subclipped(1, 11)
+bird_clip = video.subclipped(16, 20)
+bunny_clip = video.subclipped(37, 55)
+rodents_clip = video.subclipped(
     "00:03:34.75", "00:03:56"
 )  # we can also use string notation with format HH:MM:SS.uS
-rambo_clip = video.with_subclip("04:41.5", "04:44.70")
+rambo_clip = video.subclipped("04:41.5", "04:44.70")
 
 
 #####################
@@ -43,8 +43,8 @@ rambo_clip.preview(fps=20)
 ##############################
 # Well, looking at the rodent scene it is a bit long isn't?
 # Let's see how we modify the clip with one of the many clip manipulation method starting by with_*
-# in that case by removing of the clip the part between 00:06:00 to 00:10:00 of the clip, using with_cutout
-rodents_clip = rodents_clip.with_cutout(start_time=4, end_time=10)
+# in that case by removing of the clip the part between 00:06:00 to 00:10:00 of the clip, using with_section_cut_out
+rodents_clip = rodents_clip.with_section_cut_out(start_time=4, end_time=10)
 
 # Note: You may have noticed that we have reassign rodents_clip, this is because all with_* methods return a modified *copy* of the
 # original clip instead of modifying it directly. In MoviePy any function starting by with_* is out-place instead of in-place
@@ -210,8 +210,8 @@ rambo_clip = rambo_clip.with_effects(
 
 # Effects are not only for transition, they can also change a clip timing or apparence
 # To show that, lets also modify the Rambo-like part of our clip to be in slow motion
-# PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_multiply_speed
-# the others are with_multiply_volume, resized, croped and rotated
+# PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled
+# the others are with_volume_scaled, resized, croped and rotated
 rambo_clip = rambo_clip.with_effects([vfx.MultiplySpeed(0.5)])
 
 # Because we modified timing of rambo_clip with our MultiplySpeed effect, we must re-assign the following clips timing

@@ -6,7 +6,7 @@ myclip = VideoFileClip("example.mp4")
 print("Clip duration: {}".format(myclip.duration))
 print("Clip fps: {}".format(myclip.fps))
 
-myclip = myclip.with_subclip(0.5, 2)  # Cutting the clip between 0.5 and 2 secs.
+myclip = myclip.subclipped(0.5, 2)  # Cutting the clip between 0.5 and 2 secs.
 print("Clip duration: {}".format(myclip.duration))  # Cuting will update duration
 print("Clip fps: {}".format(myclip.fps))  # and keep fps
 

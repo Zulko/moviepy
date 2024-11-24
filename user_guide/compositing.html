@@ -417,7 +417,7 @@ So most of the time you don’t need to worry about mixing the audio and masks.<
 
 <span class="c1"># We load all the clips we want to concatenate</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example3.mp4&quot;</span><span class="p">)</span>
 
 <span class="c1"># We concatenate them and write the result</span>
@@ -469,7 +469,7 @@ For example, internally, both <a class="reference internal" href="../reference/r
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example3.mp4&quot;</span><span class="p">)</span>
 
 <span class="c1"># We concatenate them and write theme stacked on top of each other, with clip3 over clip2 over clip1</span>
@@ -495,7 +495,7 @@ For that, we will need to change when some clip start et stop to play, as well a
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example3.mp4&quot;</span><span class="p">)</span>
 
 <span class="c1"># We want to stop clip1 after 1s</span>
@@ -517,7 +517,7 @@ For that, we will need to change when some clip start et stop to play, as well a
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>When working with timing of your clip, you will frequently want to keep only parts of the original clip.
-To do so, you should take a look at <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_subclip" title="moviepy.Clip.Clip.with_subclip"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_subclip()</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_cutout" title="moviepy.Clip.Clip.with_cutout"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_cutout()</span></code></a>.</p>
+To do so, you should take a look at <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.subclipped" title="moviepy.Clip.Clip.subclipped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">subclipped()</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_section_cut_out" title="moviepy.Clip.Clip.with_section_cut_out"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_section_cut_out()</span></code></a>.</p>
 </div>
 </section>
 <section id="positioning-clips">
@@ -529,7 +529,7 @@ in many ways :</p>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example3.mp4&quot;</span><span class="p">)</span>
 
 <span class="c1"># We want to stop clip1 after 1s</span>
@@ -561,7 +561,7 @@ in many ways :</p>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># Clip2 will be on top of clip1 for 1s</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -597,7 +597,7 @@ That means you can actually use any of the already existing effects, and use the
 <span class="c1"># We will play aclip1, then ontop of it aclip2 after 5s, and the aclip3 on top of both after 9s</span>
 <span class="n">compo</span> <span class="o">=</span> <span class="n">CompositeAudioClip</span><span class="p">(</span>
     <span class="p">[</span>
-        <span class="n">aclip1</span><span class="o">.</span><span class="n">with_multiply_volume</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+        <span class="n">aclip1</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
         <span class="n">aclip2</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>  <span class="c1"># start at t=5s</span>
         <span class="n">aclip3</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="mi">9</span><span class="p">),</span>
     <span class="p">]</span>

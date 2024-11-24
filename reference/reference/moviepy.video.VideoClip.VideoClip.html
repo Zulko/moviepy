@@ -545,7 +545,7 @@ document.write(`
 <h1>moviepy.video.VideoClip.VideoClip<a class="headerlink" href="#moviepy-video-videoclip-videoclip" title="Permalink to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.video.VideoClip.</span></span><span class="sig-name descname"><span class="pre">VideoClip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">make_frame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_constant_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.video.VideoClip.</span></span><span class="sig-name descname"><span class="pre">VideoClip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_constant_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip" title="Permalink to this definition">#</a></dt>
 <dd><p>Base class for video clips.</p>
 <p>See <code class="docutils literal notranslate"><span class="pre">VideoFileClip</span></code>, <code class="docutils literal notranslate"><span class="pre">ImageClip</span></code> etc. for more user-friendly classes.</p>
 <dl class="field-list simple">
@@ -578,8 +578,8 @@ to True</p></li>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.make_frame">
-<span class="sig-name descname"><span class="pre">make_frame</span></span><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.make_frame" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.frame_function">
+<span class="sig-name descname"><span class="pre">frame_function</span></span><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.frame_function" title="Permalink to this definition">#</a></dt>
 <dd><p>A function <code class="docutils literal notranslate"><span class="pre">t-&gt;</span> <span class="pre">frame</span> <span class="pre">at</span> <span class="pre">time</span> <span class="pre">t</span></code> where <code class="docutils literal notranslate"><span class="pre">frame</span></code> is a
 w*h*3 RGB array.</p>
 </dd></dl>
@@ -643,7 +643,7 @@ by the clip’s <code class="docutils literal notranslate"><span class="pre">pos
 be shallow copies of the clip’s mask and audio if they exist.</p>
 <p>This method is intensively used to produce new clips every time
 there is an outplace transformation of the clip (clip.resize,
-clip.with_subclip, etc.)</p>
+clip.subclipped, etc.)</p>
 <p>Acts like a deepcopy except for the fact that readers and other
 possible unpickleables objects are not copied.</p>
 </dd></dl>
@@ -863,17 +863,6 @@ in (hour, min, sec), or as a string: ‘01:03:05.35’.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_add_mask">
-<span class="sig-name descname"><span class="pre">with_add_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_add_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_add_mask" title="Permalink to this definition">#</a></dt>
-<dd><p>Add a mask VideoClip to the VideoClip.</p>
-<p>Returns a copy of the clip with a completely opaque mask
-(made of ones). This makes computations slower compared to
-having a None mask but can be useful in many cases. Choose</p>
-<p>Set <code class="docutils literal notranslate"><span class="pre">constant_size</span></code> to  <cite>False</cite> for clips with moving
-image size.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_audio">
 <span class="sig-name descname"><span class="pre">with_audio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">audioclip</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_audio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_audio" title="Permalink to this definition">#</a></dt>
 <dd><p>Attach an AudioClip to the VideoClip.</p>
@@ -882,32 +871,8 @@ attribute set to <code class="docutils literal notranslate"><span class="pre">au
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_layer">
-<span class="sig-name descname"><span class="pre">with_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_layer" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the clip’s layer in compositions. Clips with a greater <code class="docutils literal notranslate"><span class="pre">layer</span></code>
-attribute will be displayed on top of others.</p>
-<p>Note: Only has effect when the clip is used in a CompositeVideoClip.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_make_frame">
-<span class="sig-name descname"><span class="pre">with_make_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mf</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_make_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_make_frame" title="Permalink to this definition">#</a></dt>
-<dd><p>Change the clip’s <code class="docutils literal notranslate"><span class="pre">get_frame</span></code>.</p>
-<p>Returns a copy of the VideoClip instance, with the make_frame
-attribute set to <cite>mf</cite>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_mask">
-<span class="sig-name descname"><span class="pre">with_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_mask" title="Permalink to this definition">#</a></dt>
-<dd><p>Set the clip’s mask.</p>
-<p>Returns a copy of the VideoClip with the mask attribute set to
-<code class="docutils literal notranslate"><span class="pre">mask</span></code>, which must be a greyscale (values in 0-1) VideoClip.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_on_color">
-<span class="sig-name descname"><span class="pre">with_on_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col_opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_on_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_on_color" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_background_color">
+<span class="sig-name descname"><span class="pre">with_background_color</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_background_color"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_background_color" title="Permalink to this definition">#</a></dt>
 <dd><p>Place the clip on a colored background.</p>
 <p>Returns a clip made of the current clip overlaid on a color
 clip of a possibly bigger size. Can serve to flatten transparent
@@ -919,11 +884,42 @@ clips.</p>
 By default it will be the size of the current clip.</p></li>
 <li><p><strong>color</strong> – Background color of the final clip ([R,G,B]).</p></li>
 <li><p><strong>pos</strong> – Position of the clip in the final clip. ‘center’ is the default</p></li>
-<li><p><strong>col_opacity</strong> – Parameter in 0..1 indicating the opacity of the colored
+<li><p><strong>opacity</strong> – Parameter in 0..1 indicating the opacity of the colored
 background.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_effects_on_subclip">
+<span class="sig-name descname"><span class="pre">with_effects_on_subclip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><span class="pre">Effect</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_effects_on_subclip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_effects_on_subclip" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply a transformation to a part of the clip.</p>
+<p>Returns a new clip in which the function <code class="docutils literal notranslate"><span class="pre">fun</span></code> (clip-&gt;clip)
+has been applied to the subclip between times <cite>start_time</cite> and <cite>end_time</cite>
+(in seconds).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scene between times t=3s and t=6s in ``clip`` will be</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># be played twice slower in ``new_clip``</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_sub_effect</span><span class="p">(</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_layer_index">
+<span class="sig-name descname"><span class="pre">with_layer_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_layer_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_layer_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the clip’s layer in compositions. Clips with a greater <code class="docutils literal notranslate"><span class="pre">layer</span></code>
+attribute will be displayed on top of others.</p>
+<p>Note: Only has effect when the clip is used in a CompositeVideoClip.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_mask">
+<span class="sig-name descname"><span class="pre">with_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><span class="pre">VideoClip</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Set the clip’s mask.</p>
+<p>Returns a copy of the VideoClip with the mask attribute set to
+<code class="docutils literal notranslate"><span class="pre">mask</span></code>, which must be a greyscale (values in 0-1) VideoClip.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -959,18 +955,11 @@ of several types.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_sub_effects">
-<span class="sig-name descname"><span class="pre">with_sub_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><span class="pre">Effect</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_sub_effects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_sub_effects" title="Permalink to this definition">#</a></dt>
-<dd><p>Apply a transformation to a part of the clip.</p>
-<p>Returns a new clip in which the function <code class="docutils literal notranslate"><span class="pre">fun</span></code> (clip-&gt;clip)
-has been applied to the subclip between times <cite>start_time</cite> and <cite>end_time</cite>
-(in seconds).</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scene between times t=3s and t=6s in ``clip`` will be</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># be played twice slower in ``new_clip``</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_sub_effect</span><span class="p">(</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-</pre></div>
-</div>
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.with_updated_frame_function">
+<span class="sig-name descname"><span class="pre">with_updated_frame_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame_function</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.with_updated_frame_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.with_updated_frame_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Change the clip’s <code class="docutils literal notranslate"><span class="pre">get_frame</span></code>.</p>
+<p>Returns a copy of the VideoClip instance, with the frame_function
+attribute set to <cite>mf</cite>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -978,6 +967,12 @@ has been applied to the subclip between times <cite>start_time</cite> and <cite>
 <span class="sig-name descname"><span class="pre">without_audio</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.without_audio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.without_audio" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove the clip’s audio.</p>
 <p>Return a copy of the clip with audio set to None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.without_mask">
+<span class="sig-name descname"><span class="pre">without_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.without_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.without_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Remove the clip’s mask.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1110,7 +1105,7 @@ output file in them.</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_new_video.mp4&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
@@ -1165,7 +1160,7 @@ output file in them.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip"><code class="docutils literal notranslate"><span class="pre">VideoClip</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.size"><code class="docutils literal notranslate"><span class="pre">VideoClip.size</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.is_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.is_mask</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.make_frame"><code class="docutils literal notranslate"><span class="pre">VideoClip.make_frame</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.frame_function"><code class="docutils literal notranslate"><span class="pre">VideoClip.frame_function</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.mask</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.audio"><code class="docutils literal notranslate"><span class="pre">VideoClip.audio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.pos"><code class="docutils literal notranslate"><span class="pre">VideoClip.pos</span></code></a></li>
@@ -1189,16 +1184,16 @@ output file in them.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.to_RGB"><code class="docutils literal notranslate"><span class="pre">VideoClip.to_RGB()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.to_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.to_mask()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.w"><code class="docutils literal notranslate"><span class="pre">VideoClip.w</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_add_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_add_mask()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_audio"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_audio()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_layer"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_layer()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_make_frame"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_make_frame()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_background_color"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_background_color()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_effects_on_subclip"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_effects_on_subclip()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_layer_index"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_layer_index()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_mask()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_on_color"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_on_color()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_opacity"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_opacity()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_position"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_position()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_sub_effects"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_sub_effects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.with_updated_frame_function"><code class="docutils literal notranslate"><span class="pre">VideoClip.with_updated_frame_function()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.without_audio"><code class="docutils literal notranslate"><span class="pre">VideoClip.without_audio()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.without_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.without_mask()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.write_gif"><code class="docutils literal notranslate"><span class="pre">VideoClip.write_gif()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.write_images_sequence"><code class="docutils literal notranslate"><span class="pre">VideoClip.write_images_sequence()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.write_videofile"><code class="docutils literal notranslate"><span class="pre">VideoClip.write_videofile()</span></code></a></li>

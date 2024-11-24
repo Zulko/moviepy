@@ -396,7 +396,7 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_add_mask</span><span class="p">()</span>
+            <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_mask</span><span class="p">()</span>
 
         <span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
         <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">FadeIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)])</span>

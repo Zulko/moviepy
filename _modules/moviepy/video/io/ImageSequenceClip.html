@@ -498,7 +498,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">last_index</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_image</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_index</span><span class="p">:</span>
@@ -512,7 +512,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_index</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_image</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="k">def</span> <span class="nf">mask_make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_index</span><span class="p">:</span>
                         <span class="n">frame</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">])[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span>
@@ -521,27 +521,27 @@ document.write(`
 
                     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_image</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">mask_make_frame</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">mask_make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">mask_frame_function</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">mask_frame_function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">with_mask</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-                <span class="k">def</span> <span class="nf">mask_make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">mask_make_frame</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">mask_make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">mask_frame_function</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">mask_frame_function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">make_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">frame_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">frame_function</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 </pre></div>
 
                 </article>

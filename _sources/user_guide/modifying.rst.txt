@@ -37,7 +37,7 @@ It means that creating a new clip is neither time nor memory hungry, all the com
 
 Time representations in MoviePy
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Many methods that we will see accept duration or timepoint as arguments. For instance :py:meth:`clip.with_subclip(t_start, t_end) <moviepy.Clip.Clip.with_subclip(t_start, t_end)>` which cuts the clip between two timepoints.
+Many methods that we will see accept duration or timepoint as arguments. For instance :py:meth:`clip.subclipped(t_start, t_end) <moviepy.Clip.Clip.subclipped(t_start, t_end)>` which cuts the clip between two timepoints.
 
 MoviePy usually accept duration and timepoint as either : 
 
@@ -45,7 +45,7 @@ MoviePy usually accept duration and timepoint as either :
 * a ``tuple`` with ``(minutes, seconds)`` or ``(hours, minutes, seconds)``.
 * a ``string`` such as ``'00:03:50.54'``.
 
-Also, you can usually provide negative times, indicating a time from the end of the clip. For example, ``clip.with_subclip(-20, -10)`` cuts the clip between 20s before the end and 10s before the end.
+Also, you can usually provide negative times, indicating a time from the end of the clip. For example, ``clip.subclipped(-20, -10)`` cuts the clip between 20s before the end and 10s before the end.
 
 
 Modify a clip using the ``with_*`` methods

@@ -1,6 +1,6 @@
 from moviepy import *
 
-myclip = VideoFileClip("example.mp4").with_subclip(0, 2)
+myclip = VideoFileClip("example.mp4").subclipped(0, 2)
 
 # Here we just save as GIF
 myclip.write_gif("result.gif")

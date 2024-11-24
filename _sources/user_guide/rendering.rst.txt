@@ -24,7 +24,7 @@ The first thing you can do is to preview your clip as a video, by calling method
 .. literalinclude:: /_static/code/user_guide/rendering/preview.py
     :language: python
 
-You will probably frequently want to preview only a small portion of your clip, though ``preview`` do not offer such capabilities, you can easily emulate such behavior by using :py:meth:`~moviepy.Clip.Clip.with_subclip`.
+You will probably frequently want to preview only a small portion of your clip, though ``preview`` do not offer such capabilities, you can easily emulate such behavior by using :py:meth:`~moviepy.Clip.Clip.subclipped`.
 
 .. note::
     It is quite frequent for a clip preview to be out of sync, or to play slower than it should. It means that your computer is not powerful enough to render the clip in real time.

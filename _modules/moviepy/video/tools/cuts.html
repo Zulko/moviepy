@@ -408,7 +408,7 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
 <span class="sd">    &gt;&gt;&gt; from moviepy.video.tools.cuts import find_video_period</span>
 <span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(0, 1).loop(2)</span>
+<span class="sd">    &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(0, 1).loop(2)</span>
 <span class="sd">    &gt;&gt;&gt; round(videotools.find_video_period(clip, fps=80), 6)</span>
 <span class="sd">    1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -614,7 +614,7 @@ document.write(`
 <span class="sd">        ...     clip, distance_threshold=10, max_duration=3,  # will take time</span>
 <span class="sd">        ... )</span>
 <span class="sd">        &gt;&gt;&gt; best = matches.filter(lambda m: m.time_span &gt; 1.5).best()</span>
-<span class="sd">        &gt;&gt;&gt; clip.with_subclip(best.start_time, best.end_time).write_gif(&quot;foo.gif&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; clip.subclipped(best.start_time, best.end_time).write_gif(&quot;foo.gif&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N_pixels</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="mi">3</span>
 
@@ -719,7 +719,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
 <span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
 <span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
 <span class="sd">        &gt;&gt;&gt; mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]</span>
 <span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips(mirror_and_clip)</span>
 <span class="sd">        &gt;&gt;&gt;</span>
@@ -807,7 +807,7 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
 <span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
 <span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).with_subclip(1, 4)</span>
+<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
 <span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])</span>
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
@@ -823,7 +823,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%08d</span><span class="s2">_</span><span class="si">%08d</span><span class="s2">.gif&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gifs_dir</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">start</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">end</span><span class="p">)</span>
-            <span class="n">clip</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+            <span class="n">clip</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="detect_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.detect_scenes.html#moviepy.video.tools.cuts.detect_scenes">[docs]</a><span class="nd">@use_clip_fps_by_default</span>

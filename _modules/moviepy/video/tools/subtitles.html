@@ -486,7 +486,7 @@ document.write(`
 
             <span class="k">return</span> <span class="n">sub</span>
 
-        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">add_textclip_if_none</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]])</span>
 
@@ -494,7 +494,7 @@ document.write(`
             <span class="n">sub</span> <span class="o">=</span> <span class="n">add_textclip_if_none</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">textclips</span><span class="p">[</span><span class="n">sub</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="n">sub</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">]])</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="n">frame_function</span>
         <span class="n">hasmask</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">make_textclip</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mask</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">make_mask_frame</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">hasmask</span> <span class="k">else</span> <span class="kc">None</span>
 

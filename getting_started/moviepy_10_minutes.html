@@ -454,16 +454,16 @@ This is a very classic task, so let’s turn our main clip into multiple subclip
 <span class="c1"># We extract the scenes we want to use</span>
 
 <span class="c1"># First the characters</span>
-<span class="n">intro_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">bird_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-<span class="n">bunny_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
-<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span>
+<span class="n">intro_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+<span class="n">bird_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="n">bunny_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span>
     <span class="s2">&quot;00:03:34.75&quot;</span><span class="p">,</span> <span class="s2">&quot;00:03:56&quot;</span>
 <span class="p">)</span>  <span class="c1"># we can also use string notation with format HH:MM:SS.uS</span>
-<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">with_subclip</span><span class="p">(</span><span class="s2">&quot;04:41.5&quot;</span><span class="p">,</span> <span class="s2">&quot;04:44.70&quot;</span><span class="p">)</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="s2">&quot;04:41.5&quot;</span><span class="p">,</span> <span class="s2">&quot;04:44.70&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here, we use the <code class="docutils literal notranslate"><span class="pre">with_subclip</span></code> method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format <code class="docutils literal notranslate"><span class="pre">HH:MM:SS.µS</span></code>) for each scene.
+<p>Here, we use the <code class="docutils literal notranslate"><span class="pre">subclipped</span></code> method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format <code class="docutils literal notranslate"><span class="pre">HH:MM:SS.µS</span></code>) for each scene.
 The extracted clips are stored in their respective variables (<code class="docutils literal notranslate"><span class="pre">intro_clip</span></code>, <code class="docutils literal notranslate"><span class="pre">bird_clip</span></code>, etc.).</p>
 </section>
 <section id="step-3-take-a-first-look-with-preview">
@@ -499,14 +499,14 @@ In such a case, the best course of action is to set the <code class="docutils li
 <section id="step-4-modify-a-clip-by-cutting-out-a-part-of-it">
 <h2>Step 4: Modify a Clip by Cutting Out a Part of It<a class="headerlink" href="#step-4-modify-a-clip-by-cutting-out-a-part-of-it" title="Permalink to this heading">#</a></h2>
 <p>After previewing the clips, we notice that the rodents’ scene is a bit long. Let’s modify the clip by removing a specific part. It would be nice to remove parts of the scene that we don’t need. This is also quite a common task in video-editing.
-To do so, we are going to use the <code class="docutils literal notranslate"><span class="pre">with_cutout</span></code> method to remove a portion of the clip between <code class="docutils literal notranslate"><span class="pre">00:06:00</span></code> to <code class="docutils literal notranslate"><span class="pre">00:10:00</span></code>.</p>
+To do so, we are going to use the <code class="docutils literal notranslate"><span class="pre">with_section_cut_out</span></code> method to remove a portion of the clip between <code class="docutils literal notranslate"><span class="pre">00:06:00</span></code> to <code class="docutils literal notranslate"><span class="pre">00:10:00</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##############################</span>
 <span class="c1"># CLIPS MODIFICATION CUTTING #</span>
 <span class="c1">##############################</span>
 <span class="c1"># Well, looking at the rodent scene it is a bit long isn&#39;t?</span>
 <span class="c1"># Let&#39;s see how we modify the clip with one of the many clip manipulation method starting by with_*</span>
-<span class="c1"># in that case by removing of the clip the part between 00:06:00 to 00:10:00 of the clip, using with_cutout</span>
-<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">rodents_clip</span><span class="o">.</span><span class="n">with_cutout</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># in that case by removing of the clip the part between 00:06:00 to 00:10:00 of the clip, using with_section_cut_out</span>
+<span class="n">rodents_clip</span> <span class="o">=</span> <span class="n">rodents_clip</span><span class="o">.</span><span class="n">with_section_cut_out</span><span class="p">(</span><span class="n">start_time</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 
 <span class="c1"># Note: You may have noticed that we have reassign rodents_clip, this is because all with_* methods return a modified *copy* of the</span>
 <span class="c1"># original clip instead of modifying it directly. In MoviePy any function starting by with_* is out-place instead of in-place</span>
@@ -516,7 +516,7 @@ To do so, we are going to use the <code class="docutils literal notranslate"><sp
 <span class="n">rodents_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In that particular case, we have used the <code class="docutils literal notranslate"><span class="pre">with_cutout</span></code>, but this is only one of the many clip manipulation methods starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code>. We will see a few others
+<p>In that particular case, we have used the <code class="docutils literal notranslate"><span class="pre">with_section_cut_out</span></code>, but this is only one of the many clip manipulation methods starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code>. We will see a few others
 in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see <a class="reference internal" href="../reference/index.html#reference-manual"><span class="std std-ref">Api Reference</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -743,8 +743,8 @@ Whether you want to add smooth transitions between clips, alter visual appearanc
 
 <span class="c1"># Effects are not only for transition, they can also change a clip timing or apparence</span>
 <span class="c1"># To show that, lets also modify the Rambo-like part of our clip to be in slow motion</span>
-<span class="c1"># PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_multiply_speed</span>
-<span class="c1"># the others are with_multiply_volume, resized, croped and rotated</span>
+<span class="c1"># PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled</span>
+<span class="c1"># the others are with_volume_scaled, resized, croped and rotated</span>
 <span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
 
 <span class="c1"># Because we modified timing of rambo_clip with our MultiplySpeed effect, we must re-assign the following clips timing</span>

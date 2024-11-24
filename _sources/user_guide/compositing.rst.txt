@@ -89,7 +89,7 @@ So, considering that you would want to play ``clip1`` for the first 6 seconds, `
 
 .. note::
     When working with timing of your clip, you will frequently want to keep only parts of the original clip.
-    To do so, you should take a look at :py:meth:`~moviepy.Clip.Clip.with_subclip` and :py:meth:`~moviepy.Clip.Clip.with_cutout`.
+    To do so, you should take a look at :py:meth:`~moviepy.Clip.Clip.subclipped` and :py:meth:`~moviepy.Clip.Clip.with_section_cut_out`.
 
 
 Positioning clips

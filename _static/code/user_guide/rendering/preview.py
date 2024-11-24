@@ -1,6 +1,6 @@
 from moviepy import *
 
-myclip = VideoFileClip("./example.mp4").with_subclip(0, 1)  # Keep only 0 to 1 sec
+myclip = VideoFileClip("./example.mp4").subclipped(0, 1)  # Keep only 0 to 1 sec
 
 # We preview our clip as a video, inheriting FPS and audio of the original clip
 myclip.preview()
