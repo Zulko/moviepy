@@ -83,7 +83,6 @@ class VideoFileClip(VideoClip):
 
     If copies are made, and close() is called on one, it may cause methods on
     the other copies to fail.
-
     """
 
     @convert_path_to_string("filename")

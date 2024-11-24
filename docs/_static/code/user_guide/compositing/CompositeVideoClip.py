@@ -4,9 +4,9 @@ CompositeVideoClip."""
 from moviepy import VideoFileClip, CompositeVideoClip
 
 # We load all the clips we want to compose
-clip1 = VideoFileClip("some_background.mp4")
-clip2 = VideoFileClip("some_video.mp4").subclipped(0, 1)
-clip3 = VideoFileClip("some_moving_text.mp4")
+clip1 = VideoFileClip("example.mp4")
+clip2 = VideoFileClip("example2.mp4").subclipped(0, 1)
+clip3 = VideoFileClip("example.mp4")
 
 # We concatenate them and write theme stacked on top of each other,
 # with clip3 over clip2 over clip1

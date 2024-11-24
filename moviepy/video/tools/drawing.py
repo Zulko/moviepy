@@ -105,7 +105,9 @@ def color_gradient(
         color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black
         #[[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]
         # from red to green
-        color_gradient((10, 1), (0, 0), p2=(10, 0), color_1=(255, 0, 0), color_2=(0, 255, 0))
+        color_gradient(
+            (10, 1), (0, 0), p2=(10, 0), color_1=(255, 0, 0), color_2=(0, 255, 0)
+        )
         # [[[  0.  255.    0. ]
         #   [ 25.5 229.5   0. ]
         #   [ 51.  204.    0. ]

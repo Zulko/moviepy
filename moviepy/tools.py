@@ -73,7 +73,7 @@ def convert_to_seconds(time):
         convert_to_seconds('1:33,5')    # only minutes and secs
         99.5
         convert_to_seconds('33.5')      # only secs
-    33.5
+        33.5
     """
     factors = (1, 60, 3600)
 
@@ -103,12 +103,13 @@ def deprecated_version_of(func, old_name):
     Examples
     --------
 
-    >>> # The badly named method 'to_file' is replaced by 'write_file'
-    >>> class Clip:
-    >>>    def write_file(self, some args):
-    >>>        # blablabla
-    >>>
-    >>> Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
+    .. code:: python
+
+        # The badly named method 'to_file' is replaced by 'write_file'
+        class Clip:
+            def write_file(self, some args):
+                # blablabla
+        Clip.to_file = deprecated_version_of(Clip.write_file, 'to_file')
     """
     # Detect new name of func
     new_name = func.__name__

@@ -29,7 +29,7 @@ class MasksOr(Effect):
         mask = ColorClip(color=(0, 255, 0), size=(1, 1))     # green
         masked_clip = clip.with_effects([vfx.MasksOr(mask)]) # yellow
         masked_clip.get_frame(0)
-    [[[255 255   0]]]
+        [[[255 255   0]]]
     """
 
     other_clip: Union[Clip, np.ndarray]

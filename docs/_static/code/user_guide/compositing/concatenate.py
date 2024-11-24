@@ -3,9 +3,9 @@
 from moviepy import VideoFileClip, concatenate_videoclips
 
 # We load all the clips we want to concatenate
-clip1 = VideoFileClip("first_scene.mp4")
-clip2 = VideoFileClip("second_scene.mp4").subclipped(0, 1)
-clip3 = VideoFileClip("third_scene.mp4")
+clip1 = VideoFileClip("example.mp4")
+clip2 = VideoFileClip("example2.mp4").subclipped(0, 1)
+clip3 = VideoFileClip("example3.mp4")
 
 # We concatenate them and write the result
 final_clip = concatenate_videoclips([clip1, clip2, clip3])

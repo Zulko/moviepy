@@ -35,7 +35,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
 
         clip = VideoFileClip("media/chaplin.mp4").subclipped(0, 1).loop(2)
         round(videotools.find_video_period(clip, fps=80), 6)
-    1
+        1
     """
 
     def frame(t):
