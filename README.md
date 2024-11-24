@@ -6,13 +6,11 @@
 > [!NOTE]
 > MoviePy recently upgraded to v2.0, introducing major breaking changes. You can consult the last v1 docs [here](https://zulko.github.io/moviepy/v1.0.3/) but beware that v1 is no longer maintained. For more info on how to update your code from v1 to v2, see [this guide](https://zulko.github.io/moviepy/getting_started/updating_to_v2.html).
 
-MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a
-Python library for video editing: cuts, concatenations, title
-insertions, video compositing (a.k.a. non-linear editing), video
-processing, and creation of custom effects.
+MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a Python library for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects.
 
-MoviePy can read and write all the most common audio and video formats,
-including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
+Under the hood, MoviePy imports media (video frames, images, sounds) and converts them into Python objects (numpy arrays) so that every pixel becomes accessible from a Python script. This makes it possible to apply any video or audio transformation that the Python language can express, and defining a new effects just takes a few lines of code (see the [built-in effects]() for examples). The library also provides utilities to easily mix clips together (concatenations, playing clips side by side or on top of each other with transparency, etc.). The final clip is then encoded back into mp4/webm/gif/etc. This makes MoviePy very flexible albeit slower than using ffmpeg directly due to heavier data import/export operations.  
+
+MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
 
 # Example
 
@@ -49,9 +47,13 @@ final_video.write_videofile("result.mp4")
 
 Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
 
+# How Moviepy works
+
+
+
 # Documentation
 
-The online documentation is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
+The online documentation ([here](https://zulko.github.io/moviepy/)) is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
 
 # Contribute
 
