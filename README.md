@@ -8,9 +8,15 @@
 
 MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a Python library for video editing: cuts, concatenations, title insertions, video compositing (a.k.a. non-linear editing), video processing, and creation of custom effects.
 
-Under the hood, MoviePy imports media (video frames, images, sounds) and converts them into Python objects (numpy arrays) so that every pixel becomes accessible from a Python script. This makes it possible to apply any video or audio transformation that the Python language can express, and defining a new effects just takes a few lines of code (see the [built-in effects]() for examples). The library also provides utilities to easily mix clips together (concatenations, playing clips side by side or on top of each other with transparency, etc.). The final clip is then encoded back into mp4/webm/gif/etc. This makes MoviePy very flexible albeit slower than using ffmpeg directly due to heavier data import/export operations.  
-
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
+
+# How MoviePy works
+
+Under the hood, MoviePy imports media (video frames, images, sounds) and converts them into Python objects (numpy arrays) so that every pixel becomes accessible, and video or audio effects can be defined in just a few lines of code (see the [built-in effects]() for examples).
+
+The library also provides ways to mix clips together (concatenations, playing clips side by side or on top of each other with transparency, etc.). The final clip is then encoded back into mp4/webm/gif/etc.
+
+This makes MoviePy very flexible and approachable, albeit slower than using ffmpeg directly due to heavier data import/export operations.  
 
 # Example
 
@@ -46,10 +52,6 @@ final_video.write_videofile("result.mp4")
 # Installation
 
 Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
-
-# How Moviepy works
-
-
 
 # Documentation
 
