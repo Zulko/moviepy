@@ -16,22 +16,23 @@ class CreditsClip(TextClip):
 
     creditfile
       A string or path like object pointing to a text file
-      whose content must be as follows: ::
+      whose content must be as follows:
 
-        # This is a comment
-        # The next line says : leave 4 blank lines
-        .blank 4
+      ..code:: python
 
-        ..Executive Story Editor
-        MARCEL DURAND
+          # This is a comment
+          # The next line says : leave 4 blank lines
+          .blank 4
 
-        ..Associate Producers
-        MARTIN MARCEL
-        DIDIER MARTIN
+          ..Executive Story Editor
+          MARCEL DURAND
 
-        ..Music Supervisor
-        JEAN DIDIER
+          ..Associate Producers
+          MARTIN MARCEL
+          DIDIER MARTIN
 
+          ..Music Supervisor
+          JEAN DIDIER
 
     width
       Total width of the credits text in pixels

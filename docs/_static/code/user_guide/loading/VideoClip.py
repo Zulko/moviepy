@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
 import numpy as np
-from moviepy import *
+from moviepy import VideoClip
 import math
 
 WIDTH, HEIGHT = (128, 128)
@@ -24,9 +24,7 @@ def frame_function(t):
     return np.array(img)  # returns a 8-bit RGB array
 
 
-clip = VideoClip(
-    frame_function, duration=2
-)  # we define a 2s duration for the clip to be able to render it later
-clip.write_gif(
-    "circle.gif", fps=15
-)  # we must set a framerate because VideoClip have no framerate by default
+# we define a 2s duration for the clip to be able to render it later
+clip = VideoClip(frame_function, duration=2)
+# we must set a framerate because VideoClip have no framerate by default
+clip.write_gif("circle.gif", fps=15)

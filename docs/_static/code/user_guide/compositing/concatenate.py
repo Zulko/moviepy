@@ -1,3 +1,5 @@
+"""Let's concatenate (play one after the other) three video clips."""
+
 from moviepy import VideoFileClip, concatenate_videoclips
 
 # We load all the clips we want to concatenate

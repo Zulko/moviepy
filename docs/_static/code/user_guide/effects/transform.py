@@ -1,5 +1,6 @@
+"""Let's create a scolling video effect from scratch."""
+
 from moviepy import VideoFileClip
-import math
 
 my_clip = VideoFileClip("example.mp4")
 

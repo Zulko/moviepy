@@ -40,15 +40,17 @@ class SubtitlesClip(VideoClip):
     Examples
     --------
 
-    >>> from moviepy.video.tools.subtitles import SubtitlesClip
-    >>> from moviepy.video.io.VideoFileClip import VideoFileClip
-    >>> generator = lambda text: TextClip(text, font='Georgia-Regular',
-    ...                                   font_size=24, color='white')
-    >>> sub = SubtitlesClip("subtitles.srt", generator)
-    >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
-    >>> myvideo = VideoFileClip("myvideo.avi")
-    >>> final = CompositeVideoClip([clip, subtitles])
-    >>> final.write_videofile("final.mp4", fps=myvideo.fps)
+    .. code:: python
+
+        from moviepy.video.tools.subtitles import SubtitlesClip
+        from moviepy.video.io.VideoFileClip import VideoFileClip
+        generator = lambda text: TextClip(text, font='Georgia-Regular',
+                                        font_size=24, color='white')
+        sub = SubtitlesClip("subtitles.srt", generator)
+        sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
+        myvideo = VideoFileClip("myvideo.avi")
+        final = CompositeVideoClip([clip, subtitles])
+        final.write_videofile("final.mp4", fps=myvideo.fps)
 
     """
 

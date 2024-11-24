@@ -7,13 +7,14 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
-    """
-    A video clip originating from a movie file. For instance: ::
+    """A video clip originating from a movie file. For instance:
 
-        >>> clip = VideoFileClip("myHolidays.mp4")
-        >>> clip.close()
-        >>> with VideoFileClip("myMaskVideo.avi") as clip2:
-        >>>    pass  # Implicit close called by context manager.
+    .. code:: python
+
+        clip = VideoFileClip("myHolidays.mp4")
+        clip.close()
+        with VideoFileClip("myMaskVideo.avi") as clip2:
+            pass  # Implicit close called by context manager.
 
 
     Parameters
@@ -81,7 +82,6 @@ class VideoFileClip(VideoClip):
 
     If copies are made, and close() is called on one, it may cause methods on
     the other copies to fail.
-
     """
 
     @convert_path_to_string("filename")

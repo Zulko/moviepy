@@ -27,19 +27,21 @@ class SlideIn(Effect):
     Examples
     --------
 
-    >>> from moviepy import *
-    >>>
-    >>> clips = [... make a list of clips]
-    >>> slided_clips = [
-    ...     CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, "left")])])
-    ...     for clip in clips
-    ... ]
-    >>> final_clip = concatenate_videoclips(slided_clips, padding=-1)
-    >>>
-    >>> clip = ColorClip(
-    ...     color=(255, 0, 0), duration=1, size=(300, 300)
-    ... ).with_fps(60)
-    >>> final_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, "right")])])
+    .. code:: python
+
+        from moviepy import *
+
+        clips = [... make a list of clips]
+        slided_clips = [
+            CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, "left")])])
+            for clip in clips
+        ]
+        final_clip = concatenate_videoclips(slided_clips, padding=-1)
+
+        clip = ColorClip(
+            color=(255, 0, 0), duration=1, size=(300, 300)
+        ).with_fps(60)
+        final_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, "right")])])
     """
 
     duration: float

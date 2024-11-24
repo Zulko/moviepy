@@ -170,11 +170,13 @@ class Clip:
         Examples
         --------
 
-        >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
-        >>>
-        >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda t: 3-t)
+        .. code:: python
+
+            # plays the clip (and its mask and sound) twice faster
+            new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
+
+            # plays the clip starting at t=3, and backwards:
+            new_clip = clip.time_transform(lambda t: 3-t)
 
         """
         if apply_to is None:
@@ -507,17 +509,20 @@ class Clip:
 
         dtype : type, optional
           Type to cast Numpy array frames. Use ``dtype="uint8"`` when using the
-          pictures to write video, images...
+          pictures to write video, images..
 
         Examples
         --------
 
-        >>> # prints the maximum of red that is contained
-        >>> # on the first line of each frame of the clip.
-        >>> from moviepy import VideoFileClip
-        >>> myclip = VideoFileClip('myvideo.mp4')
-        >>> print ( [frame[0,:,0].max()
-                     for frame in myclip.iter_frames()])
+
+        .. code:: python
+
+            # prints the maximum of red that is contained
+            # on the first line of each frame of the clip.
+            from moviepy import VideoFileClip
+            myclip = VideoFileClip('myvideo.mp4')
+            print([frame[0,:,0].max()
+                  for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
         for frame_index in logger.iter_bar(

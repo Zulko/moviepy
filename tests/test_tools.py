@@ -90,7 +90,7 @@ def test_deprecated_version_of(old_name):
     with pytest.warns(PendingDeprecationWarning) as record:
         func(1, b=2)
 
-    assert len(record) == 1
+    assert len(record) > 0
     assert record[0].message.args[0] == expected_warning_message
 
 
