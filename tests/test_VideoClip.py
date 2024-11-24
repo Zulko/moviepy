@@ -8,7 +8,17 @@ from PIL import Image
 
 import pytest
 
-from moviepy import *
+from moviepy import (
+    VideoClip,
+    VideoFileClip,
+    AudioClip,
+    AudioFileClip,
+    BitmapClip,
+    ColorClip,
+    CompositeVideoClip,
+    ImageClip,
+    vfx,
+)
 from moviepy.tools import convert_to_seconds
 
 
@@ -182,10 +192,10 @@ def test_write_gif(util, video):
     assert os.path.isfile(location)
 
 
-def test_with_sub_effetcs(util):
+def test_with_effects_on_time_range(util):
     clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclipped(0, 1)
-    new_clip = clip.with_effects_on_subclip([vfx.MultiplySpeed(0.5)])
-    location = os.path.join(util.TMP_DIR, "with_effects_on_subclip.mp4")
+    new_clip = clip.with_effects_on_time_range([vfx.MultiplySpeed(0.5)])
+    location = os.path.join(util.TMP_DIR, "with_effects_on_time_range.mp4")
     new_clip.write_videofile(location)
     assert os.path.isfile(location)
 
@@ -215,7 +225,10 @@ def test_oncolor(util):
 
 def test_setaudio(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    get_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
+
+    def get_frame_440(t):
+        return [np.sin(440 * 2 * np.pi * t)]
+
     audio = AudioClip(get_frame_440, duration=0.5)
     audio.fps = 44100
     clip = clip.with_audio(audio)

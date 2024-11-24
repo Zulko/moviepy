@@ -637,7 +637,7 @@ class VideoClip(Clip):
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def with_effects_on_subclip(
+    def with_effects_on_time_range(
         self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
     ):
         """Apply a transformation to a part of the clip.
@@ -653,7 +653,7 @@ class VideoClip(Clip):
 
             # The scene between times t=3s and t=6s in ``clip`` will be
             # be played twice slower in ``new_clip``
-            new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
+            new_clip = clip.with_effects_on_time_range(MultiplySpeed(0.5), 3, 6)
 
         """
         left = None if (start_time == 0) else self.subclipped(0, start_time)
