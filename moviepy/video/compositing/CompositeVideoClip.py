@@ -87,7 +87,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = True
 
         # order self.clips by layer
-        self.clips = sorted(self.clips, key=lambda clip: clip.layer)
+        self.clips = sorted(self.clips, key=lambda clip: clip.layer_index)
 
         # compute duration
         ends = [clip.end for clip in self.clips]
@@ -104,11 +104,11 @@ class CompositeVideoClip(VideoClip):
         # compute mask if necessary
         if transparent:
             maskclips = [
-                (clip.mask if (clip.mask is not None) else clip.with_add_mask().mask)
+                (clip.mask if (clip.mask is not None) else clip.with_mask().mask)
                 .with_position(clip.pos)
                 .with_end(clip.end)
                 .with_start(clip.start, change_end=False)
-                .with_layer(clip.layer)
+                .with_layer_index(clip.layer_index)
                 for clip in self.clips
             ]
 
@@ -116,7 +116,7 @@ class CompositeVideoClip(VideoClip):
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
-    def make_frame(self, t):
+    def frame_function(self, t):
         """The clips playing at time `t` are blitted over one another."""
         frame = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(frame)
@@ -284,7 +284,7 @@ def concatenate_videoclips(
 
     if method == "chain":
 
-        def make_frame(t):
+        def frame_function(t):
             i = max([i for i, e in enumerate(timings) if e <= t])
             return clips[i].get_frame(t - timings[i])
 
@@ -294,7 +294,7 @@ def concatenate_videoclips(
                 mask.duration = clip.duration
             return mask
 
-        result = VideoClip(is_mask=is_mask, make_frame=make_frame)
+        result = VideoClip(is_mask=is_mask, frame_function=frame_function)
         if any([clip.mask is not None for clip in clips]):
             masks = [get_mask(clip) for clip in clips]
             result.mask = concatenate_videoclips(masks, method="chain", is_mask=True)

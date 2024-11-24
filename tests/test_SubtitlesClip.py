@@ -44,7 +44,7 @@ def test_subtitles(util):
 
     subtitles = SubtitlesClip("media/subtitles.srt", make_textclip=generator)
     final = CompositeVideoClip([myvideo, subtitles])
-    final.with_subclip(0, 0.5).write_videofile(
+    final.subclipped(0, 0.5).write_videofile(
         os.path.join(util.TMP_DIR, "subtitles.mp4"),
         fps=5,
         logger=None,

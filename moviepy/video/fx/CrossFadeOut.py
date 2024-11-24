@@ -19,7 +19,7 @@ class CrossFadeOut(Effect):
             raise ValueError("Attribute 'duration' not set")
 
         if clip.mask is None:
-            clip = clip.with_add_mask()
+            clip = clip.with_mask()
 
         clip.mask.duration = clip.duration
         clip.mask = clip.mask.with_effects([FadeOut(self.duration)])

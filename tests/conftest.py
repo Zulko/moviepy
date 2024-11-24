@@ -30,7 +30,7 @@ DOC_EXAMPLES_MEDIAS_DIR = "media/doc_medias"
 
 @functools.lru_cache(maxsize=None)
 def get_video(start_time=0, end_time=1):
-    return VideoFileClip("media/big_buck_bunny_432_433.webm").with_subclip(
+    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclipped(
         start_time, end_time
     )
 

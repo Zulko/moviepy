@@ -8,7 +8,7 @@ import copy as _copy
 import os
 import threading
 from numbers import Real
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, Callable, List, Union
 
 import numpy as np
 import proglog
@@ -77,7 +77,7 @@ class VideoClip(Clip):
     is_mask
       Boolean set to `True` if the clip is a mask.
 
-    make_frame
+    frame_function
       A function ``t-> frame at time t`` where ``frame`` is a
       w*h*3 RGB array.
 
@@ -104,16 +104,16 @@ class VideoClip(Clip):
     """
 
     def __init__(
-        self, make_frame=None, is_mask=False, duration=None, has_constant_size=True
+        self, frame_function=None, is_mask=False, duration=None, has_constant_size=True
     ):
         super().__init__()
         self.mask = None
         self.audio = None
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
-        self.layer = 0
-        if make_frame:
-            self.make_frame = make_frame
+        self.layer_index = 0
+        if frame_function:
+            self.frame_function = frame_function
             self.size = self.get_frame(0).shape[:2][::-1]
         self.is_mask = is_mask
         self.has_constant_size = has_constant_size
@@ -151,7 +151,7 @@ class VideoClip(Clip):
 
         This method is intensively used to produce new clips every time
         there is an outplace transformation of the clip (clip.resize,
-        clip.with_subclip, etc.)
+        clip.subclipped, etc.)
 
         Acts like a deepcopy except for the fact that readers and other
         possible unpickleables objects are not copied.
@@ -327,7 +327,7 @@ class VideoClip(Clip):
         --------
 
         >>> from moviepy import VideoFileClip
-        >>> clip = VideoFileClip("myvideo.mp4").with_subclip(100,120)
+        >>> clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
         >>> clip.write_videofile("my_new_video.mp4")
         >>> clip.close()
 
@@ -629,7 +629,7 @@ class VideoClip(Clip):
     # -----------------------------------------------------------------
     # F I L T E R I N G
 
-    def with_sub_effects(
+    def with_effects_on_subclip(
         self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
     ):
         """Apply a transformation to a part of the clip.
@@ -646,9 +646,9 @@ class VideoClip(Clip):
         >>> new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
 
         """
-        left = None if (start_time == 0) else self.with_subclip(0, start_time)
-        center = self.with_subclip(start_time, end_time).with_effects(effects, **kwargs)
-        right = None if (end_time is None) else self.with_subclip(start_time=end_time)
+        left = None if (start_time == 0) else self.subclipped(0, start_time)
+        center = self.subclipped(start_time, end_time).with_effects(effects, **kwargs)
+        right = None if (end_time is None) else self.subclipped(start_time=end_time)
 
         clips = [clip for clip in [left, center, right] if clip is not None]
 
@@ -771,28 +771,7 @@ class VideoClip(Clip):
         pos = map(int, pos)
         return blit(im_img, picture, pos, mask=im_mask)
 
-    def with_add_mask(self):
-        """Add a mask VideoClip to the VideoClip.
-
-        Returns a copy of the clip with a completely opaque mask
-        (made of ones). This makes computations slower compared to
-        having a None mask but can be useful in many cases. Choose
-
-        Set ``constant_size`` to  `False` for clips with moving
-        image size.
-        """
-        if self.has_constant_size:
-            mask = ColorClip(self.size, 1.0, is_mask=True)
-            return self.with_mask(mask.with_duration(self.duration))
-        else:
-
-            def make_frame(t):
-                return np.ones(self.get_frame(t).shape[:2], dtype=float)
-
-            mask = VideoClip(is_mask=True, make_frame=make_frame)
-            return self.with_mask(mask.with_duration(self.duration))
-
-    def with_on_color(self, size=None, color=(0, 0, 0), pos=None, col_opacity=None):
+    def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
         """Place the clip on a colored background.
 
         Returns a clip made of the current clip overlaid on a color
@@ -812,7 +791,7 @@ class VideoClip(Clip):
         pos
           Position of the clip in the final clip. 'center' is the default
 
-        col_opacity
+        opacity
           Parameter in 0..1 indicating the opacity of the colored
           background.
         """
@@ -823,10 +802,10 @@ class VideoClip(Clip):
         if pos is None:
             pos = "center"
 
-        if col_opacity is not None:
+        if opacity is not None:
             colorclip = ColorClip(
                 size, color=color, duration=self.duration
-            ).with_opacity(col_opacity)
+            ).with_opacity(opacity)
             result = CompositeVideoClip([colorclip, self.with_position(pos)])
         else:
             result = CompositeVideoClip(
@@ -846,13 +825,15 @@ class VideoClip(Clip):
         return result
 
     @outplace
-    def with_make_frame(self, mf):
+    def with_updated_frame_function(
+        self, frame_function: Callable[[float], np.ndarray]
+    ):
         """Change the clip's ``get_frame``.
 
-        Returns a copy of the VideoClip instance, with the make_frame
+        Returns a copy of the VideoClip instance, with the frame_function
         attribute set to `mf`.
         """
-        self.make_frame = mf
+        self.frame_function = frame_function
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
@@ -865,14 +846,27 @@ class VideoClip(Clip):
         self.audio = audioclip
 
     @outplace
-    def with_mask(self, mask):
+    def with_mask(self, mask: Union["VideoClip", str] = "auto"):
         """Set the clip's mask.
 
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip.
         """
-        assert mask is None or mask.is_mask
+        if mask == "auto":
+            if self.has_constant_size:
+                mask = ColorClip(self.size, 1.0, is_mask=True)
+            else:
+
+                def frame_function(t):
+                    return np.ones(self.get_frame(t).shape[:2], dtype=float)
+
+                mask = VideoClip(is_mask=True, frame_function=frame_function)
         self.mask = mask
+
+    @outplace
+    def without_mask(self):
+        """Remove the clip's mask."""
+        self.mask = None
 
     @add_mask_if_none
     @outplace
@@ -918,13 +912,13 @@ class VideoClip(Clip):
 
     @apply_to_mask
     @outplace
-    def with_layer(self, layer):
+    def with_layer_index(self, index):
         """Set the clip's layer in compositions. Clips with a greater ``layer``
         attribute will be displayed on top of others.
 
         Note: Only has effect when the clip is used in a CompositeVideoClip.
         """
-        self.layer = layer
+        self.layer_index = index
 
     def resized(self, new_size=None, height=None, width=None, apply_to_mask=True):
         """Returns a video clip that is a resized version of the clip.
@@ -1122,12 +1116,12 @@ class DataVideoClip(VideoClip):
         self.data_to_frame = data_to_frame
         self.fps = fps
 
-        def make_frame(t):
+        def frame_function(t):
             return self.data_to_frame(self.data[int(self.fps * t)])
 
         VideoClip.__init__(
             self,
-            make_frame,
+            frame_function,
             is_mask=is_mask,
             duration=1.0 * len(data) / fps,
             has_constant_size=has_constant_size,
@@ -1136,14 +1130,14 @@ class DataVideoClip(VideoClip):
 
 class UpdatedVideoClip(VideoClip):
     """
-    Class of clips whose make_frame requires some objects to
+    Class of clips whose frame_function requires some objects to
     be updated. Particularly practical in science where some
     algorithm needs to make some steps before a new frame can
     be generated.
 
-    UpdatedVideoClips have the following make_frame:
+    UpdatedVideoClips have the following frame_function:
 
-    >>> def make_frame(t):
+    >>> def frame_function(t):
     >>>     while self.world.clip_t < t:
     >>>         world.update() # updates, and increases world.clip_t
     >>>     return world.to_frame()
@@ -1169,13 +1163,13 @@ class UpdatedVideoClip(VideoClip):
     def __init__(self, world, is_mask=False, duration=None):
         self.world = world
 
-        def make_frame(t):
+        def frame_function(t):
             while self.world.clip_t < t:
                 world.update()
             return world.to_frame()
 
         VideoClip.__init__(
-            self, make_frame=make_frame, is_mask=is_mask, duration=duration
+            self, frame_function=frame_function, is_mask=is_mask, duration=duration
         )
 
 
@@ -1246,7 +1240,7 @@ class ImageClip(VideoClip):
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.make_frame = lambda t: img
+        self.frame_function = lambda t: img
         self.size = img.shape[:2][::-1]
         self.img = img
 
@@ -1278,7 +1272,7 @@ class ImageClip(VideoClip):
             apply_to = []
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
-        self.make_frame = lambda t: arr
+        self.frame_function = lambda t: arr
         self.img = arr
 
         for attr in apply_to:
@@ -1873,7 +1867,7 @@ class BitmapClip(VideoClip):
 
         VideoClip.__init__(
             self,
-            make_frame=lambda t: frame_array[int(t * fps)],
+            frame_function=lambda t: frame_array[int(t * fps)],
             is_mask=is_mask,
             duration=duration,
         )

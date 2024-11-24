@@ -24,10 +24,10 @@ result to a new file:
 from moviepy import *
 
 # Load file example.mp4 and keep only the subclip from 00:00:10 to 00:00:20
-clip = VideoFileClip("long_examples/example2.mp4").with_subclip(10, 20)
+clip = VideoFileClip("long_examples/example2.mp4").subclipped(10, 20)
 
 # Reduce the audio volume to 80% of its original volume
-clip = clip.with_multiply_volume(0.8)
+clip = clip.with_volume_scaled(0.8)
 
 # Generate a text clip. You can customize the font, color, etc.
 txt_clip = TextClip(font="example.ttf", text="Big Buck Bunny", font_size=70, color='white')

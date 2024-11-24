@@ -40,10 +40,10 @@ class AudioDelay(Effect):
     ... ])
 
     >>> # stereo A note
-    >>> make_frame = lambda t: np.array(
+    >>> frame_function = lambda t: np.array(
     ...     [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]
     ... ).T
-    ... clip = AudioClip(make_frame=make_frame, duration=0.1, fps=44100)
+    ... clip = AudioClip(frame_function=frame_function, duration=0.1, fps=44100)
     ... clip = clip.with_effects([afx.AudioDelay(offset=.2, n_repeats=11, decay=0)])
     """
 
