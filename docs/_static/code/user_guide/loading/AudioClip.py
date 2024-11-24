@@ -1,8 +1,10 @@
-from moviepy import *
+from moviepy import AudioClip
 import numpy as np
 
-# Producing a sinewave of 440 Hz -> note A
-frame_function_audio = lambda t: np.sin(440 * 2 * np.pi * t)
 
-# AUDIO CLIPS
-clip = AudioClip(frame_function_audio, duration=3)
+def audio_frame(t):
+    """Producing a sinewave of 440 Hz -> note A"""
+    return np.sin(440 * 2 * np.pi * t)
+
+
+audio_clip = AudioClip(frame_function=audio_frame, duration=3)

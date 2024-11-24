@@ -16,11 +16,13 @@ class AudioLoop(Effect):
     Examples
     --------
 
-    >>> from moviepy import *
-    >>> videoclip = VideoFileClip('myvideo.mp4')
-    >>> music = AudioFileClip('music.ogg')
-    >>> audio = music.with_effects([afx.AudioLoop(duration=videoclip.duration)])
-    >>> videoclip.with_audio(audio)
+    .. code:: python
+
+        from moviepy import *
+        videoclip = VideoFileClip('myvideo.mp4')
+        music = AudioFileClip('music.ogg')
+        audio = music.with_effects([afx.AudioLoop(duration=videoclip.duration)])
+        videoclip.with_audio(audio)
 
     """
 

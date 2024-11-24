@@ -28,11 +28,13 @@ def find_video_period(clip, fps=None, start_time=0.3):
     Examples
     --------
 
-    >>> from moviepy import *
-    >>> from moviepy.video.tools.cuts import find_video_period
-    >>>
-    >>> clip = VideoFileClip("media/chaplin.mp4").subclipped(0, 1).loop(2)
-    >>> round(videotools.find_video_period(clip, fps=80), 6)
+    .. code:: python
+
+        from moviepy import *
+        from moviepy.video.tools.cuts import find_video_period
+
+        clip = VideoFileClip("media/chaplin.mp4").subclipped(0, 1).loop(2)
+        round(videotools.find_video_period(clip, fps=80), 6)
     1
     """
 
@@ -154,8 +156,10 @@ class FramesMatches(list):
 
         Examples
         --------
-        >>> # Only keep the matches corresponding to (> 1 second) sequences.
-        >>> new_matches = matches.filter( lambda match: match.time_span > 1)
+        .. code:: python
+
+            # Only keep the matches corresponding to (> 1 second) sequences.
+            new_matches = matches.filter(lambda match: match.time_span > 1)
         """
         return FramesMatches(filter(condition, self))
 
@@ -229,15 +233,17 @@ class FramesMatches(list):
         We find all matching frames in a given video and turn the best match
         with a duration of 1.5 seconds or more into a GIF:
 
-        >>> from moviepy import VideoFileClip
-        >>> from moviepy.video.tools.cuts import FramesMatches
-        >>>
-        >>> clip = VideoFileClip("foo.mp4").resize(width=200)
-        >>> matches = FramesMatches.from_clip(
-        ...     clip, distance_threshold=10, max_duration=3,  # will take time
-        ... )
-        >>> best = matches.filter(lambda m: m.time_span > 1.5).best()
-        >>> clip.subclipped(best.start_time, best.end_time).write_gif("foo.gif")
+        .. code:: python
+
+            from moviepy import VideoFileClip
+            from moviepy.video.tools.cuts import FramesMatches
+
+            clip = VideoFileClip("foo.mp4").resize(width=200)
+            matches = FramesMatches.from_clip(
+                clip, distance_threshold=10, max_duration=3,  # will take time
+            )
+            best = matches.filter(lambda m: m.time_span > 1.5).best()
+            clip.subclipped(best.start_time, best.end_time).write_gif("foo.gif")
         """
         N_pixels = clip.w * clip.h * 3
 
@@ -338,22 +344,24 @@ class FramesMatches(list):
         Examples
         --------
 
-        >>> from pprint import pprint
-        >>> from moviepy import *
-        >>> from moviepy.video.tools.cuts import FramesMatches
-        >>>
-        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
-        >>> mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]
-        >>> clip = concatenate_videoclips(mirror_and_clip)
-        >>>
-        >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
-        ...     1, 2, nomatch_threshold=0,
-        ... )
-        >>> print(result)
-        [(1.0000, 4.0000, 0.0000, 0.0000),
-         (1.1600, 3.8400, 0.0000, 0.0000),
-         (1.2800, 3.7200, 0.0000, 0.0000),
-         (1.4000, 3.6000, 0.0000, 0.0000)]
+        .. code:: python
+
+            from pprint import pprint
+            from moviepy import *
+            from moviepy.video.tools.cuts import FramesMatches
+
+            ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
+            mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]
+            clip = concatenate_videoclips(mirror_and_clip)
+
+            result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
+                1, 2, nomatch_threshold=0,
+            )
+            print(result)
+            # [(1.0000, 4.0000, 0.0000, 0.0000),
+            #  (1.1600, 3.8400, 0.0000, 0.0000),
+            #  (1.2800, 3.7200, 0.0000, 0.0000),
+            #  (1.4000, 3.6000, 0.0000, 0.0000)]
         """
         if nomatch_threshold is None:
             nomatch_threshold = match_threshold
@@ -425,24 +433,26 @@ class FramesMatches(list):
         Examples
         --------
 
-        >>> import os
-        >>> from pprint import pprint
-        >>> from moviepy import *
-        >>> from moviepy.video.tools.cuts import FramesMatches
-        >>>
-        >>> ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
-        >>> clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
-        >>>
-        >>> result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
-        ...     1, 2, nomatch_threshold=0,
-        ... )
-        >>>
-        >>> os.mkdir("foo")
-        >>> result.write_gifs(clip, "foo")
-        MoviePy - Building file foo/00000100_00000400.gif with imageio.
-        MoviePy - Building file foo/00000115_00000384.gif with imageio.
-        MoviePy - Building file foo/00000128_00000372.gif with imageio.
-        MoviePy - Building file foo/00000140_00000360.gif with imageio.
+        .. code:: python
+
+            import os
+            from pprint import pprint
+            from moviepy import *
+            from moviepy.video.tools.cuts import FramesMatches
+
+            ch_clip = VideoFileClip("media/chaplin.mp4").subclipped(1, 4)
+            clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])
+
+            result = FramesMatches.from_clip(clip, 10, 3).select_scenes(
+                1, 2, nomatch_threshold=0,
+            )
+
+            os.mkdir("foo")
+            result.write_gifs(clip, "foo")
+            # MoviePy - Building file foo/00000100_00000400.gif with imageio.
+            # MoviePy - Building file foo/00000115_00000384.gif with imageio.
+            # MoviePy - Building file foo/00000128_00000372.gif with imageio.
+            # MoviePy - Building file foo/00000140_00000360.gif with imageio.
         """
         for start, end, _, _ in self:
             name = "%s/%08d_%08d.gif" % (gifs_dir, 100 * start, 100 * end)

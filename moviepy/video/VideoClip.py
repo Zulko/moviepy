@@ -326,10 +326,12 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> from moviepy import VideoFileClip
-        >>> clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
-        >>> clip.write_videofile("my_new_video.mp4")
-        >>> clip.close()
+        .. code:: python
+
+            from moviepy import VideoFileClip
+            clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
+            clip.write_videofile("my_new_video.mp4")
+            clip.close()
 
         """
         name, ext = os.path.splitext(os.path.basename(filename))
@@ -502,8 +504,10 @@ class VideoClip(Clip):
         only change the frame rate). If you want the gif to be played
         slower than the clip you will use ::
 
-            >>> # slow down clip 50% and make it a gif
-            >>> myClip.multiply_speed(0.5).to_gif('myClip.gif')
+            .. code:: python
+
+                # slow down clip 50% and make it a gif
+                myClip.multiply_speed(0.5).to_gif('myClip.gif')
 
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
@@ -538,10 +542,12 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> from moviepy import *
-        >>>
-        >>> clip = VideoFileClip("media/chaplin.mp4")
-        >>> clip.show(t=4)
+        .. code:: python
+
+            from moviepy import *
+
+            clip = VideoFileClip("media/chaplin.mp4")
+            clip.show(t=4)
         """
         clip = self.copy()
 
@@ -592,9 +598,11 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> from moviepy import *
-        >>> clip = VideoFileClip("media/chaplin.mp4")
-        >>> clip.preview(fps=10, audio=False)
+        .. code:: python
+
+            from moviepy import *
+            clip = VideoFileClip("media/chaplin.mp4")
+            clip.preview(fps=10, audio=False)
         """
         audio = audio and (self.audio is not None)
         audio_flag = None
@@ -641,9 +649,11 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> # The scene between times t=3s and t=6s in ``clip`` will be
-        >>> # be played twice slower in ``new_clip``
-        >>> new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
+        .. code:: python
+
+            # The scene between times t=3s and t=6s in ``clip`` will be
+            # be played twice slower in ``new_clip``
+            new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
 
         """
         left = None if (start_time == 0) else self.subclipped(0, start_time)
@@ -892,16 +902,18 @@ class VideoClip(Clip):
         Examples
         --------
 
-        >>> clip.with_position((45,150)) # x=45, y=150
-        >>>
-        >>> # clip horizontally centered, at the top of the picture
-        >>> clip.with_position(("center","top"))
-        >>>
-        >>> # clip is at 40% of the width, 70% of the height:
-        >>> clip.with_position((0.4,0.7), relative=True)
-        >>>
-        >>> # clip's position is horizontally centered, and moving up !
-        >>> clip.with_position(lambda t: ('center', 50+t) )
+        .. code:: python
+
+            clip.with_position((45,150)) # x=45, y=150
+
+            # clip horizontally centered, at the top of the picture
+            clip.with_position(("center","top"))
+
+            # clip is at 40% of the width, 70% of the height:
+            clip.with_position((0.4,0.7), relative=True)
+
+            # clip's position is horizontally centered, and moving up !
+            clip.with_position(lambda t: ('center', 50+t))
 
         """
         self.relative_pos = relative
@@ -1137,10 +1149,12 @@ class UpdatedVideoClip(VideoClip):
 
     UpdatedVideoClips have the following frame_function:
 
-    >>> def frame_function(t):
-    >>>     while self.world.clip_t < t:
-    >>>         world.update() # updates, and increases world.clip_t
-    >>>     return world.to_frame()
+    .. code:: python
+
+        def frame_function(t):
+            while self.world.clip_t < t:
+                world.update() # updates, and increases world.clip_t
+            return world.to_frame()
 
     Parameters
     ----------

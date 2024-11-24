@@ -1,3 +1,5 @@
+"""Let's invert the green and blue channels of a video."""
+
 from moviepy import VideoFileClip
 import numpy
 

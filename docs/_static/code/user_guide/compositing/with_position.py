@@ -1,4 +1,6 @@
-from moviepy import *
+"""Let's position some text and images on a video."""
+
+from moviepy import TextClip, VideoFileClip, CompositeVideoClip, ImageClip
 
 # We load all the clips we want to compose
 background = VideoFileClip("example2.mp4").subclipped(0, 2)
@@ -28,8 +30,9 @@ copyright = TextClip(
 )
 logo = ImageClip("./example2.png", duration=1).resized(height=50)
 
-# We want our title to be at the center horizontaly and start at 25% of the video verticaly
-# We can set as "center", "left", "right", "top" and "bottom", and % relative from the clip size
+# We want our title to be at the center horizontaly and start at 25%
+# of the video verticaly. We can set as "center", "left", "right",
+# "top" and "bottom", and % relative from the clip size
 title = title.with_position(("center", 0.25), relative=True)
 
 # We want the author to be in the center, 30px under the title
@@ -42,7 +45,8 @@ author = author.with_position((left, top))
 copyright = copyright.with_position(("center", background.h - copyright.h - 30))
 
 # Finally, we want the logo to be in the center, but to drop as time pass
-# We can do so by setting position as a function that take time as argument, a lot like frame_function
+# We can do so by setting position as a function that take time as argument,
+# a lot like frame_function
 top = (background.h - logo.h) / 2
 logo = logo.with_position(lambda t: ("center", top + t * 30))
 

@@ -88,17 +88,18 @@ def html_embed(
 
     Examples
     --------
+    .. code:: python
 
-    >>> from moviepy import *
-    >>> # later ...
-    >>> html_embed(clip, width=360)
-    >>> html_embed(clip.audio)
+        from moviepy import *
+        # later ...
+        html_embed(clip, width=360)
+        html_embed(clip.audio)
 
-    >>> clip.write_gif("test.gif")
-    >>> html_embed('test.gif')
+        clip.write_gif("test.gif")
+        html_embed('test.gif')
 
-    >>> clip.save_frame("first_frame.jpeg")
-    >>> html_embed("first_frame.jpeg")
+        clip.save_frame("first_frame.jpeg")
+        html_embed("first_frame.jpeg")
     """
     if rd_kwargs is None:  # pragma: no cover
         rd_kwargs = {}
@@ -246,16 +247,18 @@ def display_in_notebook(
     Examples
     --------
 
-    >>> from moviepy import *
-    >>> # later ...
-    >>> clip.display_in_notebook(width=360)
-    >>> clip.audio.display_in_notebook()
+    .. code:: python
 
-    >>> clip.write_gif("test.gif")
-    >>> display_in_notebook('test.gif')
+        from moviepy import *
+        # later ...
+        clip.display_in_notebook(width=360)
+        clip.audio.display_in_notebook()
 
-    >>> clip.save_frame("first_frame.jpeg")
-    >>> display_in_notebook("first_frame.jpeg")
+        clip.write_gif("test.gif")
+        display_in_notebook('test.gif')
+
+        clip.save_frame("first_frame.jpeg")
+        display_in_notebook("first_frame.jpeg")
     """
     if not ipython_available:
         raise ImportError("Only works inside an Jupyter Notebook")

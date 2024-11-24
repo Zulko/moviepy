@@ -23,8 +23,10 @@ class AudioFadeOut(Effect):
     Examples
     --------
 
-    >>> clip = VideoFileClip("media/chaplin.mp4")
-    >>> clip.with_effects([afx.AudioFadeOut("00:00:06")])
+    .. code:: python
+
+        clip = VideoFileClip("media/chaplin.mp4")
+        clip.with_effects([afx.AudioFadeOut("00:00:06")])
     """
 
     duration: float

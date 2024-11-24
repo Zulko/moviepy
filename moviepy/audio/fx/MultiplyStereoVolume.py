@@ -15,12 +15,14 @@ class MultiplyStereoVolume(Effect):
     Examples
     --------
 
-    >>> from moviepy import AudioFileClip
-    >>> music = AudioFileClip('music.ogg')
-    >>> # mutes left channel
-    >>> audio_r = music.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])
-    >>> # halves audio volume
-    >>> audio_h = music.with_effects([afx.MultiplyStereoVolume(left=0.5, right=0.5)])
+    .. code:: python
+
+        from moviepy import AudioFileClip
+        music = AudioFileClip('music.ogg')
+        # mutes left channel
+        audio_r = music.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])
+        # halves audio volume
+        audio_h = music.with_effects([afx.MultiplyStereoVolume(left=0.5, right=0.5)])
     """
 
     left: float = 1

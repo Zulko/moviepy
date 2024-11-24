@@ -20,26 +20,29 @@ In this example we open a video file, select the subclip between 10 and
 result to a new file:
 
 ``` python
-# Import everything needed to edit video clips
-from moviepy import *
+from moviepy import VideoFileClip, TextClip, CompositeVideoClip
 
 # Load file example.mp4 and keep only the subclip from 00:00:10 to 00:00:20
-clip = VideoFileClip("long_examples/example2.mp4").subclipped(10, 20)
-
 # Reduce the audio volume to 80% of its original volume
-clip = clip.with_volume_scaled(0.8)
 
+clip = (
+    VideoFileClip("long_examples/example2.mp4")
+    .subclipped(10, 20)
+    .with_volume_scaled(0.8)
+)
 # Generate a text clip. You can customize the font, color, etc.
-txt_clip = TextClip(font="example.ttf", text="Big Buck Bunny", font_size=70, color='white')
 
-#The text clip should appear for 10s at the center of the screen
-txt_clip = txt_clip.with_duration(10).with_position('center')
+
+txt_clip = TextClip(
+    font="Arial.ttf",
+    text="Hello there!",
+    font_size=70,
+    color='white'
+).with_duration(10).with_position('center')
 
 # Overlay the text clip on the first video clip
-video = CompositeVideoClip([clip, txt_clip])
-
-# Write the result to a file (many options available!)
-video.write_videofile("result.mp4")
+final_video = CompositeVideoClip([clip, txt_clip])
+final_video.write_videofile("result.mp4")
 ```
 
 # Installation

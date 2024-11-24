@@ -170,11 +170,13 @@ class Clip:
         Examples
         --------
 
-        >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
-        >>>
-        >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda t: 3-t)
+        .. code:: python
+
+            # plays the clip (and its mask and sound) twice faster
+            new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
+
+            # plays the clip starting at t=3, and backwards:
+            new_clip = clip.time_transform(lambda t: 3-t)
 
         """
         if apply_to is None:
@@ -512,12 +514,14 @@ class Clip:
         Examples
         --------
 
-        >>> # prints the maximum of red that is contained
-        >>> # on the first line of each frame of the clip.
-        >>> from moviepy import VideoFileClip
-        >>> myclip = VideoFileClip('myvideo.mp4')
-        >>> print ( [frame[0,:,0].max()
-                     for frame in myclip.iter_frames()])
+        # prints the maximum of red that is contained
+        # on the first line of each frame of the clip.
+        .. code:: python
+
+            from moviepy import VideoFileClip
+            myclip = VideoFileClip('myvideo.mp4')
+            print([frame[0,:,0].max()
+                  for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
         for frame_index in logger.iter_bar(

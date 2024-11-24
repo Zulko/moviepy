@@ -23,10 +23,12 @@ class MasksAnd(Effect):
     Examples
     --------
 
-    >>> clip = ColorClip(color=(255, 0, 0), size=(1, 1))      # red
-    >>> mask = ColorClip(color=(0, 255, 0), size=(1, 1))      # green
-    >>> masked_clip = clip.with_effects([vfx.MasksAnd(mask)]) # black
-    >>> masked_clip.get_frame(0)
+    .. code:: python
+
+        clip = ColorClip(color=(255, 0, 0), size=(1, 1))      # red
+        mask = ColorClip(color=(0, 255, 0), size=(1, 1))      # green
+        masked_clip = clip.with_effects([vfx.MasksAnd(mask)]) # black
+        masked_clip.get_frame(0)
     [[[0 0 0]]]
     """
 

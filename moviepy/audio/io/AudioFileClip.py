@@ -49,8 +49,10 @@ class AudioFileClip(AudioClip):
     Examples
     --------
 
-    >>> snd = AudioFileClip("song.wav")
-    >>> snd.close()
+    .. code:: python
+
+        snd = AudioFileClip("song.wav")
+        snd.close()
     """
 
     @convert_path_to_string("filename")

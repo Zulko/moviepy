@@ -80,8 +80,8 @@ To test if FFmpeg and FFplay are found by MoviePy, in a Python console, you can 
 
 .. code-block:: python
 
-    >>> from moviepy.config import check
-    >>> check()
+    from moviepy.config import check
+    check()
 
 
 .. _ffmpeg: https://www.ffmpeg.org/download.html
