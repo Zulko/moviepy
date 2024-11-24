@@ -10,14 +10,6 @@ MoviePy (online documentation [here](https://zulko.github.io/moviepy/)) is a Pyt
 
 MoviePy can read and write all the most common audio and video formats, including GIF, and runs on Windows/Mac/Linux, with Python 3.9+.
 
-# How MoviePy works
-
-Under the hood, MoviePy imports media (video frames, images, sounds) and converts them into Python objects (numpy arrays) so that every pixel becomes accessible, and video or audio effects can be defined in just a few lines of code (see the [built-in effects]() for examples).
-
-The library also provides ways to mix clips together (concatenations, playing clips side by side or on top of each other with transparency, etc.). The final clip is then encoded back into mp4/webm/gif/etc.
-
-This makes MoviePy very flexible and approachable, albeit slower than using ffmpeg directly due to heavier data import/export operations.  
-
 # Example
 
 In this example we open a video file, select the subclip between 10 and
@@ -49,6 +41,15 @@ final_video = CompositeVideoClip([clip, txt_clip])
 final_video.write_videofile("result.mp4")
 ```
 
+# How MoviePy works
+
+Under the hood, MoviePy imports media (video frames, images, sounds) and converts them into Python objects (numpy arrays) so that every pixel becomes accessible, and video or audio effects can be defined in just a few lines of code (see the [built-in effects]() for examples).
+
+The library also provides ways to mix clips together (concatenations, playing clips side by side or on top of each other with transparency, etc.). The final clip is then encoded back into mp4/webm/gif/etc.
+
+This makes MoviePy very flexible and approachable, albeit slower than using ffmpeg directly due to heavier data import/export operations.  
+
+
 # Installation
 
 Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
@@ -79,9 +80,5 @@ To ask for help or simply discuss usage and examples, use [our Reddit channel](h
 -   [@ryanfox](https://github.com/ryanfox)
 -   [@mondeja](https://github.com/mondeja)
 
-# Maintainers wanted!
-
-MoviePy is always looking for maintainers, and we'd love to hear about
-developers interested in giving a hand and solving some of the issues
-(especially the ones that affect you) or reviewing pull requests. Open
+**Maintainers wanted!** this library has only been kept afloat by the involvement of its maintainers, and there are times where none of us have enough bandwidth. We'd love to hear about developers interested in giving a hand and solving some of the issues (especially the ones that affect you) or reviewing pull requests. Open
 an issue or contact us directly if you are interested. Thanks!
