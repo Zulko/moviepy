@@ -551,9 +551,7 @@ document.write(`
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>font</strong> – Path to the font to use. Must be an OpenType font.
-See <code class="docutils literal notranslate"><span class="pre">TextClip.list('font')</span></code> for the list of fonts you can use on
-your computer.</p></li>
+<li><p><strong>font</strong> – Path to the font to use. Must be an OpenType font.</p></li>
 <li><p><strong>text</strong> – A string of the text to write. Can be replaced by argument
 <code class="docutils literal notranslate"><span class="pre">filename</span></code>.</p></li>
 <li><p><strong>filename</strong> – The name of a file in which there is the text to write,
@@ -570,40 +568,29 @@ four (asymmetrical). Either <code class="docutils literal notranslate"><span cla
 <code class="docutils literal notranslate"><span class="pre">(left,</span> <span class="pre">top,</span> <span class="pre">right,</span> <span class="pre">bottom)</span></code>. By default no margin (None, None).
 This is especially usefull for auto-compute size to give the text some
 extra room.</p></li>
-<li><p><strong>bg_color</strong> – Color of the background. Default to None for no background. Can be
-a RGB (or RGBA if transparent = <code class="docutils literal notranslate"><span class="pre">True</span></code>) <code class="docutils literal notranslate"><span class="pre">tuple</span></code>, a color name, or an
-hexadecimal notation.</p></li>
 <li><p><strong>color</strong> – Color of the text. Default to “black”. Can be
 a RGB (or RGBA if transparent = <code class="docutils literal notranslate"><span class="pre">True</span></code>) <code class="docutils literal notranslate"><span class="pre">tuple</span></code>, a color name, or an
 hexadecimal notation.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>stroke_color</dt><dd><p>Color of the stroke (=contour line) of the text. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
-there will be no stroke.</p>
-</dd>
-<dt>stroke_width</dt><dd><p>Width of the stroke, in pixels. Can be a float, like 1.5.</p>
-</dd>
-<dt>method</dt><dd><p>Either ‘label’ (default, the picture will be autosized so as to fit
+<li><p><strong>bg_color</strong> – Color of the background. Default to None for no background. Can be
+a RGB (or RGBA if transparent = <code class="docutils literal notranslate"><span class="pre">True</span></code>) <code class="docutils literal notranslate"><span class="pre">tuple</span></code>, a color name, or an
+hexadecimal notation.</p></li>
+<li><p><strong>stroke_color</strong> – Color of the stroke (=contour line) of the text. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+there will be no stroke.</p></li>
+<li><p><strong>stroke_width</strong> – Width of the stroke, in pixels. Can be a float, like 1.5.</p></li>
+<li><p><strong>method</strong> – Either ‘label’ (default, the picture will be autosized so as to fit
 exactly the size) or ‘caption’ (the text will be drawn in a picture
 with fixed size provided with the <code class="docutils literal notranslate"><span class="pre">size</span></code> argument). If <cite>caption</cite>,
-the text will be wrapped automagically.</p>
-</dd>
-<dt>text_align</dt><dd><p>center | left | right. Text align similar to css. Default to <code class="docutils literal notranslate"><span class="pre">left</span></code>.</p>
-</dd>
-<dt>horizontal_align</dt><dd><p>center | left | right. Define horizontal align of text bloc in image.
-Default to <code class="docutils literal notranslate"><span class="pre">center</span></code>.</p>
-</dd>
-<dt>vertical_align</dt><dd><p>center | top | bottom. Define vertical align of text bloc in image.
-Default to <code class="docutils literal notranslate"><span class="pre">center</span></code>.</p>
-</dd>
-<dt>interline</dt><dd><p>Interline spacing. Default to <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
-</dd>
-<dt>transparent</dt><dd><p><code class="docutils literal notranslate"><span class="pre">True</span></code> (default) if you want to take into account the
-transparency in the image.</p>
-</dd>
-<dt>duration</dt><dd><p>Duration of the clip</p>
+the text will be wrapped automagically.</p></li>
+<li><p><strong>text_align</strong> – center | left | right. Text align similar to css. Default to <code class="docutils literal notranslate"><span class="pre">left</span></code>.</p></li>
+<li><p><strong>horizontal_align</strong> – center | left | right. Define horizontal align of text bloc in image.
+Default to <code class="docutils literal notranslate"><span class="pre">center</span></code>.</p></li>
+<li><p><strong>vertical_align</strong> – center | top | bottom. Define vertical align of text bloc in image.
+Default to <code class="docutils literal notranslate"><span class="pre">center</span></code>.</p></li>
+<li><p><strong>interline</strong> – Interline spacing. Default to <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p></li>
+<li><p><strong>transparent</strong> – <code class="docutils literal notranslate"><span class="pre">True</span></code> (default) if you want to take into account the
+transparency in the image.</p></li>
+<li><p><strong>duration</strong> – Duration of the clip</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

@@ -1745,8 +1745,6 @@ document.write(`
 
 <span class="sd">    font</span>
 <span class="sd">      Path to the font to use. Must be an OpenType font.</span>
-<span class="sd">      See ``TextClip.list(&#39;font&#39;)`` for the list of fonts you can use on</span>
-<span class="sd">      your computer.</span>
 
 <span class="sd">    text</span>
 <span class="sd">      A string of the text to write. Can be replaced by argument</span>
@@ -1774,16 +1772,15 @@ document.write(`
 <span class="sd">      This is especially usefull for auto-compute size to give the text some</span>
 <span class="sd">      extra room.</span>
 
-<span class="sd">    bg_color</span>
-<span class="sd">      Color of the background. Default to None for no background. Can be</span>
-<span class="sd">      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an</span>
-<span class="sd">      hexadecimal notation.</span>
-
 <span class="sd">    color</span>
 <span class="sd">      Color of the text. Default to &quot;black&quot;. Can be</span>
 <span class="sd">      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an</span>
 <span class="sd">      hexadecimal notation.</span>
 
+<span class="sd">    bg_color</span>
+<span class="sd">      Color of the background. Default to None for no background. Can be</span>
+<span class="sd">      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an</span>
+<span class="sd">      hexadecimal notation.</span>
 
 <span class="sd">    stroke_color</span>
 <span class="sd">      Color of the stroke (=contour line) of the text. If ``None``,</span>
@@ -1975,7 +1972,6 @@ document.write(`
                 <span class="k">return</span> <span class="n">min_font_size</span> <span class="o">-</span> <span class="mi">1</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;f&quot;</span><span class="p">,</span> <span class="n">font</span><span class="p">)</span>
             <span class="n">_</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -2140,9 +2136,7 @@ document.write(`
         <span class="c1"># increment by half our text height, since we have to reference from</span>
         <span class="c1"># middle line.</span>
         <span class="n">y</span> <span class="o">+=</span> <span class="n">text_height</span> <span class="o">/</span> <span class="mi">2</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="n">text_align</span><span class="p">)</span>
         <span class="n">draw</span><span class="o">.</span><span class="n">multiline_text</span><span class="p">(</span>
             <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
             <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
