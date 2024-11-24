@@ -502,12 +502,12 @@ class VideoClip(Clip):
 
         The gif will be playing the clip in real time (you can
         only change the frame rate). If you want the gif to be played
-        slower than the clip you will use ::
+        slower than the clip you will use
 
-            .. code:: python
+        .. code:: python
 
-                # slow down clip 50% and make it a gif
-                myClip.multiply_speed(0.5).to_gif('myClip.gif')
+            # slow down clip 50% and make it a gif
+            myClip.multiply_speed(0.5).to_gif('myClip.gif')
 
         """
         # A little sketchy at the moment, maybe move all that in write_gif,

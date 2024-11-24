@@ -509,15 +509,16 @@ class Clip:
 
         dtype : type, optional
           Type to cast Numpy array frames. Use ``dtype="uint8"`` when using the
-          pictures to write video, images...
+          pictures to write video, images..
 
         Examples
         --------
 
-        # prints the maximum of red that is contained
-        # on the first line of each frame of the clip.
+
         .. code:: python
 
+            # prints the maximum of red that is contained
+            # on the first line of each frame of the clip.
             from moviepy import VideoFileClip
             myclip = VideoFileClip('myvideo.mp4')
             print([frame[0,:,0].max()

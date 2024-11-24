@@ -7,8 +7,7 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
-    """
-    A video clip originating from a movie file. For instance: ::
+    """A video clip originating from a movie file. For instance:
 
     .. code:: python
 
