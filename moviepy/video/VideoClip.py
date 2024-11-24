@@ -77,7 +77,7 @@ class VideoClip(Clip):
     is_mask
       Boolean set to `True` if the clip is a mask.
 
-    frame_function
+    get_frame
       A function ``t-> frame at time t`` where ``frame`` is a
       w*h*3 RGB array.
 
@@ -104,7 +104,7 @@ class VideoClip(Clip):
     """
 
     def __init__(
-        self, frame_function=None, is_mask=False, duration=None, has_constant_size=True
+        self, get_frame=None, is_mask=False, duration=None, has_constant_size=True
     ):
         super().__init__()
         self.mask = None
@@ -112,8 +112,8 @@ class VideoClip(Clip):
         self.pos = lambda t: (0, 0)
         self.relative_pos = False
         self.layer_index = 0
-        if frame_function:
-            self.frame_function = frame_function
+        if get_frame:
+            self.get_frame = get_frame
             self.size = self.get_frame(0).shape[:2][::-1]
         self.is_mask = is_mask
         self.has_constant_size = has_constant_size
@@ -835,15 +835,13 @@ class VideoClip(Clip):
         return result
 
     @outplace
-    def with_updated_frame_function(
-        self, frame_function: Callable[[float], np.ndarray]
-    ):
+    def with_updated_get_frame(self, get_frame: Callable[[float], np.ndarray]):
         """Change the clip's ``get_frame``.
 
-        Returns a copy of the VideoClip instance, with the frame_function
+        Returns a copy of the VideoClip instance, with the get_frame
         attribute set to `mf`.
         """
-        self.frame_function = frame_function
+        self.get_frame = get_frame
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
@@ -867,10 +865,10 @@ class VideoClip(Clip):
                 mask = ColorClip(self.size, 1.0, is_mask=True)
             else:
 
-                def frame_function(t):
+                def get_frame(t):
                     return np.ones(self.get_frame(t).shape[:2], dtype=float)
 
-                mask = VideoClip(is_mask=True, frame_function=frame_function)
+                mask = VideoClip(is_mask=True, get_frame=get_frame)
         self.mask = mask
 
     @outplace
@@ -1128,12 +1126,12 @@ class DataVideoClip(VideoClip):
         self.data_to_frame = data_to_frame
         self.fps = fps
 
-        def frame_function(t):
+        def get_frame(t):
             return self.data_to_frame(self.data[int(self.fps * t)])
 
         VideoClip.__init__(
             self,
-            frame_function,
+            get_frame,
             is_mask=is_mask,
             duration=1.0 * len(data) / fps,
             has_constant_size=has_constant_size,
@@ -1142,16 +1140,16 @@ class DataVideoClip(VideoClip):
 
 class UpdatedVideoClip(VideoClip):
     """
-    Class of clips whose frame_function requires some objects to
+    Class of clips whose get_frame requires some objects to
     be updated. Particularly practical in science where some
     algorithm needs to make some steps before a new frame can
     be generated.
 
-    UpdatedVideoClips have the following frame_function:
+    UpdatedVideoClips have the following get_frame:
 
     .. code:: python
 
-        def frame_function(t):
+        def get_frame(t):
             while self.world.clip_t < t:
                 world.update() # updates, and increases world.clip_t
             return world.to_frame()
@@ -1177,13 +1175,13 @@ class UpdatedVideoClip(VideoClip):
     def __init__(self, world, is_mask=False, duration=None):
         self.world = world
 
-        def frame_function(t):
+        def get_frame(t):
             while self.world.clip_t < t:
                 world.update()
             return world.to_frame()
 
         VideoClip.__init__(
-            self, frame_function=frame_function, is_mask=is_mask, duration=duration
+            self, get_frame=get_frame, is_mask=is_mask, duration=duration
         )
 
 
@@ -1254,7 +1252,7 @@ class ImageClip(VideoClip):
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.frame_function = lambda t: img
+        self.get_frame = lambda t: img
         self.size = img.shape[:2][::-1]
         self.img = img
 
@@ -1286,7 +1284,7 @@ class ImageClip(VideoClip):
             apply_to = []
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
-        self.frame_function = lambda t: arr
+        self.get_frame = lambda t: arr
         self.img = arr
 
         for attr in apply_to:
@@ -1875,7 +1873,7 @@ class BitmapClip(VideoClip):
 
         VideoClip.__init__(
             self,
-            frame_function=lambda t: frame_array[int(t * fps)],
+            get_frame=lambda t: frame_array[int(t * fps)],
             is_mask=is_mask,
             duration=duration,
         )

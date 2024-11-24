@@ -79,12 +79,12 @@ class Clip:
             if t == self.memoized_t:
                 return self.memoized_frame
             else:
-                frame = self.frame_function(t)
+                frame = self.get_frame(t)
                 self.memoized_t = t
                 self.memoized_frame = frame
                 return frame
         else:
-            return self.frame_function(t)
+            return self.get_frame(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """General processing of a clip.
@@ -126,8 +126,8 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        # mf = copy(self.frame_function)
-        new_clip = self.with_updated_frame_function(lambda t: func(self.get_frame, t))
+        # mf = copy(self.get_frame)
+        new_clip = self.with_updated_get_frame(lambda t: func(self.get_frame, t))
 
         if not keep_duration:
             new_clip.duration = None
@@ -296,17 +296,17 @@ class Clip:
             self.start = self.end - duration
 
     @outplace
-    def with_updated_frame_function(self, frame_function):
-        """Sets a ``frame_function`` attribute for the clip. Useful for setting
+    def with_updated_get_frame(self, get_frame):
+        """Sets a ``get_frame`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
 
         Parameters
         ----------
 
-        frame_function : function
+        get_frame : function
           New frame creator function for the clip.
         """
-        self.frame_function = frame_function
+        self.get_frame = get_frame
 
     def with_fps(self, fps, change_duration=False):
         """Returns a copy of the clip with a new default fps for functions like

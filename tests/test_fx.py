@@ -1082,8 +1082,8 @@ def test_audio_normalize():
 
 def test_audio_normalize_muted():
     z_array = np.array([0.0])
-    frame_function = lambda t: z_array
-    clip = AudioClip(frame_function, duration=1, fps=44100)
+    get_frame = lambda t: z_array
+    clip = AudioClip(get_frame, duration=1, fps=44100)
     clip = clip.with_effects([afx.AudioNormalize()])
     assert np.array_equal(clip.to_soundarray(), z_array)
 
@@ -1173,17 +1173,17 @@ def test_multiply_volume_audioclip(
     end_time,
 ):
     if sound_type == "stereo":
-        frame_function = lambda t: np.array(
+        get_frame = lambda t: np.array(
             [
                 np.sin(440 * 2 * np.pi * t),
                 np.sin(160 * 2 * np.pi * t),
             ]
         ).T.copy(order="C")
     else:
-        frame_function = lambda t: [np.sin(440 * 2 * np.pi * t)]
+        get_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
 
     clip = AudioClip(
-        frame_function,
+        get_frame,
         duration=duration if duration else 0.1,
         fps=22050,
     )
@@ -1374,7 +1374,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
 
     # stereo audio clip
     clip = AudioClip(
-        frame_function=stereo_wave(left_freq=440, right_freq=880),
+        get_frame=stereo_wave(left_freq=440, right_freq=880),
         duration=duration,
         fps=44100,
     )
@@ -1448,11 +1448,11 @@ def test_audio_fadein(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadein_duration
 ):
     if sound_type == "stereo":
-        frame_function = stereo_wave(left_freq=440, right_freq=160)
+        get_frame = stereo_wave(left_freq=440, right_freq=160)
     else:
-        frame_function = mono_wave(440)
+        get_frame = mono_wave(440)
 
-    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
+    clip = AudioClip(get_frame, duration=clip_duration, fps=fps)
     new_clip = clip.with_effects([afx.AudioFadeIn(fadein_duration)])
 
     # first frame is muted
@@ -1509,11 +1509,11 @@ def test_audio_fadeout(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadeout_duration
 ):
     if sound_type == "stereo":
-        frame_function = stereo_wave(left_freq=440, right_freq=160)
+        get_frame = stereo_wave(left_freq=440, right_freq=160)
     else:
-        frame_function = mono_wave(440)
+        get_frame = mono_wave(440)
 
-    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
+    clip = AudioClip(get_frame, duration=clip_duration, fps=fps)
     new_clip = clip.with_effects([afx.AudioFadeOut(fadeout_duration)])
 
     fadeout_duration = convert_to_seconds(fadeout_duration)

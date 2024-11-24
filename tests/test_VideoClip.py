@@ -215,8 +215,8 @@ def test_oncolor(util):
 
 def test_setaudio(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    frame_function_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    audio = AudioClip(frame_function_440, duration=0.5)
+    get_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    audio = AudioClip(get_frame_440, duration=0.5)
     audio.fps = 44100
     clip = clip.with_audio(audio)
     location = os.path.join(util.TMP_DIR, "setaudio.mp4")

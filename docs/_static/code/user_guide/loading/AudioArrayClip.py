@@ -14,17 +14,17 @@ note_size = int(note_duration * sample_rate)
 n_frames = note_size * len(notes)
 
 
-def frame_function(t, note_frequency):
+def get_frame(t, note_frequency):
     return np.sin(note_frequency * 2 * np.pi * t)
 
 
 # At this point one could use this audioclip which generates the audio on the fly
-# clip = AudioFileClip(frame_function)
+# clip = AudioFileClip(get_frame)
 
 # We generate all frames timepoints
 
 audio_frame_values = [
-    2 * [frame_function(t, freq)]
+    2 * [get_frame(t, freq)]
     for freq in notes.values()
     for t in np.arange(0, note_duration, 1.0 / sample_rate)
 ]

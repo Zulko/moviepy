@@ -7,7 +7,7 @@ WIDTH, HEIGHT = (128, 128)
 RED = (255, 0, 0)
 
 
-def frame_function(t):
+def get_frame(t):
     frequency = 1  # One pulse per second
     coef = 0.5 * (1 + math.sin(2 * math.pi * frequency * t))  # radius varies over time
     radius = WIDTH * coef
@@ -25,6 +25,6 @@ def frame_function(t):
 
 
 # we define a 2s duration for the clip to be able to render it later
-clip = VideoClip(frame_function, duration=2)
+clip = VideoClip(get_frame, duration=2)
 # we must set a framerate because VideoClip have no framerate by default
 clip.write_gif("circle.gif", fps=15)

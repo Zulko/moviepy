@@ -2,10 +2,10 @@ from moviepy import VideoClip, ImageClip, VideoFileClip
 import numpy as np
 
 # Random RGB noise image of 200x100
-frame_function = lambda t: np.random.rand(100, 200)
+get_frame = lambda t: np.random.rand(100, 200)
 
 # To define the VideoClip as a mask, just pass parameter is_mask as True
-maskclip1 = VideoClip(frame_function, duration=4, is_mask=True)  # A random noise mask
+maskclip1 = VideoClip(get_frame, duration=4, is_mask=True)  # A random noise mask
 maskclip2 = ImageClip("example_mask.jpg", is_mask=True)  # A fixed mask as jpeg
 maskclip3 = VideoFileClip("example_mask.mp4", is_mask=True)  # A video as a mask
 

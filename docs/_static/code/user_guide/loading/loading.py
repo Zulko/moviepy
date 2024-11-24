@@ -14,12 +14,12 @@ import numpy as np
 black = (255, 255, 255)  # RGB for black
 
 
-def frame_function(t):
+def get_frame(t):
     """Random noise image of 200x100"""
     return np.random.randint(low=0, high=255, size=(100, 200, 3))
 
 
-def frame_function_audio(t):
+def get_frame_audio(t):
     """A note by producing a sinewave of 440 Hz"""
     return np.sin(440 * 2 * np.pi * t)
 
@@ -27,9 +27,9 @@ def frame_function_audio(t):
 # Now lets see how to load different type of resources !
 
 # VIDEO CLIPS
-# for custom animations, where frame_function is a function returning an image
+# for custom animations, where get_frame is a function returning an image
 # as numpy array for a given time
-clip = VideoClip(frame_function, duration=5)
+clip = VideoClip(get_frame, duration=5)
 clip = VideoFileClip("example.mp4")  # for videos
 # for a list or directory of images to be used as a video sequence
 clip = ImageSequenceClip("example_img_dir", fps=24)
@@ -42,6 +42,6 @@ clip = ColorClip(size=(460, 380), color=black)
 # AUDIO CLIPS
 # for audio files, but also videos where you only want the keep the audio track
 clip = AudioFileClip("example.wav")
-# for custom audio, where frame_function is a function returning a
+# for custom audio, where get_frame is a function returning a
 # float (or tuple for stereo) for a given time
-clip = AudioClip(frame_function_audio, duration=3)
+clip = AudioClip(get_frame_audio, duration=3)

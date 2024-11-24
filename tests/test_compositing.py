@@ -16,18 +16,19 @@ class ClipPixelTest:
         self.clip = clip
 
     def expect_color_at(self, ts, expected, xy=[0, 0]):
-        frame = self.clip.frame_function(ts)
+        frame = self.clip.get_frame(ts)
         r, g, b = expected
         actual = frame[xy[1]][xy[0]]
         diff = abs(actual[0] - r) + abs(actual[1] - g) + abs(actual[2] - b)
 
         mismatch = diff > ClipPixelTest.ALLOWABLE_COLOR_VARIATION
-        assert (
-            not mismatch
-        ), "Expected (%02x,%02x,%02x) but got (%02x,%02x,%02x) at timestamp %s" % (
-            *expected,
-            *actual,
-            ts,
+        assert not mismatch, (
+            "Expected (%02x,%02x,%02x) but got (%02x,%02x,%02x) at timestamp %s"
+            % (
+                *expected,
+                *actual,
+                ts,
+            )
         )
 
 

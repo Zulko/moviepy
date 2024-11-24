@@ -7,4 +7,4 @@ def audio_frame(t):
     return np.sin(440 * 2 * np.pi * t)
 
 
-audio_clip = AudioClip(frame_function=audio_frame, duration=3)
+audio_clip = AudioClip(get_frame=audio_frame, duration=3)

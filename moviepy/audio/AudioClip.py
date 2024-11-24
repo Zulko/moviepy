@@ -22,7 +22,7 @@ class AudioClip(Clip):
 
     See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.
 
-    An AudioClip is a Clip with a ``frame_function``  attribute of
+    An AudioClip is a Clip with a ``get_frame``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
@@ -32,7 +32,7 @@ class AudioClip(Clip):
     Parameters
     ----------
 
-    frame_function
+    get_frame
       A function `t-> frame at time t`. The frame does not mean much
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
@@ -51,28 +51,28 @@ class AudioClip(Clip):
 
         # Plays the note A in mono (a sine wave of frequency 440 Hz)
         import numpy as np
-        frame_function = lambda t: np.sin(440 * 2 * np.pi * t)
-        clip = AudioClip(frame_function, duration=5, fps=44100)
+        get_frame = lambda t: np.sin(440 * 2 * np.pi * t)
+        clip = AudioClip(get_frame, duration=5, fps=44100)
         clip.preview()
 
         # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
-        frame_function = lambda t: np.array([
+        get_frame = lambda t: np.array([
             np.sin(440 * 2 * np.pi * t),
             np.sin(880 * 2 * np.pi * t)
         ]).T.copy(order="C")
-        clip = AudioClip(frame_function, duration=3, fps=44100)
+        clip = AudioClip(get_frame, duration=3, fps=44100)
         clip.preview()
 
     """
 
-    def __init__(self, frame_function=None, duration=None, fps=None):
+    def __init__(self, get_frame=None, duration=None, fps=None):
         super().__init__()
 
         if fps is not None:
             self.fps = fps
 
-        if frame_function is not None:
-            self.frame_function = frame_function
+        if get_frame is not None:
+            self.get_frame = get_frame
             frame0 = self.get_frame(0)
             if hasattr(frame0, "__iter__"):
                 self.nchannels = len(list(frame0))
@@ -337,7 +337,7 @@ class AudioArrayClip(AudioClip):
         self.fps = fps
         self.duration = 1.0 * len(array) / fps
 
-        def frame_function(t):
+        def get_frame(t):
             """Complicated, but must be able to handle the case where t
             is a list of the form sin(t).
             """
@@ -354,7 +354,7 @@ class AudioArrayClip(AudioClip):
                 else:
                     return self.array[i]
 
-        self.frame_function = frame_function
+        self.get_frame = get_frame
         self.nchannels = len(list(self.get_frame(0)))
 
 
@@ -402,7 +402,7 @@ class CompositeAudioClip(AudioClip):
         """Returns ending times for all clips in the composition."""
         return (clip.end for clip in self.clips)
 
-    def frame_function(self, t):
+    def get_frame(self, t):
         """Renders a frame for the composition for the time ``t``."""
         played_parts = [clip.is_playing(t) for clip in self.clips]
 

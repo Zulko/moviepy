@@ -1088,8 +1088,8 @@ def test_find_audio_period(mono_wave, stereo_wave, wave_type):
         wave2 = stereo_wave(left_freq=100, right_freq=200)
     clip = CompositeAudioClip(
         [
-            AudioClip(frame_function=wave1, duration=0.3, fps=22050),
-            AudioClip(frame_function=wave2, duration=0.3, fps=22050).with_effects(
+            AudioClip(get_frame=wave1, duration=0.3, fps=22050),
+            AudioClip(get_frame=wave2, duration=0.3, fps=22050).with_effects(
                 [afx.MultiplyVolume(0, end_time=0.1)]
             ),
         ]

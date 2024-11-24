@@ -186,7 +186,7 @@ def test_audioclip_mono_max_volume(mono_wave):
 @pytest.mark.parametrize(("nchannels"), (2, 4, 8, 16))
 @pytest.mark.parametrize(("channel_muted"), ("left", "right"))
 def test_audioclip_stereo_max_volume(nchannels, channel_muted):
-    def frame_function(t):
+    def get_frame(t):
         frame = []
         # build channels (one of each pair muted)
         for i in range(int(nchannels / 2)):
@@ -200,7 +200,7 @@ def test_audioclip_stereo_max_volume(nchannels, channel_muted):
                 frame.append(np.sin(t * 0))
         return np.array(frame).T
 
-    clip = AudioClip(frame_function, fps=44100, duration=1)
+    clip = AudioClip(get_frame, fps=44100, duration=1)
     max_volume = clip.max_volume(stereo=True)
     # if `stereo == True`, `AudioClip.max_volume` returns a Numpy array`
     assert isinstance(max_volume, np.ndarray)

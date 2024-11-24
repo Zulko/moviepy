@@ -125,18 +125,18 @@ class VideoFileClip(VideoClip):
         self.filename = filename
 
         if has_mask:
-            self.frame_function = lambda t: self.reader.get_frame(t)[:, :, :3]
+            self.get_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
 
-            def mask_frame_function(t):
+            def mask_get_frame(t):
                 return self.reader.get_frame(t)[:, :, 3] / 255.0
 
-            self.mask = VideoClip(
-                is_mask=True, frame_function=mask_frame_function
-            ).with_duration(self.duration)
+            self.mask = VideoClip(is_mask=True, get_frame=mask_get_frame).with_duration(
+                self.duration
+            )
             self.mask.fps = self.fps
 
         else:
-            self.frame_function = lambda t: self.reader.get_frame(t)
+            self.get_frame = lambda t: self.reader.get_frame(t)
 
         # Make a reader for the audio, if any.
         if audio and self.reader.infos["audio_found"]:

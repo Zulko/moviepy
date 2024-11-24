@@ -46,7 +46,7 @@ copyright = copyright.with_position(("center", background.h - copyright.h - 30))
 
 # Finally, we want the logo to be in the center, but to drop as time pass
 # We can do so by setting position as a function that take time as argument,
-# a lot like frame_function
+# a lot like get_frame
 top = (background.h - logo.h) / 2
 logo = logo.with_position(lambda t: ("center", top + t * 30))
 

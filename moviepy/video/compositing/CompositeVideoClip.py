@@ -116,7 +116,7 @@ class CompositeVideoClip(VideoClip):
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
-    def frame_function(self, t):
+    def get_frame(self, t):
         """The clips playing at time `t` are blitted over one another."""
         frame = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(frame)
@@ -284,7 +284,7 @@ def concatenate_videoclips(
 
     if method == "chain":
 
-        def frame_function(t):
+        def get_frame(t):
             i = max([i for i, e in enumerate(timings) if e <= t])
             return clips[i].get_frame(t - timings[i])
 
@@ -294,7 +294,7 @@ def concatenate_videoclips(
                 mask.duration = clip.duration
             return mask
 
-        result = VideoClip(is_mask=is_mask, frame_function=frame_function)
+        result = VideoClip(is_mask=is_mask, get_frame=get_frame)
         if any([clip.mask is not None for clip in clips]):
             masks = [get_mask(clip) for clip in clips]
             result.mask = concatenate_videoclips(masks, method="chain", is_mask=True)
