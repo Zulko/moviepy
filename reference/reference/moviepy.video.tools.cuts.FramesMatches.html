@@ -591,8 +591,8 @@ bool.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_matches</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span> <span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
+<span class="n">new_matches</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">match</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -623,15 +623,15 @@ and whose distance is under <code class="docutils literal notranslate"><span cla
 <p class="rubric">Examples</p>
 <p>We find all matching frames in a given video and turn the best match
 with a duration of 1.5 seconds or more into a GIF:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;foo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">matches</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_duration</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># will take time</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">best</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">)</span><span class="o">.</span><span class="n">best</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="n">best</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;foo.gif&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;foo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">matches</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span>
+    <span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_duration</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>  <span class="c1"># will take time</span>
+<span class="p">)</span>
+<span class="n">best</span> <span class="o">=</span> <span class="n">matches</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">time_span</span> <span class="o">&gt;</span> <span class="mf">1.5</span><span class="p">)</span><span class="o">.</span><span class="n">best</span><span class="p">()</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="n">best</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;foo.gif&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -687,22 +687,22 @@ chosen equal to <code class="docutils literal notranslate"><span class="pre">mat
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mirror_and_clip</span> <span class="o">=</span> <span class="p">[</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">TimeMirror</span><span class="p">()]),</span> <span class="n">ch_clip</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">mirror_and_clip</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-<span class="go">[(1.0000, 4.0000, 0.0000, 0.0000),</span>
-<span class="go"> (1.1600, 3.8400, 0.0000, 0.0000),</span>
-<span class="go"> (1.2800, 3.7200, 0.0000, 0.0000),</span>
-<span class="go"> (1.4000, 3.6000, 0.0000, 0.0000)]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+
+<span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">mirror_and_clip</span> <span class="o">=</span> <span class="p">[</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">TimeMirror</span><span class="p">()]),</span> <span class="n">ch_clip</span><span class="p">]</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">mirror_and_clip</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># [(1.0000, 4.0000, 0.0000, 0.0000),</span>
+<span class="c1">#  (1.1600, 3.8400, 0.0000, 0.0000),</span>
+<span class="c1">#  (1.2800, 3.7200, 0.0000, 0.0000),</span>
+<span class="c1">#  (1.4000, 3.6000, 0.0000, 0.0000)]</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -722,24 +722,24 @@ and write them as GIFs in a directory, one GIF for each matching frame.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">time_mirror</span><span class="p">(),</span> <span class="n">ch_clip</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span><span class="o">.</span><span class="n">write_gifs</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">)</span>
-<span class="go">MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
-<span class="go">MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
-<span class="go">MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
-<span class="go">MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+
+<span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">time_mirror</span><span class="p">(),</span> <span class="n">ch_clip</span><span class="p">])</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">select_scenes</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">write_gifs</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<span class="c1"># MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
+<span class="c1"># MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
+<span class="c1"># MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
+<span class="c1"># MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
 </pre></div>
 </div>
 </dd></dl>

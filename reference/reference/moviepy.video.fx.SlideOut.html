@@ -560,19 +560,19 @@ and if the clip has the same size as the whole composition.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span> <span class="n">make</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">clips</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">slided_clips</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">SlideOut</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">)])])</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span>
-<span class="gp">... </span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">final_clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">slided_clips</span><span class="p">,</span> <span class="n">padding</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span><span class="o">.</span><span class="n">with_fps</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">SlideOut</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)])])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="o">...</span> <span class="n">make</span> <span class="n">a</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">clips</span><span class="p">]</span>
+<span class="n">slided_clips</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">SlideOut</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">)])])</span>
+    <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span>
+<span class="p">]</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">slided_clips</span><span class="p">,</span> <span class="n">padding</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span>
+    <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">with_fps</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">SlideOut</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">)])])</span>
 </pre></div>
 </div>
 <dl class="py method">

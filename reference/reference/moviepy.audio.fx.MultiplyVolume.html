@@ -560,16 +560,16 @@ ends to take effect, in seconds. By default at the end.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;music.ogg&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># doubles audio volume</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">doubled_audio_clip</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># halves audio volume</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">half_audio_clip</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># silences clip during one second at third</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">effect</span> <span class="o">=</span> <span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">silenced_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">effect</span><span class="p">])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
+
+<span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;music.ogg&quot;</span><span class="p">)</span>
+<span class="c1"># doubles audio volume</span>
+<span class="n">doubled_audio_clip</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mi">2</span><span class="p">)])</span>
+<span class="c1"># halves audio volume</span>
+<span class="n">half_audio_clip</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
+<span class="c1"># silences clip during one second at third</span>
+<span class="n">effect</span> <span class="o">=</span> <span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">silenced_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">effect</span><span class="p">])</span>
 </pre></div>
 </div>
 <dl class="py method">

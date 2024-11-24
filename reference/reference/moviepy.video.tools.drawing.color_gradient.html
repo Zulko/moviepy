@@ -598,26 +598,25 @@ representing the image of the gradient.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">color_gradient</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># from white to black</span>
-<span class="go">[[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">color_gradient</span><span class="p">(</span>  <span class="c1"># from red to green</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>  <span class="c1"># size</span>
-<span class="gp">... </span>    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>   <span class="c1"># p1</span>
-<span class="gp">... </span>    <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">color_1</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># red</span>
-<span class="gp">... </span>    <span class="n">color_2</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>  <span class="c1"># green</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="go">[[[  0.  255.    0. ]</span>
-<span class="go">  [ 25.5 229.5   0. ]</span>
-<span class="go">  [ 51.  204.    0. ]</span>
-<span class="go">  [ 76.5 178.5   0. ]</span>
-<span class="go">  [102.  153.    0. ]</span>
-<span class="go">  [127.5 127.5   0. ]</span>
-<span class="go">  [153.  102.    0. ]</span>
-<span class="go">  [178.5  76.5   0. ]</span>
-<span class="go">  [204.   51.    0. ]</span>
-<span class="go">  [229.5  25.5   0. ]]]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">color_gradient</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># from white to black</span>
+<span class="c1">#[[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]</span>
+<span class="c1"># from red to green</span>
+<span class="n">color_gradient</span><span class="p">(</span>
+    <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">p2</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">color_1</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">color_2</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># [[[  0.  255.    0. ]</span>
+<span class="c1">#   [ 25.5 229.5   0. ]</span>
+<span class="c1">#   [ 51.  204.    0. ]</span>
+<span class="c1">#   [ 76.5 178.5   0. ]</span>
+<span class="c1">#   [102.  153.    0. ]</span>
+<span class="c1">#   [127.5 127.5   0. ]</span>
+<span class="c1">#   [153.  102.    0. ]</span>
+<span class="c1">#   [178.5  76.5   0. ]</span>
+<span class="c1">#   [204.   51.    0. ]</span>
+<span class="c1">#   [229.5  25.5   0. ]]]</span>
 </pre></div>
 </div>
 </dd></dl>

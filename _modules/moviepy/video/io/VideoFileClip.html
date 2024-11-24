@@ -384,13 +384,14 @@ document.write(`
 
 
 <div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A video clip originating from a movie file. For instance: ::</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A video clip originating from a movie file. For instance:</span>
 
-<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;myHolidays.mp4&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; clip.close()</span>
-<span class="sd">        &gt;&gt;&gt; with VideoFileClip(&quot;myMaskVideo.avi&quot;) as clip2:</span>
-<span class="sd">        &gt;&gt;&gt;    pass  # Implicit close called by context manager.</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        clip = VideoFileClip(&quot;myHolidays.mp4&quot;)</span>
+<span class="sd">        clip.close()</span>
+<span class="sd">        with VideoFileClip(&quot;myMaskVideo.avi&quot;) as clip2:</span>
+<span class="sd">            pass  # Implicit close called by context manager.</span>
 
 
 <span class="sd">    Parameters</span>
@@ -458,7 +459,6 @@ document.write(`
 
 <span class="sd">    If copies are made, and close() is called on one, it may cause methods on</span>
 <span class="sd">    the other copies to fail.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>

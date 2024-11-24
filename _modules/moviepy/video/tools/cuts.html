@@ -405,12 +405,14 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt; from moviepy.video.tools.cuts import find_video_period</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(0, 1).loop(2)</span>
-<span class="sd">    &gt;&gt;&gt; round(videotools.find_video_period(clip, fps=80), 6)</span>
-<span class="sd">    1</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy import *</span>
+<span class="sd">        from moviepy.video.tools.cuts import find_video_period</span>
+
+<span class="sd">        clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(0, 1).loop(2)</span>
+<span class="sd">        round(videotools.find_video_period(clip, fps=80), 6)</span>
+<span class="sd">        1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
@@ -531,8 +533,10 @@ document.write(`
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; # Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
-<span class="sd">        &gt;&gt;&gt; new_matches = matches.filter( lambda match: match.time_span &gt; 1)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            # Only keep the matches corresponding to (&gt; 1 second) sequences.</span>
+<span class="sd">            new_matches = matches.filter(lambda match: match.time_span &gt; 1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
 
@@ -606,15 +610,17 @@ document.write(`
 <span class="sd">        We find all matching frames in a given video and turn the best match</span>
 <span class="sd">        with a duration of 1.5 seconds or more into a GIF:</span>
 
-<span class="sd">        &gt;&gt;&gt; from moviepy import VideoFileClip</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;foo.mp4&quot;).resize(width=200)</span>
-<span class="sd">        &gt;&gt;&gt; matches = FramesMatches.from_clip(</span>
-<span class="sd">        ...     clip, distance_threshold=10, max_duration=3,  # will take time</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; best = matches.filter(lambda m: m.time_span &gt; 1.5).best()</span>
-<span class="sd">        &gt;&gt;&gt; clip.subclipped(best.start_time, best.end_time).write_gif(&quot;foo.gif&quot;)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            from moviepy import VideoFileClip</span>
+<span class="sd">            from moviepy.video.tools.cuts import FramesMatches</span>
+
+<span class="sd">            clip = VideoFileClip(&quot;foo.mp4&quot;).resize(width=200)</span>
+<span class="sd">            matches = FramesMatches.from_clip(</span>
+<span class="sd">                clip, distance_threshold=10, max_duration=3,  # will take time</span>
+<span class="sd">            )</span>
+<span class="sd">            best = matches.filter(lambda m: m.time_span &gt; 1.5).best()</span>
+<span class="sd">            clip.subclipped(best.start_time, best.end_time).write_gif(&quot;foo.gif&quot;)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N_pixels</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="mi">3</span>
 
@@ -715,22 +721,24 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; from pprint import pprint</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
-<span class="sd">        &gt;&gt;&gt; mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]</span>
-<span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips(mirror_and_clip)</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
-<span class="sd">        ...     1, 2, nomatch_threshold=0,</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt; print(result)</span>
-<span class="sd">        [(1.0000, 4.0000, 0.0000, 0.0000),</span>
-<span class="sd">         (1.1600, 3.8400, 0.0000, 0.0000),</span>
-<span class="sd">         (1.2800, 3.7200, 0.0000, 0.0000),</span>
-<span class="sd">         (1.4000, 3.6000, 0.0000, 0.0000)]</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            from pprint import pprint</span>
+<span class="sd">            from moviepy import *</span>
+<span class="sd">            from moviepy.video.tools.cuts import FramesMatches</span>
+
+<span class="sd">            ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
+<span class="sd">            mirror_and_clip = [ch_clip.with_effects([vfx.TimeMirror()]), ch_clip]</span>
+<span class="sd">            clip = concatenate_videoclips(mirror_and_clip)</span>
+
+<span class="sd">            result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
+<span class="sd">                1, 2, nomatch_threshold=0,</span>
+<span class="sd">            )</span>
+<span class="sd">            print(result)</span>
+<span class="sd">            # [(1.0000, 4.0000, 0.0000, 0.0000),</span>
+<span class="sd">            #  (1.1600, 3.8400, 0.0000, 0.0000),</span>
+<span class="sd">            #  (1.2800, 3.7200, 0.0000, 0.0000),</span>
+<span class="sd">            #  (1.4000, 3.6000, 0.0000, 0.0000)]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">nomatch_threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nomatch_threshold</span> <span class="o">=</span> <span class="n">match_threshold</span>
@@ -802,24 +810,26 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; import os</span>
-<span class="sd">        &gt;&gt;&gt; from pprint import pprint</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy.video.tools.cuts import FramesMatches</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
-<span class="sd">        &gt;&gt;&gt; clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
-<span class="sd">        ...     1, 2, nomatch_threshold=0,</span>
-<span class="sd">        ... )</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; os.mkdir(&quot;foo&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; result.write_gifs(clip, &quot;foo&quot;)</span>
-<span class="sd">        MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
-<span class="sd">        MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
-<span class="sd">        MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
-<span class="sd">        MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            import os</span>
+<span class="sd">            from pprint import pprint</span>
+<span class="sd">            from moviepy import *</span>
+<span class="sd">            from moviepy.video.tools.cuts import FramesMatches</span>
+
+<span class="sd">            ch_clip = VideoFileClip(&quot;media/chaplin.mp4&quot;).subclipped(1, 4)</span>
+<span class="sd">            clip = concatenate_videoclips([ch_clip.time_mirror(), ch_clip])</span>
+
+<span class="sd">            result = FramesMatches.from_clip(clip, 10, 3).select_scenes(</span>
+<span class="sd">                1, 2, nomatch_threshold=0,</span>
+<span class="sd">            )</span>
+
+<span class="sd">            os.mkdir(&quot;foo&quot;)</span>
+<span class="sd">            result.write_gifs(clip, &quot;foo&quot;)</span>
+<span class="sd">            # MoviePy - Building file foo/00000100_00000400.gif with imageio.</span>
+<span class="sd">            # MoviePy - Building file foo/00000115_00000384.gif with imageio.</span>
+<span class="sd">            # MoviePy - Building file foo/00000128_00000372.gif with imageio.</span>
+<span class="sd">            # MoviePy - Building file foo/00000140_00000360.gif with imageio.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">/</span><span class="si">%08d</span><span class="s2">_</span><span class="si">%08d</span><span class="s2">.gif&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">gifs_dir</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">start</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">end</span><span class="p">)</span>

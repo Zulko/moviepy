@@ -576,16 +576,16 @@ situations (for instance for antialiasing).</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># an image with all pixels with x&lt;50 =0, the others =1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color_1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># an image with all pixels with y&lt;50 red, the others green</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color_1</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color_2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># An image split along an arbitrary line (see below)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">p2</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">70</span><span class="p">]</span> <span class="n">color_1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">size</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+
+<span class="c1"># an image with all pixels with x&lt;50 =0, the others =1</span>
+<span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color_1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># an image with all pixels with y&lt;50 red, the others green</span>
+<span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color_1</span><span class="o">=</span><span class="p">[</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color_2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># An image split along an arbitrary line (see below)</span>
+<span class="n">color_split</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">p1</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="n">p2</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">70</span><span class="p">],</span> <span class="n">color_1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color_2</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

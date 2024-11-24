@@ -409,10 +409,12 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; myClip.with_effects([vfx.Resize((460,720))]) # New resolution: (460,720)</span>
-<span class="sd">    &gt;&gt;&gt; myClip.with_effects([vfx.Resize(0.6)]) # width and height multiplied by 0.6</span>
-<span class="sd">    &gt;&gt;&gt; myClip.with_effects([vfx.Resize(width=800)]) # height computed automatically.</span>
-<span class="sd">    &gt;&gt;&gt; myClip.with_effects([vfx.Resize(lambda t : 1+0.02*t)]) # slow clip swelling</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        clip.with_effects([vfx.Resize((460,720))]) # New resolution: (460,720)</span>
+<span class="sd">        clip.with_effects([vfx.Resize(0.6)]) # width and height multiplied by 0.6</span>
+<span class="sd">        clip.with_effects([vfx.Resize(width=800)]) # height computed automatically.</span>
+<span class="sd">        clip.with_effects([vfx.Resize(lambda t : 1+0.02*t)]) # slow clip swelling</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">new_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>

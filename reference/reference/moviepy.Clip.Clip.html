@@ -635,17 +635,17 @@ has a <code class="docutils literal notranslate"><span class="pre">fps</span></c
 time for the frame, otherwise only a <code class="docutils literal notranslate"><span class="pre">frame</span></code> object.</p></li>
 <li><p><strong>logger</strong> (<em>str</em><em>, </em><em>optional</em>) – Either <code class="docutils literal notranslate"><span class="pre">&quot;bar&quot;</span></code> for progress bar or <code class="docutils literal notranslate"><span class="pre">None</span></code> or any Proglog logger.</p></li>
 <li><p><strong>dtype</strong> (<em>type</em><em>, </em><em>optional</em>) – Type to cast Numpy array frames. Use <code class="docutils literal notranslate"><span class="pre">dtype=&quot;uint8&quot;</span></code> when using the
-pictures to write video, images…</p></li>
+pictures to write video, images..</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># prints the maximum of red that is contained</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># on the first line of each frame of the clip.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="go">             for frame in myclip.iter_frames()])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># prints the maximum of red that is contained</span>
+<span class="c1"># on the first line of each frame of the clip.</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+      <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">myclip</span><span class="o">.</span><span class="n">iter_frames</span><span class="p">()])</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -701,11 +701,11 @@ audio or the mask of the clip, if any.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip (and its mask and sound) twice faster</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># plays the clip starting at t=3, and backwards:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plays the clip (and its mask and sound) twice faster</span>
+<span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">t</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="s1">&#39;audio&#39;</span><span class="p">])</span>
+
+<span class="c1"># plays the clip starting at t=3, and backwards:</span>
+<span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">3</span><span class="o">-</span><span class="n">t</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

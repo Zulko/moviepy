@@ -435,20 +435,22 @@ document.write(`
 
 <span class="sd">    Here are the accepted formats:</span>
 
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds(15.4)   # seconds</span>
-<span class="sd">    15.4</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds((1, 21.5))   # (min,sec)</span>
-<span class="sd">    81.5</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds((1, 1, 2))   # (hr, min, sec)</span>
-<span class="sd">    3662</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds(&#39;01:01:33.045&#39;)</span>
-<span class="sd">    3693.045</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds(&#39;01:01:33,5&#39;)    # coma works too</span>
-<span class="sd">    3693.5</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds(&#39;1:33,5&#39;)    # only minutes and secs</span>
-<span class="sd">    99.5</span>
-<span class="sd">    &gt;&gt;&gt; convert_to_seconds(&#39;33.5&#39;)      # only secs</span>
-<span class="sd">    33.5</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        convert_to_seconds(15.4)   # seconds</span>
+<span class="sd">        15.4</span>
+<span class="sd">        convert_to_seconds((1, 21.5))   # (min,sec)</span>
+<span class="sd">        81.5</span>
+<span class="sd">        convert_to_seconds((1, 1, 2))   # (hr, min, sec)</span>
+<span class="sd">        3662</span>
+<span class="sd">        convert_to_seconds(&#39;01:01:33.045&#39;)</span>
+<span class="sd">        3693.045</span>
+<span class="sd">        convert_to_seconds(&#39;01:01:33,5&#39;)    # coma works too</span>
+<span class="sd">        3693.5</span>
+<span class="sd">        convert_to_seconds(&#39;1:33,5&#39;)    # only minutes and secs</span>
+<span class="sd">        99.5</span>
+<span class="sd">        convert_to_seconds(&#39;33.5&#39;)      # only secs</span>
+<span class="sd">        33.5</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">factors</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">3600</span><span class="p">)</span>
 
@@ -478,12 +480,13 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; # The badly named method &#39;to_file&#39; is replaced by &#39;write_file&#39;</span>
-<span class="sd">    &gt;&gt;&gt; class Clip:</span>
-<span class="sd">    &gt;&gt;&gt;    def write_file(self, some args):</span>
-<span class="sd">    &gt;&gt;&gt;        # blablabla</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; Clip.to_file = deprecated_version_of(Clip.write_file, &#39;to_file&#39;)</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        # The badly named method &#39;to_file&#39; is replaced by &#39;write_file&#39;</span>
+<span class="sd">        class Clip:</span>
+<span class="sd">            def write_file(self, some args):</span>
+<span class="sd">                # blablabla</span>
+<span class="sd">        Clip.to_file = deprecated_version_of(Clip.write_file, &#39;to_file&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Detect new name of func</span>
     <span class="n">new_name</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>

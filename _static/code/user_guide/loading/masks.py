@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy import VideoClip, ImageClip, VideoFileClip
 import numpy as np
 
 # Random RGB noise image of 200x100

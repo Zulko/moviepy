@@ -400,11 +400,13 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; clip = ColorClip(color=(255, 0, 0), size=(1, 1))      # red</span>
-<span class="sd">    &gt;&gt;&gt; mask = ColorClip(color=(0, 255, 0), size=(1, 1))      # green</span>
-<span class="sd">    &gt;&gt;&gt; masked_clip = clip.with_effects([vfx.MasksAnd(mask)]) # black</span>
-<span class="sd">    &gt;&gt;&gt; masked_clip.get_frame(0)</span>
-<span class="sd">    [[[0 0 0]]]</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        clip = ColorClip(color=(255, 0, 0), size=(1, 1))      # red</span>
+<span class="sd">        mask = ColorClip(color=(0, 255, 0), size=(1, 1))      # green</span>
+<span class="sd">        masked_clip = clip.with_effects([vfx.MasksAnd(mask)]) # black</span>
+<span class="sd">        masked_clip.get_frame(0)</span>
+<span class="sd">        [[[0 0 0]]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">other_clip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Clip</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>

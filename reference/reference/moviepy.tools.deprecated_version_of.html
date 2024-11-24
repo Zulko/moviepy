@@ -560,12 +560,11 @@ deprecated and that you should use <cite>func</cite> instead.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The badly named method &#39;to_file&#39; is replaced by &#39;write_file&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">Clip</span><span class="p">:</span>
-<span class="gp">&gt;&gt;&gt; </span>   <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">some</span> <span class="n">args</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>       <span class="c1"># blablabla</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Clip</span><span class="o">.</span><span class="n">to_file</span> <span class="o">=</span> <span class="n">deprecated_version_of</span><span class="p">(</span><span class="n">Clip</span><span class="o">.</span><span class="n">write_file</span><span class="p">,</span> <span class="s1">&#39;to_file&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The badly named method &#39;to_file&#39; is replaced by &#39;write_file&#39;</span>
+<span class="k">class</span> <span class="nc">Clip</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">some</span> <span class="n">args</span><span class="p">):</span>
+        <span class="c1"># blablabla</span>
+<span class="n">Clip</span><span class="o">.</span><span class="n">to_file</span> <span class="o">=</span> <span class="n">deprecated_version_of</span><span class="p">(</span><span class="n">Clip</span><span class="o">.</span><span class="n">write_file</span><span class="p">,</span> <span class="s1">&#39;to_file&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

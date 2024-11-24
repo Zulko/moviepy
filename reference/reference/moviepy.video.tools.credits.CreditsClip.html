@@ -549,50 +549,38 @@ document.write(`
 <dd><p>Credits clip.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>creditfile</strong> – <p>A string or path like object pointing to a text file
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>creditfile</strong> – <p>A string or path like object pointing to a text file
 whose content must be as follows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># This is a comment</span>
-<span class="c1"># The next line says : leave 4 blank lines</span>
-<span class="o">.</span><span class="n">blank</span> <span class="mi">4</span>
-
-<span class="o">..</span><span class="n">Executive</span> <span class="n">Story</span> <span class="n">Editor</span>
-<span class="n">MARCEL</span> <span class="n">DURAND</span>
-
-<span class="o">..</span><span class="n">Associate</span> <span class="n">Producers</span>
-<span class="n">MARTIN</span> <span class="n">MARCEL</span>
-<span class="n">DIDIER</span> <span class="n">MARTIN</span>
-
-<span class="o">..</span><span class="n">Music</span> <span class="n">Supervisor</span>
-<span class="n">JEAN</span> <span class="n">DIDIER</span>
-</pre></div>
-</div>
-</p>
+<p>..code:: python</p>
+<blockquote>
+<div><p># This is a comment
+# The next line says : leave 4 blank lines
+.blank 4</p>
+<p>..Executive Story Editor
+MARCEL DURAND</p>
+<p>..Associate Producers
+MARTIN MARCEL
+DIDIER MARTIN</p>
+<p>..Music Supervisor
+JEAN DIDIER</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>width</strong> – Total width of the credits text in pixels</p></li>
+<li><p><strong>gap</strong> – Horizontal gap in pixels between the jobs and the names</p></li>
+<li><p><strong>color</strong> – Color of the text. See <code class="docutils literal notranslate"><span class="pre">TextClip.list('color')</span></code>
+for a list of acceptable names.</p></li>
+<li><p><strong>font</strong> – Name of the font to use. See <code class="docutils literal notranslate"><span class="pre">TextClip.list('font')</span></code> for
+the list of fonts you can use on your computer.</p></li>
+<li><p><strong>font_size</strong> – Size of font to use</p></li>
+<li><p><strong>stroke_color</strong> – Color of the stroke (=contour line) of the text. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+there will be no stroke.</p></li>
+<li><p><strong>stroke_width</strong> – Width of the stroke, in pixels. Can be a float, like 1.5.</p></li>
+<li><p><strong>bg_color</strong> – Color of the background. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the background will be transparent.</p></li>
+</ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>width</dt><dd><p>Total width of the credits text in pixels</p>
-</dd>
-<dt>gap</dt><dd><p>Horizontal gap in pixels between the jobs and the names</p>
-</dd>
-<dt>color</dt><dd><p>Color of the text. See <code class="docutils literal notranslate"><span class="pre">TextClip.list('color')</span></code>
-for a list of acceptable names.</p>
-</dd>
-<dt>font</dt><dd><p>Name of the font to use. See <code class="docutils literal notranslate"><span class="pre">TextClip.list('font')</span></code> for
-the list of fonts you can use on your computer.</p>
-</dd>
-<dt>font_size</dt><dd><p>Size of font to use</p>
-</dd>
-<dt>stroke_color</dt><dd><p>Color of the stroke (=contour line) of the text. If <code class="docutils literal notranslate"><span class="pre">None</span></code>,
-there will be no stroke.</p>
-</dd>
-<dt>stroke_width</dt><dd><p>Width of the stroke, in pixels. Can be a float, like 1.5.</p>
-</dd>
-<dt>bg_color</dt><dd><p>Color of the background. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the background will be transparent.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>An ImageClip instance that looks like this and can be scrolled
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>An ImageClip instance that looks like this and can be scrolled
 to make some credits:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Executive</span> <span class="n">Story</span> <span class="n">Editor</span>    <span class="n">MARCEL</span> <span class="n">DURAND</span>
    <span class="n">Associate</span> <span class="n">Producers</span>    <span class="n">MARTIN</span> <span class="n">MARCEL</span>
@@ -602,8 +590,8 @@ to make some credits:</p>
 </div>
 </p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>image</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>image</p>
 </dd>
 </dl>
 </dd></dl>

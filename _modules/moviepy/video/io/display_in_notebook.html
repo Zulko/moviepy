@@ -465,17 +465,18 @@ document.write(`
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
+<span class="sd">    .. code:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt; # later ...</span>
-<span class="sd">    &gt;&gt;&gt; html_embed(clip, width=360)</span>
-<span class="sd">    &gt;&gt;&gt; html_embed(clip.audio)</span>
+<span class="sd">        from moviepy import *</span>
+<span class="sd">        # later ...</span>
+<span class="sd">        html_embed(clip, width=360)</span>
+<span class="sd">        html_embed(clip.audio)</span>
 
-<span class="sd">    &gt;&gt;&gt; clip.write_gif(&quot;test.gif&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; html_embed(&#39;test.gif&#39;)</span>
+<span class="sd">        clip.write_gif(&quot;test.gif&quot;)</span>
+<span class="sd">        html_embed(&#39;test.gif&#39;)</span>
 
-<span class="sd">    &gt;&gt;&gt; clip.save_frame(&quot;first_frame.jpeg&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; html_embed(&quot;first_frame.jpeg&quot;)</span>
+<span class="sd">        clip.save_frame(&quot;first_frame.jpeg&quot;)</span>
+<span class="sd">        html_embed(&quot;first_frame.jpeg&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">rd_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="n">rd_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -623,16 +624,18 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt; # later ...</span>
-<span class="sd">    &gt;&gt;&gt; clip.display_in_notebook(width=360)</span>
-<span class="sd">    &gt;&gt;&gt; clip.audio.display_in_notebook()</span>
+<span class="sd">    .. code:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; clip.write_gif(&quot;test.gif&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; display_in_notebook(&#39;test.gif&#39;)</span>
+<span class="sd">        from moviepy import *</span>
+<span class="sd">        # later ...</span>
+<span class="sd">        clip.display_in_notebook(width=360)</span>
+<span class="sd">        clip.audio.display_in_notebook()</span>
 
-<span class="sd">    &gt;&gt;&gt; clip.save_frame(&quot;first_frame.jpeg&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; display_in_notebook(&quot;first_frame.jpeg&quot;)</span>
+<span class="sd">        clip.write_gif(&quot;test.gif&quot;)</span>
+<span class="sd">        display_in_notebook(&#39;test.gif&#39;)</span>
+
+<span class="sd">        clip.save_frame(&quot;first_frame.jpeg&quot;)</span>
+<span class="sd">        display_in_notebook(&quot;first_frame.jpeg&quot;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ipython_available</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;Only works inside an Jupyter Notebook&quot;</span><span class="p">)</span>

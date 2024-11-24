@@ -407,11 +407,13 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; # instantiate using `tt` and `ss`</span>
-<span class="sd">    &gt;&gt;&gt; interpolator = Interpolator(tt=[0, 1, 2], ss=[3, 4, 5])</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; # instantiate using `ttss`</span>
-<span class="sd">    &gt;&gt;&gt; interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        # instantiate using `tt` and `ss`</span>
+<span class="sd">        interpolator = Interpolator(tt=[0, 1, 2], ss=[3, 4, 5])</span>
+
+<span class="sd">        # instantiate using `ttss`</span>
+<span class="sd">        interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

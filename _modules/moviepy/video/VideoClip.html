@@ -703,10 +703,12 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; from moviepy import VideoFileClip</span>
-<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;myvideo.mp4&quot;).subclipped(100,120)</span>
-<span class="sd">        &gt;&gt;&gt; clip.write_videofile(&quot;my_new_video.mp4&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; clip.close()</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            from moviepy import VideoFileClip</span>
+<span class="sd">            clip = VideoFileClip(&quot;myvideo.mp4&quot;).subclipped(100,120)</span>
+<span class="sd">            clip.write_videofile(&quot;my_new_video.mp4&quot;)</span>
+<span class="sd">            clip.close()</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
@@ -877,10 +879,12 @@ document.write(`
 
 <span class="sd">        The gif will be playing the clip in real time (you can</span>
 <span class="sd">        only change the frame rate). If you want the gif to be played</span>
-<span class="sd">        slower than the clip you will use ::</span>
+<span class="sd">        slower than the clip you will use</span>
 
-<span class="sd">            &gt;&gt;&gt; # slow down clip 50% and make it a gif</span>
-<span class="sd">            &gt;&gt;&gt; myClip.multiply_speed(0.5).to_gif(&#39;myClip.gif&#39;)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            # slow down clip 50% and make it a gif</span>
+<span class="sd">            myClip.multiply_speed(0.5).to_gif(&#39;myClip.gif&#39;)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># A little sketchy at the moment, maybe move all that in write_gif,</span>
@@ -915,10 +919,12 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; clip.show(t=4)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            from moviepy import *</span>
+
+<span class="sd">            clip = VideoFileClip(&quot;media/chaplin.mp4&quot;)</span>
+<span class="sd">            clip.show(t=4)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
@@ -969,9 +975,11 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">        &gt;&gt;&gt; clip = VideoFileClip(&quot;media/chaplin.mp4&quot;)</span>
-<span class="sd">        &gt;&gt;&gt; clip.preview(fps=10, audio=False)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            from moviepy import *</span>
+<span class="sd">            clip = VideoFileClip(&quot;media/chaplin.mp4&quot;)</span>
+<span class="sd">            clip.preview(fps=10, audio=False)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">audio</span> <span class="o">=</span> <span class="n">audio</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
         <span class="n">audio_flag</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1018,9 +1026,11 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; # The scene between times t=3s and t=6s in ``clip`` will be</span>
-<span class="sd">        &gt;&gt;&gt; # be played twice slower in ``new_clip``</span>
-<span class="sd">        &gt;&gt;&gt; new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            # The scene between times t=3s and t=6s in ``clip`` will be</span>
+<span class="sd">            # be played twice slower in ``new_clip``</span>
+<span class="sd">            new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">left</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_time</span><span class="p">)</span>
@@ -1269,16 +1279,18 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; clip.with_position((45,150)) # x=45, y=150</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # clip horizontally centered, at the top of the picture</span>
-<span class="sd">        &gt;&gt;&gt; clip.with_position((&quot;center&quot;,&quot;top&quot;))</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # clip is at 40% of the width, 70% of the height:</span>
-<span class="sd">        &gt;&gt;&gt; clip.with_position((0.4,0.7), relative=True)</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # clip&#39;s position is horizontally centered, and moving up !</span>
-<span class="sd">        &gt;&gt;&gt; clip.with_position(lambda t: (&#39;center&#39;, 50+t) )</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            clip.with_position((45,150)) # x=45, y=150</span>
+
+<span class="sd">            # clip horizontally centered, at the top of the picture</span>
+<span class="sd">            clip.with_position((&quot;center&quot;,&quot;top&quot;))</span>
+
+<span class="sd">            # clip is at 40% of the width, 70% of the height:</span>
+<span class="sd">            clip.with_position((0.4,0.7), relative=True)</span>
+
+<span class="sd">            # clip&#39;s position is horizontally centered, and moving up !</span>
+<span class="sd">            clip.with_position(lambda t: (&#39;center&#39;, 50+t))</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span> <span class="o">=</span> <span class="n">relative</span>
@@ -1514,10 +1526,12 @@ document.write(`
 
 <span class="sd">    UpdatedVideoClips have the following frame_function:</span>
 
-<span class="sd">    &gt;&gt;&gt; def frame_function(t):</span>
-<span class="sd">    &gt;&gt;&gt;     while self.world.clip_t &lt; t:</span>
-<span class="sd">    &gt;&gt;&gt;         world.update() # updates, and increases world.clip_t</span>
-<span class="sd">    &gt;&gt;&gt;     return world.to_frame()</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        def frame_function(t):</span>
+<span class="sd">            while self.world.clip_t &lt; t:</span>
+<span class="sd">                world.update() # updates, and increases world.clip_t</span>
+<span class="sd">            return world.to_frame()</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

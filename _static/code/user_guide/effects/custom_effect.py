@@ -1,3 +1,6 @@
+"""Let's write a custom effect that will add a basic progress bar
+at the bottom of our clip."""
+
 from moviepy import VideoClip
 from moviepy.decorators import requires_duration
 
@@ -22,7 +25,8 @@ def progress_bar(clip: VideoClip, color: tuple, height: int = 10):
         progression = t / clip.duration
         bar_width = int(progression * clip.w)
 
-        # Showing a progress bar is just replacing bottom pixels on some part of our frame
+        # Showing a progress bar is just replacing bottom pixels
+        # on some part of our frame
         frame = get_frame(t)
         frame[-height:, 0:bar_width] = color
 

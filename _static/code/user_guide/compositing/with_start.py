@@ -1,4 +1,4 @@
-from moviepy import *
+from moviepy import VideoFileClip, CompositeVideoClip
 
 # We load all the clips we want to compose
 clip1 = VideoFileClip("example.mp4")
@@ -12,9 +12,9 @@ clip1 = clip1.with_end(1)
 clip2 = clip2.with_start(1.5)
 
 # We want to play clip3 at the end of clip2, and so for 3 seconds only
-clip3 = clip3.with_start(clip2.end).with_duration(
-    1
-)  # Some times its more practical to modify the duration of a clip instead of his end
+# Some times its more practical to modify the duration of a clip instead
+# of his end
+clip3 = clip3.with_start(clip2.end).with_duration(1)
 
 # We write the result
 final_clip = CompositeVideoClip([clip1, clip2, clip3])

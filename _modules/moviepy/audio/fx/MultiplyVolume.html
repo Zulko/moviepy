@@ -407,16 +407,18 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import AudioFileClip</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; music = AudioFileClip(&quot;music.ogg&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; # doubles audio volume</span>
-<span class="sd">    &gt;&gt;&gt; doubled_audio_clip = music.with_effects([afx.MultiplyVolume(2)])</span>
-<span class="sd">    &gt;&gt;&gt; # halves audio volume</span>
-<span class="sd">    &gt;&gt;&gt; half_audio_clip = music.with_effects([afx.MultiplyVolume(0.5)])</span>
-<span class="sd">    &gt;&gt;&gt; # silences clip during one second at third</span>
-<span class="sd">    &gt;&gt;&gt; effect = afx.MultiplyVolume(0, start_time=2, end_time=3)</span>
-<span class="sd">    &gt;&gt;&gt; silenced_clip = clip.with_effects([effect])</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy import AudioFileClip</span>
+
+<span class="sd">        music = AudioFileClip(&quot;music.ogg&quot;)</span>
+<span class="sd">        # doubles audio volume</span>
+<span class="sd">        doubled_audio_clip = music.with_effects([afx.MultiplyVolume(2)])</span>
+<span class="sd">        # halves audio volume</span>
+<span class="sd">        half_audio_clip = music.with_effects([afx.MultiplyVolume(0.5)])</span>
+<span class="sd">        # silences clip during one second at third</span>
+<span class="sd">        effect = afx.MultiplyVolume(0, start_time=2, end_time=3)</span>
+<span class="sd">        silenced_clip = clip.with_effects([effect])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span>

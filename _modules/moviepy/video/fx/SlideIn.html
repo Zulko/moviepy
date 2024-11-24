@@ -404,19 +404,21 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; clips = [... make a list of clips]</span>
-<span class="sd">    &gt;&gt;&gt; slided_clips = [</span>
-<span class="sd">    ...     CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, &quot;left&quot;)])])</span>
-<span class="sd">    ...     for clip in clips</span>
-<span class="sd">    ... ]</span>
-<span class="sd">    &gt;&gt;&gt; final_clip = concatenate_videoclips(slided_clips, padding=-1)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; clip = ColorClip(</span>
-<span class="sd">    ...     color=(255, 0, 0), duration=1, size=(300, 300)</span>
-<span class="sd">    ... ).with_fps(60)</span>
-<span class="sd">    &gt;&gt;&gt; final_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, &quot;right&quot;)])])</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy import *</span>
+
+<span class="sd">        clips = [... make a list of clips]</span>
+<span class="sd">        slided_clips = [</span>
+<span class="sd">            CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, &quot;left&quot;)])])</span>
+<span class="sd">            for clip in clips</span>
+<span class="sd">        ]</span>
+<span class="sd">        final_clip = concatenate_videoclips(slided_clips, padding=-1)</span>
+
+<span class="sd">        clip = ColorClip(</span>
+<span class="sd">            color=(255, 0, 0), duration=1, size=(300, 300)</span>
+<span class="sd">        ).with_fps(60)</span>
+<span class="sd">        final_clip = CompositeVideoClip([clip.with_effects([vfx.SlideIn(1, &quot;right&quot;)])])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span>

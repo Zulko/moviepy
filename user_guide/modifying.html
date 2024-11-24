@@ -415,22 +415,24 @@ document.write(`
 Instead it will return <strong>a modified copy of the original</strong> and let the original untouched. This is known as out-place instead of in-place behavior.</p>
 <p>To illustrate :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import everything needed to edit video clips</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="c1"># Load example.mp4</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
-<span class="c1"># This does nothing, as multiply_volume will return a copy of clip which you will loose immediatly as you dont store it</span>
+<span class="c1"># This does nothing, as multiply_volume will return a copy of clip</span>
+<span class="c1"># which you will loose immediatly as you dont store it</span>
 <span class="c1"># If you was to render clip now, the audio would still be at full volume</span>
 <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="c1"># This create a copy of clip in clip_whisper with a volume of only 10% the original, but does not modify the original clip</span>
+<span class="c1"># This create a copy of clip in clip_whisper with a volume of only 10% the original,</span>
+<span class="c1"># but does not modify the original clip</span>
 <span class="c1"># If you was to render clip right now, the audio would still be at full volume</span>
 <span class="c1"># If you was to render clip_whisper, the audio would be a 10% of the original volume</span>
 <span class="n">clip_whisper</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="c1"># This replace the original clip with a copy of it where volume is only 10% of the original</span>
-<span class="c1"># If you was to render clip now, the audio would be at 10%</span>
+<span class="c1"># This replace the original clip with a copy of it where volume is only 10% of</span>
+<span class="c1"># the original. If you was to render clip now, the audio would be at 10%</span>
 <span class="c1"># The original clip is now lost</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_volume_scaled</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
@@ -460,7 +462,6 @@ Instead it will return <strong>a modified copy of the original</strong> and let 
 <p>Thoses methods usually starts with the prefix <code class="docutils literal notranslate"><span class="pre">with_</span></code> or <code class="docutils literal notranslate"><span class="pre">without_</span></code>, indicating that they will return a copy of the clip with the properties modified.</p>
 <p>So, you may write something like :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># stop the clip after 5 sec</span>
@@ -487,16 +488,15 @@ For practicality, these two modules are loaded in MoviePy as <code class="docuti
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">)]</span>
-<span class="p">)</span>  <span class="c1"># resize clip to be 460px in width, keeping aspect ratio</span>
+<span class="c1"># resize clip to be 460px in width, keeping aspect ratio</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">460</span><span class="p">)])</span>
 
 <span class="c1"># fx method return a copy of the clip, so we can easily chain them</span>
-<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">(</span>
-    <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)]</span>
-<span class="p">)</span>  <span class="c1"># double the speed and half the audio volume</span>
+<span class="c1"># double the speed and half the audio volume</span>
+<span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">MultiplyVolume</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
 
-<span class="c1"># because effects are added to Clip at runtime, you can also call them directly from your clip as methods</span>
+<span class="c1"># because effects are added to Clip at runtime, you can also call</span>
+<span class="c1"># them directly from your clip as methods</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplyColor</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>  <span class="c1"># darken the clip</span>
 </pre></div>
 </div>
@@ -520,15 +520,9 @@ Where <code class="docutils literal notranslate"><span class="pre">your_filter</
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
-
-<span class="c1"># You can define a function the classical way</span>
-<span class="k">def</span> <span class="nf">accel_x3</span><span class="p">(</span><span class="n">time</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">time</span> <span class="o">*</span> <span class="mi">3</span>
-
-
-<span class="n">modified_clip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="n">accel_x3</span><span class="p">)</span>
-
-<span class="c1"># Of you can also use lambda function</span>
+<span class="c1"># Let&#39;s accelerate the video by a factor of 3</span>
+<span class="n">modified_clip1</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1"># Let&#39;s play the video back and forth with a &quot;sine&quot; time-warping effect</span>
 <span class="n">modified_clip2</span> <span class="o">=</span> <span class="n">my_clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -543,7 +537,9 @@ Where <code class="docutils literal notranslate"><span class="pre">your_filter</
 <h3>Modifying only the apparence of a Clip<a class="headerlink" href="#modifying-only-the-apparence-of-a-clip" title="Permalink to this heading">#</a></h3>
 <p>For <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>, you can change the apparence of the clip with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.image_transform" title="moviepy.video.VideoClip.VideoClip.image_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">image_transform(your_filter)</span></code></a>.
 Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function, taking clip frame (a numpy array) as a parameter and returning the transformed frame :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s invert the green and blue channels of a video.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -571,8 +567,9 @@ Where <code class="docutils literal notranslate"><span class="pre">your_filter</
 <p>Finally, you may want to process the clip by taking into account both the time and the frame picture, for example to apply visual effects variating with time.
 This is possible with the method <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform" title="moviepy.Clip.Clip.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform(your_filter)</span></code></a>.
 Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function taking two parameters, and returning a new frame picture. Where first argument is a <code class="docutils literal notranslate"><span class="pre">get_frame</span></code> method (i.e. a function <code class="docutils literal notranslate"><span class="pre">get_frame(time)</span></code> which given a time returns the clip’s frame at that time), and the second argument is the time.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s create a scolling video effect from scratch.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 

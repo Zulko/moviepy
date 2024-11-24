@@ -392,12 +392,14 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import AudioFileClip</span>
-<span class="sd">    &gt;&gt;&gt; music = AudioFileClip(&#39;music.ogg&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; # mutes left channel</span>
-<span class="sd">    &gt;&gt;&gt; audio_r = music.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])</span>
-<span class="sd">    &gt;&gt;&gt; # halves audio volume</span>
-<span class="sd">    &gt;&gt;&gt; audio_h = music.with_effects([afx.MultiplyStereoVolume(left=0.5, right=0.5)])</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy import AudioFileClip</span>
+<span class="sd">        music = AudioFileClip(&#39;music.ogg&#39;)</span>
+<span class="sd">        # mutes left channel</span>
+<span class="sd">        audio_r = music.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])</span>
+<span class="sd">        # halves audio volume</span>
+<span class="sd">        audio_h = music.with_effects([afx.MultiplyStereoVolume(left=0.5, right=0.5)])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">left</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>

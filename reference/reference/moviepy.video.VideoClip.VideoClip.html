@@ -689,18 +689,16 @@ looping gifs, a good choice is <code class="docutils literal notranslate"><span 
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># later ...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;test.gif&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">display_in_notebook</span><span class="p">(</span><span class="s1">&#39;test.gif&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">display_in_notebook</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># later ...</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">display_in_notebook</span><span class="p">()</span>
+
+<span class="n">clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;test.gif&quot;</span><span class="p">)</span>
+<span class="n">display_in_notebook</span><span class="p">(</span><span class="s1">&#39;test.gif&#39;</span><span class="p">)</span>
+
+<span class="n">clip</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
+<span class="n">display_in_notebook</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -769,9 +767,9 @@ are complex. In this case, try reducing the <code class="docutils literal notran
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -828,10 +826,10 @@ saved.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -899,9 +897,9 @@ background.</p></li>
 has been applied to the subclip between times <cite>start_time</cite> and <cite>end_time</cite>
 (in seconds).</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># The scene between times t=3s and t=6s in ``clip`` will be</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># be played twice slower in ``new_clip``</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_sub_effect</span><span class="p">(</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The scene between times t=3s and t=6s in ``clip`` will be</span>
+<span class="c1"># be played twice slower in ``new_clip``</span>
+<span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_sub_effect</span><span class="p">(</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -940,16 +938,16 @@ in compositions. The argument <code class="docutils literal notranslate"><span c
 location of the top left corner of the clip, and can be
 of several types.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c1"># x=45, y=150</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># clip horizontally centered, at the top of the picture</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># clip is at 40% of the width, 70% of the height:</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># clip&#39;s position is horizontally centered, and moving up !</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="o">+</span><span class="n">t</span><span class="p">)</span> <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="mi">45</span><span class="p">,</span><span class="mi">150</span><span class="p">))</span> <span class="c1"># x=45, y=150</span>
+
+<span class="c1"># clip horizontally centered, at the top of the picture</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span><span class="s2">&quot;top&quot;</span><span class="p">))</span>
+
+<span class="c1"># clip is at 40% of the width, 70% of the height:</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.7</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># clip&#39;s position is horizontally centered, and moving up !</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="o">+</span><span class="n">t</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -996,8 +994,8 @@ isn’t provided, then the function will look for the clip’s
 <p>The gif will be playing the clip in real time (you can
 only change the frame rate). If you want the gif to be played
 slower than the clip you will use</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># slow down clip 50% and make it a gif</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">myClip</span><span class="o">.</span><span class="n">multiply_speed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">to_gif</span><span class="p">(</span><span class="s1">&#39;myClip.gif&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># slow down clip 50% and make it a gif</span>
+<span class="n">myClip</span><span class="o">.</span><span class="n">multiply_speed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">to_gif</span><span class="p">(</span><span class="s1">&#39;myClip.gif&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1104,10 +1102,10 @@ output file in them.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_new_video.mp4&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_new_video.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>

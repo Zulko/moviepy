@@ -569,18 +569,16 @@ at the center.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># later ...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">html_embed</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">html_embed</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;test.gif&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">html_embed</span><span class="p">(</span><span class="s1">&#39;test.gif&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">html_embed</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># later ...</span>
+<span class="n">html_embed</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">360</span><span class="p">)</span>
+<span class="n">html_embed</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">audio</span><span class="p">)</span>
+
+<span class="n">clip</span><span class="o">.</span><span class="n">write_gif</span><span class="p">(</span><span class="s2">&quot;test.gif&quot;</span><span class="p">)</span>
+<span class="n">html_embed</span><span class="p">(</span><span class="s1">&#39;test.gif&#39;</span><span class="p">)</span>
+
+<span class="n">clip</span><span class="o">.</span><span class="n">save_frame</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
+<span class="n">html_embed</span><span class="p">(</span><span class="s2">&quot;first_frame.jpeg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

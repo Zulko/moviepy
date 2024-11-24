@@ -551,12 +551,12 @@ of the left and right channel separately (with the factors <cite>left</cite>
 and <cite>right</cite>). Makes a stereo audio clip in which the volume of left
 and right is controllable.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s1">&#39;music.ogg&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># mutes left channel</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">audio_r</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyStereoVolume</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># halves audio volume</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">audio_h</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyStereoVolume</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)])</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
+<span class="n">music</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s1">&#39;music.ogg&#39;</span><span class="p">)</span>
+<span class="c1"># mutes left channel</span>
+<span class="n">audio_r</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyStereoVolume</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">1</span><span class="p">)])</span>
+<span class="c1"># halves audio volume</span>
+<span class="n">audio_h</span> <span class="o">=</span> <span class="n">music</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">afx</span><span class="o">.</span><span class="n">MultiplyStereoVolume</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)])</span>
 </pre></div>
 </div>
 <dl class="py method">

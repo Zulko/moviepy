@@ -422,7 +422,10 @@ We will also probably want to be able to pass parameters to define the apparence
 <p>In the end, your effect will probably use <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">time_transform()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">image_transform()</span></code>, or <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.transform" title="moviepy.Clip.Clip.transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">transform()</span></code></a> to really apply your modifications on the clip,
 The main difference is, because your filter will be a method or an anonymous function inside your effect class, you will be able to access all properties of your object from it!</p>
 <p>So, lets see how we could create our progress bar effect:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s write a custom effect that will add a basic progress bar</span>
+<span class="sd">at the bottom of our clip.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoClip</span>
 <span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
 
 
@@ -446,7 +449,8 @@ The main difference is, because your filter will be a method or an anonymous fun
         <span class="n">progression</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
         <span class="n">bar_width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">progression</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">w</span><span class="p">)</span>
 
-        <span class="c1"># Showing a progress bar is just replacing bottom pixels on some part of our frame</span>
+        <span class="c1"># Showing a progress bar is just replacing bottom pixels</span>
+        <span class="c1"># on some part of our frame</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="n">frame</span><span class="p">[</span><span class="o">-</span><span class="n">height</span><span class="p">:,</span> <span class="mi">0</span><span class="p">:</span><span class="n">bar_width</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
 

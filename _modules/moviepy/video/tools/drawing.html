@@ -477,26 +477,27 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black</span>
-<span class="sd">    [[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; color_gradient(  # from red to green</span>
-<span class="sd">    ...     (10, 1),  # size</span>
-<span class="sd">    ...     (0, 0),   # p1</span>
-<span class="sd">    ...     p2=(10, 0),</span>
-<span class="sd">    ...     color_1=(255, 0, 0),  # red</span>
-<span class="sd">    ...     color_2=(0, 255, 0),  # green</span>
-<span class="sd">    ... )</span>
-<span class="sd">    [[[  0.  255.    0. ]</span>
-<span class="sd">      [ 25.5 229.5   0. ]</span>
-<span class="sd">      [ 51.  204.    0. ]</span>
-<span class="sd">      [ 76.5 178.5   0. ]</span>
-<span class="sd">      [102.  153.    0. ]</span>
-<span class="sd">      [127.5 127.5   0. ]</span>
-<span class="sd">      [153.  102.    0. ]</span>
-<span class="sd">      [178.5  76.5   0. ]</span>
-<span class="sd">      [204.   51.    0. ]</span>
-<span class="sd">      [229.5  25.5   0. ]]]</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black</span>
+<span class="sd">        #[[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]</span>
+<span class="sd">        # from red to green</span>
+<span class="sd">        color_gradient(</span>
+<span class="sd">            (10, 1), (0, 0),</span>
+<span class="sd">            p2=(10, 0),</span>
+<span class="sd">            color_1=(255, 0, 0),</span>
+<span class="sd">            color_2=(0, 255, 0)</span>
+<span class="sd">        )</span>
+<span class="sd">        # [[[  0.  255.    0. ]</span>
+<span class="sd">        #   [ 25.5 229.5   0. ]</span>
+<span class="sd">        #   [ 51.  204.    0. ]</span>
+<span class="sd">        #   [ 76.5 178.5   0. ]</span>
+<span class="sd">        #   [102.  153.    0. ]</span>
+<span class="sd">        #   [127.5 127.5   0. ]</span>
+<span class="sd">        #   [153.  102.    0. ]</span>
+<span class="sd">        #   [178.5  76.5   0. ]</span>
+<span class="sd">        #   [204.   51.    0. ]</span>
+<span class="sd">        #   [229.5  25.5   0. ]]]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># np-arrayize and change x,y coordinates to y,x</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
@@ -611,16 +612,18 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; size = [200, 200]</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; # an image with all pixels with x&lt;50 =0, the others =1</span>
-<span class="sd">    &gt;&gt;&gt; color_split(size, x=50, color_1=0, color_2=1)</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; # an image with all pixels with y&lt;50 red, the others green</span>
-<span class="sd">    &gt;&gt;&gt; color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; # An image split along an arbitrary line (see below)</span>
-<span class="sd">    &gt;&gt;&gt; color_split(size, p1=[20, 50], p2=[25, 70] color_1=0, color_2=1)</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        size = [200, 200]</span>
+
+<span class="sd">        # an image with all pixels with x&lt;50 =0, the others =1</span>
+<span class="sd">        color_split(size, x=50, color_1=0, color_2=1)</span>
+
+<span class="sd">        # an image with all pixels with y&lt;50 red, the others green</span>
+<span class="sd">        color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])</span>
+
+<span class="sd">        # An image split along an arbitrary line (see below)</span>
+<span class="sd">        color_split(size, p1=[20, 50], p2=[25, 70], color_1=0, color_2=1)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">gradient_width</span> <span class="ow">or</span> <span class="p">((</span><span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">p2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -681,18 +684,20 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy.video.tools.drawing import circle</span>
-<span class="sd">    &gt;&gt;&gt;</span>
-<span class="sd">    &gt;&gt;&gt; circle(</span>
-<span class="sd">    ...     (5, 5),  # size</span>
-<span class="sd">    ...     (2, 2),  # center</span>
-<span class="sd">    ...      2,      # radius</span>
-<span class="sd">    ... )</span>
-<span class="sd">    array([[0.        , 0.        , 0.        , 0.        , 0.        ],</span>
-<span class="sd">           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],</span>
-<span class="sd">           [0.        , 1.        , 1.        , 1.        , 0.        ],</span>
-<span class="sd">           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],</span>
-<span class="sd">           [0.        , 0.        , 0.        , 0.        , 0.        ]])</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy.video.tools.drawing import circle</span>
+
+<span class="sd">        circle(</span>
+<span class="sd">            (5, 5),  # size</span>
+<span class="sd">            (2, 2),  # center</span>
+<span class="sd">            2,      # radius</span>
+<span class="sd">        )</span>
+<span class="sd">        # array([[0.        , 0.        , 0.        , 0.        , 0.        ],</span>
+<span class="sd">        #        [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],</span>
+<span class="sd">        #        [0.        , 1.        , 1.        , 1.        , 0.        ],</span>
+<span class="sd">        #        [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],</span>
+<span class="sd">        #        [0.        , 0.        , 0.        , 0.        , 0.        ]])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">radius</span> <span class="o">-</span> <span class="n">blur</span><span class="p">)</span> <span class="o">/</span> <span class="n">radius</span> <span class="k">if</span> <span class="n">radius</span> <span class="k">else</span> <span class="mi">0</span>
     <span class="k">return</span> <span class="n">color_gradient</span><span class="p">(</span>

@@ -547,11 +547,13 @@ document.write(`
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; # plays the clip (and its mask and sound) twice faster</span>
-<span class="sd">        &gt;&gt;&gt; new_clip = clip.time_transform(lambda t: 2*t, apply_to=[&#39;mask&#39;, &#39;audio&#39;])</span>
-<span class="sd">        &gt;&gt;&gt;</span>
-<span class="sd">        &gt;&gt;&gt; # plays the clip starting at t=3, and backwards:</span>
-<span class="sd">        &gt;&gt;&gt; new_clip = clip.time_transform(lambda t: 3-t)</span>
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            # plays the clip (and its mask and sound) twice faster</span>
+<span class="sd">            new_clip = clip.time_transform(lambda t: 2*t, apply_to=[&#39;mask&#39;, &#39;audio&#39;])</span>
+
+<span class="sd">            # plays the clip starting at t=3, and backwards:</span>
+<span class="sd">            new_clip = clip.time_transform(lambda t: 3-t)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">apply_to</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -884,17 +886,20 @@ document.write(`
 
 <span class="sd">        dtype : type, optional</span>
 <span class="sd">          Type to cast Numpy array frames. Use ``dtype=&quot;uint8&quot;`` when using the</span>
-<span class="sd">          pictures to write video, images...</span>
+<span class="sd">          pictures to write video, images..</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; # prints the maximum of red that is contained</span>
-<span class="sd">        &gt;&gt;&gt; # on the first line of each frame of the clip.</span>
-<span class="sd">        &gt;&gt;&gt; from moviepy import VideoFileClip</span>
-<span class="sd">        &gt;&gt;&gt; myclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; print ( [frame[0,:,0].max()</span>
-<span class="sd">                     for frame in myclip.iter_frames()])</span>
+
+<span class="sd">        .. code:: python</span>
+
+<span class="sd">            # prints the maximum of red that is contained</span>
+<span class="sd">            # on the first line of each frame of the clip.</span>
+<span class="sd">            from moviepy import VideoFileClip</span>
+<span class="sd">            myclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
+<span class="sd">            print([frame[0,:,0].max()</span>
+<span class="sd">                  for frame in myclip.iter_frames()])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">frame_index</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">iter_bar</span><span class="p">(</span>

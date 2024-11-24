@@ -550,20 +550,20 @@ document.write(`
 <p>If the type of <cite>time</cite> is not valid,
 it’s returned as is.</p>
 <p>Here are the accepted formats:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="mf">15.4</span><span class="p">)</span>   <span class="c1"># seconds</span>
-<span class="go">15.4</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">))</span>   <span class="c1"># (min,sec)</span>
-<span class="go">81.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># (hr, min, sec)</span>
-<span class="go">3662</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;01:01:33.045&#39;</span><span class="p">)</span>
-<span class="go">3693.045</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;01:01:33,5&#39;</span><span class="p">)</span>    <span class="c1"># coma works too</span>
-<span class="go">3693.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;1:33,5&#39;</span><span class="p">)</span>    <span class="c1"># only minutes and secs</span>
-<span class="go">99.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;33.5&#39;</span><span class="p">)</span>      <span class="c1"># only secs</span>
-<span class="go">33.5</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">convert_to_seconds</span><span class="p">(</span><span class="mf">15.4</span><span class="p">)</span>   <span class="c1"># seconds</span>
+<span class="mf">15.4</span>
+<span class="n">convert_to_seconds</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mf">21.5</span><span class="p">))</span>   <span class="c1"># (min,sec)</span>
+<span class="mf">81.5</span>
+<span class="n">convert_to_seconds</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># (hr, min, sec)</span>
+<span class="mi">3662</span>
+<span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;01:01:33.045&#39;</span><span class="p">)</span>
+<span class="mf">3693.045</span>
+<span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;01:01:33,5&#39;</span><span class="p">)</span>    <span class="c1"># coma works too</span>
+<span class="mf">3693.5</span>
+<span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;1:33,5&#39;</span><span class="p">)</span>    <span class="c1"># only minutes and secs</span>
+<span class="mf">99.5</span>
+<span class="n">convert_to_seconds</span><span class="p">(</span><span class="s1">&#39;33.5&#39;</span><span class="p">)</span>      <span class="c1"># only secs</span>
+<span class="mf">33.5</span>
 </pre></div>
 </div>
 </dd></dl>

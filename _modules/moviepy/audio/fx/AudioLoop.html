@@ -393,11 +393,13 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt; videoclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; music = AudioFileClip(&#39;music.ogg&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; audio = music.with_effects([afx.AudioLoop(duration=videoclip.duration)])</span>
-<span class="sd">    &gt;&gt;&gt; videoclip.with_audio(audio)</span>
+<span class="sd">    .. code:: python</span>
+
+<span class="sd">        from moviepy import *</span>
+<span class="sd">        videoclip = VideoFileClip(&#39;myvideo.mp4&#39;)</span>
+<span class="sd">        music = AudioFileClip(&#39;music.ogg&#39;)</span>
+<span class="sd">        audio = music.with_effects([afx.AudioLoop(duration=videoclip.duration)])</span>
+<span class="sd">        videoclip.with_audio(audio)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

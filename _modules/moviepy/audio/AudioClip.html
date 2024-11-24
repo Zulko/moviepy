@@ -424,19 +424,21 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; # Plays the note A in mono (a sine wave of frequency 440 Hz)</span>
-<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
-<span class="sd">    &gt;&gt;&gt; frame_function = lambda t: np.sin(440 * 2 * np.pi * t)</span>
-<span class="sd">    &gt;&gt;&gt; clip = AudioClip(frame_function, duration=5, fps=44100)</span>
-<span class="sd">    &gt;&gt;&gt; clip.preview()</span>
+<span class="sd">    .. code:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)</span>
-<span class="sd">    &gt;&gt;&gt; frame_function = lambda t: np.array([</span>
-<span class="sd">    ...     np.sin(440 * 2 * np.pi * t),</span>
-<span class="sd">    ...     np.sin(880 * 2 * np.pi * t)</span>
-<span class="sd">    ... ]).T.copy(order=&quot;C&quot;)</span>
-<span class="sd">    &gt;&gt;&gt; clip = AudioClip(frame_function, duration=3, fps=44100)</span>
-<span class="sd">    &gt;&gt;&gt; clip.preview()</span>
+<span class="sd">        # Plays the note A in mono (a sine wave of frequency 440 Hz)</span>
+<span class="sd">        import numpy as np</span>
+<span class="sd">        frame_function = lambda t: np.sin(440 * 2 * np.pi * t)</span>
+<span class="sd">        clip = AudioClip(frame_function, duration=5, fps=44100)</span>
+<span class="sd">        clip.preview()</span>
+
+<span class="sd">        # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)</span>
+<span class="sd">        frame_function = lambda t: np.array([</span>
+<span class="sd">            np.sin(440 * 2 * np.pi * t),</span>
+<span class="sd">            np.sin(880 * 2 * np.pi * t)</span>
+<span class="sd">        ]).T.copy(order=&quot;C&quot;)</span>
+<span class="sd">        clip = AudioClip(frame_function, duration=3, fps=44100)</span>
+<span class="sd">        clip.preview()</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

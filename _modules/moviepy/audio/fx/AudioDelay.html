@@ -411,17 +411,19 @@ document.write(`
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 
-<span class="sd">    &gt;&gt;&gt; from moviepy import *</span>
-<span class="sd">    &gt;&gt;&gt; videoclip = AudioFileClip(&#39;myaudio.wav&#39;).with_effects([</span>
-<span class="sd">    ...     afx.AudioDelay(offset=.2, n_repeats=10, decayment=.2)</span>
-<span class="sd">    ... ])</span>
+<span class="sd">    .. code:: python</span>
 
-<span class="sd">    &gt;&gt;&gt; # stereo A note</span>
-<span class="sd">    &gt;&gt;&gt; frame_function = lambda t: np.array(</span>
-<span class="sd">    ...     [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]</span>
-<span class="sd">    ... ).T</span>
-<span class="sd">    ... clip = AudioClip(frame_function=frame_function, duration=0.1, fps=44100)</span>
-<span class="sd">    ... clip = clip.with_effects([afx.AudioDelay(offset=.2, n_repeats=11, decay=0)])</span>
+<span class="sd">        from moviepy import *</span>
+<span class="sd">        videoclip = AudioFileClip(&#39;myaudio.wav&#39;).with_effects([</span>
+<span class="sd">            afx.AudioDelay(offset=.2, n_repeats=10, decayment=.2)</span>
+<span class="sd">        ])</span>
+
+<span class="sd">        # stereo A note</span>
+<span class="sd">        frame_function = lambda t: np.array(</span>
+<span class="sd">            [np.sin(440 * 2 * np.pi * t), np.sin(880 * 2 * np.pi * t)]</span>
+<span class="sd">        ).T</span>
+<span class="sd">        clip = AudioClip(frame_function=frame_function, duration=0.1, fps=44100)</span>
+<span class="sd">        clip = clip.with_effects([afx.AudioDelay(offset=.2, n_repeats=11, decay=0)])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
