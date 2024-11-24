@@ -506,7 +506,7 @@ document.write(`
         <span class="c1"># to be read by self.read_frame().</span>
         <span class="c1"># Eg when self.pos is 1, the 2nd frame will be read next.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame_number</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lastread</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_frame</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_frame</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FFMPEG_VideoReader.skip_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.skip_frames">[docs]</a>    <span class="k">def</span> <span class="nf">skip_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads and throws away n frames&quot;&quot;&quot;</span>
@@ -521,7 +521,7 @@ document.write(`
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reads the next frame from the file.</span>
 <span class="sd">        Note that upon (re)initialization, the first frame will already have been read</span>
-<span class="sd">        and stored in ``self.lastread``.</span>
+<span class="sd">        and stored in ``self.last_read``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
         <span class="n">nbytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="n">h</span>
@@ -596,12 +596,17 @@ document.write(`
         <span class="k">elif</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="mi">100</span><span class="p">):</span>
             <span class="c1"># We can&#39;t just skip forward to `pos` or it would take too long</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastread</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># If pos == self.pos + 1, this line has no effect</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">skip_frames</span><span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_frame</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lastread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias of `self.last_read` for backwards compatibility with MoviePy 1.x.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span>
 
 <div class="viewcode-block" id="FFMPEG_VideoReader.get_frame_number"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame_number">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method to return the frame number at time ``t``&quot;&quot;&quot;</span>

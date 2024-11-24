@@ -577,12 +577,18 @@ whenever possible, by moving between adjacent frames.</p>
 it pre-reads the first frame).</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.lastread">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lastread</span></span><a class="headerlink" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.lastread" title="Permalink to this definition">#</a></dt>
+<dd><p>Alias of <cite>self.last_read</cite> for backwards compatibility with MoviePy 1.x.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.read_frame">
 <span class="sig-name descname"><span class="pre">read_frame</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/io/ffmpeg_reader.html#FFMPEG_VideoReader.read_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.read_frame" title="Permalink to this definition">#</a></dt>
 <dd><p>Reads the next frame from the file.
 Note that upon (re)initialization, the first frame will already have been read
-and stored in <code class="docutils literal notranslate"><span class="pre">self.lastread</span></code>.</p>
+and stored in <code class="docutils literal notranslate"><span class="pre">self.last_read</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -641,6 +647,7 @@ and stored in <code class="docutils literal notranslate"><span class="pre">self.
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.get_frame()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame_number"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.get_frame_number()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.initialize"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.initialize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.lastread"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.lastread</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.read_frame"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.read_frame()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.skip_frames"><code class="docutils literal notranslate"><span class="pre">FFMPEG_VideoReader.skip_frames()</span></code></a></li>
 </ul>
