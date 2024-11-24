@@ -30,9 +30,8 @@ clip = (
     .subclipped(10, 20)
     .with_volume_scaled(0.8)
 )
+
 # Generate a text clip. You can customize the font, color, etc.
-
-
 txt_clip = TextClip(
     font="Arial.ttf",
     text="Hello there!",
