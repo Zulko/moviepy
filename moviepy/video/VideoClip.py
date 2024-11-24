@@ -1368,8 +1368,6 @@ class TextClip(ImageClip):
 
     font
       Path to the font to use. Must be an OpenType font.
-      See ``TextClip.list('font')`` for the list of fonts you can use on
-      your computer.
 
     text
       A string of the text to write. Can be replaced by argument
@@ -1397,16 +1395,15 @@ class TextClip(ImageClip):
       This is especially usefull for auto-compute size to give the text some
       extra room.
 
-    bg_color
-      Color of the background. Default to None for no background. Can be
-      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
-      hexadecimal notation.
-
     color
       Color of the text. Default to "black". Can be
       a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
       hexadecimal notation.
 
+    bg_color
+      Color of the background. Default to None for no background. Can be
+      a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
+      hexadecimal notation.
 
     stroke_color
       Color of the stroke (=contour line) of the text. If ``None``,
@@ -1598,7 +1595,6 @@ class TextClip(ImageClip):
                 return min_font_size - 1
 
         try:
-            print("f", font)
             _ = ImageFont.truetype(font)
         except Exception as e:
             raise ValueError(
@@ -1763,9 +1759,7 @@ class TextClip(ImageClip):
         # increment by half our text height, since we have to reference from
         # middle line.
         y += text_height / 2
-        print(y)
 
-        print(text_align)
         draw.multiline_text(
             xy=(x, y),
             text=text,
