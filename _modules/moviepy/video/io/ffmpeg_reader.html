@@ -412,8 +412,10 @@ document.write(`
             <span class="n">decode_file</span><span class="o">=</span><span class="n">decode_file</span><span class="p">,</span>
             <span class="n">print_infos</span><span class="o">=</span><span class="n">print_infos</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;video_fps&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;video_size&quot;</span><span class="p">]</span>
+        <span class="c1"># If framerate is unavailable, assume 1.0 FPS to avoid divide-by-zero errors.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_fps&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="c1"># If frame size is unavailable, set 1x1 divide-by-zero errors.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_size&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="c1"># ffmpeg automatically rotates videos if rotation information is</span>
         <span class="c1"># available, so exchange width and height</span>
@@ -432,10 +434,10 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">target_resolution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">resize_algo</span> <span class="o">=</span> <span class="n">resize_algo</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;video_duration&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_duration</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bitrate</span> <span class="o">=</span> <span class="n">infos</span><span class="p">[</span><span class="s2">&quot;video_bitrate&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_duration&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ffmpeg_duration</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;duration&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bitrate</span> <span class="o">=</span> <span class="n">infos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_bitrate&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">infos</span> <span class="o">=</span> <span class="n">infos</span>
 
@@ -938,8 +940,11 @@ document.write(`
         <span class="c1"># last input file, must be included in self.result</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">[</span><span class="s2">&quot;streams&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_stream</span><span class="p">)</span>
-            <span class="c1"># include their chapters, if there are</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_chapters</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">[</span><span class="s2">&quot;input_number&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># include their chapters, if there are any</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="s2">&quot;input_number&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_chapters</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">[</span><span class="s2">&quot;input_number&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">[</span><span class="s2">&quot;chapters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">input_chapters</span><span class="p">[</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_current_input_file</span><span class="p">[</span><span class="s2">&quot;input_number&quot;</span><span class="p">]</span>
                 <span class="p">]</span>
@@ -947,13 +952,13 @@ document.write(`
 
         <span class="c1"># some video duration utilities</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_found&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_duration</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_fps&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;duration&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;video_fps&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_n_frames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;video_duration&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
         <span class="c1"># We could have also recomputed duration from the number of frames, as follows:</span>
         <span class="c1"># &gt;&gt;&gt; result[&#39;video_duration&#39;] = result[&#39;video_n_frames&#39;] / result[&#39;video_fps&#39;]</span>
 
