@@ -30,6 +30,7 @@ jobs:
         make html
         mkdir -p ../build/html/v1.0.3
         cp -r build/html/* ../build/html/v1.0.3/
+        rm -rf build/html
         git stash
 
     - name: Install dependencies
