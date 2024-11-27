@@ -3,7 +3,7 @@
 import numpy as np
 from moviepy import AudioArrayClip
 
-# We want to play those notes
+# We want to play these notes
 notes = {"A": 440, "B": 494, "C": 523, "D": 587, "E": 659, "F": 698}
 
 note_duration = 0.5

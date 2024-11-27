@@ -398,23 +398,23 @@ document.write(`
                   
   <section id="creating-your-own-effects">
 <span id="create-effects"></span><h1>Creating your own effects<a class="headerlink" href="#creating-your-own-effects" title="Permalink to this heading">#</a></h1>
-<p>In addition to the existings effects already offered by MoviePy, we can create our own effects to modify a clip as we want.</p>
+<p>In addition to the existing effects already offered by MoviePy, we can create our own effects to modify a clip however we want.</p>
 <section id="why-creating-your-own-effects">
 <h2>Why creating your own effects?<a class="headerlink" href="#why-creating-your-own-effects" title="Permalink to this heading">#</a></h2>
-<p>For simple enough tasks, we’ve seen that we can <a class="reference internal" href="modifying.html#modifying-filters"><span class="std std-ref">Modify a clip apparence and timing using filters</span></a>. Though it might be enough for simple tasks, filters are kind of limited:</p>
+<p>For simple enough tasks, we’ve seen that we can <a class="reference internal" href="modifying.html#modifying-filters"><span class="std std-ref">Modify a clip appearance and timing using filters</span></a>. Though it might be enough for simple tasks, filters are kind of limited:</p>
 <ul class="simple">
 <li><p>They can only access frame and/or timepoint</p></li>
 <li><p>We cannot pass pass arguments to them</p></li>
 <li><p>They are hard to maintain and re-use</p></li>
 </ul>
-<p>To allow for more complexe and reusable clip modifications, we can create our own custom effects, that we will later apply with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_effects" title="moviepy.Clip.Clip.with_effects"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_effects()</span></code></a>.</p>
+<p>To allow for more complex and reusable clip modifications, we can create our own custom effects, that we will later apply with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_effects" title="moviepy.Clip.Clip.with_effects"><code class="xref py py-func docutils literal notranslate"><span class="pre">with_effects()</span></code></a>.</p>
 <p>For example, imagine we want to add a progress bar to a clip, to do so we will not only need the time and image of the current frame, but also the total duration of the clip.
-We will also probably want to be able to pass parameters to define the apparence of the progress bar, such as color or height. This is a perfect task for an effect!</p>
+We will also probably want to be able to pass parameters to define the appearance of the progress bar, such as color or height. This is a perfect task for an effect!</p>
 </section>
 <section id="creating-an-effect">
 <h2>Creating an effect<a class="headerlink" href="#creating-an-effect" title="Permalink to this heading">#</a></h2>
 <p>In MoviePy, effects are objects of type <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><code class="xref py py-class docutils literal notranslate"><span class="pre">moviepy.Effect.Effect</span></code></a>, which is the base <code class="docutils literal notranslate"><span class="pre">abstract</span> <span class="pre">class</span></code> for all effects (kind of the same as <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a> is the base for all <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a>).</p>
-<p>So, to create an effect, we will need to inherint the <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effect</span></code></a> class, and do two things:</p>
+<p>So, to create an effect, we will need to inherit the <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effect</span></code></a> class, and do two things:</p>
 <ul class="simple">
 <li><p>Create an <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method to be able to received the parameters of our effect.</p></li>
 <li><p>Implement the inherited <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect.apply" title="moviepy.Effect.Effect.apply"><code class="xref py py-meth docutils literal notranslate"><span class="pre">apply()</span></code></a> method, which must take as an argument the clip we want to modify, and return the modified version.</p></li>
@@ -430,7 +430,7 @@ The main difference is, because your filter will be a method or an anonymous fun
 
 
 <span class="c1"># Here you see a decorator that will verify if our clip have a duration</span>
-<span class="c1"># MoviePy offer a few of thoses that may come handy when writing your own effects</span>
+<span class="c1"># MoviePy offer a few of them that may come handy when writing your own effects</span>
 <span class="nd">@requires_duration</span>
 <span class="k">def</span> <span class="nf">progress_bar</span><span class="p">(</span><span class="n">clip</span><span class="p">:</span> <span class="n">VideoClip</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

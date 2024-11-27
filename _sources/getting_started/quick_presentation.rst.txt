@@ -19,7 +19,7 @@ Here are a few reasons why you may want to edit videos in Python:
 And here are a few uses for which MoviePy is NOT the best solution:
 
 - You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use imageio_, OpenCV_ or SimpleCV, these are libraries that specialize in these tasks.
-- You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call ``ffmpeg`` (or ``avconv`` or ``mencoder``...) it will be faster more memory-efficient than going through MoviePy.
+- You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call ``ffmpeg`` (or ``avconv`` or ``mencoder``...) as it will be faster and more memory-efficient than going through MoviePy.
 
 
 Advantages and limitations
@@ -29,9 +29,12 @@ MoviePy has been developed with the following goals in mind:
 
 - **Simple and intuitive**. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.
 - **Flexible**. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.
-- **Portable**. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.
+- **Portable**. The code uses very common software (Numpy and FFmpeg) and can run on (almost) any machine with (almost) any version of Python.
 
-For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you'll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (>100), but this will be fixed in future versions.
+Limitations:
+- MoviePy cannot stream videos (e.g. reading from a webcam, or rendering a video live on a distant machine).
+- MoviePy is not really designed for video processing involving many successive frames of a movie (e.g. video stabilization - there is other software better suited for that).
+- You can also have memory problems if you use many video, audio, and image sources at the same time (>100).
 
 Example code
 ~~~~~~~~~~~~~~
@@ -57,18 +60,18 @@ Internally, the representation and manipulation of the different media is done u
 The central concept, the clips
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The central object of MoviePy is the :py:class:`the clips <moviepy.Clip.Clip>`, with either :py:class:`~moviepy.audio.AudioClip.AudioClip` for any audio element, or :py:class:`~moviepy.video.VideoClip.VideoClip` for any visual element. Clips really are the base unit of MoviePy, everything you do is with and on them.
+The central object of MoviePy is the the :py:class:`Clip <moviepy.Clip.Clip>`, with either :py:class:`~moviepy.audio.AudioClip.AudioClip` for any audio element, or :py:class:`~moviepy.video.VideoClip.VideoClip` for any visual element. Clips really are the base unit of MoviePy, everything you do is with and on them.
 
-Clips can be created from more than just videos or audios though. They can also be created from an image, a text, a custom animation, a folder of images, and even a simple lambda function !
+Clips can be created from more than just videos or audios though. They can also be created from an image, a text, a custom animation, a folder of images, and even a simple lambda function!
 
-To create your final video, what you will do is essentially :   
+To create your final video, what you will do is essentially:   
 
 #. Load different resources as clips (see :ref:`loading`)
 #. Modify them (see :ref:`modifying`)
 #. Mixing them into one final clip (see :ref:`compositing`)
 #. Render them into a file (see :ref:`rendering`)
 
-Of course, MoviePy offer multiple handy solution and tools to facilitate all thoses steps, and let you add new ones by writing your own effects (see :ref:`create_effects`) !
+Of course, MoviePy offer multiple handy solution and tools to facilitate all these steps, and lets you add new ones by writing your own effects (see :ref:`create_effects`)!
 
 
 .. _imageio: https://imageio.github.io/

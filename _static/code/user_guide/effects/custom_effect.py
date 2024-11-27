@@ -6,7 +6,7 @@ from moviepy.decorators import requires_duration
 
 
 # Here you see a decorator that will verify if our clip have a duration
-# MoviePy offer a few of thoses that may come handy when writing your own effects
+# MoviePy offer a few of them that may come handy when writing your own effects
 @requires_duration
 def progress_bar(clip: VideoClip, color: tuple, height: int = 10):
     """

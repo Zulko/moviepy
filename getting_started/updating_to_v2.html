@@ -405,17 +405,17 @@ Therefore, there is a high likelihood that your pre-v2.0 programs will not run w
 some changes.</p>
 <section id="dropping-support-of-python-2">
 <h2>Dropping support of Python 2<a class="headerlink" href="#dropping-support-of-python-2" title="Permalink to this heading">#</a></h2>
-<p>Starting with version 2.0 MoviePy <strong>no longer supports Python 2</strong>, which makes sense since Python 2 reached its end of life over three years ago.
+<p>Starting with version 2.0, MoviePy <strong>no longer supports Python 2</strong>, since Python 2 reached its end of life in 2020.
 Focusing on Python 3.7+ allows MoviePy to take advantage of the latest language features and improvements while maintaining code quality and security.</p>
 <p>Users are encouraged to upgrade to a supported version of Python to continue using MoviePy.</p>
 </section>
-<section id="moviepy-editor-supression-and-simplified-importation">
-<h2><code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> supression and simplified importation<a class="headerlink" href="#moviepy-editor-supression-and-simplified-importation" title="Permalink to this heading">#</a></h2>
+<section id="moviepy-editor-suppression-and-simplified-importation">
+<h2><code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> suppression and simplified importation<a class="headerlink" href="#moviepy-editor-suppression-and-simplified-importation" title="Permalink to this heading">#</a></h2>
 <p>Before v2.0, it was advised to import from <code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> whenever you needed to do some sort of manual operations,
-such as previewing or hand editing, because the <code class="docutils literal notranslate"><span class="pre">editor</span></code> package was in charge of a lot of magic and initialization, making your life
+such as previewing or hand editing, because the <code class="docutils literal notranslate"><span class="pre">editor</span></code> package handled a lot of magic and initialization, making your life
 easier, at the cost of initializing some complex modules like <code class="docutils literal notranslate"><span class="pre">pygame</span></code>.</p>
 <p>With version 2.0, the <code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> namespace simply no longer exists. You simply import everything from <code class="docutils literal notranslate"><span class="pre">moviepy</span></code> like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># Simple and nice, the __all__ is set in moviepy so only usefull things will be loaded</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># Simple and nice, the __all__ is set in moviepy so only useful things will be loaded</span>
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span> <span class="c1"># You can also import only the things you really need</span>
 </pre></div>
 </div>
@@ -453,9 +453,9 @@ However, in version 2.0 and onwards, effects are now represented as classes.</p>
 </section>
 <section id="dropping-many-external-dependencies-and-unifying-environment">
 <h2>Dropping many external dependencies and unifying environment<a class="headerlink" href="#dropping-many-external-dependencies-and-unifying-environment" title="Permalink to this heading">#</a></h2>
-<p>With v1.0, MoviePy relied on many optional external dependencies, trying to gracefully dropback from one library to another in the event one of them was missing, eventually dropping some features when no library was available.
+<p>With v1.0, MoviePy relied on many optional external dependencies, trying to gracefully fallback from one library to another in the event one of them was missing, eventually dropping some features when no library was available.
 This resulted in complex and hard to maintain code for the MoviePy team, as well as fragmented and hard to understand environment for the users.</p>
-<p>With v2.0 the MoviePy team tried to offer a simpler, smaller and more unified dependicy list, with focusing on <code class="docutils literal notranslate"><span class="pre">pillow</span></code> for all complex image manipulation, and dropping altogether the usage of <code class="docutils literal notranslate"><span class="pre">ImageMagick</span></code>, <code class="docutils literal notranslate"><span class="pre">PyGame</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenCV</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, <code class="docutils literal notranslate"><span class="pre">scikit</span></code>, and a few others.</p>
+<p>With v2.0 the MoviePy team tried to offer a simpler, smaller and more unified dependency list, with focusing on <code class="docutils literal notranslate"><span class="pre">pillow</span></code> for all complex image manipulation, and dropping altogether the usage of <code class="docutils literal notranslate"><span class="pre">ImageMagick</span></code>, <code class="docutils literal notranslate"><span class="pre">PyGame</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenCV</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, <code class="docutils literal notranslate"><span class="pre">scikit</span></code>, and a few others.</p>
 </section>
 <section id="removed-features">
 <h2>Removed features<a class="headerlink" href="#removed-features" title="Permalink to this heading">#</a></h2>
@@ -466,26 +466,26 @@ This resulted in complex and hard to maintain code for the MoviePy team, as well
 <li><p><code class="docutils literal notranslate"><span class="pre">moviepy.video.io.sliders</span></code></p></li>
 </ul>
 </section>
-<section id="miscleanous-signature-changes">
-<h2>Miscleanous signature changes<a class="headerlink" href="#miscleanous-signature-changes" title="Permalink to this heading">#</a></h2>
-<p>When updating the API and moving from previous libraries to <code class="docutils literal notranslate"><span class="pre">pillow</span></code>, some miscleanous changes also happen, meaning some methods signatures may have changed.</p>
+<section id="miscellaneous-signature-changes">
+<h2>Miscellaneous signature changes<a class="headerlink" href="#miscellaneous-signature-changes" title="Permalink to this heading">#</a></h2>
+<p>When updating the API and moving from previous libraries to <code class="docutils literal notranslate"><span class="pre">pillow</span></code>, some miscellaneous changes also happen, meaning some methods signatures may have changed.</p>
 <p>You should check the new signatures if you used any of the following:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TextClip</span></code> some arguments named have changed and a path to a font file is now needed at object instanciation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TextClip</span></code> some arguments named have changed and a path to a font file is now needed at object instantiation</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">clip.resize</span></code> is now <code class="docutils literal notranslate"><span class="pre">clip.resized</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">clip.crop</span></code> is now <code class="docutils literal notranslate"><span class="pre">clip.cropped</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">clip.rotate</span></code> is now <code class="docutils literal notranslate"><span class="pre">clip.rotated</span></code></p></li>
 <li><p>Any previous <code class="docutils literal notranslate"><span class="pre">Clip</span></code> method not starting by <code class="docutils literal notranslate"><span class="pre">with_</span></code> now probably start with it</p></li>
 </ul>
 </section>
-<section id="why-all-thoses-changes-and-updating-from-v1-0-to-v2-0">
-<h2>Why all thoses changes and updating from v1.0 to v2.0?<a class="headerlink" href="#why-all-thoses-changes-and-updating-from-v1-0-to-v2-0" title="Permalink to this heading">#</a></h2>
-<p>You may ask yourself why all thoses changes was introduced? The answer is: time.</p>
+<section id="why-all-these-changes-and-updating-from-v1-0-to-v2-0">
+<h2>Why all these changes and updating from v1.0 to v2.0?<a class="headerlink" href="#why-all-these-changes-and-updating-from-v1-0-to-v2-0" title="Permalink to this heading">#</a></h2>
+<p>You may ask yourself why were all these changes introduced? The answer is: time.</p>
 <p>MoviePy have seen many evolution since his first release and have became kind of a complex project, with ambitions sometimes too important in regards to available manpower on the development team.
-Over time, as in any project, inconsistencies have been introduced in order to support new functionnalities without breaking current API, and some initial choices no longer reflected the current state of things.</p>
+Over time, as in any project, inconsistencies have been introduced in order to support new functionalities without breaking current API, and some initial choices no longer reflected the current state of things.</p>
 <p>Due to multiple factors, MoviePy have also undergone a long period of time during which the main version distributed through PiPy diverged from the GitHub distributed version, introducing confusion and chaos.</p>
-<p>In a global effort to simplify futur development and limit confusion by providing a unified environment, it has been decided to release a new major version including the many evolutions than happened over the years, which meant breaking changes, and so a new major version released was required.</p>
-<p>For thoses interested in how and why all of thoses things have been decided, you can find a lot of the discussion that went into this in GitHub issues <a class="reference external" href="https://github.com/Zulko/moviepy/issues/1874">#1874</a>, <a class="reference external" href="https://github.com/Zulko/moviepy/issues/1089">#1089</a> and <a class="reference external" href="https://github.com/Zulko/moviepy/issues/2012">#2012</a>.</p>
+<p>In a global effort to simplify future development and limit confusion by providing a unified environment, it has been decided to release a new major version including the many evolutions than happened over the years, which meant breaking changes, and so a new major version released was required.</p>
+<p>For anyone interested in how and why all of these things have been decided, you can find a lot of the discussion that went into this in GitHub issues <a class="reference external" href="https://github.com/Zulko/moviepy/issues/1874">#1874</a>, <a class="reference external" href="https://github.com/Zulko/moviepy/issues/1089">#1089</a> and <a class="reference external" href="https://github.com/Zulko/moviepy/issues/2012">#2012</a>.</p>
 </section>
 </section>
 
@@ -531,7 +531,7 @@ Over time, as in any project, inconsistencies have been introduced in order to s
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-support-of-python-2">Dropping support of Python 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy-editor-supression-and-simplified-importation"><code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> supression and simplified importation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy-editor-suppression-and-simplified-importation"><code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> suppression and simplified importation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#renaming-and-api-unification">Renaming and API unification</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#massive-refactoring-of-effects">Massive refactoring of effects</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-effects-from-function-to-classes">Moving effects from function to classes</a></li>
@@ -541,8 +541,8 @@ Over time, as in any project, inconsistencies have been introduced in order to s
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-many-external-dependencies-and-unifying-environment">Dropping many external dependencies and unifying environment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removed-features">Removed features</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miscleanous-signature-changes">Miscleanous signature changes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-all-thoses-changes-and-updating-from-v1-0-to-v2-0">Why all thoses changes and updating from v1.0 to v2.0?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#miscellaneous-signature-changes">Miscellaneous signature changes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-all-these-changes-and-updating-from-v1-0-to-v2-0">Why all these changes and updating from v1.0 to v2.0?</a></li>
 </ul>
   </nav></div>
 

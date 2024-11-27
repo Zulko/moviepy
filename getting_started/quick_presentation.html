@@ -413,7 +413,7 @@ document.write(`
 <p>And here are a few uses for which MoviePy is NOT the best solution:</p>
 <ul class="simple">
 <li><p>You only need to do frame-by-frame video analysis (with face detection or other fancy stuff). This could be done with MoviePy in association with other libraries, but really, just use <a class="reference external" href="https://imageio.github.io/">imageio</a>, <a class="reference external" href="http://opencv.org/">OpenCV</a> or SimpleCV, these are libraries that specialize in these tasks.</p></li>
-<li><p>You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (or <code class="docutils literal notranslate"><span class="pre">avconv</span></code> or <code class="docutils literal notranslate"><span class="pre">mencoder</span></code>…) it will be faster more memory-efficient than going through MoviePy.</p></li>
+<li><p>You only want to convert a video file, or turn a series of image files into a movie. In this case it is better to directly call <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> (or <code class="docutils literal notranslate"><span class="pre">avconv</span></code> or <code class="docutils literal notranslate"><span class="pre">mencoder</span></code>…) as it will be faster and more memory-efficient than going through MoviePy.</p></li>
 </ul>
 </section>
 <section id="advantages-and-limitations">
@@ -422,9 +422,12 @@ document.write(`
 <ul class="simple">
 <li><p><strong>Simple and intuitive</strong>. Basic operations can be done in one line. The code is easy to learn and easy to understand for newcomers.</p></li>
 <li><p><strong>Flexible</strong>. You have total control over the frames of the video and audio, and creating your own effects is easy as Py.</p></li>
-<li><p><strong>Portable</strong>. The code uses very common software (Numpy and FFMPEG) and can run on (almost) any machine with (almost) any version of Python.</p></li>
+<li><p><strong>Portable</strong>. The code uses very common software (Numpy and FFmpeg) and can run on (almost) any machine with (almost) any version of Python.</p></li>
 </ul>
-<p>For the limitations: MoviePy cannot (yet) stream videos (read from a webcam, or render a video live on a distant machine), and is not really designed for video processing involving many successive frames of a movie (like video stabilization, you’ll need another software for that). You can also have memory problems if you use many video, audio, and image sources at the same time (&gt;100), but this will be fixed in future versions.</p>
+<p>Limitations:
+- MoviePy cannot stream videos (e.g. reading from a webcam, or rendering a video live on a distant machine).
+- MoviePy is not really designed for video processing involving many successive frames of a movie (e.g. video stabilization - there is other software better suited for that).
+- You can also have memory problems if you use many video, audio, and image sources at the same time (&gt;100).</p>
 </section>
 <section id="example-code">
 <h2>Example code<a class="headerlink" href="#example-code" title="Permalink to this heading">#</a></h2>
@@ -462,16 +465,16 @@ document.write(`
 </section>
 <section id="the-central-concept-the-clips">
 <h2>The central concept, the clips<a class="headerlink" href="#the-central-concept-the-clips" title="Permalink to this heading">#</a></h2>
-<p>The central object of MoviePy is the <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">the</span> <span class="pre">clips</span></code></a>, with either <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element. Clips really are the base unit of MoviePy, everything you do is with and on them.</p>
-<p>Clips can be created from more than just videos or audios though. They can also be created from an image, a text, a custom animation, a folder of images, and even a simple lambda function !</p>
-<p>To create your final video, what you will do is essentially :</p>
+<p>The central object of MoviePy is the the <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a>, with either <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element. Clips really are the base unit of MoviePy, everything you do is with and on them.</p>
+<p>Clips can be created from more than just videos or audios though. They can also be created from an image, a text, a custom animation, a folder of images, and even a simple lambda function!</p>
+<p>To create your final video, what you will do is essentially:</p>
 <ol class="arabic simple">
 <li><p>Load different resources as clips (see <a class="reference internal" href="../user_guide/loading.html#loading"><span class="std std-ref">Loading resources as clips</span></a>)</p></li>
 <li><p>Modify them (see <a class="reference internal" href="../user_guide/modifying.html#modifying"><span class="std std-ref">Modifying clips and apply effects</span></a>)</p></li>
 <li><p>Mixing them into one final clip (see <a class="reference internal" href="../user_guide/compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>)</p></li>
 <li><p>Render them into a file (see <a class="reference internal" href="../user_guide/rendering.html#rendering"><span class="std std-ref">Previewing and saving video clips</span></a>)</p></li>
 </ol>
-<p>Of course, MoviePy offer multiple handy solution and tools to facilitate all thoses steps, and let you add new ones by writing your own effects (see <a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>) !</p>
+<p>Of course, MoviePy offer multiple handy solution and tools to facilitate all these steps, and lets you add new ones by writing your own effects (see <a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>)!</p>
 </section>
 </section>
 

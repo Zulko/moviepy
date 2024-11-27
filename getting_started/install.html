@@ -399,8 +399,8 @@ document.write(`
                   
   <section id="installation">
 <span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
-<p>Installation is done with <code class="docutils literal notranslate"><span class="pre">pip</span></code> if you dont have <code class="docutils literal notranslate"><span class="pre">pip</span></code> take a look at <a class="reference external" href="https://pip.pypa.io/en/stable/installation/">how to install it</a>.</p>
-<p>With <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed, just type this in a terminal :</p>
+<p>Installation is done with <code class="docutils literal notranslate"><span class="pre">pip</span></code>. If you don’t have <code class="docutils literal notranslate"><span class="pre">pip</span></code>, take a look at <a class="reference external" href="https://pip.pypa.io/en/stable/installation/">how to install it</a>.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed, just type this in a terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span><span class="o">(</span>sudo<span class="o">)</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>moviepy
 </pre></div>
 </div>
@@ -408,11 +408,11 @@ document.write(`
 <span id="install-binaries"></span><h2>Installation of additional binaries<a class="headerlink" href="#installation-of-additional-binaries" title="Permalink to this heading">#</a></h2>
 <p>MoviePy depends on the software <a class="reference external" href="https://www.ffmpeg.org/download.html">ffmpeg</a> for video reading and writing and on <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> for video previewing.</p>
 <p>You don’t need to worry about <a class="reference external" href="https://www.ffmpeg.org/download.html">ffmpeg</a>, as it should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds).</p>
-<p>You do need to worry <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> if you plan on using video/audio previewing though. In such case, make sure to have <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> installed (it can usually be found alongside <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>) and
-make sure it is accessible to Python, or look how to set a custom path (see below).</p>
+<p>You do need to worry about <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> if you plan on using video/audio previewing. For these cases, make sure to have <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> installed (it can usually be found alongside <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>) and
+make sure it is accessible to Python, or define a custom path (see below).</p>
 <section id="define-custom-paths-to-binaries">
 <h3>Define custom paths to binaries<a class="headerlink" href="#define-custom-paths-to-binaries" title="Permalink to this heading">#</a></h3>
-<p>If you want to use a specific version of FFMPEG and FFPLAY, you can do so using environment variables.</p>
+<p>If you want to use a specific version of FFmpeg and FFplay, you can do so using environment variables.</p>
 <p>There are a couple of environment variables used by MoviePy that allow you to configure custom paths to the external tools.</p>
 <p>To setup any of these variables, the easiest way is to do it in Python before importing objects from MoviePy. For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>

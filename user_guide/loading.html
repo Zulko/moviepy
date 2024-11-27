@@ -401,7 +401,7 @@ document.write(`
 <p>The first step for making a video with MoviePy is to load the resources you wish to include in the final video.</p>
 <p>In this section we present the different sorts of clips and how to load them.
 For information on modifying a clip, see <a class="reference internal" href="modifying.html#modifying"><span class="std std-ref">Modifying clips and apply effects</span></a>. For how to put clips together see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>. And for how to see/save theme, see <a class="reference internal" href="rendering.html#rendering"><span class="std std-ref">Previewing and saving video clips</span></a> (we will usually save them in example, but we wont explain here).</p>
-<p>There’s a lot of different resources you can use with MoviePy, and you will load those differents resources with different subtypes of <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a>, and more preciselly of <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element.</p>
+<p>There’s a lot of different resources you can use with MoviePy, and you will load different resources with different subtypes of <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a>, and more precisely of <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element.</p>
 <p>The following code summarizes the base clips that you can create with moviepy:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">VideoClip</span><span class="p">,</span>
@@ -453,9 +453,9 @@ For information on modifying a clip, see <a class="reference internal" href="mod
 </pre></div>
 </div>
 <p>The best to understand all these clips more thoroughly is to read the full documentation for each in the <a class="reference internal" href="../reference/index.html#reference-manual"><span class="std std-ref">Api Reference</span></a>.</p>
-<section id="realasing-resources-by-closing-a-clip">
-<h2>Realasing resources by closing a clip<a class="headerlink" href="#realasing-resources-by-closing-a-clip" title="Permalink to this heading">#</a></h2>
-<p>When you create some types of clip instances - e.g. <code class="docutils literal notranslate"><span class="pre">VideoFileClip</span></code> or <code class="docutils literal notranslate"><span class="pre">AudioFileClip</span></code> - MoviePy creates a subprocess and locks the file. In order to release those resources when you are finished you should call the <code class="docutils literal notranslate"><span class="pre">close()</span></code> method.</p>
+<section id="releasing-resources-by-closing-a-clip">
+<h2>Releasing resources by closing a clip<a class="headerlink" href="#releasing-resources-by-closing-a-clip" title="Permalink to this heading">#</a></h2>
+<p>When you create some types of clip instances - e.g. <code class="docutils literal notranslate"><span class="pre">VideoFileClip</span></code> or <code class="docutils literal notranslate"><span class="pre">AudioFileClip</span></code> - MoviePy creates a subprocess and locks the file. In order to release these resources when you are finished you should call the <code class="docutils literal notranslate"><span class="pre">close()</span></code> method.</p>
 <p>This is more important for more complex applications and is particularly important when running on Windows. While Python’s garbage collector should eventually clean up the resources for you, closing them makes them available earlier.</p>
 <p>However, if you close a clip too early, methods on the clip (and any clips derived from it) become unsafe.</p>
 <p>So, the rules of thumb are:</p>
@@ -493,7 +493,7 @@ an exception.</p>
 <p>A video clip can carry around an audio clip (<a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a>) in <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.audio" title="moviepy.video.VideoClip.VideoClip.audio"><code class="xref py py-attr docutils literal notranslate"><span class="pre">audio</span></code></a> which is its <em>soundtrack</em>, and a mask clip in <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.mask" title="moviepy.video.VideoClip.VideoClip.mask"><code class="xref py py-attr docutils literal notranslate"><span class="pre">mask</span></code></a>.</p>
 <section id="animated-clips">
 <h3>Animated clips<a class="headerlink" href="#animated-clips" title="Permalink to this heading">#</a></h3>
-<p>Thoses are clips whose image will change in time, and who have a duration and a number of Frames Per Second.</p>
+<p>These are clips whose image will change over time, and which have a duration and a number of Frames Per Second.</p>
 <section id="videoclip">
 <h4>VideoClip<a class="headerlink" href="#videoclip" title="Permalink to this heading">#</a></h4>
 <p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> is the base class for all the other video clips in MoviePy. If all you want is to edit video files, you will never need it. This class is practical when you want to make animations from frames that are generated by another library.
@@ -649,7 +649,7 @@ but based on each entry of a data list.</p>
 </div>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">UpdatedVideoClip</span></code> is a video whose frame_function requires some objects to be updated before we can compute it.</p>
 <p>This is particularly practical in science where some algorithm needs to make some steps before a new frame can be generated, or maybe when trying to make a video based on a live exterior context.</p>
-<p>When you use this, you pass a world object to it. A world object is an object who respect thoses 3 rules :</p>
+<p>When you use this, you pass a world object to it. A world object is an object who respect these 3 rules:</p>
 <ol class="arabic simple">
 <li><p>It has a <code class="docutils literal notranslate"><span class="pre">clip_t</span></code> property, indicating the current world time.</p></li>
 <li><p>It has an <code class="docutils literal notranslate"><span class="pre">update()</span></code> method, that will update the world state and is responsible for increasing <code class="docutils literal notranslate"><span class="pre">clip_t</span></code> when a new frame can be drown.</p></li>
@@ -697,7 +697,7 @@ but based on each entry of a data list.</p>
             <span class="k">return</span>
 
         <span class="c1"># Different face, we increment clip_t and set reset so we will reset on next update.</span>
-        <span class="c1"># We dont reset immediately because we will need current state to make frame</span>
+        <span class="c1"># We don&#39;t reset immediately because we will need current state to make frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clip_t</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
 
@@ -724,7 +724,7 @@ but based on each entry of a data list.</p>
 </section>
 <section id="unanimated-clips">
 <h3>Unanimated clips<a class="headerlink" href="#unanimated-clips" title="Permalink to this heading">#</a></h3>
-<p>Thoses are clips whose image will, at least before modifications, stay the same. By default they have no duration nor FPS. Meaning you will need to define thoses if you try to do operation needing such information (for example rendering).</p>
+<p>These are clips whose image will, at least before modifications, stay the same. By default they have no duration nor FPS, meaning you will need to define them before doing operations needing such information (for example, rendering).</p>
 <section id="imageclip">
 <h4>ImageClip<a class="headerlink" href="#imageclip" title="Permalink to this heading">#</a></h4>
 <p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip" title="moviepy.video.VideoClip.ImageClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageClip</span></code></a> is the base class for all unanimated clips, it’s a video clip that always displays the same image. Along with <a class="reference internal" href="../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoFileClip</span></code></a> it’s one of the most used kind of clip.
@@ -749,8 +749,8 @@ You can create one as follows:</p>
 <section id="textclip">
 <h4>TextClip<a class="headerlink" href="#textclip" title="Permalink to this heading">#</a></h4>
 <p>A <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a> is a clip that will turn a text string into an image clip.</p>
-<p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a> accept many parameters, letting you configure the apparence of the text, such as font and font size,
-color, interlining, text alignement, etc.</p>
+<p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a> accept many parameters, letting you configure the appearance of the text, such as font and font size,
+color, interlining, text alignment, etc.</p>
 <p>The font you want to use must be an <a class="reference external" href="https://fr.wikipedia.org/wiki/OpenType">OpenType font</a>, and you will set it by passing the path to the font file.</p>
 <p>Here are a few example of using <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a> :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">TextClip</span>
@@ -787,18 +787,18 @@ color, interlining, text alignement, etc.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The parameter <code class="docutils literal notranslate"><span class="pre">method</span></code> let you define if text should be written and overflow if too long (<code class="docutils literal notranslate"><span class="pre">label</span></code>) or be automatically breaked (<code class="docutils literal notranslate"><span class="pre">caption</span></code>).</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">method</span></code> let you define if text should be written and overflow if too long (<code class="docutils literal notranslate"><span class="pre">label</span></code>) or be automatically broken over multiple lines (<code class="docutils literal notranslate"><span class="pre">caption</span></code>).</p>
 </div>
-<p>For a more detailed explaination of all the parameters, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a>.</p>
+<p>For a more detailed explanation of all the parameters, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a>.</p>
 </section>
 <section id="colorclip">
 <h4>ColorClip<a class="headerlink" href="#colorclip" title="Permalink to this heading">#</a></h4>
-<p>A <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.ColorClip.html#moviepy.video.VideoClip.ColorClip" title="moviepy.video.VideoClip.ColorClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorClip</span></code></a> is a clip that will return an image of only one color. It is sometimes usefull when doing compositing (see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>).</p>
+<p>A <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.ColorClip.html#moviepy.video.VideoClip.ColorClip" title="moviepy.video.VideoClip.ColorClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorClip</span></code></a> is a clip that will return an image of only one color. It is sometimes useful when doing compositing (see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">ColorClip</span>
 
 <span class="c1"># Color is passed as a RGB tuple</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c1"># We really dont need more than 1 fps do we ?</span>
+<span class="c1"># We really don&#39;t need more than 1 fps do we ?</span>
 <span class="n">myclip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;result.mp4&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -809,7 +809,7 @@ color, interlining, text alignement, etc.</p>
 <span id="loading-masks"></span><h3>Mask clips<a class="headerlink" href="#mask-clips" title="Permalink to this heading">#</a></h3>
 <p>Masks are a special kind of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> with the property <code class="docutils literal notranslate"><span class="pre">is_mask</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. They can be attached to any other kind of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> through method <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_mask" title="moviepy.video.VideoClip.VideoClip.with_mask"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_mask()</span></code></a>.</p>
 <p>When a clip as a mask attached to it, this mask will indicate which pixels will be visible when the clip is composed with other clips (see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.</p>
-<p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
+<p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one component per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
 <p>When you create or load a clip that you will use as a mask you need to declare it. You can then attach it to a clip with the same dimensions :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoClip</span><span class="p">,</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoFileClip</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -832,7 +832,7 @@ color, interlining, text alignement, etc.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In the case of video and image files, if these are not already black and white they will be converted automatically.</p>
-<p>Also, when you load an image with an <em>alpha layer</em>, like a PNG, MoviePy will use this layer as a mask, except if you pass <code class="docutils literal notranslate"><span class="pre">transparent=False</span></code>.</p>
+<p>Also, when you load an image with an <em>alpha layer</em>, like a PNG, MoviePy will use this layer as a mask unless you pass <code class="docutils literal notranslate"><span class="pre">transparent=False</span></code>.</p>
 </div>
 <p>Any video clip can be turned into a mask with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_mask" title="moviepy.video.VideoClip.VideoClip.to_mask"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_mask()</span></code></a>, and a mask can be turned to a standard RGB video clip with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_RGB" title="moviepy.video.VideoClip.VideoClip.to_RGB"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_RGB()</span></code></a>.</p>
 <p>Masks are treated differently by many methods (because their frames are different) but at the core, they are <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a>, so you can do with theme everything you can do with a video clip: modify, cut, apply effects, save, etc.</p>
@@ -862,8 +862,8 @@ color, interlining, text alignement, etc.</p>
 </section>
 <section id="audiofileclip">
 <h3>AudioFileClip<a class="headerlink" href="#audiofileclip" title="Permalink to this heading">#</a></h3>
-<p><a class="reference internal" href="../reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip" title="moviepy.audio.io.AudioFileClip.AudioFileClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioFileClip</span></code></a> is used to load an audio file, this is probably the only kind of audio clip you will use.</p>
-<p>You simply pass him the file you want to load :</p>
+<p><a class="reference internal" href="../reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip" title="moviepy.audio.io.AudioFileClip.AudioFileClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioFileClip</span></code></a> is used to load an audio file. This is probably the only kind of audio clip you will use.</p>
+<p>You simply pass it the file you want to load :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Works for audio files, but also videos file where you only want the keep the audio track</span>
@@ -882,7 +882,7 @@ color, interlining, text alignement, etc.</p>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioArrayClip</span>
 
-<span class="c1"># We want to play those notes</span>
+<span class="c1"># We want to play these notes</span>
 <span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">440</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">494</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mi">523</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="mi">659</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">698</span><span class="p">}</span>
 
 <span class="n">note_duration</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -960,7 +960,7 @@ color, interlining, text alignement, etc.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#realasing-resources-by-closing-a-clip">Realasing resources by closing a clip</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#releasing-resources-by-closing-a-clip">Releasing resources by closing a clip</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories-of-video-clips">Categories of video clips</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#animated-clips">Animated clips</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#videoclip">VideoClip</a></li>

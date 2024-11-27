@@ -430,7 +430,7 @@ So most of the time you don’t need to worry about mixing the audio and masks.<
 <p>The <code class="docutils literal notranslate"><span class="pre">final_clip</span></code> is a clip that plays the clips 1, 2, and 3 one after the other.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The clips do not need to be the same size. If they arent’s they will all appear centered in a clip large enough to contain the biggest of them, with optionally a color of your choosing to fill the background.</p>
+<p>The clips do not need to be the same size. If they aren’t, they will all appear centered in a clip large enough to contain the biggest of them, with optionally a color of your choosing to fill the background.</p>
 </div>
 <p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips.html#moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips" title="moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips"><code class="xref py py-func docutils literal notranslate"><span class="pre">concatenate_videoclips()</span></code></a>.</p>
 </section>
@@ -496,7 +496,7 @@ Unless  <code class="docutils literal notranslate"><span class="pre">clip3</span
 To do so, just pass the size of the final composition as <code class="docutils literal notranslate"><span class="pre">size</span></code> parameter of <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a>.</p>
 </div>
 <p>For now we have stacked multiple clip on top of each others, but this is obviously not enough for doing real video compositing.
-For that, we will need to change when some clip start et stop to play, as well as define the x:y, position of thoses clips in the final video.</p>
+For that, we will need to change when some clip starts and stops playing, as well as define the x:y, position of these clips in the final video.</p>
 <p>For more info, see <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip" title="moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeVideoClip</span></code></a>.</p>
 <section id="changing-starting-and-stopping-times-of-clips">
 <h3>Changing starting and stopping times of clips<a class="headerlink" href="#changing-starting-and-stopping-times-of-clips" title="Permalink to this heading">#</a></h3>
@@ -566,7 +566,7 @@ in many ways :</p>
 </section>
 <section id="adding-transitions-effects">
 <h3>Adding transitions effects<a class="headerlink" href="#adding-transitions-effects" title="Permalink to this heading">#</a></h3>
-<p>The last part of composition is adding transition effects. For example, when a clip start while another is still playing, it would be nice to make the new one fadein instead of showing abruptly.</p>
+<p>The last part of composition is adding transition effects. For example, when a clip start while another is still playing, it would be nice to make the new one fade-in instead of showing abruptly.</p>
 <p>To do so, we can use the transitions offered by MoviePy in <code class="xref py py-mod docutils literal notranslate"><span class="pre">transitions</span></code>, like <code class="xref py py-func docutils literal notranslate"><span class="pre">crossfadein()</span></code> :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;In this example, we will concatenate two clips with a 1-second</span>
 <span class="sd">crossfadein of the second clip.&quot;&quot;&quot;</span>
@@ -585,13 +585,13 @@ in many ways :</p>
 <span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;final_clip.mp4&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>MoviePy offer only few transitions in <code class="xref py py-mod docutils literal notranslate"><span class="pre">transitions</span></code>. But technically, transitions are mostly effects applyed to the mask of a clip !
+<p>MoviePy offer only few transitions in <code class="xref py py-mod docutils literal notranslate"><span class="pre">transitions</span></code>. But technically, transitions are mostly effects applied to the mask of a clip!
 That means you can actually use any of the already existing effects, and use them as transitions by applying them on the mask of your clip (see .</p>
 <p>For more info, see <code class="xref py py-mod docutils literal notranslate"><span class="pre">transitions</span></code> and <a class="reference internal" href="../reference/reference/moviepy.video.fx.html#module-moviepy.video.fx" title="moviepy.video.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code></a>.</p>
 <section id="compositing-audio-clips">
 <h4>Compositing audio clips<a class="headerlink" href="#compositing-audio-clips" title="Permalink to this heading">#</a></h4>
 <p>When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don’t need to worry about compositing these tracks yourself.</p>
-<p>If you want to make a custom audiotrack from several audio sources, audio clips can be mixed together like video clips, with <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip" title="moviepy.audio.AudioClip.CompositeAudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeAudioClip</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.concatenate_audioclips.html#moviepy.audio.AudioClip.concatenate_audioclips" title="moviepy.audio.AudioClip.concatenate_audioclips"><code class="xref py py-func docutils literal notranslate"><span class="pre">concatenate_audioclips()</span></code></a>:</p>
+<p>If you want to make a custom audio track from several audio sources, audio clips can be mixed together like video clips, with <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip" title="moviepy.audio.AudioClip.CompositeAudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">CompositeAudioClip</span></code></a> and <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.concatenate_audioclips.html#moviepy.audio.AudioClip.concatenate_audioclips" title="moviepy.audio.AudioClip.concatenate_audioclips"><code class="xref py py-func docutils literal notranslate"><span class="pre">concatenate_audioclips()</span></code></a>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s first concatenate (one after the other) then composite</span>
 <span class="sd">(on top of each other) three audio clips.&quot;&quot;&quot;</span>
 

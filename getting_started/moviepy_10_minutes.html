@@ -406,7 +406,7 @@ document.write(`
 <p>In this tutorial, you will learn the basics of how to use the MoviePy library in just 10 minutes. As an example project for this tutorial, we will create the following trailer for the movie <a class="reference external" href="https://peach.blender.org/">“Big Buck Bunny.”</a>.</p>
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
    <video controls>
-      <source src="/_static/medias/moviepy_10_minutes/tailer_bbb.mp4" type="video/mp4">
+      <source src="/moviepy/_static/medias/getting_started/moviepy_10_minutes/trailer_bbb.mp4" type="video/mp4">
       <p>Your browser does not support HTML5 video in MP4 format.</p>
    </video>
 </div><section id="prerequisites">
@@ -516,12 +516,12 @@ To do so, we are going to use the <code class="docutils literal notranslate"><sp
 <span class="n">rodents_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>In that particular case, we have used the <code class="docutils literal notranslate"><span class="pre">with_section_cut_out</span></code>, but this is only one of the many clip manipulation methods starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code>. We will see a few others
+<p>In that particular case, we have used the <code class="docutils literal notranslate"><span class="pre">with_section_cut_out</span></code>, but this is only one of the many clip manipulation methods starting with <code class="docutils literal notranslate"><span class="pre">with_</span></code>. We will see a few others
 in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see <a class="reference internal" href="../reference/index.html#reference-manual"><span class="std std-ref">Api Reference</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You may have noticed that we have reassigned the <code class="docutils literal notranslate"><span class="pre">rodents_clip</span></code> variable instead of just calling a method on it.
-This is because in MoviePy, any function starting with <code class="docutils literal notranslate"><span class="pre">with_*</span></code> is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy.
+This is because in MoviePy, any function starting with <code class="docutils literal notranslate"><span class="pre">with_</span></code> is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy.
 So you need to store the result of the method and, if necessary, reassign the original variable to update your clip.</p>
 </div>
 </section>
@@ -569,13 +569,13 @@ task, the name has been shortened to <code class="docutils literal notranslate">
 </section>
 <section id="step-6-timing-the-clips">
 <h2>Step 6: Timing the clips<a class="headerlink" href="#step-6-timing-the-clips" title="Permalink to this heading">#</a></h2>
-<p>We have all the clips we need, but if we were to combine all those clips into a single one using composition (we will see that in the next step), all our clips would start at the same time and play on top of each other, which is obviously not what we want.
-Also, some video clips, like the images and texts, have no endpoint/duration at creation (except if you have provided a duration parameter), which means trying to render them will throw an error as it would result in an infinite video.</p>
-<p>To fix that, we need to specify when a clip should start and stop in the final clip. So, let’s start by indicating when each clip must start and end with the appropriate with_* methods.</p>
+<p>We have all the clips we need, but if we were to combine all the clips into a single one using composition (we will see that in the next step), all our clips would start at the same time and play on top of each other, which is obviously not what we want.
+Also, some video clips, like images and texts, have no endpoint/duration at creation (unless you have provided a duration parameter), which means trying to render them will throw an error as it would result in an infinite video.</p>
+<p>To fix that, we need to specify when a clip should start and stop in the final clip. So, let’s start by indicating when each clip must start and end using the appropriate with_* methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">################</span>
 <span class="c1"># CLIPS TIMING #</span>
 <span class="c1">################</span>
-<span class="c1"># We have all the clips we need, but if we was to turn all thoses clips into a single one with composition (we will see that during next step)</span>
+<span class="c1"># We have all the clips we need, but if we was to turn all the clips into a single one with composition (we will see that during next step)</span>
 <span class="c1"># all our clips would start at the same time and play on top of each other, which is obviously not what we want.</span>
 <span class="c1"># To fix that, we need to say when a clip should start and stop in the final clip.</span>
 <span class="c1"># So, lets start by telling when each clip must start and end with appropriate with_* methods</span>
@@ -603,8 +603,8 @@ Also, some video clips, like the images and texts, have no endpoint/duration at 
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By default, all clips have a start point at <code class="docutils literal notranslate"><span class="pre">0</span></code>. If a clip has no duration but you set the <code class="docutils literal notranslate"><span class="pre">endtime</span></code>, then the duration will be calculated for you. The reciprocity is also true.</p>
-<p>So in our case, we either use duration or endtime, depending on what is more practical for each specific case.</p>
+<p>By default, all clips have a start point at <code class="docutils literal notranslate"><span class="pre">0</span></code>. If a clip has no <code class="docutils literal notranslate"><span class="pre">duration</span></code> but you set the <code class="docutils literal notranslate"><span class="pre">end_time</span></code>, then the <code class="docutils literal notranslate"><span class="pre">duration</span></code> will be calculated for you. The reciprocity is also true.</p>
+<p>So in our case, we either use <code class="docutils literal notranslate"><span class="pre">duration</span></code> or <code class="docutils literal notranslate"><span class="pre">end_time</span></code>, depending on what is more practical for each specific case.</p>
 </div>
 </section>
 <section id="step-7-seeing-how-all-clips-combine">
@@ -619,7 +619,7 @@ So, MoviePy offers a special kind of <a class="reference internal" href="../refe
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">########################</span>
 <span class="c1"># CLIPS TIMING PREVIEW #</span>
 <span class="c1">########################</span>
-<span class="c1"># Lets make a first compositing of thoses clips into one single clip and do a quick preview to see if everything is synchro</span>
+<span class="c1"># Lets make a first compositing of the clips into one single clip and do a quick preview to see if everything is synchro</span>
 
 <span class="n">quick_compo</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
     <span class="p">[</span>
@@ -712,7 +712,7 @@ Whether you want to add smooth transitions between clips, alter visual appearanc
 <span class="c1">################################</span>
 <span class="c1"># Now that our clip are timed and positionned, lets add some transition to make it more natural</span>
 <span class="c1"># To do so we use the with_effects method and the video effects in vfx</span>
-<span class="c1"># We call with_effects on our clip and pass him an array of effect objects to apply</span>
+<span class="c1"># We call with_effects on our clip and pass it an array of effect objects to apply</span>
 <span class="c1"># We&#39;ll keep it simple, nothing fancy just cross fading</span>
 <span class="n">intro_text</span> <span class="o">=</span> <span class="n">intro_text</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
 <span class="n">logo_clip</span> <span class="o">=</span> <span class="n">logo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)])</span>
@@ -741,10 +741,10 @@ Whether you want to add smooth transitions between clips, alter visual appearanc
     <span class="p">[</span><span class="n">vfx</span><span class="o">.</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">vfx</span><span class="o">.</span><span class="n">FadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeIn</span><span class="p">(</span><span class="mf">1.5</span><span class="p">),</span> <span class="n">afx</span><span class="o">.</span><span class="n">AudioFadeOut</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
 <span class="p">)</span>
 
-<span class="c1"># Effects are not only for transition, they can also change a clip timing or apparence</span>
+<span class="c1"># Effects are not only for transition, they can also change a clip timing or appearance</span>
 <span class="c1"># To show that, lets also modify the Rambo-like part of our clip to be in slow motion</span>
-<span class="c1"># PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled</span>
-<span class="c1"># the others are with_volume_scaled, resized, croped and rotated</span>
+<span class="c1"># PS: We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled</span>
+<span class="c1"># the others are with_volume_scaled, resized, cropped and rotated</span>
 <span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">MultiplySpeed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)])</span>
 
 <span class="c1"># Because we modified timing of rambo_clip with our MultiplySpeed effect, we must re-assign the following clips timing</span>
@@ -776,7 +776,7 @@ Whether you want to add smooth transitions between clips, alter visual appearanc
 For a more in-depth presentation, see <a class="reference internal" href="../reference/reference/moviepy.video.fx.html#module-moviepy.video.fx" title="moviepy.video.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code></a>, <a class="reference internal" href="../reference/reference/moviepy.audio.fx.html#module-moviepy.audio.fx" title="moviepy.audio.fx"><code class="xref py py-mod docutils literal notranslate"><span class="pre">moviepy.audio.fx</span></code></a>, and <a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Looking at the result, you may notice that crossfading makes clips go from transparent to opaque, and reciprocally, and wonder how it works.</p>
+<p>Looking at the result, you may notice that cross-fading makes clips go from transparent to opaque, and reciprocally, and wonder how it works.</p>
 <p>We won’t get into details, but know that in MoviePy, you can declare some sections of a video clip to be transparent by using masks. Masks are nothing more than
 special kinds of video clips that are made of values ranging from <code class="docutils literal notranslate"><span class="pre">0</span></code> for a transparent pixel to <code class="docutils literal notranslate"><span class="pre">1</span></code> for a fully opaque one.</p>
 <p>For more info, see <a class="reference internal" href="../user_guide/loading.html#loading-masks"><span class="std std-ref">Mask clips</span></a>.</p>
@@ -785,14 +785,14 @@ special kinds of video clips that are made of values ranging from <code class="d
 <section id="step-10-modifying-the-appearance-of-a-clip-using-filters">
 <h2>Step 10: Modifying the appearance of a clip using filters<a class="headerlink" href="#step-10-modifying-the-appearance-of-a-clip-using-filters" title="Permalink to this heading">#</a></h2>
 <p>Finally, to make it more epic, we will apply a custom filter to our Rambo clip to make the image sepia.
-MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the <code class="docutils literal notranslate"><span class="pre">image_transform</span></code> method.</p>
+MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.image_transform" title="moviepy.video.VideoClip.VideoClip.image_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">image_transform()</span></code></a> method.</p>
 <p>To understand how filters work, you first need to understand that in MoviePy, a clip frame is nothing more than a numpy <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">HxWx3</span></code>.
 This means we can modify how a frame looks like by applying simple math operations. Doing that on all the frames allows us to apply a filter to our clip!</p>
 <p>The “apply to all frames” part is done by the <code class="docutils literal notranslate"><span class="pre">image_transform</span></code> method. This method takes a callback function as an argument, and at render time, it will trigger the callback for each frame of the clip, passing the current frame.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This is a bit of an advanced usage, and the example involves matrix multiplication. If this is too much for you, you can simply ignore it until you really need to make custom filters,
-then go look for a more detailed explanation on how to do filtering (<a class="reference internal" href="../user_guide/modifying.html#modifying-filters"><span class="std std-ref">Modify a clip apparence and timing using filters</span></a>) and create custom effects (<a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>) in the user guide.</p>
+then go look for a more detailed explanation on how to do filtering (<a class="reference internal" href="../user_guide/modifying.html#modifying-filters"><span class="std std-ref">Modify a clip appearance and timing using filters</span></a>) and create custom effects (<a class="reference internal" href="../user_guide/create_effects.html#create-effects"><span class="std std-ref">Creating your own effects</span></a>) in the user guide.</p>
 <p>What you need to remember is just that we can apply filters on images. Here we do it mathematically, but you could very well use a library such as Pillow (provided it can understand numpy images) to do the maths for you!</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">###############</span>
@@ -803,7 +803,7 @@ then go look for a more detailed explanation on how to do filtering (<a class="r
 
 <span class="c1"># We will start by defining a function that turn a numpy image into sepia</span>
 <span class="c1"># It takes the image as numpy array in entry and return the modified image as output</span>
-<span class="k">def</span> <span class="nf">sepia_fitler</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">sepia_filter</span><span class="p">(</span><span class="n">frame</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
     <span class="c1"># Sepia filter transformation matrix</span>
     <span class="c1"># Sepia transform works by applying to each pixel of the image the following rules</span>
     <span class="c1"># res_R = (R * .393) + (G *.769) + (B * .189)</span>
@@ -833,7 +833,7 @@ then go look for a more detailed explanation on how to do filtering (<a class="r
 
 
 <span class="c1"># Now, we simply apply the filter to our clip by calling image_transform, which will call our filter on every frame</span>
-<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">sepia_fitler</span><span class="p">)</span>
+<span class="n">rambo_clip</span> <span class="o">=</span> <span class="n">rambo_clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">sepia_filter</span><span class="p">)</span>
 
 <span class="c1"># Let&#39;s see how our filter look</span>
 <span class="n">rambo_clip</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -844,7 +844,7 @@ then go look for a more detailed explanation on how to do filtering (<a class="r
 <h2>Step 11: Rendering the final clip to a file<a class="headerlink" href="#step-11-rendering-the-final-clip-to-a-file" title="Permalink to this heading">#</a></h2>
 <p>So, our final clip is ready, and we have made all the cutting and modifications we want. We are now ready to save the final result into a file. In video editing, this operation
 is known as rendering.</p>
-<p>Again, we will keep things simple and just do video rendering without much tweaking. In most cases, MoviePy and FFMPEG automatically find the best settings. Take a look at the <code class="docutils literal notranslate"><span class="pre">write_videofile</span></code> doc for more info.</p>
+<p>Again, we will keep things simple and just do video rendering without much tweaking. In most cases, MoviePy and FFmpeg will automatically find the best settings. Take a look at <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_videofile()</span></code></a> for more info.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">##################</span>
 <span class="c1"># CLIP RENDERING #</span>
 <span class="c1">##################</span>

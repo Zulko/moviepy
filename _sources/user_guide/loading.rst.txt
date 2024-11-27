@@ -8,7 +8,7 @@ The first step for making a video with MoviePy is to load the resources you wish
 In this section we present the different sorts of clips and how to load them.
 For information on modifying a clip, see :ref:`modifying`. For how to put clips together see :ref:`compositing`. And for how to see/save theme, see :ref:`rendering` (we will usually save them in example, but we wont explain here).
 
-There's a lot of different resources you can use with MoviePy, and you will load those differents resources with different subtypes of :py:class:`~moviepy.Clip.Clip`, and more preciselly of :py:class:`~moviepy.audio.AudioClip.AudioClip` for any audio element, or :py:class:`~moviepy.video.VideoClip.VideoClip` for any visual element.
+There's a lot of different resources you can use with MoviePy, and you will load different resources with different subtypes of :py:class:`~moviepy.Clip.Clip`, and more precisely of :py:class:`~moviepy.audio.AudioClip.AudioClip` for any audio element, or :py:class:`~moviepy.video.VideoClip.VideoClip` for any visual element.
 
 The following code summarizes the base clips that you can create with moviepy: 
 
@@ -19,10 +19,10 @@ The following code summarizes the base clips that you can create with moviepy:
 The best to understand all these clips more thoroughly is to read the full documentation for each in the :ref:`reference_manual`.
 
 
-Realasing resources by closing a clip
+Releasing resources by closing a clip
 ---------------------------------------
 
-When you create some types of clip instances - e.g. ``VideoFileClip`` or ``AudioFileClip`` - MoviePy creates a subprocess and locks the file. In order to release those resources when you are finished you should call the ``close()`` method.
+When you create some types of clip instances - e.g. ``VideoFileClip`` or ``AudioFileClip`` - MoviePy creates a subprocess and locks the file. In order to release these resources when you are finished you should call the ``close()`` method.
 
 This is more important for more complex applications and is particularly important when running on Windows. While Python's garbage collector should eventually clean up the resources for you, closing them makes them available earlier.
 
@@ -59,7 +59,7 @@ A video clip can carry around an audio clip (:py:class:`~moviepy.audio.AudioClip
 Animated clips
 ~~~~~~~~~~~~~~~
 
-Thoses are clips whose image will change in time, and who have a duration and a number of Frames Per Second.
+These are clips whose image will change over time, and which have a duration and a number of Frames Per Second.
 
 VideoClip
 """"""""""
@@ -141,7 +141,7 @@ UpdatedVideoClip
 
 This is particularly practical in science where some algorithm needs to make some steps before a new frame can be generated, or maybe when trying to make a video based on a live exterior context.
 
-When you use this, you pass a world object to it. A world object is an object who respect thoses 3 rules :
+When you use this, you pass a world object to it. A world object is an object who respect these 3 rules:
 
 #. It has a ``clip_t`` property, indicating the current world time.
 #. It has an ``update()`` method, that will update the world state and is responsible for increasing ``clip_t`` when a new frame can be drown.
@@ -157,7 +157,7 @@ On :py:meth:`~moviepy.video.io.VideoClip.UpdatedVideoClip.get_frame` call, your 
 Unanimated clips
 ~~~~~~~~~~~~~~~~
 
-Thoses are clips whose image will, at least before modifications, stay the same. By default they have no duration nor FPS. Meaning you will need to define thoses if you try to do operation needing such information (for example rendering).
+These are clips whose image will, at least before modifications, stay the same. By default they have no duration nor FPS, meaning you will need to define them before doing operations needing such information (for example, rendering).
 
 
 ImageClip
@@ -177,8 +177,8 @@ TextClip
 
 A :py:class:`~moviepy.video.VideoClip.TextClip` is a clip that will turn a text string into an image clip.
 
-:py:class:`~moviepy.video.VideoClip.TextClip` accept many parameters, letting you configure the apparence of the text, such as font and font size, 
-color, interlining, text alignement, etc.
+:py:class:`~moviepy.video.VideoClip.TextClip` accept many parameters, letting you configure the appearance of the text, such as font and font size, 
+color, interlining, text alignment, etc.
 
 The font you want to use must be an `OpenType font <https://fr.wikipedia.org/wiki/OpenType>`_, and you will set it by passing the path to the font file.
 
@@ -188,15 +188,15 @@ Here are a few example of using :py:class:`~moviepy.video.VideoClip.TextClip` :
     :language: python
 
 .. note::
-    The parameter ``method`` let you define if text should be written and overflow if too long (``label``) or be automatically breaked (``caption``).
+    The parameter ``method`` let you define if text should be written and overflow if too long (``label``) or be automatically broken over multiple lines (``caption``).
 
-For a more detailed explaination of all the parameters, see :py:class:`~moviepy.video.VideoClip.TextClip`.
+For a more detailed explanation of all the parameters, see :py:class:`~moviepy.video.VideoClip.TextClip`.
 
 
 ColorClip
 """""""""""""""
 
-A :py:class:`~moviepy.video.VideoClip.ColorClip` is a clip that will return an image of only one color. It is sometimes usefull when doing compositing (see :ref:`compositing`). 
+A :py:class:`~moviepy.video.VideoClip.ColorClip` is a clip that will return an image of only one color. It is sometimes useful when doing compositing (see :ref:`compositing`). 
 
 .. literalinclude:: /_static/code/user_guide/loading/ColorClip.py
     :language: python
@@ -213,7 +213,7 @@ Masks are a special kind of :py:class:`~moviepy.video.VideoClip.VideoClip` with 
 
 When a clip as a mask attached to it, this mask will indicate which pixels will be visible when the clip is composed with other clips (see :ref:`compositing`). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.
 
-The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one composant per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
+The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one component per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.
 
 When you create or load a clip that you will use as a mask you need to declare it. You can then attach it to a clip with the same dimensions :
 
@@ -223,7 +223,7 @@ When you create or load a clip that you will use as a mask you need to declare i
 .. note::
     In the case of video and image files, if these are not already black and white they will be converted automatically.
     
-    Also, when you load an image with an *alpha layer*, like a PNG, MoviePy will use this layer as a mask, except if you pass ``transparent=False``.
+    Also, when you load an image with an *alpha layer*, like a PNG, MoviePy will use this layer as a mask unless you pass ``transparent=False``.
 
 
 Any video clip can be turned into a mask with :py:meth:`~moviepy.video.VideoClip.VideoClip.to_mask`, and a mask can be turned to a standard RGB video clip with :py:meth:`~moviepy.video.VideoClip.VideoClip.to_RGB()`.
@@ -255,9 +255,9 @@ For more, see :py:class:`~moviepy.audio.AudioClip.AudioClip`.
 AudioFileClip
 ~~~~~~~~~~~~~~~~~~~~
 
-:py:class:`~moviepy.audio.io.AudioFileClip.AudioFileClip` is used to load an audio file, this is probably the only kind of audio clip you will use.
+:py:class:`~moviepy.audio.io.AudioFileClip.AudioFileClip` is used to load an audio file. This is probably the only kind of audio clip you will use.
 
-You simply pass him the file you want to load :
+You simply pass it the file you want to load :
 
 .. literalinclude:: /_static/code/user_guide/loading/AudioFileClip.py
     :language: python

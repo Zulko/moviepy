@@ -33,7 +33,7 @@ Concatenation can be done very easily with the function :py:func:`~moviepy.video
 The ``final_clip`` is a clip that plays the clips 1, 2, and 3 one after the other.
 
 .. note::
-    The clips do not need to be the same size. If they arent's they will all appear centered in a clip large enough to contain the biggest of them, with optionally a color of your choosing to fill the background. 
+    The clips do not need to be the same size. If they aren't, they will all appear centered in a clip large enough to contain the biggest of them, with optionally a color of your choosing to fill the background. 
 
 For more info, see :py:func:`~moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips`.
 
@@ -73,7 +73,7 @@ Unless  ``clip3`` and/or ``clip2`` have masks which hide parts of them.
     To do so, just pass the size of the final composition as ``size`` parameter of :py:class:`~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`.
 
 For now we have stacked multiple clip on top of each others, but this is obviously not enough for doing real video compositing. 
-For that, we will need to change when some clip start et stop to play, as well as define the x:y, position of thoses clips in the final video.
+For that, we will need to change when some clip starts and stops playing, as well as define the x:y, position of these clips in the final video.
 
 For more info, see :py:class:`~moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip`.
 
@@ -111,7 +111,7 @@ When indicating the position keep in mind that the ``y`` coordinate has its zero
 Adding transitions effects
 """"""""""""""""""""""""""
 
-The last part of composition is adding transition effects. For example, when a clip start while another is still playing, it would be nice to make the new one fadein instead of showing abruptly.
+The last part of composition is adding transition effects. For example, when a clip start while another is still playing, it would be nice to make the new one fade-in instead of showing abruptly.
 
 To do so, we can use the transitions offered by MoviePy in :py:mod:`~moviepy.video.compositing.transitions`, like :py:func:`~moviepy.video.compositing.transitions.crossfadein` :
 
@@ -119,7 +119,7 @@ To do so, we can use the transitions offered by MoviePy in :py:mod:`~moviepy.vid
     :language: python
 
 
-MoviePy offer only few transitions in :py:mod:`~moviepy.video.compositing.transitions`. But technically, transitions are mostly effects applyed to the mask of a clip !
+MoviePy offer only few transitions in :py:mod:`~moviepy.video.compositing.transitions`. But technically, transitions are mostly effects applied to the mask of a clip!
 That means you can actually use any of the already existing effects, and use them as transitions by applying them on the mask of your clip (see .
 
 For more info, see :py:mod:`~moviepy.video.compositing.transitions` and :py:mod:`moviepy.video.fx`.
@@ -130,7 +130,7 @@ Compositing audio clips
 
 When you mix video clips together, MoviePy will automatically compose their respective audio tracks to form the audio track of the final clip, so you don't need to worry about compositing these tracks yourself.
 
-If you want to make a custom audiotrack from several audio sources, audio clips can be mixed together like video clips, with :py:class:`~moviepy.audio.AudioClip.CompositeAudioClip` and :py:func:`~moviepy.audio.AudioClip.concatenate_audioclips`:
+If you want to make a custom audio track from several audio sources, audio clips can be mixed together like video clips, with :py:class:`~moviepy.audio.AudioClip.CompositeAudioClip` and :py:func:`~moviepy.audio.AudioClip.concatenate_audioclips`:
 
 .. literalinclude:: /_static/code/user_guide/compositing/CompositeAudioClip.py
     :language: python

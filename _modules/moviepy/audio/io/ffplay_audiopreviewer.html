@@ -392,7 +392,7 @@ document.write(`
 <span class="sd">    ----------</span>
 
 <span class="sd">    fps_input</span>
-<span class="sd">      Frames per second of the input audio (given by the AUdioClip being</span>
+<span class="sd">      Frames per second of the input audio (given by the AudioClip being</span>
 <span class="sd">      written down).</span>
 
 <span class="sd">    nbytes:</span>
@@ -413,8 +413,8 @@ document.write(`
         <span class="c1"># order is important</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">FFPLAY_BINARY</span><span class="p">,</span>
-            <span class="s2">&quot;-autoexit&quot;</span><span class="p">,</span>  <span class="c1"># If you dont precise, ffplay dont stop at end</span>
-            <span class="s2">&quot;-nodisp&quot;</span><span class="p">,</span>  <span class="c1"># If you dont precise a window is</span>
+            <span class="s2">&quot;-autoexit&quot;</span><span class="p">,</span>  <span class="c1"># If you don&#39;t precise, ffplay won&#39;t stop at end</span>
+            <span class="s2">&quot;-nodisp&quot;</span><span class="p">,</span>  <span class="c1"># If you don&#39;t precise a window is</span>
             <span class="s2">&quot;-f&quot;</span><span class="p">,</span>
             <span class="s2">&quot;s</span><span class="si">%d</span><span class="s2">le&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">nbytes</span><span class="p">),</span>
             <span class="s2">&quot;-ar&quot;</span><span class="p">,</span>

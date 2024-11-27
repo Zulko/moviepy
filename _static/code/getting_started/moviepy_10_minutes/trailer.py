@@ -85,7 +85,7 @@ moviepy_clip = ImageClip("./resources/logo_moviepy.png").resized(width=300)
 ################
 # CLIPS TIMING #
 ################
-# We have all the clips we need, but if we was to turn all thoses clips into a single one with composition (we will see that during next step)
+# We have all the clips we need, but if we was to turn all the clips into a single one with composition (we will see that during next step)
 # all our clips would start at the same time and play on top of each other, which is obviously not what we want.
 # To fix that, we need to say when a clip should start and stop in the final clip.
 # So, lets start by telling when each clip must start and end with appropriate with_* methods
@@ -114,7 +114,7 @@ moviepy_clip = moviepy_clip.with_start(made_with_text.start).with_duration(3)
 ########################
 # CLIPS TIMING PREVIEW #
 ########################
-# Lets make a first compositing of thoses clips into one single clip and do a quick preview to see if everything is synchro
+# Lets make a first compositing of the clips into one single clip and do a quick preview to see if everything is synchro
 
 quick_compo = CompositeVideoClip(
     [
@@ -179,7 +179,7 @@ quick_compo.preview(fps=10)
 ################################
 # Now that our clip are timed and positionned, lets add some transition to make it more natural
 # To do so we use the with_effects method and the video effects in vfx
-# We call with_effects on our clip and pass him an array of effect objects to apply
+# We call with_effects on our clip and pass it an array of effect objects to apply
 # We'll keep it simple, nothing fancy just cross fading
 intro_text = intro_text.with_effects([vfx.CrossFadeIn(1), vfx.CrossFadeOut(1)])
 logo_clip = logo_clip.with_effects([vfx.CrossFadeIn(1), vfx.CrossFadeOut(1)])
@@ -208,10 +208,10 @@ rambo_clip = rambo_clip.with_effects(
     [vfx.CrossFadeIn(1.5), vfx.FadeOut(1), afx.AudioFadeIn(1.5), afx.AudioFadeOut(1)]
 )
 
-# Effects are not only for transition, they can also change a clip timing or apparence
+# Effects are not only for transition, they can also change a clip timing or appearance
 # To show that, lets also modify the Rambo-like part of our clip to be in slow motion
-# PS : We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled
-# the others are with_volume_scaled, resized, croped and rotated
+# PS: We do it for effect, but this is one of the few effects that have a direct shortcut, with_speed_scaled
+# the others are with_volume_scaled, resized, cropped and rotated
 rambo_clip = rambo_clip.with_effects([vfx.MultiplySpeed(0.5)])
 
 # Because we modified timing of rambo_clip with our MultiplySpeed effect, we must re-assign the following clips timing
@@ -247,7 +247,7 @@ quick_comp.preview(fps=10)
 
 # We will start by defining a function that turn a numpy image into sepia
 # It takes the image as numpy array in entry and return the modified image as output
-def sepia_fitler(frame: np.ndarray):
+def sepia_filter(frame: np.ndarray):
     # Sepia filter transformation matrix
     # Sepia transform works by applying to each pixel of the image the following rules
     # res_R = (R * .393) + (G *.769) + (B * .189)
@@ -277,7 +277,7 @@ def sepia_fitler(frame: np.ndarray):
 
 
 # Now, we simply apply the filter to our clip by calling image_transform, which will call our filter on every frame
-rambo_clip = rambo_clip.image_transform(sepia_fitler)
+rambo_clip = rambo_clip.image_transform(sepia_filter)
 
 # Let's see how our filter look
 rambo_clip.preview(fps=10)

@@ -407,7 +407,7 @@ document.write(`
 <h3>Preview a clip as a video<a class="headerlink" href="#preview-a-clip-as-a-video" title="Permalink to this heading">#</a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>You must have <code class="docutils literal notranslate"><span class="pre">FFPLAY</span></code> installed and accessible to MoviePy to be able to use <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code>.
+<p>You must have <code class="docutils literal notranslate"><span class="pre">ffplay</span></code> installed and accessible to MoviePy to be able to use <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code>.
 If you’r not sure, take a look <a class="reference internal" href="../getting_started/install.html#install-binaries"><span class="std std-ref">Installation of additional binaries</span></a></p>
 </div>
 <p>The first thing you can do is to preview your clip as a video, by calling method <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code> on your clip:</p>
@@ -440,7 +440,7 @@ If you’r not sure, take a look <a class="reference internal" href="../getting_
 </section>
 <section id="preview-just-one-frame-of-a-clip">
 <h3>Preview just one frame of a clip<a class="headerlink" href="#preview-just-one-frame-of-a-clip" title="Permalink to this heading">#</a></h3>
-<p>In a lot of situation, you dont really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.</p>
+<p>In a lot of situation, you don’t really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.</p>
 <p>To do so, you can use the method <code class="xref py py-func docutils literal notranslate"><span class="pre">show()</span></code> on your clip, passing the frame time as an argument:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -545,7 +545,7 @@ Restarting your browser solves the problem.</p>
 <p>There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.), and we will not go in details into each. So, for more info, see <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_videofile()</span></code></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Though you are encouraged to play with settings of <code class="docutils literal notranslate"><span class="pre">write_videofile</span></code>, know that lowering the optimization preset, or increasing the number of threads will not necessarly
+<p>Though you are encouraged to play with settings of <code class="docutils literal notranslate"><span class="pre">write_videofile</span></code>, know that lowering the optimization preset or increasing the number of threads will not necessarily
 improve the rendering time, as the bottleneck may be on MoviePy computation of each frame and not in ffmpeg encoding.</p>
 <p>Also, know that it is possible to pass additional parameters to ffmpeg command line invoked by MoviePy by using the <code class="docutils literal notranslate"><span class="pre">ffmpeg_params</span></code> argument.</p>
 </div>
