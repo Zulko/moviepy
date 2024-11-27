@@ -5,7 +5,7 @@ from moviepy import VideoFileClip
 clip = VideoFileClip("example.mp4")
 
 # This does nothing, as multiply_volume will return a copy of clip
-# which you will loose immediatly as you dont store it
+# which you will loose immediatly as you don't store it
 # If you was to render clip now, the audio would still be at full volume
 clip.with_volume_scaled(0.1)
 

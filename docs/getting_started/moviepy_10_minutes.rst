@@ -12,7 +12,7 @@ In this tutorial, you will learn the basics of how to use the MoviePy library in
 
    <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;">
       <video controls>
-         <source src="/_static/medias/moviepy_10_minutes/tailer_bbb.mp4" type="video/mp4">
+         <source src="/moviepy/_static/medias/getting_started/moviepy_10_minutes/trailer_bbb.mp4" type="video/mp4">
          <p>Your browser does not support HTML5 video in MP4 format.</p>
       </video>
    </div>
@@ -99,12 +99,12 @@ To do so, we are going to use the ``with_section_cut_out`` method to remove a po
    :language: python
    :lines: 41-54
 
-In that particular case, we have used the ``with_section_cut_out``, but this is only one of the many clip manipulation methods starting with ``with_*``. We will see a few others
+In that particular case, we have used the ``with_section_cut_out``, but this is only one of the many clip manipulation methods starting with ``with_``. We will see a few others
 in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see :ref:`reference_manual`.
 
 .. note::
    You may have noticed that we have reassigned the ``rodents_clip`` variable instead of just calling a method on it.
-   This is because in MoviePy, any function starting with ``with_*`` is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy.
+   This is because in MoviePy, any function starting with ``with_`` is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy.
    So you need to store the result of the method and, if necessary, reassign the original variable to update your clip.
 
 
@@ -132,19 +132,19 @@ Feel free to experiment with different effects and transitions to achieve the de
 Step 6: Timing the clips
 --------------------------
 
-We have all the clips we need, but if we were to combine all those clips into a single one using composition (we will see that in the next step), all our clips would start at the same time and play on top of each other, which is obviously not what we want.
-Also, some video clips, like the images and texts, have no endpoint/duration at creation (except if you have provided a duration parameter), which means trying to render them will throw an error as it would result in an infinite video.
+We have all the clips we need, but if we were to combine all the clips into a single one using composition (we will see that in the next step), all our clips would start at the same time and play on top of each other, which is obviously not what we want.
+Also, some video clips, like images and texts, have no endpoint/duration at creation (unless you have provided a duration parameter), which means trying to render them will throw an error as it would result in an infinite video.
 
-To fix that, we need to specify when a clip should start and stop in the final clip. So, let's start by indicating when each clip must start and end with the appropriate with_* methods.
+To fix that, we need to specify when a clip should start and stop in the final clip. So, let's start by indicating when each clip must start and end using the appropriate with_* methods.
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python
     :lines: 85-111
 
 .. note::
-   By default, all clips have a start point at ``0``. If a clip has no duration but you set the ``endtime``, then the duration will be calculated for you. The reciprocity is also true.
+   By default, all clips have a start point at ``0``. If a clip has no ``duration`` but you set the ``end_time``, then the ``duration`` will be calculated for you. The reciprocity is also true.
    
-   So in our case, we either use duration or endtime, depending on what is more practical for each specific case.
+   So in our case, we either use ``duration`` or ``end_time``, depending on what is more practical for each specific case.
 
 Step 7: Seeing how all clips combine
 --------------------------------------
@@ -211,7 +211,7 @@ Well, this looks a lot nicer! For this tutorial, we want to keep things simple, 
 For a more in-depth presentation, see :py:mod:`moviepy.video.fx`, :py:mod:`moviepy.audio.fx`, and :ref:`create_effects`.
 
 .. note::
-   Looking at the result, you may notice that crossfading makes clips go from transparent to opaque, and reciprocally, and wonder how it works.
+   Looking at the result, you may notice that cross-fading makes clips go from transparent to opaque, and reciprocally, and wonder how it works.
 
    We won't get into details, but know that in MoviePy, you can declare some sections of a video clip to be transparent by using masks. Masks are nothing more than
    special kinds of video clips that are made of values ranging from ``0`` for a transparent pixel to ``1`` for a fully opaque one.
@@ -223,7 +223,7 @@ Step 10: Modifying the appearance of a clip using filters
 --------------------------------------------------------------
 
 Finally, to make it more epic, we will apply a custom filter to our Rambo clip to make the image sepia. 
-MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the ``image_transform`` method.
+MoviePy does not come with a sepia effect out of the box, and creating a full custom effect is beyond the scope of this tutorial. However, we will see how we can apply a simple filter to our clip using the :py:meth:`~moviepy.video.VideoClip.VideoClip.image_transform` method.
 
 To understand how filters work, you first need to understand that in MoviePy, a clip frame is nothing more than a numpy ``ndarray`` of shape ``HxWx3``.
 This means we can modify how a frame looks like by applying simple math operations. Doing that on all the frames allows us to apply a filter to our clip!
@@ -248,7 +248,7 @@ Step 11: Rendering the final clip to a file
 So, our final clip is ready, and we have made all the cutting and modifications we want. We are now ready to save the final result into a file. In video editing, this operation
 is known as rendering.
 
-Again, we will keep things simple and just do video rendering without much tweaking. In most cases, MoviePy and FFMPEG automatically find the best settings. Take a look at the ``write_videofile`` doc for more info.
+Again, we will keep things simple and just do video rendering without much tweaking. In most cases, MoviePy and FFmpeg will automatically find the best settings. Take a look at :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile` for more info.
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
     :language: python

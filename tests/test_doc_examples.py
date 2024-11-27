@@ -1,4 +1,4 @@
-"""Try to run all the documentation examples with runpy and check they dont raise
+"""Try to run all the documentation examples with runpy and check they don't raise
 exceptions.
 """
 

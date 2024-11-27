@@ -989,7 +989,7 @@ class VideoClip(Clip):
     ):
         """Returns a new clip in which just a rectangular subregion of the
         original clip is conserved. x1,y1 indicates the top left corner and
-        x2,y2 is the lower right corner of the croped region.
+        x2,y2 is the lower right corner of the cropped region.
         All coordinates are in pixels. Float numbers are accepted.
         For info on the parameters, please see ``vfx.Crop``
         """

@@ -16,7 +16,7 @@ Preview a clip as a video
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. warning::
-    You must have ``FFPLAY`` installed and accessible to MoviePy to be able to use :py:func:`~moviepy.video.io.preview.preview`.
+    You must have ``ffplay`` installed and accessible to MoviePy to be able to use :py:func:`~moviepy.video.io.preview.preview`.
     If you'r not sure, take a look :ref:`install#binaries`
 
 The first thing you can do is to preview your clip as a video, by calling method :py:func:`~moviepy.video.io.preview.preview` on your clip:
@@ -29,7 +29,7 @@ You will probably frequently want to preview only a small portion of your clip, 
 .. note::
     It is quite frequent for a clip preview to be out of sync, or to play slower than it should. It means that your computer is not powerful enough to render the clip in real time.
     
-    Don’t hesitate to play with the options of preview: for instance, lower the fps of the sound (11000 Hz is still fine) and the video. Also, downsizing your video with resize can help.
+    Don't hesitate to play with the options of preview: for instance, lower the fps of the sound (11000 Hz is still fine) and the video. Also, downsizing your video with resize can help.
 
 For more info, see :py:func:`~moviepy.video.io.preview.preview`.
 
@@ -40,7 +40,7 @@ For more info, see :py:func:`~moviepy.video.io.preview.preview`.
 Preview just one frame of a clip
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In a lot of situation, you dont really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.
+In a lot of situation, you don't really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.
 
 To do so, you can use the method :py:func:`~moviepy.video.io.preview.show` on your clip, passing the frame time as an argument:
 
@@ -96,7 +96,7 @@ MoviePy can find the a default codec name for the most common file extensions. I
 There are many many options when you are writing a video (bitrate, parameters of the audio writing, file size optimization, number of processors to use, etc.), and we will not go in details into each. So, for more info, see :py:meth:`~moviepy.video.VideoClip.VideoClip.write_videofile`.
 
 .. note::
-    Though you are encouraged to play with settings of ``write_videofile``, know that lowering the optimization preset, or increasing the number of threads will not necessarly
+    Though you are encouraged to play with settings of ``write_videofile``, know that lowering the optimization preset or increasing the number of threads will not necessarily
     improve the rendering time, as the bottleneck may be on MoviePy computation of each frame and not in ffmpeg encoding.
 
     Also, know that it is possible to pass additional parameters to ffmpeg command line invoked by MoviePy by using the ``ffmpeg_params`` argument.

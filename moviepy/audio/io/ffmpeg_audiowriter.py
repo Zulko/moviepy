@@ -23,7 +23,7 @@ class FFMPEG_AudioWriter:
       Size (width,height) in pixels of the output video.
 
     fps_input
-      Frames per second of the input audio (given by the AUdioClip being
+      Frames per second of the input audio (given by the AudioClip being
       written down).
 
     codec
