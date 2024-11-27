@@ -10,20 +10,20 @@ some changes.
 
 Dropping support of Python 2
 -----------------------------
-Starting with version 2.0 MoviePy **no longer supports Python 2**, which makes sense since Python 2 reached its end of life over three years ago. 
+Starting with version 2.0, MoviePy **no longer supports Python 2**, since Python 2 reached its end of life in 2020. 
 Focusing on Python 3.7+ allows MoviePy to take advantage of the latest language features and improvements while maintaining code quality and security. 
 
 Users are encouraged to upgrade to a supported version of Python to continue using MoviePy.
 
-``moviepy.editor`` supression and simplified importation
+``moviepy.editor`` suppression and simplified importation
 ---------------------------------------------------------
 Before v2.0, it was advised to import from ``moviepy.editor`` whenever you needed to do some sort of manual operations,
-such as previewing or hand editing, because the ``editor`` package was in charge of a lot of magic and initialization, making your life
+such as previewing or hand editing, because the ``editor`` package handled a lot of magic and initialization, making your life
 easier, at the cost of initializing some complex modules like ``pygame``.
 
 With version 2.0, the ``moviepy.editor`` namespace simply no longer exists. You simply import everything from ``moviepy`` like this: :: 
     
-    from moviepy import * # Simple and nice, the __all__ is set in moviepy so only usefull things will be loaded
+    from moviepy import * # Simple and nice, the __all__ is set in moviepy so only useful things will be loaded
     from moviepy import VideoFileClip # You can also import only the things you really need
 
 
@@ -74,10 +74,10 @@ If you previously used effect by calling them as clips method, you must now use 
 Dropping many external dependencies and unifying environment
 -------------------------------------------------------------
 
-With v1.0, MoviePy relied on many optional external dependencies, trying to gracefully dropback from one library to another in the event one of them was missing, eventually dropping some features when no library was available.
+With v1.0, MoviePy relied on many optional external dependencies, trying to gracefully fallback from one library to another in the event one of them was missing, eventually dropping some features when no library was available.
 This resulted in complex and hard to maintain code for the MoviePy team, as well as fragmented and hard to understand environment for the users.
 
-With v2.0 the MoviePy team tried to offer a simpler, smaller and more unified dependicy list, with focusing on ``pillow`` for all complex image manipulation, and dropping altogether the usage of ``ImageMagick``, ``PyGame``, ``OpenCV``, ``scipy``, ``scikit``, and a few others.
+With v2.0 the MoviePy team tried to offer a simpler, smaller and more unified dependency list, with focusing on ``pillow`` for all complex image manipulation, and dropping altogether the usage of ``ImageMagick``, ``PyGame``, ``OpenCV``, ``scipy``, ``scikit``, and a few others.
 
 Removed features
 -----------------
@@ -88,30 +88,30 @@ Sadly, reducing the scope of MoviePy and limiting the external libraries mean th
 - ``moviepy.video.tools.segmenting``
 - ``moviepy.video.io.sliders``
 
-Miscleanous signature changes
+Miscellaneous signature changes
 ------------------------------
 
-When updating the API and moving from previous libraries to ``pillow``, some miscleanous changes also happen, meaning some methods signatures may have changed.
+When updating the API and moving from previous libraries to ``pillow``, some miscellaneous changes also happen, meaning some methods signatures may have changed.
 
 You should check the new signatures if you used any of the following:
 
-- ``TextClip`` some arguments named have changed and a path to a font file is now needed at object instanciation
+- ``TextClip`` some arguments named have changed and a path to a font file is now needed at object instantiation
 - ``clip.resize`` is now ``clip.resized``
 - ``clip.crop`` is now ``clip.cropped``
 - ``clip.rotate`` is now ``clip.rotated``
 - Any previous ``Clip`` method not starting by ``with_`` now probably start with it
 
 
-Why all thoses changes and updating from v1.0 to v2.0?
+Why all these changes and updating from v1.0 to v2.0?
 -------------------------------------------------------
 
-You may ask yourself why all thoses changes was introduced? The answer is: time.
+You may ask yourself why were all these changes introduced? The answer is: time.
 
 MoviePy have seen many evolution since his first release and have became kind of a complex project, with ambitions sometimes too important in regards to available manpower on the development team.
-Over time, as in any project, inconsistencies have been introduced in order to support new functionnalities without breaking current API, and some initial choices no longer reflected the current state of things.
+Over time, as in any project, inconsistencies have been introduced in order to support new functionalities without breaking current API, and some initial choices no longer reflected the current state of things.
 
 Due to multiple factors, MoviePy have also undergone a long period of time during which the main version distributed through PiPy diverged from the GitHub distributed version, introducing confusion and chaos.
 
-In a global effort to simplify futur development and limit confusion by providing a unified environment, it has been decided to release a new major version including the many evolutions than happened over the years, which meant breaking changes, and so a new major version released was required.
+In a global effort to simplify future development and limit confusion by providing a unified environment, it has been decided to release a new major version including the many evolutions than happened over the years, which meant breaking changes, and so a new major version released was required.
 
-For thoses interested in how and why all of thoses things have been decided, you can find a lot of the discussion that went into this in GitHub issues `#1874 <https://github.com/Zulko/moviepy/issues/1874>`_, `#1089 <https://github.com/Zulko/moviepy/issues/1089>`_ and `#2012 <https://github.com/Zulko/moviepy/issues/2012>`_.
+For anyone interested in how and why all of these things have been decided, you can find a lot of the discussion that went into this in GitHub issues `#1874 <https://github.com/Zulko/moviepy/issues/1874>`_, `#1089 <https://github.com/Zulko/moviepy/issues/1089>`_ and `#2012 <https://github.com/Zulko/moviepy/issues/2012>`_.

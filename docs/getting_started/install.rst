@@ -3,9 +3,9 @@
 Installation
 ==========================
 
-Installation is done with ``pip`` if you dont have ``pip`` take a look at `how to install it <https://pip.pypa.io/en/stable/installation/>`_.
+Installation is done with ``pip``. If you don't have ``pip``, take a look at `how to install it <https://pip.pypa.io/en/stable/installation/>`_.
 
-With ``pip`` installed, just type this in a terminal :
+With ``pip`` installed, just type this in a terminal:
 
 .. code:: bash
 
@@ -21,14 +21,14 @@ MoviePy depends on the software ffmpeg_ for video reading and writing and on ``f
 
 You don't need to worry about ffmpeg_, as it should be automatically downloaded/installed by ImageIO during your first use of MoviePy (it takes a few seconds). 
 
-You do need to worry ``ffplay`` if you plan on using video/audio previewing though. In such case, make sure to have ``ffplay`` installed (it can usually be found alongside ``ffmpeg``) and 
-make sure it is accessible to Python, or look how to set a custom path (see below). 
+You do need to worry about ``ffplay`` if you plan on using video/audio previewing. For these cases, make sure to have ``ffplay`` installed (it can usually be found alongside ``ffmpeg``) and 
+make sure it is accessible to Python, or define a custom path (see below). 
 
 
 Define custom paths to binaries
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to use a specific version of FFMPEG and FFPLAY, you can do so using environment variables.
+If you want to use a specific version of FFmpeg and FFplay, you can do so using environment variables.
 
 There are a couple of environment variables used by MoviePy that allow you to configure custom paths to the external tools.
 

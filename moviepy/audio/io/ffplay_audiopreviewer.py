@@ -15,7 +15,7 @@ class FFPLAY_AudioPreviewer:
     ----------
 
     fps_input
-      Frames per second of the input audio (given by the AUdioClip being
+      Frames per second of the input audio (given by the AudioClip being
       written down).
 
     nbytes:
@@ -36,8 +36,8 @@ class FFPLAY_AudioPreviewer:
         # order is important
         cmd = [
             FFPLAY_BINARY,
-            "-autoexit",  # If you dont precise, ffplay dont stop at end
-            "-nodisp",  # If you dont precise a window is
+            "-autoexit",  # If you don't precise, ffplay won't stop at end
+            "-nodisp",  # If you don't precise a window is
             "-f",
             "s%dle" % (8 * nbytes),
             "-ar",

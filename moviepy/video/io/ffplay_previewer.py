@@ -35,7 +35,7 @@ class FFPLAY_VideoPreviewer:
         # order is important
         cmd = [
             FFPLAY_BINARY,
-            "-autoexit",  # If you dont precise, ffplay dont stop at end
+            "-autoexit",  # If you don't precise, ffplay won't stop at end
             "-f",
             "rawvideo",
             "-pixel_format",
@@ -105,9 +105,9 @@ def ffplay_preview_video(
 
     pixel_format : str, optional
       Warning: This is not used anywhere in the code and should probably
-      be remove.
+      be removed.
       It is believed pixel format rgb24 does not work properly for now because
-      it require applying mask on CompositeVideoClip and thoses are believed to
+      it requires applying a mask on CompositeVideoClip and that is believed to
       not be working.
 
       Pixel format for the output video file, ``rgb24`` for normal video, ``rgba``

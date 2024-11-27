@@ -39,7 +39,7 @@ class CoinFlipWorld:
             return
 
         # Different face, we increment clip_t and set reset so we will reset on next update.
-        # We dont reset immediately because we will need current state to make frame
+        # We don't reset immediately because we will need current state to make frame
         self.reset = True
         self.clip_t += 1 / self.fps
 

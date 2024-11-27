@@ -32,7 +32,7 @@ and manipulation tools for the `Python <https://www.python.org/>`__ programming 
         :shadow: md
 
         New to *MoviePy*? Check out the getting started guides. They contain instructions
-        to install *MoviePy'* as well as introduction concepts and tutorials.
+        to install *MoviePy* as well as introduction concepts and tutorials.
 
         +++
 
@@ -88,7 +88,7 @@ and manipulation tools for the `Python <https://www.python.org/>`__ programming 
 
         Saw a typo in the documentation? Want to improve
         existing functionalities? The contributing guidelines will guide
-        you through the process of improving moviepy.
+        you through the process of improving *MoviePy*.
 
         +++
 

@@ -4,7 +4,7 @@ Installation for MoviePy developers
 ======================================
 
 .. warning::
-    This part is only destined to people who want to build the MoviePy documentation by themself, or to contribute to MoviePy, normal user dont need it.
+    This part is only destined to people who want to build the MoviePy documentation by themselves, or to contribute to MoviePy. Normal users don't need it.
 
 In addition to MoviePy main libraries, MoviePy developers will also need to install additional libraries to be able to run MoviePy tests and build the MoviePy documentation.
 
@@ -40,7 +40,7 @@ Once libraries installed you can test with:
 
     $ python -m pytest
 
-And you can lint with :
+And you can lint with:
 
 .. code:: bash
 

@@ -4,7 +4,7 @@ MoviePy Docker
 Prerequisites
 -------------
 
-Docker installed `Docker for Mac, Docker for windows, linux, etc <https://www.docker.com/get-docker/>`_
+Docker installed: `Docker Engine for Linux <https://docs.docker.com/engine/install/>`_ or `Docker Desktop for Windows/Mac/Linux <https://docs.docker.com/desktop/>`_.
 
 Build the docker
 -----------------
