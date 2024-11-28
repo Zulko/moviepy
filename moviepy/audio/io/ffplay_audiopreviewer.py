@@ -32,7 +32,12 @@ class FFPLAY_AudioPreviewer:
         fps_input,
         nbytes=2,
         nchannels=2,
+        logfile=None,
     ):
+        if logfile is None:
+            logfile = sp.PIPE
+        self.logfile = logfile
+        
         # order is important
         cmd = [
             FFPLAY_BINARY,
@@ -49,7 +54,7 @@ class FFPLAY_AudioPreviewer:
         ]
 
         popen_params = cross_platform_popen_params(
-            {"stdout": sp.DEVNULL, "stderr": sp.STDOUT, "stdin": sp.PIPE}
+            {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
         )
 
         self.proc = sp.Popen(cmd, **popen_params)
