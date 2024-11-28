@@ -47,8 +47,6 @@ class FFPLAY_AudioPreviewer:
             "s%dle" % (8 * nbytes),
             "-ar",
             "%d" % fps_input,
-            "-ac",
-            "%d" % nchannels,
             "-i",
             "-",
         ]
