@@ -100,7 +100,7 @@ Frequently, you will want a smaller clip to appear on top of a larger one, and d
 You can do so by using the :py:meth:`~moviepy.video.VideoClip.VideoClip.with_position` method. The position is always defined from the top left corner, but you can define it
 in many ways :
 
-.. literalinclude:: /_static/code/user_guide/compositing/with_start.py
+.. literalinclude:: /_static/code/user_guide/compositing/with_position.py
     :language: python
 
 When indicating the position keep in mind that the ``y`` coordinate has its zero at the top of the picture:
