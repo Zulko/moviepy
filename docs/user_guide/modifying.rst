@@ -30,7 +30,7 @@ This is an important point to understand, because it is one of the most recurren
 
 Memory consumption of effect and modifications 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-When applying an effect or modification, it does not immediately apply the effect to all the frames of the clip, but only to the first frame: all the other frames will only be modified when required (that is, when you will write the whole clip to a file of when you will preview it). 
+When applying an effect or modification, it does not immediately apply the effect to all the frames of the clip, but only to the first frame: all the other frames will only be modified when required (that is, when you will write the whole clip to a file or when you will preview it). 
 
 It means that creating a new clip is neither time nor memory hungry, all the computation happen during the final rendering.
 
