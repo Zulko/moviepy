@@ -44,7 +44,7 @@ Let's start by importing the necessary modules and loading the "Big Buck Bunny" 
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
    :language: python
-   :lines: 0-10
+   :lines: 1-10
 
 As you see, loading a video file is really easy, but MoviePy isn't limited to video. It can handle images, audio, texts, and even custom animations.
 
