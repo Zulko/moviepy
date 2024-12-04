@@ -218,6 +218,18 @@ class FFMPEG_AudioReader:
             frames = np.round((self.fps * tt)).astype(int)[in_time]
             fr_min, fr_max = frames.min(), frames.max()
 
+            # if min and max frames don't fit the buffer, it results in IndexError
+            # we avoid that by recursively calling this function on smaller length
+            # and concatenate the results:w
+            max_frame_threshold = fr_min + self.buffersize // 2
+            threshold_idx = np.searchsorted(frames, max_frame_threshold, side="right")
+            if threshold_idx != len(frames):
+                in_time_head = in_time[0:threshold_idx]
+                in_time_tail = in_time[threshold_idx:]
+                return np.concatenate(
+                    [self.get_frame(in_time_head), self.get_frame(in_time_tail)]
+                )
+
             if not (0 <= (fr_min - self.buffer_startframe) < len(self.buffer)):
                 self.buffer_around(fr_min)
             elif not (0 <= (fr_max - self.buffer_startframe) < len(self.buffer)):
