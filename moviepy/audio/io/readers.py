@@ -190,7 +190,8 @@ class FFMPEG_AudioReader:
             fr_min, fr_max = frames.min(), frames.max()
 
             # if min and max frames don't fit the buffer, it results in IndexError
-            # we avoid that by recursively calling this function on smaller length and concatenate the results:w
+            # we avoid that by recursively calling this function on smaller length
+            # and concatenate the results:w
             max_frame_threshold = fr_min + self.buffersize // 2
             threshold_idx = np.searchsorted(frames, max_frame_threshold, side="right")
             if threshold_idx != len(frames):
