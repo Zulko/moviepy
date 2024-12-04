@@ -26,12 +26,28 @@ class FFMPEG_AudioWriter:
       Frames per second of the input audio (given by the AudioClip being
       written down).
 
-    codec
-      Name of the ffmpeg codec to use for the output.
+    nbytes : int, optional
+      Number of bytes per sample. Default is 2 (16-bit audio).
+
+    nchannels : int, optional
+      Number of audio channels. Default is 2 (stereo).
+
+    codec : str, optional
+        The codec to use for the output. Default is ``libfdk_aac``.
 
     bitrate:
       A string indicating the bitrate of the final video. Only
       relevant for codecs which accept a bitrate.
+
+    input_video : str, optional
+      Path to an input video file. If provided, the audio will be muxed with this video. 
+      If not provided, the output will be audio-only.
+
+    logfile : file-like object or None, optional
+      A file object where FFMPEG logs will be written. If None, logs are suppressed.
+
+    ffmpeg_params : list of str, optional
+      Additional FFMPEG command-line parameters to customize the output.
 
     """
 
