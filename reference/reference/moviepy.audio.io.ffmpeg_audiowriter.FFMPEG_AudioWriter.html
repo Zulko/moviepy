@@ -554,9 +554,15 @@ document.write(`
 <li><p><strong>size</strong> – Size (width,height) in pixels of the output video.</p></li>
 <li><p><strong>fps_input</strong> – Frames per second of the input audio (given by the AudioClip being
 written down).</p></li>
-<li><p><strong>codec</strong> – Name of the ffmpeg codec to use for the output.</p></li>
+<li><p><strong>nbytes</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of bytes per sample. Default is 2 (16-bit audio).</p></li>
+<li><p><strong>nchannels</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of audio channels. Default is 2 (stereo).</p></li>
+<li><p><strong>codec</strong> (<em>str</em><em>, </em><em>optional</em>) – The codec to use for the output. Default is <code class="docutils literal notranslate"><span class="pre">libfdk_aac</span></code>.</p></li>
 <li><p><strong>bitrate</strong> – A string indicating the bitrate of the final video. Only
 relevant for codecs which accept a bitrate.</p></li>
+<li><p><strong>input_video</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to an input video file. If provided, the audio will be muxed with this video.
+If not provided, the output will be audio-only.</p></li>
+<li><p><strong>logfile</strong> (<em>file-like object</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – A file object where FFMPEG logs will be written. If None, logs are suppressed.</p></li>
+<li><p><strong>ffmpeg_params</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Additional FFMPEG command-line parameters to customize the output.</p></li>
 </ul>
 </dd>
 </dl>
