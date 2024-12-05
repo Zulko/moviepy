@@ -4,6 +4,7 @@ import os
 import platform
 import subprocess as sp
 import warnings
+import shlex
 
 import proglog
 
@@ -48,6 +49,18 @@ def subprocess_call(cmd, logger="bar"):
         logger(message="MoviePy - Command successful")
 
     del proc
+
+
+def ffmpeg_escape_filename(filename):
+    """Escape a filename that we want to pass to the ffmpeg command line
+
+    That will ensure the filename doesn't start with a '-' (which would raise an error)
+    and use `shlex.quote` to escape filenames with spaces and special chars.
+    """
+    if filename.startswith('-') :
+        filename = './' + filename
+
+    return shlex.quote(filename)
 
 
 def convert_to_seconds(time):
