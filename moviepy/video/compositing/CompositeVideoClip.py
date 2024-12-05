@@ -124,7 +124,7 @@ class CompositeVideoClip(VideoClip):
         if self.bg.mask is not None:
             frame_mask = self.bg.mask.get_frame(t)
             im_mask = Image.fromarray(255 * frame_mask).convert("L")
-            im = im.putalpha(im_mask)
+            im.putalpha(im_mask)
 
         for clip in self.playing_clips(t):
             im = clip.blit_on(im, t)
