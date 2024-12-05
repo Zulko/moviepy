@@ -40,7 +40,7 @@ class FFMPEG_AudioWriter:
       relevant for codecs which accept a bitrate.
 
     input_video : str, optional
-      Path to an input video file. If provided, the audio will be muxed with this video. 
+      Path to an input video file. If provided, the audio will be muxed with this video.
       If not provided, the output will be audio-only.
 
     logfile : file-like object or None, optional
@@ -48,7 +48,6 @@ class FFMPEG_AudioWriter:
 
     ffmpeg_params : list of str, optional
       Additional FFMPEG command-line parameters to customize the output.
-
     """
 
     def __init__(
