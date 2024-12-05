@@ -12,7 +12,7 @@ Why creating your own effects?
 For simple enough tasks, we've seen that we can :ref:`modifying#filters`. Though it might be enough for simple tasks, filters are kind of limited:
 
 - They can only access frame and/or timepoint
-- We cannot pass pass arguments to them
+- We cannot pass arguments to them
 - They are hard to maintain and re-use
 
 To allow for more complex and reusable clip modifications, we can create our own custom effects, that we will later apply with :py:func:`~moviepy.Clip.Clip.with_effects`.

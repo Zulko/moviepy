@@ -536,26 +536,60 @@ To do so, you should take a look at <a class="reference internal" href="../refer
 <p>Frequently, you will want a smaller clip to appear on top of a larger one, and decide where it will appear in the composition by setting their position.</p>
 <p>You can do so by using the <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_position" title="moviepy.video.VideoClip.VideoClip.with_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_position()</span></code></a> method. The position is always defined from the top left corner, but you can define it
 in many ways :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s position some text and images on a video.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span><span class="p">,</span> <span class="n">ImageClip</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
-<span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">clip3</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example3.mp4&quot;</span><span class="p">)</span>
+<span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="s2">&quot;./example.ttf&quot;</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Big Buck Bunny&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">,</span>
+    <span class="n">text_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">author</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="s2">&quot;./example.ttf&quot;</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Blender Foundation&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">,</span>
+    <span class="n">text_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">copyright</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span>
+    <span class="s2">&quot;./example.ttf&quot;</span><span class="p">,</span>
+    <span class="n">text</span><span class="o">=</span><span class="s2">&quot;© CC BY 3.0&quot;</span><span class="p">,</span>
+    <span class="n">font_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#fff&quot;</span><span class="p">,</span>
+    <span class="n">text_align</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">logo</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;./example2.png&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">resized</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 
-<span class="c1"># We want to stop clip1 after 1s</span>
-<span class="n">clip1</span> <span class="o">=</span> <span class="n">clip1</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># We want our title to be at the center horizontaly and start at 25%</span>
+<span class="c1"># of the video verticaly. We can set as &quot;center&quot;, &quot;left&quot;, &quot;right&quot;,</span>
+<span class="c1"># &quot;top&quot; and &quot;bottom&quot;, and % relative from the clip size</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">),</span> <span class="n">relative</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="c1"># We want to play clip2 after 1.5s</span>
-<span class="n">clip2</span> <span class="o">=</span> <span class="n">clip2</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="c1"># We want the author to be in the center, 30px under the title</span>
+<span class="c1"># We can set as pixels</span>
+<span class="n">top</span> <span class="o">=</span> <span class="n">background</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="mf">0.25</span> <span class="o">+</span> <span class="n">title</span><span class="o">.</span><span class="n">h</span> <span class="o">+</span> <span class="mi">30</span>
+<span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="n">background</span><span class="o">.</span><span class="n">w</span> <span class="o">-</span> <span class="n">author</span><span class="o">.</span><span class="n">w</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">author</span> <span class="o">=</span> <span class="n">author</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span>
 
-<span class="c1"># We want to play clip3 at the end of clip2, and so for 3 seconds only</span>
-<span class="c1"># Some times its more practical to modify the duration of a clip instead</span>
-<span class="c1"># of his end</span>
-<span class="n">clip3</span> <span class="o">=</span> <span class="n">clip3</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">clip2</span><span class="o">.</span><span class="n">end</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># We want the copyright to be 30px before bottom</span>
+<span class="n">copyright</span> <span class="o">=</span> <span class="n">copyright</span><span class="o">.</span><span class="n">with_position</span><span class="p">((</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">background</span><span class="o">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">copyright</span><span class="o">.</span><span class="n">h</span> <span class="o">-</span> <span class="mi">30</span><span class="p">))</span>
+
+<span class="c1"># Finally, we want the logo to be in the center, but to drop as time pass</span>
+<span class="c1"># We can do so by setting position as a function that take time as argument,</span>
+<span class="c1"># a lot like frame_function</span>
+<span class="n">top</span> <span class="o">=</span> <span class="p">(</span><span class="n">background</span><span class="o">.</span><span class="n">h</span> <span class="o">-</span> <span class="n">logo</span><span class="o">.</span><span class="n">h</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">logo</span> <span class="o">=</span> <span class="n">logo</span><span class="o">.</span><span class="n">with_position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">top</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="mi">30</span><span class="p">))</span>
 
 <span class="c1"># We write the result</span>
-<span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip1</span><span class="p">,</span> <span class="n">clip2</span><span class="p">,</span> <span class="n">clip3</span><span class="p">])</span>
+<span class="n">final_clip</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">background</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">copyright</span><span class="p">,</span> <span class="n">logo</span><span class="p">])</span>
 <span class="n">final_clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;final_clip.mp4&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
