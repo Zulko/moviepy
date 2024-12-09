@@ -63,7 +63,7 @@ def requires_fps(func, clip, *args, **kwargs):
 
 
 @decorator.decorator
-def audio_video_fx(func, clip, *args, **kwargs):
+def audio_video_effect(func, effect, clip, *args, **kwargs):
     """Use an audio function on a video/audio clip.
 
     This decorator tells that the function func (audioclip -> audioclip)
@@ -71,12 +71,11 @@ def audio_video_fx(func, clip, *args, **kwargs):
     videoclip with unmodified video and modified audio.
     """
     if hasattr(clip, "audio"):
-        new_clip = clip.copy()
         if clip.audio is not None:
-            new_clip.audio = func(clip.audio, *args, **kwargs)
-        return new_clip
+            clip.audio = func(effect, clip.audio, *args, **kwargs)
+        return clip
     else:
-        return func(clip, *args, **kwargs)
+        return func(effect, clip, *args, **kwargs)
 
 
 def preprocess_args(fun, varnames):
@@ -111,7 +110,7 @@ def convert_path_to_string(varnames):
 def add_mask_if_none(func, clip, *args, **kwargs):
     """Add a mask to the clip if there is none."""
     if clip.mask is None:
-        clip = clip.add_mask()
+        clip = clip.with_mask()
     return func(clip, *args, **kwargs)
 
 

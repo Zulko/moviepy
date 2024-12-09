@@ -100,26 +100,27 @@ def color_gradient(
     Examples
     --------
 
-    >>> color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black
-    [[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]
-    >>>
-    >>> color_gradient(  # from red to green
-    ...     (10, 1),  # size
-    ...     (0, 0),   # p1
-    ...     p2=(10, 0),
-    ...     color_1=(255, 0, 0),  # red
-    ...     color_2=(0, 255, 0),  # green
-    ... )
-    [[[  0.  255.    0. ]
-      [ 25.5 229.5   0. ]
-      [ 51.  204.    0. ]
-      [ 76.5 178.5   0. ]
-      [102.  153.    0. ]
-      [127.5 127.5   0. ]
-      [153.  102.    0. ]
-      [178.5  76.5   0. ]
-      [204.   51.    0. ]
-      [229.5  25.5   0. ]]]
+    .. code:: python
+
+        color_gradient((10, 1), (0, 0), p2=(10, 0))  # from white to black
+        #[[1.  0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1]]
+        # from red to green
+        color_gradient(
+            (10, 1), (0, 0),
+            p2=(10, 0),
+            color_1=(255, 0, 0),
+            color_2=(0, 255, 0)
+        )
+        # [[[  0.  255.    0. ]
+        #   [ 25.5 229.5   0. ]
+        #   [ 51.  204.    0. ]
+        #   [ 76.5 178.5   0. ]
+        #   [102.  153.    0. ]
+        #   [127.5 127.5   0. ]
+        #   [153.  102.    0. ]
+        #   [178.5  76.5   0. ]
+        #   [204.   51.    0. ]
+        #   [229.5  25.5   0. ]]]
     """
     # np-arrayize and change x,y coordinates to y,x
     w, h = size
@@ -234,16 +235,18 @@ def color_split(
     Examples
     --------
 
-    >>> size = [200, 200]
-    >>>
-    >>> # an image with all pixels with x<50 =0, the others =1
-    >>> color_split(size, x=50, color_1=0, color_2=1)
-    >>>
-    >>> # an image with all pixels with y<50 red, the others green
-    >>> color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])
-    >>>
-    >>> # An image split along an arbitrary line (see below)
-    >>> color_split(size, p1=[20, 50], p2=[25, 70] color_1=0, color_2=1)
+    .. code:: python
+
+        size = [200, 200]
+
+        # an image with all pixels with x<50 =0, the others =1
+        color_split(size, x=50, color_1=0, color_2=1)
+
+        # an image with all pixels with y<50 red, the others green
+        color_split(size, x=50, color_1=[255, 0, 0], color_2=[0, 255, 0])
+
+        # An image split along an arbitrary line (see below)
+        color_split(size, p1=[20, 50], p2=[25, 70], color_1=0, color_2=1)
     """
     if gradient_width or ((x is None) and (y is None)):
         if p2 is not None:
@@ -304,18 +307,20 @@ def circle(screensize, center, radius, color=1.0, bg_color=0, blur=1):
     Examples
     --------
 
-    >>> from moviepy.video.tools.drawing import circle
-    >>>
-    >>> circle(
-    ...     (5, 5),  # size
-    ...     (2, 2),  # center
-    ...      2,      # radius
-    ... )
-    array([[0.        , 0.        , 0.        , 0.        , 0.        ],
-           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
-           [0.        , 1.        , 1.        , 1.        , 0.        ],
-           [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
-           [0.        , 0.        , 0.        , 0.        , 0.        ]])
+    .. code:: python
+
+        from moviepy.video.tools.drawing import circle
+
+        circle(
+            (5, 5),  # size
+            (2, 2),  # center
+            2,      # radius
+        )
+        # array([[0.        , 0.        , 0.        , 0.        , 0.        ],
+        #        [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
+        #        [0.        , 1.        , 1.        , 1.        , 0.        ],
+        #        [0.        , 0.58578644, 1.        , 0.58578644, 0.        ],
+        #        [0.        , 0.        , 0.        , 0.        , 0.        ]])
     """
     offset = 1.0 * (radius - blur) / radius if radius else 0
     return color_gradient(

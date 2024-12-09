@@ -11,6 +11,7 @@ import numpy as np
 import proglog
 
 from moviepy.audio.io.ffmpeg_audiowriter import ffmpeg_audiowrite
+from moviepy.audio.io.ffplay_audiopreviewer import ffplay_audiopreview
 from moviepy.Clip import Clip
 from moviepy.decorators import convert_path_to_string, requires_duration
 from moviepy.tools import extensions_dict
@@ -21,7 +22,7 @@ class AudioClip(Clip):
 
     See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.
 
-    An AudioClip is a Clip with a ``make_frame``  attribute of
+    An AudioClip is a Clip with a ``frame_function``  attribute of
     the form `` t -> [ f_t ]`` for mono sound and
     ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
     The `f_t` are floats between -1 and 1. These bounds can be
@@ -31,7 +32,7 @@ class AudioClip(Clip):
     Parameters
     ----------
 
-    make_frame
+    frame_function
       A function `t-> frame at time t`. The frame does not mean much
       for a sound, it is just a float. What 'makes' the sound are
       the variations of that float in the time.
@@ -46,30 +47,32 @@ class AudioClip(Clip):
     Examples
     --------
 
-    >>> # Plays the note A in mono (a sine wave of frequency 440 Hz)
-    >>> import numpy as np
-    >>> make_frame = lambda t: np.sin(440 * 2 * np.pi * t)
-    >>> clip = AudioClip(make_frame, duration=5, fps=44100)
-    >>> clip.preview()
+    .. code:: python
 
-    >>> # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
-    >>> make_frame = lambda t: np.array([
-    ...     np.sin(440 * 2 * np.pi * t),
-    ...     np.sin(880 * 2 * np.pi * t)
-    ... ]).T.copy(order="C")
-    >>> clip = AudioClip(make_frame, duration=3, fps=44100)
-    >>> clip.preview()
+        # Plays the note A in mono (a sine wave of frequency 440 Hz)
+        import numpy as np
+        frame_function = lambda t: np.sin(440 * 2 * np.pi * t)
+        clip = AudioClip(frame_function, duration=5, fps=44100)
+        clip.preview()
+
+        # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
+        frame_function = lambda t: np.array([
+            np.sin(440 * 2 * np.pi * t),
+            np.sin(880 * 2 * np.pi * t)
+        ]).T.copy(order="C")
+        clip = AudioClip(frame_function, duration=3, fps=44100)
+        clip.preview()
 
     """
 
-    def __init__(self, make_frame=None, duration=None, fps=None):
+    def __init__(self, frame_function=None, duration=None, fps=None):
         super().__init__()
 
         if fps is not None:
             self.fps = fps
 
-        if make_frame is not None:
-            self.make_frame = make_frame
+        if frame_function is not None:
+            self.frame_function = frame_function
             frame0 = self.get_frame(0)
             if hasattr(frame0, "__iter__"):
                 self.nchannels = len(list(frame0))
@@ -206,6 +209,12 @@ class AudioClip(Clip):
         nbytes
           Sample width (set to 2 for 16-bit sound, 4 for 32-bit sound)
 
+        buffersize
+          The sound is not generated all at once, but rather made by bunches
+          of frames (chunks). ``buffersize`` is the size of such a chunk.
+          Try varying it if you meet audio problems (but you shouldn't
+          have to). Default to 2000
+
         codec
           Which audio codec should be used. If None provided, the codec is
           determined based on the extension of the filename. Choose
@@ -259,6 +268,45 @@ class AudioClip(Clip):
             logger=logger,
         )
 
+    @requires_duration
+    def audiopreview(
+        self, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
+    ):
+        """
+        Preview an AudioClip using ffplay
+
+        Parameters
+        ----------
+
+        fps
+            Frame rate of the sound. 44100 gives top quality, but may cause
+            problems if your computer is not fast enough and your clip is
+            complicated. If the sound jumps during the preview, lower it
+            (11025 is still fine, 5000 is tolerable).
+
+        buffersize
+            The sound is not generated all at once, but rather made by bunches
+            of frames (chunks). ``buffersize`` is the size of such a chunk.
+            Try varying it if you meet audio problems (but you shouldn't
+            have to).
+
+        nbytes:
+            Number of bytes to encode the sound: 1 for 8bit sound, 2 for
+            16bit, 4 for 32bit sound. 2 bytes is fine.
+
+        audio_flag, video_flag:
+            Instances of class threading events that are used to synchronize
+            video and audio during ``VideoClip.preview()``.
+        """
+        ffplay_audiopreview(
+            clip=self,
+            fps=fps,
+            buffersize=buffersize,
+            nbytes=nbytes,
+            audio_flag=audio_flag,
+            video_flag=video_flag,
+        )
+
     def __add__(self, other):
         if isinstance(other, AudioClip):
             return concatenate_audioclips([self, other])
@@ -289,7 +337,7 @@ class AudioArrayClip(AudioClip):
         self.fps = fps
         self.duration = 1.0 * len(array) / fps
 
-        def make_frame(t):
+        def frame_function(t):
             """Complicated, but must be able to handle the case where t
             is a list of the form sin(t).
             """
@@ -306,7 +354,7 @@ class AudioArrayClip(AudioClip):
                 else:
                     return self.array[i]
 
-        self.make_frame = make_frame
+        self.frame_function = frame_function
         self.nchannels = len(list(self.get_frame(0)))
 
 
@@ -354,7 +402,7 @@ class CompositeAudioClip(AudioClip):
         """Returns ending times for all clips in the composition."""
         return (clip.end for clip in self.clips)
 
-    def make_frame(self, t):
+    def frame_function(self, t):
         """Renders a frame for the composition for the time ``t``."""
         played_parts = [clip.is_playing(t) for clip in self.clips]
 

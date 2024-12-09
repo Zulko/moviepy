@@ -292,7 +292,7 @@ def test_ffmpeg_parse_video_rotation():
 
 def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
-    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclipped(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
         util.TMP_DIR,

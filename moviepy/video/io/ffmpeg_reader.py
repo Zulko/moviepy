@@ -35,8 +35,10 @@ class FFMPEG_VideoReader:
             decode_file=decode_file,
             print_infos=print_infos,
         )
-        self.fps = infos["video_fps"]
-        self.size = infos["video_size"]
+        # If framerate is unavailable, assume 1.0 FPS to avoid divide-by-zero errors.
+        self.fps = infos.get("video_fps", 1.0)
+        # If frame size is unavailable, set 1x1 divide-by-zero errors.
+        self.size = infos.get("video_size", (1, 1))
 
         # ffmpeg automatically rotates videos if rotation information is
         # available, so exchange width and height
@@ -55,10 +57,10 @@ class FFMPEG_VideoReader:
                 self.size = target_resolution
         self.resize_algo = resize_algo
 
-        self.duration = infos["video_duration"]
-        self.ffmpeg_duration = infos["duration"]
-        self.n_frames = infos["video_n_frames"]
-        self.bitrate = infos["video_bitrate"]
+        self.duration = infos.get("video_duration", 0.0)
+        self.ffmpeg_duration = infos.get("duration", 0.0)
+        self.n_frames = infos.get("video_n_frames", 0)
+        self.bitrate = infos.get("video_bitrate", 0)
 
         self.infos = infos
 
@@ -129,7 +131,7 @@ class FFMPEG_VideoReader:
         # to be read by self.read_frame().
         # Eg when self.pos is 1, the 2nd frame will be read next.
         self.pos = self.get_frame_number(start_time)
-        self.lastread = self.read_frame()
+        self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames"""
@@ -144,7 +146,7 @@ class FFMPEG_VideoReader:
         """
         Reads the next frame from the file.
         Note that upon (re)initialization, the first frame will already have been read
-        and stored in ``self.lastread``.
+        and stored in ``self.last_read``.
         """
         w, h = self.size
         nbytes = self.depth * w * h
@@ -219,12 +221,17 @@ class FFMPEG_VideoReader:
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
             self.initialize(t)
-            return self.lastread
+            return self.last_read
         else:
             # If pos == self.pos + 1, this line has no effect
             self.skip_frames(pos - self.pos - 1)
             result = self.read_frame()
             return result
+
+    @property
+    def lastread(self):
+        """Alias of `self.last_read` for backwards compatibility with MoviePy 1.x."""
+        return self.last_read
 
     def get_frame_number(self, t):
         """Helper method to return the frame number at time ``t``"""
@@ -556,8 +563,11 @@ class FFmpegInfosParser:
         # last input file, must be included in self.result
         if self._current_input_file:
             self._current_input_file["streams"].append(self._current_stream)
-            # include their chapters, if there are
-            if len(input_chapters) == self._current_input_file["input_number"] + 1:
+            # include their chapters, if there are any
+            if (
+                "input_number" in self._current_input_file
+                and len(input_chapters) == self._current_input_file["input_number"] + 1
+            ):
                 self._current_input_file["chapters"] = input_chapters[
                     self._current_input_file["input_number"]
                 ]
@@ -565,13 +575,13 @@ class FFmpegInfosParser:
 
         # some video duration utilities
         if self.result["video_found"] and self.check_duration:
-            self.result["video_n_frames"] = int(
-                self.result["duration"] * self.result["video_fps"]
-            )
             self.result["video_duration"] = self.result["duration"]
+            self.result["video_n_frames"] = int(
+                self.result["duration"] * self.result.get("video_fps", 0)
+            )
         else:
-            self.result["video_n_frames"] = 1
-            self.result["video_duration"] = None
+            self.result["video_n_frames"] = 0
+            self.result["video_duration"] = 0.0
         # We could have also recomputed duration from the number of frames, as follows:
         # >>> result['video_duration'] = result['video_n_frames'] / result['video_fps']
 

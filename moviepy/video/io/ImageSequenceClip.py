@@ -5,7 +5,7 @@ of image files.
 import os
 
 import numpy as np
-from imageio import imread
+from imageio.v2 import imread
 
 from moviepy.video.VideoClip import VideoClip
 
@@ -38,6 +38,11 @@ class ImageSequenceClip(VideoClip):
 
     is_mask
       Will this sequence of pictures be used as an animated mask.
+
+    load_images
+      Specify that all images should be loaded into the RAM. This is only
+      interesting if you have a small number of images that will be used
+      more than once.
     """
 
     def __init__(
@@ -104,6 +109,9 @@ class ImageSequenceClip(VideoClip):
         self.end = self.duration
         self.sequence = sequence
 
+        if fps is None:
+            self.fps = self.duration / len(sequence)
+
         def find_image_index(t):
             return max(
                 [i for i in range(len(self.sequence)) if self.images_starts[i] <= t]
@@ -113,7 +121,7 @@ class ImageSequenceClip(VideoClip):
             self.last_index = None
             self.last_image = None
 
-            def make_frame(t):
+            def frame_function(t):
                 index = find_image_index(t)
 
                 if index != self.last_index:
@@ -127,7 +135,7 @@ class ImageSequenceClip(VideoClip):
                 self.mask.last_index = None
                 self.mask.last_image = None
 
-                def mask_make_frame(t):
+                def mask_frame_function(t):
                     index = find_image_index(t)
                     if index != self.mask.last_index:
                         frame = imread(self.sequence[index])[:, :, 3]
@@ -136,24 +144,24 @@ class ImageSequenceClip(VideoClip):
 
                     return self.mask.last_image
 
-                self.mask.make_frame = mask_make_frame
-                self.mask.size = mask_make_frame(0).shape[:2][::-1]
+                self.mask.frame_function = mask_frame_function
+                self.mask.size = mask_frame_function(0).shape[:2][::-1]
 
         else:
 
-            def make_frame(t):
+            def frame_function(t):
                 index = find_image_index(t)
                 return self.sequence[index][:, :, :3]
 
             if with_mask and (self.sequence[0].shape[2] == 4):
                 self.mask = VideoClip(is_mask=True)
 
-                def mask_make_frame(t):
+                def mask_frame_function(t):
                     index = find_image_index(t)
                     return 1.0 * self.sequence[index][:, :, 3] / 255
 
-                self.mask.make_frame = mask_make_frame
-                self.mask.size = mask_make_frame(0).shape[:2][::-1]
+                self.mask.frame_function = mask_frame_function
+                self.mask.size = mask_frame_function(0).shape[:2][::-1]
 
-        self.make_frame = make_frame
-        self.size = make_frame(0).shape[:2][::-1]
+        self.frame_function = frame_function
+        self.size = frame_function(0).shape[:2][::-1]

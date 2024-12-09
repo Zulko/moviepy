@@ -1,0 +1,53 @@
+name: Build and Deploy Sphinx Documentation
+
+on:
+  push:
+    branches:
+      - master  # Change to your default branch if needed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'  # Specify Python version as needed
+
+    - name: Build v1.0.3 documentation
+      run: |
+        git fetch --tags
+        git checkout v1.0.3
+        pip install "jinja2<3" "MarkupSafe<2" "alabaster==0.7.12"
+        pip install -e .
+        pip install -e ".[doc]"
+        
+        cd docs
+        make html
+        mkdir -p ../build/html/v1.0.3
+        cp -r build/html/* ../build/html/v1.0.3/
+        rm -rf build/html
+        git stash
+
+    - name: Install dependencies
+      run: |
+        git checkout master  
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install -e .[doc]
+
+    - name: Build current documentation
+      run: |
+        cd docs
+        make html
+        cp -r build/html/* ../build/html/
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/html/  # Adjusted path since we're copying docs to root build directory

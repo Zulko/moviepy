@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moviepy"
+version = "2.1.1"
+description = "Video editing with Python"
+readme = "README.md"
+license = { text = "MIT License" }
+authors = [{ name = "Zulko 2024" }]
+keywords = ["video", "editing", "audio", "compositing", "ffmpeg"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Multimedia",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Multimedia :: Video :: Capture",
+    "Topic :: Multimedia :: Video :: Conversion",
+]
+dependencies = [
+    "decorator>=4.0.2,<6.0",
+    "imageio>=2.5,<3.0",
+    "imageio_ffmpeg>=0.2.0",
+    "numpy>=1.25.0",
+    "proglog<=1.0.0",
+    "python-dotenv>=0.10",
+    "pillow>=9.2.0,<11.0",
+]
+
+[project.optional-dependencies]
+doc = [
+    "numpydoc<2.0",
+    "Sphinx==6.*",
+    "pydata-sphinx-theme==0.13",
+    "sphinx_design",
+]
+test = [
+    "coveralls>=3.0,<4.0",
+    "pytest-cov>=2.5.1,<3.0",
+    "pytest>=3.0.0,<7.0.0",
+]
+lint = [
+    "black>=23.7.0",
+    "flake8>=6.0.0",
+    "flake8-absolute-import>=1.0",
+    "flake8-docstrings>=1.7.0",
+    "flake8-rst-docstrings>=0.3",
+    "flake8-implicit-str-concat==0.4.0",
+    "isort>=5.12",
+    "pre-commit>=3.3",
+]
+
+[tool.setuptools.packages.find]
+include = ["moviepy*"]
+exclude = ["media", "tests", "docs"]

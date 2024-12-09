@@ -4,13 +4,7 @@ import os
 
 import pytest
 
-from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.compositing.transitions import crossfadein, crossfadeout
-from moviepy.video.fx.resize import resize
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import ColorClip, ImageClip, VideoClip
+from moviepy import *
 
 
 try:
@@ -235,10 +229,12 @@ def test_issue_334(util):
     avatar.with_mask(maskclip)  # must set maskclip here..
     concatenated = avatar * 3
 
-    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 3)
+    tt = VideoFileClip("media/big_buck_bunny_0_30.webm").subclipped(0, 3)
     # TODO: Setting mask here does not work:
     # .with_mask(maskclip).resize(size)])
-    final = CompositeVideoClip([tt, concatenated.with_position(posi).fx(resize, size)])
+    final = CompositeVideoClip(
+        [tt, concatenated.with_position(posi).with_effects([vfx.Resize(size)])]
+    )
     final.duration = tt.duration
     final.write_videofile(os.path.join(util.TMP_DIR, "issue_334.mp4"), fps=10)
 
@@ -248,70 +244,16 @@ def test_issue_354():
         clip.duration = 10
         crosstime = 1
 
-        # TODO: Should this be removed?
-        # caption = editor.TextClip("test text", font="Liberation-Sans-Bold",
-        #                           color='white', stroke_color='gray',
-        #                           stroke_width=2, method='caption',
-        #                           size=(1280, 720), font_size=60,
-        #                           align='South-East')
-        # caption.duration = clip.duration
-
-        fadecaption = clip.fx(crossfadein, crosstime).fx(crossfadeout, crosstime)
+        fadecaption = clip.with_effects(
+            [vfx.CrossFadeIn(crosstime), vfx.CrossFadeOut(crosstime)]
+        )
         CompositeVideoClip([clip, fadecaption]).close()
 
 
 def test_issue_359(util):
     with ColorClip((800, 600), color=(255, 0, 0)).with_duration(0.2) as video:
         video.fps = 30
-        video.write_gif(
-            filename=os.path.join(util.TMP_DIR, "issue_359.gif"), tempfiles=True
-        )
-
-
-@pytest.mark.skipif(not matplotlib, reason="no matplotlib")
-def test_issue_368(util):
-    import matplotlib.pyplot as plt
-    import numpy as np
-    from sklearn import svm
-    from sklearn.datasets import make_moons
-
-    from moviepy.video.io.bindings import mplfig_to_npimage
-
-    plt.switch_backend("Agg")
-
-    X, Y = make_moons(50, noise=0.1, random_state=2)  # semi-random data
-
-    fig, ax = plt.subplots(1, figsize=(4, 4), facecolor=(1, 1, 1))
-    fig.subplots_adjust(left=0, right=1, bottom=0)
-    xx, yy = np.meshgrid(np.linspace(-2, 3, 500), np.linspace(-1, 2, 500))
-
-    def make_frame(t):
-        ax.clear()
-        ax.axis("off")
-        ax.set_title("SVC classification", fontsize=16)
-
-        classifier = svm.SVC(gamma=2, C=1)
-        # the varying weights make the points appear one after the other
-        weights = np.minimum(1, np.maximum(0, t**2 + 10 - np.arange(50)))
-        classifier.fit(X, Y, sample_weight=weights)
-        Z = classifier.decision_function(np.c_[xx.ravel(), yy.ravel()])
-        Z = Z.reshape(xx.shape)
-        ax.contourf(
-            xx,
-            yy,
-            Z,
-            cmap=plt.cm.bone,
-            alpha=0.8,
-            vmin=-2.5,
-            vmax=2.5,
-            levels=np.linspace(-2, 2, 20),
-        )
-        ax.scatter(X[:, 0], X[:, 1], c=Y, s=50 * weights, cmap=plt.cm.bone)
-
-        return mplfig_to_npimage(fig)
-
-    animation = VideoClip(make_frame, duration=0.2)
-    animation.write_gif(os.path.join(util.TMP_DIR, "svm.gif"), fps=20)
+        video.write_gif(filename=os.path.join(util.TMP_DIR, "issue_359.gif"))
 
 
 def test_issue_407():
@@ -351,9 +293,8 @@ def test_issue_416():
 def test_issue_417():
     # failed in python2
     cad = "media/python_logo.png"
-    myclip = ImageClip(cad).fx(resize, new_size=[1280, 660])
+    myclip = ImageClip(cad).resized(new_size=[1280, 660])
     CompositeVideoClip([myclip], size=(1280, 720))
-    # final.with_duration(7).write_videofile("test.mp4", fps=30)
 
 
 def test_issue_470(util):
@@ -362,13 +303,13 @@ def test_issue_470(util):
     audio_clip = AudioFileClip("media/crunching.mp3")
 
     # end_time is out of bounds
-    subclip = audio_clip.subclip(start_time=6, end_time=9)
+    subclip = audio_clip.subclipped(start_time=6, end_time=9)
 
     with pytest.raises(IOError):
         subclip.write_audiofile(wav_filename, write_logfile=True)
 
     # but this one should work..
-    subclip = audio_clip.subclip(start_time=6, end_time=8)
+    subclip = audio_clip.subclipped(start_time=6, end_time=8)
     subclip.write_audiofile(wav_filename, write_logfile=True)
 
 
@@ -386,8 +327,8 @@ def test_issue_547():
 
 
 def test_issue_636():
-    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 11) as video:
-        with video.subclip(0, 1) as _:
+    with VideoFileClip("media/big_buck_bunny_0_30.webm").subclipped(0, 11) as video:
+        with video.subclipped(0, 1) as _:
             pass
 
 
@@ -395,10 +336,28 @@ def test_issue_655():
     video_file = "media/fire2.mp4"
     for subclip in [(0, 2), (1, 2), (2, 3)]:
         with VideoFileClip(video_file) as v:
-            with v.subclip(1, 2) as _:
+            with v.subclipped(1, 2) as _:
                 pass
-            next(v.subclip(*subclip).iter_frames())
+            next(v.subclipped(*subclip).iter_frames())
     assert True
+
+
+def test_issue_1682(util):
+    filename = "media/big_buck_bunny_0_30.webm"
+    clip = VideoFileClip(filename)
+    clip = clip.with_section_cut_out(1, 9)
+    output_video_filepath = os.path.join(
+        util.TMP_DIR, "big_buck_bunny_0_30_cutout.webm"
+    )
+    clip.write_videofile(output_video_filepath)
+
+
+def test_issue_1682_2(util):
+    filename = "media/rain.mp3"
+    clip = AudioFileClip(filename)
+    clip = clip.with_section_cut_out(10, 17)
+    output_audio_filepath = os.path.join(util.TMP_DIR, "rain_cutout.mp3")
+    clip.write_audiofile(output_audio_filepath)
 
 
 if __name__ == "__main__":
