@@ -6,7 +6,7 @@ import proglog
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
-from moviepy.tools import cross_platform_popen_params
+from moviepy.tools import cross_platform_popen_params, ffmpeg_escape_filename
 
 
 class FFMPEG_AudioWriter:
@@ -89,7 +89,7 @@ class FFMPEG_AudioWriter:
         if input_video is None:
             cmd.extend(["-vn"])
         else:
-            cmd.extend(["-i", input_video, "-vcodec", "copy"])
+            cmd.extend(["-i", ffmpeg_escape_filename(input_video), "-vcodec", "copy"])
 
         cmd.extend(["-acodec", codec] + ["-ar", "%d" % fps_input])
         cmd.extend(["-strict", "-2"])  # needed to support codec 'aac'
@@ -97,7 +97,7 @@ class FFMPEG_AudioWriter:
             cmd.extend(["-ab", bitrate])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
-        cmd.extend([filename])
+        cmd.extend([ffmpeg_escape_filename(filename)])
 
         popen_params = cross_platform_popen_params(
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
