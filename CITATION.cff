@@ -8,13 +8,12 @@ message: >-
   metadata from this file.
 type: software
 authors:
-  - given-names: Hasnain
-    family-names: Mohi Ud Din
-repository-code: 'https://github.com/hasnainmohiuddin/moviepy'
+  - given-names: Zulko
+repository-code: 'https://github.com/Zulko/moviepy'
 abstract: >-
   MoviePy is a Python library for video editing: cutting,
   concatenations, title insertions, video compositing, video
   processing, and creation of custom effects.
 license: MIT
-version: 1.0.0
-date-released: '2024-11-13'
+version: 2.1.1
+date-released: '2024-11-23'
