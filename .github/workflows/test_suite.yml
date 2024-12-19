@@ -14,7 +14,7 @@ on:
 jobs:
   # Uses Python Framework build because on macOS, Matplotlib requires it
   macos:
-    runs-on: macos-12
+    runs-on: macos-13
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
