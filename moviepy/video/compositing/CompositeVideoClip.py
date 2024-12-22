@@ -59,15 +59,20 @@ class CompositeVideoClip(VideoClip):
         if size is None:
             size = clips[0].size
 
+        if not use_bgclip and bg_color is None :
+            use_bgclip = True
+
         if use_bgclip and (clips[0].mask is None):
             transparent = False
-        else:
-            transparent = bg_color is None
 
-        if bg_color is None:
-            bg_color = 0.0 if is_mask else (0, 0, 0)
-
-        print(clips)
+        # If we must not use fist clip as background and we dont have a color
+        # we generate a black background if clip should not be transparent and 
+        # a transparent background if transparent
+        if (not use_bgclip) and bg_color is None:
+            if transparent :
+                bg_color = 0.0 if is_mask else (0, 0, 0, 0)
+            else :
+                bg_color = 0.0 if is_mask else (0, 0, 0)
 
         fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
         self.fps = max(fpss) if fpss else None
@@ -79,11 +84,13 @@ class CompositeVideoClip(VideoClip):
         self.clips = clips
         self.bg_color = bg_color
 
+        # Use first clip as background if necessary, else use color
+        # either set by user or previously generated
         if use_bgclip:
             self.bg = clips[0]
             self.clips = clips[1:]
             self.created_bg = False
-        else:
+        else :
             self.clips = clips
             self.bg = ColorClip(size, color=self.bg_color, is_mask=is_mask)
             self.created_bg = True
