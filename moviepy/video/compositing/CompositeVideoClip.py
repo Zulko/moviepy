@@ -67,6 +67,8 @@ class CompositeVideoClip(VideoClip):
         if bg_color is None:
             bg_color = 0.0 if is_mask else (0, 0, 0)
 
+        print(clips)
+
         fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
         self.fps = max(fpss) if fpss else None
 
@@ -120,6 +122,14 @@ class CompositeVideoClip(VideoClip):
         """The clips playing at time `t` are blitted over one another."""
         frame = self.bg.get_frame(t).astype("uint8")
         im = Image.fromarray(frame)
+
+        # For the mask we dont blit on each other, instead we recalculate the final transparency of the masks
+        if self.is_mask :
+            mask = np.zeros((self.size[1], self.size[0]), dtype=float)
+            for clip in self.playing_clips(t):
+                mask = clip.blit_mask(mask, t)
+            
+            return mask
 
         if self.bg.mask is not None:
             frame_mask = self.bg.mask.get_frame(t)

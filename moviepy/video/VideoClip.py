@@ -718,6 +718,8 @@ class VideoClip(Clip):
         """Returns the result of the blit of the clip's frame at time `t`
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
+
+        (note: blitting is the fact of putting an image on a surface or another image)
         """
         wf, hf = picture.size
 
@@ -744,7 +746,6 @@ class VideoClip(Clip):
                 im_mask_bg.paste(im_mask, (0, 0))
 
                 im_img, im_mask = im_img_bg, im_mask_bg
-
         else:
             im_mask = None
 
@@ -780,6 +781,92 @@ class VideoClip(Clip):
 
         pos = map(int, pos)
         return blit(im_img, picture, pos, mask=im_mask)
+    
+    def blit_mask(self, base_mask, t):
+        """Returns the result of the blit of the clip's mask at time `t`
+        on the given `base_mask`, the position of the clip being given
+        by the clip's ``pos`` attribute. Meant for compositing.
+
+        (warning: only use this function to blit two masks together, never images)
+
+        (note: blitting is the fact of putting an image on a surface or another image)
+        """
+        ct = t - self.start  # clip time
+        clip_mask = self.get_frame(ct).astype("float")
+
+        # numpy shape is H*W not W*H
+        hbm, wbm = base_mask.shape
+        hcm, wcm = clip_mask.shape
+
+        # SET POSITION
+        pos = self.pos(ct)
+
+        # preprocess short writings of the position
+        if isinstance(pos, str):
+            pos = {
+                "center": ["center", "center"],
+                "left": ["left", "center"],
+                "right": ["right", "center"],
+                "top": ["center", "top"],
+                "bottom": ["center", "bottom"],
+            }[pos]
+        else:
+            pos = list(pos)
+
+        # is the position relative (given in % of the clip's size) ?
+        if self.relative_pos:
+            for i, dim in enumerate([wbm, hbm]):
+                if not isinstance(pos[i], str):
+                    pos[i] = dim * pos[i]
+
+        if isinstance(pos[0], str):
+            D = {"left": 0, "center": (wbm - wcm) / 2, "right": wbm - wcm}
+            pos[0] = int(D[pos[0]])
+
+        if isinstance(pos[1], str):
+            D = {"top": 0, "center": (hbm - hcm) / 2, "bottom": hbm - hcm}
+            pos[1] = int(D[pos[1]])
+
+        # ALPHA COMPOSITING
+        # Determine the base_mask region to merge size
+        x_start = max(pos[0], 0) # Dont go under 0 left
+        x_end = min(pos[0] + wcm, wbm) # Dont go over base_mask width
+        y_start = max(pos[1], 0) # Dont go under 0 top
+        y_end = min(pos[1] + hcm, hbm) # Dont go over base_mask height
+
+        # Determine the clip_mask region to overlapp
+        # Dont go under 0 for horizontal, if we have negative margin of X px start at X 
+        # And dont go over clip width
+        clip_x_start = max(0, -pos[0]) 
+        clip_x_end = clip_x_start + min((x_end - x_start), (wcm - clip_x_start))
+        # same for vertical
+        clip_y_start = max(0, -pos[1])
+        clip_y_end = clip_y_start + min((y_end - y_start), (hcm - clip_y_start))
+
+        # Blend the overlapping regions
+        # The calculus is base_opacity + clip_opacity * (1 - base_opacity)
+        # this ensure that masks are drawn in the right order and
+        # the contribution of each mask is proportional to their transparency
+        #
+        # Note :
+        # Thinking in transparency is hard, as we tend to think
+        # that 50% opaque + 40% opaque = 90% opacity, when it really its 70%
+        # It's a lot easier to think in terms of "passing light"
+        # Consider I emit 100 photons, and my first layer is 50% opaque, meaning it
+        # will "stop" 50% of the photons, I'll have 50 photons left
+        # now my second layer is blocking 40% of thoses 50 photons left
+        # blocking 50 * 0.4 = 20 photons, and leaving me with only 30 photons
+        # So, by adding two layer of 50% and 40% opacity my finaly opacity is only
+        # of (100-30)*100 = 70% opacity !
+        base_mask[y_start:y_end, x_start:x_end] = (
+            base_mask[y_start:y_end, x_start:x_end] +
+            clip_mask[clip_y_start:clip_y_end, clip_x_start:clip_x_end] *
+            (1 - base_mask[y_start:y_end, x_start:x_end])
+        )
+
+        return base_mask
+
+        
 
     def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
         """Place the clip on a colored background.

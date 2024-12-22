@@ -3,10 +3,11 @@ methods that are difficult to do with the existing Python libraries.
 """
 
 import numpy as np
+from PIL import Image
 
 
-def blit(im1, im2, pos=None, mask=None):
-    """Blit an image over another.
+def blit(im1: Image, im2: Image, pos=None, mask: Image = None):
+    """Blit an image over another using pillow.
 
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided.
@@ -16,6 +17,7 @@ def blit(im1, im2, pos=None, mask=None):
     else:
         # Cast to tuple in case pos is not subscriptable.
         pos = tuple(pos)
+
     im2.paste(im1, pos, mask)
     return im2
 

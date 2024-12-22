@@ -88,26 +88,45 @@ def test_concatenate_floating_point(util):
     concat.write_videofile(os.path.join(util.TMP_DIR, "concat.mp4"), preset="ultrafast")
 
 
-# def test_blit_with_opacity():
-#     # bitmap.mp4 has one second R, one second G, one second B
-#     clip1 = VideoFileClip("media/bitmap.mp4")
-#     # overlay same clip, shifted by 1 second, at half opacity
-#     clip2 = (
-#         VideoFileClip("media/bitmap.mp4")
-#         .subclip(1, 2)
-#         .with_start(0)
-#         .with_end(2)
-#         .with_opacity(0.5)
-#     )
-#     composite = CompositeVideoClip([clip1, clip2])
-#     bt = ClipPixelTest(composite)
-
-#     bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
-#     bt.expect_color_at(1.5, (0x00, 0x7F, 0x7F))
-#     bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
-
-
 def test_blit_with_opacity():
+    # has one second R, one second G, one second B
+    size = (2, 2)
+    clip1 = (
+        ColorClip(size, color=(255, 0, 0), duration=1)
+        + ColorClip(size, color=(0, 255, 0), duration=1)
+        + ColorClip(size, color=(0, 0, 255), duration=1)
+    )
+
+    # overlay green at half opacity during first 2 sec
+    clip2 = ColorClip(size, color=(0, 255, 0), duration=2).with_opacity(0.5)
+    composite = CompositeVideoClip([clip1, clip2])
+    bt = ClipPixelTest(composite)
+
+    # red + 50% green
+    bt.expect_color_at(0.5, (0x7F, 0x7F, 0x00))
+    # green + 50% green
+    bt.expect_color_at(1.5, (0x00, 0xFF, 0x00))
+    # blue is after 2s, so keep untouched
+    bt.expect_color_at(2.5, (0x00, 0x00, 0xFF))
+
+
+def test_transparent_rendering(util):
+    # Has one R 30%, one G 30%, one B 30%
+    clip1 = ColorClip((100, 100), (255, 0, 0, 76.5)).with_duration(2)
+    clip2 = ColorClip((50, 50), (0, 255, 0, 76.5)).with_duration(2)
+    clip3 = ColorClip((25, 25), (0, 0, 255, 76.5)).with_duration(2)
+
+    compostite_clip1 = CompositeVideoClip([clip1, clip2.with_position(('center', 'center'))])
+    compostite_clip2 = CompositeVideoClip([compostite_clip1, clip3.with_position(('center', 'center'))])
+
+    output_filepath = os.path.join(util.TMP_DIR, "opacity.webm")
+    compostite_clip2.write_videofile(output_filepath, fps=5)
+
+    # Load output file and check transparency
+    output_file = VideoFileClip(output_filepath, has_mask = True)
+
+    
+
     # has one second R, one second G, one second B
     size = (2, 2)
     clip1 = (

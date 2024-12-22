@@ -360,5 +360,58 @@ def test_issue_1682_2(util):
     clip.write_audiofile(output_audio_filepath)
 
 
+def test_issue_2269(util):
+    filename = "media/big_buck_bunny_0_30.webm"
+    clip = VideoFileClip(filename).subclipped(0, 3)
+    color_clip = ColorClip((500, 200), (255, 0, 0, 255)).with_duration(3)
+    txt_clip_with_margin = TextClip(text="Hello", font=util.FONT, font_size=72, stroke_color="white", stroke_width=10, margin=(10,5,0,0), text_align="center").with_duration(3)
+    
+    comp1 = CompositeVideoClip([color_clip, txt_clip_with_margin.with_position(("center", "center"))])
+    comp2 = CompositeVideoClip([clip, comp1.with_position(("center", "center"))])
+
+    # If transparency work as expected, this pixel should be pure red at 2 seconds
+    frame = comp2.get_frame(2)
+    pixel = frame[334, 625]
+    assert pixel == [255, 0, 0]
+
+
+def test_issue_2269_2(util):
+    clip1 = ColorClip((200, 200), (255, 0, 0)).with_duration(3)
+    clip2 = ColorClip((100, 100), (0, 255, 0, 76.5)).with_duration(3)
+    clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
+
+    compostite_clip1 = CompositeVideoClip([clip1, clip2.with_position(('center', 'center'))])
+    compostite_clip2 = CompositeVideoClip([compostite_clip1, clip3.with_position(('center', 'center'))])
+
+    # If transparency work as expected the clip should match thoses colors
+    frame = compostite_clip2.get_frame(2)
+    pixel1 = frame[100, 10]
+    pixel2 = frame[100, 60]
+    pixel3 = frame[100, 100]
+    assert pixel1 == [255, 0, 0]
+    assert pixel2 == [179, 76, 0]
+    assert pixel3 == [126, 53, 76]
+
+
+def test_issue_2269_3(util):
+    # This time all clips have transparency
+    clip1 = ColorClip((200, 200), (255, 0, 0, 76.5)).with_duration(3)
+    clip2 = ColorClip((100, 100), (0, 255, 0, 76.5)).with_duration(3)
+    clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
+
+    compostite_clip1 = CompositeVideoClip([clip1, clip2.with_position(('center', 'center'))])
+    compostite_clip2 = CompositeVideoClip([compostite_clip1, clip3.with_position(('center', 'center'))])
+
+    # If transparency work as expected the clip transparency should be between 0.3 and 0.657
+    frame = compostite_clip2.mask.get_frame(2)
+    pixel1 = frame[100, 10]
+    pixel2 = frame[100, 60]
+    pixel3 = frame[100, 100]
+    assert pixel1 == 0.3
+    assert pixel2 == 0.51
+    assert pixel3 == 0.657
+
+
+
 if __name__ == "__main__":
     pytest.main()
