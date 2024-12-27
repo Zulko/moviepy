@@ -770,5 +770,19 @@ def test_failure_to_release_file(util):
             print("Yes, on Windows this fails.")
 
 
+def test_read_transparent_video():
+    reader = FFMPEG_VideoReader("media/transparent.webm", pixel_format='rgba')
+
+    # Get first frame
+    frame = reader.get_frame(1)
+    mask = frame[:, :, 3]
+    
+    # Check transparency on fully transparent part is 0
+    assert mask[10, 10] == 0
+
+    # Check transparency on fully opaque part is 255
+    assert mask[102, 18] == 255
+
+
 if __name__ == "__main__":
     pytest.main()
