@@ -102,7 +102,7 @@ class FFMPEG_VideoReader:
         # decoder dont decode alpha layer 
         # (see https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/)
         if self.depth == 4 and self.filename[-5:] == '.webm' :
-            i_arg = ["-c:v", "libvpx-vp9"] + i_arg
+            i_arg = ["-c:v", "libvpx"] + i_arg
 
         cmd = (
             [FFMPEG_BINARY]
@@ -123,6 +123,8 @@ class FFMPEG_VideoReader:
                 "-",
             ]
         )
+
+        print(' '.join(cmd))
 
         popen_params = cross_platform_popen_params(
             {
