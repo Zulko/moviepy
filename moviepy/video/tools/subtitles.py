@@ -72,6 +72,7 @@ class SubtitlesClip(VideoClip):
             if self.font is None:
                 raise ValueError("Argument font is required if make_textclip is None.")
 
+            # Changed stroke_width from float 0.5 to int 1
             def make_textclip(txt):
                 return TextClip(
                     font=self.font,
@@ -79,7 +80,7 @@ class SubtitlesClip(VideoClip):
                     font_size=24,
                     color="#ffffff",
                     stroke_color="#000000",
-                    stroke_width=0.5,
+                    stroke_width=1,
                 )
 
         self.make_textclip = make_textclip
