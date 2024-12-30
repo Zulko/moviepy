@@ -99,13 +99,13 @@ class FFMPEG_VideoReader:
             i_arg = ["-i", self.filename]
 
         # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9 as ffmpeg
-        # native webm decoder dont decode alpha layer 
+        # native webm decoder dont decode alpha layer
         # (see https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/)
-        if self.depth == 4 :
-            codec_name = self.infos.get('video_codec_name')
-            if codec_name == 'vp9' :
+        if self.depth == 4:
+            codec_name = self.infos.get("video_codec_name")
+            if codec_name == "vp9":
                 i_arg = ["-c:v", "libvpx-vp9"] + i_arg
-            elif codec_name == 'vp8' :
+            elif codec_name == "vp8":
                 i_arg = ["-c:v", "libvpx"] + i_arg
 
         print(self.infos)
@@ -474,12 +474,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[f"default_{stream_type_lower}_input_number"] = (
-                        input_number
-                    )
-                    self.result[f"default_{stream_type_lower}_stream_number"] = (
-                        stream_number
-                    )
+                    self.result[
+                        f"default_{stream_type_lower}_input_number"
+                    ] = input_number
+                    self.result[
+                        f"default_{stream_type_lower}_stream_number"
+                    ] = stream_number
 
                 # exit chapter
                 if self._current_chapter:
@@ -710,13 +710,10 @@ class FFmpegInfosParser:
             r"Video:\s(\w+)?\s?(\([^)]+\))?",
             line.lstrip(),
         )
-        if main_info_match is not None :
-            (
-                codec_name,
-                profile
-            ) = main_info_match.groups()
-            stream_data['codec_name'] = codec_name
-            stream_data['profile'] = profile
+        if main_info_match is not None:
+            (codec_name, profile) = main_info_match.groups()
+            stream_data["codec_name"] = codec_name
+            stream_data["profile"] = profile
 
         if self._current_stream["default"] or "video_codec_name" not in self.result:
             global_data["video_codec_name"] = stream_data.get("codec_name", None)

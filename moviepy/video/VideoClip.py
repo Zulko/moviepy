@@ -34,13 +34,12 @@ from moviepy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
-from moviepy.tools import extensions_dict, find_extension
+from moviepy.tools import extensions_dict, find_extension, compute_position
 from moviepy.video.fx.Crop import Crop
 from moviepy.video.fx.Resize import Resize
 from moviepy.video.fx.Rotate import Rotate
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_video
 from moviepy.video.io.gif_writers import write_gif_with_imageio
-from moviepy.video.tools.drawing import blit
 
 
 class VideoClip(Clip):
@@ -714,134 +713,123 @@ class VideoClip(Clip):
             post_array = np.hstack((post_array, x_1))
         return post_array
 
-    def blit_on(self, picture, t):
-        """Returns the result of the blit of the clip's frame at time `t`
+    def compose_on(self, background: Image.Image, t) -> Image.Image:
+        """Returns the result of the clip's frame at time `t` on top
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
 
-        (note: blitting is the fact of putting an image on a surface or another image)
-        """
-        wf, hf = picture.size
+        If the clip/backgrounds have transparency the transparency will
+        be accounted for.
 
+        The return is a Pillow Image
+
+        Parameters
+        -----------
+        backrgound (Image)
+          The background image to apply current clip on top of
+          if the background image is transparent it must be given as a RGBA image
+
+        t
+          The time of clip to apply on top of clip
+
+        Return
+        """
         ct = t - self.start  # clip time
 
         # GET IMAGE AND MASK IF ANY
-        img = self.get_frame(ct).astype("uint8")
-        im_img = Image.fromarray(img)
+        clip_frame = self.get_frame(ct).astype("uint8")
+        clip_img = Image.fromarray(clip_frame)
 
         if self.mask is not None:
-            mask = (self.mask.get_frame(ct) * 255).astype("uint8")
-            im_mask = Image.fromarray(mask).convert("L")
+            clip_mask = (self.mask.get_frame(ct) * 255).astype("uint8")
+            clip_mask_img = Image.fromarray(clip_mask).convert("L")
 
-            if im_img.size != im_mask.size:
-                bg_size = (
-                    max(im_img.size[0], im_mask.size[0]),
-                    max(im_img.size[1], im_mask.size[1]),
-                )
+            # Resize clip_mask_img to match clip_img, always use top left corner
+            if clip_mask_img.size != clip_img.size:
+                mask_width, mask_height = clip_mask_img.size
+                img_width, img_height = clip_img.size
 
-                im_img_bg = Image.new("RGB", bg_size, "black")
-                im_img_bg.paste(im_img, (0, 0))
+                if mask_width > img_width or mask_height > img_height:
+                    # Crop mask if it is larger
+                    clip_mask_img = clip_mask_img.crop((0, 0, img_width, img_height))
+                else:
+                    # Fill mask with 0 if it is smaller
+                    new_mask = Image.new("L", (img_width, img_height), 0)
+                    new_mask.paste(clip_mask_img, (0, 0))
+                    clip_mask_img = new_mask
 
-                im_mask_bg = Image.new("L", bg_size, 0)
-                im_mask_bg.paste(im_mask, (0, 0))
+            clip_img = clip_img.convert("RGBA")
+            clip_img.putalpha(clip_mask_img)
 
-                im_img, im_mask = im_img_bg, im_mask_bg
-        else:
-            im_mask = None
-
-        wi, hi = im_img.size
         # SET POSITION
         pos = self.pos(ct)
+        pos = compute_position(clip_img.size, background.size, pos, self.relative_pos)
 
-        # preprocess short writings of the position
-        if isinstance(pos, str):
-            pos = {
-                "center": ["center", "center"],
-                "left": ["left", "center"],
-                "right": ["right", "center"],
-                "top": ["center", "top"],
-                "bottom": ["center", "bottom"],
-            }[pos]
-        else:
-            pos = list(pos)
+        # If neither background nor clip have alpha layer (check if mode end
+        # with A), we can juste use pillow paste
+        if clip_img.mode[-1] != "A" and background.mode[-1] != "A":
+            background.paste(clip_img, pos)
+            return background
 
-        # is the position relative (given in % of the clip's size) ?
-        if self.relative_pos:
-            for i, dim in enumerate([wf, hf]):
-                if not isinstance(pos[i], str):
-                    pos[i] = dim * pos[i]
+        # For images with transparency we must use pillow alpha composite
+        # instead of a simple paste, because pillow paste dont work nicely
+        # with alpha compositing
+        if background.mode[-1] != "A":
+            background = background.convert("RGBA")
 
-        if isinstance(pos[0], str):
-            D = {"left": 0, "center": (wf - wi) / 2, "right": wf - wi}
-            pos[0] = D[pos[0]]
+        if clip_img.mode[-1] != "A":
+            clip_img = clip_img.convert("RGBA")
 
-        if isinstance(pos[1], str):
-            D = {"top": 0, "center": (hf - hi) / 2, "bottom": hf - hi}
-            pos[1] = D[pos[1]]
+        # We need both image to do the same size for alpha compositing in pillow
+        # so we must start by making a fully transparent canvas of background's
+        # size and paste our clip img into it in position pos, only then can we
+        # composite this canvas on top of background
+        canvas = Image.new("RGBA", (background.width, background.height), (0, 0, 0, 0))
+        canvas.paste(clip_img, pos)
+        result = Image.alpha_composite(background, canvas)
+        return result
 
-        pos = map(int, pos)
-        return blit(im_img, picture, pos, mask=im_mask)
-    
-    def blit_mask(self, base_mask, t):
-        """Returns the result of the blit of the clip's mask at time `t`
-        on the given `base_mask`, the position of the clip being given
+    def compose_mask(self, background_mask: np.ndarray, t: float) -> np.ndarray:
+        """Returns the result of the clip's mask at time `t` composited
+        on the given `background_mask`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
 
         (warning: only use this function to blit two masks together, never images)
 
-        (note: blitting is the fact of putting an image on a surface or another image)
+        Parameters
+        ----------
+        background_mask:
+          The underlying mask onto which the clip mask will be composed.
+
+        t:
+          The time position in the clip at which to extract the mask.
         """
         ct = t - self.start  # clip time
         clip_mask = self.get_frame(ct).astype("float")
 
         # numpy shape is H*W not W*H
-        hbm, wbm = base_mask.shape
-        hcm, wcm = clip_mask.shape
+        bg_h, bg_w = background_mask.shape
+        clip_h, clip_w = clip_mask.shape
 
         # SET POSITION
         pos = self.pos(ct)
-
-        # preprocess short writings of the position
-        if isinstance(pos, str):
-            pos = {
-                "center": ["center", "center"],
-                "left": ["left", "center"],
-                "right": ["right", "center"],
-                "top": ["center", "top"],
-                "bottom": ["center", "bottom"],
-            }[pos]
-        else:
-            pos = list(pos)
-
-        # is the position relative (given in % of the clip's size) ?
-        if self.relative_pos:
-            for i, dim in enumerate([wbm, hbm]):
-                if not isinstance(pos[i], str):
-                    pos[i] = dim * pos[i]
-
-        if isinstance(pos[0], str):
-            D = {"left": 0, "center": (wbm - wcm) / 2, "right": wbm - wcm}
-            pos[0] = int(D[pos[0]])
-
-        if isinstance(pos[1], str):
-            D = {"top": 0, "center": (hbm - hcm) / 2, "bottom": hbm - hcm}
-            pos[1] = int(D[pos[1]])
+        pos = compute_position((clip_w, clip_h), (bg_w, bg_h), pos, self.relative_pos)
 
         # ALPHA COMPOSITING
         # Determine the base_mask region to merge size
-        x_start = max(pos[0], 0) # Dont go under 0 left
-        x_end = min(pos[0] + wcm, wbm) # Dont go over base_mask width
-        y_start = max(pos[1], 0) # Dont go under 0 top
-        y_end = min(pos[1] + hcm, hbm) # Dont go over base_mask height
+        x_start = int(max(pos[0], 0))  # Dont go under 0 left
+        x_end = int(min(pos[0] + clip_w, bg_w))  # Dont go over base_mask width
+        y_start = int(max(pos[1], 0))  # Dont go under 0 top
+        y_end = int(min(pos[1] + clip_h, bg_h))  # Dont go over base_mask height
 
         # Determine the clip_mask region to overlapp
-        # Dont go under 0 for horizontal, if we have negative margin of X px start at X 
+        # Dont go under 0 for horizontal, if we have negative margin of X px start at X
         # And dont go over clip width
-        clip_x_start = max(0, -pos[0]) 
-        clip_x_end = clip_x_start + min((x_end - x_start), (wcm - clip_x_start))
+        clip_x_start = int(max(0, -pos[0]))
+        clip_x_end = int(clip_x_start + min((x_end - x_start), (clip_w - clip_x_start)))
         # same for vertical
-        clip_y_start = max(0, -pos[1])
-        clip_y_end = clip_y_start + min((y_end - y_start), (hcm - clip_y_start))
+        clip_y_start = int(max(0, -pos[1]))
+        clip_y_end = int(clip_y_start + min((y_end - y_start), (clip_h - clip_y_start)))
 
         # Blend the overlapping regions
         # The calculus is base_opacity + clip_opacity * (1 - base_opacity)
@@ -858,15 +846,13 @@ class VideoClip(Clip):
         # blocking 50 * 0.4 = 20 photons, and leaving me with only 30 photons
         # So, by adding two layer of 50% and 40% opacity my finaly opacity is only
         # of (100-30)*100 = 70% opacity !
-        base_mask[y_start:y_end, x_start:x_end] = (
-            base_mask[y_start:y_end, x_start:x_end] +
-            clip_mask[clip_y_start:clip_y_end, clip_x_start:clip_x_end] *
-            (1 - base_mask[y_start:y_end, x_start:x_end])
+        background_mask[y_start:y_end, x_start:x_end] = background_mask[
+            y_start:y_end, x_start:x_end
+        ] + clip_mask[clip_y_start:clip_y_end, clip_x_start:clip_x_end] * (
+            1 - background_mask[y_start:y_end, x_start:x_end]
         )
 
-        return base_mask
-
-        
+        return background_mask
 
     def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
         """Place the clip on a colored background.
@@ -944,10 +930,20 @@ class VideoClip(Clip):
 
     @outplace
     def with_mask(self, mask: Union["VideoClip", str] = "auto"):
-        """Set the clip's mask.
+        """
+        Set the clip's mask.
 
         Returns a copy of the VideoClip with the mask attribute set to
         ``mask``, which must be a greyscale (values in 0-1) VideoClip.
+
+        Parameters
+        ----------
+        mask : Union["VideoClip", str], optional
+            The mask to apply to the clip.
+            If set to "auto", a default mask will be generated:
+            - If the clip has a constant size, a solid mask with a value of 1.0
+            will be created.
+            - Otherwise, a dynamic solid mask will be created based on the frame size.
         """
         if mask == "auto":
             if self.has_constant_size:

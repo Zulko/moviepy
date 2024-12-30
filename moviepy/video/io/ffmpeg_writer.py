@@ -120,9 +120,9 @@ class FFMPEG_VideoWriter:
         ]
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
-        
+
         cmd.extend(["-vcodec", codec, "-preset", preset])
-        
+
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
 
@@ -133,11 +133,11 @@ class FFMPEG_VideoWriter:
             cmd.extend(["-threads", str(threads)])
 
         # Disable auto alt ref for transparent webm and set pix format yo yuva420p
-        if codec == 'libvpx' and with_mask :
-            cmd.extend(["-pix_fmt", 'yuva420p'])
-            cmd.extend(["-auto-alt-ref", '0'])
-        elif (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0) :
-            cmd.extend(["-pix_fmt", 'yuva420p'])
+        if codec == "libvpx" and with_mask:
+            cmd.extend(["-pix_fmt", "yuva420p"])
+            cmd.extend(["-auto-alt-ref", "0"])
+        elif (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
+            cmd.extend(["-pix_fmt", "yuva420p"])
 
         cmd.extend([filename])
 
@@ -245,11 +245,11 @@ def ffmpeg_write_video(
         logfile = open(filename + ".log", "w+")
     else:
         logfile = None
-    
+
     logger(message="MoviePy - Writing video %s\n" % filename)
-    
+
     has_mask = clip.mask is not None
-    
+
     with FFMPEG_VideoWriter(
         filename,
         clip.size,

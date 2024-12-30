@@ -771,12 +771,12 @@ def test_failure_to_release_file(util):
 
 
 def test_read_transparent_video():
-    reader = FFMPEG_VideoReader("media/transparent.webm", pixel_format='rgba')
+    reader = FFMPEG_VideoReader("media/transparent.webm", pixel_format="rgba")
 
     # Get first frame
     frame = reader.get_frame(0)
     mask = frame[:, :, 3]
-    
+
     # Check transparency on fully transparent part is 0
     assert mask[10, 10] == 0
 

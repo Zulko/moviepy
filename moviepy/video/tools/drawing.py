@@ -6,22 +6,6 @@ import numpy as np
 from PIL import Image
 
 
-def blit(im1: Image, im2: Image, pos=None, mask: Image = None):
-    """Blit an image over another using pillow.
-
-    Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
-    ``mask`` if provided.
-    """
-    if pos is None:
-        pos = (0, 0)  # pragma: no cover
-    else:
-        # Cast to tuple in case pos is not subscriptable.
-        pos = tuple(pos)
-
-    im2.paste(im1, pos, mask)
-    return im2
-
-
 def color_gradient(
     size,
     p1,

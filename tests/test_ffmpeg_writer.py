@@ -231,3 +231,25 @@ def test_write_gif(util, clip_class, loop, with_mask):
     assert r == 0
     assert g == 0
     assert b == 255
+
+
+def test_transparent_video(util):
+    # Has one R 30%
+    clip = ColorClip((100, 100), (255, 0, 0, 76.5)).with_duration(2)
+    filename = os.path.join("/home/ajani/Téléchargements", "opacity.webm")
+
+    ffmpeg_write_video(clip, filename, codec="libvpx", fps=5)
+
+    # Load output file and check transparency
+    result = VideoFileClip(filename, has_mask=True)
+
+    # Check for mask
+    assert result.mask is not None
+
+    # Check correct opacity, allow for some tolerance (about 1%)
+    # to consider rounding and compressing error
+    frame = result.mask.get_frame(1)
+    opacity = frame[50, 50]
+    assert abs(opacity - 0.3) < 0.01
+
+    result.close()

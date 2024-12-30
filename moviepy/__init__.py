@@ -1,13 +1,6 @@
 """Imports everything that you need from the MoviePy submodules so that every thing
 can be directly imported with ``from moviepy import *``.
 """
-
-import debugpy
-debugpy.listen(("localhost", 5678))  # Use a unique port
-print("Waiting for debugger to attach...")
-debugpy.wait_for_client()
-print("Debugger attached.")
-
 from moviepy.audio import fx as afx
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
