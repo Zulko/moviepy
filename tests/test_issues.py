@@ -1,6 +1,7 @@
 """Issue tests meant to be run with pytest."""
 
 import os
+
 import numpy as np
 
 import pytest

@@ -34,7 +34,7 @@ from moviepy.decorators import (
     requires_fps,
     use_clip_fps_by_default,
 )
-from moviepy.tools import extensions_dict, find_extension, compute_position
+from moviepy.tools import compute_position, extensions_dict, find_extension
 from moviepy.video.fx.Crop import Crop
 from moviepy.video.fx.Resize import Resize
 from moviepy.video.fx.Rotate import Rotate
