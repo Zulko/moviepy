@@ -220,7 +220,7 @@ class FFMPEG_VideoReader:
             return self.last_read
         elif (pos < self.pos) or (pos > self.pos + 100):
             # We can't just skip forward to `pos` or it would take too long
-            self.initialize(t)
+            self.initialize((pos - 1) / self.fps)
             return self.last_read
         else:
             # If pos == self.pos + 1, this line has no effect
