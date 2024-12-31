@@ -79,6 +79,7 @@ def test_ffmpeg_escape_filename(given, expected):
     """Test the ffmpeg_escape_filename function outputs correct paths as per
     the docstring.
     """
+    given = os.path.normpath(given)
     assert tools.ffmpeg_escape_filename(given) == expected
 
 
