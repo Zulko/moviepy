@@ -4,7 +4,7 @@ import os
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
-from moviepy.tools import subprocess_call, ffmpeg_escape_filename
+from moviepy.tools import ffmpeg_escape_filename, subprocess_call
 
 
 @convert_path_to_string(("inputfile", "outputfile"))

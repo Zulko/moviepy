@@ -2,9 +2,9 @@
 
 import os
 import platform
+import shlex
 import subprocess as sp
 import warnings
-import shlex
 
 import proglog
 

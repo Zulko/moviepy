@@ -11,7 +11,7 @@ from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
 from moviepy.tools import (
     convert_to_seconds,
     cross_platform_popen_params,
-    ffmpeg_escape_filename
+    ffmpeg_escape_filename,
 )
 
 
