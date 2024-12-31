@@ -58,7 +58,7 @@ def ffmpeg_escape_filename(filename):
     and use `shlex.quote` to escape filenames with spaces and special chars.
     """
     if filename.startswith('-') :
-        filename = './' + filename
+        filename = '.' + os.sep + filename
 
     return shlex.quote(filename)
 
