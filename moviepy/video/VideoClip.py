@@ -724,7 +724,7 @@ class VideoClip(Clip):
         The return is a Pillow Image
 
         Parameters
-        -----------
+        ----------
         backrgound (Image)
           The background image to apply current clip on top of
           if the background image is transparent it must be given as a RGBA image

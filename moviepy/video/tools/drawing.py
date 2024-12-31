@@ -3,7 +3,6 @@ methods that are difficult to do with the existing Python libraries.
 """
 
 import numpy as np
-from PIL import Image
 
 
 def color_gradient(

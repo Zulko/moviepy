@@ -98,9 +98,11 @@ class FFMPEG_VideoReader:
         else:
             i_arg = ["-i", self.filename]
 
-        # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9 as ffmpeg
-        # native webm decoder dont decode alpha layer
-        # (see https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/)
+        # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9
+        # as ffmpeg native webm decoder dont decode alpha layer
+        # (see
+        # https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/
+        # )
         if self.depth == 4:
             codec_name = self.infos.get("video_codec_name")
             if codec_name == "vp9":

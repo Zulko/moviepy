@@ -129,8 +129,7 @@ class CompositeVideoClip(VideoClip):
 
     def frame_function(self, t):
         """The clips playing at time `t` are blitted over one another."""
-
-        # For the mask we recalculate the final transparency will need
+        # For the mask we recalculate the final transparency we'll need
         # to apply on the result image
         if self.is_mask:
             mask = np.zeros((self.size[1], self.size[0]), dtype=float)
