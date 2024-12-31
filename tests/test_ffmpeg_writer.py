@@ -236,7 +236,7 @@ def test_write_gif(util, clip_class, loop, with_mask):
 def test_transparent_video(util):
     # Has one R 30%
     clip = ColorClip((100, 100), (255, 0, 0, 76.5)).with_duration(2)
-    filename = os.path.join("/home/ajani/Téléchargements", "opacity.webm")
+    filename = os.path.join(util.TMP_DIR, "opacity.webm")
 
     ffmpeg_write_video(clip, filename, codec="libvpx", fps=5)
 
