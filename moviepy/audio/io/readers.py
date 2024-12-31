@@ -181,7 +181,6 @@ class FFMPEG_AudioReader:
             t = 1.0 * pos / self.fps
             self.initialize(t)
         elif pos > self.pos:
-            # print pos
             self.skip_chunk(pos - self.pos)
         # last case standing: pos = current pos
         self.pos = pos

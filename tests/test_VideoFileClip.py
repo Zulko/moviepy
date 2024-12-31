@@ -83,5 +83,20 @@ def test_videofileclip_safe_deepcopy(monkeypatch):
     assert copy.deepcopy(clip) == "foo"
 
 
+def test_ffmpeg_transparency_mask(util):
+    """Test VideoFileClip and FFMPEG reading of video with transparency."""
+    video_file = "media/transparent.webm"
+
+    video = VideoFileClip(video_file, has_mask=True)
+
+    assert video.mask is not None
+
+    mask_frame = video.mask.get_frame(0)
+    assert mask_frame[100, 100] == 1.0
+    assert mask_frame[10, 10] == 0
+
+    video.close()
+
+
 if __name__ == "__main__":
     pytest.main()

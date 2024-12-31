@@ -66,4 +66,4 @@ jobs:
           python -m pip install --upgrade wheel pip
           pip install .[lint]
       - name: Run isort
-        run: isort --check-only --diff moviepy setup.py scripts docs/conf.py examples tests
+        run: isort --check-only --diff moviepy scripts docs/conf.py examples tests
