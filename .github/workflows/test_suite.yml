@@ -15,14 +15,21 @@ jobs:
   # Uses Python Framework build because on macOS, Matplotlib requires it
   macos:
     runs-on: macos-13
+    # Do not ignore bash profile files. From:
+    # https://github.com/marketplace/actions/setup-miniconda
+    defaults:
+      run:
+        shell: bash -l {0}
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v4.1.6
-    - uses: s-weigand/setup-conda@v1.2.2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
-        activate-conda: true
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        auto-activate-base: true
 
     - name: Install pythonw
       run: conda install python.app
