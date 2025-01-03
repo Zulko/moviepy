@@ -32,7 +32,12 @@ class FFPLAY_AudioPreviewer:
         fps_input,
         nbytes=2,
         nchannels=2,
+        logfile=None,
     ):
+        if logfile is None:
+            logfile = sp.PIPE
+        self.logfile = logfile
+
         # order is important
         cmd = [
             FFPLAY_BINARY,
@@ -42,8 +47,6 @@ class FFPLAY_AudioPreviewer:
             "s%dle" % (8 * nbytes),
             "-ar",
             "%d" % fps_input,
-            "-ac",
-            "%d" % nchannels,
             "-i",
             "-",
         ]
