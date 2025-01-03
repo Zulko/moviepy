@@ -79,7 +79,7 @@ class SubtitlesClip(VideoClip):
                     font_size=24,
                     color="#ffffff",
                     stroke_color="#000000",
-                    stroke_width=0.5,
+                    stroke_width=1,
                 )
 
         self.make_textclip = make_textclip
