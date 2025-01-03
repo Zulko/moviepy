@@ -20,9 +20,13 @@ jobs:
         python-version: ["3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v4.1.6
-    - uses: s-weigand/setup-conda@v1.2.2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
-        activate-conda: true
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+
+    - name: Activate conda base environment
+      run: conda activate base
 
     - name: Install pythonw
       run: conda install python.app
