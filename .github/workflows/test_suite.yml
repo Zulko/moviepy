@@ -22,8 +22,7 @@ jobs:
     - uses: actions/checkout@v4.1.6
     - uses: conda-incubator/setup-miniconda@v3
       with:
-        auto-activate-base: true
-        activate-environment: true
+        activate-environment: "base"
         auto-update-conda: true
         python-version: ${{ matrix.python-version }}
 
