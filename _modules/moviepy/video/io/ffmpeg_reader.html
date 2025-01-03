@@ -385,7 +385,11 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>  <span class="c1"># ffmpeg, ffmpeg.exe, etc...</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">convert_to_seconds</span><span class="p">,</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">convert_to_seconds</span><span class="p">,</span>
+    <span class="n">cross_platform_popen_params</span><span class="p">,</span>
+    <span class="n">ffmpeg_escape_filename</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="FFMPEG_VideoReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_VideoReader</span><span class="p">:</span>
@@ -468,12 +472,12 @@ document.write(`
                 <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;</span><span class="si">%.06f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">-</span> <span class="n">offset</span><span class="p">),</span>
                 <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>
                 <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;</span><span class="si">%.06f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">offset</span><span class="p">,</span>
             <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
+            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)]</span>
 
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">]</span>
@@ -1178,7 +1182,7 @@ document.write(`
 <span class="sd">      https://github.com/Zulko/moviepy/pull/1222).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Open the file in a pipe, read output</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">,</span> <span class="s2">&quot;-hide_banner&quot;</span><span class="p">,</span> <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="p">]</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">,</span> <span class="s2">&quot;-hide_banner&quot;</span><span class="p">,</span> <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)]</span>
     <span class="k">if</span> <span class="n">decode_file</span><span class="p">:</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;null&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">])</span>
 

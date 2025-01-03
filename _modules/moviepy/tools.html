@@ -427,6 +427,17 @@ document.write(`
     <span class="k">del</span> <span class="n">proc</span></div>
 
 
+<div class="viewcode-block" id="ffmpeg_escape_filename"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Escape a filename that we want to pass to the ffmpeg command line</span>
+
+<span class="sd">    That will ensure the filename doesn&#39;t start with a &#39;-&#39; (which would raise an error)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;./&#39;</span> <span class="o">+</span> <span class="n">filename</span>
+
+    <span class="k">return</span> <span class="n">filename</span></div>
+
+
 <div class="viewcode-block" id="convert_to_seconds"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.convert_to_seconds.html#moviepy.tools.convert_to_seconds">[docs]</a><span class="k">def</span> <span class="nf">convert_to_seconds</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Will convert any time into seconds.</span>
 

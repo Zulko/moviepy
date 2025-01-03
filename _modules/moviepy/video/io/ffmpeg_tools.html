@@ -381,7 +381,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
 <span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">convert_path_to_string</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">subprocess_call</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">ffmpeg_escape_filename</span><span class="p">,</span> <span class="n">subprocess_call</span>
 
 
 <div class="viewcode-block" id="ffmpeg_extract_subclip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">))</span>
@@ -418,7 +418,7 @@ document.write(`
         <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
         <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">start_time</span><span class="p">,</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-        <span class="n">inputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">inputfile</span><span class="p">),</span>
         <span class="s2">&quot;-t&quot;</span><span class="p">,</span>
         <span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">),</span>
         <span class="s2">&quot;-map&quot;</span><span class="p">,</span>
@@ -428,7 +428,7 @@ document.write(`
         <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span>
         <span class="s2">&quot;copy&quot;</span><span class="p">,</span>
         <span class="s2">&quot;-copyts&quot;</span><span class="p">,</span>
-        <span class="n">outputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">outputfile</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
 
@@ -466,14 +466,14 @@ document.write(`
         <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
         <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-        <span class="n">audiofile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">audiofile</span><span class="p">),</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-        <span class="n">videofile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">videofile</span><span class="p">),</span>
         <span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span>
         <span class="n">video_codec</span><span class="p">,</span>
         <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span>
         <span class="n">audio_codec</span><span class="p">,</span>
-        <span class="n">outputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">outputfile</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
@@ -502,12 +502,12 @@ document.write(`
         <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
         <span class="s2">&quot;-y&quot;</span><span class="p">,</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-        <span class="n">inputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">inputfile</span><span class="p">),</span>
         <span class="s2">&quot;-ab&quot;</span><span class="p">,</span>
         <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">k&quot;</span> <span class="o">%</span> <span class="n">bitrate</span><span class="p">,</span>
         <span class="s2">&quot;-ar&quot;</span><span class="p">,</span>
         <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fps</span><span class="p">,</span>
-        <span class="n">outputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">outputfile</span><span class="p">),</span>
     <span class="p">]</span>
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
 
@@ -531,10 +531,10 @@ document.write(`
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
         <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-        <span class="n">inputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">inputfile</span><span class="p">),</span>
         <span class="s2">&quot;-vf&quot;</span><span class="p">,</span>
         <span class="s2">&quot;scale=</span><span class="si">%d</span><span class="s2">:</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-        <span class="n">outputfile</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">outputfile</span><span class="p">),</span>
     <span class="p">]</span>
 
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
@@ -571,9 +571,18 @@ document.write(`
         <span class="n">outputfile</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_stabilized</span><span class="si">{</span><span class="n">ext</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="n">outputfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">)</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">,</span> <span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="s2">&quot;-vf&quot;</span><span class="p">,</span> <span class="s2">&quot;deshake&quot;</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">]</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
+        <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">inputfile</span><span class="p">),</span>
+        <span class="s2">&quot;-vf&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;deshake&quot;</span><span class="p">,</span>
+        <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">outputfile</span><span class="p">)</span>
+    <span class="p">]</span>
+
     <span class="k">if</span> <span class="n">overwrite_file</span><span class="p">:</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">)</span>
+
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
 </pre></div>
 

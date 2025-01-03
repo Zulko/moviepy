@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>moviepy.audio.io.AudioFileClip.AudioFileClip &#8212; MoviePy  documentation</title>
+    <title>moviepy.tools.ffmpeg_escape_filename &#8212; MoviePy  documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.tools.ffmpeg_escape_filename';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="moviepy.audio.io.ffmpeg_audiowriter" href="moviepy.audio.io.ffmpeg_audiowriter.html" />
-    <link rel="prev" title="moviepy.audio.io.AudioFileClip" href="moviepy.audio.io.AudioFileClip.html" />
+    <link rel="next" title="moviepy.tools.find_extension" href="moviepy.tools.find_extension.html" />
+    <link rel="prev" title="moviepy.tools.deprecated_version_of" href="moviepy.tools.deprecated_version_of.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -340,7 +340,7 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="moviepy.Effect.html">moviepy.Effect</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.AudioClip.html">moviepy.audio.AudioClip</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioArrayClip.html">moviepy.audio.AudioClip.AudioArrayClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioClip.html">moviepy.audio.AudioClip.AudioClip</a></li>
@@ -358,8 +358,8 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.fx.MultiplyVolume.html">moviepy.audio.fx.MultiplyVolume</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current active has-children"><a class="reference internal" href="moviepy.audio.io.html">moviepy.audio.io</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l4 current active"><a class="reference internal" href="moviepy.audio.io.AudioFileClip.html">moviepy.audio.io.AudioFileClip</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.io.html">moviepy.audio.io</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.AudioFileClip.html">moviepy.audio.io.AudioFileClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffmpeg_audiowriter.html">moviepy.audio.io.ffmpeg_audiowriter</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.ffplay_audiopreviewer.html">moviepy.audio.io.ffplay_audiopreviewer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.io.readers.html">moviepy.audio.io.readers</a></li>
@@ -391,12 +391,12 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.use_clip_fps_by_default.html">moviepy.decorators.use_clip_fps_by_default</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
-<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.ffmpeg_escape_filename.html">moviepy.tools.ffmpeg_escape_filename</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">moviepy.tools.ffmpeg_escape_filename</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.find_extension.html">moviepy.tools.find_extension</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.no_display_available.html">moviepy.tools.no_display_available</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.subprocess_call.html">moviepy.tools.subprocess_call</a></li>
@@ -523,9 +523,9 @@ document.write(`
     <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
     
-    <li class="breadcrumb-item"><a href="moviepy.audio.io.AudioFileClip.html" class="nav-link">moviepy.audio.io.AudioFileClip</a></li>
+    <li class="breadcrumb-item"><a href="moviepy.tools.html" class="nav-link">moviepy.tools</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">moviepy.audio.io.AudioFileClip.AudioFileClip</li>
+    <li class="breadcrumb-item active" aria-current="page">moviepy.tools.ffmpeg_escape_filename</li>
   </ul>
 </nav>
 </div>
@@ -542,82 +542,13 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="moviepy-audio-io-audiofileclip-audiofileclip">
-<h1>moviepy.audio.io.AudioFileClip.AudioFileClip<a class="headerlink" href="#moviepy-audio-io-audiofileclip-audiofileclip" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.audio.io.AudioFileClip.</span></span><span class="sig-name descname"><span class="pre">AudioFileClip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decode_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbytes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">44100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/audio/io/AudioFileClip.html#AudioFileClip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip" title="Permalink to this definition">#</a></dt>
-<dd><p>An audio clip read from a sound file, or an array.
-The whole file is not loaded in memory. Instead, only a portion is
-read and stored in memory. this portion includes frames before
-and after the last frames read, so that it is fast to read the sound
-backward and forward.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> – Either a soundfile name (of any extension supported by ffmpeg)
-as a string or a path-like object,
-or an array representing a sound. If the soundfile is not a .wav,
-it will be converted to .wav first, using the <code class="docutils literal notranslate"><span class="pre">fps</span></code> and
-<code class="docutils literal notranslate"><span class="pre">bitrate</span></code> arguments.</p></li>
-<li><p><strong>buffersize</strong> – Size to load in memory (in number of frames)</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip.nbytes">
-<span class="sig-name descname"><span class="pre">nbytes</span></span><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.nbytes" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of bits per frame of the original audio file.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip.fps">
-<span class="sig-name descname"><span class="pre">fps</span></span><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.fps" title="Permalink to this definition">#</a></dt>
-<dd><p>Number of frames per second in the audio file</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip.buffersize">
-<span class="sig-name descname"><span class="pre">buffersize</span></span><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.buffersize" title="Permalink to this definition">#</a></dt>
-<dd><p>See Parameters.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip.Lifetime">
-<span class="sig-name descname"><span class="pre">Lifetime</span></span><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.Lifetime" title="Permalink to this definition">#</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">--------</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">Note</span> <span class="pre">that</span> <span class="pre">this</span> <span class="pre">creates</span> <span class="pre">subprocesses</span> <span class="pre">and</span> <span class="pre">locks</span> <span class="pre">files.</span> <span class="pre">If</span> <span class="pre">you</span> <span class="pre">construct</span> <span class="pre">one</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">of</span> <span class="pre">these</span> <span class="pre">instances,</span> <span class="pre">you</span> <span class="pre">must</span> <span class="pre">call</span> <span class="pre">close()</span> <span class="pre">afterwards,</span> <span class="pre">or</span> <span class="pre">the</span> <span class="pre">subresources</span></span></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">will</span> <span class="pre">not</span> <span class="pre">be</span> <span class="pre">cleaned</span> <span class="pre">up</span> <span class="pre">until</span> <span class="pre">the</span> <span class="pre">process</span> <span class="pre">ends.</span></span></dt>
-<dd></dd></dl>
-
-<p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">snd</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;song.wav&quot;</span><span class="p">)</span>
-<span class="n">snd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="moviepy.audio.io.AudioFileClip.AudioFileClip.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/audio/io/AudioFileClip.html#AudioFileClip.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.close" title="Permalink to this definition">#</a></dt>
-<dd><p>Close the internal reader.</p>
-</dd></dl>
-
+  <section id="moviepy-tools-ffmpeg-escape-filename">
+<h1>moviepy.tools.ffmpeg_escape_filename<a class="headerlink" href="#moviepy-tools-ffmpeg-escape-filename" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="moviepy.tools.ffmpeg_escape_filename">
+<span class="sig-prename descclassname"><span class="pre">moviepy.tools.</span></span><span class="sig-name descname"><span class="pre">ffmpeg_escape_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/tools.html#ffmpeg_escape_filename"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.tools.ffmpeg_escape_filename" title="Permalink to this definition">#</a></dt>
+<dd><p>Escape a filename that we want to pass to the ffmpeg command line</p>
+<p>That will ensure the filename doesn’t start with a ‘-’ (which would raise an error)</p>
 </dd></dl>
 
 </section>
@@ -631,20 +562,20 @@ it will be converted to .wav first, using the <code class="docutils literal notr
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="moviepy.audio.io.AudioFileClip.html"
+       href="moviepy.tools.deprecated_version_of.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">moviepy.audio.io.AudioFileClip</p>
+        <p class="prev-next-title">moviepy.tools.deprecated_version_of</p>
       </div>
     </a>
     <a class="right-next"
-       href="moviepy.audio.io.ffmpeg_audiowriter.html"
+       href="moviepy.tools.find_extension.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">moviepy.audio.io.ffmpeg_audiowriter</p>
+        <p class="prev-next-title">moviepy.tools.find_extension</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -663,21 +594,14 @@ it will be converted to .wav first, using the <code class="docutils literal notr
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip"><code class="docutils literal notranslate"><span class="pre">AudioFileClip</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.nbytes"><code class="docutils literal notranslate"><span class="pre">AudioFileClip.nbytes</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.fps"><code class="docutils literal notranslate"><span class="pre">AudioFileClip.fps</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.buffersize"><code class="docutils literal notranslate"><span class="pre">AudioFileClip.buffersize</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.Lifetime"><code class="docutils literal notranslate"><span class="pre">AudioFileClip.Lifetime</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.io.AudioFileClip.AudioFileClip.close"><code class="docutils literal notranslate"><span class="pre">AudioFileClip.close()</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.tools.ffmpeg_escape_filename"><code class="docutils literal notranslate"><span class="pre">ffmpeg_escape_filename()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip.rst">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.tools.ffmpeg_escape_filename.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -691,7 +615,7 @@ it will be converted to .wav first, using the <code class="docutils literal notr
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip.rst.txt">
+    <a href="../../_sources/reference/reference/moviepy.tools.ffmpeg_escape_filename.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

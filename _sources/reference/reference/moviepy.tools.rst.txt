@@ -25,6 +25,7 @@ moviepy.tools
       convert_to_seconds
       cross_platform_popen_params
       deprecated_version_of
+      ffmpeg_escape_filename
       find_extension
       no_display_available
       subprocess_call

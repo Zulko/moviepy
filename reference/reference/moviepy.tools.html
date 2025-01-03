@@ -396,6 +396,7 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.ffmpeg_escape_filename.html">moviepy.tools.ffmpeg_escape_filename</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.find_extension.html">moviepy.tools.find_extension</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.no_display_available.html">moviepy.tools.no_display_available</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.subprocess_call.html">moviepy.tools.subprocess_call</a></li>
@@ -554,13 +555,16 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.deprecated_version_of.html#moviepy.tools.deprecated_version_of" title="moviepy.tools.deprecated_version_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated_version_of</span></code></a>(func, old_name)</p></td>
 <td><p>Indicates that a function is deprecated and has a new name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.find_extension.html#moviepy.tools.find_extension" title="moviepy.tools.find_extension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_extension</span></code></a>(codec)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename" title="moviepy.tools.ffmpeg_escape_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_escape_filename</span></code></a>(filename)</p></td>
+<td><p>Escape a filename that we want to pass to the ffmpeg command line</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.find_extension.html#moviepy.tools.find_extension" title="moviepy.tools.find_extension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_extension</span></code></a>(codec)</p></td>
 <td><p>Returns the correspondent file extension for a codec.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.no_display_available.html#moviepy.tools.no_display_available" title="moviepy.tools.no_display_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_display_available</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.no_display_available.html#moviepy.tools.no_display_available" title="moviepy.tools.no_display_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_display_available</span></code></a>()</p></td>
 <td><p>Return True if we determine the host system has no graphical environment.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call" title="moviepy.tools.subprocess_call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subprocess_call</span></code></a>(cmd[, logger])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call" title="moviepy.tools.subprocess_call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subprocess_call</span></code></a>(cmd[, logger])</p></td>
 <td><p>Executes the given subprocess command.</p></td>
 </tr>
 </tbody>

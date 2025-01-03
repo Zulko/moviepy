@@ -1,0 +1,6 @@
+moviepy.tools.ffmpeg\_escape\_filename
+======================================
+
+.. currentmodule:: moviepy.tools
+
+.. autofunction:: ffmpeg_escape_filename

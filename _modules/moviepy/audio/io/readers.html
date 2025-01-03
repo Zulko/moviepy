@@ -383,7 +383,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
 <span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
 
 
@@ -457,13 +457,13 @@ document.write(`
                 <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;</span><span class="si">%.05f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">start_time</span> <span class="o">-</span> <span class="n">offset</span><span class="p">),</span>
                 <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>
                 <span class="s2">&quot;-vn&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;-ss&quot;</span><span class="p">,</span>
                 <span class="s2">&quot;</span><span class="si">%.05f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">offset</span><span class="p">,</span>
             <span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;-vn&quot;</span><span class="p">]</span>
+            <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span> <span class="s2">&quot;-vn&quot;</span><span class="p">]</span>
 
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">]</span>

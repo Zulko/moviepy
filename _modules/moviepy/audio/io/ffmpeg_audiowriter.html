@@ -383,7 +383,7 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
 <span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
 
 
 <div class="viewcode-block" id="FFMPEG_AudioWriter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_AudioWriter</span><span class="p">:</span>
@@ -466,7 +466,7 @@ document.write(`
         <span class="k">if</span> <span class="n">input_video</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-vn&quot;</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">input_video</span><span class="p">,</span> <span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">input_video</span><span class="p">),</span> <span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
 
         <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="n">codec</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;-ar&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fps_input</span><span class="p">])</span>
         <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-strict&quot;</span><span class="p">,</span> <span class="s2">&quot;-2&quot;</span><span class="p">])</span>  <span class="c1"># needed to support codec &#39;aac&#39;</span>
@@ -474,7 +474,7 @@ document.write(`
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-ab&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">ffmpeg_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ffmpeg_params</span><span class="p">)</span>
-        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">filename</span><span class="p">])</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)])</span>
 
         <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
             <span class="p">{</span><span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">logfile</span><span class="p">,</span> <span class="s2">&quot;stdin&quot;</span><span class="p">:</span> <span class="n">sp</span><span class="o">.</span><span class="n">PIPE</span><span class="p">}</span>
