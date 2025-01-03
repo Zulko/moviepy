@@ -2,7 +2,6 @@
 
 import os
 import platform
-import shlex
 import subprocess as sp
 import warnings
 
@@ -55,12 +54,11 @@ def ffmpeg_escape_filename(filename):
     """Escape a filename that we want to pass to the ffmpeg command line
 
     That will ensure the filename doesn't start with a '-' (which would raise an error)
-    and use `shlex.quote` to escape filenames with spaces and special chars.
     """
     if filename.startswith('-') :
         filename = '.' + os.sep + filename
 
-    return shlex.quote(filename)
+    return filename
 
 
 def convert_to_seconds(time):
