@@ -65,7 +65,6 @@ def test_subprocess_call(command):
             tools.subprocess_call(command, logger=None)
 
 
-
 @pytest.mark.parametrize(
     "given, expected",
     [
