@@ -65,6 +65,7 @@ def test_subprocess_call(command):
             tools.subprocess_call(command, logger=None)
 
 
+
 @pytest.mark.parametrize(
     "given, expected",
     [
@@ -79,7 +80,6 @@ def test_ffmpeg_escape_filename(given, expected):
     """Test the ffmpeg_escape_filename function outputs correct paths as per
     the docstring.
     """
-    expected = expected.replace('/', os.sep)
     assert tools.ffmpeg_escape_filename(given) == expected
 
 
