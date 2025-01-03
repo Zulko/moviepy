@@ -231,3 +231,9 @@ def test_write_gif(util, clip_class, loop, with_mask):
     assert r == 0
     assert g == 0
     assert b == 255
+
+
+def test_write_file_with_spaces(util):
+    filename = os.path.join(util.TMP_DIR, "name with spaces.mp4")
+    clip = ColorClip((1, 1), color=1, is_mask=True).with_fps(1).with_duration(0.3)
+    ffmpeg_write_video(clip, filename, fps=1)

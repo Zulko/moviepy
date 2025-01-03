@@ -8,7 +8,11 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import convert_to_seconds, cross_platform_popen_params
+from moviepy.tools import (
+    convert_to_seconds,
+    cross_platform_popen_params,
+    ffmpeg_escape_filename,
+)
 
 
 class FFMPEG_VideoReader:
@@ -91,12 +95,12 @@ class FFMPEG_VideoReader:
                 "-ss",
                 "%.06f" % (start_time - offset),
                 "-i",
-                self.filename,
+                ffmpeg_escape_filename(self.filename),
                 "-ss",
                 "%.06f" % offset,
             ]
         else:
-            i_arg = ["-i", self.filename]
+            i_arg = ["-i", ffmpeg_escape_filename(self.filename)]
 
         cmd = (
             [FFMPEG_BINARY]
@@ -801,7 +805,7 @@ def ffmpeg_parse_infos(
       https://github.com/Zulko/moviepy/pull/1222).
     """
     # Open the file in a pipe, read output
-    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]
+    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", ffmpeg_escape_filename(filename)]
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 

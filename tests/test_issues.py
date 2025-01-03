@@ -360,5 +360,14 @@ def test_issue_1682_2(util):
     clip.write_audiofile(output_audio_filepath)
 
 
+def test_issue_2160(util):
+    filename = "media/-video-with-dash-.mp4"
+    clip = VideoFileClip(filename)
+    output_video_filepath = os.path.join(
+        util.TMP_DIR, "big_buck_bunny_0_30_cutout.webm"
+    )
+    clip.write_videofile(output_video_filepath)
+
+
 if __name__ == "__main__":
     pytest.main()
