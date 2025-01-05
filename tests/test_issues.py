@@ -435,7 +435,7 @@ def test_issue_2269_3(util):
     assert pixel2 == 0.51
     assert pixel3 == 0.657
 
-    
+
 def test_issue_2160(util):
     filename = "media/-video-with-dash-.mp4"
     clip = VideoFileClip(filename)

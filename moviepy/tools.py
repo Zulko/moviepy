@@ -55,8 +55,8 @@ def ffmpeg_escape_filename(filename):
 
     That will ensure the filename doesn't start with a '-' (which would raise an error)
     """
-    if filename.startswith('-') :
-        filename = './' + filename
+    if filename.startswith("-"):
+        filename = "./" + filename
 
     return filename
 

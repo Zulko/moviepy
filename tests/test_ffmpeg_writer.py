@@ -254,7 +254,7 @@ def test_transparent_video(util):
 
     result.close()
 
-    
+
 def test_write_file_with_spaces(util):
     filename = os.path.join(util.TMP_DIR, "name with spaces.mp4")
     clip = ColorClip((1, 1), color=1, is_mask=True).with_fps(1).with_duration(0.3)
