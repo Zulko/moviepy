@@ -421,10 +421,9 @@ document.write(`
 
 <span class="sd">        from moviepy.video.tools.subtitles import SubtitlesClip</span>
 <span class="sd">        from moviepy.video.io.VideoFileClip import VideoFileClip</span>
-<span class="sd">        generator = lambda text: TextClip(text, font=&#39;Georgia-Regular&#39;,</span>
+<span class="sd">        generator = lambda text: TextClip(text, font=&#39;./path/to/font.ttf&#39;,</span>
 <span class="sd">                                        font_size=24, color=&#39;white&#39;)</span>
-<span class="sd">        sub = SubtitlesClip(&quot;subtitles.srt&quot;, generator)</span>
-<span class="sd">        sub = SubtitlesClip(&quot;subtitles.srt&quot;, generator, encoding=&#39;utf-8&#39;)</span>
+<span class="sd">        sub = SubtitlesClip(&quot;subtitles.srt&quot;, make_textclip=generator, encoding=&#39;utf-8&#39;)</span>
 <span class="sd">        myvideo = VideoFileClip(&quot;myvideo.avi&quot;)</span>
 <span class="sd">        final = CompositeVideoClip([clip, subtitles])</span>
 <span class="sd">        final.write_videofile(&quot;final.mp4&quot;, fps=myvideo.fps)</span>
