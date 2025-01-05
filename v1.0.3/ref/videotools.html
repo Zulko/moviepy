@@ -446,8 +446,8 @@ needed.</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.tools.subtitles</span> <span class="kn">import</span> <span class="n">SubtitlesClip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.io.VideoFileClip</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.subtitles</span><span class="w"> </span><span class="kn">import</span> <span class="n">SubtitlesClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.VideoFileClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">txt</span><span class="p">:</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Georgia-Regular&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sub</span> <span class="o">=</span> <span class="n">SubtitlesClip</span><span class="p">(</span><span class="s2">&quot;subtitles.srt&quot;</span><span class="p">,</span> <span class="n">generator</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">myvideo</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.avi&quot;</span><span class="p">)</span>
@@ -614,7 +614,7 @@ for instance</p>
 </div>
 <p>The motivation of fx is to keep the name of the effect near its
 parameters, when the effects are chained:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.video.fx</span> <span class="kn">import</span> <span class="n">volumex</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">mirrorx</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx</span><span class="w"> </span><span class="kn">import</span> <span class="n">volumex</span><span class="p">,</span> <span class="n">resize</span><span class="p">,</span> <span class="n">mirrorx</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">resize</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">mirrorx</span> <span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Is equivalent, but clearer than</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">resize</span><span class="p">(</span> <span class="n">volumex</span><span class="p">(</span> <span class="n">mirrorx</span><span class="p">(</span> <span class="n">clip</span> <span class="p">),</span> <span class="mf">0.5</span><span class="p">),</span> <span class="mf">0.3</span><span class="p">)</span>
@@ -663,7 +663,7 @@ clip already has a <code class="docutils literal notranslate"><span class="pre">
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># prints the maximum of red that is contained</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># on the first line of each frame of the clip.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s1">&#39;myvideo.mp4&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span> <span class="p">[</span><span class="n">frame</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 <span class="go">             for frame in myclip.iter_frames()])</span>
@@ -1122,7 +1122,7 @@ output file in them.</p>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;myvideo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">120</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;my_new_video.mp4&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">clip</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

@@ -162,17 +162,17 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.audio.fx.audio_fadein</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">audio_video_fx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">audio_video_fx</span>
 
 
 <div class="viewcode-block" id="audio_fadein"><a class="viewcode-back" href="../../../../ref/audiofx/moviepy.audio.fx.all.audio_fadein.html#moviepy.audio.fx.all.audio_fadein">[docs]</a><span class="nd">@audio_video_fx</span>
-<span class="k">def</span> <span class="nf">audio_fadein</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_fadein</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Return an audio (or video) clip that is first mute, then the</span>
 <span class="sd">        sound arrives progressively over ``duration`` seconds. &quot;&quot;&quot;</span>
         
-    <span class="k">def</span> <span class="nf">fading</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fading</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
         <span class="n">gft</span> <span class="o">=</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>

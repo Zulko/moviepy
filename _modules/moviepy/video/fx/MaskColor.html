@@ -375,16 +375,16 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.MaskColor</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="MaskColor"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MaskColor.html#moviepy.video.fx.MaskColor.MaskColor">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">MaskColor</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MaskColor</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a new clip with a mask for transparency where the original</span>
 <span class="sd">    clip is of the given color.</span>
 
@@ -402,11 +402,11 @@ document.write(`
     <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">stiffness</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
 
-<div class="viewcode-block" id="MaskColor.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MaskColor.html#moviepy.video.fx.MaskColor.MaskColor.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="MaskColor.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MaskColor.html#moviepy.video.fx.MaskColor.MaskColor.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">hill</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">hill</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">stiffness</span> <span class="o">/</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">stiffness</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">stiffness</span>
@@ -414,7 +414,7 @@ document.write(`
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">flim</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">flim</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">hill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="n">im</span> <span class="o">-</span> <span class="n">color</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)))</span>
 
         <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">flim</span><span class="p">)</span>

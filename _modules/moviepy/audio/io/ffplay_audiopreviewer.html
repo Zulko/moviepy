@@ -377,14 +377,14 @@ document.write(`
   <h1>Source code for moviepy.audio.io.ffplay_audiopreviewer</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;MoviePy audio writing with ffmpeg.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFPLAY_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFPLAY_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
 
 
-<div class="viewcode-block" id="FFPLAY_AudioPreviewer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer">[docs]</a><span class="k">class</span> <span class="nc">FFPLAY_AudioPreviewer</span><span class="p">:</span>
+<div class="viewcode-block" id="FFPLAY_AudioPreviewer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFPLAY_AudioPreviewer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to preview an AudioClip.</span>
 
@@ -404,7 +404,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">fps_input</span><span class="p">,</span>
         <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
@@ -431,7 +431,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FFPLAY_AudioPreviewer.write_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.write_frames">[docs]</a>    <span class="k">def</span> <span class="nf">write_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames_array</span><span class="p">):</span>
+<div class="viewcode-block" id="FFPLAY_AudioPreviewer.write_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.write_frames">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames_array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send a raw audio frame (a chunck of audio) to ffplay to be played&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">frames_array</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
@@ -452,7 +452,7 @@ document.write(`
 
             <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFPLAY_AudioPreviewer.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFPLAY_AudioPreviewer.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the writer, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;proc&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -464,21 +464,21 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If the garbage collector comes, make sure the subprocess is terminated.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="c1"># Support the Context Manager protocol, to ensure that resources are cleaned up.</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="ffplay_audiopreview"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.ffplay_audiopreview.html#moviepy.audio.io.ffplay_audiopreviewer.ffplay_audiopreview">[docs]</a><span class="nd">@requires_duration</span>
-<span class="k">def</span> <span class="nf">ffplay_audiopreview</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffplay_audiopreview</span><span class="p">(</span>
     <span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">audio_flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">video_flag</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

@@ -216,19 +216,19 @@
 <p>The module <code class="docutils literal notranslate"><span class="pre">moviepy.video.fx</span></code> regroups functions meant to be used with <code class="docutils literal notranslate"><span class="pre">videoclip.fx()</span></code>.</p>
 <p>For all other modifications, we use <code class="docutils literal notranslate"><span class="pre">clip.fx</span></code> and <code class="docutils literal notranslate"><span class="pre">clip.fl</span></code>. <code class="docutils literal notranslate"><span class="pre">clip.fx</span></code> is meant to make it easy to use already-written transformation functions, while  <code class="docutils literal notranslate"><span class="pre">clip.fl</span></code> makes it easy to write new transformation functions.</p>
 <p>Because this module is starting to get large and will only get larger in the future, it allows two kinds of imports. You can either import a single function like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.video.fx.scroll</span> <span class="kn">import</span> <span class="n">crop</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.scroll</span><span class="w"> </span><span class="kn">import</span> <span class="n">crop</span>
 <span class="n">newclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">crop</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or import everything:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.video.fx.all</span> <span class="k">as</span> <span class="nn">vfx</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">moviepy.video.fx.all</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">vfx</span>
 <span class="n">newclip</span> <span class="o">=</span> <span class="p">(</span><span class="n">myclip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">crop</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
                  <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">resize</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
                  <span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">freeze_at_end</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>When you type:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>the module <code class="docutils literal notranslate"><span class="pre">video.fx</span></code> is loaded as <code class="docutils literal notranslate"><span class="pre">vfx</span></code> and you can use <code class="docutils literal notranslate"><span class="pre">vfx.colorx</span></code>, <code class="docutils literal notranslate"><span class="pre">vfx.resize</span></code> etc.</p>

@@ -162,10 +162,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.blackwhite</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<div class="viewcode-block" id="blackwhite"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.blackwhite.html#moviepy.video.fx.all.blackwhite">[docs]</a><span class="k">def</span> <span class="nf">blackwhite</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">RGB</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">preserve_luminosity</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="blackwhite"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.blackwhite.html#moviepy.video.fx.all.blackwhite">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">blackwhite</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">RGB</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">preserve_luminosity</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Desaturates the picture, makes it black and white.</span>
 <span class="sd">    Parameter RGB allows to set weights for the different color</span>
 <span class="sd">    channels.</span>
@@ -179,7 +179,7 @@
 
     <span class="n">R</span><span class="p">,</span><span class="n">G</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">RGB</span><span class="p">)</span><span class="o">/</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">RGB</span><span class="p">)</span> <span class="k">if</span> <span class="n">preserve_luminosity</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span>
     
-    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fl</span><span class="p">(</span><span class="n">im</span><span class="p">):</span>
         <span class="n">im</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="o">*</span><span class="n">im</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">G</span><span class="o">*</span><span class="n">im</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">im</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="p">[</span><span class="n">im</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
 

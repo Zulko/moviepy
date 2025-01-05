@@ -381,26 +381,26 @@ document.write(`
 <span class="sd">- Static image clips: ImageClip, ColorClip, TextClip,</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">copy</span> <span class="k">as</span> <span class="nn">_copy</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">proglog</span>
-<span class="kn">from</span> <span class="nn">imageio.v2</span> <span class="kn">import</span> <span class="n">imread</span> <span class="k">as</span> <span class="n">imread_v2</span>
-<span class="kn">from</span> <span class="nn">imageio.v3</span> <span class="kn">import</span> <span class="n">imwrite</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imageio.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">imread</span> <span class="k">as</span> <span class="n">imread_v2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imageio.v3</span><span class="w"> </span><span class="kn">import</span> <span class="n">imwrite</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.video.io.ffplay_previewer</span> <span class="kn">import</span> <span class="n">ffplay_preview_video</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffplay_previewer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffplay_preview_video</span>
 
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">add_mask_if_none</span><span class="p">,</span>
     <span class="n">apply_to_mask</span><span class="p">,</span>
     <span class="n">convert_masks_to_RGB</span><span class="p">,</span>
@@ -411,16 +411,16 @@ document.write(`
     <span class="n">requires_fps</span><span class="p">,</span>
     <span class="n">use_clip_fps_by_default</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">extensions_dict</span><span class="p">,</span> <span class="n">find_extension</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.Crop</span> <span class="kn">import</span> <span class="n">Crop</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.Resize</span> <span class="kn">import</span> <span class="n">Resize</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.Rotate</span> <span class="kn">import</span> <span class="n">Rotate</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_writer</span> <span class="kn">import</span> <span class="n">ffmpeg_write_video</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.gif_writers</span> <span class="kn">import</span> <span class="n">write_gif_with_imageio</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">blit</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">extensions_dict</span><span class="p">,</span> <span class="n">find_extension</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Crop</span><span class="w"> </span><span class="kn">import</span> <span class="n">Crop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Resize</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resize</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Rotate</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rotate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffmpeg_writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_write_video</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.gif_writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_gif_with_imageio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.drawing</span><span class="w"> </span><span class="kn">import</span> <span class="n">blit</span>
 
 
-<div class="viewcode-block" id="VideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip">[docs]</a><span class="k">class</span> <span class="nc">VideoClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">VideoClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for video clips.</span>
 
 <span class="sd">    See ``VideoFileClip``, ``ImageClip`` etc. for more user-friendly classes.</span>
@@ -480,7 +480,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_constant_size</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -499,28 +499,28 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">duration</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">w</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the width of the video.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the height of the video.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the aspect ratio of the video.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="nd">@requires_duration</span>
     <span class="nd">@requires_fps</span>
-    <span class="k">def</span> <span class="nf">n_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of frames of the video.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Mixed copy of the clip.</span>
 
 <span class="sd">        Returns a shallow copy of the clip whose mask and audio will</span>
@@ -549,7 +549,7 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.save_frame"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.save_frame">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
     <span class="nd">@convert_masks_to_RGB</span>
-    <span class="k">def</span> <span class="nf">save_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save a clip&#39;s frame to an image file.</span>
 
 <span class="sd">        Saves the frame of clip corresponding to time ``t`` in ``filename``.</span>
@@ -583,7 +583,7 @@ document.write(`
     <span class="nd">@use_clip_fps_by_default</span>
     <span class="nd">@convert_masks_to_RGB</span>
     <span class="nd">@convert_path_to_string</span><span class="p">([</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span> <span class="s2">&quot;temp_audiofile&quot;</span><span class="p">,</span> <span class="s2">&quot;temp_audiofile_path&quot;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">write_videofile</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_videofile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -788,7 +788,7 @@ document.write(`
 <div class="viewcode-block" id="VideoClip.write_images_sequence"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_images_sequence">[docs]</a>    <span class="nd">@requires_duration</span>
     <span class="nd">@use_clip_fps_by_default</span>
     <span class="nd">@convert_masks_to_RGB</span>
-    <span class="k">def</span> <span class="nf">write_images_sequence</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_images_sequence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">name_format</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes the videoclip to a sequence of image files.</span>
@@ -845,7 +845,7 @@ document.write(`
 <div class="viewcode-block" id="VideoClip.write_gif"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif">[docs]</a>    <span class="nd">@requires_duration</span>
     <span class="nd">@convert_masks_to_RGB</span>
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">write_gif</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_gif</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -903,7 +903,7 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.show"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.show">[docs]</a>    <span class="nd">@convert_masks_to_RGB</span>
     <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Splashes the frame of clip corresponding to time ``t``.</span>
 
 <span class="sd">        Parameters</span>
@@ -944,7 +944,7 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.preview"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.preview">[docs]</a>    <span class="nd">@requires_duration</span>
     <span class="nd">@convert_masks_to_RGB</span>
-    <span class="k">def</span> <span class="nf">preview</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">preview</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">audio_fps</span><span class="o">=</span><span class="mi">22050</span><span class="p">,</span> <span class="n">audio_buffersize</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">audio_nbytes</span><span class="o">=</span><span class="mi">2</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Displays the clip in a window, at the given frames per second.</span>
@@ -1014,7 +1014,7 @@ document.write(`
     <span class="c1"># -----------------------------------------------------------------</span>
     <span class="c1"># F I L T E R I N G</span>
 
-<div class="viewcode-block" id="VideoClip.with_effects_on_subclip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_effects_on_subclip">[docs]</a>    <span class="k">def</span> <span class="nf">with_effects_on_subclip</span><span class="p">(</span>
+<div class="viewcode-block" id="VideoClip.with_effects_on_subclip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_effects_on_subclip">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">with_effects_on_subclip</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">effects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s2">&quot;Effect&quot;</span><span class="p">],</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply a transformation to a part of the clip.</span>
@@ -1040,13 +1040,13 @@ document.write(`
         <span class="n">clips</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">]</span> <span class="k">if</span> <span class="n">clip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
 
         <span class="c1"># beurk, have to find other solution</span>
-        <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">concatenate_videoclips</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">concatenate_videoclips</span>
 
         <span class="k">return</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">clips</span><span class="p">)</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span></div>
 
     <span class="c1"># IMAGE FILTERS</span>
 
-<div class="viewcode-block" id="VideoClip.image_transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.image_transform">[docs]</a>    <span class="k">def</span> <span class="nf">image_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.image_transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.image_transform">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">image_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Modifies the images of a clip by replacing the frame `get_frame(t)` by</span>
 <span class="sd">        another frame,  `image_func(get_frame(t))`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1056,7 +1056,7 @@ document.write(`
     <span class="c1"># --------------------------------------------------------------</span>
     <span class="c1"># C O M P O S I T I N G</span>
 
-<div class="viewcode-block" id="VideoClip.fill_array"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.fill_array">[docs]</a>    <span class="k">def</span> <span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_array</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<div class="viewcode-block" id="VideoClip.fill_array"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.fill_array">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">fill_array</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_array</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fills an array to match the specified shape.</span>
 
 <span class="sd">        If the `pre_array` is smaller than the desired shape, the missing rows</span>
@@ -1091,7 +1091,7 @@ document.write(`
             <span class="n">post_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">post_array</span><span class="p">,</span> <span class="n">x_1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">post_array</span></div>
 
-<div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span> <span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the result of the blit of the clip&#39;s frame at time `t`</span>
 <span class="sd">        on the given `picture`, the position of the clip being given</span>
 <span class="sd">        by the clip&#39;s ``pos`` attribute. Meant for compositing.</span>
@@ -1158,7 +1158,7 @@ document.write(`
         <span class="n">pos</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">blit</span><span class="p">(</span><span class="n">im_img</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">im_mask</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VideoClip.with_background_color"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_background_color">[docs]</a>    <span class="k">def</span> <span class="nf">with_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.with_background_color"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_background_color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">with_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Place the clip on a colored background.</span>
 
 <span class="sd">        Returns a clip made of the current clip overlaid on a color</span>
@@ -1182,7 +1182,7 @@ document.write(`
 <span class="sd">          Parameter in 0..1 indicating the opacity of the colored</span>
 <span class="sd">          background.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeVideoClip</span>
 
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
@@ -1212,7 +1212,7 @@ document.write(`
         <span class="k">return</span> <span class="n">result</span></div>
 
 <div class="viewcode-block" id="VideoClip.with_updated_frame_function"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_updated_frame_function">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_updated_frame_function</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_updated_frame_function</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">frame_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the clip&#39;s ``get_frame``.</span>
@@ -1224,7 +1224,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
 
 <div class="viewcode-block" id="VideoClip.with_audio"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_audio">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audioclip</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">audioclip</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach an AudioClip to the VideoClip.</span>
 
 <span class="sd">        Returns a copy of the VideoClip instance, with the `audio`</span>
@@ -1233,7 +1233,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="n">audioclip</span></div>
 
 <div class="viewcode-block" id="VideoClip.with_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_mask">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;VideoClip&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;VideoClip&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the clip&#39;s mask.</span>
 
 <span class="sd">        Returns a copy of the VideoClip with the mask attribute set to</span>
@@ -1244,20 +1244,20 @@ document.write(`
                 <span class="n">mask</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
                 <span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="n">frame_function</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span></div>
 
 <div class="viewcode-block" id="VideoClip.without_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.without_mask">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">without_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">without_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the clip&#39;s mask.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="VideoClip.with_opacity"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_opacity">[docs]</a>    <span class="nd">@add_mask_if_none</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_opacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opacity</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the opacity/transparency level of the clip.</span>
 
 <span class="sd">        Returns a semi-transparent copy of the clip where the mask is</span>
@@ -1267,7 +1267,7 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.with_position"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_position">[docs]</a>    <span class="nd">@apply_to_mask</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the clip&#39;s position in compositions.</span>
 
 <span class="sd">        Sets the position that the clip will have when included</span>
@@ -1301,7 +1301,7 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.with_layer_index"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_layer_index">[docs]</a>    <span class="nd">@apply_to_mask</span>
     <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">with_layer_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_layer_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the clip&#39;s layer in compositions. Clips with a greater ``layer``</span>
 <span class="sd">        attribute will be displayed on top of others.</span>
 
@@ -1309,7 +1309,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layer_index</span> <span class="o">=</span> <span class="n">index</span></div>
 
-<div class="viewcode-block" id="VideoClip.resized"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.resized">[docs]</a>    <span class="k">def</span> <span class="nf">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.resized"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.resized">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">resized</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a video clip that is a resized version of the clip.</span>
 <span class="sd">        For info on the parameters, please see ``vfx.Resize``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1324,7 +1324,7 @@ document.write(`
             <span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="VideoClip.rotated"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.rotated">[docs]</a>    <span class="k">def</span> <span class="nf">rotated</span><span class="p">(</span>
+<div class="viewcode-block" id="VideoClip.rotated"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.rotated">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">rotated</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;deg&quot;</span><span class="p">,</span>
@@ -1353,7 +1353,7 @@ document.write(`
             <span class="p">]</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="VideoClip.cropped"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.cropped">[docs]</a>    <span class="k">def</span> <span class="nf">cropped</span><span class="p">(</span>
+<div class="viewcode-block" id="VideoClip.cropped"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.cropped">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">cropped</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">x1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">y1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1389,7 +1389,7 @@ document.write(`
     <span class="c1"># CONVERSIONS TO OTHER TYPES</span>
 
 <div class="viewcode-block" id="VideoClip.to_ImageClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_ImageClip">[docs]</a>    <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;t&quot;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="nf">to_ImageClip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_ImageClip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an ImageClip made out of the clip&#39;s frame at time ``t``,</span>
 <span class="sd">        which can be expressed in seconds (15.35), in (min, sec),</span>
@@ -1400,7 +1400,7 @@ document.write(`
             <span class="n">new_clip</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new_clip</span></div>
 
-<div class="viewcode-block" id="VideoClip.to_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_mask">[docs]</a>    <span class="k">def</span> <span class="nf">to_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.to_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_mask">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">canal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a mask a video clip made from the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_mask</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
@@ -1409,7 +1409,7 @@ document.write(`
             <span class="n">new_clip</span><span class="o">.</span><span class="n">is_mask</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">return</span> <span class="n">new_clip</span></div>
 
-<div class="viewcode-block" id="VideoClip.to_RGB"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_RGB">[docs]</a>    <span class="k">def</span> <span class="nf">to_RGB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoClip.to_RGB"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.to_RGB">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_RGB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a non-mask video clip made from the mask video clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_mask</span><span class="p">:</span>
             <span class="n">new_clip</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span>
@@ -1424,16 +1424,16 @@ document.write(`
     <span class="c1"># Audio</span>
 
 <div class="viewcode-block" id="VideoClip.without_audio"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.without_audio">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">without_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">without_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the clip&#39;s audio.</span>
 
 <span class="sd">        Return a copy of the clip with audio set to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">VideoClip</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="p">(</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
                 <span class="n">concatenate_videoclips</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -1441,29 +1441,29 @@ document.write(`
             <span class="k">return</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__or__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implement the or (self | other) to produce a video with self and other</span>
 <span class="sd">        placed side by side horizontally.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">VideoClip</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">clips_array</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">clips_array</span>
 
             <span class="k">return</span> <span class="n">clips_array</span><span class="p">([[</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">]])</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implement division (self / other) to produce a video with self</span>
 <span class="sd">        placed on top of other.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">VideoClip</span><span class="p">):</span>
-            <span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">clips_array</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">clips_array</span>
 
             <span class="k">return</span> <span class="n">clips_array</span><span class="p">([[</span><span class="bp">self</span><span class="p">],</span> <span class="p">[</span><span class="n">other</span><span class="p">]])</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__or__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__matmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__matmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implement matrice multiplication (self @ other) to rotate a video</span>
 <span class="sd">        by other degrees</span>
@@ -1471,11 +1471,11 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">NotImplemented</span>
 
-        <span class="kn">from</span> <span class="nn">moviepy.video.fx.Rotate</span> <span class="kn">import</span> <span class="n">Rotate</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Rotate</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rotate</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">Rotate</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
 
-    <span class="k">def</span> <span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__and__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Implement the and (self &amp; other) to produce a video with other</span>
 <span class="sd">        used as a mask for self.</span>
@@ -1483,7 +1483,7 @@ document.write(`
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">with_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="DataVideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.DataVideoClip.html#moviepy.video.VideoClip.DataVideoClip">[docs]</a><span class="k">class</span> <span class="nc">DataVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="DataVideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.DataVideoClip.html#moviepy.video.VideoClip.DataVideoClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">DataVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class of video clips whose successive frames are functions</span>
 <span class="sd">    of successive datasets</span>
@@ -1500,12 +1500,12 @@ document.write(`
 <span class="sd">      Number of frames per second in the animation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_to_frame</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">has_constant_size</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_to_frame</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">has_constant_size</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_to_frame</span> <span class="o">=</span> <span class="n">data_to_frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
 
-        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_to_frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">t</span><span class="p">)])</span>
 
         <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -1517,7 +1517,7 @@ document.write(`
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="UpdatedVideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.UpdatedVideoClip.html#moviepy.video.VideoClip.UpdatedVideoClip">[docs]</a><span class="k">class</span> <span class="nc">UpdatedVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="UpdatedVideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.UpdatedVideoClip.html#moviepy.video.VideoClip.UpdatedVideoClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">UpdatedVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class of clips whose frame_function requires some objects to</span>
 <span class="sd">    be updated. Particularly practical in science where some</span>
@@ -1551,10 +1551,10 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">world</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">world</span> <span class="o">=</span> <span class="n">world</span>
 
-        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">clip_t</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
                 <span class="n">world</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">world</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
@@ -1574,7 +1574,7 @@ document.write(`
 <span class="sd">---------------------------------------------------------------------&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="ImageClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip">[docs]</a><span class="k">class</span> <span class="nc">ImageClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ImageClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for non-moving VideoClips.</span>
 
 <span class="sd">    A video clip originating from a picture. This clip will simply</span>
@@ -1608,7 +1608,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fromalpha</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
         <span class="n">VideoClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="n">is_mask</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">)</span>
@@ -1635,7 +1635,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">img</span>
 
-<div class="viewcode-block" id="ImageClip.transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageClip.transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip.transform">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;General transformation filter.</span>
 
 <span class="sd">        Equivalent to VideoClip.transform. The result is no more an</span>
@@ -1652,7 +1652,7 @@ document.write(`
         <span class="k">return</span> <span class="n">new_clip</span></div>
 
 <div class="viewcode-block" id="ImageClip.image_transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip.image_transform">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">image_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">image_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Image-transformation filter.</span>
 
 <span class="sd">        Does the same as VideoClip.image_transform, but for ImageClip the</span>
@@ -1673,7 +1673,7 @@ document.write(`
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">new_a</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ImageClip.time_transform"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ImageClip.html#moviepy.video.VideoClip.ImageClip.time_transform">[docs]</a>    <span class="nd">@outplace</span>
-    <span class="k">def</span> <span class="nf">time_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_func</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_duration</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Time-transformation filter.</span>
 
 <span class="sd">        Applies a transformation to the clip&#39;s timeline</span>
@@ -1691,7 +1691,7 @@ document.write(`
                 <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">new_a</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ColorClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ColorClip.html#moviepy.video.VideoClip.ColorClip">[docs]</a><span class="k">class</span> <span class="nc">ColorClip</span><span class="p">(</span><span class="n">ImageClip</span><span class="p">):</span>
+<div class="viewcode-block" id="ColorClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.ColorClip.html#moviepy.video.VideoClip.ColorClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ColorClip</span><span class="p">(</span><span class="n">ImageClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An ImageClip showing just one color.</span>
 
 <span class="sd">    Parameters</span>
@@ -1710,7 +1710,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">size</span>
 
         <span class="k">if</span> <span class="n">is_mask</span><span class="p">:</span>
@@ -1735,7 +1735,7 @@ document.write(`
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="TextClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip">[docs]</a><span class="k">class</span> <span class="nc">TextClip</span><span class="p">(</span><span class="n">ImageClip</span><span class="p">):</span>
+<div class="viewcode-block" id="TextClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">TextClip</span><span class="p">(</span><span class="n">ImageClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for autogenerated text clips.</span>
 
 <span class="sd">    Creates an ImageClip originating from a script-generated text image.</span>
@@ -1818,7 +1818,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">font</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1838,7 +1838,7 @@ document.write(`
         <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">def</span> <span class="nf">break_text</span><span class="p">(</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">break_text</span><span class="p">(</span>
             <span class="n">width</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">spacing</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Break text to never overflow a width&quot;&quot;&quot;</span>
@@ -1872,7 +1872,7 @@ document.write(`
 
             <span class="k">return</span> <span class="n">lines</span>
 
-        <span class="k">def</span> <span class="nf">find_text_size</span><span class="p">(</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">find_text_size</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">font</span><span class="p">,</span>
             <span class="n">font_size</span><span class="p">,</span>
@@ -1922,7 +1922,7 @@ document.write(`
 
             <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">))</span>
 
-        <span class="k">def</span> <span class="nf">find_optimum_font_size</span><span class="p">(</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">find_optimum_font_size</span><span class="p">(</span>
             <span class="n">text</span><span class="p">,</span>
             <span class="n">font</span><span class="p">,</span>
             <span class="n">stroke_width</span><span class="p">,</span>
@@ -2160,7 +2160,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">stroke_color</span> <span class="o">=</span> <span class="n">stroke_color</span></div>
 
 
-<div class="viewcode-block" id="BitmapClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.BitmapClip.html#moviepy.video.VideoClip.BitmapClip">[docs]</a><span class="k">class</span> <span class="nc">BitmapClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="BitmapClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.BitmapClip.html#moviepy.video.VideoClip.BitmapClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">BitmapClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Clip made of color bitmaps. Mainly designed for testing purposes.&quot;&quot;&quot;</span>
 
     <span class="n">DEFAULT_COLOR_DICT</span> <span class="o">=</span> <span class="p">{</span>
@@ -2177,7 +2177,7 @@ document.write(`
     <span class="p">}</span>
 
     <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;duration&quot;</span><span class="p">])</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">bitmap_frames</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a VideoClip object from a bitmap representation. Primarily used</span>
@@ -2258,7 +2258,7 @@ document.write(`
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
 
-<div class="viewcode-block" id="BitmapClip.to_bitmap"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.BitmapClip.html#moviepy.video.VideoClip.BitmapClip.to_bitmap">[docs]</a>    <span class="k">def</span> <span class="nf">to_bitmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="BitmapClip.to_bitmap"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.BitmapClip.html#moviepy.video.VideoClip.BitmapClip.to_bitmap">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_bitmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">color_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a valid bitmap list that represents each frame of the clip.</span>
 <span class="sd">        If `color_dict` is not specified, then it will use the same `color_dict`</span>
 <span class="sd">        that was used to create the clip.</span>

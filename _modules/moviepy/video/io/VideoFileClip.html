@@ -377,13 +377,13 @@ document.write(`
   <h1>Source code for moviepy.video.io.VideoFileClip</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Implements VideoFileClip, a class for video clips creation using video files.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_path_to_string</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.AudioFileClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioFileClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_path_to_string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffmpeg_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_VideoReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoClip</span>
 
 
-<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span> <span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoFileClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">VideoFileClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A video clip originating from a movie file. For instance:</span>
 
 <span class="sd">    .. code:: python</span>
@@ -462,7 +462,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">decode_file</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -504,7 +504,7 @@ document.write(`
         <span class="k">if</span> <span class="n">has_mask</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
-            <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mf">255.0</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span>
@@ -524,7 +524,7 @@ document.write(`
                 <span class="n">nbytes</span><span class="o">=</span><span class="n">audio_nbytes</span><span class="p">,</span>
             <span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Implements ``copy.deepcopy(clip)`` behaviour as ``copy.copy(clip)``.</span>
 
 <span class="sd">        VideoFileClip class instances can&#39;t be deeply copied because the locked Thread</span>
@@ -537,7 +537,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span>
 
-<div class="viewcode-block" id="VideoFileClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="VideoFileClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Close the internal reader.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

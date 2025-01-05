@@ -375,18 +375,18 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.Resize</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numbers</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="Resize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Resize.html#moviepy.video.fx.Resize.Resize">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Resize</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Resize</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Effect returning a video clip that is a resized version of the clip.</span>
 
 <span class="sd">    Parameters</span>
@@ -422,20 +422,20 @@ document.write(`
     <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">apply_to_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
-<div class="viewcode-block" id="Resize.resizer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Resize.html#moviepy.video.fx.Resize.Resize.resizer">[docs]</a>    <span class="k">def</span> <span class="nf">resizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+<div class="viewcode-block" id="Resize.resizer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Resize.html#moviepy.video.fx.Resize.Resize.resizer">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">resizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resize the image using PIL.&quot;&quot;&quot;</span>
         <span class="n">new_size</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">new_size</span><span class="p">))</span>
         <span class="n">pil_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
         <span class="n">resized_pil</span> <span class="o">=</span> <span class="n">pil_img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">new_size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">Resampling</span><span class="o">.</span><span class="n">LANCZOS</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">resized_pil</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Resize.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Resize.html#moviepy.video.fx.Resize.Resize.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">):</span>
+<div class="viewcode-block" id="Resize.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Resize.html#moviepy.video.fx.Resize.Resize.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">size</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">translate_new_size</span><span class="p">(</span><span class="n">new_size_</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">translate_new_size</span><span class="p">(</span><span class="n">new_size_</span><span class="p">):</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;Returns a [w, h] pair from `new_size_`. If `new_size_` is a</span>
 <span class="sd">                scalar, then work out the correct pair using the clip&#39;s size.</span>
 <span class="sd">                Otherwise just return `new_size_`</span>
@@ -448,12 +448,12 @@ document.write(`
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_size</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
                 <span class="c1"># The resizing is a function of time</span>
 
-                <span class="k">def</span> <span class="nf">get_new_size</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">get_new_size</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">translate_new_size</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_size</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
 
                 <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">is_mask</span><span class="p">:</span>
 
-                    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
                         <span class="k">return</span> <span class="p">(</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">resizer</span><span class="p">(</span>
                                 <span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">),</span> <span class="n">get_new_size</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
@@ -463,7 +463,7 @@ document.write(`
 
                 <span class="k">else</span><span class="p">:</span>
 
-                    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
                         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizer</span><span class="p">(</span>
                             <span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">),</span> <span class="n">get_new_size</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                         <span class="p">)</span>
@@ -486,7 +486,7 @@ document.write(`
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
 
-                <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="o">/</span> <span class="n">h</span>
 
                 <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">Resize</span><span class="p">(</span><span class="n">func</span><span class="p">)])</span>
@@ -497,7 +497,7 @@ document.write(`
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span><span class="p">):</span>
 
-                <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">w</span>
 
                 <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">Resize</span><span class="p">(</span><span class="n">func</span><span class="p">)])</span>
@@ -513,7 +513,7 @@ document.write(`
 
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">is_mask</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">image_filter</span><span class="p">(</span><span class="n">pic</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">image_filter</span><span class="p">(</span><span class="n">pic</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">(</span>
                     <span class="mf">1.0</span>
                     <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizer</span><span class="p">((</span><span class="mi">255</span> <span class="o">*</span> <span class="n">pic</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_size</span><span class="p">)</span>
@@ -522,7 +522,7 @@ document.write(`
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">image_filter</span><span class="p">(</span><span class="n">pic</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">image_filter</span><span class="p">(</span><span class="n">pic</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resizer</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_size</span><span class="p">)</span>
 
         <span class="n">new_clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="n">image_filter</span><span class="p">)</span>

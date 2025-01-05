@@ -377,16 +377,16 @@ document.write(`
   <h1>Source code for moviepy.video.compositing.CompositeVideoClip</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Main video composition interface of MoviePy.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">CompositeAudioClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ColorClip</span><span class="p">,</span> <span class="n">VideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.AudioClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeAudioClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColorClip</span><span class="p">,</span> <span class="n">VideoClip</span>
 
 
-<div class="viewcode-block" id="CompositeVideoClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeVideoClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">CompositeVideoClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A VideoClip made of other videoclips displayed together. This is the</span>
 <span class="sd">    base class for most compositions.</span>
@@ -430,7 +430,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_bgclip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -493,7 +493,7 @@ document.write(`
                 <span class="n">maskclips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="mf">0.0</span>
             <span class="p">)</span>
 
-<div class="viewcode-block" id="CompositeVideoClip.frame_function"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.frame_function">[docs]</a>    <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeVideoClip.frame_function"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.frame_function">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The clips playing at time `t` are blitted over one another.&quot;&quot;&quot;</span>
         <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
         <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
@@ -508,13 +508,13 @@ document.write(`
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CompositeVideoClip.playing_clips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">[docs]</a>    <span class="k">def</span> <span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeVideoClip.playing_clips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the clips in the composite clips that are</span>
 <span class="sd">        actually playing at the given time `t`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">clip</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)]</span></div>
 
-<div class="viewcode-block" id="CompositeVideoClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeVideoClip.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the instance, releasing all the resources.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_bg</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="p">:</span>
             <span class="c1"># Only close the background clip if it was locally created.</span>
@@ -526,7 +526,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">audio</span> <span class="o">=</span> <span class="kc">None</span></div></div>
 
 
-<div class="viewcode-block" id="clips_array"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.clips_array.html#moviepy.video.compositing.CompositeVideoClip.clips_array">[docs]</a><span class="k">def</span> <span class="nf">clips_array</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">rows_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols_heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="clips_array"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.clips_array.html#moviepy.video.compositing.CompositeVideoClip.clips_array">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">clips_array</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">rows_widths</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols_heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a matrix whose rows are clips, creates a CompositeVideoClip where</span>
 <span class="sd">    all clips are placed side by side horizontally for each clip in each row</span>
 <span class="sd">    and one row on top of the other for each row. So given next matrix of clips</span>
@@ -595,7 +595,7 @@ document.write(`
     <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">xs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">ys</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">bg_color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="concatenate_videoclips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips.html#moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips">[docs]</a><span class="k">def</span> <span class="nf">concatenate_videoclips</span><span class="p">(</span>
+<div class="viewcode-block" id="concatenate_videoclips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips.html#moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">concatenate_videoclips</span><span class="p">(</span>
     <span class="n">clips</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;chain&quot;</span><span class="p">,</span> <span class="n">transition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenates several video clips.</span>
@@ -661,11 +661,11 @@ document.write(`
 
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;chain&quot;</span><span class="p">:</span>
 
-        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="n">i</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">timings</span><span class="p">)</span> <span class="k">if</span> <span class="n">e</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">clips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">timings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
-        <span class="k">def</span> <span class="nf">get_mask</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_mask</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
             <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">or</span> <span class="n">ColorClip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>

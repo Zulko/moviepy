@@ -377,10 +377,10 @@ document.write(`
   <h1>Source code for moviepy.video.tools.interpolators</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Classes for easy interpolation of trajectories and curves.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<div class="viewcode-block" id="Interpolator"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Interpolator.html#moviepy.video.tools.interpolators.Interpolator">[docs]</a><span class="k">class</span> <span class="nc">Interpolator</span><span class="p">:</span>
+<div class="viewcode-block" id="Interpolator"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Interpolator.html#moviepy.video.tools.interpolators.Interpolator">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Interpolator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Poorman&#39;s linear interpolator.</span>
 
 <span class="sd">    Parameters</span>
@@ -416,7 +416,7 @@ document.write(`
 <span class="sd">        interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ttss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">ttss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">tt</span><span class="p">,</span> <span class="n">ss</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">ttss</span><span class="p">)</span>
 
@@ -426,7 +426,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">right</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmax</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">tt</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Interpolates ``t``.</span>
 
 <span class="sd">        Parameters</span>
@@ -438,7 +438,7 @@ document.write(`
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Trajectory"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory">[docs]</a><span class="k">class</span> <span class="nc">Trajectory</span><span class="p">:</span>
+<div class="viewcode-block" id="Trajectory"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Trajectory</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Trajectory compound by time frames and (x, y) pixels.</span>
 
 <span class="sd">    It&#39;s designed as an interpolator, so you can get the position at a given</span>
@@ -465,13 +465,13 @@ document.write(`
 <span class="sd">    &gt;&gt;&gt; trajectory = Trajectory([0, .166, .333], [554, 474, 384], [100, 90, 91])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yy</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_interpolators</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Interpolates the trajectory at the given time ``t``.</span>
 
 <span class="sd">        Parameters</span>
@@ -482,7 +482,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">yi</span><span class="p">(</span><span class="n">t</span><span class="p">)])</span>
 
-<div class="viewcode-block" id="Trajectory.addx"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.addx">[docs]</a>    <span class="k">def</span> <span class="nf">addx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Trajectory.addx"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.addx">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">addx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a value to the ``xx`` position of the trajectory.</span>
 
 <span class="sd">        Parameters</span>
@@ -499,7 +499,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Trajectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xx</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yy</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Trajectory.addy"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.addy">[docs]</a>    <span class="k">def</span> <span class="nf">addy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="Trajectory.addy"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.addy">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">addy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds a value to the ``yy`` position of the trajectory.</span>
 
 <span class="sd">        Parameters</span>
@@ -516,12 +516,12 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Trajectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yy</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Trajectory.update_interpolators"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.update_interpolators">[docs]</a>    <span class="k">def</span> <span class="nf">update_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Trajectory.update_interpolators"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.update_interpolators">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">update_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Updates the internal X and Y position interpolators for the instance.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span class="n">Interpolator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xx</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yi</span> <span class="o">=</span> <span class="n">Interpolator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yy</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Trajectory.txy"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.txy">[docs]</a>    <span class="k">def</span> <span class="nf">txy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tms</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Trajectory.txy"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.txy">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">txy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tms</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns all times with the X and Y values of each position.</span>
 
 <span class="sd">        Parameters</span>
@@ -532,7 +532,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">1000</span> <span class="k">if</span> <span class="n">tms</span> <span class="k">else</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">tt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">yy</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Trajectory.to_file"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="Trajectory.to_file"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.to_file">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves the trajectory data in a text file.</span>
 
 <span class="sd">        Parameters</span>
@@ -549,7 +549,7 @@ document.write(`
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Trajectory.from_file"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.from_file">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiates an object of Trajectory using a data text file.</span>
 
 <span class="sd">        Parameters</span>
@@ -569,7 +569,7 @@ document.write(`
         <span class="k">return</span> <span class="n">Trajectory</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">tt</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Trajectory.save_list"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.save_list">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">save_list</span><span class="p">(</span><span class="n">trajs</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_list</span><span class="p">(</span><span class="n">trajs</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves a set of trajectories into a text file.</span>
 
 <span class="sd">        Parameters</span>
@@ -592,7 +592,7 @@ document.write(`
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Trajectory.load_list"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.interpolators.Trajectory.html#moviepy.video.tools.interpolators.Trajectory.load_list">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">load_list</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_list</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Loads a list of trajectories from a data text file.</span>
 
 <span class="sd">        Parameters</span>

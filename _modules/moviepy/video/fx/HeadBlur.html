@@ -375,17 +375,17 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.HeadBlur</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFilter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFilter</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="HeadBlur"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.HeadBlur.html#moviepy.video.fx.HeadBlur.HeadBlur">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">HeadBlur</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">HeadBlur</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a filter that will blur a moving part (a head ?) of the frames.</span>
 
 <span class="sd">    The position of the blur at time t is defined by (fx(t), fy(t)), the radius</span>
@@ -397,12 +397,12 @@ document.write(`
     <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">intensity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="HeadBlur.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.HeadBlur.html#moviepy.video.fx.HeadBlur.HeadBlur.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="HeadBlur.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.HeadBlur.html#moviepy.video.fx.HeadBlur.HeadBlur.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">intensity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
             <span class="n">im</span> <span class="o">=</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span>
             <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span><span class="n">t</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fy</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>

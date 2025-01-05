@@ -552,7 +552,7 @@ be updated. Particularly practical in science where some
 algorithm needs to make some steps before a new frame can
 be generated.</p>
 <p>UpdatedVideoClips have the following frame_function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">world</span><span class="o">.</span><span class="n">clip_t</span> <span class="o">&lt;</span> <span class="n">t</span><span class="p">:</span>
         <span class="n">world</span><span class="o">.</span><span class="n">update</span><span class="p">()</span> <span class="c1"># updates, and increases world.clip_t</span>
     <span class="k">return</span> <span class="n">world</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>

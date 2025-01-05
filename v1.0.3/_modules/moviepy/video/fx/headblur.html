@@ -162,11 +162,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.headblur</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1">#------- CHECKING DEPENDENCIES ----------------------------------------- </span>
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">cv2</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
     <span class="n">headblur_possible</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">__version__</span> <span class="o">&gt;=</span> <span class="s1">&#39;3.0.0&#39;</span><span class="p">:</span>
        <span class="n">cv2</span><span class="o">.</span><span class="n">CV_AA</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span>
@@ -175,7 +175,7 @@
 <span class="c1">#-----------------------------------------------------------------------</span>
 
 
-<span class="k">def</span> <span class="nf">headblur</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_blur</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">headblur</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_blur</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a filter that will blurr a moving part (a head ?) of</span>
 <span class="sd">    the frames. The position of the blur at time t is</span>
@@ -188,7 +188,7 @@
     
     <span class="k">if</span> <span class="n">r_blur</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">r_blur</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">r_zone</span><span class="o">/</span><span class="mi">3</span>
     
-    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
         
         <span class="n">im</span> <span class="o">=</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="n">h</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">d</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">shape</span>
@@ -215,7 +215,7 @@
 <span class="c1">#------- OVERWRITE IF REQUIREMENTS NOT MET -----------------------------</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">headblur_possible</span><span class="p">:</span>
     <span class="n">doc</span> <span class="o">=</span> <span class="n">headblur</span><span class="o">.</span><span class="vm">__doc__</span>
-<div class="viewcode-block" id="headblur"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.headblur.html#moviepy.video.fx.all.headblur">[docs]</a>    <span class="k">def</span> <span class="nf">headblur</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_blur</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="headblur"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.headblur.html#moviepy.video.fx.all.headblur">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">headblur</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">fx</span><span class="p">,</span><span class="n">fy</span><span class="p">,</span><span class="n">r_zone</span><span class="p">,</span><span class="n">r_blur</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;fx painting needs opencv&quot;</span><span class="p">)</span></div>
     
     <span class="n">headblur</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc</span>

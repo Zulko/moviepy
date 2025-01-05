@@ -377,16 +377,16 @@ document.write(`
   <h1>Source code for moviepy.video.tools.cuts</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Contains everything that can help automate the cuts in MoviePy.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span>
 
 
 <div class="viewcode-block" id="find_video_period"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.find_video_period.html#moviepy.video.tools.cuts.find_video_period">[docs]</a><span class="nd">@use_clip_fps_by_default</span>
 <span class="nd">@convert_parameter_to_seconds</span><span class="p">([</span><span class="s2">&quot;start_time&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">find_video_period</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_video_period</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the period of a video based on frames correlation.</span>
 
 <span class="sd">    Parameters</span>
@@ -415,7 +415,7 @@ document.write(`
 <span class="sd">        1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
     <span class="n">timings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start_time</span><span class="p">,</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fps</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
@@ -424,7 +424,7 @@ document.write(`
     <span class="k">return</span> <span class="n">timings</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">corrs</span><span class="p">)]</span></div>
 
 
-<div class="viewcode-block" id="FramesMatch"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatch.html#moviepy.video.tools.cuts.FramesMatch">[docs]</a><span class="k">class</span> <span class="nc">FramesMatch</span><span class="p">:</span>
+<div class="viewcode-block" id="FramesMatch"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatch.html#moviepy.video.tools.cuts.FramesMatch">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FramesMatch</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frames match inside a set of frames.</span>
 
 <span class="sd">    Parameters</span>
@@ -443,14 +443,14 @@ document.write(`
 <span class="sd">      Upper bound on the distance between the first and last frames</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">min_distance</span><span class="p">,</span> <span class="n">max_distance</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">start_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">end_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span> <span class="o">=</span> <span class="n">min_distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span> <span class="o">=</span> <span class="n">max_distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time_span</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">, </span><span class="si">%.04f</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">,</span>
@@ -458,15 +458,15 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span><span class="p">,</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_distance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_distance</span><span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">other</span><span class="o">.</span><span class="n">start_time</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
             <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">end_time</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span>
@@ -475,7 +475,7 @@ document.write(`
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="FramesMatches"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches">[docs]</a><span class="k">class</span> <span class="nc">FramesMatches</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<div class="viewcode-block" id="FramesMatches"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FramesMatches</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Frames matches inside a set of frames.</span>
 
 <span class="sd">    You can instantiate it passing a list of FramesMatch objects or</span>
@@ -488,10 +488,10 @@ document.write(`
 <span class="sd">      Iterable of FramesMatch objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lst</span><span class="p">):</span>
         <span class="nb">list</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">e</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">max_distance</span><span class="p">))</span>
 
-<div class="viewcode-block" id="FramesMatches.best"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.best">[docs]</a>    <span class="k">def</span> <span class="nf">best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="FramesMatches.best"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.best">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">best</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">percent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new instance of FramesMatches object or a FramesMatch</span>
 <span class="sd">        from the current class instance given different conditions.</span>
 
@@ -520,7 +520,7 @@ document.write(`
             <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">*</span> <span class="n">percent</span> <span class="o">/</span> <span class="mi">100</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="bp">self</span><span class="p">[:</span> <span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span></div>
 
-<div class="viewcode-block" id="FramesMatches.filter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
+<div class="viewcode-block" id="FramesMatches.filter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.filter">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a FramesMatches object obtained by filtering out the</span>
 <span class="sd">        FramesMatch which do not satistify a condition.</span>
 
@@ -540,7 +540,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="FramesMatches.save"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="FramesMatches.save"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.save">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save a FramesMatches object to a file.</span>
 
 <span class="sd">        Parameters</span>
@@ -557,7 +557,7 @@ document.write(`
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="FramesMatches.load"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.load">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a FramesMatches object from a file.</span>
 
 <span class="sd">        Parameters</span>
@@ -575,7 +575,7 @@ document.write(`
         <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="n">mfs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="FramesMatches.from_clip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.from_clip">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="p">,</span> <span class="n">max_duration</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_clip</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">distance_threshold</span><span class="p">,</span> <span class="n">max_duration</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Finds all the frames that look alike in a clip, for instance to make</span>
 <span class="sd">        a looping GIF.</span>
 
@@ -624,12 +624,12 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N_pixels</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">w</span> <span class="o">*</span> <span class="n">clip</span><span class="o">.</span><span class="n">h</span> <span class="o">*</span> <span class="mi">3</span>
 
-        <span class="k">def</span> <span class="nf">dot_product</span><span class="p">(</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">dot_product</span><span class="p">(</span><span class="n">F1</span><span class="p">,</span> <span class="n">F2</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">F1</span> <span class="o">*</span> <span class="n">F2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">N_pixels</span>
 
         <span class="n">frame_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># will store the frames and their mutual distances</span>
 
-        <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">distance</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">):</span>
             <span class="n">uv</span> <span class="o">=</span> <span class="n">dot_product</span><span class="p">(</span><span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="s2">&quot;frame&quot;</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;frame&quot;</span><span class="p">])</span>
             <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t1</span><span class="p">][</span><span class="s2">&quot;|F|sq&quot;</span><span class="p">],</span> <span class="n">frame_dict</span><span class="p">[</span><span class="n">t2</span><span class="p">][</span><span class="s2">&quot;|F|sq&quot;</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u</span> <span class="o">+</span> <span class="n">v</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">uv</span><span class="p">)</span>
@@ -689,7 +689,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">([</span><span class="n">FramesMatch</span><span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">matching_frames</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="FramesMatches.select_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.select_scenes">[docs]</a>    <span class="k">def</span> <span class="nf">select_scenes</span><span class="p">(</span>
+<div class="viewcode-block" id="FramesMatches.select_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.select_scenes">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">select_scenes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">match_threshold</span><span class="p">,</span> <span class="n">min_time_span</span><span class="p">,</span> <span class="n">nomatch_threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_distance</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Select the scenes at which a video clip can be reproduced as the</span>
@@ -791,7 +791,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">FramesMatches</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FramesMatches.write_gifs"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.write_gifs">[docs]</a>    <span class="k">def</span> <span class="nf">write_gifs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="n">gifs_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FramesMatches.write_gifs"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.FramesMatches.html#moviepy.video.tools.cuts.FramesMatches.write_gifs">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_gifs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="n">gifs_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract the matching frames represented by the instance from a clip</span>
 <span class="sd">        and write them as GIFs in a directory, one GIF for each matching frame.</span>
 
@@ -837,7 +837,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="detect_scenes"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.cuts.detect_scenes.html#moviepy.video.tools.cuts.detect_scenes">[docs]</a><span class="nd">@use_clip_fps_by_default</span>
-<span class="k">def</span> <span class="nf">detect_scenes</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_scenes</span><span class="p">(</span>
     <span class="n">clip</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">luminosities</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">luminosity_threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Detects scenes of a clip based on luminosity changes.</span>

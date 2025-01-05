@@ -377,18 +377,18 @@ document.write(`
   <h1>Source code for moviepy.tools</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Misc. useful functions that can be used at many places in the program.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">platform</span>
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
 
 
 <span class="n">OS_NAME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span>
 
 
-<div class="viewcode-block" id="cross_platform_popen_params"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.cross_platform_popen_params.html#moviepy.tools.cross_platform_popen_params">[docs]</a><span class="k">def</span> <span class="nf">cross_platform_popen_params</span><span class="p">(</span><span class="n">popen_params</span><span class="p">):</span>
+<div class="viewcode-block" id="cross_platform_popen_params"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.cross_platform_popen_params.html#moviepy.tools.cross_platform_popen_params">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">cross_platform_popen_params</span><span class="p">(</span><span class="n">popen_params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap with this function a dictionary of ``subprocess.Popen`` kwargs and</span>
 <span class="sd">    will be ready to work without unexpected behaviours in any platform.</span>
 <span class="sd">    Currently, the implementation will add to them:</span>
@@ -401,7 +401,7 @@ document.write(`
     <span class="k">return</span> <span class="n">popen_params</span></div>
 
 
-<div class="viewcode-block" id="subprocess_call"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call">[docs]</a><span class="k">def</span> <span class="nf">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="subprocess_call"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Executes the given subprocess command.</span>
 
 <span class="sd">    Set logger to None or a custom Proglog logger to avoid printings.</span>
@@ -427,7 +427,7 @@ document.write(`
     <span class="k">del</span> <span class="n">proc</span></div>
 
 
-<div class="viewcode-block" id="ffmpeg_escape_filename"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="ffmpeg_escape_filename"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Escape a filename that we want to pass to the ffmpeg command line</span>
 
 <span class="sd">    That will ensure the filename doesn&#39;t start with a &#39;-&#39; (which would raise an error)</span>
@@ -438,7 +438,7 @@ document.write(`
     <span class="k">return</span> <span class="n">filename</span></div>
 
 
-<div class="viewcode-block" id="convert_to_seconds"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.convert_to_seconds.html#moviepy.tools.convert_to_seconds">[docs]</a><span class="k">def</span> <span class="nf">convert_to_seconds</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_to_seconds"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.convert_to_seconds.html#moviepy.tools.convert_to_seconds">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_to_seconds</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Will convert any time into seconds.</span>
 
 <span class="sd">    If the type of `time` is not valid,</span>
@@ -474,7 +474,7 @@ document.write(`
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="n">part</span> <span class="k">for</span> <span class="n">mult</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span></div>
 
 
-<div class="viewcode-block" id="deprecated_version_of"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.deprecated_version_of.html#moviepy.tools.deprecated_version_of">[docs]</a><span class="k">def</span> <span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">old_name</span><span class="p">):</span>
+<div class="viewcode-block" id="deprecated_version_of"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.deprecated_version_of.html#moviepy.tools.deprecated_version_of">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">old_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Indicates that a function is deprecated and has a new name.</span>
 
 <span class="sd">    `func` is the new function and `old_name` is the name of the deprecated</span>
@@ -508,7 +508,7 @@ document.write(`
         <span class="s2">&quot;``</span><span class="si">%s</span><span class="s2">``, instead.&quot;</span>
     <span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">old_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">deprecated_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deprecated_func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;MoviePy: &quot;</span> <span class="o">+</span> <span class="n">warning</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -539,7 +539,7 @@ document.write(`
     <span class="n">extensions_dict</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;image&quot;</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="find_extension"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.find_extension.html#moviepy.tools.find_extension">[docs]</a><span class="k">def</span> <span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
+<div class="viewcode-block" id="find_extension"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.find_extension.html#moviepy.tools.find_extension">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the correspondent file extension for a codec.</span>
 
 <span class="sd">    Parameters</span>
@@ -563,7 +563,7 @@ document.write(`
     <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="close_all_clips"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.close_all_clips.html#moviepy.tools.close_all_clips">[docs]</a><span class="k">def</span> <span class="nf">close_all_clips</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="s2">&quot;globals&quot;</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="s2">&quot;video&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">)):</span>
+<div class="viewcode-block" id="close_all_clips"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.close_all_clips.html#moviepy.tools.close_all_clips">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">close_all_clips</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="s2">&quot;globals&quot;</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;audio&quot;</span><span class="p">,</span> <span class="s2">&quot;video&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Closes all clips in a context.</span>
 
 <span class="sd">    Follows different strategies retrieving the namespace from which the clips</span>
@@ -583,9 +583,9 @@ document.write(`
 <span class="sd">      Set of types of clips to close, being &quot;audio&quot;, &quot;video&quot; or &quot;image&quot; the supported</span>
 <span class="sd">      values.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">moviepy.audio.io.AudioFileClip</span> <span class="kn">import</span> <span class="n">AudioFileClip</span>
-    <span class="kn">from</span> <span class="nn">moviepy.video.io.VideoFileClip</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-    <span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.AudioFileClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioFileClip</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.VideoFileClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClip</span>
 
     <span class="n">CLIP_TYPES</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;audio&quot;</span><span class="p">:</span> <span class="n">AudioFileClip</span><span class="p">,</span>
@@ -603,7 +603,7 @@ document.write(`
             <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="no_display_available"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.no_display_available.html#moviepy.tools.no_display_available">[docs]</a><span class="k">def</span> <span class="nf">no_display_available</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="no_display_available"><a class="viewcode-back" href="../../reference/reference/moviepy.tools.no_display_available.html#moviepy.tools.no_display_available">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">no_display_available</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if we determine the host system has no graphical environment.</span>
 <span class="sd">    This is usefull to remove tests requiring display, like preview</span>
 

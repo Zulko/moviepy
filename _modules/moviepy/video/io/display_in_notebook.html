@@ -385,28 +385,28 @@ document.write(`
 <span class="c1"># That is because most browsers use a cache system and they won&#39;t</span>
 <span class="c1"># properly refresh the media when the original files are changed.</span>
 
-<span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">base64</span><span class="w"> </span><span class="kn">import</span> <span class="n">b64encode</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">AudioClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">extensions_dict</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.AudioClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">extensions_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffmpeg_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoClip</span>
 
 
 <span class="k">try</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-    <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
 
     <span class="n">ipython_available</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">class</span> <span class="nc">HTML2</span><span class="p">(</span><span class="n">HTML</span><span class="p">):</span>  <span class="c1"># noqa D101</span>
-        <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">class</span><span class="w"> </span><span class="nc">HTML2</span><span class="p">(</span><span class="n">HTML</span><span class="p">):</span>  <span class="c1"># noqa D101</span>
+        <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">HTML2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
-<div class="viewcode-block" id="HTML2"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.HTML2.html#moviepy.video.io.display_in_notebook.HTML2">[docs]</a>    <span class="k">def</span> <span class="nf">HTML2</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>  <span class="c1"># noqa D103</span>
+<div class="viewcode-block" id="HTML2"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.HTML2.html#moviepy.video.io.display_in_notebook.HTML2">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">HTML2</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>  <span class="c1"># noqa D103</span>
         <span class="k">return</span> <span class="n">content</span></div>
 
     <span class="n">ipython_available</span> <span class="o">=</span> <span class="kc">False</span>
@@ -428,7 +428,7 @@ document.write(`
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="html_embed"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.html_embed.html#moviepy.video.io.display_in_notebook.html_embed">[docs]</a><span class="k">def</span> <span class="nf">html_embed</span><span class="p">(</span>
+<div class="viewcode-block" id="html_embed"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.html_embed.html#moviepy.video.io.display_in_notebook.html_embed">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">html_embed</span><span class="p">(</span>
     <span class="n">clip</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maxduration</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">rd_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">html_kwargs</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns HTML5 code embedding the clip.</span>
@@ -569,7 +569,7 @@ document.write(`
     <span class="k">return</span> <span class="n">result</span></div>
 
 
-<div class="viewcode-block" id="display_in_notebook"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook">[docs]</a><span class="k">def</span> <span class="nf">display_in_notebook</span><span class="p">(</span>
+<div class="viewcode-block" id="display_in_notebook"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_in_notebook</span><span class="p">(</span>
     <span class="n">clip</span><span class="p">,</span>
     <span class="n">filetype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">maxduration</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>

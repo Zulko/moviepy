@@ -162,19 +162,19 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.audio.AudioClip</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">proglog</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">deprecated_version_of</span><span class="p">,</span> <span class="n">extensions_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated_version_of</span><span class="p">,</span> <span class="n">extensions_dict</span>
 
 
-<div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Base class for audio clips.</span>
 <span class="sd">    </span>
 <span class="sd">    See ``AudioFileClip`` and ``CompositeSoundClip`` for usable classes.</span>
@@ -208,7 +208,7 @@
 <span class="sd">                     </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -226,7 +226,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">duration</span>
     
 <div class="viewcode-block" id="AudioClip.iter_chunks"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.iter_chunks">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">iter_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chunk_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Iterator that returns the whole sound array of the clip by chunks</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -250,7 +250,7 @@
                                         <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AudioClip.to_soundarray"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_soundarray">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">to_soundarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_soundarray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">50000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transforms the sound into an array that can be played by pygame</span>
 <span class="sd">        or written in a wav file. See ``AudioClip.preview``.</span>
@@ -297,7 +297,7 @@
         
         <span class="k">return</span> <span class="n">snd_array</span></div>
 
-    <span class="k">def</span> <span class="nf">max_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">max_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         
         <span class="n">stereo</span> <span class="o">=</span> <span class="n">stereo</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -307,7 +307,7 @@
         <span class="k">return</span> <span class="n">maxi</span>
 
 <div class="viewcode-block" id="AudioClip.write_audiofile"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.AudioClip.write_audiofile">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">write_audiofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_audiofile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
                         <span class="n">codec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ffmpeg_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">write_logfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Writes an audio file from the AudioClip.</span>
@@ -380,7 +380,7 @@
 <span class="c1">###</span>
 
 
-<span class="k">class</span> <span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    </span>
 <span class="sd">    An audio clip made from a sound array.</span>
@@ -398,14 +398,14 @@
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
         
         <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="n">fps</span>
 
-        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot; complicated, but must be able to handle the case where t</span>
 <span class="sd">            is a list of the form sin(t) &quot;&quot;&quot;</span>
             
@@ -426,7 +426,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
         
         
-<div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../../../ref/AudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Clip made by composing several AudioClips.</span>
 <span class="sd">    </span>
@@ -442,7 +442,7 @@
 <span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
 
         <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
@@ -453,7 +453,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ends</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">make_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             
             <span class="n">played_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
             
@@ -472,7 +472,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="n">make_frame</span></div>
 
 
-<span class="k">def</span> <span class="nf">concatenate_audioclips</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">concatenate_audioclips</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The clip with the highest FPS will be the FPS of the result clip.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

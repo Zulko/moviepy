@@ -411,7 +411,7 @@ document.write(`
 If you’r not sure, take a look <a class="reference internal" href="../getting_started/install.html#install-binaries"><span class="std std-ref">Installation of additional binaries</span></a></p>
 </div>
 <p>The first thing you can do is to preview your clip as a video, by calling method <code class="xref py py-func docutils literal notranslate"><span class="pre">preview()</span></code> on your clip:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Keep only 0 to 1 sec</span>
 
@@ -442,7 +442,7 @@ If you’r not sure, take a look <a class="reference internal" href="../getting_
 <h3>Preview just one frame of a clip<a class="headerlink" href="#preview-just-one-frame-of-a-clip" title="Permalink to this heading">#</a></h3>
 <p>In a lot of situation, you don’t really need to preview your all clip, seeing only one frame is enough to see how it looks like and to make sure everything goes as expected.</p>
 <p>To do so, you can use the method <code class="xref py py-func docutils literal notranslate"><span class="pre">show()</span></code> on your clip, passing the frame time as an argument:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;./example.mp4&quot;</span><span class="p">)</span>
 
@@ -464,7 +464,7 @@ If you’r not sure, take a look <a class="reference internal" href="../getting_
 <p>If you work with a <a class="reference external" href="https://jupyter.org/">Jupyter Notebook</a>, it can be very practical to display your clip the notebook. To do so, you can use the method <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> on your clip.</p>
 <a class="reference internal image-reference" href="../_images/demo_preview.jpeg"><img alt="../_images/demo_preview.jpeg" class="align-center" src="../_images/demo_preview.jpeg" style="width: 500px;" /></a>
 <p>With <a class="reference internal" href="../reference/reference/moviepy.video.io.display_in_notebook.display_in_notebook.html#moviepy.video.io.display_in_notebook.display_in_notebook" title="moviepy.video.io.display_in_notebook.display_in_notebook"><code class="xref py py-func docutils literal notranslate"><span class="pre">display_in_notebook()</span></code></a> you can embed videos, images and sounds, either from a file or directly from a clip:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># ...</span>
 <span class="c1"># ... some jupyter specifics stuff</span>
@@ -507,7 +507,7 @@ Restarting your browser solves the problem.</p>
 <section id="video-files-mp4-webm-ogv">
 <h3>Video files (.mp4, .webm, .ogv…)<a class="headerlink" href="#video-files-mp4-webm-ogv" title="Permalink to this heading">#</a></h3>
 <p>The obvious first choice will be to write your clip to a video file, which you can do with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_videofile" title="moviepy.video.VideoClip.VideoClip.write_videofile"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_videofile()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;long_examples/example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -550,7 +550,7 @@ improve the rendering time, as the bottleneck may be on MoviePy computation of e
 <p>Also, know that it is possible to pass additional parameters to ffmpeg command line invoked by MoviePy by using the <code class="docutils literal notranslate"><span class="pre">ffmpeg_params</span></code> argument.</p>
 </div>
 <p>Sometimes it is impossible for MoviePy to guess the <code class="docutils literal notranslate"><span class="pre">duration</span></code> attribute of the clip (keep in mind that some clips, like ImageClips displaying a picture, have <em>a priori</em> an infinite duration). Then, the <code class="docutils literal notranslate"><span class="pre">duration</span></code> must be set manually with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_duration" title="moviepy.Clip.Clip.with_duration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_duration()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># By default an ImageClip has no duration</span>
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">ImageClip</span><span class="p">(</span><span class="s2">&quot;example.png&quot;</span><span class="p">)</span>
@@ -573,7 +573,7 @@ improve the rendering time, as the bottleneck may be on MoviePy computation of e
 <section id="export-a-single-frame-of-the-clip">
 <h3>Export a single frame of the clip<a class="headerlink" href="#export-a-single-frame-of-the-clip" title="Permalink to this heading">#</a></h3>
 <p>As for previewing, sometimes you will need to export only one frame of a clip, for example to create the preview image of a video. You can do so with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.save_frame" title="moviepy.video.VideoClip.VideoClip.save_frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">save_frame()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -585,7 +585,7 @@ improve the rendering time, as the bottleneck may be on MoviePy computation of e
 <section id="animated-gifs">
 <h3>Animated GIFs<a class="headerlink" href="#animated-gifs" title="Permalink to this heading">#</a></h3>
 <p>In addition to writing video files, MoviePy also let you write GIF file with <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_gif" title="moviepy.video.VideoClip.VideoClip.write_gif"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_gif()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -601,8 +601,8 @@ improve the rendering time, as the bottleneck may be on MoviePy computation of e
 <section id="export-all-the-clip-as-images-in-a-directory">
 <h3>Export all the clip as images in a directory<a class="headerlink" href="#export-all-the-clip-as-images-in-a-directory" title="Permalink to this heading">#</a></h3>
 <p>Lastly, you may wish to export an entire clip as an image sequence (multiple images in one directory, one image per frame). You can do so with the function <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.write_images_sequence" title="moviepy.video.VideoClip.VideoClip.write_images_sequence"><code class="xref py py-meth docutils literal notranslate"><span class="pre">write_images_sequence()</span></code></a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 

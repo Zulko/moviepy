@@ -377,16 +377,16 @@ document.write(`
   <h1>Source code for moviepy.video.io.ffmpeg_tools</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Miscellaneous bindings to ffmpeg.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">convert_path_to_string</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">ffmpeg_escape_filename</span><span class="p">,</span> <span class="n">subprocess_call</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">convert_path_to_string</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_escape_filename</span><span class="p">,</span> <span class="n">subprocess_call</span>
 
 
 <div class="viewcode-block" id="ffmpeg_extract_subclip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">))</span>
 <span class="nd">@convert_parameter_to_seconds</span><span class="p">((</span><span class="s2">&quot;start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;end_time&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">ffmpeg_extract_subclip</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_extract_subclip</span><span class="p">(</span>
     <span class="n">inputfile</span><span class="p">,</span> <span class="n">start_time</span><span class="p">,</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes a new video file playing video file between two times.</span>
@@ -434,7 +434,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ffmpeg_merge_video_audio"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio.html#moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;videofile&quot;</span><span class="p">,</span> <span class="s2">&quot;audiofile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">ffmpeg_merge_video_audio</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_merge_video_audio</span><span class="p">(</span>
     <span class="n">videofile</span><span class="p">,</span>
     <span class="n">audiofile</span><span class="p">,</span>
     <span class="n">outputfile</span><span class="p">,</span>
@@ -480,7 +480,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ffmpeg_extract_audio"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">ffmpeg_extract_audio</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_extract_audio</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract the sound from a video file and save it in ``outputfile``.</span>
 
 <span class="sd">    Parameters</span>
@@ -513,7 +513,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ffmpeg_resize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_resize.html#moviepy.video.io.ffmpeg_tools.ffmpeg_resize">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">ffmpeg_resize</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_resize</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Resizes a file to new size and write the result in another.</span>
 
 <span class="sd">    Parameters</span>
@@ -541,7 +541,7 @@ document.write(`
 
 
 <div class="viewcode-block" id="ffmpeg_stabilize_video"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_stabilize_video.html#moviepy.video.io.ffmpeg_tools.ffmpeg_stabilize_video">[docs]</a><span class="nd">@convert_path_to_string</span><span class="p">((</span><span class="s2">&quot;inputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;outputfile&quot;</span><span class="p">,</span> <span class="s2">&quot;output_dir&quot;</span><span class="p">))</span>
-<span class="k">def</span> <span class="nf">ffmpeg_stabilize_video</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_stabilize_video</span><span class="p">(</span>
     <span class="n">inputfile</span><span class="p">,</span> <span class="n">outputfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">overwrite_file</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>

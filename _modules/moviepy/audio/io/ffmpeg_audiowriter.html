@@ -377,16 +377,16 @@ document.write(`
   <h1>Source code for moviepy.audio.io.ffmpeg_audiowriter</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;MoviePy audio writing with ffmpeg.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
-<span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
 
 
-<div class="viewcode-block" id="FFMPEG_AudioWriter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_AudioWriter</span><span class="p">:</span>
+<div class="viewcode-block" id="FFMPEG_AudioWriter"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFMPEG_AudioWriter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to write an AudioClip into an audio file.</span>
 
@@ -427,7 +427,7 @@ document.write(`
 <span class="sd">      Additional FFMPEG command-line parameters to customize the output.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">fps_input</span><span class="p">,</span>
@@ -482,7 +482,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FFMPEG_AudioWriter.write_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.write_frames">[docs]</a>    <span class="k">def</span> <span class="nf">write_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames_array</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioWriter.write_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.write_frames">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">write_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frames_array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Send the audio frame (a chunck of ``AudioClip``) to ffmpeg for writting&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">frames_array</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
@@ -535,7 +535,7 @@ document.write(`
 
             <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioWriter.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioWriter.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.html#moviepy.audio.io.ffmpeg_audiowriter.FFMPEG_AudioWriter.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the writer, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;proc&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -547,21 +547,21 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If the garbage collector comes, make sure the subprocess is terminated.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="c1"># Support the Context Manager protocol, to ensure that resources are cleaned up.</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="ffmpeg_audiowrite"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffmpeg_audiowriter.ffmpeg_audiowrite.html#moviepy.audio.io.ffmpeg_audiowriter.ffmpeg_audiowrite">[docs]</a><span class="nd">@requires_duration</span>
-<span class="k">def</span> <span class="nf">ffmpeg_audiowrite</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_audiowrite</span><span class="p">(</span>
     <span class="n">clip</span><span class="p">,</span>
     <span class="n">filename</span><span class="p">,</span>
     <span class="n">fps</span><span class="p">,</span>

@@ -375,16 +375,16 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.FreezeRegion</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.Crop</span> <span class="kn">import</span> <span class="n">Crop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeVideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Crop</span><span class="w"> </span><span class="kn">import</span> <span class="n">Crop</span>
 
 
 <div class="viewcode-block" id="FreezeRegion"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.FreezeRegion.html#moviepy.video.fx.FreezeRegion.FreezeRegion">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">FreezeRegion</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">FreezeRegion</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Freezes one region of the clip while the rest remains animated.</span>
 
 <span class="sd">    You can choose one of three methods by providing either `region`,</span>
@@ -416,7 +416,7 @@ document.write(`
     <span class="n">outside_region</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">mask</span><span class="p">:</span> <span class="n">Clip</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="FreezeRegion.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.FreezeRegion.html#moviepy.video.fx.FreezeRegion.FreezeRegion.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="FreezeRegion.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.FreezeRegion.html#moviepy.video.fx.FreezeRegion.FreezeRegion.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">_x2</span><span class="p">,</span> <span class="n">_y2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">region</span>

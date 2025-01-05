@@ -375,14 +375,14 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.Crop</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="Crop"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Crop.html#moviepy.video.fx.Crop.Crop">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Crop</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Crop</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Effect to crop a clip to get a new clip in which just a rectangular</span>
 <span class="sd">    subregion of the original clip is conserved. `x1,y1` indicates the top left</span>
 <span class="sd">    corner and `x2,y2` is the lower right corner of the cropped region. All</span>
@@ -420,7 +420,7 @@ document.write(`
     <span class="n">x_center</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">y_center</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="Crop.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Crop.html#moviepy.video.fx.Crop.Crop.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="Crop.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Crop.html#moviepy.video.fx.Crop.Crop.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">x2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span>

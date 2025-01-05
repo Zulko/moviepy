@@ -375,21 +375,21 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.InvertColors</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="InvertColors"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.InvertColors.html#moviepy.video.fx.InvertColors.InvertColors">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">InvertColors</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">InvertColors</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the color-inversed clip.</span>
 
 <span class="sd">    The values of all pixels are replaced with (255-v) or (1-v) for masks</span>
 <span class="sd">    Black becomes white, green becomes purple, etc.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="InvertColors.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.InvertColors.html#moviepy.video.fx.InvertColors.InvertColors.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="InvertColors.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.InvertColors.html#moviepy.video.fx.InvertColors.InvertColors.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="n">maxi</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">is_mask</span> <span class="k">else</span> <span class="mi">255</span>
         <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">maxi</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span></div></div>

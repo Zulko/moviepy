@@ -559,8 +559,8 @@ produce more accurate periods, but the execution time will be longer.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">find_video_period</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.cuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_video_period</span>
 
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">loop</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="nb">round</span><span class="p">(</span><span class="n">videotools</span><span class="o">.</span><span class="n">find_video_period</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span> <span class="mi">6</span><span class="p">)</span>

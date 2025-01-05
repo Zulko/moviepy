@@ -415,8 +415,8 @@ Focusing on Python 3.7+ allows MoviePy to take advantage of the latest language 
 such as previewing or hand editing, because the <code class="docutils literal notranslate"><span class="pre">editor</span></code> package handled a lot of magic and initialization, making your life
 easier, at the cost of initializing some complex modules like <code class="docutils literal notranslate"><span class="pre">pygame</span></code>.</p>
 <p>With version 2.0, the <code class="docutils literal notranslate"><span class="pre">moviepy.editor</span></code> namespace simply no longer exists. You simply import everything from <code class="docutils literal notranslate"><span class="pre">moviepy</span></code> like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span> <span class="c1"># Simple and nice, the __all__ is set in moviepy so only useful things will be loaded</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span> <span class="c1"># You can also import only the things you really need</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span> <span class="c1"># Simple and nice, the __all__ is set in moviepy so only useful things will be loaded</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span> <span class="c1"># You can also import only the things you really need</span>
 </pre></div>
 </div>
 </section>

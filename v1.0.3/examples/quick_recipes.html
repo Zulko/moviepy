@@ -205,10 +205,10 @@
 <h2>Effects and filters<a class="headerlink" href="#effects-and-filters" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="blurring-all-frames-of-a-video">
 <h3>Blurring all frames of a video<a class="headerlink" href="#blurring-all-frames-of-a-video" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="kn">import</span> <span class="n">gaussian_filter</span>
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">skimage.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">gaussian_filter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 
-<span class="k">def</span> <span class="nf">blur</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">blur</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns a blurred (radius=2 pixels) version of the image &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">gaussian_filter</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -244,7 +244,7 @@ T = clip</div></blockquote>
 <h2>Useless but fun<a class="headerlink" href="#useless-but-fun" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="getting-the-average-frame-of-a-video">
 <h3>Getting the average frame of a video<a class="headerlink" href="#getting-the-average-frame-of-a-video" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">ImageClip</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">ImageClip</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;video.mp4&quot;</span><span class="p">)</span>
 <span class="n">fps</span><span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># take one frame per second</span>
 <span class="n">nframes</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="o">*</span><span class="n">fps</span> <span class="c1"># total number of frames used</span>

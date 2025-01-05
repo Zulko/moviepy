@@ -375,15 +375,15 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.Freeze</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">concatenate_videoclips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">concatenate_videoclips</span>
 
 
 <div class="viewcode-block" id="Freeze"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Freeze.html#moviepy.video.fx.Freeze.Freeze">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Freeze</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Freeze</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Momentarily freeze the clip at time t.</span>
 
 <span class="sd">    Set `t=&#39;end&#39;` to freeze the clip at the end (actually it will freeze on the</span>
@@ -399,7 +399,7 @@ document.write(`
     <span class="n">total_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">padding_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
 
-<div class="viewcode-block" id="Freeze.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Freeze.html#moviepy.video.fx.Freeze.Freeze.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="Freeze.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Freeze.html#moviepy.video.fx.Freeze.Freeze.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>

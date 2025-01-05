@@ -415,7 +415,7 @@ make sure it is accessible to Python, or define a custom path (see below).</p>
 <p>If you want to use a specific version of FFmpeg and FFplay, you can do so using environment variables.</p>
 <p>There are a couple of environment variables used by MoviePy that allow you to configure custom paths to the external tools.</p>
 <p>To setup any of these variables, the easiest way is to do it in Python before importing objects from MoviePy. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;FFMPEG_BINARY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/path/to/custom/ffmpeg&quot;</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;FFPLAY_BINARY&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;/path/to/custom/ffplay&quot;</span>
 </pre></div>
@@ -448,7 +448,7 @@ binary is found on the computer: generally <code class="docutils literal notrans
 <section id="verify-if-moviepy-find-binaries">
 <h4>Verify if MoviePy find binaries<a class="headerlink" href="#verify-if-moviepy-find-binaries" title="Permalink to this heading">#</a></h4>
 <p>To test if FFmpeg and FFplay are found by MoviePy, in a Python console, you can run :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">check</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">check</span>
 <span class="n">check</span><span class="p">()</span>
 </pre></div>
 </div>

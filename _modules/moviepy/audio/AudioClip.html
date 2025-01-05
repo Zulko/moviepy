@@ -381,20 +381,20 @@ document.write(`
 <span class="sd">- Composition: CompositeAudioClip</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numbers</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numbers</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span> <span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.ffplay_audiopreviewer</span> <span class="kn">import</span> <span class="n">ffplay_audiopreview</span>
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">convert_path_to_string</span><span class="p">,</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">extensions_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.ffmpeg_audiowriter</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_audiowrite</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.ffplay_audiopreviewer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffplay_audiopreview</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_path_to_string</span><span class="p">,</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">extensions_dict</span>
 
 
-<div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span> <span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AudioClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for audio clips.</span>
 
 <span class="sd">    See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.</span>
@@ -442,7 +442,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_function</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -460,7 +460,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">duration</span>
 
 <div class="viewcode-block" id="AudioClip.iter_chunks"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.iter_chunks">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">iter_chunks</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iter_chunks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">chunksize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">chunk_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -491,7 +491,7 @@ document.write(`
             <span class="p">)</span></div>
 
 <div class="viewcode-block" id="AudioClip.to_soundarray"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.to_soundarray">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">to_soundarray</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_soundarray</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">50000</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -543,7 +543,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">snd_array</span></div>
 
-<div class="viewcode-block" id="AudioClip.max_volume"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.max_volume">[docs]</a>    <span class="k">def</span> <span class="nf">max_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioClip.max_volume"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.max_volume">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">max_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stereo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the maximum volume level of the clip.&quot;&quot;&quot;</span>
         <span class="c1"># max volume separated by channels if ``stereo`` and not mono</span>
         <span class="n">stereo</span> <span class="o">=</span> <span class="n">stereo</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">&gt;</span> <span class="mi">1</span>
@@ -558,7 +558,7 @@ document.write(`
 
 <div class="viewcode-block" id="AudioClip.write_audiofile"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.write_audiofile">[docs]</a>    <span class="nd">@requires_duration</span>
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">write_audiofile</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">write_audiofile</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -646,7 +646,7 @@ document.write(`
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="AudioClip.audiopreview"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip.audiopreview">[docs]</a>    <span class="nd">@requires_duration</span>
-    <span class="k">def</span> <span class="nf">audiopreview</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">audiopreview</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">audio_flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">video_flag</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -684,13 +684,13 @@ document.write(`
             <span class="n">video_flag</span><span class="o">=</span><span class="n">video_flag</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">AudioClip</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">concatenate_audioclips</span><span class="p">([</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">])</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="AudioArrayClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioArrayClip.html#moviepy.audio.AudioClip.AudioArrayClip">[docs]</a><span class="k">class</span> <span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioArrayClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.AudioArrayClip.html#moviepy.audio.AudioClip.AudioArrayClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AudioArrayClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    An audio clip made from a sound array.</span>
@@ -708,13 +708,13 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
         <span class="n">Clip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">array</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="p">)</span> <span class="o">/</span> <span class="n">fps</span>
 
-        <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">&quot;&quot;&quot;Complicated, but must be able to handle the case where t</span>
 <span class="sd">            is a list of the form sin(t).</span>
 <span class="sd">            &quot;&quot;&quot;</span>
@@ -735,7 +735,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span></div>
 
 
-<div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span> <span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeAudioClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">CompositeAudioClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Clip made by composing several AudioClips.</span>
 
 <span class="sd">    An audio clip made by putting together several audio clips.</span>
@@ -750,7 +750,7 @@ document.write(`
 <span class="sd">      computed automatically.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clips</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">nchannels</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">)</span>
 
@@ -770,16 +770,16 @@ document.write(`
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">duration</span><span class="o">=</span><span class="n">duration</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="n">fps</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">starts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">starts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns starting times for all clips in the composition.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">start</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ends</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ends</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns ending times for all clips in the composition.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">end</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CompositeAudioClip.frame_function"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip.frame_function">[docs]</a>    <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="CompositeAudioClip.frame_function"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.CompositeAudioClip.html#moviepy.audio.AudioClip.CompositeAudioClip.frame_function">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Renders a frame for the composition for the time ``t``.&quot;&quot;&quot;</span>
         <span class="n">played_parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">is_playing</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span><span class="p">]</span>
 
@@ -797,7 +797,7 @@ document.write(`
         <span class="k">return</span> <span class="n">zero</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">(</span><span class="n">sounds</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="concatenate_audioclips"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.concatenate_audioclips.html#moviepy.audio.AudioClip.concatenate_audioclips">[docs]</a><span class="k">def</span> <span class="nf">concatenate_audioclips</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
+<div class="viewcode-block" id="concatenate_audioclips"><a class="viewcode-back" href="../../../reference/reference/moviepy.audio.AudioClip.concatenate_audioclips.html#moviepy.audio.AudioClip.concatenate_audioclips">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">concatenate_audioclips</span><span class="p">(</span><span class="n">clips</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Concatenates one AudioClip after another, in the order that are passed</span>
 <span class="sd">    to ``clips`` parameter.</span>
 

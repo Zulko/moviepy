@@ -568,8 +568,8 @@ Any standard Python encoding is allowed (listed at
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.video.tools.subtitles</span> <span class="kn">import</span> <span class="n">SubtitlesClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.VideoFileClip</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.subtitles</span><span class="w"> </span><span class="kn">import</span> <span class="n">SubtitlesClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.VideoFileClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 <span class="n">generator</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">text</span><span class="p">:</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Georgia-Regular&#39;</span><span class="p">,</span>
                                 <span class="n">font_size</span><span class="o">=</span><span class="mi">24</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
 <span class="n">sub</span> <span class="o">=</span> <span class="n">SubtitlesClip</span><span class="p">(</span><span class="s2">&quot;subtitles.srt&quot;</span><span class="p">,</span> <span class="n">generator</span><span class="p">)</span>

@@ -190,8 +190,8 @@ a white (=opaque) circle on a black (=transparent) background. At the begining,
 that circle is so large that you see all the actual movie and you don’t see
 the “The End” clip. Then the circle becomes progressively smaller and as a
 consequence you see less of the actual movie and more of the “The End” clip.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">circle</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.drawing</span><span class="w"> </span><span class="kn">import</span> <span class="n">circle</span>
 
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;../../videos/badl-0006.mov&quot;</span><span class="p">,</span> <span class="n">audio</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span>\
            <span class="n">subclip</span><span class="p">(</span><span class="mi">26</span><span class="p">,</span><span class="mi">31</span><span class="p">)</span><span class="o">.</span>\

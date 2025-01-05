@@ -162,13 +162,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.freeze</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.concatenate</span> <span class="kn">import</span> <span class="n">concatenate_videoclips</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">ImageClip</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.concatenate</span><span class="w"> </span><span class="kn">import</span> <span class="n">concatenate_videoclips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClip</span>
 
 
 <div class="viewcode-block" id="freeze"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.freeze.html#moviepy.video.fx.all.freeze">[docs]</a><span class="nd">@requires_duration</span>
-<span class="k">def</span> <span class="nf">freeze</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">freeze_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">total_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">freeze</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">freeze_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">total_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
            <span class="n">padding_end</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Momentarily freeze the clip at time t.</span>
 

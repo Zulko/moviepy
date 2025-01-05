@@ -162,13 +162,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.audio.io.AudioFileClip</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">AudioClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.audio.io.readers</span> <span class="kn">import</span> <span class="n">FFMPEG_AudioReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.AudioClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.io.readers</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_AudioReader</span>
 
 
-<div class="viewcode-block" id="AudioFileClip"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip">[docs]</a><span class="k">class</span> <span class="nc">AudioFileClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioFileClip"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">AudioFileClip</span><span class="p">(</span><span class="n">AudioClip</span><span class="p">):</span>
 
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An audio clip read from a sound file, or an array.</span>
@@ -226,7 +226,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">buffersize</span><span class="o">=</span><span class="mi">200000</span><span class="p">,</span> <span class="n">nbytes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">44100</span><span class="p">):</span>
 
         <span class="n">AudioClip</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -241,13 +241,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">make_frame</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nchannels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">nchannels</span>
 
-<div class="viewcode-block" id="AudioFileClip.coreader"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.coreader">[docs]</a>    <span class="k">def</span> <span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioFileClip.coreader"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.coreader">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">coreader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Returns a copy of the AudioFileClip, i.e. a new entrance point</span>
 <span class="sd">            to the audio file. Use copy when you have different clips</span>
 <span class="sd">            watching the audio file at different times. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AudioFileClip.close"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AudioFileClip.close"><a class="viewcode-back" href="../../../../ref/AudioClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Close the internal reader. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">close_proc</span><span class="p">()</span>

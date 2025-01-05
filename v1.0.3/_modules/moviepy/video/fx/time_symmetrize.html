@@ -162,15 +162,15 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.time_symmetrize</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_audio</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="p">,</span> <span class="n">requires_duration</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.concatenate</span> <span class="kn">import</span> <span class="n">concatenate_videoclips</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_to_audio</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="p">,</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.concatenate</span><span class="w"> </span><span class="kn">import</span> <span class="n">concatenate_videoclips</span>
 
-<span class="kn">from</span> <span class="nn">.time_mirror</span> <span class="kn">import</span> <span class="n">time_mirror</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.time_mirror</span><span class="w"> </span><span class="kn">import</span> <span class="n">time_mirror</span>
 
 
 <div class="viewcode-block" id="time_symmetrize"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.time_symmetrize.html#moviepy.video.fx.all.time_symmetrize">[docs]</a><span class="nd">@requires_duration</span>
 <span class="nd">@apply_to_mask</span>
-<span class="k">def</span> <span class="nf">time_symmetrize</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">time_symmetrize</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a clip that plays the current clip once forwards and</span>
 <span class="sd">    then once backwards. This is very practival to make video that</span>

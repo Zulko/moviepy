@@ -377,25 +377,25 @@ document.write(`
   <h1>Source code for moviepy.video.io.ffmpeg_reader</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Implements all the functions to read a video or a picture using ffmpeg.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>  <span class="c1"># ffmpeg, ffmpeg.exe, etc...</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>  <span class="c1"># ffmpeg, ffmpeg.exe, etc...</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">convert_to_seconds</span><span class="p">,</span>
     <span class="n">cross_platform_popen_params</span><span class="p">,</span>
     <span class="n">ffmpeg_escape_filename</span><span class="p">,</span>
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="FFMPEG_VideoReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_VideoReader</span><span class="p">:</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFMPEG_VideoReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Class for video byte-level reading with ffmpeg.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">decode_file</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -457,7 +457,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">bufsize</span> <span class="o">=</span> <span class="n">bufsize</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.initialize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.initialize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.initialize">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Opens the file, creates the pipe.</span>
 
@@ -514,7 +514,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame_number</span><span class="p">(</span><span class="n">start_time</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_frame</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.skip_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.skip_frames">[docs]</a>    <span class="k">def</span> <span class="nf">skip_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.skip_frames"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.skip_frames">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">skip_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads and throws away n frames&quot;&quot;&quot;</span>
         <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -523,7 +523,7 @@ document.write(`
             <span class="c1"># self.proc.stdout.flush()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+=</span> <span class="n">n</span></div>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.read_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.read_frame">[docs]</a>    <span class="k">def</span> <span class="nf">read_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.read_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.read_frame">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reads the next frame from the file.</span>
 <span class="sd">        Note that upon (re)initialization, the first frame will already have been read</span>
@@ -579,7 +579,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.get_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.get_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a file video frame at time t.</span>
 
 <span class="sd">        Note for coders: getting an arbitrary frame in the video with</span>
@@ -610,11 +610,11 @@ document.write(`
             <span class="k">return</span> <span class="n">result</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lastread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lastread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias of `self.last_read` for backwards compatibility with MoviePy 1.x.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.get_frame_number"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame_number">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.get_frame_number"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.get_frame_number">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frame_number</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper method to return the frame number at time ``t``&quot;&quot;&quot;</span>
         <span class="c1"># I used this horrible &#39;+0.00001&#39; hack because sometimes due to numerical</span>
         <span class="c1"># imprecisions a 3.0 can become a 2.99999999... which makes the int()</span>
@@ -622,7 +622,7 @@ document.write(`
         <span class="c1"># are getting the nth frame by writing get_frame(n/fps).</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.00001</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFMPEG_VideoReader.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete_lastread</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_VideoReader.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.html#moviepy.video.io.ffmpeg_reader.FFMPEG_VideoReader.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delete_lastread</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the reader terminating the process, if is still open.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -634,11 +634,11 @@ document.write(`
         <span class="k">if</span> <span class="n">delete_lastread</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;last_read&quot;</span><span class="p">):</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_read</span></div>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ffmpeg_read_image"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.ffmpeg_read_image.html#moviepy.video.io.ffmpeg_reader.ffmpeg_read_image">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_read_image</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ffmpeg_read_image"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.ffmpeg_read_image.html#moviepy.video.io.ffmpeg_reader.ffmpeg_read_image">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_read_image</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">with_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pixel_format</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an image file (PNG, BMP, JPEG...).</span>
 
 <span class="sd">    Wraps FFMPEG_Videoreader to read just one image.</span>
@@ -673,7 +673,7 @@ document.write(`
     <span class="k">return</span> <span class="n">im</span></div>
 
 
-<div class="viewcode-block" id="FFmpegInfosParser"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser">[docs]</a><span class="k">class</span> <span class="nc">FFmpegInfosParser</span><span class="p">:</span>
+<div class="viewcode-block" id="FFmpegInfosParser"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFmpegInfosParser</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Finite state ffmpeg `-i` command option file information parser.</span>
 <span class="sd">    Is designed to parse the output fast, in one loop. Iterates line by</span>
 <span class="sd">    line of the `ffmpeg -i &lt;filename&gt; [-f null -]` command output changing</span>
@@ -700,7 +700,7 @@ document.write(`
 <span class="sd">      will differ depending on this argument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">infos</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
@@ -716,7 +716,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_reset_state</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_reset_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reset_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reinitializes the state of the parser. Used internally at</span>
 <span class="sd">        initialization and at the end of the parsing process.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -752,7 +752,7 @@ document.write(`
         <span class="c1"># at next lines a multiline metadata value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_last_metadata_field_added</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses the information returned by FFmpeg in stderr executing their binary</span>
 <span class="sd">        for a file with ``-i`` option and returns a dictionary with all data needed</span>
 <span class="sd">        by MoviePy.</span>
@@ -985,7 +985,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_data_by_stream_type"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_data_by_stream_type">[docs]</a>    <span class="k">def</span> <span class="nf">parse_data_by_stream_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_type</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_data_by_stream_type"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_data_by_stream_type">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_data_by_stream_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stream_type</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses data from &quot;Stream ... {stream_type}&quot; line.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">{</span>
@@ -999,7 +999,7 @@ document.write(`
                 <span class="s2">&quot; will be ignored&quot;</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_audio_stream_data"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_audio_stream_data">[docs]</a>    <span class="k">def</span> <span class="nf">parse_audio_stream_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_audio_stream_data"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_audio_stream_data">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_audio_stream_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses data from &quot;Stream ... Audio&quot; line.&quot;&quot;&quot;</span>
         <span class="n">global_data</span><span class="p">,</span> <span class="n">stream_data</span> <span class="o">=</span> <span class="p">({</span><span class="s2">&quot;audio_found&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{})</span>
         <span class="k">try</span><span class="p">:</span>
@@ -1017,7 +1017,7 @@ document.write(`
             <span class="n">global_data</span><span class="p">[</span><span class="s2">&quot;audio_bitrate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stream_data</span><span class="p">[</span><span class="s2">&quot;bitrate&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">global_data</span><span class="p">,</span> <span class="n">stream_data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_video_stream_data"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_video_stream_data">[docs]</a>    <span class="k">def</span> <span class="nf">parse_video_stream_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_video_stream_data"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_video_stream_data">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_video_stream_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses data from &quot;Stream ... Video&quot; line.&quot;&quot;&quot;</span>
         <span class="n">global_data</span><span class="p">,</span> <span class="n">stream_data</span> <span class="o">=</span> <span class="p">({</span><span class="s2">&quot;video_found&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="p">{})</span>
 
@@ -1080,11 +1080,11 @@ document.write(`
 
         <span class="k">return</span> <span class="p">(</span><span class="n">global_data</span><span class="p">,</span> <span class="n">stream_data</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_fps"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_fps">[docs]</a>    <span class="k">def</span> <span class="nf">parse_fps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_fps"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_fps">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_fps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses number of FPS from a line of the ``ffmpeg -i`` command output.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; (\d+.?\d*) fps&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_tbr"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_tbr">[docs]</a>    <span class="k">def</span> <span class="nf">parse_tbr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_tbr"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_tbr">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_tbr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parses number of TBS from a line of the ``ffmpeg -i`` command output.&quot;&quot;&quot;</span>
         <span class="n">s_tbr</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot; (\d+.?\d*k?) tbr&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
@@ -1095,7 +1095,7 @@ document.write(`
             <span class="n">tbr</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">s_tbr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">tbr</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_duration"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_duration">[docs]</a>    <span class="k">def</span> <span class="nf">parse_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_duration"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_duration">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_duration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the duration from the line that outputs the duration of</span>
 <span class="sd">        the container.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1115,7 +1115,7 @@ document.write(`
                 <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">infos</span><span class="p">)</span>
             <span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.parse_metadata_field_value"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_metadata_field_value">[docs]</a>    <span class="k">def</span> <span class="nf">parse_metadata_field_value</span><span class="p">(</span>
+<div class="viewcode-block" id="FFmpegInfosParser.parse_metadata_field_value"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.parse_metadata_field_value">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">parse_metadata_field_value</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">line</span><span class="p">,</span>
     <span class="p">):</span>
@@ -1125,14 +1125,14 @@ document.write(`
         <span class="n">raw_field</span><span class="p">,</span> <span class="n">raw_value</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">raw_field</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">),</span> <span class="n">raw_value</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="FFmpegInfosParser.video_metadata_type_casting"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.video_metadata_type_casting">[docs]</a>    <span class="k">def</span> <span class="nf">video_metadata_type_casting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="FFmpegInfosParser.video_metadata_type_casting"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.html#moviepy.video.io.ffmpeg_reader.FFmpegInfosParser.video_metadata_type_casting">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">video_metadata_type_casting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Cast needed video metadata fields to other types than the default str.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">field</span> <span class="o">==</span> <span class="s2">&quot;rotate&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="ffmpeg_parse_infos"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.ffmpeg_parse_infos.html#moviepy.video.io.ffmpeg_reader.ffmpeg_parse_infos">[docs]</a><span class="k">def</span> <span class="nf">ffmpeg_parse_infos</span><span class="p">(</span>
+<div class="viewcode-block" id="ffmpeg_parse_infos"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_reader.ffmpeg_parse_infos.html#moviepy.video.io.ffmpeg_reader.ffmpeg_parse_infos">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_parse_infos</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">,</span>
     <span class="n">check_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">fps_source</span><span class="o">=</span><span class="s2">&quot;fps&quot;</span><span class="p">,</span>
@@ -1219,7 +1219,7 @@ document.write(`
             <span class="k">raise</span> <span class="ne">IsADirectoryError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; is a directory&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#39; not found&quot;</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error passing `ffmpeg -i` command output:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">infos</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span></div>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error passing `ffmpeg -i` command output:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">infos</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
 </pre></div>
 
                 </article>

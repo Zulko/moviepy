@@ -379,15 +379,15 @@ document.write(`
 <span class="sd">of image files.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">imageio.v2</span> <span class="kn">import</span> <span class="n">imread</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imageio.v2</span><span class="w"> </span><span class="kn">import</span> <span class="n">imread</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.video.VideoClip</span> <span class="kn">import</span> <span class="n">VideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.VideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoClip</span>
 
 
-<div class="viewcode-block" id="ImageSequenceClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ImageSequenceClip.ImageSequenceClip.html#moviepy.video.io.ImageSequenceClip.ImageSequenceClip">[docs]</a><span class="k">class</span> <span class="nc">ImageSequenceClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageSequenceClip"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ImageSequenceClip.ImageSequenceClip.html#moviepy.video.io.ImageSequenceClip.ImageSequenceClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">ImageSequenceClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A VideoClip made from a series of images.</span>
 
 <span class="sd">    Parameters</span>
@@ -422,7 +422,7 @@ document.write(`
 <span class="sd">      more than once.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">sequence</span><span class="p">,</span>
         <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -489,7 +489,7 @@ document.write(`
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">max</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">))</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_starts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">t</span><span class="p">]</span>
             <span class="p">)</span>
@@ -498,7 +498,7 @@ document.write(`
             <span class="bp">self</span><span class="o">.</span><span class="n">last_index</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">last_image</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_index</span><span class="p">:</span>
@@ -512,7 +512,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_index</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_image</span> <span class="o">=</span> <span class="kc">None</span>
 
-                <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">last_index</span><span class="p">:</span>
                         <span class="n">frame</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">])[:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span>
@@ -526,14 +526,14 @@ document.write(`
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                 <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">][:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">with_mask</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">VideoClip</span><span class="p">(</span><span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-                <span class="k">def</span> <span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">mask_frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
                     <span class="n">index</span> <span class="o">=</span> <span class="n">find_image_index</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
                     <span class="k">return</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">index</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="mi">255</span>
 

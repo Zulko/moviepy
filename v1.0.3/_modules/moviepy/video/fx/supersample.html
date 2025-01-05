@@ -162,14 +162,14 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.supersample</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<div class="viewcode-block" id="supersample"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.supersample.html#moviepy.video.fx.all.supersample">[docs]</a><span class="k">def</span> <span class="nf">supersample</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
+<div class="viewcode-block" id="supersample"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.supersample.html#moviepy.video.fx.all.supersample">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">supersample</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">nframes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Replaces each frame at time t by the mean of `nframes` equally spaced frames</span>
 <span class="sd">    taken in the interval [t-d, t+d]. This results in motion blur.&quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="o">+</span><span class="n">d</span><span class="p">,</span> <span class="n">nframes</span><span class="p">)</span>
         <span class="n">avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mf">1.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">gf</span><span class="p">(</span><span class="n">t_</span><span class="p">)</span> <span class="k">for</span> <span class="n">t_</span> <span class="ow">in</span> <span class="n">tt</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;uint16&#39;</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">avg</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>

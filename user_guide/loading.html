@@ -403,7 +403,7 @@ document.write(`
 For information on modifying a clip, see <a class="reference internal" href="modifying.html#modifying"><span class="std std-ref">Modifying clips and apply effects</span></a>. For how to put clips together see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>. And for how to see/save theme, see <a class="reference internal" href="rendering.html#rendering"><span class="std std-ref">Previewing and saving video clips</span></a> (we will usually save them in example, but we wont explain here).</p>
 <p>There’s a lot of different resources you can use with MoviePy, and you will load different resources with different subtypes of <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a>, and more precisely of <a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> for any audio element, or <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> for any visual element.</p>
 <p>The following code summarizes the base clips that you can create with moviepy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">VideoClip</span><span class="p">,</span>
     <span class="n">VideoFileClip</span><span class="p">,</span>
     <span class="n">ImageSequenceClip</span><span class="p">,</span>
@@ -413,18 +413,18 @@ For information on modifying a clip, see <a class="reference internal" href="mod
     <span class="n">AudioFileClip</span><span class="p">,</span>
     <span class="n">AudioClip</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Define some constants for later use</span>
 <span class="n">black</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>  <span class="c1"># RGB for black</span>
 
 
-<span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Random noise image of 200x100&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 
-<span class="k">def</span> <span class="nf">frame_function_audio</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frame_function_audio</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A note by producing a sinewave of 440 Hz&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">440</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
 
@@ -469,7 +469,7 @@ For information on modifying a clip, see <a class="reference internal" href="mod
 <p>Clips act as <a class="reference external" href="https://docs.python.org/3/reference/datamodel.html#context-managers">context managers</a>. This means you
 can use them with a <code class="docutils literal notranslate"><span class="pre">with</span></code> statement, and they will automatically be closed at the end of the block, even if there is
 an exception.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># clip.close() is implicitly called, so the lock on my_audiofile.mp3 file</span>
 <span class="c1"># is immediately released.</span>
@@ -499,16 +499,16 @@ an exception.</p>
 <p><a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> is the base class for all the other video clips in MoviePy. If all you want is to edit video files, you will never need it. This class is practical when you want to make animations from frames that are generated by another library.
 All you need is to define a function <code class="docutils literal notranslate"><span class="pre">frame_function(t)</span></code> which returns a <cite>HxWx3</cite> numpy array (of 8-bits integers) representing the frame at time <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
 <p>Here is an example where we will create a pulsating red circle with graphical library <a class="reference external" href="https://pypi.org/project/Pillow/">pillow</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoClip</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageDraw</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="n">WIDTH</span><span class="p">,</span> <span class="n">HEIGHT</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
 <span class="n">RED</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
     <span class="n">frequency</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># One pulse per second</span>
     <span class="n">coef</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">frequency</span> <span class="o">*</span> <span class="n">t</span><span class="p">))</span>  <span class="c1"># radius varies over time</span>
     <span class="n">radius</span> <span class="o">=</span> <span class="n">WIDTH</span> <span class="o">*</span> <span class="n">coef</span>
@@ -542,7 +542,7 @@ All you need is to define a function <code class="docutils literal notranslate">
 <section id="videofileclip">
 <h4>VideoFileClip<a class="headerlink" href="#videofileclip" title="Permalink to this heading">#</a></h4>
 <p>A <a class="reference internal" href="../reference/reference/moviepy.video.io.VideoFileClip.VideoFileClip.html#moviepy.video.io.VideoFileClip.VideoFileClip" title="moviepy.video.io.VideoFileClip.VideoFileClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoFileClip</span></code></a> is a clip read from a video file (most formats are supported) or a GIF file. This is probably one of the most used object ! You load the video as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
@@ -566,7 +566,7 @@ All you need is to define a function <code class="docutils literal notranslate">
 <section id="imagesequenceclip">
 <h4>ImageSequenceClip<a class="headerlink" href="#imagesequenceclip" title="Permalink to this heading">#</a></h4>
 <p>This <a class="reference internal" href="../reference/reference/moviepy.video.io.ImageSequenceClip.ImageSequenceClip.html#moviepy.video.io.ImageSequenceClip.ImageSequenceClip" title="moviepy.video.io.ImageSequenceClip.ImageSequenceClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">ImageSequenceClip</span></code></a> is a clip made from a series of images :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">ImageSequenceClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageSequenceClip</span>
 
 <span class="c1"># A clip with a list of images showed for 1 second each</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">ImageSequenceClip</span><span class="p">(</span>
@@ -610,8 +610,8 @@ and make each frame by iterating over dataset and invoking the callback function
 but based on each entry of a data list.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s make a clip where frames depend on values in a list&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">DataVideoClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataVideoClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Dataset will just be a list of colors as RGB</span>
 <span class="n">dataset</span> <span class="o">=</span> <span class="p">[</span>
@@ -626,7 +626,7 @@ but based on each entry of a data list.</p>
 
 <span class="c1"># The function make frame take data and create an image of 200x100 px</span>
 <span class="c1"># filled with the color given in the dataset</span>
-<span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
     <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">frame</span>
 
@@ -656,12 +656,12 @@ but based on each entry of a data list.</p>
 <li><p>It has a <code class="docutils literal notranslate"><span class="pre">to_frame()</span></code> method, that will render a frame based on world current state.</p></li>
 </ol>
 <p>On <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_frame()</span></code> call, your <code class="xref py py-class docutils literal notranslate"><span class="pre">UpdatedVideoClip</span></code> will try to update the world until <code class="docutils literal notranslate"><span class="pre">world.clip_t</span></code> is superior or equal to frame time, then it will call <code class="docutils literal notranslate"><span class="pre">world.to_frame()</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">UpdatedVideoClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">UpdatedVideoClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 
 
-<span class="k">class</span> <span class="nc">CoinFlipWorld</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CoinFlipWorld</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simulation of coin flipping.</span>
 
 <span class="sd">    Imagine we want to make a video that become more and more red as we repeat same face</span>
@@ -669,7 +669,7 @@ but based on each entry of a data list.</p>
 <span class="sd">    until a winning row is done to be able to make the next frame.</span>
 <span class="sd">    This is a world simulating that. Sorry, it&#39;s hard to come up with examples...&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        FPS is usefull because we must increment clip_t by 1/FPS to have</span>
 <span class="sd">        UpdatedVideoClip run with a certain FPS</span>
@@ -679,7 +679,7 @@ but based on each entry of a data list.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="n">fps</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">win_strike</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="kc">False</span>
@@ -701,7 +701,7 @@ but based on each entry of a data list.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clip_t</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
 
-    <span class="k">def</span> <span class="nf">to_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a frame of a 200x100 image with red more or less intense based</span>
 <span class="sd">        on number of victories in a row.&quot;&quot;&quot;</span>
         <span class="n">red_intensity</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">win_strike</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
@@ -732,8 +732,8 @@ You can create one as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Here&#39;s how you transform a VideoClip into an ImageClip from an image, from</span>
 <span class="sd">arbitrary data, or by extracting a frame at a given time&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoFileClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Random RGB noise image of 200x100</span>
 <span class="n">noise_image</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -753,7 +753,7 @@ You can create one as follows:</p>
 color, interlining, text alignment, etc.</p>
 <p>The font you want to use must be an <a class="reference external" href="https://fr.wikipedia.org/wiki/OpenType">OpenType font</a>, and you will set it by passing the path to the font file.</p>
 <p>Here are a few example of using <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.TextClip.html#moviepy.video.VideoClip.TextClip" title="moviepy.video.VideoClip.TextClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextClip</span></code></a> :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">TextClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextClip</span>
 
 <span class="n">font</span> <span class="o">=</span> <span class="s2">&quot;./example.ttf&quot;</span>
 
@@ -794,7 +794,7 @@ color, interlining, text alignment, etc.</p>
 <section id="colorclip">
 <h4>ColorClip<a class="headerlink" href="#colorclip" title="Permalink to this heading">#</a></h4>
 <p>A <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.ColorClip.html#moviepy.video.VideoClip.ColorClip" title="moviepy.video.VideoClip.ColorClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColorClip</span></code></a> is a clip that will return an image of only one color. It is sometimes useful when doing compositing (see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">ColorClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColorClip</span>
 
 <span class="c1"># Color is passed as a RGB tuple</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">duration</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -811,8 +811,8 @@ color, interlining, text alignment, etc.</p>
 <p>When a clip as a mask attached to it, this mask will indicate which pixels will be visible when the clip is composed with other clips (see <a class="reference internal" href="compositing.html#compositing"><span class="std std-ref">Compositing multiple clips</span></a>). Masks are also used to define transparency when you export the clip as GIF file or as a PNG.</p>
 <p>The fundamental difference between masks and standard clips is that standard clips output frames with 3 components (R-G-B) per pixel, comprised between 0 and 255, while a mask has just one component per pixel, between 0 and 1 (1 indicating a fully visible pixel and 0 a transparent pixel). Seen otherwise, a mask is always in greyscale.</p>
 <p>When you create or load a clip that you will use as a mask you need to declare it. You can then attach it to a clip with the same dimensions :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoClip</span><span class="p">,</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoFileClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoClip</span><span class="p">,</span> <span class="n">ImageClip</span><span class="p">,</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Random RGB noise image of 200x100</span>
 <span class="n">frame_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
@@ -846,11 +846,11 @@ color, interlining, text alignment, etc.</p>
 <h3>AudioClip<a class="headerlink" href="#audioclip" title="Permalink to this heading">#</a></h3>
 <p><a class="reference internal" href="../reference/reference/moviepy.audio.AudioClip.AudioClip.html#moviepy.audio.AudioClip.AudioClip" title="moviepy.audio.AudioClip.AudioClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code></a> is the base class for all audio clips. If all you want is to edit audio files, you will never need it.</p>
 <p>All you need is to define a function <code class="docutils literal notranslate"><span class="pre">frame_function(t)</span></code> which returns a <code class="docutils literal notranslate"><span class="pre">Nx1</span></code> or <code class="docutils literal notranslate"><span class="pre">Nx2</span></code> numpy array representing the sound at time <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<span class="k">def</span> <span class="nf">audio_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_frame</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Producing a sinewave of 440 Hz -&gt; note A&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">440</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
 
@@ -864,7 +864,7 @@ color, interlining, text alignment, etc.</p>
 <h3>AudioFileClip<a class="headerlink" href="#audiofileclip" title="Permalink to this heading">#</a></h3>
 <p><a class="reference internal" href="../reference/reference/moviepy.audio.io.AudioFileClip.AudioFileClip.html#moviepy.audio.io.AudioFileClip.AudioFileClip" title="moviepy.audio.io.AudioFileClip.AudioFileClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">AudioFileClip</span></code></a> is used to load an audio file. This is probably the only kind of audio clip you will use.</p>
 <p>You simply pass it the file you want to load :</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Works for audio files, but also videos file where you only want the keep the audio track</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;example.wav&quot;</span><span class="p">)</span>
@@ -879,8 +879,8 @@ color, interlining, text alignment, etc.</p>
 <p>You need to provide a numpy array representing the sound (of size <code class="docutils literal notranslate"><span class="pre">Nx1</span></code> for mono, <code class="docutils literal notranslate"><span class="pre">Nx2</span></code> for stereo), and the number of fps, indicating the speed at which the sound is supposed to be played.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s create an audioclip from values in a numpy array.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioArrayClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioArrayClip</span>
 
 <span class="c1"># We want to play these notes</span>
 <span class="n">notes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">440</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">494</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mi">523</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="mi">587</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="mi">659</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span> <span class="mi">698</span><span class="p">}</span>
@@ -893,7 +893,7 @@ color, interlining, text alignment, etc.</p>
 <span class="n">n_frames</span> <span class="o">=</span> <span class="n">note_size</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">notes</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">note_frequency</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">note_frequency</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">note_frequency</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
 
 

@@ -377,17 +377,17 @@ document.write(`
   <h1>Source code for moviepy.audio.io.readers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;MoviePy audio reading with ffmpeg.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.io.ffmpeg_reader</span> <span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffmpeg_reader</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_parse_infos</span>
 
 
-<div class="viewcode-block" id="FFMPEG_AudioReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader">[docs]</a><span class="k">class</span> <span class="nc">FFMPEG_AudioReader</span><span class="p">:</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFMPEG_AudioReader</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class to read the audio in either video files or audio files</span>
 <span class="sd">    using ffmpeg. ffmpeg will read any audio and transform them into</span>
 <span class="sd">    raw data.</span>
@@ -415,7 +415,7 @@ document.write(`
 <span class="sd">      received from ffmpeg</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">buffersize</span><span class="p">,</span>
@@ -447,7 +447,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer_around</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.initialize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.initialize"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.initialize">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_time</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Opens the file, creates the pipe.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># if any</span>
 
@@ -496,7 +496,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">*</span> <span class="n">start_time</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.skip_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.skip_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">skip_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.skip_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.skip_chunk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">skip_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Skip a chunk of audio data by reading and discarding the specified number of</span>
 <span class="sd">        frames from the audio stream. The audio stream is read from the `proc` stdout.</span>
 <span class="sd">        After skipping the chunk, the `pos` attribute is updated accordingly.</span>
@@ -510,7 +510,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">chunksize</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.read_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.read_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.read_chunk"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.read_chunk">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">read_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a chunk of audio data from the audio stream.</span>
 
 <span class="sd">        This method reads a chunk of audio data from the audio stream. The</span>
@@ -547,7 +547,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">+</span> <span class="n">chunksize</span>
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.seek"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.seek"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.seek">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Read a frame at time t. Note for coders: getting an arbitrary</span>
 <span class="sd">        frame in the video with ffmpeg can be painfully slow if some</span>
 <span class="sd">        decoding has to be done. This function tries to avoid fectching</span>
@@ -563,7 +563,7 @@ document.write(`
         <span class="c1"># last case standing: pos = current pos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.get_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.get_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.get_frame">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tt</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve the audio frame(s) corresponding to the given timestamp(s).</span>
 
 <span class="sd">        Parameters</span>
@@ -645,7 +645,7 @@ document.write(`
             <span class="c1"># read the frame in the buffer</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">ind</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.buffer_around"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.buffer_around">[docs]</a>    <span class="k">def</span> <span class="nf">buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.buffer_around"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.buffer_around">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">buffer_around</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_number</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill the buffer with frames, centered on frame_number if possible.&quot;&quot;&quot;</span>
         <span class="c1"># start-frame for the buffer</span>
         <span class="n">new_bufferstart</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame_number</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffersize</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
@@ -667,7 +667,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer_startframe</span> <span class="o">=</span> <span class="n">new_bufferstart</span></div>
 
-<div class="viewcode-block" id="FFMPEG_AudioReader.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFMPEG_AudioReader.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.readers.FFMPEG_AudioReader.html#moviepy.audio.io.readers.FFMPEG_AudioReader.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the reader, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">poll</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -677,7 +677,7 @@ document.write(`
                 <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># If the garbage collector comes, make sure the subprocess is terminated.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 </pre></div>

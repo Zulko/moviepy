@@ -377,15 +377,15 @@ document.write(`
   <h1>Source code for moviepy.config</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Third party programs configuration for MoviePy.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
 
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">find_dotenv</span><span class="p">,</span> <span class="n">load_dotenv</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_dotenv</span><span class="p">,</span> <span class="n">load_dotenv</span>
 
     <span class="n">DOTENV</span> <span class="o">=</span> <span class="n">find_dotenv</span><span class="p">()</span>
     <span class="n">load_dotenv</span><span class="p">(</span><span class="n">DOTENV</span><span class="p">)</span>
@@ -398,7 +398,7 @@ document.write(`
 <span class="n">IS_POSIX_OS</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;posix&quot;</span>
 
 
-<div class="viewcode-block" id="try_cmd"><a class="viewcode-back" href="../../reference/reference/moviepy.config.try_cmd.html#moviepy.config.try_cmd">[docs]</a><span class="k">def</span> <span class="nf">try_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+<div class="viewcode-block" id="try_cmd"><a class="viewcode-back" href="../../reference/reference/moviepy.config.try_cmd.html#moviepy.config.try_cmd">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">try_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verify if the OS support command invocation as expected by moviepy&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
@@ -413,7 +413,7 @@ document.write(`
 
 
 <span class="k">if</span> <span class="n">FFMPEG_BINARY</span> <span class="o">==</span> <span class="s2">&quot;ffmpeg-imageio&quot;</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">imageio.plugins.ffmpeg</span> <span class="kn">import</span> <span class="n">get_exe</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">imageio.plugins.ffmpeg</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_exe</span>
 
     <span class="n">FFMPEG_BINARY</span> <span class="o">=</span> <span class="n">get_exe</span><span class="p">()</span>
 
@@ -447,7 +447,7 @@ document.write(`
         <span class="p">)</span>
 
 
-<div class="viewcode-block" id="check"><a class="viewcode-back" href="../../reference/reference/moviepy.config.check.html#moviepy.config.check">[docs]</a><span class="k">def</span> <span class="nf">check</span><span class="p">():</span>
+<div class="viewcode-block" id="check"><a class="viewcode-back" href="../../reference/reference/moviepy.config.check.html#moviepy.config.check">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if moviepy has found the binaries for FFmpeg.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">try_cmd</span><span class="p">([</span><span class="n">FFMPEG_BINARY</span><span class="p">])[</span><span class="mi">0</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: ffmpeg successfully found in &#39;</span><span class="si">{</span><span class="n">FFMPEG_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>

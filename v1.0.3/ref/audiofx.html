@@ -194,12 +194,12 @@ be applied directly to a video clip, at which case they will affect the audio cl
 video clip. Read the docs of the different functions to know when this is the case.</p>
 <p>Because this module will be larger in the future, it allows two kinds of import.
 You can either import a single function like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.audio.fx.volumex</span> <span class="kn">import</span> <span class="n">volumex</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.fx.volumex</span><span class="w"> </span><span class="kn">import</span> <span class="n">volumex</span>
 <span class="n">newaudio</span> <span class="o">=</span> <span class="n">audioclip</span><span class="o">.</span><span class="n">fx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or import everything:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.audio.fx.all</span> <span class="k">as</span> <span class="nn">afx</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">moviepy.audio.fx.all</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">afx</span>
 <span class="n">newaudio</span> <span class="o">=</span> <span class="p">(</span><span class="n">audioclip</span><span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">normalize</span><span class="p">)</span>
                      <span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">volumex</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
                      <span class="o">.</span><span class="n">afx</span><span class="p">(</span> <span class="n">vfx</span><span class="o">.</span><span class="n">audio_fadein</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
@@ -207,7 +207,7 @@ You can either import a single function like this:</p>
 </pre></div>
 </div>
 <p>When you type</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 <p>the module <code class="docutils literal notranslate"><span class="pre">audio.fx</span></code> is loaded as <code class="docutils literal notranslate"><span class="pre">afx</span></code> and you can use <code class="docutils literal notranslate"><span class="pre">afx.volumex</span></code>, etc.</p>

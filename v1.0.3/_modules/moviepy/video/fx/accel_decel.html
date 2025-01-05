@@ -162,7 +162,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.accel_decel</h1><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">f_accel_decel</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">old_d</span><span class="p">,</span> <span class="n">new_d</span><span class="p">,</span> <span class="n">abruptness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">soonness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span></span><span class="k">def</span><span class="w"> </span><span class="nf">f_accel_decel</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">old_d</span><span class="p">,</span> <span class="n">new_d</span><span class="p">,</span> <span class="n">abruptness</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">soonness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    abruptness</span>
 <span class="sd">      negative abruptness (&gt;-1): speed up down up</span>
@@ -175,7 +175,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">+</span><span class="n">abruptness</span>
-    <span class="k">def</span> <span class="nf">_f</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_f</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
         <span class="n">f1</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">t</span><span class="o">**</span><span class="n">a</span><span class="p">)</span>
         <span class="n">f2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">f1</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="o">&lt;</span><span class="mf">.5</span><span class="p">)</span><span class="o">*</span><span class="n">f1</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">t</span><span class="o">&gt;=</span><span class="mf">.5</span><span class="p">)</span><span class="o">*</span><span class="n">f2</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> 
@@ -183,7 +183,7 @@
     <span class="k">return</span> <span class="n">old_d</span><span class="o">*</span><span class="n">_f</span><span class="p">((</span><span class="n">t</span><span class="o">/</span><span class="n">new_d</span><span class="p">)</span><span class="o">**</span><span class="n">soonness</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="accel_decel"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.accel_decel.html#moviepy.video.fx.all.accel_decel">[docs]</a><span class="k">def</span> <span class="nf">accel_decel</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">new_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abruptness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">soonness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<div class="viewcode-block" id="accel_decel"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.accel_decel.html#moviepy.video.fx.all.accel_decel">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">accel_decel</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">new_duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">abruptness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">soonness</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    new_duration</span>

@@ -375,17 +375,17 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.Painting</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFilter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">ImageFilter</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="Painting"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Painting.html#moviepy.video.fx.Painting.Painting">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Painting</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Painting</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Transforms any photo into some kind of painting.</span>
 
 <span class="sd">    Transforms any photo into some kind of painting. Saturation</span>
@@ -398,7 +398,7 @@ document.write(`
     <span class="n">saturation</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.4</span>
     <span class="n">black</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.006</span>
 
-<div class="viewcode-block" id="Painting.to_painting"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Painting.html#moviepy.video.fx.Painting.Painting.to_painting">[docs]</a>    <span class="k">def</span> <span class="nf">to_painting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">np_image</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">black</span><span class="o">=</span><span class="mf">0.006</span><span class="p">):</span>
+<div class="viewcode-block" id="Painting.to_painting"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Painting.html#moviepy.video.fx.Painting.Painting.to_painting">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">to_painting</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">np_image</span><span class="p">,</span> <span class="n">saturation</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">black</span><span class="o">=</span><span class="mf">0.006</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Transforms any photo into some kind of painting.</span>
 
 <span class="sd">        Transforms any photo into some kind of painting. Saturation</span>
@@ -433,7 +433,7 @@ document.write(`
 
         <span class="k">return</span> <span class="n">painting</span></div>
 
-<div class="viewcode-block" id="Painting.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Painting.html#moviepy.video.fx.Painting.Painting.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="Painting.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Painting.html#moviepy.video.fx.Painting.Painting.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">image_transform</span><span class="p">(</span>
             <span class="k">lambda</span> <span class="n">im</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_painting</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">saturation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">black</span><span class="p">)</span>

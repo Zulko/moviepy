@@ -415,7 +415,7 @@ So most of the time you don’t need to worry about mixing the audio and masks.<
 <p>Concatenation can be done very easily with the function <a class="reference internal" href="../reference/reference/moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips.html#moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips" title="moviepy.video.compositing.CompositeVideoClip.concatenate_videoclips"><code class="xref py py-func docutils literal notranslate"><span class="pre">concatenate_videoclips()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s concatenate (play one after the other) three video clips.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">concatenate_videoclips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">concatenate_videoclips</span>
 
 <span class="c1"># We load all the clips we want to concatenate</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -439,7 +439,7 @@ So most of the time you don’t need to worry about mixing the audio and masks.<
 <p>Putting multiple clip side by side is done with <code class="xref py py-func docutils literal notranslate"><span class="pre">clip_array()</span></code>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s juxtapose four video clips in a 2x2 grid.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">clips_array</span><span class="p">,</span> <span class="n">vfx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">clips_array</span><span class="p">,</span> <span class="n">vfx</span>
 
 <span class="c1"># We will use the same clip and transform it in 3 ways</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">Margin</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>  <span class="c1"># add 10px contour</span>
@@ -475,7 +475,7 @@ For example, internally, both <a class="reference internal" href="../reference/r
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s stack three video clips on top of each other with</span>
 <span class="sd">CompositeVideoClip.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -502,7 +502,7 @@ For that, we will need to change when some clip starts and stops playing, as wel
 <h3>Changing starting and stopping times of clips<a class="headerlink" href="#changing-starting-and-stopping-times-of-clips" title="Permalink to this heading">#</a></h3>
 <p>In a CompositionClip, each clip start to play at a time that is specified by his <code class="docutils literal notranslate"><span class="pre">clip.start</span></code> attribute, and will play until <code class="docutils literal notranslate"><span class="pre">clip.end</span></code>.</p>
 <p>So, considering that you would want to play <code class="docutils literal notranslate"><span class="pre">clip1</span></code> for the first 6 seconds, <code class="docutils literal notranslate"><span class="pre">clip2</span></code> 5 seconds after the start of the video, and finally <code class="docutils literal notranslate"><span class="pre">clip3</span></code> at the end of <code class="docutils literal notranslate"><span class="pre">clip2</span></code>, you would do as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -538,7 +538,7 @@ To do so, you should take a look at <a class="reference internal" href="../refer
 in many ways :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s position some text and images on a video.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span><span class="p">,</span> <span class="n">ImageClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextClip</span><span class="p">,</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span><span class="p">,</span> <span class="n">ImageClip</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">background</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example2.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -605,7 +605,7 @@ in many ways :</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;In this example, we will concatenate two clips with a 1-second</span>
 <span class="sd">crossfadein of the second clip.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span><span class="p">,</span> <span class="n">vfx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span><span class="p">,</span> <span class="n">CompositeVideoClip</span><span class="p">,</span> <span class="n">vfx</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -629,7 +629,7 @@ That means you can actually use any of the already existing effects, and use the
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s first concatenate (one after the other) then composite</span>
 <span class="sd">(on top of each other) three audio clips.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">AudioFileClip</span><span class="p">,</span> <span class="n">CompositeAudioClip</span><span class="p">,</span> <span class="n">concatenate_audioclips</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">AudioFileClip</span><span class="p">,</span> <span class="n">CompositeAudioClip</span><span class="p">,</span> <span class="n">concatenate_audioclips</span>
 
 <span class="c1"># We load all the clips we want to compose</span>
 <span class="n">clip1</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s2">&quot;example.wav&quot;</span><span class="p">)</span>

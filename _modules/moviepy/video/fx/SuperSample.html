@@ -375,16 +375,16 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.SuperSample</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="SuperSample"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.SuperSample.html#moviepy.video.fx.SuperSample.SuperSample">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">SuperSample</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SuperSample</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Replaces each frame at time t by the mean of `n_frames` equally spaced frames</span>
 <span class="sd">    taken in the interval [t-d, t+d]. This results in motion blur.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -392,10 +392,10 @@ document.write(`
     <span class="n">d</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">n_frames</span><span class="p">:</span> <span class="nb">int</span>
 
-<div class="viewcode-block" id="SuperSample.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.SuperSample.html#moviepy.video.fx.SuperSample.SuperSample.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="SuperSample.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.SuperSample.html#moviepy.video.fx.SuperSample.SuperSample.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
             <span class="n">timings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_frames</span><span class="p">)</span>
             <span class="n">frame_average</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
                 <span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t_</span><span class="p">)</span> <span class="k">for</span> <span class="n">t_</span> <span class="ow">in</span> <span class="n">timings</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint16&quot;</span><span class="p">),</span>

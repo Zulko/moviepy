@@ -375,18 +375,18 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.audio.fx.AudioFadeOut</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">audio_video_effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">convert_to_seconds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">audio_video_effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_seconds</span>
 
 
 <div class="viewcode-block" id="AudioFadeOut"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.fx.AudioFadeOut.html#moviepy.audio.fx.AudioFadeOut.AudioFadeOut">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">AudioFadeOut</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AudioFadeOut</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a sound clip where the sound fades out progressively</span>
 <span class="sd">    over ``duration`` seconds at the end of the clip.</span>
 
@@ -408,21 +408,21 @@ document.write(`
 
     <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span>
 
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">convert_to_seconds</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_mono_factor_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_duration</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_mono_factor_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_duration</span><span class="p">):</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">duration</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">clip_duration</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_stereo_factor_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_duration</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">getter</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_stereo_factor_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip_duration</span><span class="p">,</span> <span class="n">nchannels</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">getter</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
             <span class="n">factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">clip_duration</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">duration</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">factor</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchannels</span><span class="p">)])</span><span class="o">.</span><span class="n">T</span>
 
         <span class="k">return</span> <span class="n">getter</span>
 
 <div class="viewcode-block" id="AudioFadeOut.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.fx.AudioFadeOut.html#moviepy.audio.fx.AudioFadeOut.AudioFadeOut.apply">[docs]</a>    <span class="nd">@audio_video_effect</span>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>

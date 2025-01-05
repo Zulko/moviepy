@@ -162,13 +162,13 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.fadeout</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
 
 
 <div class="viewcode-block" id="fadeout"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.fadeout.html#moviepy.video.fx.all.fadeout">[docs]</a><span class="nd">@requires_duration</span>
-<span class="k">def</span> <span class="nf">fadeout</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">final_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fadeout</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">final_color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Makes the clip progressively fade to some color (black by default),</span>
 <span class="sd">    over ``duration`` seconds at the end of the clip. Can be used for</span>
@@ -182,7 +182,7 @@
     
     <span class="n">final_color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">final_color</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fl</span><span class="p">(</span><span class="n">gf</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">duration</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">gf</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>

@@ -375,19 +375,19 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.audio.fx.AudioDelay</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.audio.AudioClip</span> <span class="kn">import</span> <span class="n">CompositeAudioClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.audio.fx.MultiplyVolume</span> <span class="kn">import</span> <span class="n">MultiplyVolume</span>
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">audio_video_effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.AudioClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeAudioClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.audio.fx.MultiplyVolume</span><span class="w"> </span><span class="kn">import</span> <span class="n">MultiplyVolume</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">audio_video_effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
 
 
 <div class="viewcode-block" id="AudioDelay"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.fx.AudioDelay.html#moviepy.audio.fx.AudioDelay.AudioDelay">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">AudioDelay</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AudioDelay</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Repeats audio certain number of times at constant intervals multiplying</span>
 <span class="sd">    their volume levels using a linear space in the range 1 to ``decay`` argument</span>
 <span class="sd">    value.</span>
@@ -431,7 +431,7 @@ document.write(`
     <span class="n">decay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span>
 
 <div class="viewcode-block" id="AudioDelay.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.fx.AudioDelay.html#moviepy.audio.fx.AudioDelay.AudioDelay.apply">[docs]</a>    <span class="nd">@audio_video_effect</span>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="n">decayments</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decay</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_repeats</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">CompositeAudioClip</span><span class="p">(</span>

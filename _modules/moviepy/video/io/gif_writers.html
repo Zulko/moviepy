@@ -377,15 +377,15 @@ document.write(`
   <h1>Source code for moviepy.video.io.gif_writers</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;MoviePy video GIFs writing.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">imageio.v3</span> <span class="k">as</span> <span class="nn">iio</span>
-<span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">imageio.v3</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">requires_duration</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span><span class="p">,</span> <span class="n">use_clip_fps_by_default</span>
 
 
 <div class="viewcode-block" id="write_gif_with_imageio"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.gif_writers.write_gif_with_imageio.html#moviepy.video.io.gif_writers.write_gif_with_imageio">[docs]</a><span class="nd">@requires_duration</span>
 <span class="nd">@use_clip_fps_by_default</span>
-<span class="k">def</span> <span class="nf">write_gif_with_imageio</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_gif_with_imageio</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">loop</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Writes the gif with the Python library ImageIO (calls FreeImage).&quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">proglog</span><span class="o">.</span><span class="n">default_bar_logger</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
 

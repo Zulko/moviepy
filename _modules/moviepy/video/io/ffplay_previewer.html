@@ -380,13 +380,13 @@ document.write(`
 <span class="sd">out of VideoClips</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.config</span> <span class="kn">import</span> <span class="n">FFPLAY_BINARY</span>
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFPLAY_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
 
 
-<div class="viewcode-block" id="FFPLAY_VideoPreviewer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer">[docs]</a><span class="k">class</span> <span class="nc">FFPLAY_VideoPreviewer</span><span class="p">:</span>
+<div class="viewcode-block" id="FFPLAY_VideoPreviewer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFPLAY_VideoPreviewer</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for FFPLAY-based video preview.</span>
 
 <span class="sd">    Parameters</span>
@@ -403,7 +403,7 @@ document.write(`
 <span class="sd">      if video with mask.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">size</span><span class="p">,</span>
         <span class="n">fps</span><span class="p">,</span>
@@ -430,7 +430,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">proc</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="o">**</span><span class="n">popen_params</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FFPLAY_VideoPreviewer.show_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.show_frame">[docs]</a>    <span class="k">def</span> <span class="nf">show_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_array</span><span class="p">):</span>
+<div class="viewcode-block" id="FFPLAY_VideoPreviewer.show_frame"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.show_frame">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">show_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_array</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Writes one frame in the file.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">img_array</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
@@ -446,7 +446,7 @@ document.write(`
 
             <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">error</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFPLAY_VideoPreviewer.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="FFPLAY_VideoPreviewer.close"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.html#moviepy.video.io.ffplay_previewer.FFPLAY_VideoPreviewer.close">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Closes the writer, terminating the subprocess if is still alive.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -458,14 +458,14 @@ document.write(`
 
     <span class="c1"># Support the Context Manager protocol, to ensure that resources are cleaned up.</span>
 
-    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ffplay_preview_video"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.ffplay_preview_video.html#moviepy.video.io.ffplay_previewer.ffplay_preview_video">[docs]</a><span class="k">def</span> <span class="nf">ffplay_preview_video</span><span class="p">(</span>
+<div class="viewcode-block" id="ffplay_preview_video"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffplay_previewer.ffplay_preview_video.html#moviepy.video.io.ffplay_previewer.ffplay_preview_video">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffplay_preview_video</span><span class="p">(</span>
     <span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">pixel_format</span><span class="o">=</span><span class="s2">&quot;rgb24&quot;</span><span class="p">,</span> <span class="n">audio_flag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">video_flag</span><span class="o">=</span><span class="kc">None</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Preview the clip using ffplay. See VideoClip.preview for details</span>

@@ -186,10 +186,10 @@
 <h1>Tracking and blurring someone’s face<a class="headerlink" href="#tracking-and-blurring-someone-s-face" title="Permalink to this headline">¶</a></h1>
 <div style="position: relative; padding-bottom: 56.25%; padding-top: 30px; margin-bottom:30px; height: 0; overflow: hidden; margin-left: 5%;"><iframe type="text/html" src="https://www.youtube.com/embed/FWCKYTRCrBI" frameborder="0" style="position: absolute; top: 0; bottom: 10; width: 90%; height: 100%;" allowfullscreen></iframe></div><p>First we will need to track the face, i.e. to get two functions <code class="docutils literal notranslate"><span class="pre">fx</span></code> and <code class="docutils literal notranslate"><span class="pre">fy</span></code> such that <code class="docutils literal notranslate"><span class="pre">(fx(t),fy(t))</span></code> gives the position of the center of the head at time <code class="docutils literal notranslate"><span class="pre">t</span></code>. This will be easily done with
 <cite>manual_tracking</cite>. Then we will need to blur the area of the video around the center of the head.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.tracking</span> <span class="kn">import</span> <span class="n">manual_tracking</span><span class="p">,</span> <span class="n">to_fxfy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.tracking</span><span class="w"> </span><span class="kn">import</span> <span class="n">manual_tracking</span><span class="p">,</span> <span class="n">to_fxfy</span>
 
 <span class="c1"># LOAD THE CLIP (subclip 6&#39;51 - 7&#39;01 of a chaplin movie)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;../../videos/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclip</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mf">51.7</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mf">01.3</span><span class="p">))</span>

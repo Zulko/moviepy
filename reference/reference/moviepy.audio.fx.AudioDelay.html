@@ -564,7 +564,7 @@ for each repetition.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="n">videoclip</span> <span class="o">=</span> <span class="n">AudioFileClip</span><span class="p">(</span><span class="s1">&#39;myaudio.wav&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span>
     <span class="n">afx</span><span class="o">.</span><span class="n">AudioDelay</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">decayment</span><span class="o">=</span><span class="mf">.2</span><span class="p">)</span>
 <span class="p">])</span>

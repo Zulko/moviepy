@@ -165,18 +165,18 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Misc. useful functions that can be used at many places in the program.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">subprocess</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
-<span class="kn">import</span> <span class="nn">proglog</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">proglog</span>
 
-<span class="kn">from</span> <span class="nn">.compat</span> <span class="kn">import</span> <span class="n">DEVNULL</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.compat</span><span class="w"> </span><span class="kn">import</span> <span class="n">DEVNULL</span>
 
 
 
-<span class="k">def</span> <span class="nf">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Writes and flushes without delay a text in the console &quot;&quot;&quot;</span>
     <span class="c1"># Reason for not using `print` is that in some consoles &quot;print&quot; </span>
     <span class="c1"># commands get delayed, while stdout.flush are instantaneous, </span>
@@ -186,13 +186,13 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">verbose_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">verbose_print</span><span class="p">(</span><span class="n">verbose</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Only prints s (with sys_write_flush) if verbose is True.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="n">sys_write_flush</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">errorprint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="n">errorprint</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Executes the given subprocess command.</span>
 <span class="sd">    </span>
 <span class="sd">    Set logger to None or a custom Proglog logger to avoid printings.</span>
@@ -221,7 +221,7 @@
 
     <span class="k">del</span> <span class="n">proc</span>
 
-<span class="k">def</span> <span class="nf">is_string</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_string</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Returns true if s is string or string-like object,</span>
 <span class="sd">    compatible with Python 2 and Python 3.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
@@ -230,7 +230,7 @@
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">cvsecs</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cvsecs</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Will convert any time into seconds. </span>
 <span class="sd">    </span>
 <span class="sd">    If the type of `time` is not valid, </span>
@@ -264,7 +264,7 @@
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mult</span> <span class="o">*</span> <span class="n">part</span> <span class="k">for</span> <span class="n">mult</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">factors</span><span class="p">,</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">time</span><span class="p">)))</span>
 
 
-<span class="k">def</span> <span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">deprecated_version_of</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Indicates that a function is deprecated and has a new name.</span>
 
 <span class="sd">    `f` is the new function, `oldname` the name of the deprecated</span>
@@ -296,7 +296,7 @@
               <span class="s2">&quot;for backwards compatibility.</span><span class="se">\n</span><span class="s2">Please use the new name, &quot;</span>
               <span class="s2">&quot;``</span><span class="si">%s</span><span class="s2">``, instead.&quot;</span><span class="p">)</span><span class="o">%</span><span class="p">(</span><span class="n">oldname</span><span class="p">,</span> <span class="n">newname</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">fdepr</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fdepr</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;MoviePy: &quot;</span> <span class="o">+</span> <span class="n">warning</span><span class="p">,</span> <span class="ne">PendingDeprecationWarning</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
     <span class="n">fdepr</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">warning</span>
@@ -325,7 +325,7 @@
     <span class="n">extensions_dict</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;image&#39;</span><span class="p">}</span>
 
 
-<span class="k">def</span> <span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_extension</span><span class="p">(</span><span class="n">codec</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">codec</span> <span class="ow">in</span> <span class="n">extensions_dict</span><span class="p">:</span>
         <span class="c1"># codec is already the extension</span>
         <span class="k">return</span> <span class="n">codec</span>

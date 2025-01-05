@@ -167,9 +167,9 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># TRY USING OpenCV AS RESIZER</span>
     <span class="c1">#raise ImportError #debugging</span>
-    <span class="kn">import</span> <span class="nn">cv2</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="k">def</span> <span class="nf">resizer</span> <span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">newsize</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resizer</span> <span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">newsize</span><span class="p">):</span>
         <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">newsize</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">newsize</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">lx</span> <span class="o">&gt;</span> <span class="n">pic</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">ly</span> <span class="o">&gt;</span> <span class="n">pic</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="c1"># For upsizing use linear for good quality &amp; decent speed</span>
@@ -187,9 +187,9 @@
     
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># TRY USING PIL/PILLOW AS RESIZER</span>
-        <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="k">def</span> <span class="nf">resizer</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">newsize</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">resizer</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span> <span class="n">newsize</span><span class="p">):</span>
             <span class="n">newsize</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">newsize</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">shape</span> <span class="o">=</span> <span class="n">pic</span><span class="o">.</span><span class="n">shape</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
@@ -208,7 +208,7 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="c1"># TRY USING SCIPY AS RESIZER</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="kn">import</span> <span class="n">imresize</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">imresize</span>
             <span class="n">resizer</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">pic</span><span class="p">,</span> <span class="n">newsize</span> <span class="p">:</span> <span class="n">imresize</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span>
                                             <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">newsize</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
             <span class="n">resizer</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="s2">&quot;Scipy&quot;</span>
@@ -219,10 +219,10 @@
         
         
     
-<span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_mask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_to_mask</span>
 
 
-<span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">newsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">newsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">apply_to_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Returns a video clip that is a resized version of the clip.</span>
 <span class="sd">    </span>
@@ -257,7 +257,7 @@
     
     <span class="k">if</span> <span class="n">newsize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         
-        <span class="k">def</span> <span class="nf">trans_newsize</span><span class="p">(</span><span class="n">ns</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">trans_newsize</span><span class="p">(</span><span class="n">ns</span><span class="p">):</span>
             
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">ns</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">ns</span> <span class="o">*</span> <span class="n">h</span><span class="p">]</span>
@@ -324,7 +324,7 @@
 <span class="k">if</span> <span class="ow">not</span> <span class="n">resize_possible</span><span class="p">:</span>
     
     <span class="n">doc</span> <span class="o">=</span> <span class="n">resize</span><span class="o">.</span><span class="vm">__doc__</span>
-<div class="viewcode-block" id="resize"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.resize.html#moviepy.video.fx.all.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">newsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="resize"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.resize.html#moviepy.video.fx.all.resize">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">resize</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">newsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;fx resize needs OpenCV or Scipy or PIL&quot;</span><span class="p">)</span></div>
     <span class="n">resize</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">doc</span>
 </pre></div>

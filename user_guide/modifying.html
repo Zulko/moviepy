@@ -415,7 +415,7 @@ document.write(`
 Instead it will return <strong>a modified copy of the original</strong> and let the original untouched. This is known as out-place instead of in-place behavior.</p>
 <p>To illustrate:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import everything needed to edit video clips</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="c1"># Load example.mp4</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
@@ -461,7 +461,7 @@ Instead it will return <strong>a modified copy of the original</strong> and let 
 <p>The first way to modify a clip is by modifying internal properties of your object, thus modifying his behavior.</p>
 <p>These methods usually start with the prefix <code class="docutils literal notranslate"><span class="pre">with_</span></code> or <code class="docutils literal notranslate"><span class="pre">without_</span></code>, indicating that they will return a copy of the clip with the properties modified.</p>
 <p>So, you may write something like:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">myclip</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># stop the clip after 5 sec</span>
@@ -484,8 +484,8 @@ For practicality, these two modules are loaded in MoviePy as <code class="docuti
 <p>To use these effects, you simply need to instantiate them as object and apply them on your <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip" title="moviepy.Clip.Clip"><code class="xref py py-class docutils literal notranslate"><span class="pre">Clip</span></code></a> using method <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.with_effects" title="moviepy.Clip.Clip.with_effects"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_effects()</span></code></a>, with a list of <a class="reference internal" href="../reference/reference/moviepy.Effect.html#moviepy.Effect.Effect" title="moviepy.Effect.Effect"><code class="xref py py-class docutils literal notranslate"><span class="pre">Effect</span></code></a> objects you want to apply.</p>
 <p>For convenience the effects are also dynamically added as method of <a class="reference internal" href="../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip" title="moviepy.video.VideoClip.VideoClip"><code class="xref py py-class docutils literal notranslate"><span class="pre">VideoClip</span></code></a> and <code class="xref py py-class docutils literal notranslate"><span class="pre">AudioClip</span></code>  classes at runtime, letting you call them as simple method of your clip.</p>
 <p>So, you may write something like:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">vfx</span><span class="p">,</span> <span class="n">afx</span>
 
 <span class="n">myclip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 <span class="c1"># resize clip to be 460px in width, keeping aspect ratio</span>
@@ -515,8 +515,8 @@ For practicality, these two modules are loaded in MoviePy as <code class="docuti
 <h3>Modify only the timing of a Clip<a class="headerlink" href="#modify-only-the-timing-of-a-clip" title="Permalink to this heading">#</a></h3>
 <p>You can change the timeline of the clip with <a class="reference internal" href="../reference/reference/moviepy.Clip.Clip.html#moviepy.Clip.Clip.time_transform" title="moviepy.Clip.Clip.time_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">time_transform(your_filter)</span></code></a>.
 Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function taking clip time as a parameter and returning a new time:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">import</span> <span class="nn">math</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
@@ -539,13 +539,13 @@ Where <code class="docutils literal notranslate"><span class="pre">your_filter</
 Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function, taking clip frame (a numpy array) as a parameter and returning the transformed frame:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s invert the green and blue channels of a video.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">invert_green_blue</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">image</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
 
 
@@ -569,12 +569,12 @@ This is possible with the method <a class="reference internal" href="../referenc
 Where <code class="docutils literal notranslate"><span class="pre">your_filter</span></code> is a callback function taking two parameters, and returning a new frame picture. Where first argument is a <code class="docutils literal notranslate"><span class="pre">get_frame</span></code> method (i.e. a function <code class="docutils literal notranslate"><span class="pre">get_frame(time)</span></code> which given a time returns the clip’s frame at that time), and the second argument is the time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Let&#39;s create a scolling video effect from scratch.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
 
 <span class="n">my_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;example.mp4&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">scroll</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">scroll</span><span class="p">(</span><span class="n">get_frame</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This function returns a &#39;region&#39; of the current frame.</span>
 <span class="sd">    The position of this region depends on the time.</span>

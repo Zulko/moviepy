@@ -196,11 +196,11 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.editor</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.drawing</span> <span class="kn">import</span> <span class="n">color_gradient</span>
-<span class="kn">from</span> <span class="nn">skimage</span> <span class="kn">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.editor</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.drawing</span><span class="w"> </span><span class="kn">import</span> <span class="n">color_gradient</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skimage</span><span class="w"> </span><span class="kn">import</span> <span class="n">transform</span> <span class="k">as</span> <span class="n">tf</span>
 
 <span class="c1"># RESOLUTION</span>
 
@@ -258,7 +258,7 @@
 
 <span class="c1"># WARP THE TEXT INTO A TRAPEZOID (PERSPECTIVE EFFECT)</span>
 
-<span class="k">def</span> <span class="nf">trapzWarp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="n">cx</span><span class="p">,</span><span class="n">cy</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trapzWarp</span><span class="p">(</span><span class="n">pic</span><span class="p">,</span><span class="n">cx</span><span class="p">,</span><span class="n">cy</span><span class="p">,</span><span class="n">ismask</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Complicated function (will be latex packaged as a fx) &quot;&quot;&quot;</span>
     <span class="n">Y</span><span class="p">,</span><span class="n">X</span> <span class="o">=</span> <span class="n">pic</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="n">X</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="n">Y</span><span class="p">]])</span>
@@ -310,7 +310,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span><span class="n">txt_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="n">bg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">annotate</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">txt</span><span class="p">,</span><span class="n">txt_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="n">bg_color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Writes a text at the bottom of the clip. &quot;&quot;&quot;</span>
     
     <span class="n">txtclip</span> <span class="o">=</span> <span class="n">TextClip</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="s1">&#39;Ubuntu-bold&#39;</span><span class="p">,</span>
@@ -324,11 +324,11 @@
     <span class="k">return</span> <span class="n">cvc</span><span class="o">.</span><span class="n">set_duration</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">resizeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">resizeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">clip</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span> <span class="n">height</span><span class="o">=</span><span class="n">h</span><span class="p">)</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
 
     
-<span class="k">def</span> <span class="nf">composeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">composeCenter</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">CompositeVideoClip</span><span class="p">([</span><span class="n">clip</span><span class="o">.</span><span class="n">set_pos</span><span class="p">(</span><span class="s1">&#39;center&#39;</span><span class="p">)],</span><span class="n">size</span><span class="o">=</span><span class="n">moviesize</span><span class="p">)</span>
 
 

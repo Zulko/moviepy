@@ -166,27 +166,27 @@
 <span class="sd">all decorators used in moviepy go there</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">decorator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">decorator</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.tools</span> <span class="kn">import</span> <span class="n">cvsecs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cvsecs</span>
 
 
 <div class="viewcode-block" id="outplace"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.outplace">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">outplace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">outplace</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Applies f(clip.copy(), *a, **k) and returns clip.copy()&quot;&quot;&quot;</span>
     <span class="n">newclip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">f</span><span class="p">(</span><span class="n">newclip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">newclip</span></div>
 
 <div class="viewcode-block" id="convert_masks_to_RGB"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.convert_masks_to_RGB">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">convert_masks_to_RGB</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_masks_to_RGB</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; If the clip is a mask, convert it to RGB before running the function &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">ismask</span><span class="p">:</span>
         <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">to_RGB</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="apply_to_mask"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_mask">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">apply_to_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_to_mask</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; This decorator will apply the same function f to the mask of</span>
 <span class="sd">        the clip created with f &quot;&quot;&quot;</span>
         
@@ -198,7 +198,7 @@
 
 
 <div class="viewcode-block" id="apply_to_audio"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.apply_to_audio">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">apply_to_audio</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_to_audio</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; This decorator will apply the function f to the audio of</span>
 <span class="sd">        the clip created with f &quot;&quot;&quot;</span>
         
@@ -209,7 +209,7 @@
 
 
 <div class="viewcode-block" id="requires_duration"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.requires_duration">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">requires_duration</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">requires_duration</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Raise an error if the clip has no duration.&quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -220,7 +220,7 @@
 
 
 <div class="viewcode-block" id="audio_video_fx"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.audio_video_fx">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">audio_video_fx</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">audio_video_fx</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Use an audio function on a video/audio clip</span>
 <span class="sd">    </span>
 <span class="sd">    This decorator tells that the function f (audioclip -&gt; audioclip)</span>
@@ -236,10 +236,10 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="preprocess_args"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.preprocess_args">[docs]</a><span class="k">def</span> <span class="nf">preprocess_args</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span><span class="n">varnames</span><span class="p">):</span>
+<div class="viewcode-block" id="preprocess_args"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.preprocess_args">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_args</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span><span class="n">varnames</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Applies fun to variables in varnames before launching the function &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">&quot;func_code&quot;</span><span class="p">):</span>
             <span class="n">func_code</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">func_code</span> <span class="c1"># Python 2</span>
         <span class="k">else</span><span class="p">:</span>
@@ -254,14 +254,14 @@
     <span class="k">return</span> <span class="n">decorator</span><span class="o">.</span><span class="n">decorator</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="convert_to_seconds"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.convert_to_seconds">[docs]</a><span class="k">def</span> <span class="nf">convert_to_seconds</span><span class="p">(</span><span class="n">varnames</span><span class="p">):</span>
+<div class="viewcode-block" id="convert_to_seconds"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.convert_to_seconds">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_to_seconds</span><span class="p">(</span><span class="n">varnames</span><span class="p">):</span>
     <span class="s2">&quot;Converts the specified variables to seconds&quot;</span>
     <span class="k">return</span> <span class="n">preprocess_args</span><span class="p">(</span><span class="n">cvsecs</span><span class="p">,</span> <span class="n">varnames</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="add_mask_if_none"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.add_mask_if_none">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">add_mask_if_none</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_mask_if_none</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Add a mask to the clip if there is none. &quot;&quot;&quot;</span>        
     <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">add_mask</span><span class="p">()</span>
@@ -270,10 +270,10 @@
 
 
 <div class="viewcode-block" id="use_clip_fps_by_default"><a class="viewcode-back" href="../../ref/decorators.html#moviepy.decorators.use_clip_fps_by_default">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span> <span class="nf">use_clip_fps_by_default</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">use_clip_fps_by_default</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">k</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Will use clip.fps if no fps=... is provided in **k &quot;&quot;&quot;</span>
     
-    <span class="k">def</span> <span class="nf">fun</span><span class="p">(</span><span class="n">fps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fun</span><span class="p">(</span><span class="n">fps</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">fps</span>
         <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s1">&#39;fps&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>

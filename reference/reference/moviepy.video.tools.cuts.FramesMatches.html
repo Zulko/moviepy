@@ -624,8 +624,8 @@ and whose distance is under <code class="docutils literal notranslate"><span cla
 <p class="rubric">Examples</p>
 <p>We find all matching frames in a given video and turn the best match
 with a duration of 1.5 seconds or more into a GIF:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="n">VideoFileClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="n">VideoFileClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.cuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">FramesMatches</span>
 
 <span class="n">clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;foo.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
 <span class="n">matches</span> <span class="o">=</span> <span class="n">FramesMatches</span><span class="o">.</span><span class="n">from_clip</span><span class="p">(</span>
@@ -688,9 +688,9 @@ chosen equal to <code class="docutils literal notranslate"><span class="pre">mat
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.cuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">FramesMatches</span>
 
 <span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">mirror_and_clip</span> <span class="o">=</span> <span class="p">[</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">vfx</span><span class="o">.</span><span class="n">TimeMirror</span><span class="p">()]),</span> <span class="n">ch_clip</span><span class="p">]</span>
@@ -723,10 +723,10 @@ and write them as GIFs in a directory, one GIF for each matching frame.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-<span class="kn">from</span> <span class="nn">moviepy</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.tools.cuts</span> <span class="kn">import</span> <span class="n">FramesMatches</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.cuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">FramesMatches</span>
 
 <span class="n">ch_clip</span> <span class="o">=</span> <span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;media/chaplin.mp4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">subclipped</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">([</span><span class="n">ch_clip</span><span class="o">.</span><span class="n">time_mirror</span><span class="p">(),</span> <span class="n">ch_clip</span><span class="p">])</span>

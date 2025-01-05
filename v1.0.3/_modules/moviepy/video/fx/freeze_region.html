@@ -162,14 +162,14 @@
            <div itemprop="articleBody">
             
   <h1>Source code for moviepy.video.fx.freeze_region</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">moviepy.decorators</span> <span class="kn">import</span> <span class="n">apply_to_mask</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_to_mask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeVideoClip</span>
 
-<span class="kn">from</span> <span class="nn">.crop</span> <span class="kn">import</span> <span class="n">crop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.crop</span><span class="w"> </span><span class="kn">import</span> <span class="n">crop</span>
 
 
 <span class="c1">#@apply_to_mask</span>
-<div class="viewcode-block" id="freeze_region"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.freeze_region.html#moviepy.video.fx.all.freeze_region">[docs]</a><span class="k">def</span> <span class="nf">freeze_region</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outside_region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="freeze_region"><a class="viewcode-back" href="../../../../ref/videofx/moviepy.video.fx.all.freeze_region.html#moviepy.video.fx.all.freeze_region">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">freeze_region</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">outside_region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Freezes one region of the clip while the rest remains animated.</span>
 <span class="sd">    </span>
 <span class="sd">    You can choose one of three methods by providing either `region`,</span>

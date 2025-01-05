@@ -375,22 +375,22 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.CrossFadeOut</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.FadeOut</span> <span class="kn">import</span> <span class="n">FadeOut</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.FadeOut</span><span class="w"> </span><span class="kn">import</span> <span class="n">FadeOut</span>
 
 
 <div class="viewcode-block" id="CrossFadeOut"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.CrossFadeOut.html#moviepy.video.fx.CrossFadeOut.CrossFadeOut">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">CrossFadeOut</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CrossFadeOut</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes the clip disappear progressively, over ``duration`` seconds.</span>
 <span class="sd">    Only works when the clip is included in a CompositeVideoClip.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">duration</span><span class="p">:</span> <span class="nb">float</span>
 
-<div class="viewcode-block" id="CrossFadeOut.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.CrossFadeOut.html#moviepy.video.fx.CrossFadeOut.CrossFadeOut.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="CrossFadeOut.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.CrossFadeOut.html#moviepy.video.fx.CrossFadeOut.CrossFadeOut.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attribute &#39;duration&#39; not set&quot;</span><span class="p">)</span>

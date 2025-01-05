@@ -375,16 +375,16 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <h1>Source code for moviepy.video.fx.MakeLoopable</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">moviepy.Clip</span> <span class="kn">import</span> <span class="n">Clip</span>
-<span class="kn">from</span> <span class="nn">moviepy.Effect</span> <span class="kn">import</span> <span class="n">Effect</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.compositing.CompositeVideoClip</span> <span class="kn">import</span> <span class="n">CompositeVideoClip</span>
-<span class="kn">from</span> <span class="nn">moviepy.video.fx.CrossFadeIn</span> <span class="kn">import</span> <span class="n">CrossFadeIn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Clip</span><span class="w"> </span><span class="kn">import</span> <span class="n">Clip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.Effect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Effect</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.compositing.CompositeVideoClip</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompositeVideoClip</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.CrossFadeIn</span><span class="w"> </span><span class="kn">import</span> <span class="n">CrossFadeIn</span>
 
 
 <div class="viewcode-block" id="MakeLoopable"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MakeLoopable.html#moviepy.video.fx.MakeLoopable.MakeLoopable">[docs]</a><span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">MakeLoopable</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MakeLoopable</span><span class="p">(</span><span class="n">Effect</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes the clip fade in progressively at its own end, this way it can be</span>
 <span class="sd">    looped indefinitely.</span>
 
@@ -397,7 +397,7 @@ document.write(`
 
     <span class="n">overlap_duration</span><span class="p">:</span> <span class="nb">float</span>
 
-<div class="viewcode-block" id="MakeLoopable.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MakeLoopable.html#moviepy.video.fx.MakeLoopable.MakeLoopable.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
+<div class="viewcode-block" id="MakeLoopable.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.MakeLoopable.html#moviepy.video.fx.MakeLoopable.MakeLoopable.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
         <span class="n">clip2</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">with_effects</span><span class="p">([</span><span class="n">CrossFadeIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlap_duration</span><span class="p">)])</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span>
             <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">overlap_duration</span>
