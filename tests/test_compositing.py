@@ -293,5 +293,13 @@ def test_slide_out():
             assert n_reds == n_reds_expected
 
 
+def test_concatenate_with_masks(util):
+    video_without_mask = ColorClip(size=(10, 10), color=(255, 0, 0)).with_duration(1).with_fps(1)
+    video_with_mask = ColorClip(size=(5, 5), color=(0, 255, 0)).with_duration(1).with_fps(1).with_mask()
+    
+    output = os.path.join(util.TMP_DIR, "test_concatenate_with_masks.mp4")
+    concatenate_videoclips([video_without_mask, video_with_mask]).write_videofile(output)
+
+
 if __name__ == "__main__":
     pytest.main()

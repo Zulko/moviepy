@@ -1404,7 +1404,7 @@ class ColorClip(ImageClip):
     ----------
 
     size
-      Size (width, height) in pixels of the clip.
+      Size tuple (width, height) in pixels of the clip.
 
     color
       If argument ``is_mask`` is False, ``color`` indicates

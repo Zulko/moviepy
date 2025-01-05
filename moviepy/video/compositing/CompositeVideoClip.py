@@ -336,7 +336,7 @@ def concatenate_videoclips(
             return clips[i].get_frame(t - timings[i])
 
         def get_mask(clip):
-            mask = clip.mask or ColorClip([1, 1], color=1, is_mask=True)
+            mask = clip.mask or ColorClip(clip.size, color=1, is_mask=True)
             if mask.duration is None:
                 mask.duration = clip.duration
             return mask
