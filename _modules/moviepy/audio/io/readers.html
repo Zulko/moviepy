@@ -558,7 +558,6 @@ document.write(`
             <span class="n">t</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">pos</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">pos</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">:</span>
-            <span class="c1"># print pos</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">skip_chunk</span><span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>
         <span class="c1"># last case standing: pos = current pos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="n">pos</span></div>

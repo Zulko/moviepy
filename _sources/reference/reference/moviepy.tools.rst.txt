@@ -22,6 +22,7 @@ moviepy.tools
       :toctree:
    
       close_all_clips
+      compute_position
       convert_to_seconds
       cross_platform_popen_params
       deprecated_version_of

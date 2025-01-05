@@ -393,6 +393,7 @@ document.write(`
 </li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.compute_position.html">moviepy.tools.compute_position</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
@@ -629,11 +630,41 @@ Default is 0.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.blit_on">
-<span class="sig-name descname"><span class="pre">blit_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">picture</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.blit_on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.blit_on" title="Permalink to this definition">#</a></dt>
-<dd><p>Returns the result of the blit of the clip’s frame at time <cite>t</cite>
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.compose_mask">
+<span class="sig-name descname"><span class="pre">compose_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background_mask</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.compose_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.compose_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the result of the clip’s mask at time <cite>t</cite> composited
+on the given <cite>background_mask</cite>, the position of the clip being given
+by the clip’s <code class="docutils literal notranslate"><span class="pre">pos</span></code> attribute. Meant for compositing.</p>
+<p>(warning: only use this function to blit two masks together, never images)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>background_mask</strong> – The underlying mask onto which the clip mask will be composed.</p></li>
+<li><p><strong>t</strong> – The time position in the clip at which to extract the mask.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moviepy.video.VideoClip.VideoClip.compose_on">
+<span class="sig-name descname"><span class="pre">compose_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Image</span></span></span><a class="reference internal" href="../../_modules/moviepy/video/VideoClip.html#VideoClip.compose_on"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.VideoClip.VideoClip.compose_on" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the result of the clip’s frame at time <cite>t</cite> on top
 on the given <cite>picture</cite>, the position of the clip being given
 by the clip’s <code class="docutils literal notranslate"><span class="pre">pos</span></code> attribute. Meant for compositing.</p>
+<p>If the clip/backgrounds have transparency the transparency will
+be accounted for.</p>
+<p>The return is a Pillow Image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>(</strong><strong>Image</strong><strong>)</strong> (<em>backrgound</em>) – The background image to apply current clip on top of
+if the background image is transparent it must be given as a RGBA image</p></li>
+<li><p><strong>t</strong> – The time of clip to apply on top of clip</p></li>
+<li><p><strong>Return</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -919,6 +950,15 @@ attribute will be displayed on top of others.</p>
 <dd><p>Set the clip’s mask.</p>
 <p>Returns a copy of the VideoClip with the mask attribute set to
 <code class="docutils literal notranslate"><span class="pre">mask</span></code>, which must be a greyscale (values in 0-1) VideoClip.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mask</strong> (<em>Union</em><em>[</em><em>&quot;VideoClip&quot;</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The mask to apply to the clip.
+If set to “auto”, a default mask will be generated:
+- If the clip has a constant size, a solid mask with a value of 1.0
+will be created.
+- Otherwise, a dynamic solid mask will be created based on the frame size.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1166,7 +1206,8 @@ output file in them.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.relative_pos"><code class="docutils literal notranslate"><span class="pre">VideoClip.relative_pos</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.layer"><code class="docutils literal notranslate"><span class="pre">VideoClip.layer</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.aspect_ratio"><code class="docutils literal notranslate"><span class="pre">VideoClip.aspect_ratio</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.blit_on"><code class="docutils literal notranslate"><span class="pre">VideoClip.blit_on()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.compose_mask"><code class="docutils literal notranslate"><span class="pre">VideoClip.compose_mask()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.compose_on"><code class="docutils literal notranslate"><span class="pre">VideoClip.compose_on()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.copy"><code class="docutils literal notranslate"><span class="pre">VideoClip.copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.cropped"><code class="docutils literal notranslate"><span class="pre">VideoClip.cropped()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.VideoClip.VideoClip.display_in_notebook"><code class="docutils literal notranslate"><span class="pre">VideoClip.display_in_notebook()</span></code></a></li>

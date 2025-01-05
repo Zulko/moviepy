@@ -472,8 +472,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-            <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">with_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+
+        <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">with_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
 
         <span class="c1"># order is important</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
@@ -496,18 +496,26 @@ document.write(`
             <span class="s2">&quot;-&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">audiofile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">audiofile</span><span class="p">),</span> <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audiofile</span><span class="p">,</span> <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
+
         <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-vcodec&quot;</span><span class="p">,</span> <span class="n">codec</span><span class="p">,</span> <span class="s2">&quot;-preset&quot;</span><span class="p">,</span> <span class="n">preset</span><span class="p">])</span>
+
         <span class="k">if</span> <span class="n">ffmpeg_params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ffmpeg_params</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">bitrate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="n">bitrate</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">threads</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-threads&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">threads</span><span class="p">)])</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">codec</span> <span class="o">==</span> <span class="s2">&quot;libx264&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span> <span class="s2">&quot;yuv420p&quot;</span><span class="p">])</span>
+        <span class="c1"># Disable auto alt ref for transparent webm and set pix format yo yuva420p</span>
+        <span class="k">if</span> <span class="n">codec</span> <span class="o">==</span> <span class="s2">&quot;libvpx&quot;</span> <span class="ow">and</span> <span class="n">with_mask</span><span class="p">:</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span> <span class="s2">&quot;yuva420p&quot;</span><span class="p">])</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-auto-alt-ref&quot;</span><span class="p">,</span> <span class="s2">&quot;0&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">codec</span> <span class="o">==</span> <span class="s2">&quot;libx264&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-pix_fmt&quot;</span><span class="p">,</span> <span class="s2">&quot;yuva420p&quot;</span><span class="p">])</span>
+
         <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">ffmpeg_escape_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">)])</span>
 
         <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
@@ -614,9 +622,11 @@ document.write(`
         <span class="n">logfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.log&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logfile</span> <span class="o">=</span> <span class="kc">None</span>
+
     <span class="n">logger</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s2">&quot;MoviePy - Writing video </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
-        <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+
+    <span class="n">has_mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
     <span class="k">with</span> <span class="n">FFMPEG_VideoWriter</span><span class="p">(</span>
         <span class="n">filename</span><span class="p">,</span>
         <span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
@@ -624,6 +634,7 @@ document.write(`
         <span class="n">codec</span><span class="o">=</span><span class="n">codec</span><span class="p">,</span>
         <span class="n">preset</span><span class="o">=</span><span class="n">preset</span><span class="p">,</span>
         <span class="n">bitrate</span><span class="o">=</span><span class="n">bitrate</span><span class="p">,</span>
+        <span class="n">with_mask</span><span class="o">=</span><span class="n">has_mask</span><span class="p">,</span>
         <span class="n">logfile</span><span class="o">=</span><span class="n">logfile</span><span class="p">,</span>
         <span class="n">audiofile</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span>
         <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
@@ -669,6 +680,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;uint8&quot;</span><span class="p">:</span>
         <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
         <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
 

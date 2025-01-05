@@ -439,10 +439,16 @@ document.write(`
         <span class="k">if</span> <span class="n">use_bgclip</span> <span class="ow">and</span> <span class="p">(</span><span class="n">clips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="n">transparent</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">transparent</span> <span class="o">=</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="n">transparent</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">bg_color</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">is_mask</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># If we must not use first clip as background and we dont have a color</span>
+        <span class="c1"># we generate a black background if clip should not be transparent and</span>
+        <span class="c1"># a transparent background if transparent</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">use_bgclip</span><span class="p">)</span> <span class="ow">and</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">transparent</span><span class="p">:</span>
+                <span class="n">bg_color</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">is_mask</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bg_color</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="n">is_mask</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="n">fpss</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">fps</span> <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="n">clips</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">fpss</span><span class="p">)</span> <span class="k">if</span> <span class="n">fpss</span> <span class="k">else</span> <span class="kc">None</span>
@@ -454,6 +460,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bg_color</span> <span class="o">=</span> <span class="n">bg_color</span>
 
+        <span class="c1"># Use first clip as background if necessary, else use color</span>
+        <span class="c1"># either set by user or previously generated</span>
         <span class="k">if</span> <span class="n">use_bgclip</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bg</span> <span class="o">=</span> <span class="n">clips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clips</span> <span class="o">=</span> <span class="n">clips</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -489,24 +497,63 @@ document.write(`
                 <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clips</span>
             <span class="p">]</span>
 
+            <span class="k">if</span> <span class="n">use_bgclip</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="p">:</span>
+                <span class="n">maskclips</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">+</span> <span class="n">maskclips</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="n">CompositeVideoClip</span><span class="p">(</span>
                 <span class="n">maskclips</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bg_color</span><span class="o">=</span><span class="mf">0.0</span>
             <span class="p">)</span>
 
 <div class="viewcode-block" id="CompositeVideoClip.frame_function"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.frame_function">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">frame_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;The clips playing at time `t` are blitted over one another.&quot;&quot;&quot;</span>
-        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
-        <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="c1"># For the mask we recalculate the final transparency we&#39;ll need</span>
+        <span class="c1"># to apply on the result image</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_mask</span><span class="p">:</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_clips</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">compose_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">frame_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-            <span class="n">im_mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="n">frame_mask</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
-            <span class="n">im</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">im_mask</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">mask</span>
 
+        <span class="c1"># Try doing clip merging with pillow</span>
+        <span class="n">bg_t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">start</span>
+        <span class="n">bg_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">bg_t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+        <span class="n">bg_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">bg_frame</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="p">:</span>
+            <span class="n">bgm_t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">start</span>
+            <span class="n">bg_mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bg</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">bgm_t</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+            <span class="n">bg_mask_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">bg_mask</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Resize bg_mask_img to match bg_img, always use top left corner</span>
+            <span class="k">if</span> <span class="n">bg_mask_img</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">mask_width</span><span class="p">,</span> <span class="n">mask_height</span> <span class="o">=</span> <span class="n">bg_mask_img</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span> <span class="o">=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">size</span>
+
+                <span class="k">if</span> <span class="n">mask_width</span> <span class="o">&gt;</span> <span class="n">img_width</span> <span class="ow">or</span> <span class="n">mask_height</span> <span class="o">&gt;</span> <span class="n">img_height</span><span class="p">:</span>
+                    <span class="n">bg_mask_img</span> <span class="o">=</span> <span class="n">bg_mask_img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">new_mask</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">bg_mask_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                    <span class="n">bg_mask_img</span> <span class="o">=</span> <span class="n">new_mask</span>
+
+            <span class="n">bg_img</span> <span class="o">=</span> <span class="n">bg_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+            <span class="n">bg_img</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">bg_mask_img</span><span class="p">)</span>
+
+        <span class="c1"># For each clip apply on top of current img</span>
+        <span class="n">current_img</span> <span class="o">=</span> <span class="n">bg_img</span>
         <span class="k">for</span> <span class="n">clip</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">playing_clips</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
-            <span class="n">im</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">blit_on</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+            <span class="n">current_img</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">compose_on</span><span class="p">(</span><span class="n">current_img</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span></div>
+        <span class="c1"># Turn Pillow image into a numpy array</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">current_img</span><span class="p">)</span>
+
+        <span class="c1"># If frame have transparency, remove it</span>
+        <span class="c1"># our mask will take care of it during rendering</span>
+        <span class="k">if</span> <span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">frame</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">frame</span></div>
 
 <div class="viewcode-block" id="CompositeVideoClip.playing_clips"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.html#moviepy.video.compositing.CompositeVideoClip.CompositeVideoClip.playing_clips">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">playing_clips</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a list of the clips in the composite clips that are</span>
@@ -666,7 +713,7 @@ document.write(`
             <span class="k">return</span> <span class="n">clips</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">timings</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">get_mask</span><span class="p">(</span><span class="n">clip</span><span class="p">):</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">or</span> <span class="n">ColorClip</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">mask</span> <span class="ow">or</span> <span class="n">ColorClip</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">is_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">mask</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span>
             <span class="k">return</span> <span class="n">mask</span>

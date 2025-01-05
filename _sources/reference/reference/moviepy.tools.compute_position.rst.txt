@@ -1,0 +1,6 @@
+moviepy.tools.compute\_position
+===============================
+
+.. currentmodule:: moviepy.tools
+
+.. autofunction:: compute_position

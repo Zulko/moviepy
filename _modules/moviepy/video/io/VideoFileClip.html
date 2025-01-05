@@ -482,6 +482,7 @@ document.write(`
         <span class="c1"># Make a reader</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pixel_format</span><span class="p">:</span>
             <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">has_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">FFMPEG_VideoReader</span><span class="p">(</span>
             <span class="n">filename</span><span class="p">,</span>
             <span class="n">decode_file</span><span class="o">=</span><span class="n">decode_file</span><span class="p">,</span>

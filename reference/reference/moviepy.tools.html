@@ -393,6 +393,7 @@ document.write(`
 </li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">moviepy.tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
+<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.compute_position.html">moviepy.tools.compute_position</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
@@ -546,25 +547,28 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.close_all_clips.html#moviepy.tools.close_all_clips" title="moviepy.tools.close_all_clips"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close_all_clips</span></code></a>([objects, types])</p></td>
 <td><p>Closes all clips in a context.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.convert_to_seconds.html#moviepy.tools.convert_to_seconds" title="moviepy.tools.convert_to_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_seconds</span></code></a>(time)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.compute_position.html#moviepy.tools.compute_position" title="moviepy.tools.compute_position"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_position</span></code></a>(clip1_size, clip2_size, pos)</p></td>
+<td><p>Return the position to put clip 1 on clip 2 based on both clip size and the position of clip 1, as return by clip1.pos() method</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.convert_to_seconds.html#moviepy.tools.convert_to_seconds" title="moviepy.tools.convert_to_seconds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_seconds</span></code></a>(time)</p></td>
 <td><p>Will convert any time into seconds.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html#moviepy.tools.cross_platform_popen_params" title="moviepy.tools.cross_platform_popen_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_platform_popen_params</span></code></a>(popen_params)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html#moviepy.tools.cross_platform_popen_params" title="moviepy.tools.cross_platform_popen_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_platform_popen_params</span></code></a>(popen_params)</p></td>
 <td><p>Wrap with this function a dictionary of <code class="docutils literal notranslate"><span class="pre">subprocess.Popen</span></code> kwargs and will be ready to work without unexpected behaviours in any platform.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.deprecated_version_of.html#moviepy.tools.deprecated_version_of" title="moviepy.tools.deprecated_version_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated_version_of</span></code></a>(func, old_name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.deprecated_version_of.html#moviepy.tools.deprecated_version_of" title="moviepy.tools.deprecated_version_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated_version_of</span></code></a>(func, old_name)</p></td>
 <td><p>Indicates that a function is deprecated and has a new name.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename" title="moviepy.tools.ffmpeg_escape_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_escape_filename</span></code></a>(filename)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.ffmpeg_escape_filename.html#moviepy.tools.ffmpeg_escape_filename" title="moviepy.tools.ffmpeg_escape_filename"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_escape_filename</span></code></a>(filename)</p></td>
 <td><p>Escape a filename that we want to pass to the ffmpeg command line</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.find_extension.html#moviepy.tools.find_extension" title="moviepy.tools.find_extension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_extension</span></code></a>(codec)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.find_extension.html#moviepy.tools.find_extension" title="moviepy.tools.find_extension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_extension</span></code></a>(codec)</p></td>
 <td><p>Returns the correspondent file extension for a codec.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.no_display_available.html#moviepy.tools.no_display_available" title="moviepy.tools.no_display_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_display_available</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.no_display_available.html#moviepy.tools.no_display_available" title="moviepy.tools.no_display_available"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_display_available</span></code></a>()</p></td>
 <td><p>Return True if we determine the host system has no graphical environment.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call" title="moviepy.tools.subprocess_call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subprocess_call</span></code></a>(cmd[, logger])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.tools.subprocess_call.html#moviepy.tools.subprocess_call" title="moviepy.tools.subprocess_call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subprocess_call</span></code></a>(cmd[, logger])</p></td>
 <td><p>Executes the given subprocess command.</p></td>
 </tr>
 </tbody>

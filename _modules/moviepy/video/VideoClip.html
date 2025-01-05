@@ -411,13 +411,12 @@ document.write(`
     <span class="n">requires_fps</span><span class="p">,</span>
     <span class="n">use_clip_fps_by_default</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">extensions_dict</span><span class="p">,</span> <span class="n">find_extension</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_position</span><span class="p">,</span> <span class="n">extensions_dict</span><span class="p">,</span> <span class="n">find_extension</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Crop</span><span class="w"> </span><span class="kn">import</span> <span class="n">Crop</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Resize</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resize</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.fx.Rotate</span><span class="w"> </span><span class="kn">import</span> <span class="n">Rotate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.ffmpeg_writer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_write_video</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io.gif_writers</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_gif_with_imageio</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.tools.drawing</span><span class="w"> </span><span class="kn">import</span> <span class="n">blit</span>
 
 
 <div class="viewcode-block" id="VideoClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">VideoClip</span><span class="p">(</span><span class="n">Clip</span><span class="p">):</span>
@@ -1091,72 +1090,146 @@ document.write(`
             <span class="n">post_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">post_array</span><span class="p">,</span> <span class="n">x_1</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">post_array</span></div>
 
-<div class="viewcode-block" id="VideoClip.blit_on"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.blit_on">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">blit_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the result of the blit of the clip&#39;s frame at time `t`</span>
+<div class="viewcode-block" id="VideoClip.compose_on"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.compose_on">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">compose_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background</span><span class="p">:</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Image</span><span class="o">.</span><span class="n">Image</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the result of the clip&#39;s frame at time `t` on top</span>
 <span class="sd">        on the given `picture`, the position of the clip being given</span>
 <span class="sd">        by the clip&#39;s ``pos`` attribute. Meant for compositing.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">wf</span><span class="p">,</span> <span class="n">hf</span> <span class="o">=</span> <span class="n">picture</span><span class="o">.</span><span class="n">size</span>
 
+<span class="sd">        If the clip/backgrounds have transparency the transparency will</span>
+<span class="sd">        be accounted for.</span>
+
+<span class="sd">        The return is a Pillow Image</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        backrgound (Image)</span>
+<span class="sd">          The background image to apply current clip on top of</span>
+<span class="sd">          if the background image is transparent it must be given as a RGBA image</span>
+
+<span class="sd">        t</span>
+<span class="sd">          The time of clip to apply on top of clip</span>
+
+<span class="sd">        Return</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ct</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>  <span class="c1"># clip time</span>
 
         <span class="c1"># GET IMAGE AND MASK IF ANY</span>
-        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
-        <span class="n">im_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">clip_frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+        <span class="n">clip_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">clip_frame</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
-            <span class="n">im_mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+            <span class="n">clip_mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span>
+            <span class="n">clip_mask_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">clip_mask</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">im_img</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">im_mask</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="n">bg_size</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="nb">max</span><span class="p">(</span><span class="n">im_img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">im_mask</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                    <span class="nb">max</span><span class="p">(</span><span class="n">im_img</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">im_mask</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                <span class="p">)</span>
+            <span class="c1"># Resize clip_mask_img to match clip_img, always use top left corner</span>
+            <span class="k">if</span> <span class="n">clip_mask_img</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="n">mask_width</span><span class="p">,</span> <span class="n">mask_height</span> <span class="o">=</span> <span class="n">clip_mask_img</span><span class="o">.</span><span class="n">size</span>
+                <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span> <span class="o">=</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">size</span>
 
-                <span class="n">im_img_bg</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">bg_size</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
-                <span class="n">im_img_bg</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">mask_width</span> <span class="o">&gt;</span> <span class="n">img_width</span> <span class="ow">or</span> <span class="n">mask_height</span> <span class="o">&gt;</span> <span class="n">img_height</span><span class="p">:</span>
+                    <span class="c1"># Crop mask if it is larger</span>
+                    <span class="n">clip_mask_img</span> <span class="o">=</span> <span class="n">clip_mask_img</span><span class="o">.</span><span class="n">crop</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Fill mask with 0 if it is smaller</span>
+                    <span class="n">new_mask</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">new_mask</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">clip_mask_img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                    <span class="n">clip_mask_img</span> <span class="o">=</span> <span class="n">new_mask</span>
 
-                <span class="n">im_mask_bg</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="n">bg_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">im_mask_bg</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im_mask</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">clip_img</span> <span class="o">=</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
+            <span class="n">clip_img</span><span class="o">.</span><span class="n">putalpha</span><span class="p">(</span><span class="n">clip_mask_img</span><span class="p">)</span>
 
-                <span class="n">im_img</span><span class="p">,</span> <span class="n">im_mask</span> <span class="o">=</span> <span class="n">im_img_bg</span><span class="p">,</span> <span class="n">im_mask_bg</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">im_mask</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="n">wi</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">im_img</span><span class="o">.</span><span class="n">size</span>
         <span class="c1"># SET POSITION</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">compute_position</span><span class="p">(</span><span class="n">clip_img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">background</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span><span class="p">)</span>
 
-        <span class="c1"># preprocess short writings of the position</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;top&quot;</span><span class="p">],</span>
-                <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">],</span>
-            <span class="p">}[</span><span class="n">pos</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="c1"># If neither background nor clip have alpha layer (check if mode end</span>
+        <span class="c1"># with A), we can juste use pillow paste</span>
+        <span class="k">if</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span> <span class="ow">and</span> <span class="n">background</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+            <span class="n">background</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">clip_img</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">background</span>
 
-        <span class="c1"># is the position relative (given in % of the clip&#39;s size) ?</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">wf</span><span class="p">,</span> <span class="n">hf</span><span class="p">]):</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-                    <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dim</span> <span class="o">*</span> <span class="n">pos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># For images with transparency we must use pillow alpha composite</span>
+        <span class="c1"># instead of a simple paste, because pillow paste dont work nicely</span>
+        <span class="c1"># with alpha compositing</span>
+        <span class="k">if</span> <span class="n">background</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+            <span class="n">background</span> <span class="o">=</span> <span class="n">background</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="n">wf</span> <span class="o">-</span> <span class="n">wi</span><span class="p">}</span>
-            <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">if</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">mode</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+            <span class="n">clip_img</span> <span class="o">=</span> <span class="n">clip_img</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;top&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span> <span class="n">hf</span> <span class="o">-</span> <span class="n">hi</span><span class="p">}</span>
-            <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">D</span><span class="p">[</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="c1"># We need both image to do the same size for alpha compositing in pillow</span>
+        <span class="c1"># so we must start by making a fully transparent canvas of background&#39;s</span>
+        <span class="c1"># size and paste our clip img into it in position pos, only then can we</span>
+        <span class="c1"># composite this canvas on top of background</span>
+        <span class="n">canvas</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGBA&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">background</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">background</span><span class="o">.</span><span class="n">height</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">canvas</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">clip_img</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">alpha_composite</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="n">canvas</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
 
-        <span class="n">pos</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">blit</span><span class="p">(</span><span class="n">im_img</span><span class="p">,</span> <span class="n">picture</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">im_mask</span><span class="p">)</span></div>
+<div class="viewcode-block" id="VideoClip.compose_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.compose_mask">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">compose_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">background_mask</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the result of the clip&#39;s mask at time `t` composited</span>
+<span class="sd">        on the given `background_mask`, the position of the clip being given</span>
+<span class="sd">        by the clip&#39;s ``pos`` attribute. Meant for compositing.</span>
+
+<span class="sd">        (warning: only use this function to blit two masks together, never images)</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        background_mask:</span>
+<span class="sd">          The underlying mask onto which the clip mask will be composed.</span>
+
+<span class="sd">        t:</span>
+<span class="sd">          The time position in the clip at which to extract the mask.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ct</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>  <span class="c1"># clip time</span>
+        <span class="n">clip_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+
+        <span class="c1"># numpy shape is H*W not W*H</span>
+        <span class="n">bg_h</span><span class="p">,</span> <span class="n">bg_w</span> <span class="o">=</span> <span class="n">background_mask</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">clip_h</span><span class="p">,</span> <span class="n">clip_w</span> <span class="o">=</span> <span class="n">clip_mask</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># SET POSITION</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">compute_position</span><span class="p">((</span><span class="n">clip_w</span><span class="p">,</span> <span class="n">clip_h</span><span class="p">),</span> <span class="p">(</span><span class="n">bg_w</span><span class="p">,</span> <span class="n">bg_h</span><span class="p">),</span> <span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">relative_pos</span><span class="p">)</span>
+
+        <span class="c1"># ALPHA COMPOSITING</span>
+        <span class="c1"># Determine the base_mask region to merge size</span>
+        <span class="n">x_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># Dont go under 0 left</span>
+        <span class="n">x_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip_w</span><span class="p">,</span> <span class="n">bg_w</span><span class="p">))</span>  <span class="c1"># Dont go over base_mask width</span>
+        <span class="n">y_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># Dont go under 0 top</span>
+        <span class="n">y_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">clip_h</span><span class="p">,</span> <span class="n">bg_h</span><span class="p">))</span>  <span class="c1"># Dont go over base_mask height</span>
+
+        <span class="c1"># Determine the clip_mask region to overlapp</span>
+        <span class="c1"># Dont go under 0 for horizontal, if we have negative margin of X px start at X</span>
+        <span class="c1"># And dont go over clip width</span>
+        <span class="n">clip_x_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">clip_x_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">clip_x_start</span> <span class="o">+</span> <span class="nb">min</span><span class="p">((</span><span class="n">x_end</span> <span class="o">-</span> <span class="n">x_start</span><span class="p">),</span> <span class="p">(</span><span class="n">clip_w</span> <span class="o">-</span> <span class="n">clip_x_start</span><span class="p">)))</span>
+        <span class="c1"># same for vertical</span>
+        <span class="n">clip_y_start</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">clip_y_end</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">clip_y_start</span> <span class="o">+</span> <span class="nb">min</span><span class="p">((</span><span class="n">y_end</span> <span class="o">-</span> <span class="n">y_start</span><span class="p">),</span> <span class="p">(</span><span class="n">clip_h</span> <span class="o">-</span> <span class="n">clip_y_start</span><span class="p">)))</span>
+
+        <span class="c1"># Blend the overlapping regions</span>
+        <span class="c1"># The calculus is base_opacity + clip_opacity * (1 - base_opacity)</span>
+        <span class="c1"># this ensure that masks are drawn in the right order and</span>
+        <span class="c1"># the contribution of each mask is proportional to their transparency</span>
+        <span class="c1">#</span>
+        <span class="c1"># Note :</span>
+        <span class="c1"># Thinking in transparency is hard, as we tend to think</span>
+        <span class="c1"># that 50% opaque + 40% opaque = 90% opacity, when it really its 70%</span>
+        <span class="c1"># It&#39;s a lot easier to think in terms of &quot;passing light&quot;</span>
+        <span class="c1"># Consider I emit 100 photons, and my first layer is 50% opaque, meaning it</span>
+        <span class="c1"># will &quot;stop&quot; 50% of the photons, I&#39;ll have 50 photons left</span>
+        <span class="c1"># now my second layer is blocking 40% of thoses 50 photons left</span>
+        <span class="c1"># blocking 50 * 0.4 = 20 photons, and leaving me with only 30 photons</span>
+        <span class="c1"># So, by adding two layer of 50% and 40% opacity my finaly opacity is only</span>
+        <span class="c1"># of (100-30)*100 = 70% opacity !</span>
+        <span class="n">background_mask</span><span class="p">[</span><span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span><span class="p">]</span> <span class="o">=</span> <span class="n">background_mask</span><span class="p">[</span>
+            <span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="n">clip_mask</span><span class="p">[</span><span class="n">clip_y_start</span><span class="p">:</span><span class="n">clip_y_end</span><span class="p">,</span> <span class="n">clip_x_start</span><span class="p">:</span><span class="n">clip_x_end</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span>
+            <span class="mi">1</span> <span class="o">-</span> <span class="n">background_mask</span><span class="p">[</span><span class="n">y_start</span><span class="p">:</span><span class="n">y_end</span><span class="p">,</span> <span class="n">x_start</span><span class="p">:</span><span class="n">x_end</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">background_mask</span></div>
 
 <div class="viewcode-block" id="VideoClip.with_background_color"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_background_color">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">with_background_color</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Place the clip on a colored background.</span>
@@ -1234,10 +1307,20 @@ document.write(`
 
 <div class="viewcode-block" id="VideoClip.with_mask"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.VideoClip.html#moviepy.video.VideoClip.VideoClip.with_mask">[docs]</a>    <span class="nd">@outplace</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">with_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;VideoClip&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the clip&#39;s mask.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the clip&#39;s mask.</span>
 
 <span class="sd">        Returns a copy of the VideoClip with the mask attribute set to</span>
 <span class="sd">        ``mask``, which must be a greyscale (values in 0-1) VideoClip.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mask : Union[&quot;VideoClip&quot;, str], optional</span>
+<span class="sd">            The mask to apply to the clip.</span>
+<span class="sd">            If set to &quot;auto&quot;, a default mask will be generated:</span>
+<span class="sd">            - If the clip has a constant size, a solid mask with a value of 1.0</span>
+<span class="sd">            will be created.</span>
+<span class="sd">            - Otherwise, a dynamic solid mask will be created based on the frame size.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;auto&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_constant_size</span><span class="p">:</span>
@@ -1698,7 +1781,7 @@ document.write(`
 <span class="sd">    ----------</span>
 
 <span class="sd">    size</span>
-<span class="sd">      Size (width, height) in pixels of the clip.</span>
+<span class="sd">      Size tuple (width, height) in pixels of the clip.</span>
 
 <span class="sd">    color</span>
 <span class="sd">      If argument ``is_mask`` is False, ``color`` indicates</span>

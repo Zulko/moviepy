@@ -382,21 +382,6 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
-<div class="viewcode-block" id="blit"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.drawing.blit.html#moviepy.video.tools.drawing.blit">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">blit</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">im2</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Blit an image over another.</span>
-
-<span class="sd">    Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the</span>
-<span class="sd">    ``mask`` if provided.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">pos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Cast to tuple in case pos is not subscriptable.</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
-    <span class="n">im2</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">im1</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">im2</span></div>
-
-
 <div class="viewcode-block" id="color_gradient"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.tools.drawing.color_gradient.html#moviepy.video.tools.drawing.color_gradient">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">color_gradient</span><span class="p">(</span>
     <span class="n">size</span><span class="p">,</span>
     <span class="n">p1</span><span class="p">,</span>

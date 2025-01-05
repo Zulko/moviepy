@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>moviepy.audio.AudioClip.AudioArrayClip &#8212; MoviePy  documentation</title>
+    <title>moviepy.tools.compute_position &#8212; MoviePy  documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.audio.AudioClip.AudioArrayClip';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.tools.compute_position';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="moviepy.audio.AudioClip.AudioClip" href="moviepy.audio.AudioClip.AudioClip.html" />
-    <link rel="prev" title="moviepy.audio.AudioClip" href="moviepy.audio.AudioClip.html" />
+    <link rel="next" title="moviepy.tools.convert_to_seconds" href="moviepy.tools.convert_to_seconds.html" />
+    <link rel="prev" title="moviepy.tools.close_all_clips" href="moviepy.tools.close_all_clips.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -340,9 +340,9 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="moviepy.Effect.html">moviepy.Effect</a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active has-children"><a class="reference internal" href="moviepy.audio.AudioClip.html">moviepy.audio.AudioClip</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l4 current active"><a class="current reference internal" href="#">moviepy.audio.AudioClip.AudioArrayClip</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.audio.html">moviepy.audio</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="moviepy.audio.AudioClip.html">moviepy.audio.AudioClip</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioArrayClip.html">moviepy.audio.AudioClip.AudioArrayClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.AudioClip.html">moviepy.audio.AudioClip.AudioClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.CompositeAudioClip.html">moviepy.audio.AudioClip.CompositeAudioClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.audio.AudioClip.concatenate_audioclips.html">moviepy.audio.AudioClip.concatenate_audioclips</a></li>
@@ -391,9 +391,9 @@ document.write(`
 <li class="toctree-l3"><a class="reference internal" href="moviepy.decorators.use_clip_fps_by_default.html">moviepy.decorators.use_clip_fps_by_default</a></li>
 </ul>
 </li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="moviepy.tools.html">moviepy.tools</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.close_all_clips.html">moviepy.tools.close_all_clips</a></li>
-<li class="toctree-l3"><a class="reference internal" href="moviepy.tools.compute_position.html">moviepy.tools.compute_position</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">moviepy.tools.compute_position</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.convert_to_seconds.html">moviepy.tools.convert_to_seconds</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.cross_platform_popen_params.html">moviepy.tools.cross_platform_popen_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="moviepy.tools.deprecated_version_of.html">moviepy.tools.deprecated_version_of</a></li>
@@ -524,9 +524,9 @@ document.write(`
     <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
     
-    <li class="breadcrumb-item"><a href="moviepy.audio.AudioClip.html" class="nav-link">moviepy.audio.AudioClip</a></li>
+    <li class="breadcrumb-item"><a href="moviepy.tools.html" class="nav-link">moviepy.tools</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">moviepy.audio.AudioClip.AudioArrayClip</li>
+    <li class="breadcrumb-item active" aria-current="page">moviepy.tools.compute_position</li>
   </ul>
 </nav>
 </div>
@@ -543,22 +543,31 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="moviepy-audio-audioclip-audioarrayclip">
-<h1>moviepy.audio.AudioClip.AudioArrayClip<a class="headerlink" href="#moviepy-audio-audioclip-audioarrayclip" title="Permalink to this heading">#</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="moviepy.audio.AudioClip.AudioArrayClip">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moviepy.audio.AudioClip.</span></span><span class="sig-name descname"><span class="pre">AudioArrayClip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/audio/AudioClip.html#AudioArrayClip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.audio.AudioClip.AudioArrayClip" title="Permalink to this definition">#</a></dt>
-<dd><p>An audio clip made from a sound array.</p>
+  <section id="moviepy-tools-compute-position">
+<h1>moviepy.tools.compute_position<a class="headerlink" href="#moviepy-tools-compute-position" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="moviepy.tools.compute_position">
+<span class="sig-prename descclassname"><span class="pre">moviepy.tools.</span></span><span class="sig-name descname"><span class="pre">compute_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clip1_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip2_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/moviepy/tools.html#compute_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.tools.compute_position" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the position to put clip 1 on clip 2 based on both clip size
+and the position of clip 1, as return by clip1.pos() method</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>array</strong> – A Numpy array representing the sound, of size Nx1 for mono,
-Nx2 for stereo.</p></li>
-<li><p><strong>fps</strong> – Frames per second : speed at which the sound is supposed to be
-played.</p></li>
+<li><p><strong>clip1_size</strong> (<em>tuple</em>) – The width and height of clip1 (e.g., (width, height)).</p></li>
+<li><p><strong>clip2_size</strong> (<em>tuple</em>) – The width and height of clip2 (e.g., (width, height)).</p></li>
+<li><p><strong>pos</strong> (<em>Any</em>) – The position of clip1 as returned by the <cite>clip1.pos()</cite> method.</p></li>
+<li><p><strong>relative</strong> (<em>bool</em>) – Is the position relative (% of clip size), default False.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple (x, y) representing the top-left corner of clip1 relative to clip2.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[int, int]</p>
+</dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>For more information on <cite>pos</cite>, see the documentation for <cite>VideoClip.with_position</cite>.</p>
 </dd></dl>
 
 </section>
@@ -572,20 +581,20 @@ played.</p></li>
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="moviepy.audio.AudioClip.html"
+       href="moviepy.tools.close_all_clips.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">moviepy.audio.AudioClip</p>
+        <p class="prev-next-title">moviepy.tools.close_all_clips</p>
       </div>
     </a>
     <a class="right-next"
-       href="moviepy.audio.AudioClip.AudioClip.html"
+       href="moviepy.tools.convert_to_seconds.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">moviepy.audio.AudioClip.AudioClip</p>
+        <p class="prev-next-title">moviepy.tools.convert_to_seconds</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -604,14 +613,14 @@ played.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.audio.AudioClip.AudioArrayClip"><code class="docutils literal notranslate"><span class="pre">AudioArrayClip</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.tools.compute_position"><code class="docutils literal notranslate"><span class="pre">compute_position()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.audio.AudioClip.AudioArrayClip.rst">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.tools.compute_position.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -625,7 +634,7 @@ played.</p></li>
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/reference/reference/moviepy.audio.AudioClip.AudioArrayClip.rst.txt">
+    <a href="../../_sources/reference/reference/moviepy.tools.compute_position.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
