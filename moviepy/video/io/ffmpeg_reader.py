@@ -102,6 +102,20 @@ class FFMPEG_VideoReader:
         else:
             i_arg = ["-i", ffmpeg_escape_filename(self.filename)]
 
+        # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9
+        # as ffmpeg native webm decoder dont decode alpha layer
+        # (see
+        # https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/
+        # )
+        if self.depth == 4:
+            codec_name = self.infos.get("video_codec_name")
+            if codec_name == "vp9":
+                i_arg = ["-c:v", "libvpx-vp9"] + i_arg
+            elif codec_name == "vp8":
+                i_arg = ["-c:v", "libvpx"] + i_arg
+
+        print(self.infos)
+
         cmd = (
             [FFMPEG_BINARY]
             + i_arg
@@ -121,6 +135,9 @@ class FFMPEG_VideoReader:
                 "-",
             ]
         )
+
+        print(" ".join(cmd))
+
         popen_params = cross_platform_popen_params(
             {
                 "bufsize": self.bufsize,
@@ -463,12 +480,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[f"default_{stream_type_lower}_input_number"] = (
-                        input_number
-                    )
-                    self.result[f"default_{stream_type_lower}_stream_number"] = (
-                        stream_number
-                    )
+                    self.result[
+                        f"default_{stream_type_lower}_input_number"
+                    ] = input_number
+                    self.result[
+                        f"default_{stream_type_lower}_stream_number"
+                    ] = stream_number
 
                 # exit chapter
                 if self._current_chapter:
@@ -694,6 +711,22 @@ class FFmpegInfosParser:
                 fps = x * coef
         stream_data["fps"] = fps
 
+        # Try to extract video codec and profile
+        main_info_match = re.search(
+            r"Video:\s(\w+)?\s?(\([^)]+\))?",
+            line.lstrip(),
+        )
+        if main_info_match is not None:
+            (codec_name, profile) = main_info_match.groups()
+            stream_data["codec_name"] = codec_name
+            stream_data["profile"] = profile
+
+        if self._current_stream["default"] or "video_codec_name" not in self.result:
+            global_data["video_codec_name"] = stream_data.get("codec_name", None)
+
+        if self._current_stream["default"] or "video_profile" not in self.result:
+            global_data["video_profile"] = stream_data.get("profile", None)
+
         if self._current_stream["default"] or "video_size" not in self.result:
             global_data["video_size"] = stream_data.get("size", None)
         if self._current_stream["default"] or "video_bitrate" not in self.result:
@@ -779,6 +812,8 @@ def ffmpeg_parse_infos(
     - ``"audio_fps"``
     - ``"audio_bitrate"``
     - ``"audio_metadata"``
+    - ``"video_codec_name"``
+    - ``"video_profile"``
 
     Note that "video_duration" is slightly smaller than "duration" to avoid
     fetching the incomplete frames at the end, which raises an error.

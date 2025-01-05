@@ -72,7 +72,7 @@ def test_subprocess_call(command):
         ("-path/that/starts/with/dash.mp4", "./-path/that/starts/with/dash.mp4"),
         ("file-name-.mp4", "file-name-.mp4"),
         ("/absolute/path/to/-file.mp4", "/absolute/path/to/-file.mp4"),
-        ("filename with spaces.mp4", "filename with spaces.mp4")
+        ("filename with spaces.mp4", "filename with spaces.mp4"),
     ],
 )
 def test_ffmpeg_escape_filename(given, expected):

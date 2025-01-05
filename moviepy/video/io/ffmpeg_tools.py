@@ -200,7 +200,7 @@ def ffmpeg_stabilize_video(
         ffmpeg_escape_filename(inputfile),
         "-vf",
         "deshake",
-        ffmpeg_escape_filename(outputfile)
+        ffmpeg_escape_filename(outputfile),
     ]
 
     if overwrite_file:

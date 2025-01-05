@@ -95,8 +95,8 @@ class FFMPEG_VideoWriter:
         self.filename = filename
         self.codec = codec
         self.ext = self.filename.split(".")[-1]
-        if not pixel_format:  # pragma: no cover
-            pixel_format = "rgba" if with_mask else "rgb24"
+
+        pixel_format = "rgba" if with_mask else "rgb24"
 
         # order is important
         cmd = [
@@ -119,18 +119,26 @@ class FFMPEG_VideoWriter:
             "-",
         ]
         if audiofile is not None:
-            cmd.extend(["-i", ffmpeg_escape_filename(audiofile), "-acodec", "copy"])
+            cmd.extend(["-i", audiofile, "-acodec", "copy"])
+
         cmd.extend(["-vcodec", codec, "-preset", preset])
+
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
+
         if bitrate is not None:
             cmd.extend(["-b", bitrate])
 
         if threads is not None:
             cmd.extend(["-threads", str(threads)])
 
-        if (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
-            cmd.extend(["-pix_fmt", "yuv420p"])
+        # Disable auto alt ref for transparent webm and set pix format yo yuva420p
+        if codec == "libvpx" and with_mask:
+            cmd.extend(["-pix_fmt", "yuva420p"])
+            cmd.extend(["-auto-alt-ref", "0"])
+        elif (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
+            cmd.extend(["-pix_fmt", "yuva420p"])
+
         cmd.extend([ffmpeg_escape_filename(filename)])
 
         popen_params = cross_platform_popen_params(
@@ -237,9 +245,11 @@ def ffmpeg_write_video(
         logfile = open(filename + ".log", "w+")
     else:
         logfile = None
+
     logger(message="MoviePy - Writing video %s\n" % filename)
-    if not pixel_format:
-        pixel_format = "rgba" if clip.mask is not None else "rgb24"
+
+    has_mask = clip.mask is not None
+
     with FFMPEG_VideoWriter(
         filename,
         clip.size,
@@ -247,6 +257,7 @@ def ffmpeg_write_video(
         codec=codec,
         preset=preset,
         bitrate=bitrate,
+        with_mask=has_mask,
         logfile=logfile,
         audiofile=audiofile,
         threads=threads,
@@ -292,6 +303,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     """
     if image.dtype != "uint8":
         image = image.astype("uint8")
+
     if not pixel_format:
         pixel_format = "rgba" if (image.shape[2] == 4) else "rgb24"
 

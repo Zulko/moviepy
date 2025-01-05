@@ -55,8 +55,8 @@ def ffmpeg_escape_filename(filename):
 
     That will ensure the filename doesn't start with a '-' (which would raise an error)
     """
-    if filename.startswith('-') :
-        filename = './' + filename
+    if filename.startswith("-"):
+        filename = "./" + filename
 
     return filename
 
@@ -244,3 +244,70 @@ def no_display_available() -> bool:
             return True
 
     return False
+
+
+def compute_position(
+    clip1_size: tuple, clip2_size: tuple, pos: any, relative: bool = False
+) -> tuple[int, int]:
+    """Return the position to put clip 1 on clip 2 based on both clip size
+    and the position of clip 1, as return by clip1.pos() method
+
+    Parameters
+    ----------
+    clip1_size : tuple
+        The width and height of clip1 (e.g., (width, height)).
+    clip2_size : tuple
+        The width and height of clip2 (e.g., (width, height)).
+    pos : Any
+        The position of clip1 as returned by the `clip1.pos()` method.
+    relative: bool
+        Is the position relative (% of clip size), default False.
+
+    Returns
+    -------
+    tuple[int, int]
+        A tuple (x, y) representing the top-left corner of clip1 relative to clip2.
+
+    Notes
+    -----
+    For more information on `pos`, see the documentation for `VideoClip.with_position`.
+    """
+    if pos is None:
+        pos = (0, 0)
+
+    # preprocess short writings of the position
+    if isinstance(pos, str):
+        pos = {
+            "center": ["center", "center"],
+            "left": ["left", "center"],
+            "right": ["right", "center"],
+            "top": ["center", "top"],
+            "bottom": ["center", "bottom"],
+        }[pos]
+    else:
+        pos = list(pos)
+
+    # is the position relative (given in % of the clip's size) ?
+    if relative:
+        for i, dim in enumerate(clip2_size):
+            if not isinstance(pos[i], str):
+                pos[i] = dim * pos[i]
+
+    if isinstance(pos[0], str):
+        D = {
+            "left": 0,
+            "center": (clip2_size[0] - clip1_size[0]) / 2,
+            "right": clip2_size[0] - clip1_size[0],
+        }
+        pos[0] = D[pos[0]]
+
+    if isinstance(pos[1], str):
+        D = {
+            "top": 0,
+            "center": (clip2_size[1] - clip1_size[1]) / 2,
+            "bottom": clip2_size[1] - clip1_size[1],
+        }
+        pos[1] = D[pos[1]]
+
+    # Return as int, rounding if necessary
+    return (int(pos[0]), int(pos[1]))
