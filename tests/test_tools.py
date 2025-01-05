@@ -65,6 +65,23 @@ def test_subprocess_call(command):
             tools.subprocess_call(command, logger=None)
 
 
+@pytest.mark.parametrize(
+    "given, expected",
+    [
+        ("-filenamethatstartswithdash-.mp4", "./-filenamethatstartswithdash-.mp4"),
+        ("-path/that/starts/with/dash.mp4", "./-path/that/starts/with/dash.mp4"),
+        ("file-name-.mp4", "file-name-.mp4"),
+        ("/absolute/path/to/-file.mp4", "/absolute/path/to/-file.mp4"),
+        ("filename with spaces.mp4", "filename with spaces.mp4")
+    ],
+)
+def test_ffmpeg_escape_filename(given, expected):
+    """Test the ffmpeg_escape_filename function outputs correct paths as per
+    the docstring.
+    """
+    assert tools.ffmpeg_escape_filename(given) == expected
+
+
 @pytest.mark.parametrize("os_name", (os.name, "nt"))
 def test_cross_platform_popen_params(os_name, monkeypatch):
     tools_module = importlib.import_module("moviepy.tools")

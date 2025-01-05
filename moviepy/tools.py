@@ -50,6 +50,17 @@ def subprocess_call(cmd, logger="bar"):
     del proc
 
 
+def ffmpeg_escape_filename(filename):
+    """Escape a filename that we want to pass to the ffmpeg command line
+
+    That will ensure the filename doesn't start with a '-' (which would raise an error)
+    """
+    if filename.startswith('-') :
+        filename = './' + filename
+
+    return filename
+
+
 def convert_to_seconds(time):
     """Will convert any time into seconds.
 

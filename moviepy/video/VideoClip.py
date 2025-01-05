@@ -1493,7 +1493,7 @@ class TextClip(ImageClip):
       there will be no stroke.
 
     stroke_width
-      Width of the stroke, in pixels. Can be a float, like 1.5.
+      Width of the stroke, in pixels. Must be an int.
 
     method
       Either 'label' (default, the picture will be autosized so as to fit
