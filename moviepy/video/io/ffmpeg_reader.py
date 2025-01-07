@@ -778,8 +778,13 @@ class FFmpegInfosParser:
         """Returns a tuple with a metadata field-value pair given a ffmpeg `-i`
         command output line.
         """
-        raw_field, raw_value = line.split(":", 1)
-        return (raw_field.strip(" "), raw_value.strip(" "))
+        info = line.split(":", 1)
+        
+        if len(info) == 2:
+            raw_field, raw_value = info
+            return (raw_field.strip(" "), raw_value.strip(" "))
+        else:
+            return ("", "")
 
     def video_metadata_type_casting(self, field, value):
         """Cast needed video metadata fields to other types than the default str."""
