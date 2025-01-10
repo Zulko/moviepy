@@ -121,7 +121,12 @@ class FFMPEG_VideoWriter:
         if audiofile is not None:
             cmd.extend(["-i", audiofile, "-acodec", "copy"])
 
-        cmd.extend(["-vcodec", codec, "-preset", preset])
+        if codec == "h264_nvenc":
+            cmd.extend(["-c:v", codec])
+        else:
+            cmd.extend(["-vcodec", codec])
+
+        cmd.extend(["-preset", preset])
 
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
@@ -136,7 +141,11 @@ class FFMPEG_VideoWriter:
         if codec == "libvpx" and with_mask:
             cmd.extend(["-pix_fmt", "yuva420p"])
             cmd.extend(["-auto-alt-ref", "0"])
-        elif (codec == "libx264") and (size[0] % 2 == 0) and (size[1] % 2 == 0):
+        elif (
+            (codec == "libx264" or codec == "h264_nvenc")
+            and (size[0] % 2 == 0)
+            and (size[1] % 2 == 0)
+        ):
             cmd.extend(["-pix_fmt", "yuva420p"])
 
         cmd.extend([ffmpeg_escape_filename(filename)])
