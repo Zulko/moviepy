@@ -1898,6 +1898,11 @@ document.write(`
 
 <span class="sd">    duration</span>
 <span class="sd">        Duration of the clip</span>
+
+<span class="sd">    bg_radius</span>
+<span class="sd">     A paramater to round the edges of the text background. Defaults to 0 if there</span>
+<span class="sd">     is no background. It will have no effect if there is no bg_colour added.</span>
+<span class="sd">     The higher the value, the more rounded the corners will become.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
@@ -1920,6 +1925,7 @@ document.write(`
         <span class="n">interline</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">bg_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># TODO : Move this with other bg_param on next breaking release</span>
     <span class="p">):</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">break_text</span><span class="p">(</span>
             <span class="n">width</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">spacing</span>
@@ -2179,9 +2185,20 @@ document.write(`
         <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">transparent</span><span class="p">:</span>
             <span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
-        <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bg_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bg_radius</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">bg_radius</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">rounded_rectangle</span><span class="p">(</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">bg_radius</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">bg_color</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
+            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
         <span class="c1"># Dont need allow break here, because we already breaked in caption</span>
         <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
