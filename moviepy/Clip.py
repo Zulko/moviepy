@@ -1,13 +1,19 @@
 """Implements the central object of MoviePy, the Clip, and all the methods that
 are common to the two subclasses of Clip, VideoClip and AudioClip.
 """
+
 import copy as _copy
 from functools import reduce
 from numbers import Real
 from operator import add
+from typing import TYPE_CHECKING, List
 
 import numpy as np
 import proglog
+
+
+if TYPE_CHECKING:
+    from moviepy.Effect import Effect
 
 from moviepy.decorators import (
     apply_to_audio,
@@ -73,13 +79,12 @@ class Clip:
             if t == self.memoized_t:
                 return self.memoized_frame
             else:
-                frame = self.make_frame(t)
+                frame = self.frame_function(t)
                 self.memoized_t = t
                 self.memoized_frame = frame
                 return frame
         else:
-            # print(t)
-            return self.make_frame(t)
+            return self.frame_function(t)
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """General processing of a clip.
@@ -121,8 +126,8 @@ class Clip:
         if apply_to is None:
             apply_to = []
 
-        # mf = copy(self.make_frame)
-        new_clip = self.with_make_frame(lambda t: func(self.get_frame, t))
+        # mf = copy(self.frame_function)
+        new_clip = self.with_updated_frame_function(lambda t: func(self.get_frame, t))
 
         if not keep_duration:
             new_clip.duration = None
@@ -144,8 +149,8 @@ class Clip:
     def time_transform(self, time_func, apply_to=None, keep_duration=False):
         """
         Returns a Clip instance playing the content of the current clip
-        but with a modified timeline, time ``t`` being replaced by another
-        time `time_func(t)`.
+        but with a modified timeline, time ``t`` being replaced by the return
+        of `time_func(t)`.
 
         Parameters
         ----------
@@ -165,11 +170,13 @@ class Clip:
         Examples
         --------
 
-        >>> # plays the clip (and its mask and sound) twice faster
-        >>> new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
-        >>>
-        >>> # plays the clip starting at t=3, and backwards:
-        >>> new_clip = clip.time_transform(lambda t: 3-t)
+        .. code:: python
+
+            # plays the clip (and its mask and sound) twice faster
+            new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
+
+            # plays the clip starting at t=3, and backwards:
+            new_clip = clip.time_transform(lambda t: 3-t)
 
         """
         if apply_to is None:
@@ -181,24 +188,23 @@ class Clip:
             keep_duration=keep_duration,
         )
 
-    def fx(self, func, *args, **kwargs):
-        """Returns the result of ``func(self, *args, **kwargs)``, for instance
+    def with_effects(self, effects: List["Effect"]):
+        """Return a copy of the current clip with the effects applied
 
-        >>> new_clip = clip.fx(resize, 0.2, method="bilinear")
+        >>> new_clip = clip.with_effects([vfx.Resize(0.2, method="bilinear")])
 
-        is equivalent to
+        You can also pass multiple effect as a list
 
-        >>> new_clip = resize(clip, 0.2, method="bilinear")
-
-        The motivation of fx is to keep the name of the effect near its
-        parameters when the effects are chained:
-
-        >>> from moviepy.video.fx import multiply_volume, resize, mirrorx
-        >>> clip.fx(multiply_volume, 0.5).fx(resize, 0.3).fx(mirrorx)
-        >>> # Is equivalent, but clearer than
-        >>> mirrorx(resize(multiply_volume(clip, 0.5), 0.3))
+        >>> clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
-        return func(self, *args, **kwargs)
+        new_clip = self.copy()
+        for effect in effects:
+            # We always copy effect before using it, see Effect.copy
+            # to see why we need to
+            effect_copy = effect.copy()
+            new_clip = effect_copy.apply(new_clip)
+
+        return new_clip
 
     @apply_to_mask
     @apply_to_audio
@@ -290,17 +296,17 @@ class Clip:
             self.start = self.end - duration
 
     @outplace
-    def with_make_frame(self, make_frame):
-        """Sets a ``make_frame`` attribute for the clip. Useful for setting
+    def with_updated_frame_function(self, frame_function):
+        """Sets a ``frame_function`` attribute for the clip. Useful for setting
         arbitrary/complicated videoclips.
 
         Parameters
         ----------
 
-        make_frame : function
+        frame_function : function
           New frame creator function for the clip.
         """
-        self.make_frame = make_frame
+        self.frame_function = frame_function
 
     def with_fps(self, fps, change_duration=False):
         """Returns a copy of the clip with a new default fps for functions like
@@ -318,9 +324,9 @@ class Clip:
           fps is halved in this mode, the duration will be doubled.
         """
         if change_duration:
-            from moviepy.video.fx.multiply_speed import multiply_speed
+            from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
-            newclip = multiply_speed(self, fps / self.fps)
+            newclip = self.with_effects([MultiplySpeed(fps / self.fps)])
         else:
             newclip = self.copy()
 
@@ -351,37 +357,10 @@ class Clip:
         """
         self.memoize = memoize
 
-    @convert_parameter_to_seconds(["t"])
-    def is_playing(self, t):
-        """If ``t`` is a time, returns true if t is between the start and the end
-        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
-        array, returns False if none of the ``t`` is in the clip, else returns a
-        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
-        """
-        if isinstance(t, np.ndarray):
-            # is the whole list of t outside the clip ?
-            tmin, tmax = t.min(), t.max()
-
-            if (self.end is not None) and (tmin >= self.end):
-                return False
-
-            if tmax < self.start:
-                return False
-
-            # If we arrive here, a part of t falls in the clip
-            result = 1 * (t >= self.start)
-            if self.end is not None:
-                result *= t <= self.end
-            return result
-
-        else:
-            return (t >= self.start) and ((self.end is None) or (t < self.end))
-
     @convert_parameter_to_seconds(["start_time", "end_time"])
     @apply_to_mask
     @apply_to_audio
-    def subclip(self, start_time=0, end_time=None):
+    def subclipped(self, start_time=0, end_time=None):
         """Returns a clip playing the content of the current clip between times
         ``start_time`` and ``end_time``, which can be expressed in seconds
         (15.35), in (min, sec), in (hour, min, sec), or as a string:
@@ -407,7 +386,7 @@ class Clip:
           For instance:
 
           >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.subclip(0, -2)
+          >>> new_clip = clip.subclipped(0, -2)
 
           If ``end_time`` is provided or if the clip has a duration attribute,
           the duration of the returned clip is set automatically.
@@ -449,7 +428,7 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def cutout(self, start_time, end_time):
+    def with_section_cut_out(self, start_time, end_time):
         """
         Returns a clip playing the content of the current clip but
         skips the extract between ``start_time`` and ``end_time``, which can be
@@ -482,6 +461,26 @@ class Clip:
         else:  # pragma: no cover
             return new_clip
 
+    def with_speed_scaled(self, factor: float = None, final_duration: float = None):
+        """Returns a clip playing the current clip but at a speed multiplied
+        by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.
+        """
+        from moviepy.video.fx.MultiplySpeed import MultiplySpeed
+
+        return self.with_effects(
+            [MultiplySpeed(factor=factor, final_duration=final_duration)]
+        )
+
+    def with_volume_scaled(self, factor: float, start_time=None, end_time=None):
+        """Returns a new clip with audio volume multiplied by the value `factor`.
+        For info on the parameters, please see ``afx.MultiplyVolume``
+        """
+        from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
+
+        return self.with_effects(
+            [MultiplyVolume(factor=factor, start_time=start_time, end_time=end_time)]
+        )
+
     @requires_duration
     @use_clip_fps_by_default
     def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
@@ -510,17 +509,20 @@ class Clip:
 
         dtype : type, optional
           Type to cast Numpy array frames. Use ``dtype="uint8"`` when using the
-          pictures to write video, images...
+          pictures to write video, images..
 
         Examples
         --------
 
-        >>> # prints the maximum of red that is contained
-        >>> # on the first line of each frame of the clip.
-        >>> from moviepy import VideoFileClip
-        >>> myclip = VideoFileClip('myvideo.mp4')
-        >>> print ( [frame[0,:,0].max()
-                     for frame in myclip.iter_frames()])
+
+        .. code:: python
+
+            # prints the maximum of red that is contained
+            # on the first line of each frame of the clip.
+            from moviepy import VideoFileClip
+            myclip = VideoFileClip('myvideo.mp4')
+            print([frame[0,:,0].max()
+                  for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
         for frame_index in logger.iter_bar(
@@ -537,6 +539,33 @@ class Clip:
                 yield t, frame
             else:
                 yield frame
+
+    @convert_parameter_to_seconds(["t"])
+    def is_playing(self, t):
+        """If ``t`` is a time, returns true if t is between the start and the end
+        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
+        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
+        array, returns False if none of the ``t`` is in the clip, else returns a
+        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
+        """
+        if isinstance(t, np.ndarray):
+            # is the whole list of t outside the clip ?
+            tmin, tmax = t.min(), t.max()
+
+            if (self.end is not None) and (tmin >= self.end):
+                return False
+
+            if tmax < self.start:
+                return False
+
+            # If we arrive here, a part of t falls in the clip
+            result = 1 * (t >= self.start)
+            if self.end is not None:
+                result *= t <= self.end
+            return result
+
+        else:
+            return (t >= self.start) and ((self.end is None) or (t < self.end))
 
     def close(self):
         """Release any resources that are in use."""
@@ -584,7 +613,7 @@ class Clip:
 
         Simple slicing is implemented via `subclip`.
         So, ``clip[t_start:t_end]`` is equivalent to
-        ``clip.subclip(t_start, t_end)``. If ``t_start`` is not
+        ``clip.subclipped(t_start, t_end)``. If ``t_start`` is not
         given, default to ``0``, if ``t_end`` is not given,
         default to ``self.duration``.
 
@@ -609,7 +638,7 @@ class Clip:
         if isinstance(key, slice):
             # support for [start:end:speed] slicing. If speed is negative
             # a time mirror is applied.
-            clip = self.subclip(key.start or 0, key.stop or self.duration)
+            clip = self.subclipped(key.start or 0, key.stop or self.duration)
 
             if key.step:
                 # change speed of the subclip
@@ -635,8 +664,9 @@ class Clip:
             return self.get_frame(key)
 
     def __del__(self):
-        # WARNING: as stated in close() above, if we call close, it closes clips even
-        # if shallow copies are still in used, leading to some bugs: https://github.com/Zulko/moviepy/issues/1994
+        # WARNING: as stated in close() above, if we call close, it closes clips
+        # even if shallow copies are still in used, leading to some bugs, see:
+        # https://github.com/Zulko/moviepy/issues/1994
         # so don't call self.close() here, rather do it manually in the code.
         pass
 
@@ -649,6 +679,6 @@ class Clip:
         if not isinstance(n, Real):
             return NotImplemented
 
-        from moviepy.video.fx.loop import loop
+        from moviepy.video.fx.Loop import Loop
 
-        return loop(self, n)
+        return self.with_effects([Loop(n)])

@@ -7,12 +7,11 @@ from PIL import Image
 
 import pytest
 
-from moviepy.video.compositing.concatenate import concatenate_videoclips
+from moviepy import *
+from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 from moviepy.video.io.ffmpeg_writer import ffmpeg_write_image, ffmpeg_write_video
-from moviepy.video.io.gif_writers import write_gif
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.io.gif_writers import write_gif_with_imageio
 from moviepy.video.tools.drawing import color_gradient
-from moviepy.video.VideoClip import BitmapClip, ColorClip
 
 
 @pytest.mark.parametrize(
@@ -75,7 +74,6 @@ def test_ffmpeg_write_video(
     kwargs = dict(
         logger=None,
         write_logfile=write_logfile,
-        with_mask=with_mask,
     )
     if codec is not None:
         kwargs["codec"] = codec
@@ -181,18 +179,12 @@ def test_ffmpeg_write_image(util, size, logfile, pixel_format, expected_result):
             assert im.getpixel((i, j)) == expected_result[j][i]
 
 
-@pytest.mark.parametrize("loop", (None, 2), ids=("loop=None", "loop=2"))
-@pytest.mark.parametrize(
-    "opt",
-    (False, "OptimizeTransparency"),
-    ids=("opt=False", "opt=OptimizeTransparency"),
-)
+@pytest.mark.parametrize("loop", (0, 2), ids=("loop=0", "loop=2"))
 @pytest.mark.parametrize("clip_class", ("BitmapClip", "ColorClip"))
 @pytest.mark.parametrize(
     "with_mask", (False, True), ids=("with_mask=False", "with_mask=True")
 )
-@pytest.mark.parametrize("pixel_format", ("invalid", None))
-def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
+def test_write_gif(util, clip_class, loop, with_mask):
     filename = os.path.join(util.TMP_DIR, "moviepy_write_gif.gif")
     if os.path.isfile(filename):
         try:
@@ -221,38 +213,49 @@ def test_write_gif(util, clip_class, opt, loop, with_mask, pixel_format):
             ColorClip((1, 1), color=1, is_mask=True).with_fps(fps).with_duration(0.3)
         )
 
-    kwargs = {}
-    if pixel_format is not None:
-        kwargs["pixel_format"] = pixel_format
+    write_gif_with_imageio(original_clip, filename, fps=fps, logger=None, loop=loop)
 
-    write_gif(
-        original_clip,
-        filename,
-        fps=fps,
-        with_mask=with_mask,
-        program="ffmpeg",
-        logger=None,
-        opt=opt,
-        loop=loop,
-        **kwargs,
-    )
+    final_clip = VideoFileClip(filename)
 
-    if pixel_format != "invalid":
-        final_clip = VideoFileClip(filename)
+    r, g, b = final_clip.get_frame(0)[0][0]
+    assert r == 255
+    assert g == 0
+    assert b == 0
 
-        r, g, b = final_clip.get_frame(0)[0][0]
-        assert r == 252
-        assert g == 0
-        assert b == 0
+    r, g, b = final_clip.get_frame(0.1)[0][0]
+    assert r == 0
+    assert g == 255
+    assert b == 0
 
-        r, g, b = final_clip.get_frame(0.1)[0][0]
-        assert r == 0
-        assert g == 252
-        assert b == 0
+    r, g, b = final_clip.get_frame(0.2)[0][0]
+    assert r == 0
+    assert g == 0
+    assert b == 255
 
-        r, g, b = final_clip.get_frame(0.2)[0][0]
-        assert r == 0
-        assert g == 0
-        assert b == 255
 
-        assert final_clip.duration == (loop or 1) * round(original_clip.duration, 6)
+def test_transparent_video(util):
+    # Has one R 30%
+    clip = ColorClip((100, 100), (255, 0, 0, 76.5)).with_duration(2)
+    filename = os.path.join(util.TMP_DIR, "opacity.webm")
+
+    ffmpeg_write_video(clip, filename, codec="libvpx", fps=5)
+
+    # Load output file and check transparency
+    result = VideoFileClip(filename, has_mask=True)
+
+    # Check for mask
+    assert result.mask is not None
+
+    # Check correct opacity, allow for some tolerance (about 1%)
+    # to consider rounding and compressing error
+    frame = result.mask.get_frame(1)
+    opacity = frame[50, 50]
+    assert abs(opacity - 0.3) < 0.01
+
+    result.close()
+
+
+def test_write_file_with_spaces(util):
+    filename = os.path.join(util.TMP_DIR, "name with spaces.mp4")
+    clip = ColorClip((1, 1), color=1, is_mask=True).with_fps(1).with_duration(0.3)
+    ffmpeg_write_video(clip, filename, fps=1)

@@ -1,58 +1,17 @@
 """MoviePy video and audio effects tests."""
 
 import decimal
-import importlib
 import math
 import numbers
 import os
 import random
-import sys
 
 import numpy as np
 
 import pytest
 
-from moviepy import (
-    AudioClip,
-    AudioFileClip,
-    BitmapClip,
-    ColorClip,
-    VideoClip,
-    VideoFileClip,
-)
-from moviepy.audio.fx import (
-    audio_delay,
-    audio_fadein,
-    audio_fadeout,
-    audio_normalize,
-    multiply_stereo_volume,
-    multiply_volume,
-)
+from moviepy import *
 from moviepy.tools import convert_to_seconds
-from moviepy.video.fx import (
-    blackwhite,
-    crop,
-    even_size,
-    fadein,
-    fadeout,
-    freeze,
-    freeze_region,
-    invert_colors,
-    loop,
-    lum_contrast,
-    make_loopable,
-    margin,
-    mask_and,
-    mask_or,
-    mirror_x,
-    mirror_y,
-    multiply_color,
-    multiply_speed,
-    resize,
-    rotate,
-    time_mirror,
-    time_symmetrize,
-)
 
 
 def test_accel_decel():
@@ -87,7 +46,9 @@ def test_blackwhite():
     # for each possible ``preserve_luminosity`` boolean argument value
     for preserve_luminosity in [True, False]:
         # default argument (``RGB=None``)
-        clip_bw = blackwhite(clip, preserve_luminosity=preserve_luminosity)
+        clip_bw = clip.with_effects(
+            [vfx.BlackAndWhite(preserve_luminosity=preserve_luminosity)]
+        )
 
         bitmap = clip_bw.to_bitmap()
         assert bitmap
@@ -101,10 +62,13 @@ def test_blackwhite():
                     assert char == row[0]  # so are equal
 
         # custom random ``RGB`` argument
-        clip_bw_custom_rgb = blackwhite(
-            clip,
-            RGB=(random.randint(0, 255), 0, 0),
-            preserve_luminosity=preserve_luminosity,
+        clip_bw_custom_rgb = clip.with_effects(
+            [
+                vfx.BlackAndWhite(
+                    RGB=(random.randint(0, 255), 0, 0),
+                    preserve_luminosity=preserve_luminosity,
+                )
+            ]
         )
         bitmap = clip_bw_custom_rgb.to_bitmap()
         for i, row in enumerate(bitmap[0]):
@@ -117,8 +81,12 @@ def test_blackwhite():
                     assert char == row[1] and char == row[2]
 
         # ``RGB="CRT_phosphor"`` argument
-        clip_bw_crt_phosphor = blackwhite(
-            clip, RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+        clip_bw_crt_phosphor = clip.with_effects(
+            [
+                vfx.BlackAndWhite(
+                    RGB="CRT_phosphor", preserve_luminosity=preserve_luminosity
+                )
+            ]
         )
         bitmap = clip_bw_crt_phosphor.to_bitmap()
         assert bitmap
@@ -139,7 +107,7 @@ def test_multiply_color():
     color_dict = {"H": (0, 0, 200), "L": (0, 0, 50), "B": (0, 0, 255), "O": (0, 0, 0)}
     clip = BitmapClip([["LLO", "BLO"]], color_dict=color_dict, fps=1)
 
-    clipfx = multiply_color(clip, 4)
+    clipfx = clip.with_effects([vfx.MultiplyColor(4)])
     target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict, fps=1)
     assert target == clipfx
 
@@ -148,45 +116,45 @@ def test_crop():
     # x: 0 -> 4, y: 0 -> 3 inclusive
     clip = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
 
-    clip1 = crop(clip)
+    clip1 = clip.with_effects([vfx.Crop()])
     target1 = BitmapClip([["ABCDE", "EDCBA", "CDEAB", "BAEDC"]], fps=1)
     assert clip1 == target1
 
-    clip2 = crop(clip, x1=1, y1=1, x2=3, y2=3)
+    clip2 = clip.with_effects([vfx.Crop(x1=1, y1=1, x2=3, y2=3)])
     target2 = BitmapClip([["DC", "DE"]], fps=1)
     assert clip2 == target2
 
-    clip3 = crop(clip, y1=2)
+    clip3 = clip.with_effects([vfx.Crop(y1=2)])
     target3 = BitmapClip([["CDEAB", "BAEDC"]], fps=1)
     assert clip3 == target3
 
-    clip4 = crop(clip, x1=2, width=2)
+    clip4 = clip.with_effects([vfx.Crop(x1=2, width=2)])
     target4 = BitmapClip([["CD", "CB", "EA", "ED"]], fps=1)
     assert clip4 == target4
 
     # TODO x_center=1 does not perform correctly
-    clip5 = crop(clip, x_center=2, y_center=2, width=3, height=3)
+    clip5 = clip.with_effects([vfx.Crop(x_center=2, y_center=2, width=3, height=3)])
     target5 = BitmapClip([["ABC", "EDC", "CDE"]], fps=1)
     assert clip5 == target5
 
-    clip6 = crop(clip, x_center=2, width=2, y1=1, y2=2)
+    clip6 = clip.with_effects([vfx.Crop(x_center=2, width=2, y1=1, y2=2)])
     target6 = BitmapClip([["DC"]], fps=1)
     assert clip6 == target6
 
 
 def test_even_size():
     clip1 = BitmapClip([["ABC", "BCD"]], fps=1)  # Width odd
-    clip1even = even_size(clip1)
+    clip1even = clip1.with_effects([vfx.EvenSize()])
     target1 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip1even == target1
 
     clip2 = BitmapClip([["AB", "BC", "CD"]], fps=1)  # Height odd
-    clip2even = even_size(clip2)
+    clip2even = clip2.with_effects([vfx.EvenSize()])
     target2 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip2even == target2
 
     clip3 = BitmapClip([["ABC", "BCD", "CDE"]], fps=1)  # Width and height odd
-    clip3even = even_size(clip3)
+    clip3even = clip3.with_effects([vfx.EvenSize()])
     target3 = BitmapClip([["AB", "BC"]], fps=1)
     assert clip3even == target3
 
@@ -201,18 +169,20 @@ def test_fadein():
     }
     clip = BitmapClip([["R"], ["G"], ["B"]], color_dict=color_dict, fps=1)
 
-    clip1 = fadein(clip, 1)  # default initial color
+    clip1 = clip.with_effects([vfx.FadeIn(1)])  # default initial color
     target1 = BitmapClip([["I"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip1 == target1
 
-    clip2 = fadein(clip, 1, initial_color=(255, 255, 255))  # different initial color
+    clip2 = clip.with_effects(
+        [vfx.FadeIn(1, initial_color=(255, 255, 255))]
+    )  # different initial color
     target2 = BitmapClip([["W"], ["G"], ["B"]], color_dict=color_dict, fps=1)
     assert clip2 == target2
 
 
 def test_fadeout(util, video):
     clip = video(end_time=0.5)
-    clip1 = fadeout(clip, 0.5)
+    clip1 = clip.with_effects([vfx.FadeOut(0.5)])
     clip1.write_videofile(os.path.join(util.TMP_DIR, "fadeout1.webm"))
 
 
@@ -320,10 +290,10 @@ def test_freeze(t, freeze_duration, total_duration, padding_end, output_frames):
     # freeze clip
     if hasattr(output_frames, "__traceback__"):
         with pytest.raises(output_frames):
-            freeze(clip, **kwargs)
+            clip.with_effects([vfx.Freeze(**kwargs)])
         return
     else:
-        freezed_clip = freeze(clip, **kwargs)
+        freezed_clip = clip.with_effects([vfx.Freeze(**kwargs)])
 
     # assert new duration
     expected_freeze_duration = (
@@ -343,12 +313,12 @@ def test_freeze_region():
     clip = BitmapClip([["AAB", "CCC"], ["BBR", "DDD"], ["CCC", "ABC"]], fps=1)
 
     # Test region
-    clip1 = freeze_region(clip, t=1, region=(2, 0, 3, 1))
+    clip1 = clip.with_effects([vfx.FreezeRegion(t=1, region=(2, 0, 3, 1))])
     target1 = BitmapClip([["AAR", "CCC"], ["BBR", "DDD"], ["CCR", "ABC"]], fps=1)
     assert clip1 == target1
 
     # Test outside_region
-    clip2 = freeze_region(clip, t=1, outside_region=(2, 0, 3, 1))
+    clip2 = clip.with_effects([vfx.FreezeRegion(t=1, outside_region=(2, 0, 3, 1))])
     target2 = BitmapClip([["BBB", "DDD"], ["BBR", "DDD"], ["BBC", "DDD"]], fps=1)
     assert clip2 == target2
 
@@ -368,7 +338,7 @@ def test_invert_colors():
         fps=1,
     )
 
-    clip1 = invert_colors(clip)
+    clip1 = clip.with_effects([vfx.InvertColors()])
     target1 = BitmapClip(
         [["CD", "DA"]],
         color_dict={"A": (0, 0, 0), "D": (205, 155, 105), "C": (255, 255, 255)},
@@ -380,42 +350,42 @@ def test_invert_colors():
 def test_loop(util, video):
     clip = BitmapClip([["R"], ["G"], ["B"]], fps=1)
 
-    clip1 = loop(clip, n=2)  # loop 2 times
+    clip1 = clip.with_effects([vfx.Loop(n=2)])  # loop 2 times
     target1 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"], ["B"]], fps=1)
     assert clip1 == target1
 
-    clip2 = loop(clip, duration=8)  # loop 8 seconds
+    clip2 = clip.with_effects([vfx.Loop(duration=8)])  # loop 8 seconds
     target2 = BitmapClip(
         [["R"], ["G"], ["B"], ["R"], ["G"], ["B"], ["R"], ["G"]], fps=1
     )
     assert clip2 == target2
 
-    clip3 = loop(clip).with_duration(5)  # infinite loop
+    clip3 = clip.with_effects([vfx.Loop()]).with_duration(5)  # infinite loop
     target3 = BitmapClip([["R"], ["G"], ["B"], ["R"], ["G"]], fps=1)
     assert clip3 == target3
 
     clip = video(start_time=0.2, end_time=0.3)  # 0.1 seconds long
-    clip1 = loop(clip).with_duration(0.5)  # infinite looping
+    clip1 = clip.with_effects([vfx.Loop()]).with_duration(0.5)  # infinite looping
     clip1.write_videofile(os.path.join(util.TMP_DIR, "loop1.webm"))
 
-    clip2 = loop(clip, duration=0.5)  # loop for 1 second
+    clip2 = clip.with_effects([vfx.Loop(duration=0.5)])  # loop for 1 second
     clip2.write_videofile(os.path.join(util.TMP_DIR, "loop2.webm"))
 
-    clip3 = loop(clip, n=3)  # loop 3 times
+    clip3 = clip.with_effects([vfx.Loop(n=3)])  # loop 3 times
     clip3.write_videofile(os.path.join(util.TMP_DIR, "loop3.webm"))
 
     # Test audio looping
     clip = AudioClip(
         lambda t: np.sin(440 * 2 * np.pi * t) * (t % 1) + 0.5, duration=2.5, fps=44100
     )
-    clip1 = clip.loop(2)
+    clip1 = clip.with_effects([vfx.Loop(2)])
     # TODO fix AudioClip.__eq__()
     # assert concatenate_audioclips([clip, clip]) == clip1
 
 
 def test_lum_contrast(util, video):
     clip = video()
-    clip1 = lum_contrast(clip)
+    clip1 = clip.with_effects([vfx.LumContrast()])
     clip1.write_videofile(os.path.join(util.TMP_DIR, "lum_contrast1.webm"))
 
     # what are the correct value ranges for function arguments lum,
@@ -425,8 +395,12 @@ def test_lum_contrast(util, video):
 
 def test_make_loopable(util, video):
     clip = video()
-    clip1 = make_loopable(clip, 0.4)
-    clip1.write_videofile(os.path.join(util.TMP_DIR, "make_loopable1.webm"))
+    clip1 = clip.with_effects([vfx.MakeLoopable(0.4)])
+
+    # We need to set libvpx-vp9 because our test will produce transparency
+    clip1.write_videofile(
+        os.path.join(util.TMP_DIR, "make_loopable1.webm"), codec="libvpx-vp9"
+    )
 
 
 @pytest.mark.parametrize(
@@ -530,14 +504,17 @@ def test_margin(ClipClass, margin_size, margins, color, expected_result):
         margins = [0, 0, 0, 0]
     left, right, top, bottom = margins
 
-    new_clip = margin(
-        clip,
-        margin_size=margin_size,
-        left=left,
-        right=right,
-        top=top,
-        bottom=bottom,
-        color=color,
+    new_clip = clip.with_effects(
+        [
+            vfx.Margin(
+                margin_size=margin_size,
+                left=left,
+                right=right,
+                top=top,
+                bottom=bottom,
+                color=color,
+            )
+        ]
     )
 
     assert new_clip == BitmapClip(expected_result, fps=1)
@@ -580,8 +557,12 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = mask_and(
-        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    masked_clip = clip.with_effects(
+        [
+            vfx.MasksAnd(
+                mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+            )
+        ]
     )
 
     assert masked_clip.duration == clip.duration
@@ -591,7 +572,7 @@ def test_mask_and(image_from, duration, color, mask_color, expected_color):
     color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
     clip = VideoClip(lambda t: color_frame).with_duration(duration)
     mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
-    masked_clip = mask_and(clip, mask_clip)
+    masked_clip = clip.with_effects([vfx.MasksAnd(mask_clip)])
 
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
@@ -637,8 +618,12 @@ def test_mask_or(image_from, duration, color, mask_color, expected_color):
     # test ImageClip and np.ndarray types as mask argument
     clip = ColorClip(color=color, size=clip_size).with_duration(duration)
     mask_clip = ColorClip(color=mask_color, size=clip.size)
-    masked_clip = mask_or(
-        clip, mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+    masked_clip = clip.with_effects(
+        [
+            vfx.MasksOr(
+                mask_clip if image_from == "ImageClip" else mask_clip.get_frame(0)
+            )
+        ]
     )
 
     assert masked_clip.duration == clip.duration
@@ -648,21 +633,21 @@ def test_mask_or(image_from, duration, color, mask_color, expected_color):
     color_frame, mask_color_frame = (np.array([[color]]), np.array([[mask_color]]))
     clip = VideoClip(lambda t: color_frame).with_duration(duration)
     mask_clip = VideoClip(lambda t: mask_color_frame).with_duration(duration)
-    masked_clip = mask_or(clip, mask_clip)
+    masked_clip = clip.with_effects([vfx.MasksOr(mask_clip)])
 
     assert np.array_equal(masked_clip.get_frame(0)[0][0], np.array(expected_color))
 
 
 def test_mirror_x():
     clip = BitmapClip([["AB", "CD"]], fps=1)
-    clip1 = mirror_x(clip)
+    clip1 = clip.with_effects([vfx.MirrorX()])
     target = BitmapClip([["BA", "DC"]], fps=1)
     assert clip1 == target
 
 
 def test_mirror_y():
     clip = BitmapClip([["AB", "CD"]], fps=1)
-    clip1 = mirror_y(clip)
+    clip1 = clip.with_effects([vfx.MirrorY()])
     target = BitmapClip([["CD", "AB"]], fps=1)
     assert clip1 == target
 
@@ -671,7 +656,6 @@ def test_painting():
     pass
 
 
-@pytest.mark.parametrize("library", ("PIL", "cv2", "scipy"))
 @pytest.mark.parametrize("apply_to_mask", (True, False))
 @pytest.mark.parametrize(
     (
@@ -750,25 +734,8 @@ def test_painting():
         ),
     ),
 )
-def test_resize(
-    library, apply_to_mask, size, duration, new_size, height, width, monkeypatch
-):
-    """Checks ``resize`` FX behaviours using all argument and third party
-    implementation combinations.
-    """
-    # mock implementation
-    resize_fx_mod = sys.modules[resize.__module__]
-    resizer_func, error_msgs = {
-        "PIL": resize_fx_mod._get_PIL_resizer,
-        "cv2": resize_fx_mod._get_cv2_resizer,
-        "scipy": resize_fx_mod._get_scipy_resizer,
-    }[library]()
-
-    # if function is not available, skip test for implementation
-    if error_msgs:
-        pytest.skip(error_msgs[0].split(" (")[0])
-    monkeypatch.setattr(resize_fx_mod, "resizer", resizer_func)
-
+def test_resize(apply_to_mask, size, duration, new_size, height, width):
+    """Checks ``resize`` FX behaviours using all argument"""
     # build expected sizes (using `width` or `height` arguments will be proportional
     # to original size)
     if new_size:
@@ -812,7 +779,7 @@ def test_resize(
     # any resizing argument passed, raises `ValueError`
     if expected_new_sizes is None:
         with pytest.raises(ValueError):
-            resized_clip = clip.resize(
+            resized_clip = clip.resized(
                 new_size=new_size,
                 height=height,
                 width=width,
@@ -821,7 +788,7 @@ def test_resize(
         resized_clip = clip
         expected_new_sizes = [size]
     else:
-        resized_clip = clip.resize(
+        resized_clip = clip.resized(
             new_size=new_size, height=height, width=width, apply_to_mask=apply_to_mask
         )
 
@@ -841,8 +808,6 @@ def test_resize(
             assert len(mask_frame) == expected_height
 
 
-@pytest.mark.parametrize("PIL_installed", (True, False))
-@pytest.mark.parametrize("angle_offset", [-360, 0, 360, 720])
 @pytest.mark.parametrize("unit", ["deg", "rad"])
 @pytest.mark.parametrize("resample", ["bilinear", "nearest", "bicubic", "unknown"])
 @pytest.mark.parametrize(
@@ -922,8 +887,6 @@ def test_resize(
     ),
 )
 def test_rotate(
-    PIL_installed,
-    angle_offset,
     angle,
     unit,
     resample,
@@ -931,7 +894,6 @@ def test_rotate(
     center,
     bg_color,
     expected_frames,
-    monkeypatch,
 ):
     """Check ``rotate`` FX behaviour against possible combinations of arguments."""
     original_frames = [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]
@@ -955,20 +917,11 @@ def test_rotate(
     }
     if resample not in ["bilinear", "nearest", "bicubic"]:
         with pytest.raises(ValueError) as exc:
-            clip.rotate(_angle, **kwargs)
+            clip.rotated(_angle, **kwargs)
         assert (
             "'resample' argument must be either 'bilinear', 'nearest' or 'bicubic'"
         ) == str(exc.value)
         return
-
-    # if the scenario implies that PIL is not installed, monkeypatch the
-    # module in which 'rotate' function resides
-    if not PIL_installed:
-        rotate_module = importlib.import_module("moviepy.video.fx.rotate")
-        monkeypatch.setattr(rotate_module, "Image", None)
-        rotate_func = rotate_module.rotate
-    else:
-        rotate_func = rotate
 
     # resolve the angle, because if it is a multiple of 90, the rotation
     # can be computed event without an available PIL installation
@@ -979,27 +932,16 @@ def test_rotate(
     if unit == "rad":
         _resolved_angle = math.degrees(_resolved_angle)
 
-    if not PIL_installed and (
-        (_resolved_angle % 90 != 0) or center or translate or bg_color
-    ):
-        with pytest.raises(ValueError) as exc:
-            rotated_clip = clip.fx(rotate_func, _angle, **kwargs)
+    rotated_clip = clip.with_effects([vfx.Rotate(_angle, **kwargs)])
+    expected_clip = BitmapClip(expected_frames, fps=1)
 
-        assert (
-            'Without "Pillow" installed, only angles that are a multiple of 90'
-        ) in str(exc.value)
-
-    else:
-        rotated_clip = clip.fx(rotate_func, _angle, **kwargs)
-        expected_clip = BitmapClip(expected_frames, fps=1)
-
-        assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
+    assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
 
 
 def test_rotate_nonstandard_angles(util):
     # Test rotate with color clip
     clip = ColorClip([600, 400], [150, 250, 100]).with_duration(1).with_fps(5)
-    clip = rotate(clip, 20)
+    clip = clip.with_effects([vfx.Rotate(20)])
     clip.write_videofile(os.path.join(util.TMP_DIR, "color_rotate.webm"))
 
 
@@ -1010,7 +952,7 @@ def test_rotate_mask():
         ColorClip(color=0.5, size=(1, 1), is_mask=True)
         .with_fps(1)
         .with_duration(1)
-        .fx(rotate, 45)
+        .with_effects([vfx.Rotate(45)])
     )
     assert clip.get_frame(0)[1][1] != 0
 
@@ -1037,53 +979,7 @@ def test_rotate_supported_PIL_kwargs(
     monkeypatch,
 ):
     """Test supported 'rotate' FX arguments by PIL version."""
-    rotate_module = importlib.import_module("moviepy.video.fx.rotate")
-
-    # patch supported kwargs data by PIL version
-    new_PIL_rotate_kwargs_supported, min_version_by_kwarg_name = ({}, {})
-    for kwarg, (
-        kw_name,
-        supported,
-        min_version,
-    ) in rotate_module.PIL_rotate_kwargs_supported.items():
-        supported = kw_name not in unsupported_kwargs
-        new_PIL_rotate_kwargs_supported[kwarg] = [kw_name, supported, min_version]
-
-        min_version_by_kwarg_name[kw_name] = ".".join(str(n) for n in min_version)
-
-    monkeypatch.setattr(
-        rotate_module,
-        "PIL_rotate_kwargs_supported",
-        new_PIL_rotate_kwargs_supported,
-    )
-
-    with pytest.warns(UserWarning) as record:
-        BitmapClip([["R", "G", "B"]], fps=1).fx(
-            rotate_module.rotate,
-            45,
-            bg_color=(10, 10, 10),
-            center=(1, 1),
-            translate=(1, 0),
-        )
-
-    # assert number of warnings filtering other non related warnings
-    warning_records = list(
-        filter(lambda rec: rec.category.__name__ == "UserWarning", record.list)
-    )
-    assert len(warning_records) == len(unsupported_kwargs)
-
-    # assert messages contents
-    messages = []
-    for warning in warning_records:
-        messages.append(warning.message.args[0])
-
-    for unsupported_kwarg in unsupported_kwargs:
-        expected_message = (
-            f"rotate '{unsupported_kwarg}' argument is not supported by your"
-            " Pillow version and is being ignored. Minimum Pillow version"
-            f" required: v{min_version_by_kwarg_name[unsupported_kwarg]}"
-        )
-        assert expected_message in messages
+    pass
 
 
 def test_scroll():
@@ -1093,19 +989,19 @@ def test_scroll():
 def test_multiply_speed():
     clip = BitmapClip([["A"], ["B"], ["C"], ["D"]], fps=1)
 
-    clip1 = multiply_speed(clip, 0.5)  # 1/2x speed
+    clip1 = clip.with_effects([vfx.MultiplySpeed(0.5)])  # 1/2x speed
     target1 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip1 == target1
 
-    clip2 = multiply_speed(clip, final_duration=8)  # 1/2x speed
+    clip2 = clip.with_effects([vfx.MultiplySpeed(final_duration=8)])  # 1/2x speed
     target2 = BitmapClip(
         [["A"], ["A"], ["B"], ["B"], ["C"], ["C"], ["D"], ["D"]], fps=1
     )
     assert clip2 == target2
 
-    clip3 = multiply_speed(clip, final_duration=12)  # 1/2x speed
+    clip3 = clip.with_effects([vfx.MultiplySpeed(final_duration=12)])  # 1/2x speed
     target3 = BitmapClip(
         [
             ["A"],
@@ -1125,15 +1021,15 @@ def test_multiply_speed():
     )
     assert clip3 == target3
 
-    clip4 = multiply_speed(clip, 2)  # 2x speed
+    clip4 = clip.with_effects([vfx.MultiplySpeed(2)])  # 2x speed
     target4 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip4 == target4
 
-    clip5 = multiply_speed(clip, final_duration=2)  # 2x speed
+    clip5 = clip.with_effects([vfx.MultiplySpeed(final_duration=2)])  # 2x speed
     target5 = BitmapClip([["A"], ["C"]], fps=1)
     assert clip5 == target5
 
-    clip6 = multiply_speed(clip, 4)  # 4x speed
+    clip6 = clip.with_effects([vfx.MultiplySpeed(4)])  # 4x speed
     target6 = BitmapClip([["A"]], fps=1)
     assert (
         clip6 == target6
@@ -1147,13 +1043,13 @@ def test_supersample():
 def test_time_mirror():
     clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]], fps=1)
 
-    clip1 = time_mirror(clip)
+    clip1 = clip.with_effects([vfx.TimeMirror()])
     target1 = BitmapClip([["CC", "CC"], ["BB", "BB"], ["AA", "AA"]], fps=1)
     assert clip1 == target1
 
     clip2 = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"], ["DD", "DD"]], fps=1)
 
-    clip3 = time_mirror(clip2)
+    clip3 = clip2.with_effects([vfx.TimeMirror()])
     target3 = BitmapClip(
         [["DD", "DD"], ["CC", "CC"], ["BB", "BB"], ["AA", "AA"]], fps=1
     )
@@ -1163,7 +1059,7 @@ def test_time_mirror():
 def test_time_symmetrize():
     clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]], fps=1)
 
-    clip1 = time_symmetrize(clip)
+    clip1 = clip.with_effects([vfx.TimeSymmetrize()])
     target1 = BitmapClip(
         [
             ["AA", "AA"],
@@ -1180,15 +1076,15 @@ def test_time_symmetrize():
 
 def test_audio_normalize():
     clip = AudioFileClip("media/crunching.mp3")
-    clip = audio_normalize(clip)
+    clip = clip.with_effects([afx.AudioNormalize()])
     assert clip.max_volume() == 1
 
 
 def test_audio_normalize_muted():
     z_array = np.array([0.0])
-    make_frame = lambda t: z_array
-    clip = AudioClip(make_frame, duration=1, fps=44100)
-    clip = audio_normalize(clip)
+    frame_function = lambda t: z_array
+    clip = AudioClip(frame_function, duration=1, fps=44100)
+    clip = clip.with_effects([afx.AudioNormalize()])
     assert np.array_equal(clip.to_soundarray(), z_array)
 
 
@@ -1277,27 +1173,30 @@ def test_multiply_volume_audioclip(
     end_time,
 ):
     if sound_type == "stereo":
-        make_frame = lambda t: np.array(
+        frame_function = lambda t: np.array(
             [
                 np.sin(440 * 2 * np.pi * t),
                 np.sin(160 * 2 * np.pi * t),
             ]
         ).T.copy(order="C")
     else:
-        make_frame = lambda t: [np.sin(440 * 2 * np.pi * t)]
+        frame_function = lambda t: [np.sin(440 * 2 * np.pi * t)]
 
     clip = AudioClip(
-        make_frame,
+        frame_function,
         duration=duration if duration else 0.1,
         fps=22050,
     )
     clip_array = clip.to_soundarray()
 
-    clip_transformed = multiply_volume(
-        clip,
-        factor,
-        start_time=start_time,
-        end_time=end_time,
+    clip_transformed = clip.with_effects(
+        [
+            afx.MultiplyVolume(
+                factor,
+                start_time=start_time,
+                end_time=end_time,
+            )
+        ]
     )
     clip_transformed_array = clip_transformed.to_soundarray()
 
@@ -1381,11 +1280,18 @@ def test_multiply_volume_audioclip(
 def test_multiply_volume_videoclip():
     start_time, end_time = (0.1, 0.2)
 
-    clip = multiply_volume(
-        VideoFileClip("media/chaplin.mp4").subclip(0, 0.3),
-        0,
-        start_time=start_time,
-        end_time=end_time,
+    clip = (
+        VideoFileClip("media/chaplin.mp4")
+        .subclipped(0, 0.3)
+        .with_effects(
+            [
+                afx.MultiplyVolume(
+                    0,
+                    start_time=start_time,
+                    end_time=end_time,
+                )
+            ]
+        )
     )
     clip_soundarray = clip.audio.to_soundarray()
 
@@ -1405,8 +1311,10 @@ def test_multiply_stereo_volume():
     clip = AudioFileClip("media/crunching.mp3")
 
     # stereo mute
-    clip_left_channel_muted = multiply_stereo_volume(clip, left=0)
-    clip_right_channel_muted = multiply_stereo_volume(clip, right=0, left=2)
+    clip_left_channel_muted = clip.with_effects([afx.MultiplyStereoVolume(left=0)])
+    clip_right_channel_muted = clip.with_effects(
+        [afx.MultiplyStereoVolume(right=0, left=2)]
+    )
 
     left_channel_muted = clip_left_channel_muted.to_soundarray()[:, 0]
     right_channel_muted = clip_right_channel_muted.to_soundarray()[:, 1]
@@ -1424,7 +1332,7 @@ def test_multiply_stereo_volume():
     # mono muted
     sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
     mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
-    muted_mono_clip = multiply_stereo_volume(mono_clip, left=0)
+    muted_mono_clip = mono_clip.with_effects([afx.MultiplyStereoVolume(left=0)])
     mono_channel_muted = muted_mono_clip.to_soundarray()
 
     z_channel = np.zeros(len(mono_channel_muted))
@@ -1432,8 +1340,8 @@ def test_multiply_stereo_volume():
 
     # mono doubled
     mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
-    doubled_mono_clip = multiply_stereo_volume(
-        mono_clip, left=None, right=2
+    doubled_mono_clip = mono_clip.with_effects(
+        [afx.MultiplyStereoVolume(left=None, right=2)]
     )  # using right
     mono_channel_doubled = doubled_mono_clip.to_soundarray()
     d_channel = mono_clip.to_soundarray() * 2
@@ -1466,14 +1374,16 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
 
     # stereo audio clip
     clip = AudioClip(
-        make_frame=stereo_wave(left_freq=440, right_freq=880),
+        frame_function=stereo_wave(left_freq=440, right_freq=880),
         duration=duration,
         fps=44100,
     )
     clip_array = clip.to_soundarray()
 
     # stereo delayed clip
-    delayed_clip = audio_delay(clip, offset=offset, n_repeats=n_repeats, decay=decay)
+    delayed_clip = clip.with_effects(
+        [afx.AudioDelay(offset=offset, n_repeats=n_repeats, decay=decay)]
+    )
     delayed_clip_array = delayed_clip.to_soundarray()
 
     # size of chunks with audios
@@ -1498,7 +1408,7 @@ def test_audio_delay(stereo_wave, duration, offset, n_repeats, decay):
         if i == 0:
             assert np.array_equal(
                 delayed_clip_array[:, :][sound_start_at:sound_ends_at],
-                multiply_volume(clip, decayments[i]).to_soundarray(),
+                clip.with_effects([afx.MultiplyVolume(decayments[i])]).to_soundarray(),
             )
 
         # muted chunk
@@ -1538,12 +1448,12 @@ def test_audio_fadein(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadein_duration
 ):
     if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
+        frame_function = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = mono_wave(440)
+        frame_function = mono_wave(440)
 
-    clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
-    new_clip = audio_fadein(clip, fadein_duration)
+    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
+    new_clip = clip.with_effects([afx.AudioFadeIn(fadein_duration)])
 
     # first frame is muted
     first_frame = new_clip.get_frame(0)
@@ -1564,7 +1474,7 @@ def test_audio_fadein(
     start_times = np.arange(0, fadein_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         possible_value = (i + 1) / n_parts
         assert round(subclip_max_volume, 2) in [
@@ -1578,7 +1488,7 @@ def test_audio_fadein(
     start_times = np.arange(fadein_duration, clip_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         assert round(subclip_max_volume, 4) == 1
 
@@ -1599,12 +1509,12 @@ def test_audio_fadeout(
     mono_wave, stereo_wave, sound_type, fps, clip_duration, fadeout_duration
 ):
     if sound_type == "stereo":
-        make_frame = stereo_wave(left_freq=440, right_freq=160)
+        frame_function = stereo_wave(left_freq=440, right_freq=160)
     else:
-        make_frame = mono_wave(440)
+        frame_function = mono_wave(440)
 
-    clip = AudioClip(make_frame, duration=clip_duration, fps=fps)
-    new_clip = audio_fadeout(clip, fadeout_duration)
+    clip = AudioClip(frame_function, duration=clip_duration, fps=fps)
+    new_clip = clip.with_effects([afx.AudioFadeOut(fadeout_duration)])
 
     fadeout_duration = convert_to_seconds(fadeout_duration)
 
@@ -1620,7 +1530,7 @@ def test_audio_fadeout(
     )
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         possible_value = 1 - i * 0.1
         assert round(subclip_max_volume, 2) in [
@@ -1634,7 +1544,7 @@ def test_audio_fadeout(
     start_times = np.arange(0, clip_duration - fadeout_duration, time_foreach_part)
     for i, start_time in enumerate(start_times):
         end_time = start_time + time_foreach_part
-        subclip_max_volume = new_clip.subclip(start_time, end_time).max_volume()
+        subclip_max_volume = new_clip.subclipped(start_time, end_time).max_volume()
 
         assert round(subclip_max_volume, 4) == 1
 

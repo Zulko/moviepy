@@ -1,4 +1,5 @@
 """Video file clip tests meant to be run with pytest."""
+
 import copy
 import os
 
@@ -51,7 +52,7 @@ def test_copied_videofileclip_write_videofile(util):
     input_video_filepath = "media/big_buck_bunny_432_433.webm"
     output_video_filepath = os.path.join(util.TMP_DIR, "copied_videofileclip.mp4")
 
-    clip = VideoFileClip(input_video_filepath).subclip(0, 1)
+    clip = VideoFileClip(input_video_filepath).subclipped(0, 1)
     copied_clip = clip.copy()
 
     copied_clip.write_videofile(output_video_filepath)
@@ -80,6 +81,21 @@ def test_videofileclip_safe_deepcopy(monkeypatch):
 
     # this should not raise any exception (see `VideoFileClip.__deepcopy__`)
     assert copy.deepcopy(clip) == "foo"
+
+
+def test_ffmpeg_transparency_mask(util):
+    """Test VideoFileClip and FFMPEG reading of video with transparency."""
+    video_file = "media/transparent.webm"
+
+    video = VideoFileClip(video_file, has_mask=True)
+
+    assert video.mask is not None
+
+    mask_frame = video.mask.get_frame(0)
+    assert mask_frame[100, 100] == 1.0
+    assert mask_frame[10, 10] == 0
+
+    video.close()
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@
 
 - Keep messages on GitHub issues and pull requests on-topic and to the point. Be aware that each comment triggers a notification which gets sent out to a number of people.
   - Opinions are OK.
-  - For longer or more in-depth discussions, use the [MoviePy Gitter](https://gitter.im/Movie-py). If these discussions lead to a decision, like a merge/reject, please leave a message on the relevant MoviePy issue to document the outcome of the discussion/the reason for the decision.
+  - For longer or more in-depth discussions, use the [MoviePy Gitter](https://gitter.im/movie-py/Lobby). If these discussions lead to a decision, like a merge/reject, please leave a message on the relevant MoviePy issue to document the outcome of the discussion/the reason for the decision.
 - Do not push any commit that changes the API without prior discussion.
 
 ## Preparing for development

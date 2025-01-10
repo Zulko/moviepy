@@ -292,7 +292,7 @@ def test_ffmpeg_parse_video_rotation():
 
 def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
-    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclipped(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
         util.TMP_DIR,
@@ -768,6 +768,20 @@ def test_failure_to_release_file(util):
             print("You are not running Windows, because that worked.")
         except OSError:  # More specifically, PermissionError in Python 3.
             print("Yes, on Windows this fails.")
+
+
+def test_read_transparent_video():
+    reader = FFMPEG_VideoReader("media/transparent.webm", pixel_format="rgba")
+
+    # Get first frame
+    frame = reader.get_frame(0)
+    mask = frame[:, :, 3]
+
+    # Check transparency on fully transparent part is 0
+    assert mask[10, 10] == 0
+
+    # Check transparency on fully opaque part is 255
+    assert mask[100, 100] == 255
 
 
 if __name__ == "__main__":

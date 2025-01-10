@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: 2024 K Kollmann
+# SPDX-License-Identifier: MIT
+
+name: Code formatting and linting
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - main
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.9"
+
+jobs:
+  black:
+    name: Black code formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.1.6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Run Black
+        uses: psf/black@24.4.2
+        with:
+          options: "--version --check --diff --color" # default: "--check --diff"
+
+  flake8:
+    name: Flake8 linter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.1.6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up Python environment – ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade wheel pip
+          pip install .[lint]
+      - name: Show Flake8 version
+        run: flake8 --version
+      - name: Run Flake8
+        run: flake8 -v --show-source --max-line-length=92 moviepy docs/conf.py examples tests
+
+  isort:
+    name: isort import sorter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4.1.6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Set up Python environment – ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5.1.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade wheel pip
+          pip install .[lint]
+      - name: Run isort
+        run: isort --check-only --diff moviepy scripts docs/conf.py examples tests

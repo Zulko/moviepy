@@ -6,7 +6,7 @@ import proglog
 
 from moviepy.config import FFMPEG_BINARY
 from moviepy.decorators import requires_duration
-from moviepy.tools import cross_platform_popen_params
+from moviepy.tools import cross_platform_popen_params, ffmpeg_escape_filename
 
 
 class FFMPEG_AudioWriter:
@@ -23,16 +23,31 @@ class FFMPEG_AudioWriter:
       Size (width,height) in pixels of the output video.
 
     fps_input
-      Frames per second of the input audio (given by the AUdioClip being
+      Frames per second of the input audio (given by the AudioClip being
       written down).
 
-    codec
-      Name of the ffmpeg codec to use for the output.
+    nbytes : int, optional
+      Number of bytes per sample. Default is 2 (16-bit audio).
+
+    nchannels : int, optional
+      Number of audio channels. Default is 2 (stereo).
+
+    codec : str, optional
+        The codec to use for the output. Default is ``libfdk_aac``.
 
     bitrate:
       A string indicating the bitrate of the final video. Only
       relevant for codecs which accept a bitrate.
 
+    input_video : str, optional
+      Path to an input video file. If provided, the audio will be muxed with this video.
+      If not provided, the output will be audio-only.
+
+    logfile : file-like object or None, optional
+      A file object where FFMPEG logs will be written. If None, logs are suppressed.
+
+    ffmpeg_params : list of str, optional
+      Additional FFMPEG command-line parameters to customize the output.
     """
 
     def __init__(
@@ -74,7 +89,7 @@ class FFMPEG_AudioWriter:
         if input_video is None:
             cmd.extend(["-vn"])
         else:
-            cmd.extend(["-i", input_video, "-vcodec", "copy"])
+            cmd.extend(["-i", ffmpeg_escape_filename(input_video), "-vcodec", "copy"])
 
         cmd.extend(["-acodec", codec] + ["-ar", "%d" % fps_input])
         cmd.extend(["-strict", "-2"])  # needed to support codec 'aac'
@@ -82,7 +97,7 @@ class FFMPEG_AudioWriter:
             cmd.extend(["-ab", bitrate])
         if ffmpeg_params is not None:
             cmd.extend(ffmpeg_params)
-        cmd.extend([filename])
+        cmd.extend([ffmpeg_escape_filename(filename)])
 
         popen_params = cross_platform_popen_params(
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
@@ -91,7 +106,7 @@ class FFMPEG_AudioWriter:
         self.proc = sp.Popen(cmd, **popen_params)
 
     def write_frames(self, frames_array):
-        """TODO: add documentation"""
+        """Send the audio frame (a chunck of ``AudioClip``) to ffmpeg for writting"""
         try:
             self.proc.stdin.write(frames_array.tobytes())
         except IOError as err:
