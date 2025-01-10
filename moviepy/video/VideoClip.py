@@ -1727,13 +1727,14 @@ class TextClip(ImageClip):
 
         if bg_radius is None:
             bg_radius = 0
-        
+
         if bg_radius != 0:
-            
-            img = Image.new(img_mode, (img_width, img_height), color=(0,0,0,0))
+            img = Image.new(img_mode, (img_width, img_height), color=(0, 0, 0, 0))
             pil_font = ImageFont.truetype(font, font_size)
             draw = ImageDraw.Draw(img)
-            draw.rounded_rectangle([0, 0, img_width, img_height], radius=bg_radius, fill=bg_color)
+            draw.rounded_rectangle(
+                [0, 0, img_width, img_height], radius=bg_radius, fill=bg_color
+            )
         else:
             img = Image.new(img_mode, (img_width, img_height), color=bg_color)
             pil_font = ImageFont.truetype(font, font_size)

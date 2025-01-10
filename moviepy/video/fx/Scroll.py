@@ -30,7 +30,6 @@ class Scroll(Effect):
         y_start=0,
         apply_to="mask",
     ):
-
         self.w = w
         self.h = h
         self.x_speed = x_speed
