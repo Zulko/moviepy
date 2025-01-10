@@ -1521,6 +1521,11 @@ class TextClip(ImageClip):
 
     duration
         Duration of the clip
+
+    bg_radius
+     A paramater to round the edges of the text background. Defaults to 0 if there
+     is no background. It will have no effect if there is no bg_colour added.
+     The higher the value, the more rounded the corners will become.
     """
 
     @convert_path_to_string("filename")
@@ -1543,6 +1548,7 @@ class TextClip(ImageClip):
         interline=4,
         transparent=True,
         duration=None,
+        bg_radius=0,  # TODO : Move this with other bg_param on next breaking release
     ):
         def break_text(
             width, text, font, font_size, stroke_width, align, spacing
@@ -1802,9 +1808,20 @@ class TextClip(ImageClip):
         if bg_color is None and transparent:
             bg_color = (0, 0, 0, 0)
 
-        img = Image.new(img_mode, (img_width, img_height), color=bg_color)
-        pil_font = ImageFont.truetype(font, font_size)
-        draw = ImageDraw.Draw(img)
+        if bg_radius is None:
+            bg_radius = 0
+
+        if bg_radius != 0:
+            img = Image.new(img_mode, (img_width, img_height), color=(0, 0, 0, 0))
+            pil_font = ImageFont.truetype(font, font_size)
+            draw = ImageDraw.Draw(img)
+            draw.rounded_rectangle(
+                [0, 0, img_width, img_height], radius=bg_radius, fill=bg_color
+            )
+        else:
+            img = Image.new(img_mode, (img_width, img_height), color=bg_color)
+            pil_font = ImageFont.truetype(font, font_size)
+            draw = ImageDraw.Draw(img)
 
         # Dont need allow break here, because we already breaked in caption
         text_width, text_height = find_text_size(
