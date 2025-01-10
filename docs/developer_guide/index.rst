@@ -11,3 +11,4 @@ The Developers Guide covers most of the things people wanting to participate to 
    
    developers_install
    contribution_guidelines
+   maintainers_publish
