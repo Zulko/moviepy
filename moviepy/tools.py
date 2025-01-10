@@ -156,6 +156,7 @@ extensions_dict = {
     "mp3": {"type": "audio", "codec": ["libmp3lame"]},
     "wav": {"type": "audio", "codec": ["pcm_s16le", "pcm_s24le", "pcm_s32le"]},
     "m4a": {"type": "audio", "codec": ["libfdk_aac"]},
+    "flac":{"type": "audio", "codec": ["flac"]}
 }
 
 for ext in ["jpg", "jpeg", "png", "bmp", "tiff"]:
