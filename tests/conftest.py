@@ -9,7 +9,6 @@ import inspect
 import io
 import pkgutil
 import socketserver
-import sys
 import tempfile
 import threading
 
@@ -23,19 +22,15 @@ from moviepy.video.io.VideoFileClip import VideoFileClip
 TMP_DIR = tempfile.gettempdir()  # because tempfile.tempdir is sometimes None
 
 # Arbitrary font used in caption testing.
-if sys.platform in ("win32", "cygwin"):
-    FONT = "Arial"
-    # Even if Windows users install the Liberation fonts, it is called
-    # LiberationMono on Windows, so it doesn't help.
-else:
-    FONT = (
-        "Liberation-Mono"  # This is available in the fonts-liberation package on Linux
-    )
+FONT = "media/doc_medias/example.ttf"
+
+# Dir for doc examples medias
+DOC_EXAMPLES_MEDIAS_DIR = "media/doc_medias"
 
 
 @functools.lru_cache(maxsize=None)
 def get_video(start_time=0, end_time=1):
-    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(
+    return VideoFileClip("media/big_buck_bunny_432_433.webm").subclipped(
         start_time, end_time
     )
 
@@ -149,6 +144,7 @@ def util():
     class MoviepyTestUtils:
         FONT = FONT
         TMP_DIR = TMP_DIR
+        DOC_EXAMPLES_MEDIAS_DIR = DOC_EXAMPLES_MEDIAS_DIR
 
     return MoviepyTestUtils
 

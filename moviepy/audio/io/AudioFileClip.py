@@ -49,8 +49,10 @@ class AudioFileClip(AudioClip):
     Examples
     --------
 
-    >>> snd = AudioFileClip("song.wav")
-    >>> snd.close()
+    .. code:: python
+
+        snd = AudioFileClip("song.wav")
+        snd.close()
     """
 
     @convert_path_to_string("filename")
@@ -73,7 +75,7 @@ class AudioFileClip(AudioClip):
         self.buffersize = self.reader.buffersize
         self.filename = filename
 
-        self.make_frame = lambda t: self.reader.get_frame(t)
+        self.frame_function = lambda t: self.reader.get_frame(t)
         self.nchannels = self.reader.nchannels
 
     def close(self):
