@@ -1,6 +1,7 @@
 """Imports everything that you need from the MoviePy submodules so that every thing
 can be directly imported with ``from moviepy import *``.
 """
+
 from moviepy.audio import fx as afx
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
