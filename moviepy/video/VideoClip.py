@@ -1405,12 +1405,6 @@ class TextClip(ImageClip):
       a RGB (or RGBA if transparent = ``True``) ``tuple``, a color name, or an
       hexadecimal notation.
 
-    bg_radius
-     A paramater to round the edges of the text background. Defaults to 0 if there
-     is no background. It will have no effect if there is no bg_colour added.
-     The higher the value, the more rounded the corners will become.
-
-
     stroke_color
       Color of the stroke (=contour line) of the text. If ``None``,
       there will be no stroke.
@@ -1444,6 +1438,11 @@ class TextClip(ImageClip):
 
     duration
         Duration of the clip
+
+    bg_radius
+     A paramater to round the edges of the text background. Defaults to 0 if there
+     is no background. It will have no effect if there is no bg_colour added.
+     The higher the value, the more rounded the corners will become.
     """
 
     @convert_path_to_string("filename")
@@ -1457,7 +1456,6 @@ class TextClip(ImageClip):
         margin=(None, None),
         color="black",
         bg_color=None,
-        bg_radius=0,
         stroke_color=None,
         stroke_width=0,
         method="label",
@@ -1467,6 +1465,7 @@ class TextClip(ImageClip):
         interline=4,
         transparent=True,
         duration=None,
+        bg_radius=0, # TODO : Move this with other bg_param on next breaking release
     ):
         def break_text(
             width, text, font, font_size, stroke_width, align, spacing
