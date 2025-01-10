@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed <!-- for any bug fixes -->
 - Fix ffmpeg reading crash when invalid metadata (see pr #2311)
+- Fix GPU h264_nvenc encoding not working.
 
 ## [v2.1.2](https://github.com/zulko/moviepy/tree/master)
 
