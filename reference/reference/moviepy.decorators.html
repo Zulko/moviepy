@@ -568,8 +568,8 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="moviepy.decorators.outplace.html#moviepy.decorators.outplace" title="moviepy.decorators.outplace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outplace</span></code></a>(func, clip, *args, **kwargs)</p></td>
 <td><p>Applies <code class="docutils literal notranslate"><span class="pre">func(clip.copy(),</span> <span class="pre">*args,</span> <span class="pre">**kwargs)</span></code> and returns <code class="docutils literal notranslate"><span class="pre">clip.copy()</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.decorators.preprocess_args.html#moviepy.decorators.preprocess_args" title="moviepy.decorators.preprocess_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess_args</span></code></a>(fun, varnames)</p></td>
-<td><p>Applies fun to variables in varnames before launching the function.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.decorators.preprocess_args.html#moviepy.decorators.preprocess_args" title="moviepy.decorators.preprocess_args"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocess_args</span></code></a>(preprocess_func, varnames)</p></td>
+<td><p>Applies preprocess_func to variables in varnames before launching the function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="moviepy.decorators.requires_duration.html#moviepy.decorators.requires_duration" title="moviepy.decorators.requires_duration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requires_duration</span></code></a>(func, clip, *args, **kwargs)</p></td>
 <td><p>Raises an error if the clip has no duration.</p></td>
@@ -577,7 +577,7 @@ document.write(`
 <tr class="row-odd"><td><p><a class="reference internal" href="moviepy.decorators.requires_fps.html#moviepy.decorators.requires_fps" title="moviepy.decorators.requires_fps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">requires_fps</span></code></a>(func, clip, *args, **kwargs)</p></td>
 <td><p>Raises an error if the clip has no fps.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.decorators.use_clip_fps_by_default.html#moviepy.decorators.use_clip_fps_by_default" title="moviepy.decorators.use_clip_fps_by_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_clip_fps_by_default</span></code></a>(func, clip, *args, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="moviepy.decorators.use_clip_fps_by_default.html#moviepy.decorators.use_clip_fps_by_default" title="moviepy.decorators.use_clip_fps_by_default"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_clip_fps_by_default</span></code></a>(func)</p></td>
 <td><p>Will use <code class="docutils literal notranslate"><span class="pre">clip.fps</span></code> if no <code class="docutils literal notranslate"><span class="pre">fps=...</span></code> is provided in <strong>kwargs</strong>.</p></td>
 </tr>
 </tbody>

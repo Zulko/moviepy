@@ -455,22 +455,32 @@ document.write(`
         <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="preprocess_args"><a class="viewcode-back" href="../../reference/reference/moviepy.decorators.preprocess_args.html#moviepy.decorators.preprocess_args">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_args</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">varnames</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies fun to variables in varnames before launching the function.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="preprocess_args"><a class="viewcode-back" href="../../reference/reference/moviepy.decorators.preprocess_args.html#moviepy.decorators.preprocess_args">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">preprocess_args</span><span class="p">(</span><span class="n">preprocess_func</span><span class="p">,</span> <span class="n">varnames</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies preprocess_func to variables in varnames before launching</span>
+<span class="sd">    the function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
-        <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">fun</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="n">varnames</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-        <span class="p">]</span>
-        <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">kwarg</span><span class="p">:</span> <span class="n">fun</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">varnames</span> <span class="k">else</span> <span class="n">value</span>
-            <span class="k">for</span> <span class="p">(</span><span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decor</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">argnames</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
 
-    <span class="k">return</span> <span class="n">decorator</span><span class="o">.</span><span class="n">decorator</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span></div>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span>
+                    <span class="n">preprocess_func</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="n">varnames</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="n">arg</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">argnames</span><span class="p">)</span>
+            <span class="p">]</span>
+            <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">kwarg</span><span class="p">:</span> <span class="n">preprocess_func</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">kwarg</span> <span class="ow">in</span> <span class="n">varnames</span> <span class="k">else</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">decorator</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decor</span></div>
 
 
 <div class="viewcode-block" id="convert_parameter_to_seconds"><a class="viewcode-back" href="../../reference/reference/moviepy.decorators.convert_parameter_to_seconds.html#moviepy.decorators.convert_parameter_to_seconds">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_parameter_to_seconds</span><span class="p">(</span><span class="n">varnames</span><span class="p">):</span>
@@ -491,11 +501,11 @@ document.write(`
     <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="use_clip_fps_by_default"><a class="viewcode-back" href="../../reference/reference/moviepy.decorators.use_clip_fps_by_default.html#moviepy.decorators.use_clip_fps_by_default">[docs]</a><span class="nd">@decorator</span><span class="o">.</span><span class="n">decorator</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">use_clip_fps_by_default</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="use_clip_fps_by_default"><a class="viewcode-back" href="../../reference/reference/moviepy.decorators.use_clip_fps_by_default.html#moviepy.decorators.use_clip_fps_by_default">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">use_clip_fps_by_default</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Will use ``clip.fps`` if no ``fps=...`` is provided in **kwargs**.&quot;&quot;&quot;</span>
+    <span class="n">argnames</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">find_fps</span><span class="p">(</span><span class="n">fps</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">find_fps</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">fps</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">fps</span>
         <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="s2">&quot;fps&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
@@ -507,17 +517,19 @@ document.write(`
             <span class="s2">&quot; the clip&#39;s fps with `clip.fps=24`&quot;</span> <span class="o">%</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="p">)</span>
 
-    <span class="n">names</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">find_fps</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fps&quot;</span> <span class="k">else</span> <span class="n">arg</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">argnames</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">kwarg</span><span class="p">:</span> <span class="n">find_fps</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="n">kwarg</span><span class="p">)</span> <span class="k">if</span> <span class="n">kwarg</span> <span class="o">==</span> <span class="s2">&quot;fps&quot;</span> <span class="k">else</span> <span class="n">value</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span>
 
-    <span class="n">new_args</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">find_fps</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;fps&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
-    <span class="p">]</span>
-    <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="n">kwarg</span><span class="p">:</span> <span class="n">find_fps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">kwarg</span> <span class="o">==</span> <span class="s2">&quot;fps&quot;</span> <span class="k">else</span> <span class="n">value</span>
-        <span class="k">for</span> <span class="p">(</span><span class="n">kwarg</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-    <span class="p">}</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span> <span class="o">*</span><span class="n">new_args</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">decorator</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">wrapper</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>
