@@ -1465,7 +1465,7 @@ class TextClip(ImageClip):
         interline=4,
         transparent=True,
         duration=None,
-        bg_radius=0, # TODO : Move this with other bg_param on next breaking release
+        bg_radius=0,  # TODO : Move this with other bg_param on next breaking release
     ):
         def break_text(
             width, text, font, font_size, stroke_width, align, spacing
