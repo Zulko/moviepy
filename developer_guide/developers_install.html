@@ -336,6 +336,7 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation for MoviePy developers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contribution_guidelines.html">MoviePy’s Contribution Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="maintainers_publish.html">Publishing a New Version of MoviePy</a></li>
 </ul>
 </div>
 </nav></div>
@@ -424,6 +425,10 @@ $<span class="w"> </span><span class="o">(</span>sudo<span class="o">)</span><sp
 </div>
 <p>And you can lint with:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>black<span class="w"> </span>.
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>flake8<span class="w"> </span>-v<span class="w"> </span>--show-source<span class="w"> </span>--max-line-length<span class="o">=</span><span class="m">92</span><span class="w"> </span>moviepy<span class="w"> </span>docs/conf.py<span class="w"> </span>examples<span class="w"> </span>tests
 </pre></div>
 </div>
 </section>

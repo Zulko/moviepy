@@ -46,6 +46,12 @@ And you can lint with:
 
     $ python -m black .
 
+and 
+
+.. code:: bash
+
+    $ python3 -m flake8 -v --show-source --max-line-length=92 moviepy docs/conf.py examples tests
+
 
 
 
