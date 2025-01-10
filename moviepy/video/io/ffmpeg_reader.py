@@ -779,7 +779,6 @@ class FFmpegInfosParser:
         command output line.
         """
         info = line.split(":", 1)
-        
         if len(info) == 2:
             raw_field, raw_value = info
             return (raw_field.strip(" "), raw_value.strip(" "))
