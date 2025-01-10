@@ -491,8 +491,6 @@ document.write(`
             <span class="k">elif</span> <span class="n">codec_name</span> <span class="o">==</span> <span class="s2">&quot;vp8&quot;</span><span class="p">:</span>
                 <span class="n">i_arg</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;-c:v&quot;</span><span class="p">,</span> <span class="s2">&quot;libvpx&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">i_arg</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infos</span><span class="p">)</span>
-
         <span class="n">cmd</span> <span class="o">=</span> <span class="p">(</span>
             <span class="p">[</span><span class="n">FFMPEG_BINARY</span><span class="p">]</span>
             <span class="o">+</span> <span class="n">i_arg</span>
@@ -512,8 +510,6 @@ document.write(`
                 <span class="s2">&quot;-&quot;</span><span class="p">,</span>
             <span class="p">]</span>
         <span class="p">)</span>
-
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
 
         <span class="n">popen_params</span> <span class="o">=</span> <span class="n">cross_platform_popen_params</span><span class="p">(</span>
             <span class="p">{</span>
