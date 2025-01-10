@@ -126,7 +126,6 @@ def add_mask_if_none(func, clip, *args, **kwargs):
 
 def use_clip_fps_by_default(func):
     """Will use ``clip.fps`` if no ``fps=...`` is provided in **kwargs**."""
-
     argnames = inspect.getfullargspec(func).args[1:]
 
     def find_fps(clip, fps):
