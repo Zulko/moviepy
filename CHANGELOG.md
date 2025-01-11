@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add background radius to text clips
 
 ### Changed <!-- for changes in existing functionality -->
+- Subclipping outside of clip boundaries now raise an exception
 
 ### Deprecated <!-- for soon-to-be removed features -->
 

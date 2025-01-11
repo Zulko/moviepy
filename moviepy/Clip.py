@@ -402,6 +402,7 @@ class Clip:
                 + "should be smaller than the clip's "
                 + "duration (%.02f)." % self.duration
             )
+        
 
         new_clip = self.time_transform(lambda t: t + start_time, apply_to=[])
 
@@ -422,6 +423,13 @@ class Clip:
                 end_time = self.duration + end_time
 
         if end_time is not None:
+            if (self.duration is not None) and (end_time > self.duration):
+                raise ValueError(
+                    "end_time (%.02f) " % end_time
+                    + "should be smaller or equal to the clip's "
+                    + "duration (%.02f)." % self.duration
+                )
+        
             new_clip.duration = end_time - start_time
             new_clip.end = new_clip.start + new_clip.duration
 

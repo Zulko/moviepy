@@ -389,16 +389,17 @@ def test_afterimage(util):
 
 def test_add():
     clip = VideoFileClip("media/fire2.mp4")
-    new_clip = clip[0:1] + clip[2:3.2]
-    assert new_clip.duration == 2.2
-    assert np.array_equal(new_clip[1.1], clip[2.1])
+    print(clip.duration)
+    new_clip = clip[0:1] + clip[1.5:2]
+    assert new_clip.duration == 1.5
+    assert np.array_equal(new_clip[1.1], clip[1.6])
 
 
 def test_slice_tuples():
     clip = VideoFileClip("media/fire2.mp4")
-    new_clip = clip[0:1, 2:3.2]
-    assert new_clip.duration == 2.2
-    assert np.array_equal(new_clip[1.1], clip[2.1])
+    new_clip = clip[0:1, 1.5:2]
+    assert new_clip.duration == 1.5
+    assert np.array_equal(new_clip[1.1], clip[1.6])
 
 
 def test_slice_mirror():
