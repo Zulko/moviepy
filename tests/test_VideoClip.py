@@ -389,7 +389,6 @@ def test_afterimage(util):
 
 def test_add():
     clip = VideoFileClip("media/fire2.mp4")
-    print(clip.duration)
     new_clip = clip[0:1] + clip[1.5:2]
     assert new_clip.duration == 1.5
     assert np.array_equal(new_clip[1.1], clip[1.6])
