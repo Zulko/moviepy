@@ -1496,10 +1496,15 @@ class TextClip(ImageClip):
       Width of the stroke, in pixels. Must be an int.
 
     method
-      Either 'label' (default, the picture will be autosized so as to fit
-      exactly the size) or 'caption' (the text will be drawn in a picture
-      with fixed size provided with the ``size`` argument). If `caption`,
-      the text will be wrapped automagically.
+      Either :
+        - 'label' (default), the picture will be autosized so as to fit the text
+          either by auto-computing font size if width is provided or auto-computing
+          width and eight if font size is defined
+
+        - 'caption' the text will be drawn in a picture with fixed size provided
+          with the ``size`` argument. The text will be wrapped automagically,
+          either by auto-computing font size if width is provided or adding
+          line break when necesarry if font size is defined
 
     text_align
       center | left | right. Text align similar to css. Default to ``left``.
@@ -1521,11 +1526,6 @@ class TextClip(ImageClip):
 
     duration
         Duration of the clip
-
-    bg_radius
-     A paramater to round the edges of the text background. Defaults to 0 if there
-     is no background. It will have no effect if there is no bg_colour added.
-     The higher the value, the more rounded the corners will become.
     """
 
     @convert_path_to_string("filename")
@@ -1548,141 +1548,7 @@ class TextClip(ImageClip):
         interline=4,
         transparent=True,
         duration=None,
-        bg_radius=0,  # TODO : Move this with other bg_param on next breaking release
     ):
-        def break_text(
-            width, text, font, font_size, stroke_width, align, spacing
-        ) -> List[str]:
-            """Break text to never overflow a width"""
-            img = Image.new("RGB", (1, 1))
-            font_pil = ImageFont.truetype(font, font_size)
-            draw = ImageDraw.Draw(img)
-
-            lines = []
-            current_line = ""
-            words = text.split(" ")
-            for word in words:
-                temp_line = current_line + " " + word if current_line else word
-                temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
-                    (0, 0),
-                    temp_line,
-                    font=font_pil,
-                    spacing=spacing,
-                    align=align,
-                    stroke_width=stroke_width,
-                )
-                temp_width = temp_right - temp_left
-
-                if temp_width <= width:
-                    current_line = temp_line
-                else:
-                    lines.append(current_line)
-                    current_line = word
-
-            if current_line:
-                lines.append(current_line)
-
-            return lines
-
-        def find_text_size(
-            text,
-            font,
-            font_size,
-            stroke_width,
-            align,
-            spacing,
-            max_width=None,
-            allow_break=False,
-        ) -> tuple[int, int]:
-            """Find dimensions a text will occupy, return a tuple (width, height)"""
-            img = Image.new("RGB", (1, 1))
-            font_pil = ImageFont.truetype(font, font_size)
-            draw = ImageDraw.Draw(img)
-
-            if max_width is None or not allow_break:
-                left, top, right, bottom = draw.multiline_textbbox(
-                    (0, 0),
-                    text,
-                    font=font_pil,
-                    spacing=spacing,
-                    align=align,
-                    stroke_width=stroke_width,
-                    anchor="lm",
-                )
-
-                return (int(right - left), int(bottom - top))
-
-            lines = break_text(
-                width=max_width,
-                text=text,
-                font=font,
-                font_size=font_size,
-                stroke_width=stroke_width,
-                align=align,
-                spacing=spacing,
-            )
-
-            left, top, right, bottom = draw.multiline_textbbox(
-                (0, 0),
-                "\n".join(lines),
-                font=font_pil,
-                spacing=spacing,
-                align=align,
-                stroke_width=stroke_width,
-                anchor="lm",
-            )
-
-            return (int(right - left), int(bottom - top))
-
-        def find_optimum_font_size(
-            text,
-            font,
-            stroke_width,
-            align,
-            spacing,
-            width,
-            height=None,
-            allow_break=False,
-        ):
-            """Find the best font size to fit as optimally as possible"""
-            max_font_size = width
-            min_font_size = 1
-
-            # Try find best size using bisection
-            while min_font_size < max_font_size:
-                avg_font_size = int((max_font_size + min_font_size) // 2)
-                text_width, text_height = find_text_size(
-                    text,
-                    font,
-                    avg_font_size,
-                    stroke_width,
-                    align,
-                    spacing,
-                    max_width=width,
-                    allow_break=allow_break,
-                )
-
-                if text_width <= width and (height is None or text_height <= height):
-                    min_font_size = avg_font_size + 1
-                else:
-                    max_font_size = avg_font_size - 1
-
-            # Check if the last font size tested fits within the given width and height
-            text_width, text_height = find_text_size(
-                text,
-                font,
-                min_font_size,
-                stroke_width,
-                align,
-                spacing,
-                max_width=width,
-                allow_break=allow_break,
-            )
-            if text_width <= width and (height is None or text_height <= height):
-                return min_font_size
-            else:
-                return min_font_size - 1
-
         try:
             _ = ImageFont.truetype(font)
         except Exception as e:
@@ -1697,6 +1563,21 @@ class TextClip(ImageClip):
         if text is None:
             raise ValueError("No text nor filename provided")
 
+        if method not in ["caption", "label"]:
+            raise ValueError("Method must be either `caption` or `label`.")
+
+        # Compute the margin and apply it
+        if len(margin) == 2:
+            left_margin = right_margin = int(margin[0] or 0)
+            top_margin = bottom_margin = int(margin[1] or 0)
+        elif len(margin) == 4:
+            left_margin = int(margin[0] or 0)
+            top_margin = int(margin[1] or 0)
+            right_margin = int(margin[2] or 0)
+            bottom_margin = int(margin[3] or 0)
+        else:
+            raise ValueError("Margin must be a tuple of either 2 or 4 elements.")
+
         # Compute all img and text sizes if some are missing
         img_width, img_height = size
 
@@ -1710,7 +1591,7 @@ class TextClip(ImageClip):
                 )
 
             if font_size is None:
-                font_size = find_optimum_font_size(
+                font_size = self.__find_optimum_font_size(
                     text=text,
                     font=font,
                     stroke_width=stroke_width,
@@ -1722,7 +1603,7 @@ class TextClip(ImageClip):
                 )
 
             if img_height is None:
-                img_height = find_text_size(
+                img_height = self.__find_text_size(
                     text=text,
                     font=font,
                     font_size=font_size,
@@ -1735,7 +1616,7 @@ class TextClip(ImageClip):
 
             # Add line breaks whenever needed
             text = "\n".join(
-                break_text(
+                self.__break_text(
                     width=img_width,
                     text=text,
                     font=font,
@@ -1753,7 +1634,7 @@ class TextClip(ImageClip):
                 )
 
             if font_size is None:
-                font_size = find_optimum_font_size(
+                font_size = self.__find_optimum_font_size(
                     text=text,
                     font=font,
                     stroke_width=stroke_width,
@@ -1764,7 +1645,7 @@ class TextClip(ImageClip):
                 )
 
             if img_width is None:
-                img_width = find_text_size(
+                img_width = self.__find_text_size(
                     text=text,
                     font=font,
                     font_size=font_size,
@@ -1774,7 +1655,7 @@ class TextClip(ImageClip):
                 )[0]
 
             if img_height is None:
-                img_height = find_text_size(
+                img_height = self.__find_text_size(
                     text=text,
                     font=font,
                     font_size=font_size,
@@ -1784,21 +1665,8 @@ class TextClip(ImageClip):
                     max_width=img_width,
                 )[1]
 
-        else:
-            raise ValueError("Method must be either `caption` or `label`.")
-
-        # Compute the margin and apply it
-        if len(margin) == 2:
-            left_margin = right_margin = int(margin[0] or 0)
-            top_margin = bottom_margin = int(margin[1] or 0)
-        elif len(margin) == 4:
-            left_margin = int(margin[0] or 0)
-            top_margin = int(margin[1] or 0)
-            right_margin = int(margin[2] or 0)
-            bottom_margin = int(margin[3] or 0)
-        else:
-            raise ValueError("Margin must be a tuple of either 2 or 4 elements.")
-
+        # In image size computing include font descent to height to avoid
+        # clipping text
         img_width += left_margin + right_margin
         img_height += top_margin + bottom_margin
 
@@ -1808,23 +1676,12 @@ class TextClip(ImageClip):
         if bg_color is None and transparent:
             bg_color = (0, 0, 0, 0)
 
-        if bg_radius is None:
-            bg_radius = 0
-
-        if bg_radius != 0:
-            img = Image.new(img_mode, (img_width, img_height), color=(0, 0, 0, 0))
-            pil_font = ImageFont.truetype(font, font_size)
-            draw = ImageDraw.Draw(img)
-            draw.rounded_rectangle(
-                [0, 0, img_width, img_height], radius=bg_radius, fill=bg_color
-            )
-        else:
-            img = Image.new(img_mode, (img_width, img_height), color=bg_color)
-            pil_font = ImageFont.truetype(font, font_size)
-            draw = ImageDraw.Draw(img)
+        img = Image.new(img_mode, (img_width, img_height), color=bg_color)
+        pil_font = ImageFont.truetype(font, font_size)
+        draw = ImageDraw.Draw(img)
 
         # Dont need allow break here, because we already breaked in caption
-        text_width, text_height = find_text_size(
+        text_width, text_height = self.__find_text_size(
             text=text,
             font=font,
             font_size=font_size,
@@ -1881,6 +1738,143 @@ class TextClip(ImageClip):
         self.text = text
         self.color = color
         self.stroke_color = stroke_color
+
+    def __break_text(
+        self, width, text, font, font_size, stroke_width, align, spacing
+    ) -> List[str]:
+        """Break text to never overflow a width"""
+        img = Image.new("RGB", (1, 1))
+        font_pil = ImageFont.truetype(font, font_size)
+        draw = ImageDraw.Draw(img)
+
+        lines = []
+        current_line = ""
+        words = text.split(" ")
+        for word in words:
+            temp_line = current_line + " " + word if current_line else word
+            temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
+                (0, 0),
+                temp_line,
+                font=font_pil,
+                spacing=spacing,
+                align=align,
+                stroke_width=stroke_width,
+            )
+            temp_width = temp_right - temp_left
+
+            if temp_width <= width:
+                current_line = temp_line
+            else:
+                lines.append(current_line)
+                current_line = word
+
+        if current_line:
+            lines.append(current_line)
+
+        return lines
+
+    def __find_text_size(
+        self,
+        text,
+        font,
+        font_size,
+        stroke_width,
+        align,
+        spacing,
+        max_width=None,
+        allow_break=False,
+    ) -> tuple[int, int]:
+        """Find dimensions a text will occupy, return a tuple (width, height)"""
+        img = Image.new("RGB", (1, 1))
+        font_pil = ImageFont.truetype(font, font_size)
+        ascent, descent = font_pil.getmetrics()
+        draw = ImageDraw.Draw(img)
+
+        if max_width is None or not allow_break:
+            left, top, right, bottom = draw.multiline_textbbox(
+                (0, 0),
+                text,
+                font=font_pil,
+                spacing=spacing,
+                align=align,
+                stroke_width=stroke_width,
+                anchor="lm",
+            )
+
+            return (int(right - left), int(bottom - top + descent))
+
+        lines = self.__break_text(
+            width=max_width,
+            text=text,
+            font=font,
+            font_size=font_size,
+            stroke_width=stroke_width,
+            align=align,
+            spacing=spacing,
+        )
+
+        left, top, right, bottom = draw.multiline_textbbox(
+            (0, 0),
+            "\n".join(lines),
+            font=font_pil,
+            spacing=spacing,
+            align=align,
+            stroke_width=stroke_width,
+            anchor="lm",
+        )
+
+        # Add descent to text size to avoid bottom of text clipping
+        return (int(right - left), int(bottom - top + descent))
+
+    def __find_optimum_font_size(
+        self,
+        text,
+        font,
+        stroke_width,
+        align,
+        spacing,
+        width,
+        height=None,
+        allow_break=False,
+    ):
+        """Find the best font size to fit as optimally as possible"""
+        max_font_size = width
+        min_font_size = 1
+
+        # Try find best size using bisection
+        while min_font_size < max_font_size:
+            avg_font_size = int((max_font_size + min_font_size) // 2)
+            text_width, text_height = self.__find_text_size(
+                text,
+                font,
+                avg_font_size,
+                stroke_width,
+                align,
+                spacing,
+                max_width=width,
+                allow_break=allow_break,
+            )
+
+            if text_width <= width and (height is None or text_height <= height):
+                min_font_size = avg_font_size + 1
+            else:
+                max_font_size = avg_font_size - 1
+
+        # Check if the last font size tested fits within the given width and height
+        text_width, text_height = self.__find_text_size(
+            text,
+            font,
+            min_font_size,
+            stroke_width,
+            align,
+            spacing,
+            max_width=width,
+            allow_break=allow_break,
+        )
+        if text_width <= width and (height is None or text_height <= height):
+            return min_font_size
+        else:
+            return min_font_size - 1
 
 
 class BitmapClip(VideoClip):
