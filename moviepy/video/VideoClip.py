@@ -1711,10 +1711,6 @@ class TextClip(ImageClip):
         # middle line.
         (ascent, descent) = pil_font.getmetrics()
         real_font_size = ascent + descent
-        print("Font size", font_size)
-        print("Real font size", real_font_size)
-        print("Ascent & Descent", (ascent, descent))
-        print("Height", text_height)
         y += real_font_size - descent
 
         # Add margins and stroke size to start point
