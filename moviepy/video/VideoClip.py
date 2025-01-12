@@ -1503,7 +1503,7 @@ class TextClip(ImageClip):
 
         - 'caption' the text will be drawn in a picture with fixed size provided
           with the ``size`` argument. The text will be wrapped automagically,
-          either by auto-computing font size if width is provided or adding
+          either by auto-computing font size if width and height are provided or adding
           line break when necesarry if font size is defined
 
     text_align
@@ -1665,8 +1665,6 @@ class TextClip(ImageClip):
                     max_width=img_width,
                 )[1]
 
-        # In image size computing include font descent to height to avoid
-        # clipping text
         img_width += left_margin + right_margin
         img_height += top_margin + bottom_margin
 
@@ -1697,15 +1695,11 @@ class TextClip(ImageClip):
         elif horizontal_align == "center":
             x = (img_width - left_margin - right_margin - text_width) / 2
 
-        x += left_margin
-
         y = 0
         if vertical_align == "bottom":
             y = img_height - text_height - top_margin - bottom_margin
         elif vertical_align == "center":
             y = (img_height - top_margin - bottom_margin - text_height) / 2
-
-        y += top_margin
 
         # So, pillow multiline support is horrible, in particular multiline_text
         # and multiline_textbbox are not intuitive at all. They cannot use left
@@ -1715,7 +1709,19 @@ class TextClip(ImageClip):
         # text. That mean our Y is actually not from 0 for top, but need to be
         # increment by half our text height, since we have to reference from
         # middle line.
-        y += text_height / 2
+        (ascent, descent) = pil_font.getmetrics()
+        real_font_size = ascent + descent
+        print("Font size", font_size)
+        print("Real font size", real_font_size)
+        print("Ascent & Descent", (ascent, descent))
+        print("Height", text_height)
+        y += real_font_size - descent
+
+        # Add margins and stroke size to start point
+        y += top_margin
+        x += left_margin
+        y += stroke_width
+        x += stroke_width
 
         draw.multiline_text(
             xy=(x, y),
@@ -1726,7 +1732,7 @@ class TextClip(ImageClip):
             align=text_align,
             stroke_width=stroke_width,
             stroke_fill=stroke_color,
-            anchor="lm",
+            anchor="ls",
         )
 
         # We just need the image as a numpy array
@@ -1788,9 +1794,16 @@ class TextClip(ImageClip):
         img = Image.new("RGB", (1, 1))
         font_pil = ImageFont.truetype(font, font_size)
         ascent, descent = font_pil.getmetrics()
+        real_font_size = ascent + descent
         draw = ImageDraw.Draw(img)
+        # Compute individual line height with spaces using pillow internal method
+        line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
 
         if max_width is None or not allow_break:
+            line_breaks = text.count('\n')
+            nb_lines = line_breaks + 1
+            total_text_height = nb_lines * line_height
+
             left, top, right, bottom = draw.multiline_textbbox(
                 (0, 0),
                 text,
@@ -1798,10 +1811,11 @@ class TextClip(ImageClip):
                 spacing=spacing,
                 align=align,
                 stroke_width=stroke_width,
-                anchor="lm",
+                anchor="ls",
             )
 
-            return (int(right - left), int(bottom - top + descent))
+            # Multiline textbbox is not reliable for height
+            return (int(right - left), int(spacing + total_text_height))
 
         lines = self.__break_text(
             width=max_width,
@@ -1813,6 +1827,10 @@ class TextClip(ImageClip):
             spacing=spacing,
         )
 
+        nb_lines = len(lines)
+        line_breaks = nb_lines - 1
+        total_text_height = nb_lines * real_font_size
+
         left, top, right, bottom = draw.multiline_textbbox(
             (0, 0),
             "\n".join(lines),
@@ -1820,11 +1838,11 @@ class TextClip(ImageClip):
             spacing=spacing,
             align=align,
             stroke_width=stroke_width,
-            anchor="lm",
+            anchor="ls",
         )
 
         # Add descent to text size to avoid bottom of text clipping
-        return (int(right - left), int(bottom - top + descent))
+        return (int(right - left), int(spacing + total_text_height))
 
     def __find_optimum_font_size(
         self,
