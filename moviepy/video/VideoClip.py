@@ -1704,14 +1704,12 @@ class TextClip(ImageClip):
         # So, pillow multiline support is horrible, in particular multiline_text
         # and multiline_textbbox are not intuitive at all. They cannot use left
         # top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
-        # as anchor, so we always have to use left middle instead. Else we would
+        # as anchor, so we always have to use left baseline instead. Else we would
         # always have a useless margin (the diff between ascender and top) on any
         # text. That mean our Y is actually not from 0 for top, but need to be
-        # increment by half our text height, since we have to reference from
-        # middle line.
-        (ascent, descent) = pil_font.getmetrics()
-        real_font_size = ascent + descent
-        y += real_font_size - descent
+        # increment by ascent, since we have to reference from baseline.
+        (ascent, _) = pil_font.getmetrics()
+        y += ascent
 
         # Add margins and stroke size to start point
         y += top_margin
@@ -1786,50 +1784,74 @@ class TextClip(ImageClip):
         max_width=None,
         allow_break=False,
     ) -> tuple[int, int]:
-        """Find dimensions a text will occupy, return a tuple (width, height)"""
+        """Find *real* dimensions a text will occupy, return a tuple (width, height)
+        
+        .. note::
+            Text height calculation is quite complex due to how `Pillow` works.
+            When calculating line height, `Pillow` actually uses the letter ``A``
+            as a reference height, adding the spacing and the stroke width.
+            However, ``A`` is a simple letter and does not account for ascent and
+            descent, such as in ``Ô``.
+
+            This means each line will be considered as having a "standard"
+            height instead of the real maximum font size (``ascent + descent``).
+
+            When drawing each line, `Pillow` will offset the new line by
+            ``standard height * number of previous lines``.
+            This mostly works, but if the spacing is not big enough,
+            lines will overlap if a letter with an ascent (e.g., ``d``) is above
+            a letter with a descent (e.g., ``p``).
+
+            For our case, we use the baseline as the text anchor. This means that,
+            no matter what, we need to draw the absolute top of our first line at
+            ``0 + ascent + stroke_width`` to ensure the first pixel of any possible
+            letter is aligned with the top border of the image (ignoring any
+            additional margins, if needed).
+
+            Therefore, our first line height will not start at ``0`` but at
+            ``ascent + stroke_width``, and we need to account for that. Each
+            subsequent line will then be drawn at
+            ``index * standard height`` from this point. The position of the last
+            line can be calculated as:
+            ``(total_lines - 1) * standard height``.
+
+            Finally, as we use the baseline as the text anchor, we also need to
+            consider that the real size of the last line is not "standard" but
+            rather ``standard + descent + stroke_width``.
+
+            To summarize, the real height of the text is:
+              ``initial padding + (lines - 1) * height + end padding``
+            or:
+              ``(ascent + stroke_width) + (lines - 1) * height + (descent + stroke_width)``
+            or:
+              ``real_font_size + (stroke_width * 2) + (lines - 1) * height``
+        """
         img = Image.new("RGB", (1, 1))
         font_pil = ImageFont.truetype(font, font_size)
         ascent, descent = font_pil.getmetrics()
         real_font_size = ascent + descent
         draw = ImageDraw.Draw(img)
+
         # Compute individual line height with spaces using pillow internal method
         line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
 
-        if max_width is None or not allow_break:
-            line_breaks = text.count('\n')
-            nb_lines = line_breaks + 1
-            total_text_height = nb_lines * line_height
-
-            left, top, right, bottom = draw.multiline_textbbox(
-                (0, 0),
-                text,
-                font=font_pil,
-                spacing=spacing,
-                align=align,
+        if max_width is not None and allow_break:
+            lines = self.__break_text(
+                width=max_width,
+                text=text,
+                font=font,
+                font_size=font_size,
                 stroke_width=stroke_width,
-                anchor="ls",
+                align=align,
+                spacing=spacing,
             )
 
-            # Multiline textbbox is not reliable for height
-            return (int(right - left), int(spacing + total_text_height))
-
-        lines = self.__break_text(
-            width=max_width,
-            text=text,
-            font=font,
-            font_size=font_size,
-            stroke_width=stroke_width,
-            align=align,
-            spacing=spacing,
-        )
-
-        nb_lines = len(lines)
-        line_breaks = nb_lines - 1
-        total_text_height = nb_lines * real_font_size
-
+            text = "\n".join(lines)
+                
+        # Use multiline textbbox to get width
         left, top, right, bottom = draw.multiline_textbbox(
             (0, 0),
-            "\n".join(lines),
+            text,
             font=font_pil,
             spacing=spacing,
             align=align,
@@ -1837,8 +1859,13 @@ class TextClip(ImageClip):
             anchor="ls",
         )
 
-        # Add descent to text size to avoid bottom of text clipping
-        return (int(right - left), int(spacing + total_text_height))
+        # For height calculate manually as textbbox is not realiable
+        line_breaks = text.count('\n')
+        lines_height = line_breaks * line_height
+        paddings = real_font_size + stroke_width * 2
+
+        return (int(right - left), int(lines_height + paddings))
+
 
     def __find_optimum_font_size(
         self,
@@ -1851,7 +1878,8 @@ class TextClip(ImageClip):
         height=None,
         allow_break=False,
     ):
-        """Find the best font size to fit as optimally as possible"""
+        """Find the best font size to fit as optimally as possible
+        in a box of some width and optionally height"""
         max_font_size = width
         min_font_size = 1
 
