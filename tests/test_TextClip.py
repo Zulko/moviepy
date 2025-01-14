@@ -6,6 +6,8 @@ import numpy as np
 
 import pytest
 
+import string
+
 from moviepy import *
 
 
@@ -74,8 +76,11 @@ def test_no_text_nor_filename_arguments(method, util):
 
 
 def test_label_autosizing(util):
-    # We test with the letters usually triggering cutting such a ypj and ÀÉÔ
-    text = "ÀÉÔÇjpgy\nÀÉÔÇjpgy"
+    # We test with about all possible letters
+    text = "abcdefghijklmnopqrstuvwxyzáàâäãåāæąēéèêëīíìîïñōóòôöõøœęýABCDEFGHIJKLMNOPQRSTUVWXYZÁÀÂÄÃÅĀÆĄĒÉÈÊËĪÍÌÎÏÑŌÓÒÔÖÕØŒĘÝ"
+    text += "\nabcdefghijklmnopqrstuvwxyzáàâäãåāæąēéèêëīíìîïñōóòôöõøœęýABCDEFGHIJKLMNOPQRSTUVWXYZÁÀÂÄÃÅĀÆĄĒÉÈÊËĪÍÌÎÏÑŌÓÒÔÖÕØŒĘÝ"
+    text += "\nabcdefghijklmnopqrstuvwxyzáàâäãåāæąēéèêëīíìîïñōóòôöõøœęýABCDEFGHIJKLMNOPQRSTUVWXYZÁÀÂÄÃÅĀÆĄĒÉÈÊËĪÍÌÎÏÑŌÓÒÔÖÕØŒĘÝ"
+
 
     text_clip_margin = TextClip(util.FONT, method="label", font_size=40, text=text, color="red", bg_color="black", stroke_width=3, stroke_color="white", margin=(1, 1)).with_duration(1)
     text_clip_no_margin = TextClip(util.FONT, method="label", font_size=40, text=text, color="red", bg_color="black", stroke_width=3, stroke_color="white").with_duration(1)
@@ -94,18 +99,16 @@ def test_label_autosizing(util):
     assert np.allclose(first_column, [0, 0, 0], rtol=0.01)
     assert np.allclose(last_column, [0, 0, 0], rtol=0.01)
 
-    # We actually check on two pixels border, because some fonts
-    # always add a 1px padding all arround
-    first_two_rows, last_two_rows = (no_margin_frame[:2], no_margin_frame[-2:])
-    first_two_columns, last_two_columns = (no_margin_frame[:, :2], no_margin_frame[:, -2:])
+    # We actually check on three pixels border, because some fonts
+    # always add a 1px padding all arround and some rounding error can make it two
+    first_three_rows, last_three_rows = (no_margin_frame[:3], no_margin_frame[-3:])
+    first_three_columns, last_three_columns = (no_margin_frame[:, :3], no_margin_frame[:, -3:])
 
     # We add a bit of tolerance (about 1%) to account for possible rounding errors
-    assert not (
-        np.allclose(first_two_rows, [0, 0, 0], rtol=0.01) and 
-        np.allclose(last_two_rows, [0, 0, 0], rtol=0.01) and
-        np.allclose(first_two_columns, [0, 0, 0], rtol=0.01) and
-        np.allclose(last_two_columns, [0, 0, 0], rtol=0.01)
-    )
+    assert not np.allclose(first_three_rows, [0, 0, 0], rtol=0.01)
+    assert not np.allclose(last_three_rows, [0, 0, 0], rtol=0.01)
+    assert not np.allclose(first_three_columns, [0, 0, 0], rtol=0.01)
+    assert not np.allclose(last_three_columns, [0, 0, 0], rtol=0.01)
 
 
 
