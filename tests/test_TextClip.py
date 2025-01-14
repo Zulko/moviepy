@@ -73,5 +73,41 @@ def test_no_text_nor_filename_arguments(method, util):
         )
 
 
+def test_label_autosizing(util):
+    # We test with the letters usually triggering cutting such a ypj and ÀÉÔ
+    text = "ÀÉÔÇjpgy\nÀÉÔÇjpgy"
+
+    text_clip_margin = TextClip(util.FONT, method="label", font_size=40, text=text, color="red", bg_color="black", stroke_width=3, stroke_color="white", margin=(1, 1)).with_duration(1)
+    text_clip_no_margin = TextClip(util.FONT, method="label", font_size=40, text=text, color="red", bg_color="black", stroke_width=3, stroke_color="white").with_duration(1)
+    
+    margin_frame = text_clip_margin.get_frame(1)
+    no_margin_frame = text_clip_no_margin.get_frame(1)
+    
+    # The idea is, if autosizing work as expected, frame with 1px margin will
+    # have black color all around, where frame without margin will have white somewhere
+    first_row, last_row = (margin_frame[0], margin_frame[-1])
+    first_column, last_column = (margin_frame[:, 0], margin_frame[:, -1])
+
+    # We add a bit of tolerance (about 1%) to account for possible rounding errors
+    assert np.allclose(first_row, [0, 0, 0], rtol=0.01)
+    assert np.allclose(last_row, [0, 0, 0], rtol=0.01)    
+    assert np.allclose(first_column, [0, 0, 0], rtol=0.01)
+    assert np.allclose(last_column, [0, 0, 0], rtol=0.01)
+
+    # We actually check on two pixels border, because some fonts
+    # always add a 1px padding all arround
+    first_two_rows, last_two_rows = (no_margin_frame[:2], no_margin_frame[-2:])
+    first_two_columns, last_two_columns = (no_margin_frame[:, :2], no_margin_frame[:, -2:])
+
+    # We add a bit of tolerance (about 1%) to account for possible rounding errors
+    assert not (
+        np.allclose(first_two_rows, [0, 0, 0], rtol=0.01) and 
+        np.allclose(last_two_rows, [0, 0, 0], rtol=0.01) and
+        np.allclose(first_two_columns, [0, 0, 0], rtol=0.01) and
+        np.allclose(last_two_columns, [0, 0, 0], rtol=0.01)
+    )
+
+
+
 if __name__ == "__main__":
     pytest.main()
