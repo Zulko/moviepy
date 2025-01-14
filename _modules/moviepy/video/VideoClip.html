@@ -1873,10 +1873,15 @@ document.write(`
 <span class="sd">      Width of the stroke, in pixels. Must be an int.</span>
 
 <span class="sd">    method</span>
-<span class="sd">      Either &#39;label&#39; (default, the picture will be autosized so as to fit</span>
-<span class="sd">      exactly the size) or &#39;caption&#39; (the text will be drawn in a picture</span>
-<span class="sd">      with fixed size provided with the ``size`` argument). If `caption`,</span>
-<span class="sd">      the text will be wrapped automagically.</span>
+<span class="sd">      Either :</span>
+<span class="sd">        - &#39;label&#39; (default), the picture will be autosized so as to fit the text</span>
+<span class="sd">          either by auto-computing font size if width is provided or auto-computing</span>
+<span class="sd">          width and eight if font size is defined</span>
+
+<span class="sd">        - &#39;caption&#39; the text will be drawn in a picture with fixed size provided</span>
+<span class="sd">          with the ``size`` argument. The text will be wrapped automagically,</span>
+<span class="sd">          either by auto-computing font size if width and height are provided or adding</span>
+<span class="sd">          line break when necesarry if font size is defined</span>
 
 <span class="sd">    text_align</span>
 <span class="sd">      center | left | right. Text align similar to css. Default to ``left``.</span>
@@ -1899,10 +1904,23 @@ document.write(`
 <span class="sd">    duration</span>
 <span class="sd">        Duration of the clip</span>
 
-<span class="sd">    bg_radius</span>
-<span class="sd">     A paramater to round the edges of the text background. Defaults to 0 if there</span>
-<span class="sd">     is no background. It will have no effect if there is no bg_colour added.</span>
-<span class="sd">     The higher the value, the more rounded the corners will become.</span>
+<span class="sd">    .. note::</span>
+
+<span class="sd">      ** About final TextClip size **</span>
+
+<span class="sd">      The final TextClip size will be of the absolute maximum height possible</span>
+<span class="sd">      for the font and the number of line. It specifically mean that the final</span>
+<span class="sd">      height might be a bit bigger than the real text height, i.e, absolute</span>
+<span class="sd">      bottom pixel of text - absolute top pixel of text.</span>
+<span class="sd">      This is because in a font, some letter go above standard top line (e.g</span>
+<span class="sd">      letters with accents), and bellow standard baseline (e.g letters such as</span>
+<span class="sd">      p, y, g).</span>
+
+<span class="sd">      This notion is knowned under the name ascent and descent meaning the</span>
+<span class="sd">      highest and lowest pixel above and below baseline</span>
+
+<span class="sd">      If your first line dont have an &quot;accent character&quot; and your last line</span>
+<span class="sd">      dont have a &quot;descent character&quot;, you&#39;ll have some &quot;fat&quot; arround</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
@@ -1925,141 +1943,7 @@ document.write(`
         <span class="n">interline</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">bg_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># TODO : Move this with other bg_param on next breaking release</span>
     <span class="p">):</span>
-        <span class="k">def</span><span class="w"> </span><span class="nf">break_text</span><span class="p">(</span>
-            <span class="n">width</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">spacing</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Break text to never overflow a width&quot;&quot;&quot;</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-
-            <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">current_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-            <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
-                <span class="n">temp_line</span> <span class="o">=</span> <span class="n">current_line</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">word</span> <span class="k">if</span> <span class="n">current_line</span> <span class="k">else</span> <span class="n">word</span>
-                <span class="n">temp_left</span><span class="p">,</span> <span class="n">temp_top</span><span class="p">,</span> <span class="n">temp_right</span><span class="p">,</span> <span class="n">temp_bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">multiline_textbbox</span><span class="p">(</span>
-                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                    <span class="n">temp_line</span><span class="p">,</span>
-                    <span class="n">font</span><span class="o">=</span><span class="n">font_pil</span><span class="p">,</span>
-                    <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
-                    <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
-                    <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
-                <span class="p">)</span>
-                <span class="n">temp_width</span> <span class="o">=</span> <span class="n">temp_right</span> <span class="o">-</span> <span class="n">temp_left</span>
-
-                <span class="k">if</span> <span class="n">temp_width</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">:</span>
-                    <span class="n">current_line</span> <span class="o">=</span> <span class="n">temp_line</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_line</span><span class="p">)</span>
-                    <span class="n">current_line</span> <span class="o">=</span> <span class="n">word</span>
-
-            <span class="k">if</span> <span class="n">current_line</span><span class="p">:</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_line</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">lines</span>
-
-        <span class="k">def</span><span class="w"> </span><span class="nf">find_text_size</span><span class="p">(</span>
-            <span class="n">text</span><span class="p">,</span>
-            <span class="n">font</span><span class="p">,</span>
-            <span class="n">font_size</span><span class="p">,</span>
-            <span class="n">stroke_width</span><span class="p">,</span>
-            <span class="n">align</span><span class="p">,</span>
-            <span class="n">spacing</span><span class="p">,</span>
-            <span class="n">max_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">allow_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find dimensions a text will occupy, return a tuple (width, height)&quot;&quot;&quot;</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">max_width</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">allow_break</span><span class="p">:</span>
-                <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">multiline_textbbox</span><span class="p">(</span>
-                    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                    <span class="n">text</span><span class="p">,</span>
-                    <span class="n">font</span><span class="o">=</span><span class="n">font_pil</span><span class="p">,</span>
-                    <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
-                    <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
-                    <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
-                    <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">,</span>
-                <span class="p">)</span>
-
-                <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">))</span>
-
-            <span class="n">lines</span> <span class="o">=</span> <span class="n">break_text</span><span class="p">(</span>
-                <span class="n">width</span><span class="o">=</span><span class="n">max_width</span><span class="p">,</span>
-                <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-                <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
-                <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
-                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
-                <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
-                <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
-            <span class="p">)</span>
-
-            <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">multiline_textbbox</span><span class="p">(</span>
-                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span>
-                <span class="n">font</span><span class="o">=</span><span class="n">font_pil</span><span class="p">,</span>
-                <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
-                <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
-                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
-                <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-
-            <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">))</span>
-
-        <span class="k">def</span><span class="w"> </span><span class="nf">find_optimum_font_size</span><span class="p">(</span>
-            <span class="n">text</span><span class="p">,</span>
-            <span class="n">font</span><span class="p">,</span>
-            <span class="n">stroke_width</span><span class="p">,</span>
-            <span class="n">align</span><span class="p">,</span>
-            <span class="n">spacing</span><span class="p">,</span>
-            <span class="n">width</span><span class="p">,</span>
-            <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">allow_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="p">):</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Find the best font size to fit as optimally as possible&quot;&quot;&quot;</span>
-            <span class="n">max_font_size</span> <span class="o">=</span> <span class="n">width</span>
-            <span class="n">min_font_size</span> <span class="o">=</span> <span class="mi">1</span>
-
-            <span class="c1"># Try find best size using bisection</span>
-            <span class="k">while</span> <span class="n">min_font_size</span> <span class="o">&lt;</span> <span class="n">max_font_size</span><span class="p">:</span>
-                <span class="n">avg_font_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">max_font_size</span> <span class="o">+</span> <span class="n">min_font_size</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
-                <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
-                    <span class="n">text</span><span class="p">,</span>
-                    <span class="n">font</span><span class="p">,</span>
-                    <span class="n">avg_font_size</span><span class="p">,</span>
-                    <span class="n">stroke_width</span><span class="p">,</span>
-                    <span class="n">align</span><span class="p">,</span>
-                    <span class="n">spacing</span><span class="p">,</span>
-                    <span class="n">max_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
-                    <span class="n">allow_break</span><span class="o">=</span><span class="n">allow_break</span><span class="p">,</span>
-                <span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">text_width</span> <span class="o">&lt;=</span> <span class="n">width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">text_height</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">):</span>
-                    <span class="n">min_font_size</span> <span class="o">=</span> <span class="n">avg_font_size</span> <span class="o">+</span> <span class="mi">1</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">max_font_size</span> <span class="o">=</span> <span class="n">avg_font_size</span> <span class="o">-</span> <span class="mi">1</span>
-
-            <span class="c1"># Check if the last font size tested fits within the given width and height</span>
-            <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
-                <span class="n">text</span><span class="p">,</span>
-                <span class="n">font</span><span class="p">,</span>
-                <span class="n">min_font_size</span><span class="p">,</span>
-                <span class="n">stroke_width</span><span class="p">,</span>
-                <span class="n">align</span><span class="p">,</span>
-                <span class="n">spacing</span><span class="p">,</span>
-                <span class="n">max_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
-                <span class="n">allow_break</span><span class="o">=</span><span class="n">allow_break</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">text_width</span> <span class="o">&lt;=</span> <span class="n">width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">text_height</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">min_font_size</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">min_font_size</span> <span class="o">-</span> <span class="mi">1</span>
-
         <span class="k">try</span><span class="p">:</span>
             <span class="n">_</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -2074,6 +1958,21 @@ document.write(`
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No text nor filename provided&quot;</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;caption&quot;</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be either `caption` or `label`.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Compute the margin and apply it</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">margin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">left_margin</span> <span class="o">=</span> <span class="n">right_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">top_margin</span> <span class="o">=</span> <span class="n">bottom_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">margin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">left_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">top_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">right_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">bottom_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Margin must be a tuple of either 2 or 4 elements.&quot;</span><span class="p">)</span>
+
         <span class="c1"># Compute all img and text sizes if some are missing</span>
         <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span> <span class="o">=</span> <span class="n">size</span>
 
@@ -2087,7 +1986,7 @@ document.write(`
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">font_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">font_size</span> <span class="o">=</span> <span class="n">find_optimum_font_size</span><span class="p">(</span>
+                <span class="n">font_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_optimum_font_size</span><span class="p">(</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                     <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
@@ -2099,7 +1998,7 @@ document.write(`
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">img_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">img_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
+                <span class="n">img_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                     <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
@@ -2112,7 +2011,7 @@ document.write(`
 
             <span class="c1"># Add line breaks whenever needed</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="n">break_text</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__break_text</span><span class="p">(</span>
                     <span class="n">width</span><span class="o">=</span><span class="n">img_width</span><span class="p">,</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
@@ -2130,7 +2029,7 @@ document.write(`
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">font_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">font_size</span> <span class="o">=</span> <span class="n">find_optimum_font_size</span><span class="p">(</span>
+                <span class="n">font_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_optimum_font_size</span><span class="p">(</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                     <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
@@ -2141,7 +2040,7 @@ document.write(`
                 <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">img_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">img_width</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
+                <span class="n">img_width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                     <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
@@ -2151,7 +2050,7 @@ document.write(`
                 <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">img_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">img_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
+                <span class="n">img_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
                     <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
                     <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
                     <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
@@ -2160,21 +2059,6 @@ document.write(`
                     <span class="n">spacing</span><span class="o">=</span><span class="n">interline</span><span class="p">,</span>
                     <span class="n">max_width</span><span class="o">=</span><span class="n">img_width</span><span class="p">,</span>
                 <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be either `caption` or `label`.&quot;</span><span class="p">)</span>
-
-        <span class="c1"># Compute the margin and apply it</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">margin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">left_margin</span> <span class="o">=</span> <span class="n">right_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">top_margin</span> <span class="o">=</span> <span class="n">bottom_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">margin</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-            <span class="n">left_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">top_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">right_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">bottom_margin</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">margin</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Margin must be a tuple of either 2 or 4 elements.&quot;</span><span class="p">)</span>
 
         <span class="n">img_width</span> <span class="o">+=</span> <span class="n">left_margin</span> <span class="o">+</span> <span class="n">right_margin</span>
         <span class="n">img_height</span> <span class="o">+=</span> <span class="n">top_margin</span> <span class="o">+</span> <span class="n">bottom_margin</span>
@@ -2185,23 +2069,12 @@ document.write(`
         <span class="k">if</span> <span class="n">bg_color</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">transparent</span><span class="p">:</span>
             <span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">bg_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">bg_radius</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="k">if</span> <span class="n">bg_radius</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
-            <span class="n">draw</span><span class="o">.</span><span class="n">rounded_rectangle</span><span class="p">(</span>
-                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="n">bg_radius</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">bg_color</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
-            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-            <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
+        <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
         <span class="c1"># Dont need allow break here, because we already breaked in caption</span>
-        <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="n">find_text_size</span><span class="p">(</span>
+        <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
             <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
             <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
             <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
@@ -2217,25 +2090,25 @@ document.write(`
         <span class="k">elif</span> <span class="n">horizontal_align</span> <span class="o">==</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_width</span> <span class="o">-</span> <span class="n">left_margin</span> <span class="o">-</span> <span class="n">right_margin</span> <span class="o">-</span> <span class="n">text_width</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
-        <span class="n">x</span> <span class="o">+=</span> <span class="n">left_margin</span>
-
         <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="n">vertical_align</span> <span class="o">==</span> <span class="s2">&quot;bottom&quot;</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="n">img_height</span> <span class="o">-</span> <span class="n">text_height</span> <span class="o">-</span> <span class="n">top_margin</span> <span class="o">-</span> <span class="n">bottom_margin</span>
         <span class="k">elif</span> <span class="n">vertical_align</span> <span class="o">==</span> <span class="s2">&quot;center&quot;</span><span class="p">:</span>
             <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_height</span> <span class="o">-</span> <span class="n">top_margin</span> <span class="o">-</span> <span class="n">bottom_margin</span> <span class="o">-</span> <span class="n">text_height</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
-        <span class="n">y</span> <span class="o">+=</span> <span class="n">top_margin</span>
-
-        <span class="c1"># So, pillow multiline support is horrible, in particular multiline_text</span>
-        <span class="c1"># and multiline_textbbox are not intuitive at all. They cannot use left</span>
-        <span class="c1"># top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)</span>
-        <span class="c1"># as anchor, so we always have to use left middle instead. Else we would</span>
+        <span class="c1"># We use baseline as our anchor because it is predictable and reliable</span>
+        <span class="c1"># That mean we always have to use left baseline instead. Else we would</span>
         <span class="c1"># always have a useless margin (the diff between ascender and top) on any</span>
         <span class="c1"># text. That mean our Y is actually not from 0 for top, but need to be</span>
-        <span class="c1"># increment by half our text height, since we have to reference from</span>
-        <span class="c1"># middle line.</span>
-        <span class="n">y</span> <span class="o">+=</span> <span class="n">text_height</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="c1"># increment by ascent, since we have to reference from baseline.</span>
+        <span class="p">(</span><span class="n">ascent</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">pil_font</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">ascent</span>
+
+        <span class="c1"># Add margins and stroke size to start point</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">top_margin</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">left_margin</span>
+        <span class="n">y</span> <span class="o">+=</span> <span class="n">stroke_width</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">stroke_width</span>
 
         <span class="n">draw</span><span class="o">.</span><span class="n">multiline_text</span><span class="p">(</span>
             <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
@@ -2246,7 +2119,7 @@ document.write(`
             <span class="n">align</span><span class="o">=</span><span class="n">text_align</span><span class="p">,</span>
             <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
             <span class="n">stroke_fill</span><span class="o">=</span><span class="n">stroke_color</span><span class="p">,</span>
-            <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;lm&quot;</span><span class="p">,</span>
+            <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># We just need the image as a numpy array</span>
@@ -2257,7 +2130,186 @@ document.write(`
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">stroke_color</span> <span class="o">=</span> <span class="n">stroke_color</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stroke_color</span> <span class="o">=</span> <span class="n">stroke_color</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__break_text</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">stroke_width</span><span class="p">,</span> <span class="n">align</span><span class="p">,</span> <span class="n">spacing</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Break text to never overflow a width&quot;&quot;&quot;</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">current_line</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="n">temp_line</span> <span class="o">=</span> <span class="n">current_line</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">word</span> <span class="k">if</span> <span class="n">current_line</span> <span class="k">else</span> <span class="n">word</span>
+            <span class="n">temp_left</span><span class="p">,</span> <span class="n">temp_top</span><span class="p">,</span> <span class="n">temp_right</span><span class="p">,</span> <span class="n">temp_bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">multiline_textbbox</span><span class="p">(</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">temp_line</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="n">font_pil</span><span class="p">,</span>
+                <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+                <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
+                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">temp_width</span> <span class="o">=</span> <span class="n">temp_right</span> <span class="o">-</span> <span class="n">temp_left</span>
+
+            <span class="k">if</span> <span class="n">temp_width</span> <span class="o">&lt;=</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">current_line</span> <span class="o">=</span> <span class="n">temp_line</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_line</span><span class="p">)</span>
+                <span class="n">current_line</span> <span class="o">=</span> <span class="n">word</span>
+
+        <span class="k">if</span> <span class="n">current_line</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_line</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">lines</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__find_text_size</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">font</span><span class="p">,</span>
+        <span class="n">font_size</span><span class="p">,</span>
+        <span class="n">stroke_width</span><span class="p">,</span>
+        <span class="n">align</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="p">,</span>
+        <span class="n">max_width</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">allow_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find *real* dimensions a text will occupy, return a tuple (width, height)</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Text height calculation is quite complex due to how `Pillow` works.</span>
+<span class="sd">            When calculating line height, `Pillow` actually uses the letter ``A``</span>
+<span class="sd">            as a reference height, adding the spacing and the stroke width.</span>
+<span class="sd">            However, ``A`` is a simple letter and does not account for ascent and</span>
+<span class="sd">            descent, such as in ``Ô``.</span>
+
+<span class="sd">            This means each line will be considered as having a &quot;standard&quot;</span>
+<span class="sd">            height instead of the real maximum font size (``ascent + descent``).</span>
+
+<span class="sd">            When drawing each line, `Pillow` will offset the new line by</span>
+<span class="sd">            ``standard height * number of previous lines``.</span>
+<span class="sd">            This mostly works, but if the spacing is not big enough,</span>
+<span class="sd">            lines will overlap if a letter with an ascent (e.g., ``d``) is above</span>
+<span class="sd">            a letter with a descent (e.g., ``p``).</span>
+
+<span class="sd">            For our case, we use the baseline as the text anchor. This means that,</span>
+<span class="sd">            no matter what, we need to draw the absolute top of our first line at</span>
+<span class="sd">            ``0 + ascent + stroke_width`` to ensure the first pixel of any possible</span>
+<span class="sd">            letter is aligned with the top border of the image (ignoring any</span>
+<span class="sd">            additional margins, if needed).</span>
+
+<span class="sd">            Therefore, our first line height will not start at ``0`` but at</span>
+<span class="sd">            ``ascent + stroke_width``, and we need to account for that. Each</span>
+<span class="sd">            subsequent line will then be drawn at</span>
+<span class="sd">            ``index * standard height`` from this point. The position of the last</span>
+<span class="sd">            line can be calculated as:</span>
+<span class="sd">            ``(total_lines - 1) * standard height``.</span>
+
+<span class="sd">            Finally, as we use the baseline as the text anchor, we also need to</span>
+<span class="sd">            consider that the real size of the last line is not &quot;standard&quot; but</span>
+<span class="sd">            rather ``standard + descent + stroke_width``.</span>
+
+<span class="sd">            To summarize, the real height of the text is:</span>
+<span class="sd">              ``initial padding + (lines - 1) * height + end padding``</span>
+<span class="sd">            or:</span>
+<span class="sd">              ``(ascent + stroke_width) + (lines - 1) * height + (descent + stroke_width)``</span>
+<span class="sd">            or:</span>
+<span class="sd">              ``real_font_size + (stroke_width * 2) + (lines - 1) * height``</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="n">ascent</span><span class="p">,</span> <span class="n">descent</span> <span class="o">=</span> <span class="n">font_pil</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()</span>
+        <span class="n">real_font_size</span> <span class="o">=</span> <span class="n">ascent</span> <span class="o">+</span> <span class="n">descent</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="c1"># Compute individual line height with spaces using pillow internal method</span>
+        <span class="n">line_height</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">_multiline_spacing</span><span class="p">(</span><span class="n">font_pil</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">stroke_width</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">max_width</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_break</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__break_text</span><span class="p">(</span>
+                <span class="n">width</span><span class="o">=</span><span class="n">max_width</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
+                <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
+                <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
+                <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+        <span class="c1"># Use multiline textbbox to get width</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">draw</span><span class="o">.</span><span class="n">multiline_textbbox</span><span class="p">(</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">font</span><span class="o">=</span><span class="n">font_pil</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">align</span><span class="o">=</span><span class="n">align</span><span class="p">,</span>
+            <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
+            <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># For height calculate manually as textbbox is not realiable</span>
+        <span class="n">line_breaks</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines_height</span> <span class="o">=</span> <span class="n">line_breaks</span> <span class="o">*</span> <span class="n">line_height</span>
+        <span class="n">paddings</span> <span class="o">=</span> <span class="n">real_font_size</span> <span class="o">+</span> <span class="n">stroke_width</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="n">left</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">lines_height</span> <span class="o">+</span> <span class="n">paddings</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__find_optimum_font_size</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">,</span>
+        <span class="n">font</span><span class="p">,</span>
+        <span class="n">stroke_width</span><span class="p">,</span>
+        <span class="n">align</span><span class="p">,</span>
+        <span class="n">spacing</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">allow_break</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the best font size to fit as optimally as possible</span>
+<span class="sd">        in a box of some width and optionally height</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_font_size</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="n">min_font_size</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1"># Try find best size using bisection</span>
+        <span class="k">while</span> <span class="n">min_font_size</span> <span class="o">&lt;</span> <span class="n">max_font_size</span><span class="p">:</span>
+            <span class="n">avg_font_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">max_font_size</span> <span class="o">+</span> <span class="n">min_font_size</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
+                <span class="n">text</span><span class="p">,</span>
+                <span class="n">font</span><span class="p">,</span>
+                <span class="n">avg_font_size</span><span class="p">,</span>
+                <span class="n">stroke_width</span><span class="p">,</span>
+                <span class="n">align</span><span class="p">,</span>
+                <span class="n">spacing</span><span class="p">,</span>
+                <span class="n">max_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                <span class="n">allow_break</span><span class="o">=</span><span class="n">allow_break</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">text_width</span> <span class="o">&lt;=</span> <span class="n">width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">text_height</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">):</span>
+                <span class="n">min_font_size</span> <span class="o">=</span> <span class="n">avg_font_size</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">max_font_size</span> <span class="o">=</span> <span class="n">avg_font_size</span> <span class="o">-</span> <span class="mi">1</span>
+
+        <span class="c1"># Check if the last font size tested fits within the given width and height</span>
+        <span class="n">text_width</span><span class="p">,</span> <span class="n">text_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">font</span><span class="p">,</span>
+            <span class="n">min_font_size</span><span class="p">,</span>
+            <span class="n">stroke_width</span><span class="p">,</span>
+            <span class="n">align</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="p">,</span>
+            <span class="n">max_width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">allow_break</span><span class="o">=</span><span class="n">allow_break</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">text_width</span> <span class="o">&lt;=</span> <span class="n">width</span> <span class="ow">and</span> <span class="p">(</span><span class="n">height</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">text_height</span> <span class="o">&lt;=</span> <span class="n">height</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">min_font_size</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">min_font_size</span> <span class="o">-</span> <span class="mi">1</span></div>
 
 
 <div class="viewcode-block" id="BitmapClip"><a class="viewcode-back" href="../../../reference/reference/moviepy.video.VideoClip.BitmapClip.html#moviepy.video.VideoClip.BitmapClip">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">BitmapClip</span><span class="p">(</span><span class="n">VideoClip</span><span class="p">):</span>
