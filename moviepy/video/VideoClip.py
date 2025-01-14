@@ -1537,12 +1537,12 @@ class TextClip(ImageClip):
       bottom pixel of text - absolute top pixel of text.
       This is because in a font, some letter go above standard top line (e.g
       letters with accents), and bellow standard baseline (e.g letters such as
-      p, y, g). 
-      
+      p, y, g).
+
       This notion is knowned under the name ascent and descent meaning the
       highest and lowest pixel above and below baseline
 
-      If your first line dont have an "accent character" and your last line 
+      If your first line dont have an "accent character" and your last line
       dont have a "descent character", you'll have some "fat" arround
     """
 
@@ -1801,7 +1801,7 @@ class TextClip(ImageClip):
         allow_break=False,
     ) -> tuple[int, int]:
         """Find *real* dimensions a text will occupy, return a tuple (width, height)
-        
+
         .. note::
             Text height calculation is quite complex due to how `Pillow` works.
             When calculating line height, `Pillow` actually uses the letter ``A``
@@ -1863,7 +1863,7 @@ class TextClip(ImageClip):
             )
 
             text = "\n".join(lines)
-                
+
         # Use multiline textbbox to get width
         left, top, right, bottom = draw.multiline_textbbox(
             (0, 0),
@@ -1876,12 +1876,11 @@ class TextClip(ImageClip):
         )
 
         # For height calculate manually as textbbox is not realiable
-        line_breaks = text.count('\n')
+        line_breaks = text.count("\n")
         lines_height = line_breaks * line_height
         paddings = real_font_size + stroke_width * 2
 
         return (int(right - left), int(lines_height + paddings))
-
 
     def __find_optimum_font_size(
         self,
@@ -1895,7 +1894,8 @@ class TextClip(ImageClip):
         allow_break=False,
     ):
         """Find the best font size to fit as optimally as possible
-        in a box of some width and optionally height"""
+        in a box of some width and optionally height
+        """
         max_font_size = width
         min_font_size = 1
 
