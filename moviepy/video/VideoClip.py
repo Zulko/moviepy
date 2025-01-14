@@ -1526,6 +1526,24 @@ class TextClip(ImageClip):
 
     duration
         Duration of the clip
+
+    .. note::
+
+      ** About final TextClip size **
+
+      The final TextClip size will be of the absolute maximum height possible
+      for the font and the number of line. It specifically mean that the final
+      height might be a bit bigger than the real text height, i.e, absolute
+      bottom pixel of text - absolute top pixel of text.
+      This is because in a font, some letter go above standard top line (e.g
+      letters with accents), and bellow standard baseline (e.g letters such as
+      p, y, g). 
+      
+      This notion is knowned under the name ascent and descent meaning the
+      highest and lowest pixel above and below baseline
+
+      If your first line dont have an "accent character" and your last line 
+      dont have a "descent character", you'll have some "fat" arround
     """
 
     @convert_path_to_string("filename")
@@ -1701,10 +1719,8 @@ class TextClip(ImageClip):
         elif vertical_align == "center":
             y = (img_height - top_margin - bottom_margin - text_height) / 2
 
-        # So, pillow multiline support is horrible, in particular multiline_text
-        # and multiline_textbbox are not intuitive at all. They cannot use left
-        # top (see https://pillow.readthedocs.io/en/stable/handbook/text-anchors.html)
-        # as anchor, so we always have to use left baseline instead. Else we would
+        # We use baseline as our anchor because it is predictable and reliable
+        # That mean we always have to use left baseline instead. Else we would
         # always have a useless margin (the diff between ascender and top) on any
         # text. That mean our Y is actually not from 0 for top, but need to be
         # increment by ascent, since we have to reference from baseline.
