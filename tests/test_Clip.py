@@ -184,6 +184,7 @@ def test_clip_copy(copy_func):
         (3, 3, None, ValueError),  # start_time == duration
         (3, 1, -1, 1),  # negative end_time
         (None, 1, -1, ValueError),  # negative end_time for clip without duration
+        (1, 0, 2, ValueError),  # end_time after video end should raise exception
     ),
 )
 def test_clip_subclip(duration, start_time, end_time, expected_duration):
