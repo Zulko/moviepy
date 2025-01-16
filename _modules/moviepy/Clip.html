@@ -1029,7 +1029,7 @@ document.write(`
                 <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">step</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="c1"># time mirror</span>
                     <span class="n">clip</span> <span class="o">=</span> <span class="n">clip</span><span class="o">.</span><span class="n">time_transform</span><span class="p">(</span>
-                        <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">-</span> <span class="n">t</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">fps</span><span class="p">,</span>
                         <span class="n">keep_duration</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                         <span class="n">apply_to</span><span class="o">=</span><span class="n">apply_to</span><span class="p">,</span>
                     <span class="p">)</span>

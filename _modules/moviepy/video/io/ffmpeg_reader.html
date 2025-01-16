@@ -853,12 +853,12 @@ document.write(`
                 <span class="c1"># for default streams, set their numbers globally, so it&#39;s</span>
                 <span class="c1"># easy to get without iterating all</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_stream</span><span class="p">[</span><span class="s2">&quot;default&quot;</span><span class="p">]:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;default_</span><span class="si">{</span><span class="n">stream_type_lower</span><span class="si">}</span><span class="s2">_input_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">input_number</span>
-                    <span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;default_</span><span class="si">{</span><span class="n">stream_type_lower</span><span class="si">}</span><span class="s2">_stream_number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                        <span class="n">stream_number</span>
-                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span>
+                        <span class="sa">f</span><span class="s2">&quot;default_</span><span class="si">{</span><span class="n">stream_type_lower</span><span class="si">}</span><span class="s2">_input_number&quot;</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">input_number</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="p">[</span>
+                        <span class="sa">f</span><span class="s2">&quot;default_</span><span class="si">{</span><span class="n">stream_type_lower</span><span class="si">}</span><span class="s2">_stream_number&quot;</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">stream_number</span>
 
                 <span class="c1"># exit chapter</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_chapter</span><span class="p">:</span>
