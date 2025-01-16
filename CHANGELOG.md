@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix GPU h264_nvenc encoding not working.
 - Improve perfs of decorator by pre-computing arguments
 - Fix textclip being cut or of impredictable height (see issues #2325, #2260 and #2268)
+- Fix TimeMirror and TimeSymmetrize cutting last second of clip
 
 ## [v2.1.2](https://github.com/zulko/moviepy/tree/master)
 
