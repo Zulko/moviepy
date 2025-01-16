@@ -799,6 +799,14 @@ document.write(`
                 <span class="n">end_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">+</span> <span class="n">end_time</span>
 
         <span class="k">if</span> <span class="n">end_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Allow a slight tolerance to account for rounding errors</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">end_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">&gt;</span> <span class="mf">0.00000001</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;end_time (</span><span class="si">%.02f</span><span class="s2">) &quot;</span> <span class="o">%</span> <span class="n">end_time</span>
+                    <span class="o">+</span> <span class="s2">&quot;should be smaller or equal to the clip&#39;s &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;duration (</span><span class="si">%.02f</span><span class="s2">).&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span>
+                <span class="p">)</span>
+
             <span class="n">new_clip</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span>
             <span class="n">new_clip</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">start</span> <span class="o">+</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">duration</span>
 
