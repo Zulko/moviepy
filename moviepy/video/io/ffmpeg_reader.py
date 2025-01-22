@@ -476,12 +476,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[
-                        f"default_{stream_type_lower}_input_number"
-                    ] = input_number
-                    self.result[
-                        f"default_{stream_type_lower}_stream_number"
-                    ] = stream_number
+                    self.result[f"default_{stream_type_lower}_input_number"] = (
+                        input_number
+                    )
+                    self.result[f"default_{stream_type_lower}_stream_number"] = (
+                        stream_number
+                    )
 
                 # exit chapter
                 if self._current_chapter:
@@ -788,14 +788,14 @@ class FFmpegInfosParser:
         """Cast needed video metadata fields to other types than the default str."""
         if field == "rotate":
             return (field, float(value))
-    
+
         elif field == "displaymatrix":
             match = re.search(r"[-+]?\d+(\.\d+)?", value)
             if match:
                 # We must multiply by -1 because displaymatrix return info
                 # about how to rotate to show video, not about video rotation
                 return (field, float(match.group()) * -1)
-            
+
         return (field, value)
 
 

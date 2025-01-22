@@ -7,6 +7,7 @@ from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
 from moviepy.video.io import ffmpeg_tools
 
+
 class FFPLAY_AudioPreviewer:
     """
     A class to preview an AudioClip.
@@ -45,12 +46,12 @@ class FFPLAY_AudioPreviewer:
 
         # Adapt number of channels argument to ffplay version
         ffplay_version = ffmpeg_tools.ffplay_version()[1]
-        if int(ffplay_version.split('.')[0]) >= 7:
+        if int(ffplay_version.split(".")[0]) >= 7:
             cmd += [
                 "-ch_layout",
                 "stereo" if nchannels == 2 else "mono",
             ]
-        else :
+        else:
             cmd += [
                 "-ac",
                 "%d" % nchannels,
@@ -75,7 +76,7 @@ class FFPLAY_AudioPreviewer:
             _, ffplay_error = self.proc.communicate()
             if ffplay_error is not None:
                 ffplay_error = ffplay_error.decode()
-            
+
             error = (
                 f"{err}\n\nMoviePy error: FFPLAY encountered the following error while "
                 f":\n\n {ffplay_error}"

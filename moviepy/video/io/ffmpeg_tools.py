@@ -1,10 +1,8 @@
 """Miscellaneous bindings to ffmpeg."""
 
 import os
-
-import subprocess
-
 import re
+import subprocess
 
 from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
@@ -217,9 +215,9 @@ def ffmpeg_version():
     """
     Retrieve the FFmpeg version.
 
-    This function retrieves both the full and numeric version of FFmpeg 
-    by executing the `ffmpeg -version` command. The full version includes 
-    additional details like build information, while the numeric version 
+    This function retrieves both the full and numeric version of FFmpeg
+    by executing the `ffmpeg -version` command. The full version includes
+    additional details like build information, while the numeric version
     contains only the version numbers (e.g., '7.0.2').
 
     Return
@@ -242,15 +240,14 @@ def ffmpeg_version():
     cmd = [
         FFMPEG_BINARY,
         "-version",
-        "-v"
-        "quiet",
+        "-v", "quiet",
     ]
 
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-    
+
     # Extract the version number from the first line of output
     full_version = result.stdout.splitlines()[0].split()[2]
-    numeric_version = re.match(r'^[0-9.]+', full_version).group(0)
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
     return (full_version, numeric_version)
 
 
@@ -258,9 +255,9 @@ def ffplay_version():
     """
     Retrieve the FFplay version.
 
-    This function retrieves both the full and numeric version of FFplay 
-    by executing the `ffplay -version` command. The full version includes 
-    additional details like build information, while the numeric version 
+    This function retrieves both the full and numeric version of FFplay
+    by executing the `ffplay -version` command. The full version includes
+    additional details like build information, while the numeric version
     contains only the version numbers (e.g., '6.0.1').
 
     Return
@@ -288,7 +285,5 @@ def ffplay_version():
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
     # Extract the version number from the first line of output
     full_version = result.stdout.splitlines()[0].split()[2]
-    numeric_version = re.match(r'^[0-9.]+', full_version).group(0)
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
     return (full_version, numeric_version)
-
-

@@ -9,7 +9,7 @@ from moviepy.video.io.ffmpeg_tools import (
     ffmpeg_extract_subclip,
     ffmpeg_resize,
     ffmpeg_stabilize_video,
-    ffmpeg_version
+    ffmpeg_version,
 )
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -59,7 +59,7 @@ def test_ffmpeg_resize(util):
     assert os.path.isfile(outputfile)
 
     # overwrite file on old version of ffmpeg
-    if int(ffmpeg_version()[1].split('.')[0]) < 7:
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
         with pytest.raises(OSError):
             ffmpeg_resize("media/bitmap.mp4", outputfile, expected_size, logger=None)
 
@@ -101,7 +101,7 @@ def test_ffmpeg_stabilize_video(util):
     assert os.path.isfile(expected_filepath)
 
     # don't overwrite file on old version of ffmpeg
-    if int(ffmpeg_version()[1].split('.')[0]) < 7:
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
         with pytest.raises(OSError):
             ffmpeg_stabilize_video(
                 "media/bitmap.mp4",
