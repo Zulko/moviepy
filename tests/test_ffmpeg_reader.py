@@ -16,6 +16,7 @@ from moviepy.video.io.ffmpeg_reader import (
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
+from moviepy.video.io.ffmpeg_tools import ffmpeg_version
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
@@ -59,7 +60,7 @@ def test_ffmpeg_parse_infos_video_nframes():
     ("decode_file", "expected_duration"),
     (
         (False, 30),
-        (True, 30.02),
+        (True, 30),
     ),
     ids=(
         "decode_file=False",
@@ -69,6 +70,11 @@ def test_ffmpeg_parse_infos_video_nframes():
 def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     """Test `decode_file` argument of `ffmpeg_parse_infos` function."""
     d = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm", decode_file=decode_file)
+
+    # On old version of ffmpeg, duration and video duration was different
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
+        expected_duration += 0.02
+
     assert d["duration"] == expected_duration
 
     # check metadata is fine
