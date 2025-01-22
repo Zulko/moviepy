@@ -240,7 +240,8 @@ def ffmpeg_version():
     cmd = [
         FFMPEG_BINARY,
         "-version",
-        "-v", "quiet",
+        "-v",
+        "quiet",
     ]
 
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
