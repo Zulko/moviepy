@@ -218,6 +218,15 @@ class Clip:
         These changes are also applied to the ``audio`` and ``mask``
         clips of the current clip, if they exist.
 
+        note::
+          The start and end attribute of a clip define when a clip will start
+          playing when used in a composite video clip, not the start time of
+          the clip itself.
+
+          i.e: with_start(10) mean the clip will still start at his first frame,
+          but if used in a composite video clip it will only start to show at
+          10 seconds.
+
         Parameters
         ----------
 
@@ -247,6 +256,15 @@ class Clip:
         which can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
         of the mask and audio, if any, of the returned clip.
+
+        note::
+          The start and end attribute of a clip define when a clip will start
+          playing when used in a composite video clip, not the start time of
+          the clip itself.
+
+          i.e: with_start(10) mean the clip will still start at his first frame,
+          but if used in a composite video clip it will only start to show at
+          10 seconds.
 
         Parameters
         ----------
