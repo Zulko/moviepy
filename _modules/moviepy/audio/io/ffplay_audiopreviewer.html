@@ -382,6 +382,7 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFPLAY_BINARY</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">requires_duration</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_platform_popen_params</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.video.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_tools</span>
 
 
 <div class="viewcode-block" id="FFPLAY_AudioPreviewer"><a class="viewcode-back" href="../../../../reference/reference/moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer.html#moviepy.audio.io.ffplay_audiopreviewer.FFPLAY_AudioPreviewer">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">FFPLAY_AudioPreviewer</span><span class="p">:</span>
@@ -401,7 +402,6 @@ document.write(`
 
 <span class="sd">    nchannels:</span>
 <span class="sd">      Number of audio channels in the clip. Default to 2 channels.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -419,8 +419,22 @@ document.write(`
             <span class="s2">&quot;s</span><span class="si">%d</span><span class="s2">le&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">nbytes</span><span class="p">),</span>
             <span class="s2">&quot;-ar&quot;</span><span class="p">,</span>
             <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">fps_input</span><span class="p">,</span>
-            <span class="s2">&quot;-ac&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nchannels</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Adapt number of channels argument to ffplay version</span>
+        <span class="n">ffplay_version</span> <span class="o">=</span> <span class="n">ffmpeg_tools</span><span class="o">.</span><span class="n">ffplay_version</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">ffplay_version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">7</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;-ch_layout&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;stereo&quot;</span> <span class="k">if</span> <span class="n">nchannels</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="s2">&quot;mono&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="s2">&quot;-ac&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">nchannels</span><span class="p">,</span>
+            <span class="p">]</span>
+
+        <span class="n">cmd</span> <span class="o">+=</span> <span class="p">[</span>
             <span class="s2">&quot;-i&quot;</span><span class="p">,</span>
             <span class="s2">&quot;-&quot;</span><span class="p">,</span>
         <span class="p">]</span>
@@ -439,11 +453,6 @@ document.write(`
             <span class="n">_</span><span class="p">,</span> <span class="n">ffplay_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">ffplay_error</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">ffplay_error</span> <span class="o">=</span> <span class="n">ffplay_error</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># The error was redirected to a logfile with `write_logfile=True`,</span>
-                <span class="c1"># so read the error from that file instead</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">ffplay_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
             <span class="n">error</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">MoviePy error: FFPLAY encountered the following error while &quot;</span>

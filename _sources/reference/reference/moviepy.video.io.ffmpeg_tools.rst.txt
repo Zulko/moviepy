@@ -1,4 +1,4 @@
-.. custom module to enable complete documentation of every function
+﻿.. custom module to enable complete documentation of every function
    see https://stackoverflow.com/a/62613202
    
 moviepy.video.io.ffmpeg\_tools
@@ -26,6 +26,8 @@ moviepy.video.io.ffmpeg\_tools
       ffmpeg_merge_video_audio
       ffmpeg_resize
       ffmpeg_stabilize_video
+      ffmpeg_version
+      ffplay_version
    
    
 

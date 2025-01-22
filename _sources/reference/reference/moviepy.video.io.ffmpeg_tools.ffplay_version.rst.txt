@@ -1,0 +1,6 @@
+moviepy.video.io.ffmpeg\_tools.ffplay\_version
+==============================================
+
+.. currentmodule:: moviepy.video.io.ffmpeg_tools
+
+.. autofunction:: ffplay_version

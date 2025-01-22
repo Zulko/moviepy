@@ -378,8 +378,10 @@ document.write(`
 <span></span><span class="sd">&quot;&quot;&quot;Miscellaneous bindings to ffmpeg.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FFMPEG_BINARY</span><span class="p">,</span> <span class="n">FFPLAY_BINARY</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.decorators</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_parameter_to_seconds</span><span class="p">,</span> <span class="n">convert_path_to_string</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">moviepy.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">ffmpeg_escape_filename</span><span class="p">,</span> <span class="n">subprocess_call</span>
 
@@ -584,6 +586,84 @@ document.write(`
         <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-y&quot;</span><span class="p">)</span>
 
     <span class="n">subprocess_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ffmpeg_version"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffmpeg_version.html#moviepy.video.io.ffmpeg_tools.ffmpeg_version">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffmpeg_version</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve the FFmpeg version.</span>
+
+<span class="sd">    This function retrieves both the full and numeric version of FFmpeg</span>
+<span class="sd">    by executing the `ffmpeg -version` command. The full version includes</span>
+<span class="sd">    additional details like build information, while the numeric version</span>
+<span class="sd">    contains only the version numbers (e.g., &#39;7.0.2&#39;).</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple containing:</span>
+<span class="sd">        - `full_version` (str): The complete version string (e.g., &#39;7.0.2-static&#39;).</span>
+<span class="sd">        - `numeric_version` (str): The numeric version string (e.g., &#39;7.0.2&#39;).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; ffmpeg_version()</span>
+<span class="sd">    (&#39;7.0.2-static&#39;, &#39;7.0.2&#39;)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    subprocess.CalledProcessError</span>
+<span class="sd">        If the FFmpeg command fails to execute properly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
+        <span class="s2">&quot;-version&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;quiet&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Extract the version number from the first line of output</span>
+    <span class="n">full_version</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">numeric_version</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9.]+&quot;</span><span class="p">,</span> <span class="n">full_version</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">full_version</span><span class="p">,</span> <span class="n">numeric_version</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ffplay_version"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.io.ffmpeg_tools.ffplay_version.html#moviepy.video.io.ffmpeg_tools.ffplay_version">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">ffplay_version</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Retrieve the FFplay version.</span>
+
+<span class="sd">    This function retrieves both the full and numeric version of FFplay</span>
+<span class="sd">    by executing the `ffplay -version` command. The full version includes</span>
+<span class="sd">    additional details like build information, while the numeric version</span>
+<span class="sd">    contains only the version numbers (e.g., &#39;6.0.1&#39;).</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        A tuple containing:</span>
+<span class="sd">        - `full_version` (str): The complete version string (e.g., &#39;6.0.1-static&#39;).</span>
+<span class="sd">        - `numeric_version` (str): The numeric version string (e.g., &#39;6.0.1&#39;).</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; ffplay_version()</span>
+<span class="sd">    (&#39;6.0.1-static&#39;, &#39;6.0.1&#39;)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    subprocess.CalledProcessError</span>
+<span class="sd">        If the FFplay command fails to execute properly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">FFPLAY_BINARY</span><span class="p">,</span>
+        <span class="s2">&quot;-version&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># Extract the version number from the first line of output</span>
+    <span class="n">full_version</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">numeric_version</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^[0-9.]+&quot;</span><span class="p">,</span> <span class="n">full_version</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">full_version</span><span class="p">,</span> <span class="n">numeric_version</span><span class="p">)</span></div>
 </pre></div>
 
                 </article>

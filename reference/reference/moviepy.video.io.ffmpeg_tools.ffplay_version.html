@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>moviepy.video.io.ffmpeg_tools &#8212; MoviePy  documentation</title>
+    <title>moviepy.video.io.ffmpeg_tools.ffplay_version &#8212; MoviePy  documentation</title>
   
   
   
@@ -41,11 +41,11 @@
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.video.io.ffmpeg_tools';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'reference/reference/moviepy.video.io.ffmpeg_tools.ffplay_version';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio" href="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio.html" />
-    <link rel="prev" title="moviepy.video.io.ffmpeg_reader.ffmpeg_read_image" href="moviepy.video.io.ffmpeg_reader.ffmpeg_read_image.html" />
+    <link rel="next" title="moviepy.video.io.ffmpeg_writer" href="moviepy.video.io.ffmpeg_writer.html" />
+    <link rel="prev" title="moviepy.video.io.ffmpeg_tools.ffmpeg_version" href="moviepy.video.io.ffmpeg_tools.ffmpeg_version.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -460,7 +460,7 @@ document.write(`
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.VideoFileClip.html">moviepy.video.io.VideoFileClip</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.display_in_notebook.html">moviepy.video.io.display_in_notebook</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_reader.html">moviepy.video.io.ffmpeg_reader</a></li>
-<li class="toctree-l4 current active"><a class="current reference internal" href="#">moviepy.video.io.ffmpeg_tools</a></li>
+<li class="toctree-l4 current active"><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.html">moviepy.video.io.ffmpeg_tools</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffmpeg_writer.html">moviepy.video.io.ffmpeg_writer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.ffplay_previewer.html">moviepy.video.io.ffplay_previewer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="moviepy.video.io.gif_writers.html">moviepy.video.io.gif_writers</a></li>
@@ -524,9 +524,9 @@ document.write(`
     <li class="breadcrumb-item"><i class="fa-solid fa-ellipsis"></i></li>
     
     
-    <li class="breadcrumb-item"><a href="moviepy.video.io.html" class="nav-link">moviepy.video.io</a></li>
+    <li class="breadcrumb-item"><a href="moviepy.video.io.ffmpeg_tools.html" class="nav-link">moviepy.video.io.ffmpeg_tools</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">moviepy.video.io.ffmpeg_tools</li>
+    <li class="breadcrumb-item active" aria-current="page">moviepy.video.io.ffmpeg_tools.ffplay_version</li>
   </ul>
 </nav>
 </div>
@@ -543,35 +543,38 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="module-moviepy.video.io.ffmpeg_tools">
-<span id="moviepy-video-io-ffmpeg-tools"></span><h1>moviepy.video.io.ffmpeg_tools<a class="headerlink" href="#module-moviepy.video.io.ffmpeg_tools" title="Permalink to this heading">#</a></h1>
-<p>Miscellaneous bindings to ffmpeg.</p>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio" title="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_extract_audio</span></code></a>(inputfile, outputfile)</p></td>
-<td><p>Extract the sound from a video file and save it in <code class="docutils literal notranslate"><span class="pre">outputfile</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip.html#moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip" title="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_subclip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_extract_subclip</span></code></a>(inputfile, ...[, ...])</p></td>
-<td><p>Makes a new video file playing video file between two times.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio.html#moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio" title="moviepy.video.io.ffmpeg_tools.ffmpeg_merge_video_audio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_merge_video_audio</span></code></a>(videofile, ...[, ...])</p></td>
-<td><p>Merges video file and audio file into one movie file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_resize.html#moviepy.video.io.ffmpeg_tools.ffmpeg_resize" title="moviepy.video.io.ffmpeg_tools.ffmpeg_resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_resize</span></code></a>(inputfile, outputfile, size[, ...])</p></td>
-<td><p>Resizes a file to new size and write the result in another.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_stabilize_video.html#moviepy.video.io.ffmpeg_tools.ffmpeg_stabilize_video" title="moviepy.video.io.ffmpeg_tools.ffmpeg_stabilize_video"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_stabilize_video</span></code></a>(inputfile[, ...])</p></td>
-<td><p>Stabilizes <code class="docutils literal notranslate"><span class="pre">filename</span></code> and write the result to <code class="docutils literal notranslate"><span class="pre">output</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffmpeg_version.html#moviepy.video.io.ffmpeg_tools.ffmpeg_version" title="moviepy.video.io.ffmpeg_tools.ffmpeg_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffmpeg_version</span></code></a>()</p></td>
-<td><p>Retrieve the FFmpeg version.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="moviepy.video.io.ffmpeg_tools.ffplay_version.html#moviepy.video.io.ffmpeg_tools.ffplay_version" title="moviepy.video.io.ffmpeg_tools.ffplay_version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ffplay_version</span></code></a>()</p></td>
-<td><p>Retrieve the FFplay version.</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="moviepy-video-io-ffmpeg-tools-ffplay-version">
+<h1>moviepy.video.io.ffmpeg_tools.ffplay_version<a class="headerlink" href="#moviepy-video-io-ffmpeg-tools-ffplay-version" title="Permalink to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="moviepy.video.io.ffmpeg_tools.ffplay_version">
+<span class="sig-prename descclassname"><span class="pre">moviepy.video.io.ffmpeg_tools.</span></span><span class="sig-name descname"><span class="pre">ffplay_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/moviepy/video/io/ffmpeg_tools.html#ffplay_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#moviepy.video.io.ffmpeg_tools.ffplay_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Retrieve the FFplay version.</p>
+<p>This function retrieves both the full and numeric version of FFplay
+by executing the <cite>ffplay -version</cite> command. The full version includes
+additional details like build information, while the numeric version
+contains only the version numbers (e.g., ‘6.0.1’).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A tuple containing:
+- <cite>full_version</cite> (str): The complete version string (e.g., ‘6.0.1-static’).
+- <cite>numeric_version</cite> (str): The numeric version string (e.g., ‘6.0.1’).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ffplay_version</span><span class="p">()</span>
+<span class="go">(&#39;6.0.1-static&#39;, &#39;6.0.1&#39;)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>subprocess.CalledProcessError</strong> – If the FFplay command fails to execute properly.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -583,20 +586,20 @@ document.write(`
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="moviepy.video.io.ffmpeg_reader.ffmpeg_read_image.html"
+       href="moviepy.video.io.ffmpeg_tools.ffmpeg_version.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">moviepy.video.io.ffmpeg_reader.ffmpeg_read_image</p>
+        <p class="prev-next-title">moviepy.video.io.ffmpeg_tools.ffmpeg_version</p>
       </div>
     </a>
     <a class="right-next"
-       href="moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio.html"
+       href="moviepy.video.io.ffmpeg_writer.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio</p>
+        <p class="prev-next-title">moviepy.video.io.ffmpeg_writer</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -610,9 +613,19 @@ document.write(`
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
   <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moviepy.video.io.ffmpeg_tools.ffplay_version"><code class="docutils literal notranslate"><span class="pre">ffplay_version()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.video.io.ffmpeg_tools.rst">
+    <a href="https://github.com/Zulko/moviepy/edit/master/docs/reference/reference/moviepy.video.io.ffmpeg_tools.ffplay_version.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -626,7 +639,7 @@ document.write(`
 
   <div class="sidebar-secondary-item">
   <div class="tocsection sourcelink">
-    <a href="../../_sources/reference/reference/moviepy.video.io.ffmpeg_tools.rst.txt">
+    <a href="../../_sources/reference/reference/moviepy.video.io.ffmpeg_tools.ffplay_version.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
