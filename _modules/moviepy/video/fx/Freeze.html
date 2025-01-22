@@ -392,12 +392,16 @@ document.write(`
 <span class="sd">    With ``total_duration`` you can specify the total duration of</span>
 <span class="sd">    the clip and the freeze (i.e. the duration of the freeze is</span>
 <span class="sd">    automatically computed). One of them must be provided.</span>
+
+<span class="sd">    With ``update_start_end`` you can define if the effect must preserve</span>
+<span class="sd">    and/or update start and end properties of the original clip</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">freeze_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">total_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">padding_end</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">update_start_end</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
 
 <div class="viewcode-block" id="Freeze.apply"><a class="viewcode-back" href="../../../../reference/reference/moviepy.video.fx.Freeze.html#moviepy.video.fx.Freeze.Freeze.apply">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clip</span><span class="p">:</span> <span class="n">Clip</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Clip</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the effect to the clip.&quot;&quot;&quot;</span>
@@ -417,7 +421,15 @@ document.write(`
         <span class="n">before</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">]]</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
         <span class="n">freeze</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="o">.</span><span class="n">to_ImageClip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">with_duration</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freeze_duration</span><span class="p">)]</span>
         <span class="n">after</span> <span class="o">=</span> <span class="p">[</span><span class="n">clip</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="p">:]]</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">!=</span> <span class="n">clip</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span>
-        <span class="k">return</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">before</span> <span class="o">+</span> <span class="n">freeze</span> <span class="o">+</span> <span class="n">after</span><span class="p">)</span></div></div>
+
+        <span class="n">new_clip</span> <span class="o">=</span> <span class="n">concatenate_videoclips</span><span class="p">(</span><span class="n">before</span> <span class="o">+</span> <span class="n">freeze</span> <span class="o">+</span> <span class="n">after</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_start_end</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_clip</span> <span class="o">=</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">with_start</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">clip</span><span class="o">.</span><span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">new_clip</span> <span class="o">=</span> <span class="n">new_clip</span><span class="o">.</span><span class="n">with_end</span><span class="p">(</span><span class="n">clip</span><span class="o">.</span><span class="n">end</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">freeze_duration</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_clip</span></div></div>
 </pre></div>
 
                 </article>

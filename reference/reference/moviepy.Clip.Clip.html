@@ -785,6 +785,15 @@ accordingly to the new duration using <code class="docutils literal notranslate"
 which can be expressed in seconds (15.35), in (min, sec), in
 (hour, min, sec), or as a string: ‘01:03:05.35’. Also sets the duration
 of the mask and audio, if any, of the returned clip.</p>
+<dl>
+<dt>note::</dt><dd><p>The start and end attribute of a clip define when a clip will start
+playing when used in a composite video clip, not the start time of
+the clip itself.</p>
+<p>i.e: with_start(10) mean the clip will still start at his first frame,
+but if used in a composite video clip it will only start to show at
+10 seconds.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>t</strong> (<em>float</em><em> or </em><em>tuple</em><em> or </em><em>str</em>) – New <code class="docutils literal notranslate"><span class="pre">end</span></code> attribute value for the clip.</p>
@@ -868,6 +877,15 @@ to <code class="docutils literal notranslate"><span class="pre">t</span></code>,
 in (hour, min, sec), or as a string: ‘01:03:05.35’.</p>
 <p>These changes are also applied to the <code class="docutils literal notranslate"><span class="pre">audio</span></code> and <code class="docutils literal notranslate"><span class="pre">mask</span></code>
 clips of the current clip, if they exist.</p>
+<dl>
+<dt>note::</dt><dd><p>The start and end attribute of a clip define when a clip will start
+playing when used in a composite video clip, not the start time of
+the clip itself.</p>
+<p>i.e: with_start(10) mean the clip will still start at his first frame,
+but if used in a composite video clip it will only start to show at
+10 seconds.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

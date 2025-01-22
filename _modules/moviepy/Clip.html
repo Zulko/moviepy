@@ -595,6 +595,15 @@ document.write(`
 <span class="sd">        These changes are also applied to the ``audio`` and ``mask``</span>
 <span class="sd">        clips of the current clip, if they exist.</span>
 
+<span class="sd">        note::</span>
+<span class="sd">          The start and end attribute of a clip define when a clip will start</span>
+<span class="sd">          playing when used in a composite video clip, not the start time of</span>
+<span class="sd">          the clip itself.</span>
+
+<span class="sd">          i.e: with_start(10) mean the clip will still start at his first frame,</span>
+<span class="sd">          but if used in a composite video clip it will only start to show at</span>
+<span class="sd">          10 seconds.</span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 
@@ -624,6 +633,15 @@ document.write(`
 <span class="sd">        which can be expressed in seconds (15.35), in (min, sec), in</span>
 <span class="sd">        (hour, min, sec), or as a string: &#39;01:03:05.35&#39;. Also sets the duration</span>
 <span class="sd">        of the mask and audio, if any, of the returned clip.</span>
+
+<span class="sd">        note::</span>
+<span class="sd">          The start and end attribute of a clip define when a clip will start</span>
+<span class="sd">          playing when used in a composite video clip, not the start time of</span>
+<span class="sd">          the clip itself.</span>
+
+<span class="sd">          i.e: with_start(10) mean the clip will still start at his first frame,</span>
+<span class="sd">          but if used in a composite video clip it will only start to show at</span>
+<span class="sd">          10 seconds.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

@@ -617,7 +617,8 @@ document.write(`
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">FFMPEG_BINARY</span><span class="p">,</span>
         <span class="s2">&quot;-version&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;quiet&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-v&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quiet&quot;</span><span class="p">,</span>
     <span class="p">]</span>
 
     <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
