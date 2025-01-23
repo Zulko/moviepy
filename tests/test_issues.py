@@ -303,9 +303,8 @@ def test_issue_470(util):
     audio_clip = AudioFileClip("media/crunching.mp3")
 
     # end_time is out of bounds
-    subclip = audio_clip.subclipped(start_time=6, end_time=9)
-
-    with pytest.raises(IOError):
+    with pytest.raises(ValueError):
+        subclip = audio_clip.subclipped(start_time=6, end_time=9)
         subclip.write_audiofile(wav_filename, write_logfile=True)
 
     # but this one should work..
@@ -334,7 +333,7 @@ def test_issue_636():
 
 def test_issue_655():
     video_file = "media/fire2.mp4"
-    for subclip in [(0, 2), (1, 2), (2, 3)]:
+    for subclip in [(0, 2), (1, 2), (2, 2.10)]:
         with VideoFileClip(video_file) as v:
             with v.subclipped(1, 2) as _:
                 pass

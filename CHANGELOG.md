@@ -17,8 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add background radius to text clips
 - Support pillow 11
 - Add support for Pillow default font on textclip
+- Add support for ffmpeg v7
 
 ### Changed <!-- for changes in existing functionality -->
+- Subclipping outside of clip boundaries now raise an exception
+- Freeze effect no longer remove start and end
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
