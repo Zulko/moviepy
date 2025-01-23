@@ -133,5 +133,12 @@ def test_label_autosizing(util):
     assert not np.allclose(last_three_columns, [0, 0, 0], rtol=0.01)
 
 
+def test_no_font(util):
+    # Try make a clip with default font
+    clip = TextClip(text="Hello world !", font_size=20, color="white")
+    clip.show(1)
+    assert clip.size[0] > 10
+
+
 if __name__ == "__main__":
     pytest.main()

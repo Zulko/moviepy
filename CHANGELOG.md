@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add codecs to .mov files
 - Add background radius to text clips
 - Support pillow 11
+- Add support for Pillow default font on textclip
 
 ### Changed <!-- for changes in existing functionality -->
 
