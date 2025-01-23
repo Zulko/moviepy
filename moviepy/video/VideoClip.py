@@ -1450,7 +1450,8 @@ class TextClip(ImageClip):
     ----------
 
     font
-      Path to the font to use. Must be an OpenType font.
+      Path to the font to use. Must be an OpenType font. If set to None
+      (default) will use Pillow default font
 
     text
       A string of the text to write. Can be replaced by argument
@@ -1549,7 +1550,7 @@ class TextClip(ImageClip):
     @convert_path_to_string("filename")
     def __init__(
         self,
-        font,
+        font=None,
         text=None,
         filename=None,
         font_size=None,
@@ -1567,12 +1568,13 @@ class TextClip(ImageClip):
         transparent=True,
         duration=None,
     ):
-        try:
-            _ = ImageFont.truetype(font)
-        except Exception as e:
-            raise ValueError(
-                "Invalid font {}, pillow failed to use it with error {}".format(font, e)
-            )
+        if font is not None:
+            try:
+                _ = ImageFont.truetype(font)
+            except Exception as e:
+                raise ValueError(
+                    "Invalid font {}, pillow failed to use it with error {}".format(font, e)
+                )
 
         if filename:
             with open(filename, "r") as file:
@@ -1620,18 +1622,6 @@ class TextClip(ImageClip):
                     allow_break=True,
                 )
 
-            if img_height is None:
-                img_height = self.__find_text_size(
-                    text=text,
-                    font=font,
-                    font_size=font_size,
-                    stroke_width=stroke_width,
-                    align=text_align,
-                    spacing=interline,
-                    max_width=img_width,
-                    allow_break=True,
-                )[1]
-
             # Add line breaks whenever needed
             text = "\n".join(
                 self.__break_text(
@@ -1644,6 +1634,18 @@ class TextClip(ImageClip):
                     spacing=interline,
                 )
             )
+
+            if img_height is None:
+                img_height = self.__find_text_size(
+                    text=text,
+                    font=font,
+                    font_size=font_size,
+                    stroke_width=stroke_width,
+                    align=text_align,
+                    spacing=interline,
+                    max_width=img_width,
+                    allow_break=True,
+                )[1]
 
         elif method == "label":
             if font_size is None and img_width is None:
@@ -1693,7 +1695,10 @@ class TextClip(ImageClip):
             bg_color = (0, 0, 0, 0)
 
         img = Image.new(img_mode, (img_width, img_height), color=bg_color)
-        pil_font = ImageFont.truetype(font, font_size)
+        if font:
+            pil_font = ImageFont.truetype(font, font_size)
+        else:
+            pil_font = ImageFont.load_default(font_size)
         draw = ImageDraw.Draw(img)
 
         # Dont need allow break here, because we already breaked in caption
@@ -1760,7 +1765,10 @@ class TextClip(ImageClip):
     ) -> List[str]:
         """Break text to never overflow a width"""
         img = Image.new("RGB", (1, 1))
-        font_pil = ImageFont.truetype(font, font_size)
+        if font:
+            font_pil = ImageFont.truetype(font, font_size)
+        else:
+            font_pil = ImageFont.load_default(font_size)
         draw = ImageDraw.Draw(img)
 
         lines = []
@@ -1843,7 +1851,10 @@ class TextClip(ImageClip):
               ``real_font_size + (stroke_width * 2) + (lines - 1) * height``
         """
         img = Image.new("RGB", (1, 1))
-        font_pil = ImageFont.truetype(font, font_size)
+        if font:
+            font_pil = ImageFont.truetype(font, font_size)
+        else:
+            font_pil = ImageFont.load_default(font_size)
         ascent, descent = font_pil.getmetrics()
         real_font_size = ascent + descent
         draw = ImageDraw.Draw(img)
