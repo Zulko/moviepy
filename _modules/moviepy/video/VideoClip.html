@@ -1827,7 +1827,8 @@ document.write(`
 <span class="sd">    ----------</span>
 
 <span class="sd">    font</span>
-<span class="sd">      Path to the font to use. Must be an OpenType font.</span>
+<span class="sd">      Path to the font to use. Must be an OpenType font. If set to None</span>
+<span class="sd">      (default) will use Pillow default font</span>
 
 <span class="sd">    text</span>
 <span class="sd">      A string of the text to write. Can be replaced by argument</span>
@@ -1926,7 +1927,7 @@ document.write(`
     <span class="nd">@convert_path_to_string</span><span class="p">(</span><span class="s2">&quot;filename&quot;</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">font</span><span class="p">,</span>
+        <span class="n">font</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">font_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -1944,12 +1945,13 @@ document.write(`
         <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">duration</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">_</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid font </span><span class="si">{}</span><span class="s2">, pillow failed to use it with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">font</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Invalid font </span><span class="si">{}</span><span class="s2">, pillow failed to use it with error </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
@@ -1997,18 +1999,6 @@ document.write(`
                     <span class="n">allow_break</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">img_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">img_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
-                    <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
-                    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
-                    <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
-                    <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
-                    <span class="n">align</span><span class="o">=</span><span class="n">text_align</span><span class="p">,</span>
-                    <span class="n">spacing</span><span class="o">=</span><span class="n">interline</span><span class="p">,</span>
-                    <span class="n">max_width</span><span class="o">=</span><span class="n">img_width</span><span class="p">,</span>
-                    <span class="n">allow_break</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-
             <span class="c1"># Add line breaks whenever needed</span>
             <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__break_text</span><span class="p">(</span>
@@ -2021,6 +2011,18 @@ document.write(`
                     <span class="n">spacing</span><span class="o">=</span><span class="n">interline</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">img_height</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">img_height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__find_text_size</span><span class="p">(</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                    <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
+                    <span class="n">font_size</span><span class="o">=</span><span class="n">font_size</span><span class="p">,</span>
+                    <span class="n">stroke_width</span><span class="o">=</span><span class="n">stroke_width</span><span class="p">,</span>
+                    <span class="n">align</span><span class="o">=</span><span class="n">text_align</span><span class="p">,</span>
+                    <span class="n">spacing</span><span class="o">=</span><span class="n">interline</span><span class="p">,</span>
+                    <span class="n">max_width</span><span class="o">=</span><span class="n">img_width</span><span class="p">,</span>
+                    <span class="n">allow_break</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;label&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">font_size</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">img_width</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2070,7 +2072,10 @@ document.write(`
             <span class="n">bg_color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">img_mode</span><span class="p">,</span> <span class="p">(</span><span class="n">img_width</span><span class="p">,</span> <span class="n">img_height</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">bg_color</span><span class="p">)</span>
-        <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">font</span><span class="p">:</span>
+            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pil_font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
         <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
         <span class="c1"># Dont need allow break here, because we already breaked in caption</span>
@@ -2137,7 +2142,10 @@ document.write(`
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Break text to never overflow a width&quot;&quot;&quot;</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">font</span><span class="p">:</span>
+            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
         <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
 
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2220,7 +2228,10 @@ document.write(`
 <span class="sd">              ``real_font_size + (stroke_width * 2) + (lines - 1) * height``</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-        <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">font</span><span class="p">:</span>
+            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">font</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">font_pil</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
         <span class="n">ascent</span><span class="p">,</span> <span class="n">descent</span> <span class="o">=</span> <span class="n">font_pil</span><span class="o">.</span><span class="n">getmetrics</span><span class="p">()</span>
         <span class="n">real_font_size</span> <span class="o">=</span> <span class="n">ascent</span> <span class="o">+</span> <span class="n">descent</span>
         <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
