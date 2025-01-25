@@ -1057,7 +1057,17 @@ def test_time_mirror():
 
 
 def test_time_symmetrize():
-    clip = BitmapClip([["AA", "AA"], ["BB", "BB"], ["CC", "CC"]], fps=1)
+    clip = BitmapClip(
+        [
+            ["AA", "AA"],
+            ["BB", "BB"],
+            ["CC", "CC"],
+            ["DD", "DD"],
+            ["EE", "EE"],
+            ["FF", "FF"],
+        ],
+        fps=2,
+    )
 
     clip1 = clip.with_effects([vfx.TimeSymmetrize()])
     target1 = BitmapClip(
@@ -1065,6 +1075,12 @@ def test_time_symmetrize():
             ["AA", "AA"],
             ["BB", "BB"],
             ["CC", "CC"],
+            ["DD", "DD"],
+            ["EE", "EE"],
+            ["FF", "FF"],
+            ["FF", "FF"],
+            ["EE", "EE"],
+            ["DD", "DD"],
             ["CC", "CC"],
             ["BB", "BB"],
             ["AA", "AA"],

@@ -2,6 +2,8 @@
 
 import os
 
+import numpy as np
+
 import pytest
 
 from moviepy import *
@@ -201,7 +203,6 @@ def test_issue_334(util):
                 now = t - last_move[0]
                 w = (lis[0][1] - last_move[1]) * (now / dura)
                 h = (lis[0][2] - last_move[2]) * (now / dura)
-                # print t, last_move[1] + w, last_move[2] + h
                 return (last_move[1] + w, last_move[2] + h)
             return (last_move[1], last_move[2])
 
@@ -219,7 +220,6 @@ def test_issue_334(util):
                 s = (lis1[0][3] - last_move1[3]) * (now / dura)
                 nsw = last_move1[3] + s
                 nsh = nsw * 1.33
-                # print t, nsw, nsh
                 return (nsw, nsh)
             return (last_move1[3], last_move1[3] * 1.33)
 
@@ -303,9 +303,8 @@ def test_issue_470(util):
     audio_clip = AudioFileClip("media/crunching.mp3")
 
     # end_time is out of bounds
-    subclip = audio_clip.subclipped(start_time=6, end_time=9)
-
-    with pytest.raises(IOError):
+    with pytest.raises(ValueError):
+        subclip = audio_clip.subclipped(start_time=6, end_time=9)
         subclip.write_audiofile(wav_filename, write_logfile=True)
 
     # but this one should work..
@@ -334,7 +333,7 @@ def test_issue_636():
 
 def test_issue_655():
     video_file = "media/fire2.mp4"
-    for subclip in [(0, 2), (1, 2), (2, 3)]:
+    for subclip in [(0, 2), (1, 2), (2, 2.10)]:
         with VideoFileClip(video_file) as v:
             with v.subclipped(1, 2) as _:
                 pass
@@ -358,6 +357,91 @@ def test_issue_1682_2(util):
     clip = clip.with_section_cut_out(10, 17)
     output_audio_filepath = os.path.join(util.TMP_DIR, "rain_cutout.mp3")
     clip.write_audiofile(output_audio_filepath)
+
+
+def test_issue_2269(util):
+    filename = "media/big_buck_bunny_0_30.webm"
+    clip = VideoFileClip(filename).subclipped(0, 3)
+    color_clip = ColorClip((500, 200), (255, 0, 0, 255)).with_duration(3)
+    txt_clip_with_margin = TextClip(
+        text="Hello",
+        font=util.FONT,
+        font_size=72,
+        stroke_color="white",
+        stroke_width=10,
+        margin=(10, 5, 0, 0),
+        text_align="center",
+    ).with_duration(3)
+
+    comp1 = CompositeVideoClip(
+        [color_clip, txt_clip_with_margin.with_position(("center", "center"))]
+    )
+    comp2 = CompositeVideoClip([clip, comp1.with_position(("center", "center"))])
+
+    # If transparency work as expected, this pixel should be pure red at 2 seconds
+    frame = comp2.get_frame(2)
+    pixel = frame[334, 625]
+
+    # We add a bit of tolerance (about 1%) to account
+    # For possible rounding errors
+    assert np.allclose(pixel, [255, 0, 0], rtol=0.01)
+
+
+def test_issue_2269_2(util):
+    clip1 = ColorClip((200, 200), (255, 0, 0)).with_duration(3)
+    clip2 = ColorClip((100, 100), (0, 255, 0, 76.5)).with_duration(3)
+    clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
+
+    compostite_clip1 = CompositeVideoClip(
+        [clip1, clip2.with_position(("center", "center"))]
+    )
+    compostite_clip2 = CompositeVideoClip(
+        [compostite_clip1, clip3.with_position(("center", "center"))]
+    )
+
+    # If transparency work as expected the clip should match thoses colors
+    frame = compostite_clip2.get_frame(2)
+    pixel1 = frame[100, 10]
+    pixel2 = frame[100, 60]
+    pixel3 = frame[100, 100]
+
+    # We add a bit of tolerance (about 1%) to account
+    # For possible rounding errors
+    assert np.allclose(pixel1, [255, 0, 0], rtol=0.01)
+    assert np.allclose(pixel2, [179, 76, 0], rtol=0.01)
+    assert np.allclose(pixel3, [126, 53, 76], rtol=0.01)
+
+
+def test_issue_2269_3(util):
+    # This time all clips have transparency
+    clip1 = ColorClip((200, 200), (255, 0, 0, 76.5)).with_duration(3)
+    clip2 = ColorClip((100, 100), (0, 255, 0, 76.5)).with_duration(3)
+    clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
+
+    compostite_clip1 = CompositeVideoClip(
+        [clip1, clip2.with_position(("center", "center"))]
+    )
+    compostite_clip2 = CompositeVideoClip(
+        [compostite_clip1, clip3.with_position(("center", "center"))]
+    )
+
+    # If transparency work as expected the clip transparency should be between 0.3 and 0.657
+    frame = compostite_clip2.mask.get_frame(2)
+    pixel1 = frame[100, 10]
+    pixel2 = frame[100, 60]
+    pixel3 = frame[100, 100]
+    assert pixel1 == 0.3
+    assert pixel2 == 0.51
+    assert pixel3 == 0.657
+
+
+def test_issue_2160(util):
+    filename = "media/-video-with-dash-.mp4"
+    clip = VideoFileClip(filename)
+    output_video_filepath = os.path.join(
+        util.TMP_DIR, "big_buck_bunny_0_30_cutout.webm"
+    )
+    clip.write_videofile(output_video_filepath)
 
 
 if __name__ == "__main__":

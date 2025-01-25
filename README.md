@@ -69,14 +69,17 @@ To ask for help or simply discuss usage and examples, use [our Reddit channel](h
 
 # Maintainers
 
+## Active maintainers
 -   [Zulko](https://github.com/Zulko) (owner)
 -   [@osaajani](https://github.com/OsaAjani) led the development of v2 ([MR](https://github.com/Zulko/moviepy/pull/2024))
 -   [@tburrows13](https://github.com/tburrows13)
+-   [@keikoro](https://github.com/keikoro)
+
+## Past maintainers and thanks
 -   [@mgaitan](https://github.com/mgaitan)
 -   [@earney](https://github.com/earney)
 -   [@mbeacom](https://github.com/mbeacom)
 -   [@overdrivr](https://github.com/overdrivr)
--   [@keikoro](https://github.com/keikoro)
 -   [@ryanfox](https://github.com/ryanfox)
 -   [@mondeja](https://github.com/mondeja)
 

@@ -62,10 +62,16 @@ class CompositeVideoClip(VideoClip):
         if use_bgclip and (clips[0].mask is None):
             transparent = False
         else:
-            transparent = bg_color is None
+            transparent = True if bg_color is None else False
 
-        if bg_color is None:
-            bg_color = 0.0 if is_mask else (0, 0, 0)
+        # If we must not use first clip as background and we dont have a color
+        # we generate a black background if clip should not be transparent and
+        # a transparent background if transparent
+        if (not use_bgclip) and bg_color is None:
+            if transparent:
+                bg_color = 0.0 if is_mask else (0, 0, 0, 0)
+            else:
+                bg_color = 0.0 if is_mask else (0, 0, 0)
 
         fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
         self.fps = max(fpss) if fpss else None
@@ -77,6 +83,8 @@ class CompositeVideoClip(VideoClip):
         self.clips = clips
         self.bg_color = bg_color
 
+        # Use first clip as background if necessary, else use color
+        # either set by user or previously generated
         if use_bgclip:
             self.bg = clips[0]
             self.clips = clips[1:]
@@ -112,24 +120,63 @@ class CompositeVideoClip(VideoClip):
                 for clip in self.clips
             ]
 
+            if use_bgclip and self.bg.mask:
+                maskclips = [self.bg.mask] + maskclips
+
             self.mask = CompositeVideoClip(
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
     def frame_function(self, t):
         """The clips playing at time `t` are blitted over one another."""
-        frame = self.bg.get_frame(t).astype("uint8")
-        im = Image.fromarray(frame)
+        # For the mask we recalculate the final transparency we'll need
+        # to apply on the result image
+        if self.is_mask:
+            mask = np.zeros((self.size[1], self.size[0]), dtype=float)
+            for clip in self.playing_clips(t):
+                mask = clip.compose_mask(mask, t)
 
-        if self.bg.mask is not None:
-            frame_mask = self.bg.mask.get_frame(t)
-            im_mask = Image.fromarray(255 * frame_mask).convert("L")
-            im.putalpha(im_mask)
+            return mask
 
+        # Try doing clip merging with pillow
+        bg_t = t - self.bg.start
+        bg_frame = self.bg.get_frame(bg_t).astype("uint8")
+        bg_img = Image.fromarray(bg_frame)
+
+        if self.bg.mask:
+            bgm_t = t - self.bg.mask.start
+            bg_mask = (self.bg.mask.get_frame(bgm_t) * 255).astype("uint8")
+            bg_mask_img = Image.fromarray(bg_mask).convert("L")
+
+            # Resize bg_mask_img to match bg_img, always use top left corner
+            if bg_mask_img.size != bg_img.size:
+                mask_width, mask_height = bg_mask_img.size
+                img_width, img_height = bg_img.size
+
+                if mask_width > img_width or mask_height > img_height:
+                    bg_mask_img = bg_mask_img.crop((0, 0, img_width, img_height))
+                else:
+                    new_mask = Image.new("L", (img_width, img_height), 0)
+                    new_mask.paste(bg_mask_img, (0, 0))
+                    bg_mask_img = new_mask
+
+            bg_img = bg_img.convert("RGBA")
+            bg_img.putalpha(bg_mask_img)
+
+        # For each clip apply on top of current img
+        current_img = bg_img
         for clip in self.playing_clips(t):
-            im = clip.blit_on(im, t)
+            current_img = clip.compose_on(current_img, t)
 
-        return np.array(im)
+        # Turn Pillow image into a numpy array
+        frame = np.array(current_img)
+
+        # If frame have transparency, remove it
+        # our mask will take care of it during rendering
+        if frame.shape[2] == 4:
+            return frame[:, :, :3]
+
+        return frame
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are
@@ -289,7 +336,7 @@ def concatenate_videoclips(
             return clips[i].get_frame(t - timings[i])
 
         def get_mask(clip):
-            mask = clip.mask or ColorClip([1, 1], color=1, is_mask=True)
+            mask = clip.mask or ColorClip(clip.size, color=1, is_mask=True)
             if mask.duration is None:
                 mask.duration = clip.duration
             return mask

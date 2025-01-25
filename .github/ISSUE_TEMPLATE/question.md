@@ -1,6 +1,6 @@
 ---
 name: Question
-about: Ask a question about how to use MoviePy
+about: Ask a question about an unexpected behavior of MoviePy
 title: ''
 labels: question
 assignees: ''
@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 <!--
-Hello! If you think that it is a simple problem, then consider asking instead on our Gitter channel: https://gitter.im/movie-py/. This makes it easier to have a back-and-forth discussion in real-time.
+If possible, please prioritize using discussions (https://github.com/Zulko/moviepy/discussions) or online forums for asking questions on how to use MoviePy, issues should be used mainly for questions about a specific behavior that seem incoherent and could possibly be a bug.
  
 --------------------
 

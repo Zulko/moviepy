@@ -8,7 +8,11 @@ import warnings
 import numpy as np
 
 from moviepy.config import FFMPEG_BINARY  # ffmpeg, ffmpeg.exe, etc...
-from moviepy.tools import convert_to_seconds, cross_platform_popen_params
+from moviepy.tools import (
+    convert_to_seconds,
+    cross_platform_popen_params,
+    ffmpeg_escape_filename,
+)
 
 
 class FFMPEG_VideoReader:
@@ -91,12 +95,24 @@ class FFMPEG_VideoReader:
                 "-ss",
                 "%.06f" % (start_time - offset),
                 "-i",
-                self.filename,
+                ffmpeg_escape_filename(self.filename),
                 "-ss",
                 "%.06f" % offset,
             ]
         else:
-            i_arg = ["-i", self.filename]
+            i_arg = ["-i", ffmpeg_escape_filename(self.filename)]
+
+        # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9
+        # as ffmpeg native webm decoder dont decode alpha layer
+        # (see
+        # https://www.reddit.com/r/ffmpeg/comments/fgpyfb/help_with_webm_with_alpha_channel/
+        # )
+        if self.depth == 4:
+            codec_name = self.infos.get("video_codec_name")
+            if codec_name == "vp9":
+                i_arg = ["-c:v", "libvpx-vp9"] + i_arg
+            elif codec_name == "vp8":
+                i_arg = ["-c:v", "libvpx"] + i_arg
 
         cmd = (
             [FFMPEG_BINARY]
@@ -117,6 +133,7 @@ class FFMPEG_VideoReader:
                 "-",
             ]
         )
+
         popen_params = cross_platform_popen_params(
             {
                 "bufsize": self.bufsize,
@@ -401,7 +418,7 @@ class FFmpegInfosParser:
                     self.result["duration"] = self.parse_duration(line)
 
                 # parse global bitrate (in kb/s)
-                bitrate_match = re.search(r"bitrate: (\d+) kb/s", line)
+                bitrate_match = re.search(r"bitrate: (\d+) k(i?)b/s", line)
                 self.result["bitrate"] = (
                     int(bitrate_match.group(1)) if bitrate_match else None
                 )
@@ -511,7 +528,10 @@ class FFmpegInfosParser:
 
                 if self._current_stream["stream_type"] == "video":
                     field, value = self.video_metadata_type_casting(field, value)
+                    # ffmpeg 7 now use displaymatrix instead of rotate
                     if field == "rotate":
+                        self.result["video_rotation"] = value
+                    elif field == "displaymatrix":
                         self.result["video_rotation"] = value
 
                 # multiline metadata value parsing
@@ -627,7 +647,7 @@ class FFmpegInfosParser:
             # AttributeError: 'NoneType' object has no attribute 'group'
             # ValueError: invalid literal for int() with base 10: '<string>'
             stream_data["fps"] = "unknown"
-        match_audio_bitrate = re.search(r"(\d+) kb/s", line)
+        match_audio_bitrate = re.search(r"(\d+) k(i?)b/s", line)
         stream_data["bitrate"] = (
             int(match_audio_bitrate.group(1)) if match_audio_bitrate else None
         )
@@ -655,7 +675,7 @@ class FFmpegInfosParser:
                 % (self.filename, self.infos)
             )
 
-        match_bitrate = re.search(r"(\d+) kb/s", line)
+        match_bitrate = re.search(r"(\d+) k(i?)b/s", line)
         stream_data["bitrate"] = int(match_bitrate.group(1)) if match_bitrate else None
 
         # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
@@ -689,6 +709,22 @@ class FFmpegInfosParser:
             if (fps != x) and abs(fps - x * coef) < 0.01:
                 fps = x * coef
         stream_data["fps"] = fps
+
+        # Try to extract video codec and profile
+        main_info_match = re.search(
+            r"Video:\s(\w+)?\s?(\([^)]+\))?",
+            line.lstrip(),
+        )
+        if main_info_match is not None:
+            (codec_name, profile) = main_info_match.groups()
+            stream_data["codec_name"] = codec_name
+            stream_data["profile"] = profile
+
+        if self._current_stream["default"] or "video_codec_name" not in self.result:
+            global_data["video_codec_name"] = stream_data.get("codec_name", None)
+
+        if self._current_stream["default"] or "video_profile" not in self.result:
+            global_data["video_profile"] = stream_data.get("profile", None)
 
         if self._current_stream["default"] or "video_size" not in self.result:
             global_data["video_size"] = stream_data.get("size", None)
@@ -741,13 +777,25 @@ class FFmpegInfosParser:
         """Returns a tuple with a metadata field-value pair given a ffmpeg `-i`
         command output line.
         """
-        raw_field, raw_value = line.split(":", 1)
-        return (raw_field.strip(" "), raw_value.strip(" "))
+        info = line.split(":", 1)
+        if len(info) == 2:
+            raw_field, raw_value = info
+            return (raw_field.strip(" "), raw_value.strip(" "))
+        else:
+            return ("", "")
 
     def video_metadata_type_casting(self, field, value):
         """Cast needed video metadata fields to other types than the default str."""
         if field == "rotate":
             return (field, float(value))
+
+        elif field == "displaymatrix":
+            match = re.search(r"[-+]?\d+(\.\d+)?", value)
+            if match:
+                # We must multiply by -1 because displaymatrix return info
+                # about how to rotate to show video, not about video rotation
+                return (field, float(match.group()) * -1)
+
         return (field, value)
 
 
@@ -775,6 +823,8 @@ def ffmpeg_parse_infos(
     - ``"audio_fps"``
     - ``"audio_bitrate"``
     - ``"audio_metadata"``
+    - ``"video_codec_name"``
+    - ``"video_profile"``
 
     Note that "video_duration" is slightly smaller than "duration" to avoid
     fetching the incomplete frames at the end, which raises an error.
@@ -801,7 +851,7 @@ def ffmpeg_parse_infos(
       https://github.com/Zulko/moviepy/pull/1222).
     """
     # Open the file in a pipe, read output
-    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", filename]
+    cmd = [FFMPEG_BINARY, "-hide_banner", "-i", ffmpeg_escape_filename(filename)]
     if decode_file:
         cmd.extend(["-f", "null", "-"])
 

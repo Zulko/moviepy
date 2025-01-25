@@ -218,6 +218,15 @@ class Clip:
         These changes are also applied to the ``audio`` and ``mask``
         clips of the current clip, if they exist.
 
+        note::
+          The start and end attribute of a clip define when a clip will start
+          playing when used in a composite video clip, not the start time of
+          the clip itself.
+
+          i.e: with_start(10) mean the clip will still start at his first frame,
+          but if used in a composite video clip it will only start to show at
+          10 seconds.
+
         Parameters
         ----------
 
@@ -247,6 +256,15 @@ class Clip:
         which can be expressed in seconds (15.35), in (min, sec), in
         (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
         of the mask and audio, if any, of the returned clip.
+
+        note::
+          The start and end attribute of a clip define when a clip will start
+          playing when used in a composite video clip, not the start time of
+          the clip itself.
+
+          i.e: with_start(10) mean the clip will still start at his first frame,
+          but if used in a composite video clip it will only start to show at
+          10 seconds.
 
         Parameters
         ----------
@@ -422,6 +440,14 @@ class Clip:
                 end_time = self.duration + end_time
 
         if end_time is not None:
+            # Allow a slight tolerance to account for rounding errors
+            if (self.duration is not None) and (end_time - self.duration > 0.00000001):
+                raise ValueError(
+                    "end_time (%.02f) " % end_time
+                    + "should be smaller or equal to the clip's "
+                    + "duration (%.02f)." % self.duration
+                )
+
             new_clip.duration = end_time - start_time
             new_clip.end = new_clip.start + new_clip.duration
 
@@ -652,7 +678,7 @@ class Clip:
                 if key.step < 0:
                     # time mirror
                     clip = clip.time_transform(
-                        lambda t: clip.duration - t - 1,
+                        lambda t: clip.duration - t - 1 / self.fps,
                         keep_duration=True,
                         apply_to=apply_to,
                     )
