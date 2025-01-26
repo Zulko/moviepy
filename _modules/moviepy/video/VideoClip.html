@@ -763,6 +763,9 @@ document.write(`
                 <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
                 <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="c1"># The audio is already encoded,</span>
+            <span class="c1"># so there is no need to encode it during video export</span>
+            <span class="n">audio_codec</span> <span class="o">=</span> <span class="s2">&quot;copy&quot;</span>
 
         <span class="n">ffmpeg_write_video</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -773,6 +776,7 @@ document.write(`
             <span class="n">preset</span><span class="o">=</span><span class="n">preset</span><span class="p">,</span>
             <span class="n">write_logfile</span><span class="o">=</span><span class="n">write_logfile</span><span class="p">,</span>
             <span class="n">audiofile</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span>
+            <span class="n">audio_codec</span><span class="o">=</span><span class="n">audio_codec</span><span class="p">,</span>
             <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
             <span class="n">ffmpeg_params</span><span class="o">=</span><span class="n">ffmpeg_params</span><span class="p">,</span>
             <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>

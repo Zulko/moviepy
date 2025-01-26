@@ -421,6 +421,9 @@ document.write(`
 <span class="sd">    audiofile : str, optional</span>
 <span class="sd">      The name of an audio file that will be incorporated to the video.</span>
 
+<span class="sd">    audio_codec : str, optional</span>
+<span class="sd">      FFMPEG audio codec. If None, ``&quot;copy&quot;`` codec is used.</span>
+
 <span class="sd">    preset : str, optional</span>
 <span class="sd">      Sets the time that FFMPEG will take to compress the video. The slower,</span>
 <span class="sd">      the better the compression rate. Possibilities are: ``&quot;ultrafast&quot;``,</span>
@@ -458,6 +461,7 @@ document.write(`
         <span class="n">fps</span><span class="p">,</span>
         <span class="n">codec</span><span class="o">=</span><span class="s2">&quot;libx264&quot;</span><span class="p">,</span>
         <span class="n">audiofile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">audio_codec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
         <span class="n">bitrate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">with_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -471,6 +475,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">logfile</span> <span class="o">=</span> <span class="n">logfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">codec</span> <span class="o">=</span> <span class="n">codec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">audio_codec</span> <span class="o">=</span> <span class="n">audio_codec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ext</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">pixel_format</span> <span class="o">=</span> <span class="s2">&quot;rgba&quot;</span> <span class="k">if</span> <span class="n">with_mask</span> <span class="k">else</span> <span class="s2">&quot;rgb24&quot;</span>
@@ -496,7 +501,9 @@ document.write(`
             <span class="s2">&quot;-&quot;</span><span class="p">,</span>
         <span class="p">]</span>
         <span class="k">if</span> <span class="n">audiofile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audiofile</span><span class="p">,</span> <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="s2">&quot;copy&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">audio_codec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">audio_codec</span> <span class="o">=</span> <span class="s2">&quot;copy&quot;</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-i&quot;</span><span class="p">,</span> <span class="n">audiofile</span><span class="p">,</span> <span class="s2">&quot;-acodec&quot;</span><span class="p">,</span> <span class="n">audio_codec</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="n">codec</span> <span class="o">==</span> <span class="s2">&quot;h264_nvenc&quot;</span><span class="p">:</span>
             <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;-c:v&quot;</span><span class="p">,</span> <span class="n">codec</span><span class="p">])</span>
@@ -552,13 +559,14 @@ document.write(`
                 <span class="sa">f</span><span class="s2">&quot;writing file </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="si">}</span><span class="s2">:</span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">ffmpeg_error</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
-            <span class="k">if</span> <span class="s2">&quot;Unknown encoder&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;Unknown encoder&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span> <span class="ow">or</span> <span class="s2">&quot;Unknown decoder&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
                 <span class="n">error</span> <span class="o">+=</span> <span class="p">(</span>
                     <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">The video export failed because FFMPEG didn&#39;t find the &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;specified codec for video encoding </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">codec</span><span class="si">}</span><span class="s2">. &quot;</span>
+                    <span class="s2">&quot;specified codec for video or audio. &quot;</span>
                     <span class="s2">&quot;Please install this codec or change the codec when calling &quot;</span>
                     <span class="s2">&quot;write_videofile.</span><span class="se">\n</span><span class="s2">For instance:</span><span class="se">\n</span><span class="s2">&quot;</span>
-                    <span class="s2">&quot;  &gt;&gt;&gt; clip.write_videofile(&#39;myvid.webm&#39;, codec=&#39;libvpx&#39;)&quot;</span>
+                    <span class="s2">&quot;  &gt;&gt;&gt; clip.write_videofile(&#39;myvid.webm&#39;, audio=&#39;myaudio.mp3&#39;, &quot;</span>
+                    <span class="s2">&quot;codec=&#39;libvpx&#39;, audio_codec=&#39;aac&#39;)&quot;</span>
                 <span class="p">)</span>
 
             <span class="k">elif</span> <span class="s2">&quot;incorrect codec parameters ?&quot;</span> <span class="ow">in</span> <span class="n">ffmpeg_error</span><span class="p">:</span>
@@ -617,6 +625,7 @@ document.write(`
     <span class="n">preset</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
     <span class="n">write_logfile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">audiofile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">audio_codec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">threads</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">ffmpeg_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">logger</span><span class="o">=</span><span class="s2">&quot;bar&quot;</span><span class="p">,</span>
@@ -646,6 +655,7 @@ document.write(`
         <span class="n">with_mask</span><span class="o">=</span><span class="n">has_mask</span><span class="p">,</span>
         <span class="n">logfile</span><span class="o">=</span><span class="n">logfile</span><span class="p">,</span>
         <span class="n">audiofile</span><span class="o">=</span><span class="n">audiofile</span><span class="p">,</span>
+        <span class="n">audio_codec</span><span class="o">=</span><span class="n">audio_codec</span><span class="p">,</span>
         <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
         <span class="n">ffmpeg_params</span><span class="o">=</span><span class="n">ffmpeg_params</span><span class="p">,</span>
         <span class="n">pixel_format</span><span class="o">=</span><span class="n">pixel_format</span><span class="p">,</span>
