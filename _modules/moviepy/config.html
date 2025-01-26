@@ -455,9 +455,9 @@ document.write(`
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: can&#39;t find or access ffmpeg in &#39;</span><span class="si">{</span><span class="n">FFMPEG_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">try_cmd</span><span class="p">([</span><span class="n">FFPLAY_BINARY</span><span class="p">])[</span><span class="mi">0</span><span class="p">]:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: ffmpeg successfully found in &#39;</span><span class="si">{</span><span class="n">FFPLAY_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: ffplay successfully found in &#39;</span><span class="si">{</span><span class="n">FFPLAY_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: can&#39;t find or access ffmpeg in &#39;</span><span class="si">{</span><span class="n">FFPLAY_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MoviePy: can&#39;t find or access ffplay in &#39;</span><span class="si">{</span><span class="n">FFPLAY_BINARY</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">DOTENV</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">.env file content at </span><span class="si">{</span><span class="n">DOTENV</span><span class="si">}</span><span class="s2">:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
