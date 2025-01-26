@@ -78,9 +78,9 @@ def check():
         print(f"MoviePy: can't find or access ffmpeg in '{FFMPEG_BINARY}'.")
 
     if try_cmd([FFPLAY_BINARY])[0]:
-        print(f"MoviePy: ffmpeg successfully found in '{FFPLAY_BINARY}'.")
+        print(f"MoviePy: ffplay successfully found in '{FFPLAY_BINARY}'.")
     else:  # pragma: no cover
-        print(f"MoviePy: can't find or access ffmpeg in '{FFPLAY_BINARY}'.")
+        print(f"MoviePy: can't find or access ffplay in '{FFPLAY_BINARY}'.")
 
     if DOTENV:
         print(f"\n.env file content at {DOTENV}:\n")
