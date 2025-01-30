@@ -240,9 +240,9 @@ class AudioClip(Clip):
         """
         if not fps:
             if hasattr(self, "fps"):
-                fps = 44100
-            else:
                 fps = self.fps
+            else:
+                fps = 44100
 
         if codec is None:
             name, ext = os.path.splitext(os.path.basename(filename))

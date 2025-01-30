@@ -5,6 +5,7 @@ import subprocess as sp
 from moviepy.config import FFPLAY_BINARY
 from moviepy.decorators import requires_duration
 from moviepy.tools import cross_platform_popen_params
+from moviepy.video.io import ffmpeg_tools
 
 
 class FFPLAY_AudioPreviewer:
@@ -24,7 +25,6 @@ class FFPLAY_AudioPreviewer:
 
     nchannels:
       Number of audio channels in the clip. Default to 2 channels.
-
     """
 
     def __init__(
@@ -42,8 +42,22 @@ class FFPLAY_AudioPreviewer:
             "s%dle" % (8 * nbytes),
             "-ar",
             "%d" % fps_input,
-            "-ac",
-            "%d" % nchannels,
+        ]
+
+        # Adapt number of channels argument to ffplay version
+        ffplay_version = ffmpeg_tools.ffplay_version()[1]
+        if int(ffplay_version.split(".")[0]) >= 7:
+            cmd += [
+                "-ch_layout",
+                "stereo" if nchannels == 2 else "mono",
+            ]
+        else:
+            cmd += [
+                "-ac",
+                "%d" % nchannels,
+            ]
+
+        cmd += [
             "-i",
             "-",
         ]
@@ -62,11 +76,6 @@ class FFPLAY_AudioPreviewer:
             _, ffplay_error = self.proc.communicate()
             if ffplay_error is not None:
                 ffplay_error = ffplay_error.decode()
-            else:
-                # The error was redirected to a logfile with `write_logfile=True`,
-                # so read the error from that file instead
-                self.logfile.seek(0)
-                ffplay_error = self.logfile.read()
 
             error = (
                 f"{err}\n\nMoviePy error: FFPLAY encountered the following error while "
