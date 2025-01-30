@@ -110,7 +110,7 @@ class ImageSequenceClip(VideoClip):
         self.sequence = sequence
 
         if fps is None:
-            self.fps = self.duration / len(sequence)
+            self.fps = len(sequence) / self.duration
 
         def find_image_index(t):
             return max(
