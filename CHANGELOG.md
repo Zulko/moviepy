@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix textclip being cut or of impredictable height (see issues #2325, #2260 and #2268)
 - Fix TimeMirror and TimeSymmetrize cutting last second of clip
 - ImageSequenceClip was wrong when calculating fps with duration and no fps (see issue #2351)
-
+- More consistent frame seek (see issue #2115 and PR #2117)
 ## [v2.1.2](https://github.com/zulko/moviepy/tree/master)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v2.1.2...HEAD)
