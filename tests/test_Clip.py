@@ -184,6 +184,7 @@ def test_clip_copy(copy_func):
         (3, 3, None, ValueError),  # start_time == duration
         (3, 1, -1, 1),  # negative end_time
         (None, 1, -1, ValueError),  # negative end_time for clip without duration
+        (1, 0, 2, ValueError),  # end_time after video end should raise exception
     ),
 )
 def test_clip_subclip(duration, start_time, end_time, expected_duration):
@@ -194,9 +195,9 @@ def test_clip_subclip(duration, start_time, end_time, expected_duration):
 
     if hasattr(expected_duration, "__traceback__"):
         with pytest.raises(expected_duration):
-            clip.subclip(start_time=start_time, end_time=end_time)
+            clip.subclipped(start_time=start_time, end_time=end_time)
     else:
-        sub_clip = clip.subclip(start_time=start_time, end_time=end_time)
+        sub_clip = clip.subclipped(start_time=start_time, end_time=end_time)
         assert sub_clip.duration == expected_duration
 
 
@@ -232,7 +233,7 @@ def test_clip_subclip(duration, start_time, end_time, expected_duration):
 )
 def test_clip_cutout(start_time, end_time, expected_frames):
     clip = BitmapClip([["RR", "RR"], ["GG", "GG"], ["BB", "BB"]], fps=1)
-    new_clip = clip.cutout(start_time, end_time)
+    new_clip = clip.with_section_cut_out(start_time, end_time)
 
     assert new_clip == BitmapClip(expected_frames, fps=1)
 

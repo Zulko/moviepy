@@ -8,14 +8,8 @@ from PIL import Image
 
 import pytest
 
-from moviepy.audio.AudioClip import AudioClip
-from moviepy.audio.io.AudioFileClip import AudioFileClip
+from moviepy import *
 from moviepy.tools import convert_to_seconds
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.mask_color import mask_color
-from moviepy.video.fx.multiply_speed import multiply_speed
-from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.VideoClip import BitmapClip, ColorClip, ImageClip, VideoClip
 
 
 def test_aspect_ratio():
@@ -101,7 +95,7 @@ def test_write_frame_errors_with_redirected_logs(util, video):
 
 
 def test_write_videofiles_with_temp_audiofile_path(util):
-    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclip(0.2, 0.5)
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm").subclipped(0.2, 0.5)
     location = os.path.join(util.TMP_DIR, "temp_audiofile_path.webm")
     temp_location = os.path.join(util.TMP_DIR, "temp_audiofile")
     if not os.path.exists(temp_location):
@@ -181,68 +175,17 @@ def test_write_image_sequence(util, video):
         assert os.path.isfile(location)
 
 
-def test_write_gif_imageio(util, video):
+def test_write_gif(util, video):
     clip = video(start_time=0.2, end_time=0.8)
     location = os.path.join(util.TMP_DIR, "imageio_gif.gif")
-    clip.write_gif(location, program="imageio")
+    clip.write_gif(location)
     assert os.path.isfile(location)
 
 
-def test_write_gif_ffmpeg(util, video):
-    clip = video(start_time=0.2, end_time=0.28)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_gif.gif")
-    clip.write_gif(location, program="ffmpeg")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.28)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_gif.gif")
-    clip.write_gif(location, program="ffmpeg", pixel_format="bgr24")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_tmpfiles(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ffmpeg", tempfiles=True)
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ffmpeg_tmpfiles_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "ffmpeg_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ffmpeg", tempfiles=True, pixel_format="bgr24")
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick(util, video):
-    clip = video(start_time=0.2, end_time=0.5)
-    location = os.path.join(util.TMP_DIR, "imagemagick_gif.gif")
-    clip.write_gif(location, program="ImageMagick")
-    # Fails for some reason
-    # assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick_tmpfiles(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "imagemagick_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ImageMagick", tempfiles=True)
-    assert os.path.isfile(location)
-
-
-def test_write_gif_ImageMagick_tmpfiles_pixel_format(util, video):
-    clip = video(start_time=0.2, end_time=0.24)
-    location = os.path.join(util.TMP_DIR, "imagemagick_tmpfiles_gif.gif")
-    clip.write_gif(location, program="ImageMagick", tempfiles=True, pixel_format="SGI")
-    assert os.path.isfile(location)
-
-
-def test_subfx(util):
-    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclip(0, 1)
-    transform = lambda c: multiply_speed(c, 0.5)
-    new_clip = clip.subfx(transform, 0.5, 0.8)
-    location = os.path.join(util.TMP_DIR, "subfx.mp4")
+def test_with_sub_effetcs(util):
+    clip = VideoFileClip("media/big_buck_bunny_0_30.webm").subclipped(0, 1)
+    new_clip = clip.with_effects_on_subclip([vfx.MultiplySpeed(0.5)])
+    location = os.path.join(util.TMP_DIR, "with_effects_on_subclip.mp4")
     new_clip.write_videofile(location)
     assert os.path.isfile(location)
 
@@ -250,7 +193,7 @@ def test_subfx(util):
 def test_oncolor(util):
     # It doesn't need to be a ColorClip
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    on_color_clip = clip.on_color(size=(200, 160), color=(0, 0, 255))
+    on_color_clip = clip.with_background_color(size=(200, 160), color=(0, 0, 255))
     location = os.path.join(util.TMP_DIR, "oncolor.mp4")
     on_color_clip.write_videofile(location, fps=24)
     assert os.path.isfile(location)
@@ -272,8 +215,8 @@ def test_oncolor(util):
 
 def test_setaudio(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    make_frame_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
-    audio = AudioClip(make_frame_440, duration=0.5)
+    frame_function_440 = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    audio = AudioClip(frame_function_440, duration=0.5)
     audio.fps = 44100
     clip = clip.with_audio(audio)
     location = os.path.join(util.TMP_DIR, "setaudio.mp4")
@@ -283,7 +226,7 @@ def test_setaudio(util):
 
 def test_setaudio_with_audiofile(util):
     clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=0.5)
-    audio = AudioFileClip("media/crunching.mp3").subclip(0, 0.5)
+    audio = AudioFileClip("media/crunching.mp3").subclipped(0, 0.5)
     clip = clip.with_audio(audio)
     location = os.path.join(util.TMP_DIR, "setaudiofile.mp4")
     clip.write_videofile(location, fps=24)
@@ -293,24 +236,24 @@ def test_setaudio_with_audiofile(util):
 def test_setopacity(util, video):
     clip = video(start_time=0.2, end_time=0.6)
     clip = clip.with_opacity(0.5)
-    clip = clip.on_color(size=(1000, 1000), color=(0, 0, 255), col_opacity=0.8)
+    clip = clip.with_background_color(size=(1000, 1000), color=(0, 0, 255), opacity=0.8)
     location = os.path.join(util.TMP_DIR, "setopacity.mp4")
     clip.write_videofile(location)
     assert os.path.isfile(location)
 
 
-def test_with_layer():
-    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).with_layer(1)
-    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).with_layer(2)
+def test_with_layer_index():
+    bottom_clip = BitmapClip([["ABC"], ["BCA"], ["CAB"]], fps=1).with_layer_index(1)
+    top_clip = BitmapClip([["DEF"], ["EFD"]], fps=1).with_layer_index(2)
 
     composite_clip = CompositeVideoClip([bottom_clip, top_clip])
     reversed_composite_clip = CompositeVideoClip([top_clip, bottom_clip])
 
     # Make sure that the order of clips makes no difference to the composite clip
-    assert composite_clip.subclip(0, 2) == reversed_composite_clip.subclip(0, 2)
+    assert composite_clip.subclipped(0, 2) == reversed_composite_clip.subclipped(0, 2)
 
     # Make sure that only the 'top' clip is kept
-    assert top_clip.subclip(0, 2) == composite_clip.subclip(0, 2)
+    assert top_clip.subclipped(0, 2) == composite_clip.subclipped(0, 2)
 
     # Make sure that it works even when there is only one clip playing at that time
     target_clip = BitmapClip([["DEF"], ["EFD"], ["CAB"]], fps=1)
@@ -434,7 +377,7 @@ def test_videoclip_copy(copy_func):
 
 def test_afterimage(util):
     ai = ImageClip("media/afterimage.png")
-    masked_clip = mask_color(ai, color=[0, 255, 1])  # for green
+    masked_clip = ai.with_effects([vfx.MaskColor(color=[0, 255, 1])])  # for green
     some_background_clip = ColorClip((800, 600), color=(255, 255, 255))
     final_clip = CompositeVideoClip(
         [some_background_clip, masked_clip], use_bgclip=True
@@ -446,16 +389,16 @@ def test_afterimage(util):
 
 def test_add():
     clip = VideoFileClip("media/fire2.mp4")
-    new_clip = clip[0:1] + clip[2:3.2]
-    assert new_clip.duration == 2.2
-    assert np.array_equal(new_clip[1.1], clip[2.1])
+    new_clip = clip[0:1] + clip[1.5:2]
+    assert new_clip.duration == 1.5
+    assert np.array_equal(new_clip[1.1], clip[1.6])
 
 
 def test_slice_tuples():
     clip = VideoFileClip("media/fire2.mp4")
-    new_clip = clip[0:1, 2:3.2]
-    assert new_clip.duration == 2.2
-    assert np.array_equal(new_clip[1.1], clip[2.1])
+    new_clip = clip[0:1, 1.5:2]
+    assert new_clip.duration == 1.5
+    assert np.array_equal(new_clip[1.1], clip[1.6])
 
 
 def test_slice_mirror():

@@ -20,29 +20,40 @@ class SubtitlesClip(VideoClip):
     ----------
 
     subtitles
-      Either the name of a file as a string or path-like object, or a list
+        Either the name of a file as a string or path-like object, or a list
+
+    font
+        Path to a font file to be used. Optional if make_textclip is provided.
+
+    make_textclip
+        A custom function to use for text clip generation. If None, a TextClip
+        will be generated.
+
+        The function must take a text as argument and return a VideoClip
+        to be used as caption
 
     encoding
-      Optional, specifies srt file encoding.
-      Any standard Python encoding is allowed (listed at
-      https://docs.python.org/3.8/library/codecs.html#standard-encodings)
+        Optional, specifies srt file encoding.
+        Any standard Python encoding is allowed (listed at
+        https://docs.python.org/3.8/library/codecs.html#standard-encodings)
 
     Examples
     --------
 
-    >>> from moviepy.video.tools.subtitles import SubtitlesClip
-    >>> from moviepy.video.io.VideoFileClip import VideoFileClip
-    >>> generator = lambda text: TextClip(text, font='Georgia-Regular',
-    ...                                   font_size=24, color='white')
-    >>> sub = SubtitlesClip("subtitles.srt", generator)
-    >>> sub = SubtitlesClip("subtitles.srt", generator, encoding='utf-8')
-    >>> myvideo = VideoFileClip("myvideo.avi")
-    >>> final = CompositeVideoClip([clip, subtitles])
-    >>> final.write_videofile("final.mp4", fps=myvideo.fps)
+    .. code:: python
+
+        from moviepy.video.tools.subtitles import SubtitlesClip
+        from moviepy.video.io.VideoFileClip import VideoFileClip
+        generator = lambda text: TextClip(text, font='./path/to/font.ttf',
+                                        font_size=24, color='white')
+        sub = SubtitlesClip("subtitles.srt", make_textclip=generator, encoding='utf-8')
+        myvideo = VideoFileClip("myvideo.avi")
+        final = CompositeVideoClip([clip, subtitles])
+        final.write_videofile("final.mp4", fps=myvideo.fps)
 
     """
 
-    def __init__(self, subtitles, make_textclip=None, encoding=None):
+    def __init__(self, subtitles, font=None, make_textclip=None, encoding=None):
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):
@@ -54,16 +65,20 @@ class SubtitlesClip(VideoClip):
         self.subtitles = subtitles
         self.textclips = dict()
 
+        self.font = font
+
         if make_textclip is None:
+            if self.font is None:
+                raise ValueError("Argument font is required if make_textclip is None.")
 
             def make_textclip(txt):
                 return TextClip(
-                    txt,
-                    font="Georgia-Bold",
+                    font=self.font,
+                    text=txt,
                     font_size=24,
-                    color="white",
-                    stroke_color="black",
-                    stroke_width=0.5,
+                    color="#ffffff",
+                    stroke_color="#000000",
+                    stroke_width=1,
                 )
 
         self.make_textclip = make_textclip
@@ -95,7 +110,7 @@ class SubtitlesClip(VideoClip):
 
             return sub
 
-        def make_frame(t):
+        def frame_function(t):
             sub = add_textclip_if_none(t)
             return self.textclips[sub].get_frame(t) if sub else np.array([[[0, 0, 0]]])
 
@@ -103,7 +118,7 @@ class SubtitlesClip(VideoClip):
             sub = add_textclip_if_none(t)
             return self.textclips[sub].mask.get_frame(t) if sub else np.array([[0]])
 
-        self.make_frame = make_frame
+        self.frame_function = frame_function
         hasmask = bool(self.make_textclip("T").mask)
         self.mask = VideoClip(make_mask_frame, is_mask=True) if hasmask else None
 

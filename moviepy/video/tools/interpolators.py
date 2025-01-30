@@ -30,11 +30,13 @@ class Interpolator:
     Examples
     --------
 
-    >>> # instantiate using `tt` and `ss`
-    >>> interpolator = Interpolator(tt=[0, 1, 2], ss=[3, 4, 5])
-    >>>
-    >>> # instantiate using `ttss`
-    >>> interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]
+    .. code:: python
+
+        # instantiate using `tt` and `ss`
+        interpolator = Interpolator(tt=[0, 1, 2], ss=[3, 4, 5])
+
+        # instantiate using `ttss`
+        interpolator = Interpolator(ttss=[[0, 3], [1, 4], [2, 5]])  # [t, value]
     """
 
     def __init__(self, tt=None, ss=None, ttss=None, left=None, right=None):
