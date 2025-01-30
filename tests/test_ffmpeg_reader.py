@@ -784,5 +784,10 @@ def test_read_transparent_video():
     assert mask[100, 100] == 255
 
 
+def test_frame_seek():
+    reader = FFMPEG_VideoReader("media/smpte-2997.mp4", pixel_format="rgba")
+
+
+
 if __name__ == "__main__":
     pytest.main()
