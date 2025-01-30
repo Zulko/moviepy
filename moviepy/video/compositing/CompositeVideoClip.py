@@ -371,7 +371,9 @@ def concatenate_videoclips(
         (clip.audio, t) for clip, t in zip(clips, timings) if clip.audio is not None
     ]
     if audio_t:
-        result.audio = CompositeAudioClip([a.with_start(t) for a, t in audio_t])
+        result.audio = CompositeAudioClip(
+            [a.with_start(t) for a, t in audio_t]
+        ).with_duration(result.duration)
 
     fpss = [clip.fps for clip in clips if getattr(clip, "fps", None) is not None]
     result.fps = max(fpss) if fpss else None
