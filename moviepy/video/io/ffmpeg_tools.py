@@ -1,8 +1,10 @@
 """Miscellaneous bindings to ffmpeg."""
 
 import os
+import re
+import subprocess
 
-from moviepy.config import FFMPEG_BINARY
+from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
 from moviepy.tools import ffmpeg_escape_filename, subprocess_call
 
@@ -207,3 +209,82 @@ def ffmpeg_stabilize_video(
         cmd.append("-y")
 
     subprocess_call(cmd, logger=logger)
+
+
+def ffmpeg_version():
+    """
+    Retrieve the FFmpeg version.
+
+    This function retrieves both the full and numeric version of FFmpeg
+    by executing the `ffmpeg -version` command. The full version includes
+    additional details like build information, while the numeric version
+    contains only the version numbers (e.g., '7.0.2').
+
+    Return
+    ------
+    tuple
+        A tuple containing:
+        - `full_version` (str): The complete version string (e.g., '7.0.2-static').
+        - `numeric_version` (str): The numeric version string (e.g., '7.0.2').
+
+    Example
+    -------
+    >>> ffmpeg_version()
+    ('7.0.2-static', '7.0.2')
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the FFmpeg command fails to execute properly.
+    """
+    cmd = [
+        FFMPEG_BINARY,
+        "-version",
+        "-v",
+        "quiet",
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+    # Extract the version number from the first line of output
+    full_version = result.stdout.splitlines()[0].split()[2]
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
+    return (full_version, numeric_version)
+
+
+def ffplay_version():
+    """
+    Retrieve the FFplay version.
+
+    This function retrieves both the full and numeric version of FFplay
+    by executing the `ffplay -version` command. The full version includes
+    additional details like build information, while the numeric version
+    contains only the version numbers (e.g., '6.0.1').
+
+    Return
+    ------
+    tuple
+        A tuple containing:
+        - `full_version` (str): The complete version string (e.g., '6.0.1-static').
+        - `numeric_version` (str): The numeric version string (e.g., '6.0.1').
+
+    Example
+    -------
+    >>> ffplay_version()
+    ('6.0.1-static', '6.0.1')
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the FFplay command fails to execute properly.
+    """
+    cmd = [
+        FFPLAY_BINARY,
+        "-version",
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    # Extract the version number from the first line of output
+    full_version = result.stdout.splitlines()[0].split()[2]
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
+    return (full_version, numeric_version)

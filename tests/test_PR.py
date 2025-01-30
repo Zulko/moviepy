@@ -69,6 +69,8 @@ def test_PR_528(util):
 
 
 def test_PR_529():
+    # print(ffmpeg_tools.ffplay_version())
+    print(ffmpeg_tools.ffmpeg_version())
     with VideoFileClip("media/fire2.mp4") as video_clip:
         assert video_clip.rotation == 180
 

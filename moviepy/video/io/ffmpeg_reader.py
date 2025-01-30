@@ -434,7 +434,7 @@ class FFmpegInfosParser:
                     self.result["duration"] = self.parse_duration(line)
 
                 # parse global bitrate (in kb/s)
-                bitrate_match = re.search(r"bitrate: (\d+) kb/s", line)
+                bitrate_match = re.search(r"bitrate: (\d+) k(i?)b/s", line)
                 self.result["bitrate"] = (
                     int(bitrate_match.group(1)) if bitrate_match else None
                 )
@@ -492,12 +492,12 @@ class FFmpegInfosParser:
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[
-                        f"default_{stream_type_lower}_input_number"
-                    ] = input_number
-                    self.result[
-                        f"default_{stream_type_lower}_stream_number"
-                    ] = stream_number
+                    self.result[f"default_{stream_type_lower}_input_number"] = (
+                        input_number
+                    )
+                    self.result[f"default_{stream_type_lower}_stream_number"] = (
+                        stream_number
+                    )
 
                 # exit chapter
                 if self._current_chapter:
@@ -544,7 +544,10 @@ class FFmpegInfosParser:
 
                 if self._current_stream["stream_type"] == "video":
                     field, value = self.video_metadata_type_casting(field, value)
+                    # ffmpeg 7 now use displaymatrix instead of rotate
                     if field == "rotate":
+                        self.result["video_rotation"] = value
+                    elif field == "displaymatrix":
                         self.result["video_rotation"] = value
 
                 # multiline metadata value parsing
@@ -660,7 +663,7 @@ class FFmpegInfosParser:
             # AttributeError: 'NoneType' object has no attribute 'group'
             # ValueError: invalid literal for int() with base 10: '<string>'
             stream_data["fps"] = "unknown"
-        match_audio_bitrate = re.search(r"(\d+) kb/s", line)
+        match_audio_bitrate = re.search(r"(\d+) k(i?)b/s", line)
         stream_data["bitrate"] = (
             int(match_audio_bitrate.group(1)) if match_audio_bitrate else None
         )
@@ -688,7 +691,7 @@ class FFmpegInfosParser:
                 % (self.filename, self.infos)
             )
 
-        match_bitrate = re.search(r"(\d+) kb/s", line)
+        match_bitrate = re.search(r"(\d+) k(i?)b/s", line)
         stream_data["bitrate"] = int(match_bitrate.group(1)) if match_bitrate else None
 
         # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
@@ -801,6 +804,14 @@ class FFmpegInfosParser:
         """Cast needed video metadata fields to other types than the default str."""
         if field == "rotate":
             return (field, float(value))
+
+        elif field == "displaymatrix":
+            match = re.search(r"[-+]?\d+(\.\d+)?", value)
+            if match:
+                # We must multiply by -1 because displaymatrix return info
+                # about how to rotate to show video, not about video rotation
+                return (field, float(match.group()) * -1)
+
         return (field, value)
 
 

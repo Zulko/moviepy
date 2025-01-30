@@ -9,6 +9,7 @@ from moviepy.video.io.ffmpeg_tools import (
     ffmpeg_extract_subclip,
     ffmpeg_resize,
     ffmpeg_stabilize_video,
+    ffmpeg_version,
 )
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
@@ -57,9 +58,10 @@ def test_ffmpeg_resize(util):
     ffmpeg_resize("media/bitmap.mp4", outputfile, expected_size, logger=None)
     assert os.path.isfile(outputfile)
 
-    # overwrite file
-    with pytest.raises(OSError):
-        ffmpeg_resize("media/bitmap.mp4", outputfile, expected_size, logger=None)
+    # overwrite file on old version of ffmpeg
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
+        with pytest.raises(OSError):
+            ffmpeg_resize("media/bitmap.mp4", outputfile, expected_size, logger=None)
 
     clip = VideoFileClip(outputfile)
     assert clip.size[0] == expected_size[0]
@@ -98,15 +100,16 @@ def test_ffmpeg_stabilize_video(util):
     expected_filepath = os.path.join(stabilize_video_tempdir, "foo.mp4")
     assert os.path.isfile(expected_filepath)
 
-    # don't overwrite file
-    with pytest.raises(OSError):
-        ffmpeg_stabilize_video(
-            "media/bitmap.mp4",
-            output_dir=stabilize_video_tempdir,
-            outputfile="foo.mp4",
-            overwrite_file=False,
-            logger=None,
-        )
+    # don't overwrite file on old version of ffmpeg
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
+        with pytest.raises(OSError):
+            ffmpeg_stabilize_video(
+                "media/bitmap.mp4",
+                output_dir=stabilize_video_tempdir,
+                outputfile="foo.mp4",
+                overwrite_file=False,
+                logger=None,
+            )
 
     if os.path.isdir(stabilize_video_tempdir):
         try:

@@ -16,9 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add codecs to .mov files
 - Add background radius to text clips
 - Support pillow 11
+- Add support for Pillow default font on textclip
+- Add support for ffmpeg v7
 
 ### Changed <!-- for changes in existing functionality -->
 - Subclipping outside of clip boundaries now raise an exception
+- Freeze effect no longer remove start and end
+- Add a parameter to define audio codec of a clip
 
 ### Deprecated <!-- for soon-to-be removed features -->
 
@@ -32,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix TimeMirror and TimeSymmetrize cutting last second of clip
 - ImageSequenceClip was wrong when calculating fps with duration and no fps (see issue #2351)
 - More consistent frame seek (see issue #2115 and PR #2117)
+- Fix audiopreview not working with ffplay >= 7.0.0
+
 ## [v2.1.2](https://github.com/zulko/moviepy/tree/master)
 
 [Full Changelog](https://github.com/zulko/moviepy/compare/v2.1.2...HEAD)
