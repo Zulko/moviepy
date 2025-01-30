@@ -89,6 +89,27 @@ class FFMPEG_VideoReader:
         """
         self.close(delete_lastread=False)  # if any
 
+        # self.pos represents the (0-indexed) index of the frame that is next in line
+        # to be read by self.read_frame().
+        # Eg when self.pos is 1, the 2nd frame will be read next.
+        self.pos = self.get_frame_number(start_time)
+
+        # Getting around a difference between ffmpeg and moviepy seeking:
+        # "moviepy seek" means "get the frame displayed at time t"
+        #   Hence given a 29.97 FPS video, seeking to .01s means "get frame 0".
+        # "ffmpeg seek" means "skip all frames until you reach time t".
+        #   This time, seeking to .01s means "get frame 1". Surprise!
+        #
+        # (In 30fps, timestamps like 2.0s, 3.5s will give the same frame output
+        # under both rules, for the timestamp can be represented exactly in
+        # decimal.)
+        #
+        # So we'll subtract an epsilon from the timestamp given to ffmpeg.
+        if self.pos != 0:
+            start_time = self.pos * (1 / self.fps) - 0.00001
+        else:
+            start_time = 0.0
+
         if start_time != 0:
             offset = min(1, start_time)
             i_arg = [
@@ -143,11 +164,6 @@ class FFMPEG_VideoReader:
             }
         )
         self.proc = sp.Popen(cmd, **popen_params)
-
-        # self.pos represents the (0-indexed) index of the frame that is next in line
-        # to be read by self.read_frame().
-        # Eg when self.pos is 1, the 2nd frame will be read next.
-        self.pos = self.get_frame_number(start_time)
         self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
