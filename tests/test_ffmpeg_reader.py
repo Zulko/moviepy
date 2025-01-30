@@ -786,7 +786,12 @@ def test_read_transparent_video():
 
 def test_frame_seek():
     reader = FFMPEG_VideoReader("media/smpte-2997.mp4", pixel_format="rgba")
+    
+    # Get first frame and second frame
+    frame = reader.get_frame(0)
+    frame2 = reader.get_frame(0.34)
 
+    assert not np.array_equal(frame, frame2)
 
 
 if __name__ == "__main__":
