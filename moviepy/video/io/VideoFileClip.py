@@ -7,13 +7,14 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class VideoFileClip(VideoClip):
-    """
-    A video clip originating from a movie file. For instance: ::
+    """A video clip originating from a movie file. For instance:
 
-        >>> clip = VideoFileClip("myHolidays.mp4")
-        >>> clip.close()
-        >>> with VideoFileClip("myMaskVideo.avi") as clip2:
-        >>>    pass  # Implicit close called by context manager.
+    .. code:: python
+
+        clip = VideoFileClip("myHolidays.mp4")
+        clip.close()
+        with VideoFileClip("myMaskVideo.avi") as clip2:
+            pass  # Implicit close called by context manager.
 
 
     Parameters
@@ -56,6 +57,9 @@ class VideoFileClip(VideoClip):
       'rgb24' will be used as the default format unless ``has_mask`` is set
       as ``True``, then 'rgba' will be used.
 
+    is_mask
+      `True` if the clip is going to be used as a mask.
+
 
     Attributes
     ----------
@@ -78,7 +82,6 @@ class VideoFileClip(VideoClip):
 
     If copies are made, and close() is called on one, it may cause methods on
     the other copies to fail.
-
     """
 
     @convert_path_to_string("filename")
@@ -95,12 +98,14 @@ class VideoFileClip(VideoClip):
         audio_nbytes=2,
         fps_source="fps",
         pixel_format=None,
+        is_mask=False,
     ):
-        VideoClip.__init__(self)
+        VideoClip.__init__(self, is_mask=is_mask)
 
         # Make a reader
         if not pixel_format:
             pixel_format = "rgba" if has_mask else "rgb24"
+
         self.reader = FFMPEG_VideoReader(
             filename,
             decode_file=decode_file,
@@ -121,18 +126,18 @@ class VideoFileClip(VideoClip):
         self.filename = filename
 
         if has_mask:
-            self.make_frame = lambda t: self.reader.get_frame(t)[:, :, :3]
+            self.frame_function = lambda t: self.reader.get_frame(t)[:, :, :3]
 
-            def mask_make_frame(t):
+            def mask_frame_function(t):
                 return self.reader.get_frame(t)[:, :, 3] / 255.0
 
             self.mask = VideoClip(
-                is_mask=True, make_frame=mask_make_frame
+                is_mask=True, frame_function=mask_frame_function
             ).with_duration(self.duration)
             self.mask.fps = self.fps
 
         else:
-            self.make_frame = lambda t: self.reader.get_frame(t)
+            self.frame_function = lambda t: self.reader.get_frame(t)
 
         # Make a reader for the audio, if any.
         if audio and self.reader.infos["audio_found"]:

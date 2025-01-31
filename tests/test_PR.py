@@ -5,37 +5,25 @@ from pathlib import Path
 
 import pytest
 
-from moviepy.audio.io.AudioFileClip import AudioFileClip
-from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
-from moviepy.video.fx.scroll import scroll
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy import *
 from moviepy.video.tools.interpolators import Trajectory
 from moviepy.video.tools.subtitles import SubtitlesClip
-from moviepy.video.VideoClip import ColorClip, ImageClip, TextClip
-
-
-def test_PR_306():
-    assert TextClip.list("font") != []
-    assert TextClip.list("color") != []
-
-    with pytest.raises(Exception):
-        TextClip.list("blah")
 
 
 def test_PR_339(util):
     # In caption mode.
     TextClip(
+        font=util.FONT,
         text="foo",
         color="white",
-        font=util.FONT,
         size=(640, 480),
         method="caption",
-        align="center",
+        text_align="center",
         font_size=25,
     ).close()
 
     # In label mode.
-    TextClip(text="foo", font=util.FONT, method="label").close()
+    TextClip(text="foo", font=util.FONT, method="label", font_size=25).close()
 
 
 def test_PR_373(util):
@@ -74,13 +62,15 @@ def test_PR_515():
 
 def test_PR_528(util):
     with ImageClip("media/vacation_2017.jpg") as clip:
-        new_clip = scroll(clip, w=1000, x_speed=50)
+        new_clip = clip.with_effects([vfx.Scroll(w=1000, x_speed=50)])
         new_clip = new_clip.with_duration(0.2)
         new_clip.fps = 24
         new_clip.write_videofile(os.path.join(util.TMP_DIR, "pano.mp4"), logger=None)
 
 
 def test_PR_529():
+    # print(ffmpeg_tools.ffplay_version())
+    print(ffmpeg_tools.ffmpeg_version())
     with VideoFileClip("media/fire2.mp4") as video_clip:
         assert video_clip.rotation == 180
 
@@ -119,12 +109,12 @@ def test_PR_1137_subtitles(util):
 
     def make_textclip(txt):
         return TextClip(
-            txt,
             font=util.FONT,
+            text=txt,
             font_size=24,
             color="white",
             stroke_color="black",
-            stroke_width=0.5,
+            stroke_width=1,
         )
 
     SubtitlesClip(Path("media/subtitles.srt"), make_textclip=make_textclip).close()

@@ -1,10 +1,12 @@
 """Miscellaneous bindings to ffmpeg."""
 
 import os
+import re
+import subprocess
 
-from moviepy.config import FFMPEG_BINARY
+from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
-from moviepy.tools import subprocess_call
+from moviepy.tools import ffmpeg_escape_filename, subprocess_call
 
 
 @convert_path_to_string(("inputfile", "outputfile"))
@@ -41,7 +43,7 @@ def ffmpeg_extract_subclip(
         "-ss",
         "%0.2f" % start_time,
         "-i",
-        inputfile,
+        ffmpeg_escape_filename(inputfile),
         "-t",
         "%0.2f" % (end_time - start_time),
         "-map",
@@ -51,7 +53,7 @@ def ffmpeg_extract_subclip(
         "-acodec",
         "copy",
         "-copyts",
-        outputfile,
+        ffmpeg_escape_filename(outputfile),
     ]
     subprocess_call(cmd, logger=logger)
 
@@ -89,14 +91,14 @@ def ffmpeg_merge_video_audio(
         FFMPEG_BINARY,
         "-y",
         "-i",
-        audiofile,
+        ffmpeg_escape_filename(audiofile),
         "-i",
-        videofile,
+        ffmpeg_escape_filename(videofile),
         "-vcodec",
         video_codec,
         "-acodec",
         audio_codec,
-        outputfile,
+        ffmpeg_escape_filename(outputfile),
     ]
 
     subprocess_call(cmd, logger=logger)
@@ -125,12 +127,12 @@ def ffmpeg_extract_audio(inputfile, outputfile, bitrate=3000, fps=44100, logger=
         FFMPEG_BINARY,
         "-y",
         "-i",
-        inputfile,
+        ffmpeg_escape_filename(inputfile),
         "-ab",
         "%dk" % bitrate,
         "-ar",
         "%d" % fps,
-        outputfile,
+        ffmpeg_escape_filename(outputfile),
     ]
     subprocess_call(cmd, logger=logger)
 
@@ -154,10 +156,10 @@ def ffmpeg_resize(inputfile, outputfile, size, logger="bar"):
     cmd = [
         FFMPEG_BINARY,
         "-i",
-        inputfile,
+        ffmpeg_escape_filename(inputfile),
         "-vf",
         "scale=%d:%d" % (size[0], size[1]),
-        outputfile,
+        ffmpeg_escape_filename(outputfile),
     ]
 
     subprocess_call(cmd, logger=logger)
@@ -194,7 +196,95 @@ def ffmpeg_stabilize_video(
         outputfile = f"{name}_stabilized{ext}"
 
     outputfile = os.path.join(output_dir, outputfile)
-    cmd = [FFMPEG_BINARY, "-i", inputfile, "-vf", "deshake", outputfile]
+    cmd = [
+        FFMPEG_BINARY,
+        "-i",
+        ffmpeg_escape_filename(inputfile),
+        "-vf",
+        "deshake",
+        ffmpeg_escape_filename(outputfile),
+    ]
+
     if overwrite_file:
         cmd.append("-y")
+
     subprocess_call(cmd, logger=logger)
+
+
+def ffmpeg_version():
+    """
+    Retrieve the FFmpeg version.
+
+    This function retrieves both the full and numeric version of FFmpeg
+    by executing the `ffmpeg -version` command. The full version includes
+    additional details like build information, while the numeric version
+    contains only the version numbers (e.g., '7.0.2').
+
+    Return
+    ------
+    tuple
+        A tuple containing:
+        - `full_version` (str): The complete version string (e.g., '7.0.2-static').
+        - `numeric_version` (str): The numeric version string (e.g., '7.0.2').
+
+    Example
+    -------
+    >>> ffmpeg_version()
+    ('7.0.2-static', '7.0.2')
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the FFmpeg command fails to execute properly.
+    """
+    cmd = [
+        FFMPEG_BINARY,
+        "-version",
+        "-v",
+        "quiet",
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+
+    # Extract the version number from the first line of output
+    full_version = result.stdout.splitlines()[0].split()[2]
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
+    return (full_version, numeric_version)
+
+
+def ffplay_version():
+    """
+    Retrieve the FFplay version.
+
+    This function retrieves both the full and numeric version of FFplay
+    by executing the `ffplay -version` command. The full version includes
+    additional details like build information, while the numeric version
+    contains only the version numbers (e.g., '6.0.1').
+
+    Return
+    ------
+    tuple
+        A tuple containing:
+        - `full_version` (str): The complete version string (e.g., '6.0.1-static').
+        - `numeric_version` (str): The numeric version string (e.g., '6.0.1').
+
+    Example
+    -------
+    >>> ffplay_version()
+    ('6.0.1-static', '6.0.1')
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the FFplay command fails to execute properly.
+    """
+    cmd = [
+        FFPLAY_BINARY,
+        "-version",
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    # Extract the version number from the first line of output
+    full_version = result.stdout.splitlines()[0].split()[2]
+    numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
+    return (full_version, numeric_version)

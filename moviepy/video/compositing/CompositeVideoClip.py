@@ -1,5 +1,7 @@
 """Main video composition interface of MoviePy."""
 
+from functools import reduce
+
 import numpy as np
 from PIL import Image
 
@@ -60,10 +62,16 @@ class CompositeVideoClip(VideoClip):
         if use_bgclip and (clips[0].mask is None):
             transparent = False
         else:
-            transparent = bg_color is None
+            transparent = True if bg_color is None else False
 
-        if bg_color is None:
-            bg_color = 0.0 if is_mask else (0, 0, 0)
+        # If we must not use first clip as background and we dont have a color
+        # we generate a black background if clip should not be transparent and
+        # a transparent background if transparent
+        if (not use_bgclip) and bg_color is None:
+            if transparent:
+                bg_color = 0.0 if is_mask else (0, 0, 0, 0)
+            else:
+                bg_color = 0.0 if is_mask else (0, 0, 0)
 
         fpss = [clip.fps for clip in clips if getattr(clip, "fps", None)]
         self.fps = max(fpss) if fpss else None
@@ -75,6 +83,8 @@ class CompositeVideoClip(VideoClip):
         self.clips = clips
         self.bg_color = bg_color
 
+        # Use first clip as background if necessary, else use color
+        # either set by user or previously generated
         if use_bgclip:
             self.bg = clips[0]
             self.clips = clips[1:]
@@ -85,7 +95,7 @@ class CompositeVideoClip(VideoClip):
             self.created_bg = True
 
         # order self.clips by layer
-        self.clips = sorted(self.clips, key=lambda clip: clip.layer)
+        self.clips = sorted(self.clips, key=lambda clip: clip.layer_index)
 
         # compute duration
         ends = [clip.end for clip in self.clips]
@@ -102,32 +112,71 @@ class CompositeVideoClip(VideoClip):
         # compute mask if necessary
         if transparent:
             maskclips = [
-                (clip.mask if (clip.mask is not None) else clip.add_mask().mask)
+                (clip.mask if (clip.mask is not None) else clip.with_mask().mask)
                 .with_position(clip.pos)
                 .with_end(clip.end)
                 .with_start(clip.start, change_end=False)
-                .with_layer(clip.layer)
+                .with_layer_index(clip.layer_index)
                 for clip in self.clips
             ]
+
+            if use_bgclip and self.bg.mask:
+                maskclips = [self.bg.mask] + maskclips
 
             self.mask = CompositeVideoClip(
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
 
-    def make_frame(self, t):
+    def frame_function(self, t):
         """The clips playing at time `t` are blitted over one another."""
-        frame = self.bg.get_frame(t).astype("uint8")
-        im = Image.fromarray(frame)
+        # For the mask we recalculate the final transparency we'll need
+        # to apply on the result image
+        if self.is_mask:
+            mask = np.zeros((self.size[1], self.size[0]), dtype=float)
+            for clip in self.playing_clips(t):
+                mask = clip.compose_mask(mask, t)
 
-        if self.bg.mask is not None:
-            frame_mask = self.bg.mask.get_frame(t)
-            im_mask = Image.fromarray(255 * frame_mask).convert("L")
-            im = im.putalpha(im_mask)
+            return mask
 
+        # Try doing clip merging with pillow
+        bg_t = t - self.bg.start
+        bg_frame = self.bg.get_frame(bg_t).astype("uint8")
+        bg_img = Image.fromarray(bg_frame)
+
+        if self.bg.mask:
+            bgm_t = t - self.bg.mask.start
+            bg_mask = (self.bg.mask.get_frame(bgm_t) * 255).astype("uint8")
+            bg_mask_img = Image.fromarray(bg_mask).convert("L")
+
+            # Resize bg_mask_img to match bg_img, always use top left corner
+            if bg_mask_img.size != bg_img.size:
+                mask_width, mask_height = bg_mask_img.size
+                img_width, img_height = bg_img.size
+
+                if mask_width > img_width or mask_height > img_height:
+                    bg_mask_img = bg_mask_img.crop((0, 0, img_width, img_height))
+                else:
+                    new_mask = Image.new("L", (img_width, img_height), 0)
+                    new_mask.paste(bg_mask_img, (0, 0))
+                    bg_mask_img = new_mask
+
+            bg_img = bg_img.convert("RGBA")
+            bg_img.putalpha(bg_mask_img)
+
+        # For each clip apply on top of current img
+        current_img = bg_img
         for clip in self.playing_clips(t):
-            im = clip.blit_on(im, t)
+            current_img = clip.compose_on(current_img, t)
 
-        return np.array(im)
+        # Turn Pillow image into a numpy array
+        frame = np.array(current_img)
+
+        # If frame have transparency, remove it
+        # our mask will take care of it during rendering
+        if frame.shape[2] == 4:
+            return frame[:, :, :3]
+
+        return frame
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are
@@ -214,3 +263,118 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
             array[i, j] = clip.with_position((x, y))
 
     return CompositeVideoClip(array.flatten(), size=(xs[-1], ys[-1]), bg_color=bg_color)
+
+
+def concatenate_videoclips(
+    clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
+):
+    """Concatenates several video clips.
+
+    Returns a video clip made by clip by concatenating several video clips.
+    (Concatenated means that they will be played one after another).
+
+    There are two methods:
+
+    - method="chain": will produce a clip that simply outputs
+      the frames of the successive clips, without any correction if they are
+      not of the same size of anything. If none of the clips have masks the
+      resulting clip has no mask, else the mask is a concatenation of masks
+      (using completely opaque for clips that don't have masks, obviously).
+      If you have clips of different size and you want to write directly the
+      result of the concatenation to a file, use the method "compose" instead.
+
+    - method="compose", if the clips do not have the same resolution, the final
+      resolution will be such that no clip has to be resized.
+      As a consequence the final clip has the height of the highest clip and the
+      width of the widest clip of the list. All the clips with smaller dimensions
+      will appear centered. The border will be transparent if mask=True, else it
+      will be of the color specified by ``bg_color``.
+
+    The clip with the highest FPS will be the FPS of the result clip.
+
+    Parameters
+    ----------
+    clips
+      A list of video clips which must all have their ``duration``
+      attributes set.
+    method
+      "chain" or "compose": see above.
+    transition
+      A clip that will be played between each two clips of the list.
+
+    bg_color
+      Only for method='compose'. Color of the background.
+      Set to None for a transparent clip
+
+    padding
+      Only for method='compose'. Duration during two consecutive clips.
+      Note that for negative padding, a clip will partly play at the same
+      time as the clip it follows (negative padding is cool for clips who fade
+      in on one another). A non-null padding automatically sets the method to
+      `compose`.
+
+    """
+    if transition is not None:
+        clip_transition_pairs = [[v, transition] for v in clips[:-1]]
+        clips = reduce(lambda x, y: x + y, clip_transition_pairs) + [clips[-1]]
+        transition = None
+
+    timings = np.cumsum([0] + [clip.duration for clip in clips])
+
+    sizes = [clip.size for clip in clips]
+
+    w = max(size[0] for size in sizes)
+    h = max(size[1] for size in sizes)
+
+    timings = np.maximum(0, timings + padding * np.arange(len(timings)))
+    timings[-1] -= padding  # Last element is the duration of the whole
+
+    if method == "chain":
+
+        def frame_function(t):
+            i = max([i for i, e in enumerate(timings) if e <= t])
+            return clips[i].get_frame(t - timings[i])
+
+        def get_mask(clip):
+            mask = clip.mask or ColorClip(clip.size, color=1, is_mask=True)
+            if mask.duration is None:
+                mask.duration = clip.duration
+            return mask
+
+        result = VideoClip(is_mask=is_mask, frame_function=frame_function)
+        if any([clip.mask is not None for clip in clips]):
+            masks = [get_mask(clip) for clip in clips]
+            result.mask = concatenate_videoclips(masks, method="chain", is_mask=True)
+            result.clips = clips
+    elif method == "compose":
+        result = CompositeVideoClip(
+            [
+                clip.with_start(t).with_position("center")
+                for (clip, t) in zip(clips, timings)
+            ],
+            size=(w, h),
+            bg_color=bg_color,
+            is_mask=is_mask,
+        )
+    else:
+        raise Exception(
+            "MoviePy Error: The 'method' argument of "
+            "concatenate_videoclips must be 'chain' or 'compose'"
+        )
+
+    result.timings = timings
+
+    result.start_times = timings[:-1]
+    result.start, result.duration, result.end = 0, timings[-1], timings[-1]
+
+    audio_t = [
+        (clip.audio, t) for clip, t in zip(clips, timings) if clip.audio is not None
+    ]
+    if audio_t:
+        result.audio = CompositeAudioClip(
+            [a.with_start(t) for a, t in audio_t]
+        ).with_duration(result.duration)
+
+    fpss = [clip.fps for clip in clips if getattr(clip, "fps", None) is not None]
+    result.fps = max(fpss) if fpss else None
+    return result

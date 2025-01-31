@@ -16,6 +16,7 @@ from moviepy.video.io.ffmpeg_reader import (
     FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
+from moviepy.video.io.ffmpeg_tools import ffmpeg_version
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
 
@@ -59,7 +60,7 @@ def test_ffmpeg_parse_infos_video_nframes():
     ("decode_file", "expected_duration"),
     (
         (False, 30),
-        (True, 30.02),
+        (True, 30),
     ),
     ids=(
         "decode_file=False",
@@ -69,6 +70,11 @@ def test_ffmpeg_parse_infos_video_nframes():
 def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     """Test `decode_file` argument of `ffmpeg_parse_infos` function."""
     d = ffmpeg_parse_infos("media/big_buck_bunny_0_30.webm", decode_file=decode_file)
+
+    # On old version of ffmpeg, duration and video duration was different
+    if int(ffmpeg_version()[1].split(".")[0]) < 7:
+        expected_duration += 0.02
+
     assert d["duration"] == expected_duration
 
     # check metadata is fine
@@ -292,7 +298,7 @@ def test_ffmpeg_parse_video_rotation():
 
 def test_correct_video_rotation(util):
     """See https://github.com/Zulko/moviepy/pull/577"""
-    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclip(0.2, 0.4)
+    clip = VideoFileClip("media/rotated-90-degrees.mp4").subclipped(0.2, 0.4)
 
     corrected_rotation_filename = os.path.join(
         util.TMP_DIR,
@@ -768,6 +774,30 @@ def test_failure_to_release_file(util):
             print("You are not running Windows, because that worked.")
         except OSError:  # More specifically, PermissionError in Python 3.
             print("Yes, on Windows this fails.")
+
+
+def test_read_transparent_video():
+    reader = FFMPEG_VideoReader("media/transparent.webm", pixel_format="rgba")
+
+    # Get first frame
+    frame = reader.get_frame(0)
+    mask = frame[:, :, 3]
+
+    # Check transparency on fully transparent part is 0
+    assert mask[10, 10] == 0
+
+    # Check transparency on fully opaque part is 255
+    assert mask[100, 100] == 255
+
+
+def test_frame_seek():
+    reader = FFMPEG_VideoReader("media/smpte-2997.mp4", pixel_format="rgba")
+
+    # Get first frame and second frame
+    frame = reader.get_frame(0)
+    frame2 = reader.get_frame(0.34)
+
+    assert not np.array_equal(frame, frame2)
 
 
 if __name__ == "__main__":
