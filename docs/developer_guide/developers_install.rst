@@ -52,6 +52,16 @@ and
 
     $ python3 -m flake8 -v --show-source --max-line-length=92 moviepy docs/conf.py examples tests
 
+Adding Git pre-commit hooks
+-----------------------------
+
+Running linter manually is painfull and error prone, instead you should consider adding a pre-commit hook.
+To do so you can simply go in your local moviepy directory, and run :
+
+.. code:: bash
+    $ pre-commit install
+
+This will enable a git hooks using python pre-commit framework.
 
 
 
