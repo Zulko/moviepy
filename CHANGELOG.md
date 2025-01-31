@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix GPU h264_nvenc encoding not working.
 - Improve perfs of decorator by pre-computing arguments
 - Fix textclip being cut or of impredictable height (see issues #2325, #2260 and #2268)
+- TextClip now properly breaklines on text without spaces, such as chinese (see #2260)
 - Fix TimeMirror and TimeSymmetrize cutting last second of clip
 - ImageSequenceClip was wrong when calculating fps with duration and no fps (see issue #2351)
 - More consistent frame seek (see issue #2115 and PR #2117)

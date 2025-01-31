@@ -1577,7 +1577,9 @@ class TextClip(ImageClip):
                 _ = ImageFont.truetype(font)
             except Exception as e:
                 raise ValueError(
-                    "Invalid font {}, pillow failed to use it with error {}".format(font, e)
+                    "Invalid font {}, pillow failed to use it with error {}".format(
+                        font, e
+                    )
                 )
 
         if filename:
@@ -1777,9 +1779,15 @@ class TextClip(ImageClip):
 
         lines = []
         current_line = ""
-        words = text.split(" ")
-        for word in words:
-            temp_line = current_line + " " + word if current_line else word
+
+        # We try to break on spaces as much as possible
+        # if a text dont contain spaces (ex chinese), we will break when possible
+        last_space = 0
+        for index, char in enumerate(text):
+            if char == " ":
+                last_space = index
+
+            temp_line = current_line + char
             temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
                 (0, 0),
                 temp_line,
@@ -1790,11 +1798,20 @@ class TextClip(ImageClip):
             )
             temp_width = temp_right - temp_left
 
-            if temp_width <= width:
-                current_line = temp_line
+            if temp_width >= width:
+                # If we had a space previously, add everything up to the space
+                # and reset last_space and current_line else add everything up
+                # to previous char
+                if last_space:
+                    lines.append(temp_line[0:last_space])
+                    current_line = temp_line[last_space + 1 : index + 1]
+                    last_space = 0
+                else:
+                    lines.append(current_line[0:index])
+                    current_line = char
+                    last_space = 0
             else:
-                lines.append(current_line)
-                current_line = word
+                current_line = temp_line
 
         if current_line:
             lines.append(current_line)
