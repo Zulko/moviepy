@@ -92,6 +92,7 @@ class FFMPEG_VideoWriter:
         threads=None,
         ffmpeg_params=None,
         pixel_format=None,
+        print_cmd=False,
     ):
         if logfile is None:
             logfile = sp.PIPE
@@ -101,8 +102,6 @@ class FFMPEG_VideoWriter:
         self.audio_codec = audio_codec
         self.ext = self.filename.split(".")[-1]
 
-        pixel_format = "rgba" if with_mask else "rgb24"
-
         # order is important
         cmd = [
             FFMPEG_BINARY,
@@ -111,12 +110,8 @@ class FFMPEG_VideoWriter:
             "error" if logfile == sp.PIPE else "info",
             "-f",
             "rawvideo",
-            "-vcodec",
-            "rawvideo",
             "-s",
             "%dx%d" % (size[0], size[1]),
-            "-pix_fmt",
-            pixel_format,
             "-r",
             "%.02f" % fps,
             "-an",
@@ -133,10 +128,9 @@ class FFMPEG_VideoWriter:
         else:
             cmd.extend(["-vcodec", codec])
 
-        cmd.extend(["-preset", preset])
-
-        if ffmpeg_params is not None:
-            cmd.extend(ffmpeg_params)
+        # Disable auto alt ref for transparent webm
+        if codec == "libvpx" and with_mask:
+            cmd.extend(["-auto-alt-ref", "0"])
 
         if bitrate is not None:
             cmd.extend(["-b", bitrate])
@@ -144,18 +138,30 @@ class FFMPEG_VideoWriter:
         if threads is not None:
             cmd.extend(["-threads", str(threads)])
 
-        # Disable auto alt ref for transparent webm and set pix format yo yuva420p
-        if codec == "libvpx" and with_mask:
-            cmd.extend(["-pix_fmt", "yuva420p"])
-            cmd.extend(["-auto-alt-ref", "0"])
-        elif (
-            (codec == "libx264" or codec == "h264_nvenc")
-            and (size[0] % 2 == 0)
-            and (size[1] % 2 == 0)
-        ):
-            cmd.extend(["-pix_fmt", "yuva420p"])
+        # Honor choice of pixel_format if specified manually
+        if pixel_format is None:
+            if (  # use yuva420p for transparent webm
+                codec == "libvpx" and with_mask
+            ) or (
+                (codec == "libx264" or codec == "h264_nvenc")
+                and (size[0] % 2 == 0)
+                and (size[1] % 2 == 0)
+            ):
+                pixel_format = "yuva420p"
+            elif with_mask:
+                pixel_format = "rgba"
+            else:
+                pixel_format = "rgb24"
+
+        cmd.extend(["-pix_fmt", pixel_format])
+        cmd.extend(["-preset", preset])
+
+        if ffmpeg_params is not None:
+            cmd.extend(ffmpeg_params)
 
         cmd.extend([ffmpeg_escape_filename(filename)])
+        if print_cmd:
+            print(" ".join(cmd))
 
         popen_params = cross_platform_popen_params(
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
