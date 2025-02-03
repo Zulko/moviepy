@@ -259,6 +259,7 @@ def ffmpeg_write_video(
     ffmpeg_params=None,
     logger="bar",
     pixel_format=None,
+    print_cmd=False,
 ):
     """Write the clip to a videofile. See VideoClip.write_videofile for details
     on the parameters.
@@ -288,6 +289,7 @@ def ffmpeg_write_video(
         threads=threads,
         ffmpeg_params=ffmpeg_params,
         pixel_format=pixel_format,
+        print_cmd=print_cmd,
     ) as writer:
         for t, frame in clip.iter_frames(
             logger=logger, with_times=True, fps=fps, dtype="uint8"

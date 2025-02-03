@@ -226,6 +226,7 @@ class VideoClip(Clip):
         ffmpeg_params=None,
         logger="bar",
         pixel_format=None,
+        print_cmd=False,
     ):
         """Write the clip to a videofile.
 
@@ -404,6 +405,7 @@ class VideoClip(Clip):
             ffmpeg_params=ffmpeg_params,
             logger=logger,
             pixel_format=pixel_format,
+            print_cmd=print_cmd,
         )
 
         if remove_temp and make_audio:
@@ -1867,7 +1869,8 @@ class TextClip(ImageClip):
             To summarize, the real height of the text is:
               ``initial padding + (lines - 1) * height + end padding``
             or:
-              ``(ascent + stroke_width) + (lines - 1) * height + (descent + stroke_width)``
+              ``(ascent + stroke_width) + (lines - 1) * height
+              + (descent + stroke_width)``
             or:
               ``real_font_size + (stroke_width * 2) + (lines - 1) * height``
         """
