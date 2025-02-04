@@ -1,0 +1,15 @@
+# This CITATION.cff file was generated with cffinit [https://bit.ly/cffinit]
+
+cff-version: 1.2.0
+title: MoviePy
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Zulko
+repository-code: 'https://github.com/Zulko/moviepy'
+abstract: >-
+  MoviePy is a Python library for video editing,
+  compositing, and processing.
+license: MIT
