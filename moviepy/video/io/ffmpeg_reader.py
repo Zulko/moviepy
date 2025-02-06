@@ -384,8 +384,9 @@ class FFmpegInfosParser:
         # should be ignored
         self._inside_output = False
 
-        # flag which indicates that a default stream has not been found yet
-        self._default_stream_found = False
+        # map from stream type to default stream
+        # if a default stream is not indicated, pick the first one available
+        self._default_streams = {}
 
         # current input file, stream and chapter, which will be built at runtime
         self._current_input_file = {"streams": []}
@@ -484,20 +485,14 @@ class FFmpegInfosParser:
                     "stream_number": stream_number,
                     "stream_type": stream_type_lower,
                     "language": language,
-                    "default": not self._default_stream_found
-                    or line.endswith("(default)"),
+                    "default": (stream_type_lower not in self._default_streams)
+                    and line.endswith("(default)"),
                 }
-                self._default_stream_found = True
 
                 # for default streams, set their numbers globally, so it's
                 # easy to get without iterating all
                 if self._current_stream["default"]:
-                    self.result[
-                        f"default_{stream_type_lower}_input_number"
-                    ] = input_number
-                    self.result[
-                        f"default_{stream_type_lower}_stream_number"
-                    ] = stream_number
+                    self._default_streams[stream_type_lower] = self._current_stream
 
                 # exit chapter
                 if self._current_chapter:
@@ -516,21 +511,18 @@ class FFmpegInfosParser:
                             input_number
                         ]
 
-                    # add new input file to self.result
+                    # add new input file to result
                     self.result["inputs"].append(self._current_input_file)
                     self._current_input_file = {"input_number": input_number}
 
                 # parse relevant data by stream type
                 try:
-                    global_data, stream_data = self.parse_data_by_stream_type(
-                        stream_type, line
-                    )
+                    stream_data = self.parse_data_by_stream_type(stream_type, line)
                 except NotImplementedError as exc:
                     warnings.warn(
                         f"{str(exc)}\nffmpeg output:\n\n{self.infos}", UserWarning
                     )
                 else:
-                    self.result.update(global_data)
                     self._current_stream.update(stream_data)
             elif line.startswith("    Metadata:"):
                 # enter group "    Metadata:"
@@ -596,7 +588,7 @@ class FFmpegInfosParser:
                     self._last_metadata_field_added = field
                 self._current_chapter["metadata"][field] = value
 
-        # last input file, must be included in self.result
+        # last input file, must be included in the result
         if self._current_input_file:
             self._current_input_file["streams"].append(self._current_stream)
             # include their chapters, if there are any
@@ -608,6 +600,33 @@ class FFmpegInfosParser:
                     self._current_input_file["input_number"]
                 ]
             self.result["inputs"].append(self._current_input_file)
+
+        # set any missing default automatically
+        for stream in self._current_input_file["streams"]:
+            if stream["stream_type"] not in self._default_streams:
+                self._default_streams[stream["stream_type"]] = stream
+                stream["default"] = True
+
+        # set some global info based on the defaults
+        for stream_type_lower, stream_data in self._default_streams.items():
+            self.result[f"default_{stream_type_lower}_input_number"] = stream_data[
+                "input_number"
+            ]
+            self.result[f"default_{stream_type_lower}_stream_number"] = stream_data[
+                "stream_number"
+            ]
+
+            if stream_type_lower == "audio":
+                self.result["audio_found"] = True
+                self.result["audio_fps"] = stream_data["fps"]
+                self.result["audio_bitrate"] = stream_data["bitrate"]
+            elif stream_type_lower == "video":
+                self.result["video_found"] = True
+                self.result["video_size"] = stream_data.get("size", None)
+                self.result["video_bitrate"] = stream_data.get("bitrate", None)
+                self.result["video_fps"] = stream_data["fps"]
+                self.result["video_codec_name"] = stream_data.get("codec_name", None)
+                self.result["video_profile"] = stream_data.get("profile", None)
 
         # some video duration utilities
         if self.result["video_found"] and self.check_duration:
@@ -646,7 +665,7 @@ class FFmpegInfosParser:
             return {
                 "Audio": self.parse_audio_stream_data,
                 "Video": self.parse_video_stream_data,
-                "Data": lambda _line: ({}, {}),
+                "Data": lambda _line: {},
             }[stream_type](line)
         except KeyError:
             raise NotImplementedError(
@@ -656,7 +675,7 @@ class FFmpegInfosParser:
 
     def parse_audio_stream_data(self, line):
         """Parses data from "Stream ... Audio" line."""
-        global_data, stream_data = ({"audio_found": True}, {})
+        stream_data = {}
         try:
             stream_data["fps"] = int(re.search(r" (\d+) Hz", line).group(1))
         except (AttributeError, ValueError):
@@ -667,14 +686,11 @@ class FFmpegInfosParser:
         stream_data["bitrate"] = (
             int(match_audio_bitrate.group(1)) if match_audio_bitrate else None
         )
-        if self._current_stream["default"]:
-            global_data["audio_fps"] = stream_data["fps"]
-            global_data["audio_bitrate"] = stream_data["bitrate"]
-        return (global_data, stream_data)
+        return stream_data
 
     def parse_video_stream_data(self, line):
         """Parses data from "Stream ... Video" line."""
-        global_data, stream_data = ({"video_found": True}, {})
+        stream_data = {}
 
         try:
             match_video_size = re.search(r" (\d+)x(\d+)[,\s]", line)
@@ -736,20 +752,7 @@ class FFmpegInfosParser:
             stream_data["codec_name"] = codec_name
             stream_data["profile"] = profile
 
-        if self._current_stream["default"] or "video_codec_name" not in self.result:
-            global_data["video_codec_name"] = stream_data.get("codec_name", None)
-
-        if self._current_stream["default"] or "video_profile" not in self.result:
-            global_data["video_profile"] = stream_data.get("profile", None)
-
-        if self._current_stream["default"] or "video_size" not in self.result:
-            global_data["video_size"] = stream_data.get("size", None)
-        if self._current_stream["default"] or "video_bitrate" not in self.result:
-            global_data["video_bitrate"] = stream_data.get("bitrate", None)
-        if self._current_stream["default"] or "video_fps" not in self.result:
-            global_data["video_fps"] = stream_data["fps"]
-
-        return (global_data, stream_data)
+        return stream_data
 
     def parse_fps(self, line):
         """Parses number of FPS from a line of the ``ffmpeg -i`` command output."""

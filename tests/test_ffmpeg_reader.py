@@ -10,6 +10,7 @@ import pytest
 
 from moviepy.audio.AudioClip import AudioClip
 from moviepy.config import FFMPEG_BINARY
+from moviepy.tools import ffmpeg_escape_filename
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
@@ -54,6 +55,38 @@ def test_ffmpeg_parse_infos_video_nframes():
 
     d = ffmpeg_parse_infos("media/bitmap.mp4")
     assert d["video_n_frames"] == 5
+
+
+def test_ffmpeg_parse_infos_no_default_stream(util):
+    """WMV files don't have "default" streams marked in ffmpeg output.
+    Make sure that ffmpeg_parse_infos can handle this case.
+    """
+    mp4_filepath = os.path.abspath("media/smpte-2997.mp4")
+    wmv_filepath = os.path.join(
+        util.TMP_DIR, "ffmpeg_parse_infos_no_default_stream-smpte-2997.wmv"
+    )
+
+    cmd = [
+        FFMPEG_BINARY,
+        "-y",
+        "-i",
+        ffmpeg_escape_filename(mp4_filepath),
+        ffmpeg_escape_filename(wmv_filepath),
+    ]
+    with open(os.devnull, "w") as stderr:
+        subprocess.check_call(cmd, stderr=stderr)
+
+    d = ffmpeg_parse_infos(wmv_filepath)
+
+    for key in (
+        "default_video_stream_number",
+        "default_video_input_number",
+        "default_audio_stream_number",
+        "default_audio_input_number",
+        "video_fps",
+        "audio_fps",
+    ):
+        assert key in d
 
 
 @pytest.mark.parametrize(
