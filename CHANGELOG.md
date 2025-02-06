@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ImageSequenceClip was wrong when calculating fps with duration and no fps (see issue #2351)
 - More consistent frame seek (see issue #2115 and PR #2117)
 - Fix audiopreview not working with ffplay >= 7.0.0
+- Fix ffmpeg_reader not selecting a default stream (see PR #2114) 
 
 ## [v2.1.2](https://github.com/zulko/moviepy/tree/master)
 
