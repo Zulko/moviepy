@@ -13,6 +13,7 @@ from moviepy.tools import (
     cross_platform_popen_params,
     ffmpeg_escape_filename,
 )
+from moviepy.video.io.errors import VideoCorruptedError
 
 
 class FFMPEG_VideoReader:
@@ -779,7 +780,11 @@ class FFmpegInfosParser:
                 r"([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])",
                 time_raw_string,
             )
+            if match_duration is None:
+                raise VideoCorruptedError("Video is corrupted and missing duration")
             return convert_to_seconds(match_duration.group(1))
+        except VideoCorruptedError:
+            raise
         except Exception:
             raise IOError(
                 (
@@ -902,6 +907,8 @@ def ffmpeg_parse_infos(
             check_duration=check_duration,
             decode_file=decode_file,
         ).parse()
+    except VideoCorruptedError:
+        raise
     except Exception as exc:
         if os.path.isdir(filename):
             raise IsADirectoryError(f"'{filename}' is a directory")
