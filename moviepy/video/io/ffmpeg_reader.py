@@ -781,7 +781,9 @@ class FFmpegInfosParser:
                 time_raw_string,
             )
             if match_duration is None:
-                raise VideoCorruptedError("Video is corrupted and missing duration")
+                raise VideoCorruptedError(
+                    f"Could not parse duration from {time_raw_string!r}"
+                )
             return convert_to_seconds(match_duration.group(1))
         except VideoCorruptedError:
             raise

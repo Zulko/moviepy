@@ -4,9 +4,9 @@ import subprocess
 from pathlib import Path
 
 
-def reencode_video(input_file: str | Path, output_file: str | Path):
+def remux_video(input_file: str | Path, output_file: str | Path):
     """
-    Re-encode a video file using ffmpeg.
+    Re-mux a video file using ffmpeg.
     This may fix issues with corrupted video file.
 
     Parameters
@@ -36,12 +36,11 @@ def reencode_video(input_file: str | Path, output_file: str | Path):
             "-i",
             str(input_path),
             "-c",
-            "copy",  # Copy audio without re-encoding
+            "copy",  # Copy streams without re-encoding
             str(output_path),
         ]
 
         # Run the command
-        proc = subprocess.run(command, check=True)
-        proc.check_returncode()
+        subprocess.run(command, check=True)
     except subprocess.CalledProcessError as e:
-        print(f"Error: ffmpeg command failed with error {e}")
+        raise IOError(f"Error: ffmpeg command failed with error {e}") from e
