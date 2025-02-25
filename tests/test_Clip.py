@@ -263,7 +263,7 @@ def test_clip_memoize():
     ),
 )
 def test_clip_get_frame(fps):
-    clip = BitmapClip([["RR", "RR"], ["GG", "GG"], ["BB", "BB"]], fps=fps)
+    clip = BitmapClip([["RR", "RR"], ["GG", "GG"], ["BB", "BB"], ["RB", "RB"]], fps=fps)
 
     assert clip.get_frame(0) != clip.get_frame(clip.duration)
     assert clip.get_frame(0) != clip.get_frame(clip.duration - 1./fps)
