@@ -255,12 +255,12 @@ def test_clip_memoize():
     assert isinstance(memoize_clip.get_frame(1), np.ndarray)
 
 @pytest.mark.parametrize(
-    (
-        "fps",
-    ),
-    (
-        (0.1,1,30),
-    ),
+    "fps",
+    [
+        0.1,
+        1,
+        30
+    ],
 )
 def test_clip_get_frame(fps):
     clip = BitmapClip([["RR", "RR"], ["GG", "GG"], ["BB", "BB"], ["RB", "RB"]], fps=fps)
