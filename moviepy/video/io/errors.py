@@ -3,5 +3,3 @@
 
 class VideoCorruptedError(RuntimeError):
     """Error raised when a video file is corrupted."""
-
-    ...
