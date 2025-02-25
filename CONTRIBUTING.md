@@ -16,7 +16,7 @@ You can get the appropriate URL (SSH- or HTTPS-based) by using the green "Code" 
 - Enter your local clone and add the official MoviePy repository as a second remote, with alias `upstream`:  
 `$ git remote add upstream git@github.com:Zulko/moviepy.git` (using SSL) _or_   
 `$ git remote add upstream https://github.com/Zulko/moviepy.git` (using HTTPS).
-- Install the library inside a [virtual environment](https://docs.python.org/3/tutorial/venv.html) with all dependencies included using `$ pip install -e ".[optional,doc,test,lint]"`
+- Install the library inside a [virtual environment](https://docs.python.org/3/tutorial/venv.html) with all dependencies included using `$ pip install -e ".[optional,doc,test,lint]"` or  `$ uv sync --all-groups"`
 - Configure pre-commit hooks running `$ pre-commit install`
 
 ## Coding conventions, code quality
