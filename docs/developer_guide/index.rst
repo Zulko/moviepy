@@ -1,10 +1,9 @@
 .. _developer_guide:
 
+The MoviePy Developer's Guide
+-----------------------------
 
-The MoviePy Developers Guide
-------------------------------
-
-The Developers Guide covers most of the things people wanting to participate to MoviePy development need to know.
+This guide covers most of the things people wanting to participate in MoviePy development need to know.
 
 .. toctree::
    :maxdepth: 1
