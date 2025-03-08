@@ -545,7 +545,7 @@ class FFmpegInfosParser:
                 # multiline metadata value parsing
                 if field == "":
                     field = self._last_metadata_field_added
-                    value = self._current_stream["metadata"][field] + "\n" + value
+                    value = str(self._current_stream["metadata"][field]) + "\n" + value
                 else:
                     self._last_metadata_field_added = field
                 self._current_stream["metadata"][field] = value
