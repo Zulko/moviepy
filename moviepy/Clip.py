@@ -708,3 +708,16 @@ class Clip:
         from moviepy.video.fx.Loop import Loop
 
         return self.with_effects([Loop(n)])
+
+if __name__ == '__main__':
+    from video.io.VideoFileClip import *
+
+    video = VideoFileClip("../media/chaplin.mp4")
+    print("duration", video.duration)
+    print("start", video.start)
+    print("end", video.end)
+    print("memoize", video.memoize)
+    print("memoized_t", video.memoized_t)
+    print("memoized_frame", video.memoized_frame)
+    print("is_mask", video.is_mask)
+    print("frame_function", video.frame_function)
