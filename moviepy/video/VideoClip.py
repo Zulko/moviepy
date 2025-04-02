@@ -96,24 +96,24 @@ class VideoClip(Clip):
 
     @property
     def w(self):
-        """Returns the width of the video."""
+        """返回视频的宽度。"""
         return self.size[0]
 
     @property
     def h(self):
-        """Returns the height of the video."""
+        """返回视频的高度。"""
         return self.size[1]
 
     @property
     def aspect_ratio(self):
-        """Returns the aspect ratio of the video."""
+        """返回视频的宽高比。"""
         return self.w / float(self.h)
 
     @property
     @requires_duration
     @requires_fps
     def n_frames(self):
-        """Returns the number of frames of the video."""
+        """返回视频的帧数。"""
         return int(self.duration * self.fps)
 
     def __copy__(self):
@@ -141,30 +141,32 @@ class VideoClip(Clip):
     copy = __copy__
 
     # ===============================================================
-    # EXPORT OPERATIONS
+    # EXPORT OPERATIONS 导出操作
 
     @convert_parameter_to_seconds(["t"])
     @convert_masks_to_RGB
     def save_frame(self, filename, t=0, with_mask=True):
-        """Save a clip's frame to an image file.
+        """
+        功能：
+        该方法将视频在指定时间点 t 的帧保存为一张图像，并保存到给定的文件 filename 中。
+        如果视频有一个遮罩（mask），并且 with_mask=True，它还会将遮罩信息存储到图像的 alpha 通道（透明度通道）中，适用于 PNG 格式。
+        该方法支持以秒（如 15.35），分钟-秒（如 01:05），小时-分钟-秒（如 01:03:05）或字符串（如 '01:03:05.35'）等不同方式指定时间点 t。
 
-        Saves the frame of clip corresponding to time ``t`` in ``filename``.
-        ``t`` can be expressed in seconds (15.35), in (min, sec),
-        in (hour, min, sec), or as a string: '01:03:05.35'.
+        参数：
+        filename：
+            保存图像文件的路径和文件名，图像将被保存在这个文件中。
+        t：
+            可选参数，指定保存的帧时间。可以是：
+            float（秒），如 15.35。
+            tuple 或 str，表示时间（如 (1, 5) 或 '01:03:05'）。
+            默认情况下，保存的是第一帧（t=0）。
+        with_mask：
+            可选布尔参数。如果为 True，并且视频有遮罩，遮罩将被保存到图像的 alpha 通道中。适用于 PNG 格式的图像。如果为 False，则仅保存视频帧，不包含遮罩信息。
 
-        Parameters
-        ----------
-
-        filename : str
-          Name of the file in which the frame will be stored.
-
-        t : float or tuple or str, optional
-          Moment of the frame to be saved. As default, the first frame will be
-          saved.
-
-        with_mask : bool, optional
-          If is ``True`` the mask is saved in the alpha layer of the picture
-          (only works with PNGs).
+        工作流程：
+        获取帧：首先调用 get_frame(t) 获取视频在时间 t 的帧。
+        处理遮罩：如果 with_mask 为 True 且视频包含遮罩，它会将遮罩数据（通过 mask.get_frame(t) 获取）合并到图像的 alpha 通道中，创建一个带透明度的图像。
+        保存图像：最后将处理过的图像保存到指定路径的文件中。
         """
         im = self.get_frame(t)
         if with_mask and self.mask is not None:
@@ -201,112 +203,68 @@ class VideoClip(Clip):
         logger="bar",
         pixel_format=None,
     ):
-        """Write the clip to a videofile.
-
-        Parameters
-        ----------
-
-        filename
-          Name of the video file to write in, as a string or a path-like object.
-          The extension must correspond to the "codec" used (see below),
-          or simply be '.avi' (which will work with any codec).
-
-        fps
-          Number of frames per second in the resulting video file. If None is
-          provided, and the clip has an fps attribute, this fps will be used.
-
-        codec
-          Codec to use for image encoding. Can be any codec supported
-          by ffmpeg. If the filename is has extension '.mp4', '.ogv', '.webm',
-          the codec will be set accordingly, but you can still set it if you
-          don't like the default. For other extensions, the output filename
-          must be set accordingly.
-
-          Some examples of codecs are:
-
-          - ``'libx264'`` (default codec for file extension ``.mp4``)
-            makes well-compressed videos (quality tunable using 'bitrate').
-          - ``'mpeg4'`` (other codec for extension ``.mp4``) can be an alternative
-            to ``'libx264'``, and produces higher quality videos by default.
-          - ``'rawvideo'`` (use file extension ``.avi``) will produce
-            a video of perfect quality, of possibly very huge size.
-          - ``png`` (use file extension ``.avi``) will produce a video
-            of perfect quality, of smaller size than with ``rawvideo``.
-          - ``'libvorbis'`` (use file extension ``.ogv``) is a nice video
-            format, which is completely free/ open source. However not
-            everyone has the codecs installed by default on their machine.
-          - ``'libvpx'`` (use file extension ``.webm``) is tiny a video
-            format well indicated for web videos (with HTML5). Open source.
-
-        audio
-          Either ``True``, ``False``, or a file name.
-          If ``True`` and the clip has an audio clip attached, this
-          audio clip will be incorporated as a soundtrack in the movie.
-          If ``audio`` is the name of an audio file, this audio file
-          will be incorporated as a soundtrack in the movie.
-
-        audio_fps
-          frame rate to use when generating the sound.
-
-        temp_audiofile
-          the name of the temporary audiofile, as a string or path-like object,
-          to be created and then used to write the complete video, if any.
-
-        temp_audiofile_path
-          the location that the temporary audiofile is placed, as a
-          string or path-like object. Defaults to the current working directory.
-
-        audio_codec
-          Which audio codec should be used. Examples are 'libmp3lame'
-          for '.mp3', 'libvorbis' for 'ogg', 'libfdk_aac':'m4a',
-          'pcm_s16le' for 16-bit wav and 'pcm_s32le' for 32-bit wav.
-          Default is 'libmp3lame', unless the video extension is 'ogv'
-          or 'webm', at which case the default is 'libvorbis'.
-
-        audio_bitrate
-          Audio bitrate, given as a string like '50k', '500k', '3000k'.
-          Will determine the size/quality of audio in the output file.
-          Note that it mainly an indicative goal, the bitrate won't
-          necessarily be the this in the final file.
-
-        preset
-          Sets the time that FFMPEG will spend optimizing the compression.
-          Choices are: ultrafast, superfast, veryfast, faster, fast, medium,
-          slow, slower, veryslow, placebo. Note that this does not impact
-          the quality of the video, only the size of the video file. So
-          choose ultrafast when you are in a hurry and file size does not
-          matter.
-
-        threads
-          Number of threads to use for ffmpeg. Can speed up the writing of
-          the video on multicore computers.
-
-        ffmpeg_params
-          Any additional ffmpeg parameters you would like to pass, as a list
-          of terms, like ['-option1', 'value1', '-option2', 'value2'].
-
-        write_logfile
-          If true, will write log files for the audio and the video.
-          These will be files ending with '.log' with the name of the
-          output file in them.
-
-        logger
-          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
-
-        pixel_format
-          Pixel format for the output video file.
-
-        Examples
-        --------
-
-        .. code:: python
-
-            from moviepy import VideoFileClip
-            clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
-            clip.write_videofile("my_new_video.mp4")
-            clip.close()
-
         """
+        用于将剪辑（clip）保存为视频文件的方法。它会根据用户提供的参数生成一个视频文件，
+        并支持配置编码、音频、压缩、帧速率等多个选项。
+        ---- 参数 ------
+        filename
+          要写入的视频文件的名称，作为字符串或类似路径的对象。
+          扩展名必须与使用的“编解码器”相对应（见下文），或者简单使用 '.avi'（适用于任何编解码器）。
+        fps
+          结果视频文件的每秒帧数。如果没有提供，并且剪辑有 fps 属性，则使用该 fps。
+        codec
+          用于图像编码的编解码器。可以是任何 ffmpeg 支持的编解码器。如果文件名具有扩展名 '.mp4'、'.ogv'、'.webm'，
+          则编解码器会自动设置，但你仍然可以根据需要进行设置。对于其他扩展名，输出文件名必须相应设置。
+          一些编解码器示例：
+          - ``'libx264'``（默认的 '.mp4' 扩展名编解码器）
+            制作压缩良好的视频（质量可以通过 'bitrate' 调整）。
+          - ``'mpeg4'``（另一个适用于 '.mp4' 的编解码器）可以作为 ``'libx264'`` 的替代，
+            默认会生成较高质量的视频。
+          - ``'rawvideo'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件可能非常大。
+          - ``'png'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件比使用 ``rawvideo`` 的文件要小。
+          - ``'libvorbis'``（使用 '.ogv' 扩展名）是一种不错的视频格式，完全免费/开源。然而，并不是所有人都默认安装了该编解码器。
+          - ``'libvpx'``（使用 '.webm' 扩展名）是一种非常小的视频格式，适合用于网页视频（支持 HTML5）。开源。
+        audio
+          可以是 ``True``、``False`` 或一个文件名。
+          如果为 ``True``，并且剪辑有音频轨道，它将被作为视频的背景音乐加入。
+          如果 `audio` 是一个音频文件的路径，指定的音频文件将作为视频的背景音乐加入。
+        audio_fps
+          用于生成音频的帧率。
+        temp_audiofile
+          临时音频文件的名称，作为字符串或类似路径的对象，
+          它会被创建然后用于生成完整的视频（如果有的话）。
+        temp_audiofile_path
+          临时音频文件的存储位置，作为字符串或类似路径的对象。默认是当前工作目录。
+        audio_codec
+          要使用的音频编解码器。例如：'libmp3lame'（用于 '.mp3'）、'libvorbis'（用于 '.ogg'）、'libfdk_aac'（用于 '.m4a'）、
+          'pcm_s16le'（用于 16 位 wav）和 'pcm_s32le'（用于 32 位 wav）。默认是 'libmp3lame'，除非视频扩展名是 'ogv' 或 'webm'，
+          在这种情况下，默认是 'libvorbis'。
+        audio_bitrate
+          音频比特率，以字符串表示，如 '50k'、'500k'、'3000k'。
+          它将决定输出文件中音频的大小/质量。请注意，它主要是一个目标值，比特率不会一定在最终文件中达到这个值。
+        preset
+          设置 FFMPEG 用于优化压缩的时间。
+          可选择的设置有：ultrafast、superfast、veryfast、faster、fast、medium、slow、slower、veryslow、placebo。
+          请注意，这不会影响视频质量，只会影响视频文件的大小。因此，如果你急需生成文件并且文件大小无关紧要，可以选择 ultrafast。
+        threads
+          用于 ffmpeg 的线程数。可以在多核计算机上加速视频写入过程。
+        ffmpeg_params
+          任何你希望传递给 ffmpeg 的额外参数，以列表形式提供，例如 ['-option1', 'value1', '-option2', 'value2']。
+        write_logfile
+          如果为 `True`，将为音频和视频生成日志文件。
+          这些文件将以 '.log' 结尾，文件名与输出文件相同。
+        logger
+          可以是 ``"bar"`` 显示进度条，或 ``None``，或任何 Proglog 日志记录器。
+        pixel_format
+          输出视频文件的像素格式。
+        示例
+        --------
+        from moviepy import VideoFileClip
+        clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
+        clip.write_videofile("my_new_video.mp4")
+        clip.close()
+    """
+
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
         logger = proglog.default_bar_logger(logger)
@@ -391,41 +349,30 @@ class VideoClip(Clip):
     def write_images_sequence(
         self, name_format, fps=None, with_mask=True, logger="bar"
     ):
-        """Writes the videoclip to a sequence of image files.
+        """
+        方法功能
+        write_images_sequence 方法将视频剪辑保存为一系列图像文件。
+        你可以指定输出图像文件的命名格式、每秒帧数以及是否保存视频的掩膜（透明部分）。
+        生成的图像文件会按照指定的命名格式和扩展名进行保存。
 
-        Parameters
-        ----------
+        参数说明
+        name_format:
+        图像文件名格式，指定输出图像的命名规则和文件扩展名。例如 "frame%03d.png" 表示图像的文件名将按 3 位数字格式化（如 frame001.png、frame002.png），文件格式为 PNG。也可以是其他格式，例如 "some_folder/frame%04d.jpeg"，会将文件保存为 JPEG 格式。
+        fps:
+        每秒帧数，指定在保存图像时每秒提取多少帧。如果没有指定，则使用视频剪辑的 fps 属性（如果有的话）。
+        with_mask:
+        如果设置为 True，则会保存剪辑的掩膜（如果存在），并作为 PNG 文件的 alpha 通道（仅适用于 PNG 格式）。掩膜通常用于保存透明背景部分。
+        logger:
+        进度条显示的日志记录器。可以设置为 "bar" 来显示进度条，或 None 来禁用日志，或者使用任何支持的 Proglog 日志记录器。
 
-        name_format
-          A filename specifying the numerotation format and extension
-          of the pictures. For instance "frame%03d.png" for filenames
-          indexed with 3 digits and PNG format. Also possible:
-          "some_folder/frame%04d.jpeg", etc.
+        返回值
+        names_list:
+        返回一个包含所有生成的文件名的列表。这些文件是按顺序保存的图像文件的路径。
 
-        fps
-          Number of frames per second to consider when writing the
-          clip. If not specified, the clip's ``fps`` attribute will
-          be used if it has one.
-
-        with_mask
-          will save the clip's mask (if any) as an alpha canal (PNGs only).
-
-        logger
-          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
-
-
-        Returns
-        -------
-
-        names_list
-          A list of all the files generated.
-
-        Notes
-        -----
-
-        The resulting image sequence can be read using e.g. the class
-        ``ImageSequenceClip``.
-
+        备注
+        图像序列读取:
+        生成的图像序列可以使用 ImageSequenceClip 类读取并创建新的视频剪辑。
+        该方法通常用于将视频剪辑的每一帧保存为单独的图像文件，适用于视频分析、特效制作等需要逐帧处理的任务。
         """
         logger = proglog.default_bar_logger(logger)
         # Fails on GitHub macos CI
@@ -452,40 +399,23 @@ class VideoClip(Clip):
         loop=0,
         logger="bar",
     ):
-        """Write the VideoClip to a GIF file.
+        """
+        这个方法的作用是将一个 VideoClip 转换成一个动画 GIF 文件。具体来说，它使用 imageio 库来进行 GIF 文件的创建。
 
-        Converts a VideoClip into an animated GIF using imageio
+        参数：
+        filename: 生成的 GIF 文件的名称，可以是字符串或路径。
+        fps: 每秒帧数。如果没有提供，函数会尝试从视频剪辑中读取 fps 属性。
+        loop: 一个可选参数，决定 GIF 循环播放的次数。如果不指定，默认会无限循环。
+        progress_bar: 如果为 True，则在处理时显示进度条。
 
-        Parameters
-        ----------
-
-        filename
-          Name of the resulting gif file, as a string or a path-like object.
-
-        fps
-          Number of frames per second (see note below). If it
-          isn't provided, then the function will look for the clip's
-          ``fps`` attribute (VideoFileClip, for instance, have one).
-
-        loop : int, optional
-          Repeat the clip using ``loop`` iterations in the resulting GIF.
-
-        progress_bar
-          If True, displays a progress bar
-
-
-        Notes
-        -----
-
-        The gif will be playing the clip in real time (you can
-        only change the frame rate). If you want the gif to be played
-        slower than the clip you will use
+        说明：
+        生成的 GIF 将会按视频的真实播放速度播放。如果想让 GIF 播放得更慢，
+        可以使用 multiply_speed 方法来调整播放速度，如将视频速度减慢到 50%。
 
         .. code:: python
 
             # slow down clip 50% and make it a gif
             myClip.multiply_speed(0.5).to_gif('myClip.gif')
-
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
         #  refactor a little... we will see.
@@ -504,38 +434,32 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     @convert_parameter_to_seconds(["t"])
     def show(self, t=0, with_mask=True):
-        """Splashes the frame of clip corresponding to time ``t``.
+        """
+        这个方法用于显示视频剪辑在给定时间 t 的某一帧。它可以用于查看视频的特定帧，方便调试或展示特定的画面。
 
-        Parameters
-        ----------
+        参数：
+        t: 可选参数，表示时间，单位为秒。可以是浮动数值、元组或字符串（例如："00:03:05"）。
+        这个时间对应的是视频中要显示的那一帧。
 
-        t : float or tuple or str, optional
-        Time in seconds of the frame to display.
-
-        with_mask : bool, optional
-        ``False`` if the clip has a mask but you want to see the clip without
-        the mask.
+        with_mask: 可选参数，默认值为 True。如果视频有遮罩（mask），
+        设置为 False 会显示不带遮罩的帧。设置为 True 时，显示带遮罩的帧。
 
         Examples
         --------
-
         .. code:: python
-
             from moviepy import *
-
             clip = VideoFileClip("media/chaplin.mp4")
             clip.show(t=4)
         """
         clip = self.copy()
 
-        # Warning : Comment to fix a bug on preview for compositevideoclip
-        # it broke compositevideoclip and it does nothing on normal clip with alpha
-
+        # 警告：注释以修复 compositevideoclip 预览中的错误
+        # 它破坏了 compositevideoclip，并且它对带有 alpha 的正常剪辑没有任何作用
         # if with_mask and (self.mask is not None):
-        #   # Hate it, but cannot figure a better way with python awful circular
-        #   # dependency
-        #   from mpy.video.compositing.CompositeVideoClip import CompositeVideoClip
-        #   clip = CompositeVideoClip([self.with_position((0, 0))])
+        # # 讨厌它，但无法找到更好的方法来解决 python 可怕的循环问题
+        # # 依赖关系
+        # from mpy.video.compositing.CompositeVideoClip import CompositeVideoClip
+        # clip = CompositeVideoClip([self.with_position((0, 0))])
 
         frame = clip.get_frame(t)
         pil_img = Image.fromarray(frame.astype("uint8"))
@@ -547,36 +471,21 @@ class VideoClip(Clip):
     def preview(
         self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
     ):
-        """Displays the clip in a window, at the given frames per second.
+        """
+        在窗口中以给定的每秒帧数显示剪辑。
+        它可以避免剪辑播放速度比正常情况更快，但如果计算复杂，则无法避免剪辑播放速度比正常情况更慢。在这种情况下，请尝试降低“fps”。
+        这个方法用于在窗口中显示视频剪辑，并按指定的帧率播放视频，适合用来预览视频内容。
 
-        It will avoid that the clip be played faster than normal, but it
-        cannot avoid the clip to be played slower than normal if the computations
-        are complex. In this case, try reducing the ``fps``.
-
-        Parameters
-        ----------
-
-        fps : int, optional
-        Number of frames per seconds in the displayed video. Default to ``15``.
-
-        audio : bool, optional
-        ``True`` (default) if you want the clip's audio be played during
-        the preview.
-
-        audio_fps : int, optional
-        The frames per second to use when generating the audio sound.
-
-        audio_buffersize : int, optional
-        The sized of the buffer used generating the audio sound.
-
-        audio_nbytes : int, optional
-        The number of bytes used generating the audio sound.
+        参数：
+        fps: 可选参数，指定视频预览时的帧率（每秒帧数）。默认值是 15。
+        audio: 可选参数，默认为 True，表示是否在预览时播放视频的音频。如果设置为 False，视频将不带音频播放。
+        audio_fps: 可选参数，指定生成音频时使用的帧率。默认值依赖于音频源的帧率。
+        audio_buffersize: 可选参数，指定生成音频时使用的缓冲区大小，影响音频处理的稳定性。
+        audio_nbytes: 可选参数，指定生成音频时每帧音频数据的字节数。
 
         Examples
         --------
-
         .. code:: python
-
             from moviepy import *
             clip = VideoFileClip("media/chaplin.mp4")
             clip.preview(fps=10, audio=False)
@@ -654,7 +563,7 @@ class VideoClip(Clip):
         return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
 
     # --------------------------------------------------------------
-    # C O M P O S I T I N G
+    # C O M P O S I T I N G  合成
 
     def fill_array(self, pre_array, shape=(0, 0)):
         """Fills an array to match the specified shape.

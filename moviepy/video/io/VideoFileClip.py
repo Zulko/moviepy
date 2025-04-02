@@ -198,6 +198,9 @@ if __name__ == '__main__':
     # 保存合成后的视频
     new_clip.write_videofile("video_with_red_background.mp4", codec="libx264")
 
-
+    # 保存视频在时间 5 秒时的帧，保存为 'frame_at_5sec.png'
+    video.save_frame("frame_at_5sec.png", t=5)
+    # 如果视频有遮罩，并且需要将遮罩也保存到图像中，可以设置 with_mask=True
+    video.save_frame("frame_with_mask.png", t=5, with_mask=True)
 
 
