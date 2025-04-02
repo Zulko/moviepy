@@ -176,31 +176,47 @@ if __name__ == '__main__':
     print("is_mask", video.is_mask)
     print("frame_function", video.frame_function)
 
-    frame = video.get_frame(2.5)  # 获取视频在 2.5 秒时的帧（NumPy 数组）
-    print("frame ->", frame)
+    # frame = video.get_frame(2.5)  # 获取视频在 2.5 秒时的帧（NumPy 数组）
+    # print("frame ->", frame)
 
-    subclip = video.subclipped(5, 10)  # 截取 5 秒到 10 秒的部分
-    resized_clip = video.resized(height=720)  # 调整视频高度为 720p，宽度会按比例缩放
-    rotated_clip = video.rotated(90)  # 顺时针旋转 90 度
+    # video = video.subclipped(5, 8)  # 截取 5 秒到 10 秒的部分
+    # video = video.resized(new_size=(200, 400))  # 调整视频高度为 720p，宽度会按比例缩放
+    # video = video.rotated(30, bg_color="green")  # 顺时针旋转 90 度
 
     # 使用 cropped 方法裁剪视频
     # 假设你想裁剪出左上角坐标为 (x1=100, y1=50) 和右下角坐标为 (x2=500, y2=350) 的区域
-    cropped_clip = video.cropped(x1=100, y1=50, x2=500, y2=350)
-    # 你还可以通过指定宽度和高度来裁剪
-    # 假设你想从 (x1=200, y1=100) 开始裁剪，裁剪区域的宽度为 300， 高度为 200
-    cropped_clip_by_size = video.cropped(x1=200, y1=100, width=300, height=200)
-    # 保存裁剪后的视频
-    cropped_clip.write_videofile("cropped_video.mp4")
-    cropped_clip_by_size.write_videofile("cropped_video_by_size.mp4")
+    # video = video.cropped(x1=100, y1=50, x2=500, y2=350, width=120, height=150, x_center=430, y_center=100)
+    # # 你还可以通过指定宽度和高度来裁剪
+    # # 假设你想从 (x1=200, y1=100) 开始裁剪，裁剪区域的宽度为 300， 高度为 200
+    # cropped_clip_by_size = video.cropped(x1=200, y1=100, width=300, height=200)
+    # # 保存裁剪后的视频
+    # cropped_clip.write_videofile("cropped_video.mp4")
+    # cropped_clip_by_size.write_videofile("cropped_video_by_size.mp4")
+    #
+    # # 将视频放置在红色背景上，背景的大小为 (1920, 1080)，位置居中
+    # video = video.with_background_color(size=(1080, 1920), color=(0,255,0), opacity=0.5)
+    # # 保存合成后的视频
+    # new_clip.write_videofile("video_with_red_background.mp4", codec="libx264")
+    #
+    # # 保存视频在时间 5 秒时的帧，保存为 'frame_at_5sec.png'
+    # video.save_frame("frame_at_5sec.png", t=5)
+    # # 如果视频有遮罩，并且需要将遮罩也保存到图像中，可以设置 with_mask=True
+    # video.save_frame("frame_with_mask.png", t=5, with_mask=True)
 
-    # 将视频放置在红色背景上，背景的大小为 (1920, 1080)，位置居中
-    new_clip = video.with_background_color(size=(1920, 1080), color=(255, 0, 0), pos="center")
-    # 保存合成后的视频
-    new_clip.write_videofile("video_with_red_background.mp4", codec="libx264")
+    # video = video.with_duration(3, True)
+    # video = video.with_section_cut_out(start_time=4, end_time=7) # 假设原视频是 0s - 9s，此操作会删除 4s-7s，最终视频为：0s - 4s  +  7s - 9s
+    # video = video.with_speed_scaled(factor=2, final_duration=3) # factor=2 表示播放速度是原来的2倍，时长变为原来的一半
+    # video = video.with_volume_scaled(factor=1.5) # 将整个剪辑的音量提高 50%
+    # video = video.with_volume_scaled(factor=2, start_time=3, end_time=7) # 示例：将剪辑的第 3 秒到第 7 秒之间的音量加倍
 
-    # 保存视频在时间 5 秒时的帧，保存为 'frame_at_5sec.png'
-    video.save_frame("frame_at_5sec.png", t=5)
-    # 如果视频有遮罩，并且需要将遮罩也保存到图像中，可以设置 with_mask=True
-    video.save_frame("frame_with_mask.png", t=5, with_mask=True)
+    # video.time_transform()
+    # video.with_audio
+    # video.audio
+    # video.without_audio()
 
+    # video = video.with_opacity(0.9)
 
+    # , pos, relative=False
+    video = video.with_position((45, 150)) # x=45, y=150
+
+    video.preview(fps=10, audio=False)

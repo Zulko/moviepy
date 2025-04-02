@@ -830,19 +830,18 @@ class VideoClip(Clip):
     @outplace
     def with_mask(self, mask: Union["VideoClip", str] = "auto"):
         """
-        Set the clip's mask.
+        设置剪辑的蒙版。
 
-        Returns a copy of the VideoClip with the mask attribute set to
-        ``mask``, which must be a greyscale (values in 0-1) VideoClip.
+        返回 VideoClip 的副本，其蒙版属性设置为
+        ``mask``，必须是灰度（值在 0-1 之间）的 VideoClip。
 
-        Parameters
+        参数
         ----------
-        mask : Union["VideoClip", str], optional
-            The mask to apply to the clip.
-            If set to "auto", a default mask will be generated:
-            - If the clip has a constant size, a solid mask with a value of 1.0
-            will be created.
-            - Otherwise, a dynamic solid mask will be created based on the frame size.
+        mask ：Union["VideoClip", str]，可选
+        要应用于剪辑的蒙版。
+        如果设置为“auto”，将生成默认蒙版：
+        - 如果剪辑具有恒定大小，则将创建值为 1.0 的实心蒙版。
+        - 否则，将根据帧大小创建动态实心蒙版。
         """
         if mask == "auto":
             if self.has_constant_size:
@@ -857,46 +856,40 @@ class VideoClip(Clip):
 
     @outplace
     def without_mask(self):
-        """Remove the clip's mask."""
+        """移除剪辑的遮罩。"""
         self.mask = None
 
     @add_mask_if_none
     @outplace
     def with_opacity(self, opacity):
-        """Set the opacity/transparency level of the clip.
-
-        Returns a semi-transparent copy of the clip where the mask is
-        multiplied by ``op`` (any float, normally between 0 and 1).
+        """
+        设置剪辑的不透明度/透明度级别。
+        返回剪辑的一个半透明副本。其实现方式是将剪辑的遮罩（mask）
+        与指定的 ``opacity`` 值（通常是 0 到 1 之间的浮点数）相乘。
+        值为 1 表示完全不透明，值为 0 表示完全透明。
         """
         self.mask = self.mask.image_transform(lambda pic: opacity * pic)
 
     @apply_to_mask
     @outplace
     def with_position(self, pos, relative=False):
-        """Set the clip's position in compositions.
+        """
+        设置剪辑在合成视频中的位置。
+        设置剪辑在包含于合成视频中时所处的位置。参数 ``pos`` 可以是一个坐标对 ``(x,y)`` 或一个函数 ``t-> (x,y)``。
+        `x` 和 `y` 标记剪辑的左上角的位置，并且可以是多种类型。
 
-        Sets the position that the clip will have when included
-        in compositions. The argument ``pos`` can be either a couple
-        ``(x,y)`` or a function ``t-> (x,y)``. `x` and `y` mark the
-        location of the top left corner of the clip, and can be
-        of several types.
-
-        Examples
-        --------
-
-        .. code:: python
-
+        例子
+        ----
             clip.with_position((45,150)) # x=45, y=150
-
-            # clip horizontally centered, at the top of the picture
+            # 剪辑水平居中，位于画面顶部
             clip.with_position(("center","top"))
-
-            # clip is at 40% of the width, 70% of the height:
+            # 剪辑位于宽度 40%，高度 70% 的位置：
             clip.with_position((0.4,0.7), relative=True)
-
-            # clip's position is horizontally centered, and moving up !
+            # 剪辑的位置水平居中，并且向上移动！
             clip.with_position(lambda t: ('center', 50+t))
 
+            为视频剪辑提供了灵活的定位功能，允许您使用绝对坐标、相对坐标或随时间变化的坐标来精确控制剪辑在合成视频中的位置。
+            这对于创建复杂的视频布局和动画效果非常有用。
         """
         self.relative_pos = relative
         if hasattr(pos, "__call__"):

@@ -6,7 +6,7 @@ from moviepy.Effect import Effect
 
 @dataclass
 class EvenSize(Effect):
-    """Crops the clip to make dimensions even."""
+    """裁剪剪辑以使尺寸均匀。"""
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""

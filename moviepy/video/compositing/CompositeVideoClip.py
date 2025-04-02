@@ -11,50 +11,37 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 class CompositeVideoClip(VideoClip):
     """
-    A VideoClip made of other videoclips displayed together. This is the
-    base class for most compositions.
-
-    Parameters
-    ----------
-
-    size
-      The size (width, height) of the final clip.
-
-    clips
-      A list of videoclips.
-
-      Clips with a higher ``layer`` attribute will be displayed
-      on top of other clips in a lower layer.
-      If two or more clips share the same ``layer``,
-      then the one appearing latest in ``clips`` will be displayed
-      on top (i.e. it has the higher layer).
-
-      For each clip:
-
-      - The attribute ``pos`` determines where the clip is placed.
-          See ``VideoClip.set_pos``
-      - The mask of the clip determines which parts are visible.
-
-      Finally, if all the clips in the list have their ``duration``
-      attribute set, then the duration of the composite video clip
-      is computed automatically
-
-    bg_color
-      Color for the unmasked and unfilled regions. Set to None for these
-      regions to be transparent (will be slower).
-
-    use_bgclip
-      Set to True if the first clip in the list should be used as the
-      'background' on which all other clips are blitted. That first clip must
-      have the same size as the final clip. If it has no transparency, the final
-      clip will have no mask.
-
-    The clip with the highest FPS will be the FPS of the composite clip.
-
+    由其他视频剪辑组合而成的 VideoClip。这是大多数合成视频的基础类。
+    具有最高 FPS 的剪辑将成为合成剪辑的 FPS。
     """
 
     def __init__(
-        self, clips, size=None, bg_color=None, use_bgclip=False, is_mask=False
+            self,
+            clips,
+            # clips
+            #       一个视频剪辑列表。
+            #       具有较高 ``layer`` 属性的剪辑将显示在具有较低 ``layer`` 属性的其他剪辑之上。
+            #       如果两个或多个剪辑共享相同的 ``layer``，
+            #       则列表中最后出现的剪辑将显示在顶部（即，它具有更高的图层）。
+            #
+            #       对于每个剪辑：
+            #       - 属性 ``pos`` 确定剪辑的放置位置。
+            #           请参阅 ``VideoClip.set_pos``
+            #       - 剪辑的遮罩 (mask) 确定哪些部分是可见的。
+            #
+            #       最后，如果列表中的所有剪辑都设置了 ``duration`` 属性，
+            #       则自动计算合成视频剪辑的持续时间。
+            size=None,
+            #     size
+            #       最终合成视频剪辑的尺寸 (宽度, 高度)。
+            bg_color=None,
+            #     bg_color
+            #       未遮罩和未填充区域的颜色。如果这些区域需要透明，则设置为 None（速度会较慢）。
+            use_bgclip=False,
+            #     use_bgclip
+            #       如果列表中的第一个剪辑应作为所有其他剪辑在其上进行绘制的“背景”，则设置为 True。
+            #       第一个剪辑必须具有与最终剪辑相同的尺寸。如果它没有透明度，则最终剪辑将没有遮罩。
+            is_mask=False
     ):
         if size is None:
             size = clips[0].size
@@ -266,7 +253,7 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
 
 
 def concatenate_videoclips(
-    clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
+        clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
 ):
     """Concatenates several video clips.
 

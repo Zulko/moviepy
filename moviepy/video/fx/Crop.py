@@ -6,32 +6,30 @@ from moviepy.Effect import Effect
 
 @dataclass
 class Crop(Effect):
-    """Effect to crop a clip to get a new clip in which just a rectangular
-    subregion of the original clip is conserved. `x1,y1` indicates the top left
-    corner and `x2,y2` is the lower right corner of the cropped region. All
-    coordinates are in pixels. Float numbers are accepted.
+    """
+    裁剪剪辑以获得一个新剪辑的效果，其中仅保留原始剪辑的矩形子区域。
+    `x1,y1` 表示裁剪区域的左上角，`x2,y2` 表示右下角。所有坐标以像素为单位。
+    接受浮点数。
 
-    To crop an arbitrary rectangle:
+    裁剪任意矩形：
 
     >>> Crop(x1=50, y1=60, x2=460, y2=275)
 
-    Only remove the part above y=30:
+    仅移除 y=30 上方的部分：
 
     >>> Crop(y1=30)
 
-    Crop a rectangle that starts 10 pixels left and is 200px wide
+    裁剪一个从左边 10 像素开始，宽度为 200 像素的矩形：
 
     >>> Crop(x1=10, width=200)
 
-    Crop a rectangle centered in x,y=(300,400), width=50, height=150 :
+    裁剪一个以 x,y=(300,400) 为中心，宽度为 50，高度为 150 的矩形：
 
     >>> Crop(x_center=300, y_center=400, width=50, height=150)
 
-    Any combination of the above should work, like for this rectangle
-    centered in x=300, with explicit y-boundaries:
+    上述任何组合都应该有效，例如对于这个以 x=300 为中心，具有显式 y 边界的矩形：
 
     >>> Crop(x_center=300, width=400, y1=100, y2=600)
-
     """
 
     x1: int = None

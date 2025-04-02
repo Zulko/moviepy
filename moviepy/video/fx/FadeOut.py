@@ -8,19 +8,18 @@ from moviepy.Effect import Effect
 
 @dataclass
 class FadeOut(Effect):
-    """Makes the clip progressively fade to some color (black by default),
-    over ``duration`` seconds at the end of the clip. Can be used for masks too,
-    where the final color must be a number between 0 and 1.
+    """
+    使剪辑在剪辑结尾逐渐淡化为某种颜色（默认为黑色），
+    持续 ``duration`` 秒。也可以用于遮罩，其中最终颜色必须是 0 到 1 之间的数字。
 
-    For cross-fading (progressive appearance or disappearance of a clip over another
-    clip), see ``CrossFadeOut``
+    对于交叉淡化（一个剪辑在另一个剪辑上逐渐出现或消失），请参阅 ``CrossFadeOut``
     """
 
     duration: float
     final_color: list = None
 
     def apply(self, clip: Clip) -> Clip:
-        """Apply the effect to the clip."""
+        """ 将效果应用于剪辑。 """
         if clip.duration is None:
             raise ValueError("Attribute 'duration' not set")
 

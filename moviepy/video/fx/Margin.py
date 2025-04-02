@@ -9,32 +9,31 @@ from moviepy.video.VideoClip import ImageClip
 
 @dataclass
 class Margin(Effect):
-    """Draws an external margin all around the frame.
+    """
+    在帧的四周绘制外部边距。
 
-    Parameters
+    参数
     ----------
-
     margin_size : int, optional
-      If not ``None``, then the new clip has a margin size of
-      size ``margin_size`` in pixels on the left, right, top, and bottom.
+      如果不是 ``None``，则新剪辑在左、右、上、下方向的边距大小为 ``margin_size`` 像素。
 
     left : int, optional
-      If ``margin_size=None``, margin size for the new clip in left direction.
+      如果 ``margin_size=None``，则新剪辑在左方向的边距大小。
 
     right : int, optional
-      If ``margin_size=None``, margin size for the new clip in right direction.
+      如果 ``margin_size=None``，则新剪辑在右方向的边距大小。
 
     top : int, optional
-      If ``margin_size=None``, margin size for the new clip in top direction.
+      如果 ``margin_size=None``，则新剪辑在上方向的边距大小。
 
     bottom : int, optional
-      If ``margin_size=None``, margin size for the new clip in bottom direction.
+      如果 ``margin_size=None``，则新剪辑在下方向的边距大小。
 
     color : tuple, optional
-      Color of the margin.
+      边距的颜色。
 
     opacity : float, optional
-      Opacity of the margin. Setting this value to 0 yields transparent margins.
+      边距的不透明度。将此值设置为 0 会产生透明边距。
     """
 
     margin_size: int = None

@@ -7,18 +7,16 @@ from moviepy.Effect import Effect
 @dataclass
 class Loop(Effect):
     """
-    Returns a clip that plays the current clip in an infinite loop.
-    Ideal for clips coming from GIFs.
+    返回一个无限循环播放当前剪辑的剪辑。
+    适用于来自 GIF 的剪辑。
 
-    Parameters
+    参数
     ----------
-
     n
-      Number of times the clip should be played. If `None` the
-      the clip will loop indefinitely (i.e. with no set duration).
+      剪辑应播放的次数。如果 `None`，则剪辑将无限循环（即，没有设置持续时间）。
 
     duration
-      Total duration of the clip. Can be specified instead of n.
+      剪辑的总持续时间。可以代替 n 指定。
     """
 
     n: int = None

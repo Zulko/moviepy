@@ -286,23 +286,24 @@ class Clip:
     @convert_parameter_to_seconds(["duration"])
     @outplace
     def with_duration(self, duration, change_end=True):
-        """Returns a copy of the clip, with the  ``duration`` attribute set to
-        ``t``, which can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
-        of the mask and audio, if any, of the returned clip.
+        """
+        返回剪辑的一个副本，并将其 duration（时长）属性设置为 t。
+        t
+        可以用秒（如 15.35）、
+        分钟和秒（如 (1, 30)）、
+        小时分钟秒（如 (1, 3, 5)）
+        或者字符串格式（如 '01:03:05.35'）表示。
 
-        If ``change_end is False``, the start attribute of the clip will be
-        modified in function of the duration and the preset end of the clip.
+        如果剪辑包含 蒙版（mask） 或 音频（audio），它们的时长也会被同步修改。
+        如果 change_end=False，则 start 属性会根据新的 duration 及剪辑原本的 end 值进行调整。
 
-        Parameters
-        ----------
+        参数
+        duration（float）
+        新的时长值（单位：秒）。
 
-        duration : float
-          New duration attribute value for the clip.
-
-        change_end : bool, optional
-          If ``True``, the ``end`` attribute value of the clip will be adjusted
-          accordingly to the new duration using ``clip.start + duration``.
+        change_end（bool，可选，默认 True）
+        True：end 值会被设置为 start + duration（自动调整 end）。
+        False：保持 end 不变，而调整 start 以确保 end - start = duration。
         """
         self.duration = duration
 
@@ -448,26 +449,18 @@ class Clip:
     @convert_parameter_to_seconds(["start_time", "end_time"])
     def with_section_cut_out(self, start_time, end_time):
         """
-        Returns a clip playing the content of the current clip but
-        skips the extract between ``start_time`` and ``end_time``, which can be
-        expressed in seconds (15.35), in (min, sec), in (hour, min, sec),
-        or as a string: '01:03:05.35'.
+        返回播放当前剪辑内容的剪辑，但会跳过“start_time”和“end_time”之间的摘录，可以以秒（15.35）、
+        （分钟，秒）、（小时，分钟，秒）表示，或以字符串表示：'01:03:05.35'。
 
-        If the original clip has a ``duration`` attribute set,
-        the duration of the returned clip  is automatically computed as
-        `` duration - (end_time - start_time)``.
+        如果原始剪辑设置了“duration”属性，则返回剪辑的持续时间将自动计算为“duration - (end_time - start_time)”。
+        如果存在，则生成的剪辑的“audio”和“mask”也将被剪切掉。
 
-        The resulting clip's ``audio`` and ``mask`` will also be cutout
-        if they exist.
+        参数
+        start_time（float / tuple / str）
+        表示从哪个时间点开始删除（从 start_time 开始，该时间之后的视频片段将被移除）。
 
-        Parameters
-        ----------
-
-        start_time : float or tuple or str
-          Moment from which frames will be ignored in the resulting output.
-
-        end_time : float or tuple or str
-          Moment until which frames will be ignored in the resulting output.
+        end_time（float / tuple / str）
+        表示在哪个时间点结束删除（删除到 end_time 这个时间点）。
         """
         new_clip = self.time_transform(
             lambda t: t + (t >= start_time) * (end_time - start_time),
@@ -480,8 +473,24 @@ class Clip:
             return new_clip
 
     def with_speed_scaled(self, factor: float = None, final_duration: float = None):
-        """Returns a clip playing the current clip but at a speed multiplied
-        by ``factor``. For info on the parameters, please see ``vfx.MultiplySpeed``.
+        """
+        返回一个以当前剪辑 ``factor`` 倍速度播放的新剪辑。
+
+        这个方法会创建一个当前剪辑的副本，但播放速度会乘以指定的 `factor` 值。
+        例如，`factor=2` 会使播放速度加倍，剪辑时长减半；
+        `factor=0.5` 会使播放速度减半，剪辑时长加倍。
+
+        你也可以不指定 `factor`，而是通过 `final_duration` 参数来指定你希望这个加速/减速后的剪辑最终变成多长。
+        MoviePy 会自动计算出需要的速度因子。
+
+        有关这两个参数（`factor` 和 `final_duration`）的更详细信息和底层逻辑，
+        请参阅 ``moviepy.video.fx.MultiplySpeed`` 这个特效类。
+
+
+        总结:
+            with_speed_scaled 方法提供了一种方便的方式来创建原始剪辑的变速版本。
+            你可以直接指定速度倍数 (factor)，或者指定希望剪辑播放完毕的总时长 (final_duration)，
+            MoviePy 会帮你处理底层的速度计算。它内部调用了 MultiplySpeed 特效，并通过 with_effects 方法应用到剪辑上。
         """
         from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
@@ -490,8 +499,23 @@ class Clip:
         )
 
     def with_volume_scaled(self, factor: float, start_time=None, end_time=None):
-        """Returns a new clip with audio volume multiplied by the value `factor`.
-        For info on the parameters, please see ``afx.MultiplyVolume``
+        """
+        with_volume_scaled 是一个用于调整剪辑音量的便捷方法。它通过 factor 参数控制音量的乘数，
+        并且允许使用 start_time 和 end_time 参数来精确控制音量变化的范围。
+        这对于需要动态调整音量（比如在特定片段降低背景音乐音量以突出人声）的二次创作场景非常有用。
+        它背后依赖的是 moviepy.audio.fx.MultiplyVolume 特效。
+
+        这个方法会创建一个当前剪辑的副本，但是它的音频部分的音量会被调整。
+        - `factor` 大于 1.0 会增大音量。
+        - `factor` 在 0.0 到 1.0 之间会减小音量。
+        - `factor` 等于 0 会使音频静音。
+        - `factor` 小于 0 可能会导致未定义的行为或错误，不推荐使用。
+
+        你可以通过可选的 `start_time` 和 `end_time` 参数 (单位是秒) 来指定
+        仅在剪辑的某一个时间段内应用这个音量调整效果。
+        如果省略 `start_time`，则效果从剪辑开头开始。
+        如果省略 `end_time`，则效果一直持续到剪辑结尾。
+        如果两者都省略，则音量调整会应用于整个剪辑的音频。
         """
         from moviepy.audio.fx.MultiplyVolume import MultiplyVolume
 

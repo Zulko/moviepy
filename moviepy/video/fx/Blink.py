@@ -6,9 +6,8 @@ from moviepy.Effect import Effect
 @dataclass
 class Blink(Effect):
     """
-    Makes the clip blink. At each blink it will be displayed ``duration_on``
-    seconds and disappear ``duration_off`` seconds. Will only work in
-    composite clips.
+    使剪辑闪烁。在每次闪烁时，它将显示 ``duration_on`` 秒，然后消失 ``duration_off`` 秒。
+    仅在合成剪辑中有效。
     """
 
     duration_on: float

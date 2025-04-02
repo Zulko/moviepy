@@ -7,8 +7,8 @@ from moviepy.video.fx.FadeOut import FadeOut
 
 @dataclass
 class CrossFadeOut(Effect):
-    """Makes the clip disappear progressively, over ``duration`` seconds.
-    Only works when the clip is included in a CompositeVideoClip.
+    """使剪辑在 ``duration`` 秒内逐渐消失。
+    仅当剪辑包含在 CompositeVideoClip 中时才有效。
     """
 
     duration: float

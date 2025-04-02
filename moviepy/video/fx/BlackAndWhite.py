@@ -7,11 +7,11 @@ from moviepy.Effect import Effect
 
 @dataclass
 class BlackAndWhite(Effect):
-    """Desaturates the picture, makes it black and white.
-    Parameter RGB allows to set weights for the different color
-    channels.
-    If RBG is 'CRT_phosphor' a special set of values is used.
-    preserve_luminosity maintains the sum of RGB to 1.
+    """
+    对图像进行去饱和处理，使其变为黑白。
+    参数 RGB 允许设置不同颜色通道的权重。
+    如果 RGB 为 'CRT_phosphor'，则使用一组特殊的值。
+    preserve_luminosity 保持 RGB 的总和为 1。
     """
 
     RGB: str = None

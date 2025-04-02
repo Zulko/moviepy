@@ -7,8 +7,8 @@ from moviepy.video.fx.FadeIn import FadeIn
 
 @dataclass
 class CrossFadeIn(Effect):
-    """Makes the clip appear progressively, over ``duration`` seconds.
-    Only works when the clip is included in a CompositeVideoClip.
+    """使剪辑在 ``duration`` 秒内逐渐出现。
+    仅当剪辑包含在 CompositeVideoClip 中时才有效。
     """
 
     duration: float
