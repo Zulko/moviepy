@@ -16,19 +16,22 @@ from moviepy.tools import (
 
 
 class FFMPEG_VideoReader:
-    """Class for video byte-level reading with ffmpeg."""
+    """
+    通过 FFmpeg 以字节流的方式获取视频帧数据。
+    它可以处理视频的解码、帧读取、视频旋转（如 90 度和 270 度）、视频大小调整等任务。
+    """
 
     def __init__(
         self,
-        filename,
-        decode_file=True,
-        print_infos=False,
-        bufsize=None,
-        pixel_format="rgb24",
-        check_duration=True,
-        target_resolution=None,
-        resize_algo="bicubic",
-        fps_source="fps",
+        filename, # 视频文件的路径。
+        decode_file=True, # 是否解码整个文件来获取准确时长，默认为 True。
+        print_infos=False, # 是否打印 FFmpeg 提供的元数据，默认为 False。
+        bufsize=None, # 缓冲区大小，默认为 None，会根据视频大小自动计算。
+        pixel_format="rgb24", # 像素格式，默认为 rgb24。
+        check_duration=True, # 是否检查文件时长，默认为 True。
+        target_resolution=None, # 目标视频分辨率，默认为 None，表示不调整分辨率。
+        resize_algo="bicubic", # 缩放算法，默认为 bicubic（双三次插值）。
+        fps_source="fps", # 获取帧率的数据来源，默认为 "fps"。
     ):
         self.filename = filename
         self.proc = None
@@ -82,11 +85,10 @@ class FFMPEG_VideoReader:
 
     def initialize(self, start_time=0):
         """
-        Opens the file, creates the pipe.
-
-        Sets self.pos to the appropriate value (1 if start_time == 0 because
-        it pre-reads the first frame).
+        打开文件，创建管道。
+        设置 self.pos 为适当的值（如果 start_time == 0，则为 1，因为会预先读取第一帧）。
         """
+
         self.close(delete_lastread=False)  # if any
 
         # self.pos represents the (0-indexed) index of the frame that is next in line
@@ -167,7 +169,7 @@ class FFMPEG_VideoReader:
         self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
-        """Reads and throws away n frames"""
+        """ 读取并丢弃 n 帧" """
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth * w * h)
@@ -177,9 +179,8 @@ class FFMPEG_VideoReader:
 
     def read_frame(self):
         """
-        Reads the next frame from the file.
-        Note that upon (re)initialization, the first frame will already have been read
-        and stored in ``self.last_read``.
+        读取文件中的下一帧。
+        注意：在（重新）初始化时，第一帧会已存在于 ``self.last_read`` 中。
         """
         w, h = self.size
         nbytes = self.depth * w * h
@@ -232,12 +233,11 @@ class FFMPEG_VideoReader:
         return result
 
     def get_frame(self, t):
-        """Read a file video frame at time t.
+        """
+        读取给定时间点 t 的视频帧。
 
-        Note for coders: getting an arbitrary frame in the video with
-        ffmpeg can be painfully slow if some decoding has to be done.
-        This function tries to avoid fetching arbitrary frames
-        whenever possible, by moving between adjacent frames.
+        对开发者的提醒：如果必须解码一些帧，获取任意帧的速度可能非常慢。
+        该函数会尽量避免读取任意帧，而是通过移动到相邻帧来优化。
         """
         # + 1 so that it represents the frame position that it will be
         # after the frame is read. This makes the later comparisons easier.
@@ -263,11 +263,11 @@ class FFMPEG_VideoReader:
 
     @property
     def lastread(self):
-        """Alias of `self.last_read` for backwards compatibility with MoviePy 1.x."""
+        """ 为了与 MoviePy 1.x 版本兼容，`self.last_read` 的别名 """
         return self.last_read
 
     def get_frame_number(self, t):
-        """Helper method to return the frame number at time ``t``"""
+        """ 根据时间 t 获取视频的帧编号 """
         # I used this horrible '+0.00001' hack because sometimes due to numerical
         # imprecisions a 3.0 can become a 2.99999999... which makes the int()
         # go to the previous integer. This makes the fetching more robust when you
@@ -275,7 +275,7 @@ class FFMPEG_VideoReader:
         return int(self.fps * t + 0.00001)
 
     def close(self, delete_lastread=True):
-        """Closes the reader terminating the process, if is still open."""
+        """ 关闭读取器，终止进程（如果仍然打开）。 """
         if self.proc:
             if self.proc.poll() is None:
                 self.proc.terminate()
@@ -825,49 +825,44 @@ def ffmpeg_parse_infos(
     decode_file=False,
     print_infos=False,
 ):
-    """Get the information of a file using ffmpeg.
-
-    Returns a dictionary with next fields:
-
-    - ``"duration"``
-    - ``"metadata"``
-    - ``"inputs"``
-    - ``"video_found"``
-    - ``"video_fps"``
-    - ``"video_n_frames"``
-    - ``"video_duration"``
-    - ``"video_bitrate"``
-    - ``"video_metadata"``
-    - ``"audio_found"``
-    - ``"audio_fps"``
-    - ``"audio_bitrate"``
-    - ``"audio_metadata"``
-    - ``"video_codec_name"``
-    - ``"video_profile"``
-
-    Note that "video_duration" is slightly smaller than "duration" to avoid
-    fetching the incomplete frames at the end, which raises an error.
-
-    Parameters
+    """
+    使用 FFmpeg 获取文件信息。 返回一个包含以下字段的字典：
+    
+    - ``"duration"``（总时长）
+    - ``"metadata"``（元数据）
+    - ``"inputs"``（输入文件信息）
+    - ``"video_found"``（是否找到视频流）
+    - ``"video_fps"``（视频帧率）
+    - ``"video_n_frames"``（视频总帧数）
+    - ``"video_duration"``（视频时长）
+    - ``"video_bitrate"``（视频比特率）
+    - ``"video_metadata"``（视频元数据）
+    - ``"audio_found"``（是否找到音频流）
+    - ``"audio_fps"``（音频采样率）
+    - ``"audio_bitrate"``（音频比特率）
+    - ``"audio_metadata"``（音频元数据）
+    - ``"video_codec_name"``（视频编码格式）
+    - ``"video_profile"``（视频编码配置）
+    
+    请注意，"video_duration" 的值通常比 "duration" 略小，
+    这是为了避免读取视频文件尾部的**不完整帧**，因为这样会导致错误。
+    
+    参数说明
     ----------
-
+    
     filename
-      Name of the file parsed, only used to raise accurate error messages.
-
-    infos
-      Information returned by FFmpeg.
-
+      需要解析的文件名，仅用于报错时提供更准确的错误信息。
+    
     fps_source
-      Indicates what source data will be preferably used to retrieve fps data.
-
+      指定首选的帧率数据来源。
+    
     check_duration
-      Enable or disable the parsing of the duration of the file. Useful to
-      skip the duration check, for example, for images.
-
+      是否启用文件时长解析。对于静态图片，可以跳过该步骤，提高效率。
+    
     decode_file
-      Indicates if the whole file must be read to retrieve their duration.
-      This is needed for some files in order to get the correct duration (see
-      https://github.com/Zulko/moviepy/pull/1222).
+      是否读取整个文件来获取精确的时长信息。
+      某些文件（例如 VFR 变帧率视频）可能需要完整解码才能得到正确的时长。
+      参考：https://github.com/Zulko/moviepy/pull/1222
     """
     # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-hide_banner", "-i", ffmpeg_escape_filename(filename)]

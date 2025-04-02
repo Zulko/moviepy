@@ -376,38 +376,30 @@ class Clip:
         self.memoize = memoize
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
+    # 这个装饰器会将 start_time 和 end_time 转换为秒。
+    # 比如 "01:03:05.35" 这样的时间字符串会转换成 1 * 3600 + 3 * 60 + 5.35 = 3785.35 秒。
+    # (min, sec) 这种元组也会自动转换成秒数。
     @apply_to_mask
     @apply_to_audio
+    # 这些装饰器确保如果 self 有 mask（蒙版）或 audio（音频），那么截取的 mask 和 audio 也会相应调整。
     def subclipped(self, start_time=0, end_time=None):
-        """Returns a clip playing the content of the current clip between times
-        ``start_time`` and ``end_time``, which can be expressed in seconds
-        (15.35), in (min, sec), in (hour, min, sec), or as a string:
-        '01:03:05.35'.
+        """
+            返回在时间“start_time”和“end_time”之间播放当前剪辑内容的剪辑，
+            可以用秒（15.35）、（分钟，秒）、（小时，分钟，秒）或字符串表示：'01:03:05.35'。
 
-        The ``mask`` and ``audio`` of the resulting subclip will be subclips of
-        ``mask`` and ``audio`` the original clip, if they exist.
-
-        It's equivalent to slice the clip as a sequence, like
-        ``clip[t_start:t_end]``.
-
-        Parameters
+            如果存在，则生成的子剪辑的“mask”和“audio”将是原始剪辑的“mask”和“audio”的子剪辑。
+            相当于将剪辑切片为序列，例如“clip[t_start:t_end]”。
+        参数
         ----------
+            start_time：浮点数或元组或字符串，可选
+            将选择为生成剪辑的开头的时刻。如果为负数，则将其重置为“clip.duration + start_time”。
+            end_time：浮点数或元组或字符串，可选
+            选择为所生成剪辑的结束时刻。如果未提供，则假定为剪辑的持续时间（可能为无限）。如果为负数，则将其重置为“clip.duration + end_time”。
 
-        start_time : float or tuple or str, optional
-          Moment that will be chosen as the beginning of the produced clip. If
-          is negative, it is reset to ``clip.duration + start_time``.
-
-        end_time : float or tuple or str, optional
-          Moment that will be chosen as the end of the produced clip. If not
-          provided, it is assumed to be the duration of the clip (potentially
-          infinite). If is negative, it is reset to ``clip.duration + end_time``.
-          For instance:
-
-          >>> # cut the last two seconds of the clip:
-          >>> new_clip = clip.subclipped(0, -2)
-
-          If ``end_time`` is provided or if the clip has a duration attribute,
-          the duration of the returned clip is set automatically.
+        例如：
+            >>> # 剪切剪辑的最后两秒：
+            >>> new_clip = clip.subclipped(0, -2)
+            如果提供了“end_time”或剪辑具有持续时间属性，则自动设置返回剪辑的持续时间。
         """
         if start_time < 0:
             # Make this more Python-like, a negative value means to move

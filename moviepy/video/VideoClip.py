@@ -43,67 +43,41 @@ from moviepy.video.io.gif_writers import write_gif_with_imageio
 
 
 class VideoClip(Clip):
-    """Base class for video clips.
+    """
+        视频剪辑的基类。
+        参考 `VideoFileClip`、`ImageClip` 等更易用的类。
 
-    See ``VideoFileClip``, ``ImageClip`` etc. for more user-friendly classes.
-
-
-    Parameters
-    ----------
-
-    is_mask
-      `True` if the clip is going to be used as a mask.
-
-    duration
-      Duration of the clip in seconds. If None we got a clip of infinite
-      duration
-
-    has_constant_size
-      Define if clip size is constant or if it may vary with time. Default
-      to True
-
-
-
-    Attributes
-    ----------
-
-    size
-      The size of the clip, (width,height), in pixels.
-
-    w, h
-      The width and height of the clip, in pixels.
-
-    is_mask
-      Boolean set to `True` if the clip is a mask.
-
-    frame_function
-      A function ``t-> frame at time t`` where ``frame`` is a
-      w*h*3 RGB array.
-
-    mask (default None)
-      VideoClip mask attached to this clip. If mask is ``None``,
-                The video clip is fully opaque.
-
-    audio (default None)
-      An AudioClip instance containing the audio of the video clip.
-
-    pos
-      A function ``t->(x,y)`` where ``x,y`` is the position
-      of the clip when it is composed with other clips.
-      See ``VideoClip.set_pos`` for more details
-
-    relative_pos
-      See variable ``pos``.
-
-    layer
-      Indicates which clip is rendered on top when two clips overlap in
-      a CompositeVideoClip. The highest number is rendered on top.
-      Default is 0.
-
+        属性
+        ----------
+        size
+          剪辑的尺寸（宽度，高度），单位为像素。
+        w, h
+          剪辑的宽度 (`w`) 和高度 (`h`)，单位为像素。
+        is_mask
+          如果剪辑是遮罩，则该值为 `True`。
+        frame_function
+          一个函数 `t -> frame at time t`，用于在时间 `t` 获取当前帧图像。
+          其中 `frame` 是一个 `w*h*3` 的 RGB 数组。
+        mask (默认值 `None`)
+          该剪辑附带的遮罩。如果 `mask` 为 `None`，则该视频剪辑完全不透明。
+        audio (默认值 `None`)
+          该剪辑的音频部分，为 `AudioClip` 实例。
+        pos
+          一个函数 `t -> (x,y)`，用于指定该剪辑在合成多个剪辑时的位置。
+          详见 `VideoClip.set_pos` 方法。
+        relative_pos
+          见变量 `pos`。
+        layer
+          当多个剪辑在 `CompositeVideoClip` 中重叠时，该值用于确定层级顺序。
+          值越大，剪辑越靠上（优先渲染）。默认值为 `0`。
     """
 
     def __init__(
-        self, frame_function=None, is_mask=False, duration=None, has_constant_size=True
+        self,
+            frame_function=None,
+            is_mask=False, # 如果该剪辑用作遮罩（mask），则为 `True`。
+            duration=None, # 剪辑的时长（秒）。如果为 `None`，则表示剪辑时长无限。
+            has_constant_size=True # 指定剪辑的尺寸是否固定。如果 `True`，表示尺寸恒定；如果 `False`，表示尺寸可能随时间变化。默认值为 `True`。
     ):
         super().__init__()
         self.mask = None
@@ -638,7 +612,7 @@ class VideoClip(Clip):
         )
 
     # -----------------------------------------------------------------
-    # F I L T E R I N G
+    # F I L T E R I N G  过滤
 
     def with_effects_on_subclip(
         self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
@@ -859,28 +833,40 @@ class VideoClip(Clip):
         return background_mask
 
     def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
-        """Place the clip on a colored background.
+        """
+        功能：
+        该方法可以将当前的剪辑（可能是透明的）放置在一个指定颜色的背景上，生成一个新的剪辑。
+        它可以用于给透明的剪辑添加背景色，或者调整剪辑的大小和位置。
 
-        Returns a clip made of the current clip overlaid on a color
-        clip of a possibly bigger size. Can serve to flatten transparent
-        clips.
+        参数：
+        size：
+        类型：tuple（宽度, 高度）
+        描述：最终生成的视频的大小。如果未提供，默认为当前剪辑的大小。
 
-        Parameters
-        ----------
+        color：
+        类型：tuple（R, G, B）
+        描述：背景的颜色，默认为黑色 (0, 0, 0)，即 RGB 值为 (0, 0, 0)。
 
-        size
-          Size (width, height) in pixels of the final clip.
-          By default it will be the size of the current clip.
+        pos：
+        类型：str 或 tuple
+        描述：剪辑在最终视频中的位置。默认为 "center"，即将剪辑放在背景的中央。可以传入具体的位置坐标（如 (x, y)）。
 
-        color
-          Background color of the final clip ([R,G,B]).
+        opacity：
+        类型：float（0 到 1 之间）
+        描述：背景色的透明度。如果未提供，背景色将是完全不透明的。如果提供，值范围为 0 到 1，0 表示完全透明，1 表示完全不透明。
 
-        pos
-          Position of the clip in the final clip. 'center' is the default
+        功能：
+            将当前的剪辑放在一个背景色为指定颜色的图层上。
+            可以用来将透明剪辑放置在有背景色的区域中。
+            可以指定最终视频的大小和剪辑的位置。
 
-        opacity
-          Parameter in 0..1 indicating the opacity of the colored
-          background.
+        工作原理：
+            如果 opacity 被设置了，则背景颜色的透明度将根据 opacity 参数调整。通过使用 ColorClip 创建一个背景色的剪辑，并设置透明度，然后将背景剪辑和当前剪辑合成在一起。
+            如果没有设置 opacity，则背景为不透明，直接合成。
+            最终返回一个合成后的 CompositeVideoClip，其中包含当前剪辑和背景。
+
+        返回值：
+            返回一个新的 CompositeVideoClip，这个剪辑由当前剪辑和背景色的剪辑合成而成。
         """
         from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
@@ -1020,8 +1006,21 @@ class VideoClip(Clip):
         self.layer_index = index
 
     def resized(self, new_size=None, height=None, width=None, apply_to_mask=True):
-        """Returns a video clip that is a resized version of the clip.
-        For info on the parameters, please see ``vfx.Resize``
+        """
+        参数说明：
+        new_size: 新的视频大小，可以是一个 (width, height) 的元组，用于同时设置宽度和高度。如果提供了该参数，则 height 和 width 可以忽略。
+        height: 新的视频高度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
+        width: 新的视频宽度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
+        apply_to_mask: 一个布尔值，指示是否将重设大小的效果应用到视频的蒙版（mask）上。如果为 True，则蒙版会随视频一起被重设大小。默认为 True。
+
+        功能：
+        该方法通过调用 with_effects 方法，将一个 Resize 效果应用到视频剪辑上，生成一个新的调整大小后的剪辑。
+        Resize 类是一个视频效果类，用于调整视频的大小，具体的行为由传入的参数决定。
+        该方法的关键作用是通过 Resize 将视频尺寸进行变更，并且可以选择是否将效果应用到蒙版上。
+
+        返回值：
+        返回一个经过调整尺寸（重设大小）的视频剪辑。
+        有关参数的更多信息，请参见 ``vfx.Resize``。
         """
         return self.with_effects(
             [
@@ -1044,10 +1043,27 @@ class VideoClip(Clip):
         translate: tuple = None,
         bg_color: tuple = None,
     ):
-        """Rotates the specified clip by ``angle`` degrees (or radians) anticlockwise
-        If the angle is not a multiple of 90 (degrees) or ``center``, ``translate``,
-        and ``bg_color`` are not ``None``.
-        For info on the parameters, please see ``vfx.Rotate``
+        """
+        通过 ``angle`` 角度（度数或弧度）逆时针旋转指定的剪辑。
+        如果角度不是 90 的倍数，或者 ``center``、``translate`` 和 ``bg_color`` 不是 ``None``，则会进行更复杂的旋转。
+        有关参数的更多信息，请参见 ``vfx.Rotate``。
+
+        参数说明：
+        angle: 旋转角度。表示旋转的度数或弧度数。该角度是逆时针方向的。如果角度不是 90 的倍数，或者提供了 center、translate 或 bg_color，则会进行复杂的旋转操作。
+        unit: 角度的单位，默认为 "deg"（度）。如果设置为 "rad"，则角度将以弧度为单位进行旋转。
+        resample: 重采样方法，控制旋转后的图像质量。默认为 "bicubic"，这通常用于图像处理中的平滑重采样。
+        expand: 布尔值，指示是否扩展图像以适应旋转后的新大小。如果为 True，图像大小会根据旋转后的内容进行自动扩展，否则图像会裁剪掉多余的部分。
+        center: 一个二元组 (x, y)，指定旋转中心点。如果为 None，旋转将在剪辑的中心进行。
+        translate: 一个二元组 (dx, dy)，表示旋转后对图像的平移（移动）。这会在旋转过程中改变剪辑的位置。
+        bg_color: 背景颜色，指定旋转时可能出现的空白区域的填充颜色。这个参数通常与 expand=True 配合使用。
+
+        功能：
+            该方法通过调用 with_effects 方法，将一个 Rotate 效果应用到视频剪辑上，实现旋转操作。
+            Rotate 类是一个视频效果类，专门用于旋转视频。在旋转时，如果角度不是 90 的倍数，或者需要使用指定的旋转中心、平移或背景色时，旋转操作会变得更复杂。
+            这个方法允许对旋转进行精确控制，能够选择旋转中心、旋转后图像的处理方式（是否扩展、平移等），并且可以设置背景颜色。
+
+        返回值：
+        返回一个新的视频剪辑，经过旋转后的效果。
         """
         return self.with_effects(
             [
@@ -1074,11 +1090,29 @@ class VideoClip(Clip):
         x_center: int = None,
         y_center: int = None,
     ):
-        """Returns a new clip in which just a rectangular subregion of the
-        original clip is conserved. x1,y1 indicates the top left corner and
-        x2,y2 is the lower right corner of the cropped region.
-        All coordinates are in pixels. Float numbers are accepted.
-        For info on the parameters, please see ``vfx.Crop``
+        """
+        返回一个新的剪辑，其中仅保留原始剪辑中的矩形子区域。
+        x1,y1 表示裁剪区域的左上角，x2,y2 表示裁剪区域的右下角。
+        所有坐标均以像素为单位。可以接受浮动数值。
+        有关参数的更多信息，请参见 ``vfx.Crop``。
+
+        参数说明：
+        x1: 裁剪区域左上角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
+        y1: 裁剪区域左上角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
+        x2: 裁剪区域右下角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
+        y2: 裁剪区域右下角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
+        width: 如果提供了这个值，它会指定裁剪区域的宽度。x1 和 y1 定义了裁剪区域的起始位置，width 会指定裁剪区域的宽度。
+        height: 如果提供了这个值，它会指定裁剪区域的高度。y1 和 x1 定义了裁剪区域的起始位置，height 会指定裁剪区域的高度。
+        x_center: 裁剪区域的 x 轴中心。通过 x_center 和 width，可以定义裁剪区域的中心和宽度。
+        y_center: 裁剪区域的 y 轴中心。通过 y_center 和 height，可以定义裁剪区域的中心和高度。
+
+        功能：
+            这个方法会返回一个新的剪辑，裁剪出的区域是原始剪辑的一部分。裁剪是通过调用 Crop 效果实现的，Crop 类会根据传入的参数裁剪出一个矩形区域。
+            如果同时提供了 x1, y1 和 x2, y2，它们表示裁剪区域的左上角和右下角。如果提供了 width 和 height，则从左上角 x1, y1 位置开始，裁剪出指定大小的矩形区域。
+            如果指定了 x_center 和 y_center，则裁剪区域将围绕这个中心点展开。
+
+        返回值：
+            返回一个新的 VideoClip，其中包含裁剪后的部分。
         """
         return self.with_effects(
             [
