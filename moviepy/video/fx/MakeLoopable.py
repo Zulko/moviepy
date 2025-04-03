@@ -8,14 +8,12 @@ from moviepy.video.fx.CrossFadeIn import CrossFadeIn
 
 @dataclass
 class MakeLoopable(Effect):
-    """Makes the clip fade in progressively at its own end, this way it can be
-    looped indefinitely.
+    """使剪辑在自己的结束逐渐淡入，这种方式可以无限循环
 
     Parameters
     ----------
-
-    overlap_duration : float
-      Duration of the fade-in (in seconds).
+    重叠持续时间：浮点数
+        淡入持续时间（以秒为单位）。
     """
 
     overlap_duration: float

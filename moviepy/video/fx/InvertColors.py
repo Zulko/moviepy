@@ -6,10 +6,10 @@ from moviepy.Effect import Effect
 
 @dataclass
 class InvertColors(Effect):
-    """Returns the color-inversed clip.
+    """返回颜色反转的剪辑。
 
-    The values of all pixels are replaced with (255-v) or (1-v) for masks
-    Black becomes white, green becomes purple, etc.
+    对于遮罩，所有像素的值都替换为（255-v）或（1-v
+    黑色变成白色，绿色变成紫色，等等。
     """
 
     def apply(self, clip: Clip) -> Clip:

@@ -6,7 +6,7 @@ from moviepy.Effect import Effect
 
 @dataclass
 class LumContrast(Effect):
-    """Luminosity-contrast correction of a clip."""
+    """剪辑的亮度对比度校正。"""
 
     lum: float = 0
     contrast: float = 0
