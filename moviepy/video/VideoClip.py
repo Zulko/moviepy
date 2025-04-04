@@ -18,7 +18,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
-
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
 
@@ -73,11 +72,11 @@ class VideoClip(Clip):
     """
 
     def __init__(
-        self,
+            self,
             frame_function=None,
-            is_mask=False, # 如果该剪辑用作遮罩（mask），则为 `True`。
-            duration=None, # 剪辑的时长（秒）。如果为 `None`，则表示剪辑时长无限。
-            has_constant_size=True # 指定剪辑的尺寸是否固定。如果 `True`，表示尺寸恒定；如果 `False`，表示尺寸可能随时间变化。默认值为 `True`。
+            is_mask=False,  # 如果该剪辑用作遮罩（mask），则为 `True`。
+            duration=None,  # 剪辑的时长（秒）。如果为 `None`，则表示剪辑时长无限。
+            has_constant_size=True  # 指定剪辑的尺寸是否固定。如果 `True`，表示尺寸恒定；如果 `False`，表示尺寸可能随时间变化。默认值为 `True`。
     ):
         super().__init__()
         self.mask = None
@@ -182,26 +181,26 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     @convert_path_to_string(["filename", "temp_audiofile", "temp_audiofile_path"])
     def write_videofile(
-        self,
-        filename,
-        fps=None,
-        codec=None,
-        bitrate=None,
-        audio=True,
-        audio_fps=44100,
-        preset="medium",
-        audio_nbytes=4,
-        audio_codec=None,
-        audio_bitrate=None,
-        audio_bufsize=2000,
-        temp_audiofile=None,
-        temp_audiofile_path="",
-        remove_temp=True,
-        write_logfile=False,
-        threads=None,
-        ffmpeg_params=None,
-        logger="bar",
-        pixel_format=None,
+            self,
+            filename,
+            fps=None,
+            codec=None,
+            bitrate=None,
+            audio=True,
+            audio_fps=44100,
+            preset="medium",
+            audio_nbytes=4,
+            audio_codec=None,
+            audio_bitrate=None,
+            audio_bufsize=2000,
+            temp_audiofile=None,
+            temp_audiofile_path="",
+            remove_temp=True,
+            write_logfile=False,
+            threads=None,
+            ffmpeg_params=None,
+            logger="bar",
+            pixel_format=None,
     ):
         """
         用于将剪辑（clip）保存为视频文件的方法。它会根据用户提供的参数生成一个视频文件，
@@ -291,7 +290,7 @@ class VideoClip(Clip):
 
         audiofile = audio if isinstance(audio, str) else None
         make_audio = (
-            (audiofile is None) and (audio is True) and (self.audio is not None)
+                (audiofile is None) and (audio is True) and (self.audio is not None)
         )
 
         if make_audio and temp_audiofile:
@@ -347,7 +346,7 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(
-        self, name_format, fps=None, with_mask=True, logger="bar"
+            self, name_format, fps=None, with_mask=True, logger="bar"
     ):
         """
         方法功能
@@ -393,11 +392,11 @@ class VideoClip(Clip):
     @convert_masks_to_RGB
     @convert_path_to_string("filename")
     def write_gif(
-        self,
-        filename,
-        fps=None,
-        loop=0,
-        logger="bar",
+            self,
+            filename,
+            fps=None,
+            loop=0,
+            logger="bar",
     ):
         """
         这个方法的作用是将一个 VideoClip 转换成一个动画 GIF 文件。具体来说，它使用 imageio 库来进行 GIF 文件的创建。
@@ -469,7 +468,7 @@ class VideoClip(Clip):
     @requires_duration
     @convert_masks_to_RGB
     def preview(
-        self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
+            self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
     ):
         """
         在窗口中以给定的每秒帧数显示剪辑。
@@ -524,7 +523,7 @@ class VideoClip(Clip):
     # F I L T E R I N G  过滤
 
     def with_effects_on_subclip(
-        self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
+            self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
     ):
         """Apply a transformation to a part of the clip.
 
@@ -734,10 +733,11 @@ class VideoClip(Clip):
         # So, by adding two layer of 50% and 40% opacity my finaly opacity is only
         # of (100-30)*100 = 70% opacity !
         background_mask[y_start:y_end, x_start:x_end] = background_mask[
-            y_start:y_end, x_start:x_end
-        ] + clip_mask[clip_y_start:clip_y_end, clip_x_start:clip_x_end] * (
-            1 - background_mask[y_start:y_end, x_start:x_end]
-        )
+                                                        y_start:y_end, x_start:x_end
+                                                        ] + clip_mask[clip_y_start:clip_y_end,
+                                                            clip_x_start:clip_x_end] * (
+                                                                1 - background_mask[y_start:y_end, x_start:x_end]
+                                                        )
 
         return background_mask
 
@@ -795,9 +795,9 @@ class VideoClip(Clip):
             )
 
         if (
-            isinstance(self, ImageClip)
-            and (not hasattr(pos, "__call__"))
-            and ((self.mask is None) or isinstance(self.mask, ImageClip))
+                isinstance(self, ImageClip)
+                and (not hasattr(pos, "__call__"))
+                and ((self.mask is None) or isinstance(self.mask, ImageClip))
         ):
             new_result = result.to_ImageClip()
             if result.mask is not None:
@@ -808,7 +808,7 @@ class VideoClip(Clip):
 
     @outplace
     def with_updated_frame_function(
-        self, frame_function: Callable[[float], np.ndarray]
+            self, frame_function: Callable[[float], np.ndarray]
     ):
         """Change the clip's ``get_frame``.
 
@@ -936,14 +936,14 @@ class VideoClip(Clip):
         )
 
     def rotated(
-        self,
-        angle: float,
-        unit: str = "deg",
-        resample: str = "bicubic",
-        expand: bool = False,
-        center: tuple = None,
-        translate: tuple = None,
-        bg_color: tuple = None,
+            self,
+            angle: float,
+            unit: str = "deg",
+            resample: str = "bicubic",
+            expand: bool = False,
+            center: tuple = None,
+            translate: tuple = None,
+            bg_color: tuple = None,
     ):
         """
         通过 ``angle`` 角度（度数或弧度）逆时针旋转指定的剪辑。
@@ -982,15 +982,15 @@ class VideoClip(Clip):
         )
 
     def cropped(
-        self,
-        x1: int = None,
-        y1: int = None,
-        x2: int = None,
-        y2: int = None,
-        width: int = None,
-        height: int = None,
-        x_center: int = None,
-        y_center: int = None,
+            self,
+            x1: int = None,
+            y1: int = None,
+            x2: int = None,
+            y2: int = None,
+            width: int = None,
+            height: int = None,
+            x_center: int = None,
+            y_center: int = None,
     ):
         """
         返回一个新的剪辑，其中仅保留原始剪辑中的矩形子区域。
@@ -1230,27 +1230,20 @@ class ImageClip(VideoClip):
     --------
     >>> clip = ImageClip("myHouse.jpeg")
     >>> clip = ImageClip( someArray ) # 一个表示图像的 Numpy 数组
-    参数
-    ----------
-    img
-      任何图片文件（png、tiff、jpeg 等）的字符串或路径类对象，
-      或表示 RGB 图像的任何数组（例如来自 VideoClip 的帧）。
-
-    is_mask
-      如果剪辑是遮罩，请将此参数设置为 `True`。
-
-    transparent
-      如果要将图片的 alpha 层（如果存在）用作遮罩，请将此参数设置为 `True`（默认）。
 
     属性
     ----------
     img
       表示剪辑图像的数组。
-
     """
 
     def __init__(
-        self, img, is_mask=False, transparent=True, fromalpha=False, duration=None
+            self,
+            img,  # 任何图片文件（png、tiff、jpeg 等）的字符串或路径类对象， 或表示 RGB 图像的任何数组（例如来自 VideoClip 的帧）。
+            is_mask=False,  # 如果剪辑是遮罩，请将此参数设置为 `True`。
+            transparent=True,  # 如果要将图片的 alpha 层（如果存在）用作遮罩，请将此参数设置为 `True`（默认）。
+            fromalpha=False,
+            duration=None # 剪辑的持续时间。
     ):
         VideoClip.__init__(self, is_mask=is_mask, duration=duration)
 
@@ -1337,23 +1330,19 @@ class ImageClip(VideoClip):
 # ColorClip 类继承自 ImageClip 类，表示它是一个静态图像剪辑，但它显示的是单一颜色。
 # 它可以用于创建背景、遮罩或简单的颜色填充效果。
 class ColorClip(ImageClip):
-    """一个只显示一种颜色的 ImageClip。
+    """一个只显示一种颜色的 ImageClip。"""
 
-    参数
-    ----------
-    size
-      剪辑的尺寸元组（宽度，高度），以像素为单位。
-
-    color 剪辑的颜色
-      如果 is_mask 为 False，则 color 是一个 RGB 元组，例如 (255, 0, 0) 表示红色。
-      如果 is_mask 为 True，则 color 是一个 0 到 1 之间的浮点数，表示遮罩的不透明度。
-      如果 color 为 None，则默认颜色为黑色（is_mask 为 False）或 0（is_mask 为 True）。
-
-    is_mask
-      如果剪辑将用作遮罩，则设置为 true。
-    duration: 剪辑的持续时间。
-    """
-    def __init__(self, size, color=None, is_mask=False, duration=None):
+    def __init__(
+            self,
+            size, # 剪辑的尺寸元组（宽度，高度），以像素为单位。
+            color=None,
+            #     color 剪辑的颜色
+            #       如果 is_mask 为 False，则 color 是一个 RGB 元组，例如 (255, 0, 0) 表示红色。
+            #       如果 is_mask 为 True，则 color 是一个 0 到 1 之间的浮点数，表示遮罩的不透明度。
+            #       如果 color 为 None，则默认颜色为黑色（is_mask 为 False）或 0（is_mask 为 True）。
+            is_mask=False, # 如果剪辑将用作遮罩，则设置为 true。
+            duration=None # 剪辑的持续时间。
+    ):
         w, h = size
 
         if is_mask:
@@ -1377,6 +1366,7 @@ class ColorClip(ImageClip):
             np.tile(color, w * h).reshape(shape), is_mask=is_mask, duration=duration
         )
 
+
 # TextClip 类继承自 ImageClip 类，表示它是一个静态图像剪辑，但它显示的是文本。
 # TextClip 类用于创建由文本生成的视频剪辑。
 # 它允许您指定字体、文本、大小、颜色、边距等参数。
@@ -1385,57 +1375,7 @@ class TextClip(ImageClip):
     自动生成文本剪辑的类。
     创建一个由脚本生成的文本图像产生的 ImageClip。
 
-    参数
-    ----------
-    font
-      要使用的字体的路径。必须是 OpenType 字体。如果设置为 None（默认），将使用 Pillow 默认字体。
-    text
-      要写入的文本字符串。可以使用参数 ``filename`` 替换。
-    filename
-      包含要写入的文本的文件的名称，作为字符串或路径类对象。
-      可以代替参数 ``text`` 提供。
-    font_size
-      字体大小，以磅为单位。如果 method='caption' 或 method='label' 且设置了 size，则可以自动设置。
-    size
-      图片的尺寸，以像素为单位。如果 method='label' 且 font_size 已设置，则可以自动设置；
-      如果 method='caption'，则必须设置。如果定义了 font_size，则 caption 的高度可以为 None，
-      它将自动确定。
-    margin
-      要添加到文本周围的边距，作为两个（对称）或四个（不对称）的元组。
-      可以是 ``(水平, 垂直)`` 或 ``(左, 上, 右, 下)``。默认情况下，没有边距 (None, None)。
-      这对于自动计算尺寸以给文本一些额外空间特别有用。
-    color
-      文本的颜色。默认为“黑色”。可以是 RGB（或 RGBA，如果 transparent = ``True``）``tuple``、颜色名称或十六进制表示法。
-    bg_color
-      背景颜色。如果不需要背景，则默认为 None。可以是 RGB（或 RGBA，如果 transparent = ``True``）``tuple``、颜色名称或十六进制表示法。
-    stroke_color
-      文本的描边（=轮廓线）颜色。如果为 ``None``，则没有描边。
-    stroke_width
-      描边的宽度，以像素为单位。必须是整数。
-    method
-      可以是：
-        - 'label'（默认），图片将自动调整大小以适应文本，
-          如果提供了宽度，则自动计算字体大小；如果定义了字体大小，则自动计算宽度和高度。
-
-        - 'caption'，文本将在使用 ``size`` 参数提供的固定尺寸的图片中绘制。
-          文本将自动换行，如果提供了宽度和高度，则自动计算字体大小；
-          如果定义了字体大小，则在必要时添加换行符。
-
-    text_align
-      center | left | right。类似于 CSS 的文本对齐方式。默认为 ``left``。
-    horizontal_align
-      center | left | right。定义图像中文本块的水平对齐方式。默认为 ``center``。
-    vertical_align
-      center | top | bottom。定义图像中文本块的垂直对齐方式。默认为 ``center``。
-    interline
-      行间距。默认为 ``4``。
-    transparent
-      如果希望考虑图像中的透明度，则为 ``True``（默认）。
-    duration
-        剪辑的持续时间
-
     .. note::
-
       ** 关于最终 TextClip 尺寸 **
 
       最终 TextClip 尺寸将是字体和行数的绝对最大高度。
@@ -1450,30 +1390,45 @@ class TextClip(ImageClip):
 
     @convert_path_to_string("filename")
     def __init__(
-        self,
-        font=None,
-        text=None,
-        filename=None,
-        font_size=None,
-        size=(None, None),
-        margin=(None, None),
-        color="black",
-        bg_color=None,
-        stroke_color=None,
-        stroke_width=0,
-        method="label",
-        text_align="left",
-        horizontal_align="center",
-        vertical_align="center",
-        interline=4,
-        transparent=True,
-        duration=None,
+            self,
+            font=None,  # 要使用的字体的路径。必须是 OpenType 字体。如果设置为 None（默认），将使用 Pillow 默认字体。
+            text=None,  # 要写入的文本字符串。可以使用参数 ``filename`` 替换。
+            filename=None,  # 包含要写入的文本的文件的名称，作为字符串或路径类对象。 可以代替参数 ``text`` 提供。
+            font_size=None,  # 字体大小，以磅为单位。如果 method='caption' 或 method='label' 且设置了 size，则可以自动设置。
+            size=(None, None),
+            #     size
+            #       （字体区域的大小）图片的尺寸，以像素为单位。如果 method='label' 且 font_size 已设置，则可以自动设置；
+            #       如果 method='caption 字幕'，则必须设置。如果定义了 font_size，则 caption 的高度可以为 None，
+            #       它将自动确定。
+            margin=(None, None),
+            #     margin
+            #       要添加到文本周围的边距，作为两个（对称）或四个（不对称）的元组。
+            #       可以是 ``(水平, 垂直)`` 或 ``(左, 上, 右, 下)``。默认情况下，没有边距 (None, None)。
+            #       这对于自动计算尺寸以给文本一些额外空间特别有用。
+            color="black",  # 文本的颜色。默认为“黑色”。可以是 RGB（或 RGBA，如果 transparent = ``True``）``tuple``、颜色名称或十六进制表示法。
+            bg_color=None,  # 背景颜色。如果不需要背景，则默认为 None。可以是 RGB（或 RGBA，如果 transparent = ``True``）``tuple``、颜色名称或十六进制表示法。
+            stroke_color=None,  # 文本的描边（=轮廓线）颜色。如果为 ``None``，则没有描边。
+            stroke_width=0,  # 描边的宽度，以像素为单位。必须是整数。
+            method="label",
+            #     method
+            #       可以是：
+            #         - 'label'（默认），图片将自动调整大小以适应文本，
+            #           如果提供了宽度，则自动计算字体大小；如果定义了字体大小，则自动计算宽度和高度。
+            #
+            #         - 'caption'，文本将在使用 ``size`` 参数提供的固定尺寸的图片中绘制。
+            #           文本将自动换行，如果提供了宽度和高度，则自动计算字体大小；
+            #           如果定义了字体大小，则在必要时添加换行符。
+            text_align="left",  # center | left | right。类似于 CSS 的文本对齐方式。默认为 ``left``。
+            horizontal_align="center",  # center | left | right。定义图像中文本块的水平对齐方式。默认为 ``center``。
+            vertical_align="center",  # center | top | bottom。定义图像中文本块的垂直对齐方式。默认为 ``center``。
+            interline=4,  # 行间距。默认为 ``4``。
+            transparent=True,  # 如果希望考虑图像中的透明度，则为 ``True``（默认）。
+            duration=None,  # 剪辑的持续时间
     ):
         """
         这段代码实现了 TextClip 类的构造函数，用于创建由文本生成的视频剪辑。它处理字体加载、文本读取、尺寸计算、图像创建和文本绘制等任务。
         它还根据 method 参数实现了 "caption" 和 "label" 两种文本布局方法。
         """
-
         if font is not None:
             # 如果提供了 font 参数，则尝试使用 ImageFont.truetype(font) 加载字体。
             # 如果加载失败，则抛出 ValueError，指示字体无效。
@@ -1490,7 +1445,7 @@ class TextClip(ImageClip):
             # 如果提供了 filename 参数，则打开文件并读取文本内容。
             # text = file.read().rstrip()：读取文件内容并删除末尾的换行符。
             with open(filename, "r") as file:
-                text = file.read().rstrip()  # Remove newline at end
+                text = file.read().rstrip()  # 删除结尾处的换行符
 
         if text is None:
             # 如果 text 和 filename 都没有提供，则抛出 ValueError，指示缺少文本。
@@ -1518,7 +1473,7 @@ class TextClip(ImageClip):
         # Compute all img and text sizes if some are missing
         img_width, img_height = size
 
-        if method == "caption": # (标题/字幕)
+        if method == "caption":  # (标题/字幕)
             if img_width is None:
                 # 如果 method 为 "caption"，则 img_width 必须提供 img_height 和 font_size 可以自动计算。
                 raise ValueError("当方法是caption(标题/字幕)时，尺寸是必需的")
@@ -1619,7 +1574,7 @@ class TextClip(ImageClip):
             # 如果背景颜色为 None 且 transparent 为 True，则设置背景颜色为透明黑色。
             bg_color = (0, 0, 0, 0)
 
-        img = Image.new(img_mode, (img_width, img_height), color=bg_color) # 创建新的图像。
+        img = Image.new(img_mode, (img_width, img_height), color=bg_color)  # 创建新的图像。
 
         # 加载字体。
         if font:
@@ -1660,8 +1615,8 @@ class TextClip(ImageClip):
         # 总是有一个无用的保证金（上升和顶部之间的差异）在任何
         # 文本。这意味着我们的Y实际上不是从0到顶部，而是需要从0到顶部。
         # 递增，因为我们必须从基线开始参考。
-        (ascent, _) = pil_font.getmetrics() # 获取字体的 ascent。
-        y += ascent # 调整 y 坐标，以基于基线绘制文本。
+        (ascent, _) = pil_font.getmetrics()  # 获取字体的 ascent。
+        y += ascent  # 调整 y 坐标，以基于基线绘制文本。
 
         # 向起点添加边距和描边大小
         y += top_margin
@@ -1683,7 +1638,7 @@ class TextClip(ImageClip):
         )
 
         # 我们只需要图像作为一个numpy数组
-        img_numpy = np.array(img) # 将图像转换为 NumPy 数组。
+        img_numpy = np.array(img)  # 将图像转换为 NumPy 数组。
 
         # 调用父类 ImageClip 的构造函数。
         ImageClip.__init__(
@@ -1695,7 +1650,7 @@ class TextClip(ImageClip):
         self.stroke_color = stroke_color
 
     def __break_text(
-        self, width, text, font, font_size, stroke_width, align, spacing
+            self, width, text, font, font_size, stroke_width, align, spacing
     ) -> List[str]:
         """Break text to never overflow a width"""
         img = Image.new("RGB", (1, 1))
@@ -1732,7 +1687,7 @@ class TextClip(ImageClip):
                 # to previous char
                 if last_space:
                     lines.append(temp_line[0:last_space])
-                    current_line = temp_line[last_space + 1 : index + 1]
+                    current_line = temp_line[last_space + 1: index + 1]
                     last_space = 0
                 else:
                     lines.append(current_line[0:index])
@@ -1747,15 +1702,15 @@ class TextClip(ImageClip):
         return lines
 
     def __find_text_size(
-        self,
-        text,
-        font,
-        font_size,
-        stroke_width,
-        align,
-        spacing,
-        max_width=None,
-        allow_break=False,
+            self,
+            text,
+            font,
+            font_size,
+            stroke_width,
+            align,
+            spacing,
+            max_width=None,
+            allow_break=False,
     ) -> tuple[int, int]:
         """Find *real* dimensions a text will occupy, return a tuple (width, height)
 
@@ -1843,15 +1798,15 @@ class TextClip(ImageClip):
         return (int(right - left), int(lines_height + paddings))
 
     def __find_optimum_font_size(
-        self,
-        text,
-        font,
-        stroke_width,
-        align,
-        spacing,
-        width,
-        height=None,
-        allow_break=False,
+            self,
+            text,
+            font,
+            stroke_width,
+            align,
+            spacing,
+            width,
+            height=None,
+            allow_break=False,
     ):
         """Find the best font size to fit as optimally as possible
         in a box of some width and optionally height
@@ -1913,7 +1868,7 @@ class BitmapClip(VideoClip):
 
     @convert_parameter_to_seconds(["duration"])
     def __init__(
-        self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
+            self, bitmap_frames, *, fps=None, duration=None, color_dict=None, is_mask=False
     ):
         """从位图表示创建 VideoClip 对象。主要用于测试套件。
 

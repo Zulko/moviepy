@@ -18,16 +18,15 @@ from moviepy.tools import extensions_dict
 
 
 class AudioClip(Clip):
-    """Base class for audio clips.
+    """
+    音频剪辑的基类。
 
-    See ``AudioFileClip`` and ``CompositeAudioClip`` for usable classes.
+    有关可用的类，请参见 ``AudioFileClip`` 和 ``CompositeAudioClip``。
 
-    An AudioClip is a Clip with a ``frame_function``  attribute of
-    the form `` t -> [ f_t ]`` for mono sound and
-    ``t-> [ f1_t, f2_t ]`` for stereo sound (the arrays are Numpy arrays).
-    The `f_t` are floats between -1 and 1. These bounds can be
-    trespassed without problems (the program will put the
-    sound back into the bounds at conversion time, without much impact).
+    AudioClip 是一个 Clip，其 ``frame_function`` 属性的形式为
+    ``t -> [ f_t ]``（对于单声道声音）和 ``t-> [ f1_t, f2_t ]``（对于立体声声音）（数组是 Numpy 数组）。
+    `f_t` 是介于 -1 和 1 之间的浮点数。这些边界可以被超越而没有问题
+    （程序将在转换时将声音放回边界内，而不会产生太大影响）。
 
     Parameters
     ----------
@@ -46,26 +45,28 @@ class AudioClip(Clip):
 
     Examples
     --------
-
     .. code:: python
-
-        # Plays the note A in mono (a sine wave of frequency 440 Hz)
+        # 以单声道播放音符 A（频率为 440 Hz 的正弦波）
         import numpy as np
         frame_function = lambda t: np.sin(440 * 2 * np.pi * t)
         clip = AudioClip(frame_function, duration=5, fps=44100)
         clip.preview()
 
-        # Plays the note A in stereo (two sine waves of frequencies 440 and 880 Hz)
+        # 以立体声播放音符 A（频率为 440 和 880 Hz 的两个正弦波）
         frame_function = lambda t: np.array([
             np.sin(440 * 2 * np.pi * t),
             np.sin(880 * 2 * np.pi * t)
         ]).T.copy(order="C")
         clip = AudioClip(frame_function, duration=3, fps=44100)
         clip.preview()
-
     """
 
-    def __init__(self, frame_function=None, duration=None, fps=None):
+    def __init__(
+            self,
+            frame_function=None,  # 一个函数 `t-> 时间 t 的帧`。帧对于声音来说意义不大，它只是一个浮点数。 “产生”声音的是该浮点数在时间上的变化。
+            duration=None,  # 剪辑的持续时间（以秒为单位）。有些剪辑是无限的，在这种情况下，它们的持续时间将为 ``None``。
+            fps=None  # 声道数（单声道或立体声为一或二）。
+    ):
         super().__init__()
 
         if fps is not None:
@@ -84,13 +85,13 @@ class AudioClip(Clip):
 
     @requires_duration
     def iter_chunks(
-        self,
-        chunksize=None,
-        chunk_duration=None,
-        fps=None,
-        quantize=False,
-        nbytes=2,
-        logger=None,
+            self,
+            chunksize=None,
+            chunk_duration=None,
+            fps=None,
+            quantize=False,
+            nbytes=2,
+            logger=None,
     ):
         """Iterator that returns the whole sound array of the clip by chunks"""
         if fps is None:
@@ -115,7 +116,7 @@ class AudioClip(Clip):
 
     @requires_duration
     def to_soundarray(
-        self, tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000
+            self, tt=None, fps=None, quantize=False, nbytes=2, buffersize=50000
     ):
         """
         Transforms the sound into an array that can be played by pygame
@@ -182,16 +183,16 @@ class AudioClip(Clip):
     @requires_duration
     @convert_path_to_string("filename")
     def write_audiofile(
-        self,
-        filename,
-        fps=None,
-        nbytes=2,
-        buffersize=2000,
-        codec=None,
-        bitrate=None,
-        ffmpeg_params=None,
-        write_logfile=False,
-        logger="bar",
+            self,
+            filename,
+            fps=None,
+            nbytes=2,
+            buffersize=2000,
+            codec=None,
+            bitrate=None,
+            ffmpeg_params=None,
+            write_logfile=False,
+            logger="bar",
     ):
         """Writes an audio file from the AudioClip.
 
@@ -270,7 +271,7 @@ class AudioClip(Clip):
 
     @requires_duration
     def audiopreview(
-        self, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
+            self, fps=None, buffersize=2000, nbytes=2, audio_flag=None, video_flag=None
     ):
         """
         Preview an AudioClip using ffplay
@@ -315,32 +316,21 @@ class AudioClip(Clip):
 
 class AudioArrayClip(AudioClip):
     """
-
-    An audio clip made from a sound array.
-
-    Parameters
-    ----------
-
-    array
-      A Numpy array representing the sound, of size Nx1 for mono,
-      Nx2 for stereo.
-
-    fps
-      Frames per second : speed at which the sound is supposed to be
-      played.
-
+    一个由声音数组组成的音频剪辑。
     """
 
-    def __init__(self, array, fps):
+    def __init__(
+            self,
+            array,  # 一个表示声音的 Numpy 数组，对于单声道为 Nx1 大小，对于立体声为 Nx2 大小。
+            fps  # 每秒帧数：声音应该播放的速度。
+    ):
         Clip.__init__(self)
         self.array = array
         self.fps = fps
         self.duration = 1.0 * len(array) / fps
 
         def frame_function(t):
-            """Complicated, but must be able to handle the case where t
-            is a list of the form sin(t).
-            """
+            """ 很复杂，但必须能够处理 t 是 sin(t) 形式列表的情况。"""
             if isinstance(t, np.ndarray):
                 array_inds = np.round(self.fps * t).astype(int)
                 in_array = (array_inds >= 0) & (array_inds < len(self.array))
@@ -359,32 +349,28 @@ class AudioArrayClip(AudioClip):
 
 
 class CompositeAudioClip(AudioClip):
-    """Clip made by composing several AudioClips.
+    """
+    通过组合多个 AudioClip 创建的剪辑。 通过将多个音频剪辑放在一起来创建的音频剪辑。
 
-    An audio clip made by putting together several audio clips.
-
-    Parameters
+    参数
     ----------
-
     clips
-      List of audio clips, which may start playing at different times or
-      together, depends on their ``start`` attributes. If all have their
-      ``duration`` attribute set, the duration of the composite clip is
-      computed automatically.
+      音频剪辑列表，可以根据其 ``start`` 属性在不同的时间或一起开始播放。
+      如果所有剪辑都设置了 ``duration`` 属性，则会自动计算复合剪辑的持续时间。
     """
 
     def __init__(self, clips):
         self.clips = clips
         self.nchannels = max(clip.nchannels for clip in self.clips)
 
-        # self.duration is set at AudioClip
+        # self.duration 在 AudioClip 上设置
         duration = None
         for end in self.ends:
             if end is None:
                 break
             duration = max(end, duration or 0)
 
-        # self.fps is set at AudioClip
+        # self.fps 在 AudioClip 处设置
         fps = None
         for clip in self.clips:
             if hasattr(clip, "fps") and isinstance(clip.fps, numbers.Number):
@@ -394,16 +380,16 @@ class CompositeAudioClip(AudioClip):
 
     @property
     def starts(self):
-        """Returns starting times for all clips in the composition."""
+        """返回合成中所有剪辑的开始时间。"""
         return (clip.start for clip in self.clips)
 
     @property
     def ends(self):
-        """Returns ending times for all clips in the composition."""
+        """返回合成中所有剪辑的结束时间。"""
         return (clip.end for clip in self.clips)
 
     def frame_function(self, t):
-        """Renders a frame for the composition for the time ``t``."""
+        """为时间“t”的合成渲染一帧。"""
         played_parts = [clip.is_playing(t) for clip in self.clips]
 
         sounds = [

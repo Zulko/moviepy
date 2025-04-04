@@ -1,5 +1,4 @@
-"""Deals with making images (np arrays). It provides drawing
-methods that are difficult to do with the existing Python libraries.
+"""处理制作图像（np 数组）。它提供了现有 Python 库难以实现的绘图方法。
 """
 
 import numpy as np

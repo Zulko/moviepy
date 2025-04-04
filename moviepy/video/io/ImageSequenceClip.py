@@ -1,6 +1,4 @@
-"""Implements ImageSequenceClip, a class to create a video clip from a set
-of image files.
-"""
+"""实现 ImageSequenceClip，这是一个从一组图像文件创建视频剪辑的类。"""
 
 import os
 
@@ -11,48 +9,22 @@ from moviepy.video.VideoClip import VideoClip
 
 
 class ImageSequenceClip(VideoClip):
-    """A VideoClip made from a series of images.
-
-    Parameters
-    ----------
-
-    sequence
-      Can be one of these:
-
-      - The name of a folder (containing only pictures). The pictures
-        will be considered in alphanumerical order.
-      - A list of names of image files. In this case you can choose to
-        load the pictures in memory pictures
-      - A list of Numpy arrays representing images. In this last case,
-        masks are not supported currently.
-
-    fps
-      Number of picture frames to read per second. Instead, you can provide
-      the duration of each image with durations (see below)
-
-    durations
-      List of the duration of each picture.
-
-    with_mask
-      Should the alpha layer of PNG images be considered as a mask ?
-
-    is_mask
-      Will this sequence of pictures be used as an animated mask.
-
-    load_images
-      Specify that all images should be loaded into the RAM. This is only
-      interesting if you have a small number of images that will be used
-      more than once.
+    """
+    由一系列图像组成的 VideoClip。
     """
 
     def __init__(
-        self,
-        sequence,
-        fps=None,
-        durations=None,
-        with_mask=True,
-        is_mask=False,
-        load_images=False,
+            self,
+            sequence,
+            #       可以是以下之一：
+            #       - 文件夹的名称（仅包含图片）。图片将按字母数字顺序考虑。
+            #       - 图像文件名称的列表。在这种情况下，您可以选择将图片加载到内存中。
+            #       - 表示图像的 Numpy 数组的列表。在最后一种情况下，当前不支持遮罩。
+            fps=None,  # 每秒读取的图片帧数。您可以提供每个图像的持续时间（使用 durations，见下文）代替。
+            durations=None,  # 每个图片的持续时间列表。
+            with_mask=True,  # 是否应将 PNG 图像的 alpha 层视为遮罩？
+            is_mask=False,  # 此图片序列是否将用作动画遮罩。
+            load_images=False,  # 指定应将所有图像加载到 RAM 中。如果您有少量将多次使用的图像，这将很有用。
     ):
         # CODE WRITTEN AS IT CAME, MAY BE IMPROVED IN THE FUTURE
 
