@@ -112,7 +112,7 @@ class VideoClip(Clip):
     @requires_duration
     @requires_fps
     def n_frames(self):
-        """返回视频的帧数。"""
+        """ 返回视频的帧数。"""
         return int(self.duration * self.fps)
 
     def __copy__(self):
@@ -428,7 +428,7 @@ class VideoClip(Clip):
         )
 
     # ===============================================================
-    # PREVIEW OPERATIONS
+    # PREVIEW OPERATIONS 预览操作
 
     @convert_masks_to_RGB
     @convert_parameter_to_seconds(["t"])
@@ -520,7 +520,7 @@ class VideoClip(Clip):
         )
 
     # -----------------------------------------------------------------
-    # F I L T E R I N G  过滤
+    # FILTERING  过滤
 
     def with_effects_on_subclip(
             self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
@@ -562,7 +562,7 @@ class VideoClip(Clip):
         return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
 
     # --------------------------------------------------------------
-    # C O M P O S I T I N G  合成
+    # COMPOSITING  合成
 
     def fill_array(self, pre_array, shape=(0, 0)):
         """Fills an array to match the specified shape.
@@ -1032,7 +1032,7 @@ class VideoClip(Clip):
         )
 
     # --------------------------------------------------------------
-    # CONVERSIONS TO OTHER TYPES
+    # CONVERSIONS TO OTHER TYPES 转换为其他类型
 
     @convert_parameter_to_seconds(["t"])
     def to_ImageClip(self, t=0, with_mask=True, duration=None):
@@ -1067,14 +1067,11 @@ class VideoClip(Clip):
             return self
 
     # ----------------------------------------------------------------
-    # Audio
+    # Audio 音频
 
     @outplace
     def without_audio(self):
-        """Remove the clip's audio.
-
-        Return a copy of the clip with audio set to None.
-        """
+        """ 删除剪辑的音频。 返回音频设置为“无”的剪辑副本。"""
         self.audio = None
 
     def __add__(self, other):
@@ -1242,7 +1239,7 @@ class ImageClip(VideoClip):
             img,  # 任何图片文件（png、tiff、jpeg 等）的字符串或路径类对象， 或表示 RGB 图像的任何数组（例如来自 VideoClip 的帧）。
             is_mask=False,  # 如果剪辑是遮罩，请将此参数设置为 `True`。
             transparent=True,  # 如果要将图片的 alpha 层（如果存在）用作遮罩，请将此参数设置为 `True`（默认）。
-            fromalpha=False,
+            fromalpha=False, # 将 alpha 通道单独作为 mask 使用，一般用不上，默认 False
             duration=None # 剪辑的持续时间。
     ):
         VideoClip.__init__(self, is_mask=is_mask, duration=duration)
@@ -1276,9 +1273,7 @@ class ImageClip(VideoClip):
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """通用转换过滤器。
-
-        等效于 VideoClip.transform。结果不再是 ImageClip，
-        而是 VideoClip 类（因为它可能是动画）。
+        等效于 VideoClip.transform。结果不再是 ImageClip，而是 VideoClip 类（因为它可能是动画）。
         """
         if apply_to is None:
             apply_to = []
@@ -1396,12 +1391,10 @@ class TextClip(ImageClip):
             filename=None,  # 包含要写入的文本的文件的名称，作为字符串或路径类对象。 可以代替参数 ``text`` 提供。
             font_size=None,  # 字体大小，以磅为单位。如果 method='caption' 或 method='label' 且设置了 size，则可以自动设置。
             size=(None, None),
-            #     size
             #       （字体区域的大小）图片的尺寸，以像素为单位。如果 method='label' 且 font_size 已设置，则可以自动设置；
             #       如果 method='caption 字幕'，则必须设置。如果定义了 font_size，则 caption 的高度可以为 None，
             #       它将自动确定。
             margin=(None, None),
-            #     margin
             #       要添加到文本周围的边距，作为两个（对称）或四个（不对称）的元组。
             #       可以是 ``(水平, 垂直)`` 或 ``(左, 上, 右, 下)``。默认情况下，没有边距 (None, None)。
             #       这对于自动计算尺寸以给文本一些额外空间特别有用。
@@ -1410,7 +1403,6 @@ class TextClip(ImageClip):
             stroke_color=None,  # 文本的描边（=轮廓线）颜色。如果为 ``None``，则没有描边。
             stroke_width=0,  # 描边的宽度，以像素为单位。必须是整数。
             method="label",
-            #     method
             #       可以是：
             #         - 'label'（默认），图片将自动调整大小以适应文本，
             #           如果提供了宽度，则自动计算字体大小；如果定义了字体大小，则自动计算宽度和高度。

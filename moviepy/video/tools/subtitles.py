@@ -10,50 +10,33 @@ from moviepy.video.VideoClip import TextClip, VideoClip
 
 
 class SubtitlesClip(VideoClip):
-    """A Clip that serves as "subtitle track" in videos.
+    """一个作为视频中“字幕轨道”的剪辑。
+    这个类的一个特点是，字幕文本的图像不是预先生成的，而是在需要时才生成。
 
-    One particularity of this class is that the images of the
-    subtitle texts are not generated beforehand, but only if
-    needed.
-
-    Parameters
-    ----------
-
-    subtitles
-        Either the name of a file as a string or path-like object, or a list
-
-    font
-        Path to a font file to be used. Optional if make_textclip is provided.
-
-    make_textclip
-        A custom function to use for text clip generation. If None, a TextClip
-        will be generated.
-
-        The function must take a text as argument and return a VideoClip
-        to be used as caption
-
-    encoding
-        Optional, specifies srt file encoding.
-        Any standard Python encoding is allowed (listed at
-        https://docs.python.org/3.8/library/codecs.html#standard-encodings)
-
-    Examples
+    示例
     --------
-
     .. code:: python
-
         from moviepy.video.tools.subtitles import SubtitlesClip
         from moviepy.video.io.VideoFileClip import VideoFileClip
-        generator = lambda text: TextClip(text, font='./path/to/font.ttf',
-                                        font_size=24, color='white')
+        generator = lambda text: TextClip(text, font='./path/to/font.ttf', font_size=24, color='white')
         sub = SubtitlesClip("subtitles.srt", make_textclip=generator, encoding='utf-8')
         myvideo = VideoFileClip("myvideo.avi")
         final = CompositeVideoClip([clip, subtitles])
         final.write_videofile("final.mp4", fps=myvideo.fps)
-
     """
 
-    def __init__(self, subtitles, font=None, make_textclip=None, encoding=None):
+    def __init__(
+            self,
+            subtitles, # 可以是文件名（字符串或类似路径的对象），也可以是一个列表
+            font=None, # 要使用的字体文件的路径。如果提供了 make_textclip，则为可选。
+            make_textclip=None,
+            # 用于生成文本剪辑的自定义函数。如果为 None，将生成一个 TextClip。
+            # 该函数必须接受一个文本作为参数，并返回一个用作字幕的 VideoClip
+            encoding=None
+            # 可选，指定 srt 文件的编码。
+            # 允许任何标准的 Python 编码（列在
+            # https://docs.python.org/3.8/library/codecs.html#standard-encodings）
+    ):
         VideoClip.__init__(self, has_constant_size=False)
 
         if not isinstance(subtitles, list):

@@ -107,7 +107,13 @@ def preprocess_args(preprocess_func, varnames):
 
 
 def convert_parameter_to_seconds(varnames):
-    """Converts the specified variables to seconds."""
+    """
+    # 这个装饰器会将 start_time 和 end_time 转换为秒。
+    # 比如 "01:03:05.35" 这样的时间字符串会转换成 1 * 3600 + 3 * 60 + 5.35 = 3785.35 秒。
+    # (min, sec) 这种元组也会自动转换成秒数。
+
+    将指定变量转换为秒。
+    """
     return preprocess_args(convert_to_seconds, varnames)
 
 

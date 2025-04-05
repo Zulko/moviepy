@@ -169,7 +169,7 @@ class FFMPEG_VideoReader:
         self.last_read = self.read_frame()
 
     def skip_frames(self, n=1):
-        """ 读取并丢弃 n 帧" """
+        """ 读取并丢弃 n 帧  """
         w, h = self.size
         for i in range(n):
             self.proc.stdout.read(self.depth * w * h)
@@ -545,7 +545,10 @@ class FFmpegInfosParser:
                 # multiline metadata value parsing
                 if field == "":
                     field = self._last_metadata_field_added
-                    value = self._current_stream["metadata"][field] + "\n" + value
+                    # value = self._current_stream["metadata"][field] + "\n" + value
+                    # 这里有个报错，已处理
+                    # TypeError: unsupported operand type(s) for +: 'float' and 'str'
+                    value = str(self._current_stream["metadata"][field]) + "\n" + value
                 else:
                     self._last_metadata_field_added = field
                 self._current_stream["metadata"][field] = value

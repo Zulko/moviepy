@@ -11,7 +11,6 @@ from typing import TYPE_CHECKING, List
 import numpy as np
 import proglog
 
-
 if TYPE_CHECKING:
     from moviepy.Effect import Effect
 
@@ -26,28 +25,18 @@ from moviepy.decorators import (
 
 
 class Clip:
-    """Base class of all clips (VideoClips and AudioClips).
-
-    Attributes
+    """
+    所有剪辑（视频剪辑和音频剪辑）的基类。
+    属性
     ----------
-
-    start : float
-      When the clip is included in a composition, time of the
-      composition at which the clip starts playing (in seconds).
-
-    end : float
-      When the clip is included in a composition, time of the
-      composition at which the clip stops playing (in seconds).
-
-    duration : float
-      Duration of the clip (in seconds). Some clips are infinite, in
-      this case their duration will be ``None``.
+    start : 当剪辑包含在合成中时，剪辑开始播放的合成时间（以秒为单位）。
+    end : 当剪辑包含在合成中时，剪辑停止播放的合成时间（以秒为单位）。
+    duration : 剪辑的持续时间（以秒为单位）。有些剪辑是无限的，在这种情况下，它们的持续时间将为“无”。
     """
 
-    # prefix for all temporary video and audio files.
-    # You can overwrite it with
+    # 所有临时视频和音频文件的前缀。
+    # 您可以使用以下方式覆盖它
     # >>> Clip._TEMP_FILES_PREFIX = "temp_"
-
     _TEMP_FILES_PREFIX = "TEMP_MPY_"
 
     def __init__(self):
@@ -55,27 +44,31 @@ class Clip:
         self.end = None
         self.duration = None
 
-        self.memoize = False
+        self.memoize = False  # 表示是否启用记忆化，用于优化剪辑的处理过程。记忆化的意思是缓存已经处理过的结果，避免重复计算。
         self.memoized_t = None
         self.memoized_frame = None
+        # 这两个属性用于存储记忆化的时间和帧数据。它们通常用于优化视频剪辑的渲染和计算过程，减少不必要的重复计算。
 
     def copy(self):
-        """Allows the usage of ``.copy()`` in clips as chained methods invocation."""
+        """ 允许在剪辑中使用“.copy()”作为链式方法调用。
+        剪辑对象上使用 .copy() 来创建剪辑的副本。这意味着你可以在不修改原始剪辑的情况下，对剪辑进行修改和操作
+        """
         return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
-    def get_frame(self, t):
-        """Gets a numpy array representing the RGB picture of the clip,
-        or (mono or stereo) value for a sound clip, at time ``t``.
-
-        Parameters
-        ----------
-
-        t : float or tuple or str
-          Moment of the clip whose frame will be returned.
+    def get_frame(
+            self,
+            t  # 浮点数或元组或字符串, 将返回其帧的剪辑的时刻。
+    ):
         """
-        # Coming soon: smart error handling for debugging at this point
+        用于获取剪辑在某一时刻 t 的帧。它返回的是一个 numpy 数组，表示在该时刻该剪辑的 RGB 图像。
+        对于音频剪辑，它返回的是该时刻的音频值（单声道或立体声）。
+        """
+
+        # 即将推出：此时进行调试的智能错误处理 (官方注释)
         if self.memoize:
+            # memoization（缓存）：方法使用了缓存机制。如果你在多次调用 get_frame(t) 时传入相同的 t，它会返回缓存的帧，从而提高性能。
+            # 如果已经计算过某个时刻 t 的帧，就不会重新计算，而是直接返回之前计算的结果。
             if t == self.memoized_t:
                 return self.memoized_frame
             else:
@@ -86,43 +79,39 @@ class Clip:
         else:
             return self.frame_function(t)
 
-    def transform(self, func, apply_to=None, keep_duration=True):
-        """General processing of a clip.
+    def transform(
+            self,
+            func,  # 这是一个函数，它接受两个参数：
+            # gf：当前剪辑的 get_frame 方法（即获取视频帧的函数）。
+            # t：视频的时间（以秒为单位）。
+            # frame：是传入的帧（一个 numpy 数组），你可以对这个帧进行修改并返回一个新的帧。
+            apply_to=None,  # 你可以选择是否将转换应用到视频剪辑的其它部分（如 mask 或 audio）。它可以是：
+            # "mask"：应用于剪辑的遮罩。
+            # "audio"：应用于剪辑的音频。
+            # ["mask", "audio"]：同时应用于遮罩和音频。
+            # 默认为 None，表示只对视频部分进行操作。
+            keep_duration=True  # 设置为 True，表示转换后的剪辑的持续时间保持不变。如果设置为 False，转换后的剪辑的持续时间可能会根据帧的处理发生变化。
+    ):
+        """
+        通用的处理函数
 
-        Returns a new Clip whose frames are a transformation
-        (through function ``func``) of the frames of the current clip.
+        允许你对 Clip 对象（如 VideoClip 或 ImageClip）的帧进行转化处理，返回一个新的 Clip 对象，处理过程通过你提供的转换函数 func 来实现。
+        这个方法可以用来做一些复杂的视频帧处理，如视频滤镜、特效、图像变换等。
 
-        Parameters
-        ----------
-
-        func : function
-          A function with signature (gf,t -> frame) where ``gf`` will
-          represent the current clip's ``get_frame`` method,
-          i.e. ``gf`` is a function (t->image). Parameter `t` is a time
-          in seconds, `frame` is a picture (=Numpy array) which will be
-          returned by the transformed clip (see examples below).
-
-        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
-          Can be either ``'mask'``, or ``'audio'``, or
-          ``['mask','audio']``.
-          Specifies if the filter should also be applied to the
-          audio or the mask of the clip, if any.
-
-        keep_duration : bool, optional
-          Set to True if the transformation does not change the
-          ``duration`` of the clip.
-
+        剪辑的常规处理。 返回一个新的剪辑，其帧是一个变换 （通过函数``func``）当前剪辑的帧。
         Examples
         --------
-
-        In the following ``new_clip`` a 100 pixels-high clip whose video
-        content scrolls from the top to the bottom of the frames of
-        ``clip`` at 50 pixels per second.
-
+        在以下“new_clip”中，有一个 100 像素高的剪辑，其视频内容以每秒 50 像素的速度从“clip”帧的顶部滚动到底部。
         >>> filter = lambda get_frame,t : get_frame(t)[int(t):int(t)+50, :]
         >>> new_clip = clip.transform(filter, apply_to='mask')
-
         """
+
+        '''
+        解释：
+        apply_to 默认值 []（如果没有传递），使用 with_updated_frame_function 更新帧函数，生成一个新的 Clip 对象。
+        如果 apply_to 指定了 mask 或 audio，该方法会递归地将变换函数应用于视频剪辑的遮罩或音频部分（如果存在）。
+        最后，方法返回一个新的剪辑对象，该对象的帧是通过 func 转换过的。
+        '''
         if apply_to is None:
             apply_to = []
 
@@ -146,61 +135,62 @@ class Clip:
 
         return new_clip
 
-    def time_transform(self, time_func, apply_to=None, keep_duration=False):
+    def time_transform(
+            self,
+            time_func,
+            # 这是一个函数，接受一个时间参数 t（视频播放的当前时间，单位为秒），并返回一个新的时间值 new_t。这个新时间值将替代原时间 t，用来决定该时间点的视频帧、音频帧等。
+            # 比如，time_func(t) = 2*t 表示将时间轴加速，所有的时间点都会被加速两倍。
+            # 另外，time_func(t) = 3-t 可以用来做倒放，视频的播放时间会反向。
+            apply_to=None,
+            # 指定是否将时间变换应用到遮罩和音频部分。它可以是：
+            # "mask"：只应用于视频的遮罩。
+            # "audio"：只应用于音频部分。
+            # ["mask", "audio"]：同时应用于视频的遮罩和音频。
+            #
+            # 默认值是 None，只应用于视频内容。
+            keep_duration=False  # 果设置为 True，表示变换后剪辑的持续时间保持不变。如果设置为 False，剪辑的持续时间可能会因为时间轴变换而变化。
+    ):
         """
-        Returns a Clip instance playing the content of the current clip
-        but with a modified timeline, time ``t`` being replaced by the return
-        of `time_func(t)`.
-
-        Parameters
-        ----------
-
-        time_func : function
-          A function ``t -> new_t``.
-
-        apply_to : {"mask", "audio", ["mask", "audio"]}, optional
-          Can be either 'mask', or 'audio', or ['mask','audio'].
-          Specifies if the filter ``transform`` should also be applied to the
-          audio or the mask of the clip, if any.
-
-        keep_duration : bool, optional
-          ``False`` (default) if the transformation modifies the
-          ``duration`` of the clip.
+        用于修改剪辑时间轴的功能。它通过接受一个时间函数 time_func，并将时间 t 替换为 time_func(t)，从而改变视频、音频或遮罩的播放时间。
+        这个方法可以用来做一些特殊的时间轴变换，例如加速、倒放、延迟等。
 
         Examples
         --------
-
         .. code:: python
-
             # plays the clip (and its mask and sound) twice faster
             new_clip = clip.time_transform(lambda t: 2*t, apply_to=['mask', 'audio'])
 
             # plays the clip starting at t=3, and backwards:
             new_clip = clip.time_transform(lambda t: 3-t)
-
         """
         if apply_to is None:
             apply_to = []
 
+        # TODO 这里返回的 duration 是None，明天再看看
         return self.transform(
             lambda get_frame, t: get_frame(time_func(t)),
             apply_to,
             keep_duration=keep_duration,
         )
 
-    def with_effects(self, effects: List["Effect"]):
-        """Return a copy of the current clip with the effects applied
-
+    def with_effects(
+            self,
+            effects: List["Effect"]  # 这是一个包含 Effect 对象的列表。你可以将多个特效传递给该方法，每个特效会依次应用到当前剪辑。
+    ):
+        """ 返回当前剪辑的副本，并应用效果
         >>> new_clip = clip.with_effects([vfx.Resize(0.2, method="bilinear")])
 
-        You can also pass multiple effect as a list
-
+        您还可以将多个效果作为列表传递
         >>> clip.with_effects([afx.VolumeX(0.5), vfx.Resize(0.3), vfx.Mirrorx()])
         """
+        '''
+        允许你在剪辑上应用多个特效，并且通过链式调用的方式保持代码简洁。
+        你可以通过传入一系列 Effect 对象（如视频尺寸调整、音量控制、视频翻转等），将这些特效组合应用到视频上，生成一个全新的视频剪辑。
+        '''
         new_clip = self.copy()
         for effect in effects:
-            # We always copy effect before using it, see Effect.copy
-            # to see why we need to
+            # 我们总是在使用效果之前先复制它，请参阅 Effect.copy
+            # 以了解为什么我们需要
             effect_copy = effect.copy()
             new_clip = effect_copy.apply(new_clip)
 
@@ -210,37 +200,31 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
     @outplace
-    def with_start(self, t, change_end=True):
-        """Returns a copy of the clip, with the ``start`` attribute set
-        to ``t``, which can be expressed in seconds (15.35), in (min, sec),
-        in (hour, min, sec), or as a string: '01:03:05.35'.
-
-        These changes are also applied to the ``audio`` and ``mask``
-        clips of the current clip, if they exist.
-
-        note::
-          The start and end attribute of a clip define when a clip will start
-          playing when used in a composite video clip, not the start time of
-          the clip itself.
-
-          i.e: with_start(10) mean the clip will still start at his first frame,
-          but if used in a composite video clip it will only start to show at
-          10 seconds.
-
-        Parameters
-        ----------
-
-        t : float or tuple or str
-          New ``start`` attribute value for the clip.
-
-        change_end : bool optional
-          Indicates if the ``end`` attribute value must be changed accordingly,
-          if possible. If ``change_end=True`` and the clip has a ``duration``
-          attribute, the ``end`` attribute of the clip will be updated to
-          ``start + duration``. If ``change_end=False`` and the clip has a
-          ``end`` attribute, the ``duration`` attribute of the clip will be
-          updated to ``end - start``.
+    def with_start(
+            self,
+            t,  # 浮点数或元组或字符串 剪辑的新“start”属性值。
+            change_end=True
+            # 指示是否必须相应地更改“end "属性值，
+            # 如果可能的话。如果``change_end=True``且剪辑具有``持续时间``
+            # 属性，则剪辑的“end "属性将更新为
+            # ``开始+持续时间``。如果``change_end=False``且剪辑具有
+            # "end"属性，剪辑的"duration"属性将为
+            # 更新为“结束-开始”。
+    ):
         """
+        返回剪辑的副本，其中 ``start`` 属性设置为 ``t``，可以用秒 (15.35)、(分，秒)、
+        (时，分，秒) 或字符串表示：'01:03:05.35'。
+        如果存在，这些更改也适用于当前剪辑的 ``audio`` 和 ``mask`` 剪辑。
+
+        注意：
+        剪辑的开始和结束属性定义剪辑在合成视频剪辑中使用时何时开始播放，而不是剪辑本身的开始时间。
+        即：with_start(10) 表示剪辑仍将从第一帧开始，
+        但如果在合成视频剪辑中使用，它将仅在 10 秒后开始显示。
+        """
+        '''
+        主要用于修改剪辑在复合视频中的起始时间，而不改变剪辑本身的时间轴。你可以通过这个方法来调整视频剪辑的相对位置，确保其在复合视频中的播放顺序。
+        change_end 参数允许你决定是否同时调整结束时间，或者根据需要仅调整开始时间而不改变剪辑的总持续时间。
+        '''
         self.start = t
         if (self.duration is not None) and change_end:
             self.end = t + self.duration
@@ -251,27 +235,23 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
     @outplace
-    def with_end(self, t):
-        """Returns a copy of the clip, with the ``end`` attribute set to ``t``,
-        which can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. Also sets the duration
-        of the mask and audio, if any, of the returned clip.
-
-        note::
-          The start and end attribute of a clip define when a clip will start
-          playing when used in a composite video clip, not the start time of
-          the clip itself.
-
-          i.e: with_start(10) mean the clip will still start at his first frame,
-          but if used in a composite video clip it will only start to show at
-          10 seconds.
-
-        Parameters
-        ----------
-
-        t : float or tuple or str
-          New ``end`` attribute value for the clip.
+    def with_end(
+            self,
+            t  # t, # 浮点数或元组或字符串 剪辑的新“结束”属性值。
+    ):
         """
+        返回剪辑的副本，其中 ``end`` 属性设置为 ``t``，可以以秒 (15.35)、（分，秒）、
+        （时，分，秒）或字符串表示：'01:03:05.35'。还设置返回剪辑的掩码和音频（如果有）的持续时间。
+
+        注意：
+        剪辑的开始和结束属性定义剪辑在合成视频剪辑中使用时开始播放的时间，而不是剪辑本身的开始时间。
+        即：with_start(10) 表示剪辑仍将从第一帧开始，
+        但如果在合成视频剪辑中使用，它将仅在 10 秒后开始显示。
+        """
+        '''
+        用来设置视频剪辑的 结束时间 的，并返回一个新的剪辑副本。它和我们刚学的 with_start 方法属于一对“时间管理”工具
+        核心作用就是控制 在合成视频中，剪辑何时结束播放。
+        '''
         self.end = t
         if self.end is None:
             return
@@ -285,7 +265,13 @@ class Clip:
     @apply_to_audio
     @convert_parameter_to_seconds(["duration"])
     @outplace
-    def with_duration(self, duration, change_end=True):
+    def with_duration(
+            self,
+            duration,  # 新的时长值（单位：秒）。
+            change_end=True
+            # True：end 值会被设置为 start + duration（自动调整 end）。
+            # False：保持 end 不变，而调整 start 以确保 end - start = duration。
+    ):
         """
         返回剪辑的一个副本，并将其 duration（时长）属性设置为 t。
         t
@@ -296,14 +282,6 @@ class Clip:
 
         如果剪辑包含 蒙版（mask） 或 音频（audio），它们的时长也会被同步修改。
         如果 change_end=False，则 start 属性会根据新的 duration 及剪辑原本的 end 值进行调整。
-
-        参数
-        duration（float）
-        新的时长值（单位：秒）。
-
-        change_end（bool，可选，默认 True）
-        True：end 值会被设置为 start + duration（自动调整 end）。
-        False：保持 end 不变，而调整 start 以确保 end - start = duration。
         """
         self.duration = duration
 
@@ -315,33 +293,32 @@ class Clip:
             self.start = self.end - duration
 
     @outplace
-    def with_updated_frame_function(self, frame_function):
-        """Sets a ``frame_function`` attribute for the clip. Useful for setting
-        arbitrary/complicated videoclips.
+    def with_updated_frame_function(
+            self,
+            frame_function  # 它是一个函数，定义了「在任意时间点 t，当前帧画面长啥样」。
+            #         frame_function(t: float) -> np.ndarray（图像）
+            #         它是 clip 在时间轴上如何生成画面的核心逻辑。
+    ):
+        """设置剪辑的"frame_function"属性。用于设置任意/复杂的视频剪辑。
 
         Parameters
         ----------
 
-        frame_function : function
-          New frame creator function for the clip.
+        frame_function : 新的帧创建器功能的剪辑。
+
+        方法	                                     作用	                    复杂性	        推荐使用
+        transform(func)	                    包装原来的 get_frame，做变换	    更方便	        90% 场景
+        with_updated_frame_function(func)	完全替换原始帧生成方式	            灵活但更底层	    高级用法、动态绘图等
+
         """
         self.frame_function = frame_function
 
-    def with_fps(self, fps, change_duration=False):
-        """Returns a copy of the clip with a new default fps for functions like
-        write_videofile, iterframe, etc.
-
-        Parameters
-        ----------
-
-        fps : int
-          New ``fps`` attribute value for the clip.
-
-        change_duration : bool, optional
-          If ``change_duration=True``, then the video speed will change to
-          match the new fps (conserving all frames 1:1). For example, if the
-          fps is halved in this mode, the duration will be doubled.
-        """
+    def with_fps(
+            self,
+            fps, # int 剪辑的新“fps”属性值。
+            change_duration=False # 如果“change_duration=True”，则视频速度将更改为与新的 fps 匹配（所有帧以 1:1 的比例保存）。例如，如果在此模式下 fps 减半，则持续时间将加倍。
+    ):
+        """ 返回剪辑的副本，并使用新的默认fps，write_videofile、iterframe等。"""
         if change_duration:
             from moviepy.video.fx.MultiplySpeed import MultiplySpeed
 
@@ -353,59 +330,44 @@ class Clip:
         return newclip
 
     @outplace
-    def with_is_mask(self, is_mask):
-        """Says whether the clip is a mask or not.
-
-        Parameters
-        ----------
-
-        is_mask : bool
-          New ``is_mask`` attribute value for the clip.
-        """
+    def with_is_mask(
+            self,
+            is_mask # 剪辑的新“is_mask”属性值。
+    ):
+        """ 设置该剪辑是否为蒙版。"""
         self.is_mask = is_mask
 
     @outplace
-    def with_memoize(self, memoize):
-        """Sets whether the clip should keep the last frame read in memory.
-
-        Parameters
-        ----------
-
-        memoize : bool
-          Indicates if the clip should keep the last frame read in memory.
-        """
+    def with_memoize(
+            self,
+            memoize # bool 指示剪辑是否应在内存中保留最后读取的帧。
+    ):
+        """ 设置剪辑是否应在内存中保留最后读取的帧。"""
         self.memoize = memoize
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    # 这个装饰器会将 start_time 和 end_time 转换为秒。
-    # 比如 "01:03:05.35" 这样的时间字符串会转换成 1 * 3600 + 3 * 60 + 5.35 = 3785.35 秒。
-    # (min, sec) 这种元组也会自动转换成秒数。
     @apply_to_mask
     @apply_to_audio
     # 这些装饰器确保如果 self 有 mask（蒙版）或 audio（音频），那么截取的 mask 和 audio 也会相应调整。
-    def subclipped(self, start_time=0, end_time=None):
+    def subclipped(
+            self,
+            start_time=0, # 浮点数或元组或字符串，可选。 将选择为生成剪辑的开头的时刻。如果为负数，则将其重置为“clip.duration + start_time”。
+            end_time=None # 浮点数或元组或字符串，可选。 选择为所生成剪辑的结束时刻。如果未提供，则假定为剪辑的持续时间（可能为无限）。如果为负数，则将其重置为“clip.duration + end_time”。
+    ):
         """
             返回在时间“start_time”和“end_time”之间播放当前剪辑内容的剪辑，
             可以用秒（15.35）、（分钟，秒）、（小时，分钟，秒）或字符串表示：'01:03:05.35'。
 
             如果存在，则生成的子剪辑的“mask”和“audio”将是原始剪辑的“mask”和“audio”的子剪辑。
             相当于将剪辑切片为序列，例如“clip[t_start:t_end]”。
-        参数
-        ----------
-            start_time：浮点数或元组或字符串，可选
-            将选择为生成剪辑的开头的时刻。如果为负数，则将其重置为“clip.duration + start_time”。
-            end_time：浮点数或元组或字符串，可选
-            选择为所生成剪辑的结束时刻。如果未提供，则假定为剪辑的持续时间（可能为无限）。如果为负数，则将其重置为“clip.duration + end_time”。
-
         例如：
             >>> # 剪切剪辑的最后两秒：
             >>> new_clip = clip.subclipped(0, -2)
             如果提供了“end_time”或剪辑具有持续时间属性，则自动设置返回剪辑的持续时间。
         """
         if start_time < 0:
-            # Make this more Python-like, a negative value means to move
-            # backward from the end of the clip
-            start_time = self.duration + start_time  # Remember start_time is negative
+            # 使其更像Python，负值表示移动。 从剪辑的结尾向后
+            start_time = self.duration + start_time  # 记住start_time为负数
 
         if (self.duration is not None) and (start_time >= self.duration):
             raise ValueError(
@@ -433,7 +395,7 @@ class Clip:
                 end_time = self.duration + end_time
 
         if end_time is not None:
-            # Allow a slight tolerance to account for rounding errors
+            # 允许稍微容忍一点，以解决舍入错误
             if (self.duration is not None) and (end_time - self.duration > 0.00000001):
                 raise ValueError(
                     "end_time (%.02f) " % end_time
@@ -447,20 +409,17 @@ class Clip:
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
-    def with_section_cut_out(self, start_time, end_time):
+    def with_section_cut_out(
+            self,
+            start_time, # （float / tuple / str） 表示从哪个时间点开始删除（从 start_time 开始，该时间之后的视频片段将被移除）。
+            end_time # （float / tuple / str） 表示在哪个时间点结束删除（删除到 end_time 这个时间点）。
+    ):
         """
         返回播放当前剪辑内容的剪辑，但会跳过“start_time”和“end_time”之间的摘录，可以以秒（15.35）、
         （分钟，秒）、（小时，分钟，秒）表示，或以字符串表示：'01:03:05.35'。
 
         如果原始剪辑设置了“duration”属性，则返回剪辑的持续时间将自动计算为“duration - (end_time - start_time)”。
         如果存在，则生成的剪辑的“audio”和“mask”也将被剪切掉。
-
-        参数
-        start_time（float / tuple / str）
-        表示从哪个时间点开始删除（从 start_time 开始，该时间之后的视频片段将被移除）。
-
-        end_time（float / tuple / str）
-        表示在哪个时间点结束删除（删除到 end_time 这个时间点）。
         """
         new_clip = self.time_transform(
             lambda t: t + (t >= start_time) * (end_time - start_time),
@@ -472,20 +431,21 @@ class Clip:
         else:  # pragma: no cover
             return new_clip
 
-    def with_speed_scaled(self, factor: float = None, final_duration: float = None):
+    def with_speed_scaled(
+            self,
+            factor: float = None,
+            final_duration: float = None
+    ):
         """
         返回一个以当前剪辑 ``factor`` 倍速度播放的新剪辑。
 
         这个方法会创建一个当前剪辑的副本，但播放速度会乘以指定的 `factor` 值。
-        例如，`factor=2` 会使播放速度加倍，剪辑时长减半；
-        `factor=0.5` 会使播放速度减半，剪辑时长加倍。
+        例如，`factor=2` 会使播放速度加倍，剪辑时长减半；`factor=0.5` 会使播放速度减半，剪辑时长加倍。
 
-        你也可以不指定 `factor`，而是通过 `final_duration` 参数来指定你希望这个加速/减速后的剪辑最终变成多长。
-        MoviePy 会自动计算出需要的速度因子。
+        你也可以不指定 `factor`，而是通过 `final_duration` 参数来指定你希望这个加速/减速后的剪辑最终变成多长。 MoviePy 会自动计算出需要的速度因子。
 
         有关这两个参数（`factor` 和 `final_duration`）的更详细信息和底层逻辑，
         请参阅 ``moviepy.video.fx.MultiplySpeed`` 这个特效类。
-
 
         总结:
             with_speed_scaled 方法提供了一种方便的方式来创建原始剪辑的变速版本。
@@ -498,7 +458,12 @@ class Clip:
             [MultiplySpeed(factor=factor, final_duration=final_duration)]
         )
 
-    def with_volume_scaled(self, factor: float, start_time=None, end_time=None):
+    def with_volume_scaled(
+            self,
+            factor: float,
+            start_time=None,
+            end_time=None
+    ):
         """
         with_volume_scaled 是一个用于调整剪辑音量的便捷方法。它通过 factor 参数控制音量的乘数，
         并且允许使用 start_time 和 end_time 参数来精确控制音量变化的范围。
@@ -525,42 +490,21 @@ class Clip:
 
     @requires_duration
     @use_clip_fps_by_default
-    def iter_frames(self, fps=None, with_times=False, logger=None, dtype=None):
-        """Iterates over all the frames of the clip.
-
-        Returns each frame of the clip as a HxWxN Numpy array,
-        where N=1 for mask clips and N=3 for RGB clips.
-
-        This function is not really meant for video editing. It provides an
-        easy way to do frame-by-frame treatment of a video, for fields like
-        science, computer vision...
-
-        Parameters
-        ----------
-
-        fps : int, optional
-          Frames per second for clip iteration. Is optional if the clip already
-          has a ``fps`` attribute.
-
-        with_times : bool, optional
-          Ff ``True`` yield tuples of ``(t, frame)`` where ``t`` is the current
-          time for the frame, otherwise only a ``frame`` object.
-
-        logger : str, optional
-          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
-
-        dtype : type, optional
-          Type to cast Numpy array frames. Use ``dtype="uint8"`` when using the
-          pictures to write video, images..
+    def iter_frames(
+            self,
+            fps=None, # int	剪辑迭代的每秒帧数。如果剪辑已经具有“fps”属性，则为可选项。
+            with_times=False, # bool Ff ``True`` 产生 ``(t, frame)`` 的元组，其中 ``t`` 是帧的当前时间，否则仅为 ``frame`` 对象。
+            logger=None, # str 进度条为“bar”，或者为“None”或任何 Proglog 记录器。
+            dtype=None # type 类型转换 Numpy 数组帧。使用图片写入视频、图像时，请使用“dtype="uint8"”。
+    ):
+        """迭代剪辑的所有帧。
+        将剪辑的每一帧作为 HxWxN Numpy 数组返回，其中 N=1 表示蒙版剪辑，N=3 表示 RGB 剪辑。
+        此函数并非真正用于视频编辑。它提供了一种简单的方法来逐帧处理视频，适用于科学、计算机视觉等领域...
 
         Examples
         --------
-
-
         .. code:: python
-
-            # prints the maximum of red that is contained
-            # on the first line of each frame of the clip.
+            # 打印剪辑中每帧第一行所含的红色的最大值。
             from moviepy import VideoFileClip
             myclip = VideoFileClip('myvideo.mp4')
             print([frame[0,:,0].max()
@@ -568,10 +512,9 @@ class Clip:
         """
         logger = proglog.default_bar_logger(logger)
         for frame_index in logger.iter_bar(
-            frame_index=np.arange(0, int(self.duration * fps))
+                frame_index=np.arange(0, int(self.duration * fps))
         ):
-            # int is used to ensure that floating point errors are rounded
-            # down to the nearest integer
+            # int 用于确保浮点错误被四舍五入为最接近的整数
             t = frame_index / fps
 
             frame = self.get_frame(t)
@@ -584,11 +527,9 @@ class Clip:
 
     @convert_parameter_to_seconds(["t"])
     def is_playing(self, t):
-        """If ``t`` is a time, returns true if t is between the start and the end
-        of the clip. ``t`` can be expressed in seconds (15.35), in (min, sec), in
-        (hour, min, sec), or as a string: '01:03:05.35'. If ``t`` is a numpy
-        array, returns False if none of the ``t`` is in the clip, else returns a
-        vector [b_1, b_2, b_3...] where b_i is true if tti is in the clip.
+        """如果 ``t`` 是时间，则如果 t 在剪辑的开始和结束之间，则返回 true。
+        ``t`` 可以以秒 (15.35)、(分，秒)、(时，分，秒) 或字符串表示：'01:03:05.35'。
+        如果 ``t`` 是 numpy 数组，则如果剪辑中没有 ``t``，则返回 False，否则返回向量 [b_1, b_2, b_3...]，其中如果 tti 在剪辑中，则 b_i 为 true。
         """
         if isinstance(t, np.ndarray):
             # is the whole list of t outside the clip ?
@@ -600,7 +541,7 @@ class Clip:
             if tmax < self.start:
                 return False
 
-            # If we arrive here, a part of t falls in the clip
+            # 如果我们到达这里，t的一部分就会落入“clip 剪辑”中
             result = 1 * (t >= self.start)
             if self.end is not None:
                 result *= t <= self.end
@@ -610,15 +551,14 @@ class Clip:
             return (t >= self.start) and ((self.end is None) or (t < self.end))
 
     def close(self):
-        """Release any resources that are in use."""
-        #    Implementation note for subclasses:
-        #
-        #    * Memory-based resources can be left to the garbage-collector.
-        #    * However, any open files should be closed, and subprocesses
-        #      should be terminated.
-        #    * Be wary that shallow copies are frequently used.
-        #      Closing a Clip may affect its copies.
-        #    * Therefore, should NOT be called by __del__().
+        """
+        释放所有正在使用的资源。
+        #    子类的实现说明：
+        #    * 基于内存的资源可以留给垃圾收集器。
+        #    * 但是，任何打开的文件都应该关闭，应该被终止。
+        #    * 请注意，频繁使用浅拷贝。关闭剪辑可能会影响其副本。
+        #    * 因此，不应该由__del__（）调用。
+        """
         pass
 
     def __eq__(self, other):
@@ -724,6 +664,7 @@ class Clip:
         from moviepy.video.fx.Loop import Loop
 
         return self.with_effects([Loop(n)])
+
 
 if __name__ == '__main__':
     from video.io.VideoFileClip import *

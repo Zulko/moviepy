@@ -37,33 +37,25 @@ class VideoFileClip(VideoClip):
     @convert_path_to_string("filename")
     def __init__(
             self,
-            filename,
-            #  **`filename`**：
-            #  - 视频文件的名称，可以是字符串或路径对象。
-            #  - 支持所有 `ffmpeg` 兼容的格式，如 `.ogv`、`.mp4`、`.mpeg`、`.avi`、`.mov` 等。
+            filename,  # 视频文件的名称，可以是字符串或路径对象。 支持所有 `ffmpeg` 兼容的格式，如 `.ogv`、`.mp4`、`.mpeg`、`.avi`、`.mov` 等。
             decode_file=False,
             # decode_file 似乎是一个未启用或备用参数，因为在 FFMPEG_VideoReader 里并没有实际使用它。
             # 可能是计划用于提前解码整个视频，但当前版本 moviepy 仍然是按需解码，即只解码当前请求的帧。
             has_mask=False,
-            #      - **`has_mask`**：
-            #      如果视频文件包含遮罩（mask），请将其设置为 `True`。
-            #      大多数视频文件不会包含遮罩，但某些视频编码格式支持遮罩。例如，如果你有一个带遮罩的 MoviePy `VideoClip`，
-            #      可以将其保存为带遮罩的视频文件（参见 `VideoClip.write_videofile` 了解更多细节）。
-            audio=True,
-            #         - **`audio`**：
-            #           - 如果视频没有音频，或者你不需要加载音频，请设置为 `False`。
+            # 如果视频文件包含遮罩（mask），请将其设置为 `True`。
+            # 大多数视频文件不会包含遮罩，但某些视频编码格式支持遮罩。例如，如果你有一个带遮罩的 MoviePy `VideoClip`，
+            # 可以将其保存为带遮罩的视频文件（参见 `VideoClip.write_videofile` 了解更多细节）。
+            audio=True,  # 如果视频没有音频，或者你不需要加载音频，请设置为 `False`。
             audio_buffersize=200000,
             # 音频缓冲区大小，单位是 字节（bytes）。
             # 200000 这个默认值 ≈ 200 KB。
             # 影响 音频流的加载方式，数值越大，占用内存越多，但读取效率可能更高。
             # 适用于大文件或高比特率音频，如果缓冲区太小，可能导致音频卡顿。
             target_resolution=None,
-            #         - **`target_resolution`**：
-            #           - 设置为 `(期望宽度, 期望高度)`，让 `ffmpeg` 在读取视频帧时直接进行缩放。
-            #           - 这样做比读取原始高分辨率视频再缩放更快。
-            #           - 如果宽度或高度的其中一个为 `None`，则会保持原始视频的宽高比进行缩放。
+            #  设置为 `(期望宽度, 期望高度)`，让 `ffmpeg` 在读取视频帧时直接进行缩放。
+            #  这样做比读取原始高分辨率视频再缩放更快。
+            #  如果宽度或高度的其中一个为 `None`，则会保持原始视频的宽高比进行缩放。
             resize_algorithm="bicubic",
-            #         - **`resize_algorithm`**：
             #           - 指定用于缩放的算法，默认为 `"bicubic"`。
             #           - 其他常见选项包括 `"bilinear"` 和 `"fast_bilinear"`。
             #           - 详细信息请参考 [FFmpeg Scaler](https://ffmpeg.org/ffmpeg-scaler.html)。
@@ -78,17 +70,9 @@ class VideoFileClip(VideoClip):
             # 2 字节（16-bit）：CD 标准（默认）
             # 4 字节（32-bit）：高精度（适用于专业音频）
             # 默认值 2（16-bit PCM），常见于 MP3、WAV 等格式。
-            fps_source="fps",
-            #        - **`fps_source`**：
-            #           - 指定从视频元数据中提取的帧率值，默认为 `"fps"`。
-            #           - 但如果发现提取的帧率不正确，可以将其设置为 `"tbr"` 以尝试获取正确的帧率。
-            pixel_format=None,
-            #         - **`pixel_format`**（可选）：
-            #           - 指定要读取的视频的像素格式。
-            #           - 默认使用 `"rgb24"`，但如果 `has_mask=True`，则默认使用 `"rgba"`。
-            is_mask=False,
-            #  - **`is_mask`**：
-            #  - 如果此视频剪辑将用作遮罩，请设置为 `True`。
+            fps_source="fps",  # 指定从视频元数据中提取的帧率值，默认为 `"fps"`。 但如果发现提取的帧率不正确，可以将其设置为 `"tbr"` 以尝试获取正确的帧率。
+            pixel_format=None,  # 指定要读取的视频的像素格式。 默认使用 `"rgb24"`，但如果 `has_mask=True`，则默认使用 "rgba"。
+            is_mask=False,  # 如果此视频剪辑将用作遮罩，请设置为 True。
     ):
         VideoClip.__init__(self, is_mask=is_mask)
 
@@ -217,6 +201,6 @@ if __name__ == '__main__':
     # video = video.with_opacity(0.9)
 
     # , pos, relative=False
-    video = video.with_position((45, 150)) # x=45, y=150
+    video = video.with_position((45, 150))  # x=45, y=150
 
     video.preview(fps=10, audio=False)

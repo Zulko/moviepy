@@ -5,14 +5,26 @@ from moviepy import VideoFileClip, DataVideoClip, TextClip, CompositeVideoClip, 
 # VideoClip
 
 
+
 # VideoFileClip
-video = VideoFileClip("../media/Study/VID20250309194700.mp4")
+video = VideoFileClip("../media/Study/IMG_6220.MOV")
 print(video.duration)
 print(video.fps)
+video = video.resized((300,800))
+# video = video.subclipped(8)
+video = video.with_start(10)
 
-video = video.subclipped(0, 4)
+# 设置 clip 在第 15 秒结束播放
+new_clip = video.with_end(15)
+
+# new_video = video.copy()
+# new_video = new_video.time_transform(time_func=lambda t : t*2, apply_to=['mask', 'audio'])
+# new_video = new_video.with_duration(video.duration * 2)
+# video.preview(fps=20)
+video.write_videofile("examples2.mov", codec="libx264")
 # TextClip
-
+video.close()
+# new_video.close()
 txt_clip1 = TextClip(
     text="Hello Word !",
     filename="../media/Study/test_clip_content.txt",
@@ -48,7 +60,7 @@ clip = ImageSequenceClip(
     # durations=[1,1,1,1,1,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5],
     fps=10
 )
-clip.preview()
+# clip.preview()
 
 
 
@@ -86,3 +98,5 @@ image = ImageClip(
 
 
 # UpdatedVideoClip
+
+
