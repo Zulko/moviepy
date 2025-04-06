@@ -205,11 +205,8 @@ class Clip:
             t,  # 浮点数或元组或字符串 剪辑的新“start”属性值。
             change_end=True
             # 指示是否必须相应地更改“end "属性值，
-            # 如果可能的话。如果``change_end=True``且剪辑具有``持续时间``
-            # 属性，则剪辑的“end "属性将更新为
-            # ``开始+持续时间``。如果``change_end=False``且剪辑具有
-            # "end"属性，剪辑的"duration"属性将为
-            # 更新为“结束-开始”。
+            # 如果``change_end=True``且剪辑具有``持续时间`` 属性，则剪辑的“end "属性将更新为`开始+持续时间``。
+            # 如果``change_end=False``且剪辑具有 "end"属性，剪辑的"duration"属性将为 更新为“结束-开始”。
     ):
         """
         返回剪辑的副本，其中 ``start`` 属性设置为 ``t``，可以用秒 (15.35)、(分，秒)、
@@ -315,8 +312,9 @@ class Clip:
 
     def with_fps(
             self,
-            fps, # int 剪辑的新“fps”属性值。
-            change_duration=False # 如果“change_duration=True”，则视频速度将更改为与新的 fps 匹配（所有帧以 1:1 的比例保存）。例如，如果在此模式下 fps 减半，则持续时间将加倍。
+            fps,  # int 剪辑的新“fps”属性值。
+            change_duration=False
+            # 如果“change_duration=True”，则视频速度将更改为与新的 fps 匹配（所有帧以 1:1 的比例保存）。例如，如果在此模式下 fps 减半，则持续时间将加倍。
     ):
         """ 返回剪辑的副本，并使用新的默认fps，write_videofile、iterframe等。"""
         if change_duration:
@@ -332,7 +330,7 @@ class Clip:
     @outplace
     def with_is_mask(
             self,
-            is_mask # 剪辑的新“is_mask”属性值。
+            is_mask  # 剪辑的新“is_mask”属性值。
     ):
         """ 设置该剪辑是否为蒙版。"""
         self.is_mask = is_mask
@@ -340,7 +338,7 @@ class Clip:
     @outplace
     def with_memoize(
             self,
-            memoize # bool 指示剪辑是否应在内存中保留最后读取的帧。
+            memoize  # bool 指示剪辑是否应在内存中保留最后读取的帧。
     ):
         """ 设置剪辑是否应在内存中保留最后读取的帧。"""
         self.memoize = memoize
@@ -351,8 +349,9 @@ class Clip:
     # 这些装饰器确保如果 self 有 mask（蒙版）或 audio（音频），那么截取的 mask 和 audio 也会相应调整。
     def subclipped(
             self,
-            start_time=0, # 浮点数或元组或字符串，可选。 将选择为生成剪辑的开头的时刻。如果为负数，则将其重置为“clip.duration + start_time”。
-            end_time=None # 浮点数或元组或字符串，可选。 选择为所生成剪辑的结束时刻。如果未提供，则假定为剪辑的持续时间（可能为无限）。如果为负数，则将其重置为“clip.duration + end_time”。
+            start_time=0,  # 浮点数或元组或字符串，可选。 将选择为生成剪辑的开头的时刻。如果为负数，则将其重置为“clip.duration + start_time”。
+            end_time=None
+            # 浮点数或元组或字符串，可选。 选择为所生成剪辑的结束时刻。如果未提供，则假定为剪辑的持续时间（可能为无限）。如果为负数，则将其重置为“clip.duration + end_time”。
     ):
         """
             返回在时间“start_time”和“end_time”之间播放当前剪辑内容的剪辑，
@@ -411,8 +410,8 @@ class Clip:
     @convert_parameter_to_seconds(["start_time", "end_time"])
     def with_section_cut_out(
             self,
-            start_time, # （float / tuple / str） 表示从哪个时间点开始删除（从 start_time 开始，该时间之后的视频片段将被移除）。
-            end_time # （float / tuple / str） 表示在哪个时间点结束删除（删除到 end_time 这个时间点）。
+            start_time,  # （float / tuple / str） 表示从哪个时间点开始删除（从 start_time 开始，该时间之后的视频片段将被移除）。
+            end_time  # （float / tuple / str） 表示在哪个时间点结束删除（删除到 end_time 这个时间点）。
     ):
         """
         返回播放当前剪辑内容的剪辑，但会跳过“start_time”和“end_time”之间的摘录，可以以秒（15.35）、
@@ -492,10 +491,10 @@ class Clip:
     @use_clip_fps_by_default
     def iter_frames(
             self,
-            fps=None, # int	剪辑迭代的每秒帧数。如果剪辑已经具有“fps”属性，则为可选项。
-            with_times=False, # bool Ff ``True`` 产生 ``(t, frame)`` 的元组，其中 ``t`` 是帧的当前时间，否则仅为 ``frame`` 对象。
-            logger=None, # str 进度条为“bar”，或者为“None”或任何 Proglog 记录器。
-            dtype=None # type 类型转换 Numpy 数组帧。使用图片写入视频、图像时，请使用“dtype="uint8"”。
+            fps=None,  # int	剪辑迭代的每秒帧数。如果剪辑已经具有“fps”属性，则为可选项。
+            with_times=False,  # bool Ff ``True`` 产生 ``(t, frame)`` 的元组，其中 ``t`` 是帧的当前时间，否则仅为 ``frame`` 对象。
+            logger=None,  # str 进度条为“bar”，或者为“None”或任何 Proglog 记录器。
+            dtype=None  # type 类型转换 Numpy 数组帧。使用图片写入视频、图像时，请使用“dtype="uint8"”。
     ):
         """迭代剪辑的所有帧。
         将剪辑的每一帧作为 HxWxN Numpy 数组返回，其中 N=1 表示蒙版剪辑，N=3 表示 RGB 剪辑。

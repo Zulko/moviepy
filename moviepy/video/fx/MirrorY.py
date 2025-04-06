@@ -7,7 +7,7 @@ from moviepy.Effect import Effect
 
 @dataclass
 class MirrorY(Effect):
-    """Flips the clip vertically (and its mask too, by default)."""
+    """垂直翻转剪辑（默认情况下也翻转其蒙版mask）。"""
 
     apply_to: Union[List, str] = "mask"
 

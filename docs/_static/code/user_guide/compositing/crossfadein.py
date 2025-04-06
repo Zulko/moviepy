@@ -1,9 +1,8 @@
-"""In this example, we will concatenate two clips with a 1-second
-crossfadein of the second clip."""
+"""在此示例中，我们将连接两个剪辑，第二个剪辑的淡入淡出时长为 1 秒。"""
 
 from moviepy import VideoFileClip, CompositeVideoClip, vfx
 
-# We load all the clips we want to compose
+# 我们加载所有想要合成的剪辑
 clip1 = VideoFileClip("example.mp4")
 clip2 = VideoFileClip("example2.mp4")
 

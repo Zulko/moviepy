@@ -183,86 +183,56 @@ class VideoClip(Clip):
     def write_videofile(
             self,
             filename,
-            fps=None,
+            # 要写入的视频文件的名称，作为字符串或类似路径的对象。
+            # 扩展名必须与使用的“编解码器”相对应（见下文），或者简单使用 '.avi'（适用于任何编解码器）。
+            fps=None, # 结果视频文件的每秒帧数。如果没有提供，并且剪辑有 fps 属性，则使用该 fps。
             codec=None,
-            bitrate=None,
-            audio=True,
-            audio_fps=44100,
-            preset="medium",
-            audio_nbytes=4,
-            audio_codec=None,
-            audio_bitrate=None,
+            # 用于图像编码的编解码器。可以是任何 ffmpeg 支持的编解码器。如果文件名具有扩展名 '.mp4'、'.ogv'、'.webm'，
+            # 则编解码器会自动设置，但你仍然可以根据需要进行设置。对于其他扩展名，输出文件名必须相应设置。
+            # 一些编解码器示例：
+            # - ``'libx264'``（默认的 '.mp4' 扩展名编解码器）
+            #   制作压缩良好的视频（质量可以通过 'bitrate' 调整）。
+            # - ``'mpeg4'``（另一个适用于 '.mp4' 的编解码器）可以作为 ``'libx264'`` 的替代，
+            #   默认会生成较高质量的视频。
+            # - ``'rawvideo'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件可能非常大。
+            # - ``'png'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件比使用 ``rawvideo`` 的文件要小。
+            # - ``'libvorbis'``（使用 '.ogv' 扩展名）是一种不错的视频格式，完全免费/开源。然而，并不是所有人都默认安装了该编解码器。
+            # - ``'libvpx'``（使用 '.webm' 扩展名）是一种非常小的视频格式，适合用于网页视频（支持 HTML5）。开源。
+            bitrate=None, # 视频质量控制，如 "5000k"（越高质量越大）
+            audio=True, # 可以是 ``True``、``False`` 或一个文件名。
+            # 如果为 ``True``，并且剪辑有音频轨道，它将被作为视频的背景音乐加入。
+            # 如果 `audio` 是一个音频文件的路径，指定的音频文件将作为视频的背景音乐加入。
+            audio_fps=44100, # 用于生成音频的帧率。
+            preset="medium", # 设置 FFMPEG 用于优化压缩的时间。
+            # 可选择的设置有：ultrafast、superfast、veryfast、faster、fast、medium、slow、slower、veryslow、placebo。
+            # 请注意，这不会影响视频质量，只会影响视频文件的大小。因此，如果你急需生成文件并且文件大小无关紧要，可以选择 ultrafast。
+            audio_nbytes=4, # 指定生成音频时每帧音频数据的字节数。 4 字节（32-bit）：高精度（适用于专业音频）
+            audio_codec=None, # 要使用的音频编解码器。例如：'libmp3lame'（用于 '.mp3'）、'libvorbis'（用于 '.ogg'）、'libfdk_aac'（用于 '.m4a'）、
+            # 'pcm_s16le'（用于 16 位 wav）和 'pcm_s32le'（用于 32 位 wav）。默认是 'libmp3lame'，除非视频扩展名是 'ogv' 或 'webm'，
+            # 在这种情况下，默认是 'libvorbis'。
+            audio_bitrate=None, # 音频比特率，以字符串表示，如 '50k'、'500k'、'3000k'。
+            # 它将决定输出文件中音频的大小/质量。请注意，它主要是一个目标值，比特率不会一定在最终文件中达到这个值。
             audio_bufsize=2000,
-            temp_audiofile=None,
-            temp_audiofile_path="",
-            remove_temp=True,
-            write_logfile=False,
-            threads=None,
-            ffmpeg_params=None,
-            logger="bar",
-            pixel_format=None,
+            temp_audiofile=None, # 临时音频文件的名称，作为字符串或类似路径的对象，
+            # 它会被创建然后用于生成完整的视频（如果有的话）。
+            temp_audiofile_path="", # 临时音频文件的存储位置，作为字符串或类似路径的对象。默认是当前工作目录。
+            remove_temp=True, # 是否删除中间音频临时文件
+            write_logfile=False, # 如果为 `True`，将为音频和视频生成日志文件。这些文件将以 '.log' 结尾，文件名与输出文件相同。
+            threads=None, # 用于 ffmpeg 的线程数。可以在多核计算机上加速视频写入过程。
+            ffmpeg_params=None, # 任何你希望传递给 ffmpeg 的额外参数，以列表形式提供，例如 ['-option1', 'value1', '-option2', 'value2']。
+            logger="bar", # 可以是 ``"bar"`` 显示进度条，或 ``None``，或任何 Proglog 日志记录器。
+            pixel_format=None, # 输出视频文件的像素格式。
     ):
         """
-        用于将剪辑（clip）保存为视频文件的方法。它会根据用户提供的参数生成一个视频文件，
-        并支持配置编码、音频、压缩、帧速率等多个选项。
-        ---- 参数 ------
-        filename
-          要写入的视频文件的名称，作为字符串或类似路径的对象。
-          扩展名必须与使用的“编解码器”相对应（见下文），或者简单使用 '.avi'（适用于任何编解码器）。
-        fps
-          结果视频文件的每秒帧数。如果没有提供，并且剪辑有 fps 属性，则使用该 fps。
-        codec
-          用于图像编码的编解码器。可以是任何 ffmpeg 支持的编解码器。如果文件名具有扩展名 '.mp4'、'.ogv'、'.webm'，
-          则编解码器会自动设置，但你仍然可以根据需要进行设置。对于其他扩展名，输出文件名必须相应设置。
-          一些编解码器示例：
-          - ``'libx264'``（默认的 '.mp4' 扩展名编解码器）
-            制作压缩良好的视频（质量可以通过 'bitrate' 调整）。
-          - ``'mpeg4'``（另一个适用于 '.mp4' 的编解码器）可以作为 ``'libx264'`` 的替代，
-            默认会生成较高质量的视频。
-          - ``'rawvideo'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件可能非常大。
-          - ``'png'``（使用 '.avi' 扩展名）将生成完美质量的视频，文件比使用 ``rawvideo`` 的文件要小。
-          - ``'libvorbis'``（使用 '.ogv' 扩展名）是一种不错的视频格式，完全免费/开源。然而，并不是所有人都默认安装了该编解码器。
-          - ``'libvpx'``（使用 '.webm' 扩展名）是一种非常小的视频格式，适合用于网页视频（支持 HTML5）。开源。
-        audio
-          可以是 ``True``、``False`` 或一个文件名。
-          如果为 ``True``，并且剪辑有音频轨道，它将被作为视频的背景音乐加入。
-          如果 `audio` 是一个音频文件的路径，指定的音频文件将作为视频的背景音乐加入。
-        audio_fps
-          用于生成音频的帧率。
-        temp_audiofile
-          临时音频文件的名称，作为字符串或类似路径的对象，
-          它会被创建然后用于生成完整的视频（如果有的话）。
-        temp_audiofile_path
-          临时音频文件的存储位置，作为字符串或类似路径的对象。默认是当前工作目录。
-        audio_codec
-          要使用的音频编解码器。例如：'libmp3lame'（用于 '.mp3'）、'libvorbis'（用于 '.ogg'）、'libfdk_aac'（用于 '.m4a'）、
-          'pcm_s16le'（用于 16 位 wav）和 'pcm_s32le'（用于 32 位 wav）。默认是 'libmp3lame'，除非视频扩展名是 'ogv' 或 'webm'，
-          在这种情况下，默认是 'libvorbis'。
-        audio_bitrate
-          音频比特率，以字符串表示，如 '50k'、'500k'、'3000k'。
-          它将决定输出文件中音频的大小/质量。请注意，它主要是一个目标值，比特率不会一定在最终文件中达到这个值。
-        preset
-          设置 FFMPEG 用于优化压缩的时间。
-          可选择的设置有：ultrafast、superfast、veryfast、faster、fast、medium、slow、slower、veryslow、placebo。
-          请注意，这不会影响视频质量，只会影响视频文件的大小。因此，如果你急需生成文件并且文件大小无关紧要，可以选择 ultrafast。
-        threads
-          用于 ffmpeg 的线程数。可以在多核计算机上加速视频写入过程。
-        ffmpeg_params
-          任何你希望传递给 ffmpeg 的额外参数，以列表形式提供，例如 ['-option1', 'value1', '-option2', 'value2']。
-        write_logfile
-          如果为 `True`，将为音频和视频生成日志文件。
-          这些文件将以 '.log' 结尾，文件名与输出文件相同。
-        logger
-          可以是 ``"bar"`` 显示进度条，或 ``None``，或任何 Proglog 日志记录器。
-        pixel_format
-          输出视频文件的像素格式。
-        示例
-        --------
-        from moviepy import VideoFileClip
-        clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
-        clip.write_videofile("my_new_video.mp4")
-        clip.close()
-    """
+            用于将剪辑（clip）保存为视频文件的方法。它会根据用户提供的参数生成一个视频文件，
+            并支持配置编码、音频、压缩、帧速率等多个选项。
+            示例
+            --------
+            from moviepy import VideoFileClip
+            clip = VideoFileClip("myvideo.mp4").subclipped(100,120)
+            clip.write_videofile("my_new_video.mp4")
+            clip.close()
+        """
 
         name, ext = os.path.splitext(os.path.basename(filename))
         ext = ext[1:].lower()
@@ -294,7 +264,7 @@ class VideoClip(Clip):
         )
 
         if make_audio and temp_audiofile:
-            # The audio will be the clip's audio
+            # 音频将是剪辑的音频
             audiofile = temp_audiofile
         elif make_audio:
             audio_ext = find_extension(audio_codec)
@@ -303,7 +273,7 @@ class VideoClip(Clip):
                 name + Clip._TEMP_FILES_PREFIX + "wvf_snd.%s" % audio_ext,
             )
 
-        # enough cpu for multiprocessing ? USELESS RIGHT NOW, WILL COME AGAIN
+        # 有足够的 CPU 进行多处理？目前无用，以后还会用
         # enough_cpu = (multiprocessing.cpu_count() > 1)
         logger(message="MoviePy - Building video %s." % filename)
         if make_audio:
@@ -317,8 +287,8 @@ class VideoClip(Clip):
                 write_logfile=write_logfile,
                 logger=logger,
             )
-            # The audio is already encoded,
-            # so there is no need to encode it during video export
+            # 音频已编码，
+            # 因此在视频导出时无需对其进行编码
             audio_codec = "copy"
 
         ffmpeg_write_video(
@@ -346,23 +316,17 @@ class VideoClip(Clip):
     @use_clip_fps_by_default
     @convert_masks_to_RGB
     def write_images_sequence(
-            self, name_format, fps=None, with_mask=True, logger="bar"
+            self,
+            name_format, # 图像文件名格式，指定输出图像的命名规则和文件扩展名。例如 "frame.png" 表示图像的文件名将按 3 位数字格式化（如 frame001.png、frame002.png），文件格式为 PNG。也可以是其他格式，例如 "some_folder/frame%04d.jpeg"，会将文件保存为 JPEG 格式。
+            fps=None, # 每秒帧数，指定在保存图像时每秒提取多少帧。如果没有指定，则使用视频剪辑的 fps 属性（如果有的话）。
+            with_mask=True, # 如果设置为 True，则会保存剪辑的掩膜（如果存在），并作为 PNG 文件的 alpha 通道（仅适用于 PNG 格式）。掩膜通常用于保存透明背景部分。
+            logger="bar" # 进度条显示的日志记录器。可以设置为 "bar" 来显示进度条，或 None 来禁用日志，或者使用任何支持的 Proglog 日志记录器。
     ):
         """
         方法功能
         write_images_sequence 方法将视频剪辑保存为一系列图像文件。
         你可以指定输出图像文件的命名格式、每秒帧数以及是否保存视频的掩膜（透明部分）。
         生成的图像文件会按照指定的命名格式和扩展名进行保存。
-
-        参数说明
-        name_format:
-        图像文件名格式，指定输出图像的命名规则和文件扩展名。例如 "frame%03d.png" 表示图像的文件名将按 3 位数字格式化（如 frame001.png、frame002.png），文件格式为 PNG。也可以是其他格式，例如 "some_folder/frame%04d.jpeg"，会将文件保存为 JPEG 格式。
-        fps:
-        每秒帧数，指定在保存图像时每秒提取多少帧。如果没有指定，则使用视频剪辑的 fps 属性（如果有的话）。
-        with_mask:
-        如果设置为 True，则会保存剪辑的掩膜（如果存在），并作为 PNG 文件的 alpha 通道（仅适用于 PNG 格式）。掩膜通常用于保存透明背景部分。
-        logger:
-        进度条显示的日志记录器。可以设置为 "bar" 来显示进度条，或 None 来禁用日志，或者使用任何支持的 Proglog 日志记录器。
 
         返回值
         names_list:
@@ -393,32 +357,20 @@ class VideoClip(Clip):
     @convert_path_to_string("filename")
     def write_gif(
             self,
-            filename,
-            fps=None,
-            loop=0,
-            logger="bar",
+            filename, # 生成的 GIF 文件的名称，可以是字符串或路径。
+            fps=None, # 每秒帧数。如果没有提供，函数会尝试从视频剪辑中读取 fps 属性。
+            loop=0,# 一个可选参数，决定 GIF 循环播放的次数。如果不指定，默认会无限循环。
+            logger="bar", # 进度条显示的日志记录器。可以设置为 "bar" 来显示进度条，或 None 来禁用日志，或者使用任何支持的 Proglog 日志记录器。
     ):
         """
         这个方法的作用是将一个 VideoClip 转换成一个动画 GIF 文件。具体来说，它使用 imageio 库来进行 GIF 文件的创建。
 
-        参数：
-        filename: 生成的 GIF 文件的名称，可以是字符串或路径。
-        fps: 每秒帧数。如果没有提供，函数会尝试从视频剪辑中读取 fps 属性。
-        loop: 一个可选参数，决定 GIF 循环播放的次数。如果不指定，默认会无限循环。
-        progress_bar: 如果为 True，则在处理时显示进度条。
-
         说明：
         生成的 GIF 将会按视频的真实播放速度播放。如果想让 GIF 播放得更慢，
         可以使用 multiply_speed 方法来调整播放速度，如将视频速度减慢到 50%。
-
-        .. code:: python
-
-            # slow down clip 50% and make it a gif
-            myClip.multiply_speed(0.5).to_gif('myClip.gif')
         """
         # A little sketchy at the moment, maybe move all that in write_gif,
         #  refactor a little... we will see.
-
         write_gif_with_imageio(
             self,
             filename,
@@ -432,16 +384,13 @@ class VideoClip(Clip):
 
     @convert_masks_to_RGB
     @convert_parameter_to_seconds(["t"])
-    def show(self, t=0, with_mask=True):
+    def show(
+            self,
+            t=0, # 可选参数，表示时间，单位为秒。可以是浮动数值、元组或字符串（例如："00:03:05"）。这个时间对应的是视频中要显示的那一帧。
+            with_mask=True # 可选参数，默认值为 True。如果视频有遮罩（mask），设置为 False 会显示不带遮罩的帧。设置为 True 时，显示带遮罩的帧。
+    ):
         """
         这个方法用于显示视频剪辑在给定时间 t 的某一帧。它可以用于查看视频的特定帧，方便调试或展示特定的画面。
-
-        参数：
-        t: 可选参数，表示时间，单位为秒。可以是浮动数值、元组或字符串（例如："00:03:05"）。
-        这个时间对应的是视频中要显示的那一帧。
-
-        with_mask: 可选参数，默认值为 True。如果视频有遮罩（mask），
-        设置为 False 会显示不带遮罩的帧。设置为 True 时，显示带遮罩的帧。
 
         Examples
         --------
@@ -462,25 +411,22 @@ class VideoClip(Clip):
 
         frame = clip.get_frame(t)
         pil_img = Image.fromarray(frame.astype("uint8"))
-
         pil_img.show()
 
     @requires_duration
     @convert_masks_to_RGB
     def preview(
-            self, fps=15, audio=True, audio_fps=22050, audio_buffersize=3000, audio_nbytes=2
+            self,
+            fps=15, # 可选参数，指定视频预览时的帧率（每秒帧数）。默认值是 15。
+            audio=True,# 可选参数，默认为 True，表示是否在预览时播放视频的音频。如果设置为 False，视频将不带音频播放。
+            audio_fps=22050,# 可选参数，指定生成音频时使用的帧率。默认值依赖于音频源的帧率。
+            audio_buffersize=3000,# 可选参数，指定生成音频时使用的缓冲区大小，影响音频处理的稳定性。
+            audio_nbytes=2 # 可选参数，指定生成音频时每帧音频数据的字节数。
     ):
         """
         在窗口中以给定的每秒帧数显示剪辑。
         它可以避免剪辑播放速度比正常情况更快，但如果计算复杂，则无法避免剪辑播放速度比正常情况更慢。在这种情况下，请尝试降低“fps”。
         这个方法用于在窗口中显示视频剪辑，并按指定的帧率播放视频，适合用来预览视频内容。
-
-        参数：
-        fps: 可选参数，指定视频预览时的帧率（每秒帧数）。默认值是 15。
-        audio: 可选参数，默认为 True，表示是否在预览时播放视频的音频。如果设置为 False，视频将不带音频播放。
-        audio_fps: 可选参数，指定生成音频时使用的帧率。默认值依赖于音频源的帧率。
-        audio_buffersize: 可选参数，指定生成音频时使用的缓冲区大小，影响音频处理的稳定性。
-        audio_nbytes: 可选参数，指定生成音频时每帧音频数据的字节数。
 
         Examples
         --------
@@ -520,26 +466,19 @@ class VideoClip(Clip):
         )
 
     # -----------------------------------------------------------------
-    # FILTERING  过滤
+    # FILTERING  过滤操作/滤镜处理
 
     def with_effects_on_subclip(
             self, effects: List["Effect"], start_time=0, end_time=None, **kwargs
     ):
-        """Apply a transformation to a part of the clip.
-
-        Returns a new clip in which the function ``fun`` (clip->clip)
-        has been applied to the subclip between times `start_time` and `end_time`
-        (in seconds).
+        """对剪辑的一部分应用变换。
+        返回一个新剪辑，其中函数“fun”（clip->clip）已在“start_time”和“end_time”（以秒为单位）之间应用于子剪辑。
 
         Examples
         --------
-
         .. code:: python
-
-            # The scene between times t=3s and t=6s in ``clip`` will be
-            # be played twice slower in ``new_clip``
+            #``clip`` 中时间 t=3s 和 t=6s 之间的场景将在 ``new_clip`` 中以两倍慢的速度播放
             new_clip = clip.with_sub_effect(MultiplySpeed(0.5), 3, 6)
-
         """
         left = None if (start_time == 0) else self.subclipped(0, start_time)
         center = self.subclipped(start_time, end_time).with_effects(effects, **kwargs)
@@ -552,36 +491,25 @@ class VideoClip(Clip):
 
         return concatenate_videoclips(clips).with_start(self.start)
 
-    # IMAGE FILTERS
+    # IMAGE FILTERS 图像过滤器
 
     def image_transform(self, image_func, apply_to=None):
-        """Modifies the images of a clip by replacing the frame `get_frame(t)` by
-        another frame,  `image_func(get_frame(t))`.
-        """
+        """通过将帧“get_frame(t)”替换为另一个帧“image_func(get_frame(t))”来修改剪辑的图像。"""
         apply_to = apply_to or []
         return self.transform(lambda get_frame, t: image_func(get_frame(t)), apply_to)
 
     # --------------------------------------------------------------
     # COMPOSITING  合成
 
-    def fill_array(self, pre_array, shape=(0, 0)):
-        """Fills an array to match the specified shape.
-
-        If the `pre_array` is smaller than the desired shape, the missing rows
-        or columns are added with ones to the bottom or right, respectively,
-        until the shape matches. If the `pre_array` is larger than the desired
-        shape, the excess rows or columns are cropped from the bottom or right,
-        respectively, until the shape matches.
-
-        The resulting array with the filled shape is returned.
-
-        Parameters
-        ----------
-        pre_array (numpy.ndarray)
-          The original array to be filled.
-
-        shape (tuple)
-          The desired shape of the resulting array.
+    def fill_array(
+            self,
+            pre_array, # 需要调整形状的原始数组。通常是图像帧或视频帧，类型为 NumPy 数组。
+            shape=(0, 0) # 目标数组的形状，指定期望的高度和宽度。
+    ):
+        """填充数组以匹配指定的形状。
+        如果 `pre_array` 小于所需形状，则将缺失的行或列分别添加到底部或右侧，直到形状匹配。
+        如果 `pre_array` 大于所需形状，则将多余的行或列分别从底部或右侧裁剪，直到形状匹配。
+        返回具有填充形状的结果数组。
         """
         pre_shape = pre_array.shape
         dx = shape[0] - pre_shape[0]
@@ -599,26 +527,13 @@ class VideoClip(Clip):
             post_array = np.hstack((post_array, x_1))
         return post_array
 
-    def compose_on(self, background: Image.Image, t) -> Image.Image:
-        """Returns the result of the clip's frame at time `t` on top
-        on the given `picture`, the position of the clip being given
-        by the clip's ``pos`` attribute. Meant for compositing.
-
-        If the clip/backgrounds have transparency the transparency will
-        be accounted for.
-
-        The return is a Pillow Image
-
-        Parameters
-        ----------
-        backrgound (Image)
-          The background image to apply current clip on top of
-          if the background image is transparent it must be given as a RGBA image
-
-        t
-          The time of clip to apply on top of clip
-
-        Return
+    def compose_on(
+            self,
+            background: Image.Image,# 背景图像，通常是一个 PIL.Image 对象。如果背景图像是透明的，则必须将其作为 RGBA 图像提供
+            t # 视频剪辑中要显示的时间，单位为秒。
+    ) -> Image.Image:
+        """返回剪辑在时间 `t` 时在给定 `picture` 顶部的帧的结果，剪辑的位置由剪辑的 ``pos`` 属性指定。用于合成。
+        如果剪辑/背景具有透明度，则将考虑透明度。返回的是 Pillow 图像
         """
         ct = t - self.start  # clip time
 
@@ -651,8 +566,7 @@ class VideoClip(Clip):
         pos = self.pos(ct)
         pos = compute_position(clip_img.size, background.size, pos, self.relative_pos)
 
-        # If neither background nor clip have alpha layer (check if mode end
-        # with A), we can juste use pillow paste
+        # # 如果背景和剪辑都没有 alpha 层（用 A 检查模式是否结束），我们可以使用pillow粘贴
         if clip_img.mode[-1] != "A" and background.mode[-1] != "A":
             background.paste(clip_img, pos)
             return background
@@ -675,20 +589,13 @@ class VideoClip(Clip):
         result = Image.alpha_composite(background, canvas)
         return result
 
-    def compose_mask(self, background_mask: np.ndarray, t: float) -> np.ndarray:
-        """Returns the result of the clip's mask at time `t` composited
-        on the given `background_mask`, the position of the clip being given
-        by the clip's ``pos`` attribute. Meant for compositing.
-
-        (warning: only use this function to blit two masks together, never images)
-
-        Parameters
-        ----------
-        background_mask:
-          The underlying mask onto which the clip mask will be composed.
-
-        t:
-          The time position in the clip at which to extract the mask.
+    def compose_mask(
+            self,
+            background_mask: np.ndarray, # 将在其上合成剪辑蒙版的基础蒙版。
+            t: float # 剪辑中提取蒙版的时间位置。
+    ) -> np.ndarray:
+        """返回在时间 `t` 处剪辑的蒙版与给定的 `background_mask` 合成的结果，剪辑的位置由剪辑的 ``pos`` 属性指定。用于合成。
+        （警告：只能使用此功能将两个蒙版连接在一起，不能将图像连接在一起）
         """
         ct = t - self.start  # clip time
         clip_mask = self.get_frame(ct).astype("float")
@@ -741,28 +648,17 @@ class VideoClip(Clip):
 
         return background_mask
 
-    def with_background_color(self, size=None, color=(0, 0, 0), pos=None, opacity=None):
+    def with_background_color(
+            self,
+            size=None, # 类型：tuple（宽度, 高度）描述：最终生成的视频的大小。如果未提供，默认为当前剪辑的大小。
+            color=(0, 0, 0), # 类型：tuple（R, G, B）描述：背景的颜色，默认为黑色 (0, 0, 0)，即 RGB 值为 (0, 0, 0)。
+            pos=None, # 类型：str 或 tuple 描述：剪辑在最终视频中的位置。默认为 "center"，即将剪辑放在背景的中央。可以传入具体的位置坐标（如 (x, y)）。
+            opacity=None # 类型：float（0 到 1 之间） 描述：背景色的透明度。如果未提供，背景色将是完全不透明的。如果提供，值范围为 0 到 1，0 表示完全透明，1 表示完全不透明。
+    ):
         """
         功能：
         该方法可以将当前的剪辑（可能是透明的）放置在一个指定颜色的背景上，生成一个新的剪辑。
         它可以用于给透明的剪辑添加背景色，或者调整剪辑的大小和位置。
-
-        参数：
-        size：
-        类型：tuple（宽度, 高度）
-        描述：最终生成的视频的大小。如果未提供，默认为当前剪辑的大小。
-
-        color：
-        类型：tuple（R, G, B）
-        描述：背景的颜色，默认为黑色 (0, 0, 0)，即 RGB 值为 (0, 0, 0)。
-
-        pos：
-        类型：str 或 tuple
-        描述：剪辑在最终视频中的位置。默认为 "center"，即将剪辑放在背景的中央。可以传入具体的位置坐标（如 (x, y)）。
-
-        opacity：
-        类型：float（0 到 1 之间）
-        描述：背景色的透明度。如果未提供，背景色将是完全不透明的。如果提供，值范围为 0 到 1，0 表示完全透明，1 表示完全不透明。
 
         功能：
             将当前的剪辑放在一个背景色为指定颜色的图层上。
@@ -810,38 +706,33 @@ class VideoClip(Clip):
     def with_updated_frame_function(
             self, frame_function: Callable[[float], np.ndarray]
     ):
-        """Change the clip's ``get_frame``.
-
-        Returns a copy of the VideoClip instance, with the frame_function
-        attribute set to `mf`.
+        """更改剪辑的“get_frame”。
+        返回 VideoClip 实例的副本，并将 frame_function
+        属性设置为“mf”。
         """
         self.frame_function = frame_function
         self.size = self.get_frame(0).shape[:2][::-1]
 
     @outplace
     def with_audio(self, audioclip):
-        """Attach an AudioClip to the VideoClip.
-
-        Returns a copy of the VideoClip instance, with the `audio`
-        attribute set to ``audio``, which must be an AudioClip instance.
-        """
+        """ 将 AudioClip 附加到 VideoClip。返回 VideoClip 实例的副本，并将 `audio` 属性设置为 ``audio``，该实例必须是 AudioClip 实例。"""
         self.audio = audioclip
 
     @outplace
-    def with_mask(self, mask: Union["VideoClip", str] = "auto"):
+    def with_mask(
+            self,
+            mask: Union["VideoClip", str] = "auto"
+            #  Union["VideoClip", str]，可选
+            #  要应用于剪辑的蒙版。
+            #  如果设置为“auto”，将生成默认蒙版：
+            #  - 如果剪辑具有恒定大小，则将创建值为 1.0 的实心蒙版。
+            #  - 否则，将根据帧大小创建动态实心蒙版。
+    ):
         """
         设置剪辑的蒙版。
 
         返回 VideoClip 的副本，其蒙版属性设置为
         ``mask``，必须是灰度（值在 0-1 之间）的 VideoClip。
-
-        参数
-        ----------
-        mask ：Union["VideoClip", str]，可选
-        要应用于剪辑的蒙版。
-        如果设置为“auto”，将生成默认蒙版：
-        - 如果剪辑具有恒定大小，则将创建值为 1.0 的实心蒙版。
-        - 否则，将根据帧大小创建动态实心蒙版。
         """
         if mask == "auto":
             if self.has_constant_size:
@@ -856,23 +747,32 @@ class VideoClip(Clip):
 
     @outplace
     def without_mask(self):
-        """移除剪辑的遮罩。"""
+        """移除剪辑的mask。"""
         self.mask = None
 
     @add_mask_if_none
     @outplace
-    def with_opacity(self, opacity):
+    def with_opacity(
+            self,
+            opacity # 如果 opacity = 1，表示视频完全不透明。 如果 opacity = 0，表示视频完全透明，视频不可见。
+    ):
         """
         设置剪辑的不透明度/透明度级别。
         返回剪辑的一个半透明副本。其实现方式是将剪辑的遮罩（mask）
         与指定的 ``opacity`` 值（通常是 0 到 1 之间的浮点数）相乘。
-        值为 1 表示完全不透明，值为 0 表示完全透明。
         """
         self.mask = self.mask.image_transform(lambda pic: opacity * pic)
 
     @apply_to_mask
     @outplace
-    def with_position(self, pos, relative=False):
+    def with_position(
+            self,
+            pos, # tuple (x, y): 绝对坐标，表示剪辑的左上角在画面上的位置。x 为水平位置，y 为垂直位置。
+            # str: 字符串表示某个常见位置，如 "center"（中心）、"top"（顶部）等。
+            # function t-> (x, y): 随时间变化的函数，允许动态地改变位置，适用于动画效果。
+            relative=False # relative=True: pos 表示相对于画面大小的比例坐标，例如 (0.4, 0.7) 表示位置在画面宽度的 40% 处和画面高度的 70% 处。
+            # relative=False: pos 表示绝对坐标，以像素为单位。
+    ):
         """
         设置剪辑在合成视频中的位置。
         设置剪辑在包含于合成视频中时所处的位置。参数 ``pos`` 可以是一个坐标对 ``(x,y)`` 或一个函数 ``t-> (x,y)``。
@@ -900,21 +800,19 @@ class VideoClip(Clip):
     @apply_to_mask
     @outplace
     def with_layer_index(self, index):
-        """Set the clip's layer in compositions. Clips with a greater ``layer``
-        attribute will be displayed on top of others.
-
-        Note: Only has effect when the clip is used in a CompositeVideoClip.
+        """在合成中设置剪辑的图层。具有更大“层”的剪辑 属性将显示在其他属性之上。
+        注意：只有在CompositeVideoClip中使用剪辑时才有效。
         """
         self.layer_index = index
 
-    def resized(self, new_size=None, height=None, width=None, apply_to_mask=True):
+    def resized(
+            self,
+            new_size=None, # 新的视频大小，可以是一个 (width, height) 的元组，用于同时设置宽度和高度。如果提供了该参数，则 height 和 width 可以忽略。
+            height=None, # 新的视频高度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
+            width=None, # 新的视频宽度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
+            apply_to_mask=True # 一个布尔值，指示是否将重设大小的效果应用到视频的蒙版（mask）上。如果为 True，则蒙版会随视频一起被重设大小。默认为 True。
+    ):
         """
-        参数说明：
-        new_size: 新的视频大小，可以是一个 (width, height) 的元组，用于同时设置宽度和高度。如果提供了该参数，则 height 和 width 可以忽略。
-        height: 新的视频高度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
-        width: 新的视频宽度（像素）。如果同时提供了 new_size 参数，则此参数会被忽略。
-        apply_to_mask: 一个布尔值，指示是否将重设大小的效果应用到视频的蒙版（mask）上。如果为 True，则蒙版会随视频一起被重设大小。默认为 True。
-
         功能：
         该方法通过调用 with_effects 方法，将一个 Resize 效果应用到视频剪辑上，生成一个新的调整大小后的剪辑。
         Resize 类是一个视频效果类，用于调整视频的大小，具体的行为由传入的参数决定。
@@ -937,27 +835,18 @@ class VideoClip(Clip):
 
     def rotated(
             self,
-            angle: float,
-            unit: str = "deg",
-            resample: str = "bicubic",
-            expand: bool = False,
-            center: tuple = None,
-            translate: tuple = None,
-            bg_color: tuple = None,
+            angle: float, # 旋转角度。表示旋转的度数或弧度数。该角度是逆时针方向的。如果角度不是 90 的倍数，或者提供了 center、translate 或 bg_color，则会进行复杂的旋转操作。
+            unit: str = "deg", # 角度的单位，默认为 "deg"（度）。如果设置为 "rad"，则角度将以弧度为单位进行旋转。
+            resample: str = "bicubic", # 重采样方法，控制旋转后的图像质量。默认为 "bicubic"，这通常用于图像处理中的平滑重采样。
+            expand: bool = False, # 布尔值，指示是否扩展图像以适应旋转后的新大小。如果为 True，图像大小会根据旋转后的内容进行自动扩展，否则图像会裁剪掉多余的部分。
+            center: tuple = None, # 一个二元组 (x, y)，指定旋转中心点。如果为 None，旋转将在剪辑的中心进行。
+            translate: tuple = None, # 一个二元组 (dx, dy)，表示旋转后对图像的平移（移动）。这会在旋转过程中改变剪辑的位置。
+            bg_color: tuple = None, # 背景颜色，指定旋转时可能出现的空白区域的填充颜色。这个参数通常与 expand=True 配合使用。
     ):
         """
         通过 ``angle`` 角度（度数或弧度）逆时针旋转指定的剪辑。
         如果角度不是 90 的倍数，或者 ``center``、``translate`` 和 ``bg_color`` 不是 ``None``，则会进行更复杂的旋转。
         有关参数的更多信息，请参见 ``vfx.Rotate``。
-
-        参数说明：
-        angle: 旋转角度。表示旋转的度数或弧度数。该角度是逆时针方向的。如果角度不是 90 的倍数，或者提供了 center、translate 或 bg_color，则会进行复杂的旋转操作。
-        unit: 角度的单位，默认为 "deg"（度）。如果设置为 "rad"，则角度将以弧度为单位进行旋转。
-        resample: 重采样方法，控制旋转后的图像质量。默认为 "bicubic"，这通常用于图像处理中的平滑重采样。
-        expand: 布尔值，指示是否扩展图像以适应旋转后的新大小。如果为 True，图像大小会根据旋转后的内容进行自动扩展，否则图像会裁剪掉多余的部分。
-        center: 一个二元组 (x, y)，指定旋转中心点。如果为 None，旋转将在剪辑的中心进行。
-        translate: 一个二元组 (dx, dy)，表示旋转后对图像的平移（移动）。这会在旋转过程中改变剪辑的位置。
-        bg_color: 背景颜色，指定旋转时可能出现的空白区域的填充颜色。这个参数通常与 expand=True 配合使用。
 
         功能：
             该方法通过调用 with_effects 方法，将一个 Rotate 效果应用到视频剪辑上，实现旋转操作。
@@ -983,30 +872,20 @@ class VideoClip(Clip):
 
     def cropped(
             self,
-            x1: int = None,
-            y1: int = None,
-            x2: int = None,
-            y2: int = None,
-            width: int = None,
-            height: int = None,
-            x_center: int = None,
-            y_center: int = None,
+            x1: int = None, # 裁剪区域左上角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
+            y1: int = None, # 裁剪区域左上角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
+            x2: int = None, # 裁剪区域右下角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
+            y2: int = None, # 裁剪区域右下角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
+            width: int = None, # 如果提供了这个值，它会指定裁剪区域的宽度。x1 和 y1 定义了裁剪区域的起始位置，width 会指定裁剪区域的宽度。
+            height: int = None, # 如果提供了这个值，它会指定裁剪区域的高度。y1 和 x1 定义了裁剪区域的起始位置，height 会指定裁剪区域的高度。
+            x_center: int = None, # 裁剪区域的 x 轴中心。通过 x_center 和 width，可以定义裁剪区域的中心和宽度。
+            y_center: int = None, # 裁剪区域的 y 轴中心。通过 y_center 和 height，可以定义裁剪区域的中心和高度。
     ):
         """
         返回一个新的剪辑，其中仅保留原始剪辑中的矩形子区域。
         x1,y1 表示裁剪区域的左上角，x2,y2 表示裁剪区域的右下角。
         所有坐标均以像素为单位。可以接受浮动数值。
         有关参数的更多信息，请参见 ``vfx.Crop``。
-
-        参数说明：
-        x1: 裁剪区域左上角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
-        y1: 裁剪区域左上角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的起始位置。
-        x2: 裁剪区域右下角的 x 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
-        y2: 裁剪区域右下角的 y 坐标（以像素为单位）。可以是浮动值，表示裁剪区域的结束位置。
-        width: 如果提供了这个值，它会指定裁剪区域的宽度。x1 和 y1 定义了裁剪区域的起始位置，width 会指定裁剪区域的宽度。
-        height: 如果提供了这个值，它会指定裁剪区域的高度。y1 和 x1 定义了裁剪区域的起始位置，height 会指定裁剪区域的高度。
-        x_center: 裁剪区域的 x 轴中心。通过 x_center 和 width，可以定义裁剪区域的中心和宽度。
-        y_center: 裁剪区域的 y 轴中心。通过 y_center 和 height，可以定义裁剪区域的中心和高度。
 
         功能：
             这个方法会返回一个新的剪辑，裁剪出的区域是原始剪辑的一部分。裁剪是通过调用 Crop 效果实现的，Crop 类会根据传入的参数裁剪出一个矩形区域。
@@ -1037,9 +916,8 @@ class VideoClip(Clip):
     @convert_parameter_to_seconds(["t"])
     def to_ImageClip(self, t=0, with_mask=True, duration=None):
         """
-        Returns an ImageClip made out of the clip's frame at time ``t``,
-        which can be expressed in seconds (15.35), in (min, sec),
-        in (hour, min, sec), or as a string: '01:03:05.35'.
+        返回由时间“t”的剪辑帧构成的 ImageClip，可以以秒（15.35）、（分，秒）
+        （时，分，秒）表示，也可以用字符串表示：'01:03:05.35'。
         """
         new_clip = ImageClip(self.get_frame(t), is_mask=self.is_mask, duration=duration)
         if with_mask and self.mask is not None:
@@ -1047,7 +925,7 @@ class VideoClip(Clip):
         return new_clip
 
     def to_mask(self, canal=0):
-        """Return a mask a video clip made from the clip."""
+        """ 返回由剪辑制作的视频剪辑的蒙版。 """
         if self.is_mask:
             return self
         else:
@@ -1056,7 +934,7 @@ class VideoClip(Clip):
             return new_clip
 
     def to_RGB(self):
-        """Return a non-mask video clip made from the mask video clip."""
+        """ 返回由蒙版视频片段制作的非蒙版视频片段。 """
         if self.is_mask:
             new_clip = self.image_transform(
                 lambda pic: np.dstack(3 * [255 * pic]).astype("uint8")

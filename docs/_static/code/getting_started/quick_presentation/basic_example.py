@@ -12,11 +12,11 @@ txt_clip = TextClip(
     font="example.ttf", text="Big Buck Bunny", font_size=70, color="white"
 )
 
-# Say that you want it to appear for 10s at the center of the screen
+# 假设您希望它在屏幕中央出现 10 秒
 txt_clip = txt_clip.with_position("center").with_duration(10)
 
-# Overlay the text clip on the first video clip
+# 将文本片段叠加在第一个视频片段上
 video = CompositeVideoClip([clip, txt_clip])
 
-# Write the result to a file (many options available!)
+# 将结果写入文件（有很多选项可用！）
 video.write_videofile("result.mp4")

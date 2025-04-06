@@ -17,12 +17,8 @@ class CompositeVideoClip(VideoClip):
 
     def __init__(
             self,
-            clips,
-            # clips
-            #       一个视频剪辑列表。
-            #       具有较高 ``layer`` 属性的剪辑将显示在具有较低 ``layer`` 属性的其他剪辑之上。
-            #       如果两个或多个剪辑共享相同的 ``layer``，
-            #       则列表中最后出现的剪辑将显示在顶部（即，它具有更高的图层）。
+            clips, # 一个视频剪辑列表。具有较高 ``layer`` 属性的剪辑将显示在具有较低 ``layer`` 属性的其他剪辑之上。
+            #       如果两个或多个剪辑共享相同的 ``layer``，则列表中最后出现的剪辑将显示在顶部（即，它具有更高的图层）。
             #
             #       对于每个剪辑：
             #       - 属性 ``pos`` 确定剪辑的放置位置。
@@ -31,16 +27,10 @@ class CompositeVideoClip(VideoClip):
             #
             #       最后，如果列表中的所有剪辑都设置了 ``duration`` 属性，
             #       则自动计算合成视频剪辑的持续时间。
-            size=None,
-            #     size
-            #       最终合成视频剪辑的尺寸 (宽度, 高度)。
-            bg_color=None,
-            #     bg_color
-            #       未遮罩和未填充区域的颜色。如果这些区域需要透明，则设置为 None（速度会较慢）。
-            use_bgclip=False,
-            #     use_bgclip
-            #       如果列表中的第一个剪辑应作为所有其他剪辑在其上进行绘制的“背景”，则设置为 True。
-            #       第一个剪辑必须具有与最终剪辑相同的尺寸。如果它没有透明度，则最终剪辑将没有遮罩。
+            size=None, # 最终合成视频剪辑的尺寸 (宽度, 高度)。
+            bg_color=None, #  未遮罩和未填充区域的颜色。如果这些区域需要透明，则设置为 None（速度会较慢）。
+            use_bgclip=False, # 如果列表中的第一个剪辑应作为所有其他剪辑在其上进行绘制的“背景”，则设置为 True。
+            # 第一个剪辑必须具有与最终剪辑相同的尺寸。如果它没有透明度，则最终剪辑将没有遮罩。
             is_mask=False
     ):
         if size is None:
@@ -253,52 +243,27 @@ def clips_array(array, rows_widths=None, cols_heights=None, bg_color=None):
 
 
 def concatenate_videoclips(
-        clips, method="chain", transition=None, bg_color=None, is_mask=False, padding=0
+        clips, # 所有视频剪辑都必须设置其“持续时间”属性的列表。
+        method="chain", # “链接”或“组成”：见上文。
+        transition=None, # 将在列表的每两个剪辑之间播放的剪辑。
+        bg_color=None, # 仅适用于 method='compose'。背景颜色。设置为 None 以获得透明剪辑
+        is_mask=False,
+        padding=0 # 仅适用于方法='compose'。两个连续剪辑的持续时间。请注意，对于负填充，剪辑将与其后面的剪辑同时部分播放
+        # （对于淡入淡出的剪辑来说，负填充效果很棒）。非空填充会自动将方法设置为`compose`。
 ):
-    """Concatenates several video clips.
+    """连接多个视频剪辑。返回由多个视频剪辑连接而成的视频剪辑。（连接意味着它们将一个接一个地播放）。
 
-    Returns a video clip made by clip by concatenating several video clips.
-    (Concatenated means that they will be played one after another).
+    有两种方法：
+    - method="chain"：将生成一个剪辑，该剪辑仅输出连续剪辑的帧，如果它们的大小不同，则不进行任何校正。
+    如果所有剪辑都没有蒙版，则生成的剪辑没有蒙版，否则蒙版是蒙版的连接（显然，对于没有蒙版的剪辑，使用完全不透明的蒙版）。
 
-    There are two methods:
+    如果您有不同大小的剪辑，并且想要将连接的结果直接写入文件，请改用方法“compose”。
 
-    - method="chain": will produce a clip that simply outputs
-      the frames of the successive clips, without any correction if they are
-      not of the same size of anything. If none of the clips have masks the
-      resulting clip has no mask, else the mask is a concatenation of masks
-      (using completely opaque for clips that don't have masks, obviously).
-      If you have clips of different size and you want to write directly the
-      result of the concatenation to a file, use the method "compose" instead.
+    - method="compose"，如果剪辑的分辨率不同，则最终的分辨率将使得不需要调整任何剪辑的大小。
+    因此，最终剪辑的高度与列表中最高的剪辑相同，宽度与列表中最宽的剪辑相同。所有尺寸较小的剪辑
+    都将居中显示。如果 mask=True，边框将是透明的，否则将为“bg_color”指定的颜色。
 
-    - method="compose", if the clips do not have the same resolution, the final
-      resolution will be such that no clip has to be resized.
-      As a consequence the final clip has the height of the highest clip and the
-      width of the widest clip of the list. All the clips with smaller dimensions
-      will appear centered. The border will be transparent if mask=True, else it
-      will be of the color specified by ``bg_color``.
-
-    The clip with the highest FPS will be the FPS of the result clip.
-
-    Parameters
-    ----------
-    clips
-      A list of video clips which must all have their ``duration``
-      attributes set.
-    method
-      "chain" or "compose": see above.
-    transition
-      A clip that will be played between each two clips of the list.
-
-    bg_color
-      Only for method='compose'. Color of the background.
-      Set to None for a transparent clip
-
-    padding
-      Only for method='compose'. Duration during two consecutive clips.
-      Note that for negative padding, a clip will partly play at the same
-      time as the clip it follows (negative padding is cool for clips who fade
-      in on one another). A non-null padding automatically sets the method to
-      `compose`.
+    FPS 最高的剪辑将成为结果剪辑的 FPS。
 
     """
     if transition is not None:
@@ -317,7 +282,6 @@ def concatenate_videoclips(
     timings[-1] -= padding  # Last element is the duration of the whole
 
     if method == "chain":
-
         def frame_function(t):
             i = max([i for i, e in enumerate(timings) if e <= t])
             return clips[i].get_frame(t - timings[i])

@@ -9,10 +9,8 @@ from moviepy.Effect import Effect
 
 @dataclass
 class HeadBlur(Effect):
-    """Returns a filter that will blur a moving part (a head ?) of the frames.
-
-    The position of the blur at time t is defined by (fx(t), fy(t)), the radius
-    of the blurring by ``radius`` and the intensity of the blurring by ``intensity``.
+    """返回一个过滤器，该过滤器将模糊帧的移动部分（头部？）。
+    时间 t 时的模糊位置由 (fx(t), fy(t)) 定义，模糊半径由“radius”定义，模糊强度由“intensity”定义。
     """
 
     fx: callable

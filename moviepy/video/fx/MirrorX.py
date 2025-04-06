@@ -7,7 +7,7 @@ from moviepy.Effect import Effect
 
 @dataclass
 class MirrorX(Effect):
-    """Flips the clip horizontally (and its mask too, by default)."""
+    """水平翻转剪辑（默认情况下也翻转其蒙版mask）。"""
 
     apply_to: Union[List, str] = "mask"
 

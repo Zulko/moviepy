@@ -6,11 +6,10 @@ from moviepy.Effect import Effect
 
 @dataclass
 class MultiplySpeed(Effect):
-    """Returns a clip playing the current clip but at a speed multiplied by ``factor``.
+    """
+    返回以乘以“因子”的速度播放当前剪辑的剪辑。
 
-    Instead of factor one can indicate the desired ``final_duration`` of the clip, and
-    the factor will be automatically computed. The same effect is applied to the clip's
-    audio and mask if any.
+    除了因子之外，还可以指示剪辑所需的“最终持续时间”，并且该因子将自动计算。 相同的效果将应用于剪辑的音频和掩码（如果有）。
     """
 
     factor: float = None

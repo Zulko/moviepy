@@ -276,7 +276,7 @@ def sepia_filter(frame: np.ndarray):
     return sepia_image
 
 
-# Now, we simply apply the filter to our clip by calling image_transform, which will call our filter on every frame
+# 现在，我们只需通过调用 image_transform 将过滤器应用到我们的剪辑中，它将在每一帧上调用我们的过滤器
 rambo_clip = rambo_clip.image_transform(sepia_filter)
 
 # Let's see how our filter look
