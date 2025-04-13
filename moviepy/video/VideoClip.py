@@ -1881,7 +1881,12 @@ class TextClip(ImageClip):
         draw = ImageDraw.Draw(img)
 
         # Compute individual line height with spaces using pillow internal method
-        line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
+        try:
+            line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
+        except AttributeError:
+            # support for PIL>10.0.0, changelog https://pillow.readthedocs.io/en/stable/releasenotes/10.0.0.html#font-size-and-offset-methods
+            line_height = draw.textbbox((0, 0), text="A", font=font_pil, spacing=spacing, stroke_width=stroke_width)[3]
+            line_height += spacing + stroke_width
 
         if max_width is not None and allow_break:
             lines = self.__break_text(
