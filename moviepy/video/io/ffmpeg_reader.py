@@ -543,7 +543,7 @@ class FFmpegInfosParser:
                         self.result["video_rotation"] = value
 
                 # multiline metadata value parsing
-                if field == "":
+                if field == "" and self._last_metadata_field_added not in ['rotate', 'displaymatrix']:
                     field = self._last_metadata_field_added
                     value = self._current_stream["metadata"][field] + "\n" + value
                 else:
@@ -796,6 +796,13 @@ class FFmpegInfosParser:
         """Returns a tuple with a metadata field-value pair given a ffmpeg `-i`
         command output line.
         """
+        if line.startswith("Ambient Viewing Environment, ") or line.startswith(
+            "Content Light Level Metadata, "
+        ) or line.startswith("Mastering Display Metadata, "):
+            field = line.split(",")[0]
+            value = line.split(",")[1:]
+            return (field.strip(" "), ",".join(value).strip(" "))
+
         info = line.split(":", 1)
         if len(info) == 2:
             raw_field, raw_value = info
