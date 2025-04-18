@@ -393,6 +393,9 @@ class FFmpegInfosParser:
         self._current_stream = None
         self._current_chapter = None
 
+        # if stream type is video then has side data
+        self._inside_stream_sidedata = False
+
         # resulting data of the parsing process
         self.result = {
             "video_found": False,
@@ -455,9 +458,12 @@ class FFmpegInfosParser:
                     value = self.result["metadata"][field] + "\n" + value
                 else:
                     self._last_metadata_field_added = field
+
                 self.result["metadata"][field] = value
             elif line.lstrip().startswith("Stream "):
                 # exit stream "    Metadata:"
+                self._inside_stream_sidedata = False
+
                 if self._current_stream:
                     self._current_input_file["streams"].append(self._current_stream)
 
@@ -524,13 +530,19 @@ class FFmpegInfosParser:
                     )
                 else:
                     self._current_stream.update(stream_data)
-            elif line.startswith("    Metadata:"):
+            elif line.startswith('      Metadata:'):
                 # enter group "    Metadata:"
                 continue
             elif self._current_stream:
                 # stream metadata line
                 if "metadata" not in self._current_stream:
                     self._current_stream["metadata"] = {}
+
+                if line.strip().startswith("Side data:"):
+                    self._inside_stream_sidedata = True
+                    if "side_data" not in self._current_stream:
+                        self._current_stream["sidedata"] = {}
+                    continue
 
                 field, value = self.parse_metadata_field_value(line)
 
@@ -548,7 +560,12 @@ class FFmpegInfosParser:
                     value = self._current_stream["metadata"][field] + "\n" + value
                 else:
                     self._last_metadata_field_added = field
-                self._current_stream["metadata"][field] = value
+
+                if not self._inside_stream_sidedata:
+                    self._current_stream["metadata"][field] = value
+                else:
+                    self._current_stream["sidedata"][field] = value
+                
             elif line.startswith("    Chapter"):
                 # Chapter data line
                 if self._current_chapter:
