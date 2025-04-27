@@ -7,17 +7,13 @@ from moviepy.video.compositing.CompositeVideoClip import concatenate_videoclips
 
 @dataclass
 class Freeze(Effect):
-    """Momentarily freeze the clip at time t.
+    """在时间t暂时冻结剪辑。
 
-    Set `t='end'` to freeze the clip at the end (actually it will freeze on the
-    frame at time clip.duration - padding_end seconds - 1 / clip_fps).
-    With ``duration`` you can specify the duration of the freeze.
-    With ``total_duration`` you can specify the total duration of
-    the clip and the freeze (i.e. the duration of the freeze is
-    automatically computed). One of them must be provided.
+    设置`t ='end'`以在结尾冻结剪辑（实际上它将在时间 clip.duration - padding_end seconds - 1 / clip_fps处的帧）。
+    使用``duration``，您可以指定冻结的持续时间。
+    使用``total_duration``，您可以指定剪辑和冻结（即，冻结的持续时间是自动计算）。其中一个必须提供。
 
-    With ``update_start_end`` you can define if the effect must preserve
-    and/or update start and end properties of the original clip
+    使用“update_start_end”，您可以定义效果是否必须保留和/或更新原始剪辑的开始和结束属性
     """
 
     t: float = 0

@@ -8,17 +8,14 @@ from moviepy.Effect import Effect
 
 @dataclass
 class MaskColor(Effect):
-    """Returns a new clip with a mask for transparency where the original
-    clip is of the given color.
+    """返回一个新的剪辑，其中原始的剪辑是给定的颜色。
 
-    You can also have a "progressive" mask by specifying a non-null distance
-    threshold ``threshold``. In this case, if the distance between a pixel and
-    the given color is d, the transparency will be
+    你也可以通过指定一个非空距离来获得一个“渐进式”遮罩
+    门槛，门槛。在这种情况下，如果像素与给定的颜色是d，透明度将是
 
-    d**stiffness / (threshold**stiffness + d**stiffness)
+    d** 刚度/（阈值 ** 刚度+ d** 刚度）
 
-    which is 1 when d>>threshold and 0 for d<<threshold, the stiffness of the
-    effect being parametrized by ``stiffness``
+    其在d>>阈值时为1，并且对于d<<阈值为0，通过“刚度”参数化效果
     """
 
     color: tuple = (0, 0, 0)

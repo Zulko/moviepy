@@ -9,11 +9,11 @@ from moviepy.Effect import Effect
 
 @dataclass
 class Painting(Effect):
-    """Transforms any photo into some kind of painting.
+    """将任何照片转换为某种绘画。
 
-    Transforms any photo into some kind of painting. Saturation
-    tells at which point the colors of the result should be
-    flashy. ``black`` gives the amount of black lines wanted.
+    将任何照片转换为某种绘画。饱和度
+    表示结果的颜色在什么时候应该是
+    鲜艳的。``黑色`` 表示所需的黑线数量。
 
     np_image : a numpy image
     """

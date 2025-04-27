@@ -92,9 +92,14 @@ class FFMPEG_VideoWriter:
         threads=None,
         ffmpeg_params=None,
         pixel_format=None,
+        batch_size=10
     ):
         if logfile is None:
             logfile = sp.PIPE
+
+        self.frame_buffer = []
+        self.batch_size = batch_size
+
         self.logfile = logfile
         self.filename = filename
         self.codec = codec
@@ -161,12 +166,17 @@ class FFMPEG_VideoWriter:
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
         )
 
+        print("FFMPEG_VideoWriter cmd -> ", cmd)
+
         self.proc = sp.Popen(cmd, **popen_params)
 
-    def write_frame(self, img_array):
-        """Writes one frame in the file."""
+    def _flush_frame_buffer(self):
+        if not self.frame_buffer:
+            return
         try:
-            self.proc.stdin.write(img_array.tobytes())
+            combined = b"".join(frame.tobytes() for frame in self.frame_buffer)
+            self.proc.stdin.write(combined)
+            self.frame_buffer.clear()
         except IOError as err:
             _, ffmpeg_error = self.proc.communicate()
             if ffmpeg_error is not None:
@@ -220,14 +230,21 @@ class FFMPEG_VideoWriter:
 
             raise IOError(error)
 
+    def write_frame(self, img_array):
+        """Writes one frame in the file."""
+        self.frame_buffer.append(img_array)
+
+        if len(self.frame_buffer) >= self.batch_size:
+            self._flush_frame_buffer()
+
+
     def close(self):
-        """Closes the writer, terminating the subprocess if is still alive."""
+        self._flush_frame_buffer()  # 写入剩下的帧
         if self.proc:
             self.proc.stdin.close()
             if self.proc.stderr is not None:
                 self.proc.stderr.close()
             self.proc.wait()
-
             self.proc = None
 
     # Support the Context Manager protocol, to ensure that resources are cleaned up.

@@ -6,11 +6,11 @@ from moviepy.Effect import Effect
 
 @dataclass
 class LumContrast(Effect):
-    """剪辑的亮度对比度校正。"""
+    """ 剪辑的亮度对比度校正。"""
 
-    lum: float = 0
-    contrast: float = 0
-    contrast_threshold: float = 127
+    lum: float = 0,              # 整体亮度增减（+变亮，-变暗）
+    contrast: float = 0,         # 对比度调整（+增强明暗差异，-减弱）
+    contrast_threshold: float = 127  # 对比度参考基准（默认是中灰色）
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""
