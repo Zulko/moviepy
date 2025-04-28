@@ -6,6 +6,7 @@
 
 import numbers
 import os
+from typing import List
 
 import numpy as np
 import proglog
@@ -420,7 +421,7 @@ class CompositeAudioClip(AudioClip):
         return zero + sum(sounds)
 
 
-def concatenate_audioclips(clips):
+def concatenate_audioclips(clips: List[AudioClip]):
     """Concatenates one AudioClip after another, in the order that are passed
     to ``clips`` parameter.
 

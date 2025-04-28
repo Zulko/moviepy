@@ -206,10 +206,10 @@ class Clip:
 
         return new_clip
 
+    @outplace
     @apply_to_mask
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
-    @outplace
     def with_start(self, t, change_end=True):
         """Returns a copy of the clip, with the ``start`` attribute set
         to ``t``, which can be expressed in seconds (15.35), in (min, sec),
@@ -247,10 +247,10 @@ class Clip:
         elif self.end is not None:
             self.duration = self.end - self.start
 
+    @outplace
     @apply_to_mask
     @apply_to_audio
     @convert_parameter_to_seconds(["t"])
-    @outplace
     def with_end(self, t):
         """Returns a copy of the clip, with the ``end`` attribute set to ``t``,
         which can be expressed in seconds (15.35), in (min, sec), in
@@ -281,10 +281,10 @@ class Clip:
         else:
             self.duration = self.end - self.start
 
+    @outplace
     @apply_to_mask
     @apply_to_audio
     @convert_parameter_to_seconds(["duration"])
-    @outplace
     def with_duration(self, duration, change_end=True):
         """Returns a copy of the clip, with the  ``duration`` attribute set to
         ``t``, which can be expressed in seconds (15.35), in (min, sec), in
