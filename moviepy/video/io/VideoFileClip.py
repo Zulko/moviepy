@@ -60,6 +60,9 @@ class VideoFileClip(VideoClip):
     is_mask
       `True` if the clip is going to be used as a mask.
 
+    audio_stream_index
+      The index of the audio stream to read from the file.
+
 
     Attributes
     ----------
@@ -99,6 +102,7 @@ class VideoFileClip(VideoClip):
         fps_source="fps",
         pixel_format=None,
         is_mask=False,
+        audio_stream_index=0,
     ):
         VideoClip.__init__(self, is_mask=is_mask)
 
@@ -146,6 +150,7 @@ class VideoFileClip(VideoClip):
                 buffersize=audio_buffersize,
                 fps=audio_fps,
                 nbytes=audio_nbytes,
+                audio_stream_index=audio_stream_index,
             )
 
     def __deepcopy__(self, memo):
