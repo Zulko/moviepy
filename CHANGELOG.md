@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
+## v2.2.1
+
+Pillow mitigations (try/except for newer versions of pillow).
+
+## v2.2
+
 [Full Changelog](https://github.com/zulko/moviepy/compare/v2.0.0.dev2...HEAD)
 
 ### Important Announcements

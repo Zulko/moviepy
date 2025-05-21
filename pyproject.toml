@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moviepy"
-version = "2.2.0"
+version = "2.2.1"
 description = "Video editing with Python"
 readme = "README.md"
 license = { text = "MIT License" }
