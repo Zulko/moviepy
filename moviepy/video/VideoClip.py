@@ -965,8 +965,8 @@ class VideoClip(Clip):
         """Remove the clip's mask."""
         self.mask = None
 
-    @add_mask_if_none
     @outplace
+    @add_mask_if_none
     def with_opacity(self, opacity):
         """Set the opacity/transparency level of the clip.
 
@@ -975,8 +975,8 @@ class VideoClip(Clip):
         """
         self.mask = self.mask.image_transform(lambda pic: opacity * pic)
 
-    @apply_to_mask
     @outplace
+    @apply_to_mask
     def with_position(self, pos, relative=False):
         """Set the clip's position in compositions.
 
@@ -1009,8 +1009,8 @@ class VideoClip(Clip):
         else:
             self.pos = lambda t: pos
 
-    @apply_to_mask
     @outplace
+    @apply_to_mask
     def with_layer_index(self, index):
         """Set the clip's layer in compositions. Clips with a greater ``layer``
         attribute will be displayed on top of others.
