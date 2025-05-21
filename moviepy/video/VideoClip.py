@@ -1914,7 +1914,7 @@ class TextClip(ImageClip):
             lines_height = line_breaks * line_height
             paddings = real_font_size + stroke_width * 2
             height = int(lines_height + paddings)
-        except AttributeError as err:
+        except AttributeError:
             height = int(bottom - top)
 
         return (int(right - left), height)
