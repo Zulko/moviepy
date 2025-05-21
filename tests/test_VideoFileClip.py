@@ -2,11 +2,15 @@
 
 import copy
 import os
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import pytest
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
+from moviepy.video.io.errors import VideoCorruptedError
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy.video.re_mux import remux_video
 from moviepy.video.VideoClip import ColorClip
 
 
@@ -96,6 +100,21 @@ def test_ffmpeg_transparency_mask(util):
     assert mask_frame[10, 10] == 0
 
     video.close()
+
+
+def test_no_duration_raise_io_error():
+    with pytest.raises(
+        VideoCorruptedError,
+        match="Could not parse duration from 'N/A, start: 0.000000, bitrate: N/A",
+    ):
+        VideoFileClip("media/no_duration.webm")
+
+
+def test_no_duration_re_encode_can_be_opened():
+    with TemporaryDirectory() as temp_dir:
+        target = Path(temp_dir).joinpath("re_encoded.webm")
+        remux_video("media/no_duration.webm", target)
+        VideoFileClip(target)
 
 
 if __name__ == "__main__":
