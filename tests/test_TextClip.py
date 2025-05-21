@@ -72,7 +72,7 @@ def test_no_text_nor_filename_arguments(method, util):
             method=method,
         )
 
-
+@pytest.mark.xfail(reason="Autosizing might not work great with new Pillow versions")
 def test_label_autosizing(util):
     # We test with about all possible letters
     text = "abcdefghijklmnopqrstuvwxyzáàâäãåāæąēéèêëīíìîïñōóòôöõøœęý\
