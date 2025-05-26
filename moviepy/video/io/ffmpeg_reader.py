@@ -29,9 +29,11 @@ class FFMPEG_VideoReader:
         target_resolution=None,
         resize_algo="bicubic",
         fps_source="fps",
+        print_cmd=False,
     ):
         self.filename = filename
         self.proc = None
+        self.print_cmd = print_cmd
         infos = ffmpeg_parse_infos(
             filename,
             check_duration=check_duration,
@@ -154,6 +156,8 @@ class FFMPEG_VideoReader:
                 "-",
             ]
         )
+        if self.print_cmd:
+            print(" ".join(cmd))
 
         popen_params = cross_platform_popen_params(
             {
