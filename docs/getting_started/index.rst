@@ -1,18 +1,21 @@
-.. _getting_started:
+.. _user_guide:
 
-Getting started with MoviePy
+The MoviePy User Guide
 ------------------------------
 
-This section explain everything you need to start editing with MoviePy. To go further, have a look at the :ref:`user_guide` and the :ref:`reference_manual`.
+The User Guide covers all of MoviePy's main concepts grouped by tasks (loading, editing, composing, rendering), with a presentation of the different concepts/elements relative to the tasks along with short code examples.
 
+It is a good place for users wishing to understand more precisely one of these aspects and to discover the different MoviePy elements relative to it.
+
+For users wanting to have a quick overview of how to use MoviePy, a better place to start is the :ref:`getting_started` section, and more specifically the :ref:`moviepy_10_minutes` tutorial.
+
+For a full overview of MoviePy, see the :ref:`reference_manual`.
 
 .. toctree::
    :maxdepth: 1
-
-   install
-   quick_presentation
-   moviepy_10_minutes
-   docker
-   updating_to_v2
-   FAQ
-
+   
+   loading
+   modifying
+   create_effects
+   compositing
+   rendering
