@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
+### Fixed
+- Fix circular reference in ImageSequenceClip
+
 ## v2.2.1
 
 Pillow mitigations (try/except for newer versions of pillow).
