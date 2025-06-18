@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
 ### Fixed
-- Fix circular reference in ImageSequenceClip
+- Fix circular reference in ImageSequenceClip leading to memory leak
 
 ## v2.2.1
 
+### Fixed
 Pillow mitigations (try/except for newer versions of pillow).
 
 ## v2.2
