@@ -323,6 +323,8 @@ class Clip:
 
         frame_function : function
           New frame creator function for the clip.
+          A frame_function is a function taking a time ``t`` as input and
+          returning a frame (a numpy array) as a result.
         """
         self.frame_function = frame_function
 

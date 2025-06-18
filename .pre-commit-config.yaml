@@ -21,5 +21,7 @@ repos:
           - flake8-docstrings>=1.7.0
           - flake8-rst-docstrings>=0.3
           - flake8-implicit-str-concat==0.4.0
+        args:
+          - --max-line-length=92
         name: flake8-test
         files: \.py$
