@@ -1545,11 +1545,11 @@ class TextClip(ImageClip):
       letters with accents), and bellow standard baseline (e.g letters such as
       p, y, g).
 
-      This notion is knowned under the name ascent and descent meaning the
-      highest and lowest pixel above and below baseline
+      This notion is known under the name "ascent" and "descent" meaning the
+      highest and lowest pixel above and below the baseline.
 
-      If your first line dont have an "accent character" and your last line
-      dont have a "descent character", you'll have some "fat" arround
+      If your first line doesn't have an "accent character" and your last line
+      doesn't have a "descent character", you'll have some "fat" around.
     """
 
     @convert_path_to_string("filename")
