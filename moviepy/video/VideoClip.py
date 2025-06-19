@@ -15,7 +15,6 @@ import proglog
 from imageio.v2 import imread as imread_v2
 from imageio.v3 import imwrite
 from PIL import Image, ImageDraw, ImageFont, __version__ as PIL_version
-from pkg_resources import parse_version
 
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
@@ -1576,7 +1575,11 @@ class TextClip(ImageClip):
         if font is not None:
             try:
                 _ = ImageFont.truetype(font)
-            except Exception as e:
+            except TypeError as e:
+                if "takes no arguments" in str(e):
+                    pil_font = ImageFont.load_default()
+                else:
+                    raise
                 raise ValueError(
                     "Invalid font {}, pillow failed to use it with error {}".format(
                         font, e
@@ -1705,10 +1708,12 @@ class TextClip(ImageClip):
         if font:
             pil_font = ImageFont.truetype(font, font_size)
         else:
-            if parse_version(PIL_version) >= parse_version("10.1.0"):
+            try:
+                # Only Pillow >= 10.1.0, can set font size
                 pil_font = ImageFont.load_default(font_size)
-            else:
+            except TypeError as e:
                 pil_font = ImageFont.load_default()
+
         draw = ImageDraw.Draw(img)
 
         # Dont need allow break here, because we already breaked in caption
@@ -1778,10 +1783,12 @@ class TextClip(ImageClip):
         if font:
             font_pil = ImageFont.truetype(font, font_size)
         else:
-            if parse_version(PIL_version) >= parse_version("10.1.0"):
+            try:
+                # Only Pillow >= 10.1.0, can set font size
                 font_pil = ImageFont.load_default(font_size)
-            else:
+            except TypeError as e:
                 font_pil = ImageFont.load_default()
+            
         draw = ImageDraw.Draw(img)
 
         lines = []
