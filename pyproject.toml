@@ -33,7 +33,7 @@ dependencies = [
     "numpy>=1.25.0",
     "proglog<=1.0.0",
     "python-dotenv>=0.10",
-    "pillow>=9.2.0,<12.0",
+    "pillow>=9.2.0",
 ]
 
 [project.optional-dependencies]
