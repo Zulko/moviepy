@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix circular reference in ImageSequenceClip leading to memory leak
+- Fix TextClip broken with Pillow > 11.2
 
 ### Added
 - Possibility to select audio track when reading a file (#2429)

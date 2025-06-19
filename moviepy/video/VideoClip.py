@@ -14,7 +14,7 @@ import numpy as np
 import proglog
 from imageio.v2 import imread as imread_v2
 from imageio.v3 import imwrite
-from PIL import Image, ImageDraw, ImageFont, __version__ as PIL_version
+from PIL import Image, ImageDraw, ImageFont
 
 from moviepy.video.io.ffplay_previewer import ffplay_preview_video
 
@@ -1711,7 +1711,7 @@ class TextClip(ImageClip):
             try:
                 # Only Pillow >= 10.1.0, can set font size
                 pil_font = ImageFont.load_default(font_size)
-            except TypeError as e:
+            except TypeError:
                 pil_font = ImageFont.load_default()
 
         draw = ImageDraw.Draw(img)
@@ -1786,9 +1786,9 @@ class TextClip(ImageClip):
             try:
                 # Only Pillow >= 10.1.0, can set font size
                 font_pil = ImageFont.load_default(font_size)
-            except TypeError as e:
+            except TypeError:
                 font_pil = ImageFont.load_default()
-            
+
         draw = ImageDraw.Draw(img)
 
         lines = []
@@ -1921,17 +1921,36 @@ class TextClip(ImageClip):
         )
 
         # For height calculate manually as textbbox is not realiable
-        try:
-            # this disappeared in more recent versions of Pillow
-            line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
-            line_breaks = text.count("\n")
-            lines_height = line_breaks * line_height
-            paddings = real_font_size + stroke_width * 2
-            height = int(lines_height + paddings)
-        except AttributeError:
-            height = int(bottom - top)
+        line_height = self.__multiline_spacing(draw, font_pil, spacing, stroke_width)
+        line_breaks = text.count("\n")
+        lines_height = line_breaks * line_height
+        paddings = real_font_size + stroke_width * 2
+        height = int(lines_height + paddings)
 
         return (int(right - left), height)
+
+    def __multiline_spacing(
+        self,
+        draw: ImageDraw.ImageDraw,
+        font: Union[
+            ImageFont.ImageFont, ImageFont.FreeTypeFont, ImageFont.TransposedFont
+        ],
+        spacing: float,
+        stroke_width: float,
+    ) -> float:
+        """Calculate the spacing between lines for multiline text.
+
+        This method is used to calculate the height of each line in a multiline
+        text block, taking into account the font metrics, spacing, and stroke width.
+
+        This is a dropped-in replacement for the deprecated
+        `ImageDraw._multiline_spacing` method in Pillow.
+        """
+        return (
+            draw.textbbox((0, 0), "A", font, stroke_width=stroke_width)[3]
+            + stroke_width
+            + spacing
+        )
 
     def __find_optimum_font_size(
         self,

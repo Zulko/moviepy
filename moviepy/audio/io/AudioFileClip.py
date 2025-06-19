@@ -60,8 +60,13 @@ class AudioFileClip(AudioClip):
 
     @convert_path_to_string("filename")
     def __init__(
-        self, filename, decode_file=False, buffersize=200000,
-        nbytes=2, fps=44100, audio_stream_index=0
+        self,
+        filename,
+        decode_file=False,
+        buffersize=200000,
+        nbytes=2,
+        fps=44100,
+        audio_stream_index=0,
     ):
         AudioClip.__init__(self)
 
