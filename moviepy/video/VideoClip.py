@@ -1932,7 +1932,9 @@ class TextClip(ImageClip):
     def __multiline_spacing(
         self,
         draw: ImageDraw.ImageDraw,
-        font: ImageFont.ImageFont | ImageFont.FreeTypeFont | ImageFont.TransposedFont,
+        font: Union[
+            ImageFont.ImageFont, ImageFont.FreeTypeFont, ImageFont.TransposedFont
+        ],
         spacing: float,
         stroke_width: float,
     ) -> float:
