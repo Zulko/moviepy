@@ -75,6 +75,11 @@ class FFMPEG_VideoWriter:
 
     ffmpeg_params : list, optional
       Additional parameters passed to ffmpeg command.
+
+    print_cmd : bool, optional
+      If set to ``True``, the ffmpeg command used to write the video will be
+      printed to the console. This can be useful for debugging purposes.
+      Default is ``False``.
     """
 
     def __init__(
@@ -92,6 +97,7 @@ class FFMPEG_VideoWriter:
         threads=None,
         ffmpeg_params=None,
         pixel_format=None,
+        print_cmd=False,
     ):
         if logfile is None:
             logfile = sp.PIPE
@@ -101,7 +107,7 @@ class FFMPEG_VideoWriter:
         self.audio_codec = audio_codec
         self.ext = self.filename.split(".")[-1]
 
-        pixel_format = "rgba" if with_mask else "rgb24"
+        input_pixel_format = "rgba" if with_mask else "rgb24"
 
         # order is important
         cmd = [
@@ -116,7 +122,7 @@ class FFMPEG_VideoWriter:
             "-s",
             "%dx%d" % (size[0], size[1]),
             "-pix_fmt",
-            pixel_format,
+            input_pixel_format,
             "-r",
             "%.02f" % fps,
             "-an",
@@ -144,7 +150,7 @@ class FFMPEG_VideoWriter:
         if threads is not None:
             cmd.extend(["-threads", str(threads)])
 
-        # Disable auto alt ref for transparent webm and set pix format yo yuva420p
+        # Disable auto alt ref for transparent webm and set pix format to yuva420p
         if codec == "libvpx" and with_mask:
             cmd.extend(["-pix_fmt", "yuva420p"])
             cmd.extend(["-auto-alt-ref", "0"])
@@ -154,8 +160,17 @@ class FFMPEG_VideoWriter:
             and (size[1] % 2 == 0)
         ):
             cmd.extend(["-pix_fmt", "yuva420p"])
+        else:
+            # For all other codecs, we use the pixel format specified by the user
+            # or the default one.
+            if pixel_format is None:
+                pixel_format = "rgba" if with_mask else "rgb24"
+            cmd.extend(["-pix_fmt", pixel_format])
 
         cmd.extend([ffmpeg_escape_filename(filename)])
+
+        if print_cmd:
+            print("FFMPEG command:", " ".join(cmd))
 
         popen_params = cross_platform_popen_params(
             {"stdout": sp.DEVNULL, "stderr": logfile, "stdin": sp.PIPE}
@@ -179,7 +194,7 @@ class FFMPEG_VideoWriter:
 
             error = (
                 f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
-                f"writing file {self.filename}:\n\n {ffmpeg_error}"
+                f"writing file {self.filename}: \n\n {ffmpeg_error}"
             )
 
             if "Unknown encoder" in ffmpeg_error or "Unknown decoder" in ffmpeg_error:
@@ -355,7 +370,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     if proc.returncode:
         error = (
             f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
-            f"writing file {filename} with command {cmd}:\n\n {err.decode()}"
+            f"writing file {filename} with command {cmd}: \n\n {err.decode()}"
         )
 
         raise IOError(error)
