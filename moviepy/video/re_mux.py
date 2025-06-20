@@ -2,9 +2,10 @@
 
 import subprocess
 from pathlib import Path
+from typing import Union
 
 
-def remux_video(input_file: str | Path, output_file: str | Path):
+def remux_video(input_file: Union[str, Path], output_file: Union[str, Path]):
     """
     Re-mux a video file using ffmpeg.
     This may fix issues with corrupted video file.
