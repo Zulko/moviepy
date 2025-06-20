@@ -133,11 +133,3 @@ Lastly, you might wish to export an entire clip as an image sequence (multiple i
 
 For more information, see :py:func:`~moviepy.video.VideoClip.VideoClip.write_images_sequence`.
 ```
-
-### Changes Made:
-- Corrected minor grammatical errors.
-- Standardized capitalization and punctuation.
-- Improved readability by breaking up long paragraphs.
-- Fixed typos and inconsistencies.
-- Ensured consistent formatting throughout.
-<summary>input tokens: 1776, prefill time: 1.36s, output tokens: 1792, decode speed: 74.01 tokens/s</summary>
