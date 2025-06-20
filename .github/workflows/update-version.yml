@@ -1,0 +1,45 @@
+name: Update Version on Tag
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on version tags
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # ensures tags are fetched
+
+      - name: Extract version from tag
+        id: get_version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update version in pyproject.toml
+        run: |
+          sed -i "s/^version = \".*\"/version = \"${{ steps.get_version.outputs.version }}\"/" pyproject.toml
+
+      - name: Update __version__ in source code
+        run: |
+          VERSION=${{ steps.get_version.outputs.version }}
+          sed -i "s/^__version__ = \".*\"/__version__ = \"${VERSION}\"/" moviepy/version.py
+
+      - name: Update version in docs/conf.py
+        run: |  
+          VERSION=${{ steps.get_version.outputs.version }}
+          sed -i "s/^version = \".*\"/version = \"${VERSION}\"/" docs/conf.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "moviepy[bot]@users.noreply.github.com"
+          git commit -am "[bot] Update version to ${{ steps.get_version.outputs.version }}"
+          git push origin HEAD:${GITHUB_REF_NAME}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
