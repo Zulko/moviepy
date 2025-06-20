@@ -1544,11 +1544,11 @@ class TextClip(ImageClip):
       letters with accents), and bellow standard baseline (e.g letters such as
       p, y, g).
 
-      This notion is knowned under the name ascent and descent meaning the
-      highest and lowest pixel above and below baseline
+      This notion is known under the name "ascent" and "descent" meaning the
+      highest and lowest pixel above and below the baseline.
 
-      If your first line dont have an "accent character" and your last line
-      dont have a "descent character", you'll have some "fat" arround
+      If your first line doesn't have an "accent character" and your last line
+      doesn't have a "descent character", you'll have some "fat" around.
     """
 
     @convert_path_to_string("filename")
@@ -1575,7 +1575,11 @@ class TextClip(ImageClip):
         if font is not None:
             try:
                 _ = ImageFont.truetype(font)
-            except Exception as e:
+            except TypeError as e:
+                if "takes no arguments" in str(e):
+                    pil_font = ImageFont.load_default()
+                else:
+                    raise
                 raise ValueError(
                     "Invalid font {}, pillow failed to use it with error {}".format(
                         font, e
@@ -1704,7 +1708,12 @@ class TextClip(ImageClip):
         if font:
             pil_font = ImageFont.truetype(font, font_size)
         else:
-            pil_font = ImageFont.load_default(font_size)
+            try:
+                # Only Pillow >= 10.1.0, can set font size
+                pil_font = ImageFont.load_default(font_size)
+            except TypeError:
+                pil_font = ImageFont.load_default()
+
         draw = ImageDraw.Draw(img)
 
         # Dont need allow break here, because we already breaked in caption
@@ -1774,7 +1783,12 @@ class TextClip(ImageClip):
         if font:
             font_pil = ImageFont.truetype(font, font_size)
         else:
-            font_pil = ImageFont.load_default(font_size)
+            try:
+                # Only Pillow >= 10.1.0, can set font size
+                font_pil = ImageFont.load_default(font_size)
+            except TypeError:
+                font_pil = ImageFont.load_default()
+
         draw = ImageDraw.Draw(img)
 
         lines = []
@@ -1881,7 +1895,6 @@ class TextClip(ImageClip):
         draw = ImageDraw.Draw(img)
 
         # Compute individual line height with spaces using pillow internal method
-        line_height = draw._multiline_spacing(font_pil, spacing, stroke_width)
 
         if max_width is not None and allow_break:
             lines = self.__break_text(
@@ -1908,11 +1921,36 @@ class TextClip(ImageClip):
         )
 
         # For height calculate manually as textbbox is not realiable
+        line_height = self.__multiline_spacing(draw, font_pil, spacing, stroke_width)
         line_breaks = text.count("\n")
         lines_height = line_breaks * line_height
         paddings = real_font_size + stroke_width * 2
+        height = int(lines_height + paddings)
 
-        return (int(right - left), int(lines_height + paddings))
+        return (int(right - left), height)
+
+    def __multiline_spacing(
+        self,
+        draw: ImageDraw.ImageDraw,
+        font: Union[
+            ImageFont.ImageFont, ImageFont.FreeTypeFont, ImageFont.TransposedFont
+        ],
+        spacing: float,
+        stroke_width: float,
+    ) -> float:
+        """Calculate the spacing between lines for multiline text.
+
+        This method is used to calculate the height of each line in a multiline
+        text block, taking into account the font metrics, spacing, and stroke width.
+
+        This is a dropped-in replacement for the deprecated
+        `ImageDraw._multiline_spacing` method in Pillow.
+        """
+        return (
+            draw.textbbox((0, 0), "A", font, stroke_width=stroke_width)[3]
+            + stroke_width
+            + spacing
+        )
 
     def __find_optimum_font_size(
         self,
