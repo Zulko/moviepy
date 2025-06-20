@@ -3,4 +3,4 @@ try:
 
     __version__ = version("moviepy")
 except Exception:
-    __version__ = "%VERSION%"
+    __version__ = "2.1.2"  # Fallback version if import fails

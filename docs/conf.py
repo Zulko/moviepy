@@ -54,7 +54,8 @@ copyright = "2024, Zulko - MIT"
 # built documents.
 #
 # The short X.Y version.
-# version = '0.2'
+version = "2.2.1"
+
 # The full version, including alpha/beta/rc tags.
 # release = '0.2.3.1'
 
@@ -120,10 +121,8 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "announcement": f"""
-    <p>MoviePy v2.0 have introduced breaking changes,
-    see <a href="{v2_page}">Updating from v1.X to v2.X</a> for more info.</p>
-    """,
+    "announcement": f"""<p>MoviePy v2.0 have introduced breaking changes, 
+    see <a href="{v2_page}">Updating from v1.X to v2.X</a> for more info.</p>""",
 }
 
 html_context = {

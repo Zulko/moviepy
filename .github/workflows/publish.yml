@@ -26,18 +26,6 @@ jobs:
         run: |
           pip install setuptools wheel build
 
-      - name: Set version from latest tag
-        run: |
-          git fetch --tags
-          latest_tag=$(git tag --sort=-v:refname | head -n 1)
-          echo "Latest tag: $latest_tag"
-
-          # Update version in pyproject.toml
-          sed -i "s/%VERSION%/$latest_tag/g" pyproject.toml
-
-          # Update version in moviepy/version.py
-          sed -i "s/%VERSION%/$latest_tag/g" moviepy/version.py
-
       - name: Build
         run: |
           python -m build
