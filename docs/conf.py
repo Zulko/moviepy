@@ -121,7 +121,7 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "announcement": f"""<p>MoviePy v2.0 have introduced breaking changes, 
+    "announcement": f"""<p>MoviePy v2.0 have introduced breaking changes,
     see <a href="{v2_page}">Updating from v1.X to v2.X</a> for more info.</p>""",
 }
 
