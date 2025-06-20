@@ -18,18 +18,23 @@ jobs:
       with:
         python-version: '3.x'  # Specify Python version as needed
 
-    - name: Build v1.0.3 documentation
+    - name: Build current documentation
       run: |
         git fetch --tags
-        git checkout v1.0.3
-        pip install "jinja2<3" "MarkupSafe<2" "alabaster==0.7.12"
+        latest_tag=$(git tag --sort=-v:refname | head -n 1)
+        echo "Latest tag: $latest_tag"
+        git checkout "$latest_tag"
         pip install -e .
         pip install -e ".[doc]"
         
         cd docs
+
+        # Replace %VERSION% with the latest tag in conf.py
+        sed -i "s/%VERSION%/$latest_tag/g" conf.py
+
         make html
-        mkdir -p ../build/html/v1.0.3
-        cp -r build/html/* ../build/html/v1.0.3/
+        mkdir -p "../build/html/$latest_tag"
+        cp -r build/html/* "../build/html/$latest_tag/"
         rm -rf build/html
         git stash
 

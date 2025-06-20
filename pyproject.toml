@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moviepy"
-version = "2.1.2"
+version = "%VERSION%"
 description = "Video editing with Python"
 readme = "README.md"
 license = { text = "MIT License" }
-authors = [{ name = "Zulko 2024" }]
+authors = [{ name = "Zulko 2025" }]
 keywords = ["video", "editing", "audio", "compositing", "ffmpeg"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -19,6 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
