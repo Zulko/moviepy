@@ -1,31 +1,19 @@
 """Decorators used by moviepy."""
 
-import functools
 import inspect
 import os
-from typing import Callable, Concatenate, ParamSpec, TypeVar
 
 import decorator
 
 from moviepy.tools import convert_to_seconds
 
 
-T = TypeVar('T')
-P = ParamSpec('P')
-
-
-def outplace(func: Callable[Concatenate[T, P], None]) -> Callable[Concatenate[T, P], T]:
-    @functools.wraps(func)
-    def wrapper(obj: T, *args: P.args, **kwargs: P.kwargs) -> T:
-        if not hasattr(obj, 'copy') or not callable(getattr(obj, 'copy')):
-            raise TypeError(
-                f"Object of type {type(obj).__name__} must have a callable copy() method for @outplace"
-            )
-        new_obj: T = obj.copy()
-        func(new_obj, *args, **kwargs)
-        return new_obj
-
-    return wrapper
+@decorator.decorator
+def outplace(func, clip, *args, **kwargs):
+    """Applies ``func(clip.copy(), *args, **kwargs)`` and returns ``clip.copy()``."""
+    new_clip = clip.copy()
+    func(new_clip, *args, **kwargs)
+    return new_clip
 
 
 @decorator.decorator
