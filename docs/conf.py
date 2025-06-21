@@ -48,7 +48,6 @@ master_doc = "index"
 # General information about the project.
 project = "MoviePy"
 copyright = "2025, Zulko - MIT"
-version = "%VERSION%"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -122,7 +121,7 @@ html_theme_options = {
             "type": "fontawesome",
         }
     ],
-    "announcement": f"""<p>MoviePy v2.0 have introduced breaking changes,
+    "announcement": f"""<p>MoviePy v2.0 have introduced breaking changes, 
     see <a href="{v2_page}">Updating from v1.X to v2.X</a> for more info.</p>""",
 }
 
