@@ -1,13 +1,17 @@
-"""Module contains a function to re-encode a video file using ffmpeg."""
+"""Module contains a function to copy a video file using ffmpeg without re-encoding.
+This can be useful for fixing issues with corrupted video files.
+"""
 
 import subprocess
 from pathlib import Path
 from typing import Union
 
+from moviepy.config import FFMPEG_BINARY
 
-def remux_video(input_file: Union[str, Path], output_file: Union[str, Path]):
+
+def ffmpeg_copy(input_file: Union[str, Path], output_file: Union[str, Path]):
     """
-    Re-mux a video file using ffmpeg.
+    Re-mix a video file using ffmpeg.
     This may fix issues with corrupted video file.
 
     Parameters
@@ -33,7 +37,7 @@ def remux_video(input_file: Union[str, Path], output_file: Union[str, Path]):
     try:
         # Construct the ffmpeg command
         command = [
-            "ffmpeg",
+            FFMPEG_BINARY,
             "-i",
             str(input_path),
             "-c",

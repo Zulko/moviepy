@@ -47,7 +47,8 @@ master_doc = "index"
 
 # General information about the project.
 project = "MoviePy"
-copyright = "2024, Zulko - MIT"
+copyright = "2025, Zulko - MIT"
+version = "%VERSION%"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

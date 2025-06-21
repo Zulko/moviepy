@@ -3,14 +3,13 @@
 import copy
 import os
 from pathlib import Path
-from tempfile import TemporaryDirectory
 
 import pytest
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.errors import VideoCorruptedError
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.re_mux import remux_video
+from moviepy.video.tools.ffmpeg_copy import ffmpeg_copy
 from moviepy.video.VideoClip import ColorClip
 
 
@@ -110,11 +109,10 @@ def test_no_duration_raise_io_error():
         VideoFileClip("media/no_duration.webm")
 
 
-def test_no_duration_re_encode_can_be_opened():
-    with TemporaryDirectory() as temp_dir:
-        target = Path(temp_dir).joinpath("re_encoded.webm")
-        remux_video("media/no_duration.webm", target)
-        VideoFileClip(target)
+def test_no_duration_re_encode_can_be_opened(util):
+    target = Path(util.TMP_DIR).joinpath("re_encoded.webm")
+    ffmpeg_copy("media/no_duration.webm", target)
+    VideoFileClip(target)
 
 
 if __name__ == "__main__":
