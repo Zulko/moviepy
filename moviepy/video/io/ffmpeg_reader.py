@@ -977,7 +977,11 @@ class FFmpegBetterInfosParser:
         """Parse a standard line to return (field, value) with typecasting
         when needed (rotate, displaymatrix)
         """
-        specials = ("Ambient Viewing Environment,", "Content Light Level Metadata,")
+        specials = (
+            "Ambient Viewing Environment,",
+            "Content Light Level Metadata,",
+            "Mastering Display Metadata,",
+        )
         line = line.strip()
         if line.startswith(specials):
             infos = line.split(",", 1)
