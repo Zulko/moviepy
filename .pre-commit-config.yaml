@@ -25,3 +25,8 @@ repos:
           - --max-line-length=92
         name: flake8-test
         files: \.py$
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.3
+    hooks:
+      - id: uv-lock
