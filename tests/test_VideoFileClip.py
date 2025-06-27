@@ -8,8 +8,8 @@ import pytest
 
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.errors import VideoCorruptedError
+from moviepy.video.io.ffmpeg_tools import ffmpeg_copy
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from moviepy.video.tools.ffmpeg_copy import ffmpeg_copy
 from moviepy.video.VideoClip import ColorClip
 
 

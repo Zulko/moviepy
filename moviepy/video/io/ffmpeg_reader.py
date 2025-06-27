@@ -4,6 +4,7 @@ import os
 import re
 import subprocess as sp
 import warnings
+from typing import List
 
 import numpy as np
 
@@ -521,7 +522,7 @@ class FFmpegInfosParser:
                     stream_data = self.parse_data_by_stream_type(stream_type, line)
                 except NotImplementedError as exc:
                     warnings.warn(
-                        f"{str(exc)}\nffmpeg output:\n\n{self.infos}", UserWarning
+                        f"{str(exc)}\nffmpeg output: \n\n{self.infos}", UserWarning
                     )
                 else:
                     self._current_stream.update(stream_data)
@@ -825,6 +826,424 @@ class FFmpegInfosParser:
         return (field, value)
 
 
+class FFmpegBetterInfosParser:
+    """Finite state ffmpeg `-i` command option file information parser.
+    Is designed to parse the output fast, in one loop. Iterates line by
+    line of the `ffmpeg -i <filename> [-f null -]` command output changing
+    the internal state of the parser.
+
+    Parameters
+    ----------
+
+    filename
+      Name of the file parsed, only used to raise accurate error messages.
+
+    infos
+      Information returned by FFmpeg.
+
+    fps_source
+      Indicates what source data will be preferably used to retrieve fps data.
+
+    check_duration
+      Enable or disable the parsing of the duration of the file. Useful to
+      skip the duration check, for example, for images.
+
+    decode_file
+      Indicates if the whole file has been decoded. The duration parsing strategy
+      will differ depending on this argument.
+    """
+
+    class ParseDimensionError(VideoCorruptedError):
+        """Error raised when we cannot find dimensions in a video stream"""
+
+        pass
+
+    class ParseDurationError(VideoCorruptedError):
+        """Error raised when we cannot find duration in a video stream"""
+
+        pass
+
+    class InfoBlock:
+        """Represents a block of output from ffmpeg, which can be an input file,
+        stream, chapter or metadata.
+        """
+
+        def __init__(self, block_line, indent_level=0):
+            self.type = "unknown"
+            self.childs: List[FFmpegBetterInfosParser.InfoBlock] = []
+            self.parent = None
+            self.indent_level = indent_level
+            self.head_line = block_line
+            self.raw_data = []
+            self.data = {}
+
+        def add_child(self, child):
+            """Adds a child to the current block."""
+            child.parent = self
+            self.childs.append(child)
+
+    def __init__(
+        self,
+        infos,
+        filename,
+        fps_source="fps",
+        check_duration=True,
+        decode_file=False,
+    ):
+        self.infos = infos
+        self.filename = filename
+        self.check_duration = check_duration
+        self.fps_source = fps_source
+        self.duration_tag_separator = "time=" if decode_file else "Duration: "
+        self.blocks = None
+        self.video_stream = None
+        self.audio_stream = None
+
+        self.result = {
+            "video_found": False,
+            "audio_found": False,
+            "metadata": {},
+        }
+
+    def _extract_block(self, index, start_indent, block: InfoBlock = None):
+        lines = self.infos.splitlines()
+        block.content = []
+        multiline = None
+        is_last_line = False
+        while index < len(lines) - 2:
+            index += 1
+            is_last_line = index < (len(lines) - 1)
+
+            line = lines[index]
+
+            indent_level = (len(line) - len(line.lstrip())) / 2
+
+            # End of block
+            if indent_level <= start_indent:
+                index -= 1
+                break
+
+            # Entry in block or block content
+            if indent_level >= start_indent + 1:
+                # Support for multiline entries
+                if line.lstrip().startswith(":"):
+                    if multiline is None:
+                        multiline = lines[index - 1] + "\n" + line
+                    elif (not is_last_line) and lines[index + 1].lstrip().startswith(
+                        ":"
+                    ):
+                        multiline += "\n" + line[1:]  # Remove starting ":"
+                    else:
+                        multiline += "\n" + line[1:]
+                        block.raw_data.append(multiline)
+                        multiline = None
+
+                    continue
+
+                # New block
+                if line.lstrip().startswith(
+                    ("Metadata", "Stream", "Side data", "Chapter")
+                ):
+                    (child_block, index) = self._extract_block(
+                        index, indent_level, self.InfoBlock(line.lstrip(), indent_level)
+                    )
+                    self._parse_headline_data(child_block)
+                    block.add_child(child_block)
+                    continue
+
+                # Standard line, add to block raw data and parsed data
+                block.raw_data.append(line)
+                field, value = self._parse_line(line)
+                block.data[field] = value
+
+        return (block, index)
+
+    def _parse_headline_data(self, block: InfoBlock):
+        line = block.head_line.lstrip()
+        if line.startswith("Input "):
+            block.type = "input"
+        elif line.startswith("Metadata:"):
+            block.type = "metadata"
+        elif line.startswith("Stream "):
+            block.type = "stream"
+            self._parse_stream(block)
+        elif line.startswith("Side data:"):
+            block.type = "side_data"
+        elif line.startswith("Chapter"):
+            block.type = "chapter"
+            self._parse_chapter(block)
+
+    def _parse_line(self, line):
+        """Parse a standard line to return (field, value) with typecasting
+        when needed (rotate, displaymatrix)
+        """
+        specials = ("Ambient Viewing Environment,", "Content Light Level Metadata,")
+        line = line.strip()
+        if line.startswith(specials):
+            infos = line.split(",", 1)
+        else:
+            infos = line.split(":", 1)
+
+        field = infos[0].strip()
+        value = infos[1].strip()
+
+        if field == "rotate":
+            value = float(value)
+
+        elif field == "displaymatrix":
+            match = re.search(r"[-+]?\d+(\.\d+)?", value)
+            if match:
+                # We must multiply by -1 because displaymatrix return info
+                # about how to rotate to show video, not about video rotation
+                value = float(match.group()) * -1
+
+        return (field, value)
+
+    def _parse_duration(self, line):
+        """Parse the duration from the block data."""
+        try:
+            match_duration = re.search(
+                r"([0-9][0-9]:[0-9][0-9]:[0-9][0-9].[0-9][0-9])",
+                line,
+            )
+            if match_duration is None:
+                raise VideoCorruptedError(f"Could not parse duration from {line!r}")
+            return convert_to_seconds(match_duration.group(1))
+        except VideoCorruptedError:
+            raise
+        except Exception:
+            raise IOError(
+                (
+                    "MoviePy error: failed to read the duration of file '%s'.\n"
+                    "Here are the file infos returned by ffmpeg:\n\n%s"
+                )
+                % (self.filename, self.infos)
+            )
+
+    def _parse_stream(self, block: InfoBlock):
+        # get input number, stream number, language and type
+        main_info_match = re.search(
+            r"^Stream\s#(\d+):(\d+)(?:\[\w+\])?\(?(\w+)?\)?:\s(\w+):",
+            block.head_line.lstrip(),
+        )
+        (
+            input_number,
+            stream_number,
+            language,
+            stream_type,
+        ) = main_info_match.groups()
+        block.data["input_number"] = int(input_number)
+        block.data["stream_number"] = int(stream_number)
+        block.data["stream_type_lower"] = stream_type.lower()
+
+        if language == "und":
+            language = None
+
+        block.data["language"] = language
+        block.data["default"] = block.head_line.rstrip().endswith("(default)")
+
+        if block.data["stream_type_lower"] == "audio":
+            self._parse_stream_audio(block)
+        elif block.data["stream_type_lower"] == "video":
+            self._parse_stream_video(block)
+
+    def _parse_stream_audio(self, block: InfoBlock):
+        """Parses data from "Stream ... Audio" line."""
+        try:
+            block.data["fps"] = int(re.search(r" (\d+) Hz", block.head_line).group(1))
+        except (AttributeError, ValueError):
+            # AttributeError: 'NoneType' object has no attribute 'group'
+            # ValueError: invalid literal for int() with base 10: '<string>'
+            block.data["fps"] = "unknown"
+
+        match_audio_bitrate = re.search(r"(\d+) k(i?)b/s", block.head_line)
+        block.data["bitrate"] = (
+            int(match_audio_bitrate.group(1)) if match_audio_bitrate else None
+        )
+
+        # Store default stream, or first stream if we dont find any default
+        if block.data["default"] or not self.audio_stream:
+            self.audio_stream = block
+
+    def _parse_stream_video(self, block: InfoBlock):
+        """Parses data from "Stream ... Video" line."""
+        try:
+            match_video_size = re.search(r" (\d+)x(\d+)[,\s]", block.head_line)
+            if match_video_size:
+                # size, of the form 460x320 (w x h)
+                block.data["size"] = [int(num) for num in match_video_size.groups()]
+        except Exception:
+            raise FFmpegBetterInfosParser.ParseDimensionError()
+
+        match_bitrate = re.search(r"(\d+) k(i?)b/s", block.head_line)
+        block.data["bitrate"] = int(match_bitrate.group(1)) if match_bitrate else None
+
+        # Get the frame rate. Sometimes it's 'tbr', sometimes 'fps', sometimes
+        # tbc, and sometimes tbc/2...
+        # Current policy: Trust fps first, then tbr unless fps_source is
+        # specified as 'tbr' in which case try tbr then fps
+
+        # If result is near from x*1000/1001 where x is 23,24,25,50,
+        # replace by x*1000/1001 (very common case for the fps).
+
+        if self.fps_source == "fps":
+            try:
+                fps = self._parse_fps(block.head_line)
+            except (AttributeError, ValueError):
+                fps = self._parse_tbr(block.head_line)
+        elif self.fps_source == "tbr":
+            try:
+                fps = self._parse_tbr(block.head_line)
+            except (AttributeError, ValueError):
+                fps = self._parse_fps(block.head_line)
+        else:
+            raise ValueError(
+                ("fps source '%s' not supported parsing the video '%s'")
+                % (self.fps_source, self.filename)
+            )
+
+        # It is known that a fps of 24 is often written as 24000/1001
+        # but then ffmpeg nicely rounds it to 23.98, which we hate.
+        coef = 1000.0 / 1001.0
+        for x in [23, 24, 25, 30, 50]:
+            if (fps != x) and abs(fps - x * coef) < 0.01:
+                fps = x * coef
+        block.data["fps"] = fps
+
+        # Try to extract video codec and profile
+        main_info_match = re.search(
+            r"Video:\s(\w+)?\s?(\([^)]+\))?",
+            block.head_line.lstrip(),
+        )
+
+        if main_info_match is not None:
+            (codec_name, profile) = main_info_match.groups()
+            block.data["codec_name"] = codec_name
+            block.data["profile"] = profile
+
+        # Store default stream, or first stream if we dont find any default
+        if block.data["default"] or not self.video_stream:
+            self.video_stream = block
+
+    def _parse_fps(self, line):
+        """Parses number of FPS from a line of the ``ffmpeg -i`` command output."""
+        return float(re.search(r" (\d+.?\d*) fps", line).group(1))
+
+    def _parse_tbr(self, line):
+        """Parses number of TBS from a line of the ``ffmpeg -i`` command output."""
+        s_tbr = re.search(r" (\d+.?\d*k?) tbr", line).group(1)
+
+        # Sometimes comes as e.g. 12k. We need to replace that with 12000.
+        if s_tbr[-1] == "k":
+            tbr = float(s_tbr[:-1]) * 1000
+        else:
+            tbr = float(s_tbr)
+        return tbr
+
+    def _parse_chapter(self, block):
+        # extract chapter data
+        chapter_data_match = re.search(
+            r"^Chapter #(\d+):(\d+): start (\d+\.?\d+?), end (\d+\.?\d+?)",
+            block.head_line.lstrip(),
+        )
+        input_number, chapter_number, start, end = chapter_data_match.groups()
+
+        # start building the chapter
+        self.data = {
+            "input_number": int(input_number),
+            "chapter_number": int(chapter_number),
+            "start": float(start),
+            "end": float(end),
+        }
+
+    def _parse_blocks(self, root: InfoBlock):
+        for key, data in root.data.items():
+            if key == "Duration":
+                self.result["duration"] = self._parse_duration(data)
+
+                bitrate_match = re.search(r"bitrate: (\d+) k(i?)b/s", data)
+                self.result["bitrate"] = (
+                    int(bitrate_match.group(1)) if bitrate_match else None
+                )
+
+                start_match = re.search(r"start: (\d+\.?\d+)", data)
+                self.result["start"] = (
+                    float(start_match.group(1)) if start_match else None
+                )
+
+                if "metadata" not in self.result:
+                    self.result["metadata"] = {}
+                self.result["metadata"][key] = data
+
+        if self.video_stream:
+            self.result["video_found"] = True
+            self.result["video_size"] = self.video_stream.data.get("size", None)
+            self.result["video_bitrate"] = self.video_stream.data.get("bitrate", None)
+            self.result["video_fps"] = self.video_stream.data["fps"]
+            self.result["video_codec_name"] = self.video_stream.data.get(
+                "codec_name", None
+            )
+            self.result["video_profile"] = self.video_stream.data.get("profile", None)
+            for child in self.video_stream.childs:
+                if child.type in ("metadata", "side_data"):
+                    for key, data in child.data.items():
+                        if key in ("rotate", "displaymatrix"):
+                            self.result["video_rotation"] = data
+
+        if self.audio_stream:
+            self.result["audio_found"] = True
+            self.result["audio_fps"] = self.audio_stream.data["fps"]
+            self.result["audio_bitrate"] = self.audio_stream.data["bitrate"]
+
+        if self.result["video_found"] and self.check_duration:
+            if "duration" not in self.result:
+                raise self.ParseDurationError()
+
+            self.result["video_duration"] = self.result["duration"]
+            self.result["video_n_frames"] = int(
+                self.result["duration"] * self.result.get("video_fps", 0)
+            )
+        else:
+            self.result["video_n_frames"] = 0
+            self.result["video_duration"] = 0.0
+
+    def parse(self):
+        """Parses the information returned by FFmpeg in stderr executing their binary
+        for a file with ``-i`` option and returns a dictionary with all data needed
+        by MoviePy.
+        """
+        try:
+            first_input = 0
+            for line in self.infos.splitlines():
+                if line.startswith("Input"):
+                    break
+                first_input += 1
+
+            root_block = self.InfoBlock(self.infos.splitlines()[first_input], 0)
+            self._extract_block(first_input, 0, root_block)
+            self._parse_blocks(root_block)
+            self.blocks = root_block
+            return self.result
+        except self.ParseDimensionError:
+            raise IOError(
+                (
+                    "MoviePy error: failed to read video dimensions in"
+                    " file '%s'.\nHere are the file infos returned by"
+                    "ffmpeg:\n\n%s"
+                )
+                % (self.filename, self.infos)
+            )
+        except self.ParseDurationError:
+            raise IOError(
+                (
+                    "MoviePy error: failed to read video duration in"
+                    " file '%s'.\nHere are the file infos returned by"
+                    "ffmpeg:\n\n%s"
+                )
+                % (self.filename, self.infos)
+            )
+
+
 def ffmpeg_parse_infos(
     filename,
     check_duration=True,
@@ -836,21 +1255,23 @@ def ffmpeg_parse_infos(
 
     Returns a dictionary with next fields:
 
-    - ``"duration"``
-    - ``"metadata"``
-    - ``"inputs"``
-    - ``"video_found"``
-    - ``"video_fps"``
-    - ``"video_n_frames"``
-    - ``"video_duration"``
-    - ``"video_bitrate"``
-    - ``"video_metadata"``
+    - ``"audio_bitrate"``
     - ``"audio_found"``
     - ``"audio_fps"``
-    - ``"audio_bitrate"``
-    - ``"audio_metadata"``
+    - ``"bitrate"``
+    - ``"duration"``
+    - ``"inputs"``
+    - ``"metadata"``
+    - ``"start"``
+    - ``"video_bitrate"``
     - ``"video_codec_name"``
+    - ``"video_duration"``
+    - ``"video_fps"``
+    - ``"video_found"``
+    - ``"video_n_frames"``
     - ``"video_profile"``
+    - ``"video_rotation"``
+    - ``"video_size"``
 
     Note that "video_duration" is slightly smaller than "duration" to avoid
     fetching the incomplete frames at the end, which raises an error.
@@ -902,7 +1323,7 @@ def ffmpeg_parse_infos(
         print(infos)
 
     try:
-        return FFmpegInfosParser(
+        return FFmpegBetterInfosParser(
             infos,
             filename,
             fps_source=fps_source,
@@ -916,4 +1337,4 @@ def ffmpeg_parse_infos(
             raise IsADirectoryError(f"'{filename}' is a directory")
         elif not os.path.exists(filename):
             raise FileNotFoundError(f"'{filename}' not found")
-        raise IOError(f"Error passing `ffmpeg -i` command output:\n\n{infos}") from exc
+        raise IOError(f"Error passing `ffmpeg -i` command output: \n\n{infos}") from exc
