@@ -212,7 +212,7 @@ def ffmpeg_stabilize_video(
     subprocess_call(cmd, logger=logger)
 
 
-@convert_path_to_string(("inputfile", "outputfile", "output_dir"))
+@convert_path_to_string(("input_file", "output_file"))
 def ffmpeg_copy(input_file, output_file):
     """
     Re-mix a video file using ffmpeg.
