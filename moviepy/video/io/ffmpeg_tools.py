@@ -242,6 +242,7 @@ def ffmpeg_copy(input_file: Union[str, Path], output_file: Union[str, Path]):
         # Construct the ffmpeg command
         command = [
             FFMPEG_BINARY,
+            "-y",
             "-i",
             str(input_path),
             "-c",
