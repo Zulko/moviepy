@@ -14,7 +14,7 @@ from moviepy.tools import ffmpeg_escape_filename
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
-    FFmpegInfosParser,
+    FFmpegBetterInfosParser,
     ffmpeg_parse_infos,
 )
 from moviepy.video.io.ffmpeg_tools import ffmpeg_version
@@ -117,7 +117,7 @@ def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     assert len(d["inputs"]) == 1
 
     # check streams
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 2
     assert streams[0]["stream_type"] == "video"
     assert streams[0]["stream_number"] == 0
@@ -173,10 +173,10 @@ def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
 
     # number of inputs and streams
     assert len(d["inputs"]) == 1
-    assert len(d["inputs"][0]["streams"]) == 2
+    assert len(d["inputs"]["streams"]) == 2
 
-    default_stream = d["inputs"][0]["streams"][0]
-    ignored_stream = d["inputs"][0]["streams"][1]
+    default_stream = d["inputs"]["streams"][0]
+    ignored_stream = d["inputs"]["streams"][1]
 
     # default, only the first
     assert default_stream["default"]
@@ -269,7 +269,7 @@ def test_ffmpeg_parse_infos_metadata(util, mono_wave):
 
     # assert streams metadata
     streams = {"audio": None, "video": None}
-    for stream in d["inputs"][0]["streams"]:
+    for stream in d["inputs"]["streams"]:
         streams[stream["stream_type"]] = stream
 
     for stream_type, stream in streams.items():
@@ -289,7 +289,7 @@ def test_ffmpeg_parse_infos_chapters():
     """Check that `ffmpeg_parse_infos` can parse chapters with their metadata."""
     d = ffmpeg_parse_infos("media/sintel_with_14_chapters.mp4")
 
-    chapters = d["inputs"][0]["chapters"]
+    chapters = d["inputs"]["chapters"]
 
     num_chapters_expected = 14
 
@@ -315,7 +315,7 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert d["audio_fps"] == 44100
 
     assert len(d["inputs"]) == 1
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 2
     assert streams[0]["stream_type"] == "audio"
     assert streams[1]["stream_type"] == "video"
@@ -408,7 +408,7 @@ def test_ffmpeg_parse_infos_multiline_metadata():
 At least one output file must be specified
 """
 
-    d = FFmpegInfosParser(infos, "foo.mkv").parse()
+    d = FFmpegBetterInfosParser(infos, "foo.mkv").parse()
 
     # container data
     assert d["audio_bitrate"] == 64
@@ -472,7 +472,7 @@ stDim:unit="pixel"/>
     # streams
     assert len(d["inputs"]) == 1
 
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 3
 
     # video stream
@@ -522,7 +522,7 @@ def test_not_default_audio_stream_audio_bitrate():
     Stream #0:1: Audio: aac (LC) (...), 48000 Hz, stereo, fltp, 139 kb/s
 """
 
-    d = FFmpegInfosParser(infos, "foo.avi").parse()
+    d = FFmpegBetterInfosParser(infos, "foo.avi").parse()
     assert d["audio_bitrate"] == 139
 
 
@@ -544,10 +544,10 @@ def test_stream_deidentation_not_raises_error():
       vendor_id       : [0][0][0][0]
 At least one output file must be specified"""
 
-    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 1
+    assert len(d["inputs"]["streams"]) == 1
 
 
 def test_stream_square_brackets():
@@ -558,12 +558,12 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0]: Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
-    assert d["inputs"][0]["streams"][0]["language"] is None
-    assert d["inputs"][0]["streams"][1]["language"] is None
+    assert len(d["inputs"]["streams"]) == 2
+    assert d["inputs"]["streams"][0]["language"] is None
+    assert d["inputs"]["streams"][1]["language"] is None
 
 
 def test_stream_square_brackets_and_language():
@@ -574,12 +574,12 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0](und): Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
-    assert d["inputs"][0]["streams"][0]["language"] == "eng"
-    assert d["inputs"][0]["streams"][1]["language"] is None
+    assert len(d["inputs"]["streams"]) == 2
+    assert d["inputs"]["streams"][0]["language"] == "eng"
+    assert d["inputs"]["streams"][1]["language"] is None
 
 
 def test_stream_missing_audio_bitrate():
@@ -590,10 +590,10 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0]: Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
+    assert len(d["inputs"]["streams"]) == 2
     assert d["audio_found"]
     assert d["audio_bitrate"] is None
 
