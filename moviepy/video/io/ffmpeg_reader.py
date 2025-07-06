@@ -399,6 +399,7 @@ class FFmpegBetterInfosParser:
         self.blocks = None
         self.video_stream = None
         self.audio_stream = None
+        self.data_stream = None
 
         self.result = {
             "video_found": False,
@@ -413,51 +414,51 @@ class FFmpegBetterInfosParser:
         block.content = []
         multiline = None
         is_last_line = False
-        while index < len(lines) - 2:
+        while index < len(lines) - 1:
             index += 1
-            is_last_line = index < (len(lines) - 1)
-
+            is_last_line = index == (len(lines) - 1)
             line = lines[index]
-
             indent_level = (len(line) - len(line.lstrip())) / 2
+            line = line.strip()
+
+            if not is_last_line:
+                next_line = lines[index + 1].strip()
+            else:
+                next_line = False
 
             # End of block
             if indent_level <= start_indent:
                 index -= 1
                 break
 
-            # Entry in block or block content
-            if indent_level >= start_indent + 1:
-                # Support for multiline entries
-                if line.lstrip().startswith(":"):
-                    if multiline is None:
-                        multiline = lines[index - 1] + "\n" + line
-                    elif (not is_last_line) and lines[index + 1].lstrip().startswith(
-                        ":"
-                    ):
-                        multiline += "\n" + line[1:]  # Remove starting ":"
-                    else:
-                        multiline += "\n" + line[1:]
-                        block.raw_data.append(multiline)
-                        multiline = None
+            # New block
+            if line.lstrip().startswith(
+                ("Metadata", "Stream", "Side data", "Chapter", "Chapters")
+            ):
+                (child_block, index) = self._extract_block(
+                    index, indent_level, self.InfoBlock(line.lstrip(), indent_level)
+                )
+                self._parse_headline_data(child_block)
+                block.add_child(child_block)
+                continue
 
+            # Support for multiline entries
+            if line.startswith(":") or (next_line and next_line.startswith(":")):
+                if not multiline:
+                    multiline = line
+                    continue
+                elif next_line.startswith(":"):
+                    multiline += "\n" + line[1:].strip()
                     continue
 
-                # New block
-                if line.lstrip().startswith(
-                    ("Metadata", "Stream", "Side data", "Chapter", "Chapters")
-                ):
-                    (child_block, index) = self._extract_block(
-                        index, indent_level, self.InfoBlock(line.lstrip(), indent_level)
-                    )
-                    self._parse_headline_data(child_block)
-                    block.add_child(child_block)
-                    continue
+            if multiline:
+                line = multiline + "\n" + line[1:].strip()
+                multiline = None
 
-                # Standard line, add to block raw data and parsed data
-                block.raw_data.append(line)
-                field, value = self._parse_line(line)
-                block.data[field] = value
+            # Standard line, add to block raw data and parsed data
+            block.raw_data.append(line)
+            field, value = self._parse_line(line)
+            block.data[field] = value
 
         return (block, index)
 
@@ -555,6 +556,8 @@ class FFmpegBetterInfosParser:
             self._parse_stream_audio(block)
         elif block.data["stream_type_lower"] == "video":
             self._parse_stream_video(block)
+        elif block.data["stream_type_lower"] == "data":
+            self._parse_stream_data(block)
 
     def _parse_stream_audio(self, block: InfoBlock):
         """Parses data from "Stream ... Audio" line."""
@@ -573,6 +576,12 @@ class FFmpegBetterInfosParser:
         # Store default stream, or first stream if we dont find any default
         if block.data["default"] or not self.audio_stream:
             self.audio_stream = block
+
+    def _parse_stream_data(self, block: InfoBlock):
+        """Parses data from "Stream ... Data" line."""
+        # Store default stream, or first stream if we dont find any default
+        if block.data["default"] or not self.data_stream:
+            self.data_stream = block
 
     def _parse_stream_video(self, block: InfoBlock):
         """Parses data from "Stream ... Video" line."""
@@ -679,10 +688,20 @@ class FFmpegBetterInfosParser:
                 self.result["start"] = (
                     float(start_match.group(1)) if start_match else None
                 )
-
+            else:
                 if "metadata" not in self.result:
                     self.result["metadata"] = {}
+
                 self.result["metadata"][key] = data
+
+        # For input direct metadata blocks, add meta to results
+        for child in root.childs:
+            if child.type in ("metadata", "side_data"):
+                for key, data in child.data.items():
+                    if "metadata" not in self.result:
+                        self.result["metadata"] = {}
+
+                    self.result["metadata"][key] = data
 
         if self.video_stream:
             self.result["video_found"] = True
@@ -749,6 +768,33 @@ class FFmpegBetterInfosParser:
                             chap["side_data"] = chapter_child.data
 
                     self.result["inputs"]["chapters"].append(chap)
+
+            elif child.type == "metadata":
+                self.result["metadata"] = child.data
+
+        if self.audio_stream:
+            self.result["default_audio_input_number"] = self.audio_stream.data[
+                "input_number"
+            ]
+            self.result["default_audio_stream_number"] = self.audio_stream.data[
+                "stream_number"
+            ]
+
+        if self.video_stream:
+            self.result["default_video_input_number"] = self.video_stream.data[
+                "input_number"
+            ]
+            self.result["default_video_stream_number"] = self.video_stream.data[
+                "stream_number"
+            ]
+
+        if self.data_stream:
+            self.result["default_data_input_number"] = self.data_stream.data[
+                "input_number"
+            ]
+            self.result["default_data_stream_number"] = self.data_stream.data[
+                "stream_number"
+            ]
 
     def parse(self):
         """Parses the information returned by FFmpeg in stderr executing their binary

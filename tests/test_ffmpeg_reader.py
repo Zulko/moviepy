@@ -40,6 +40,7 @@ def test_ffmpeg_parse_infos():
     d = ffmpeg_parse_infos("media/crunching.mp3")
     assert d["audio_found"]
     assert d["audio_fps"] == 48000
+    print(d)
     assert d["metadata"]["artist"] == "SoundJay.com Sound Effects"
 
     d = ffmpeg_parse_infos("media/sintel_with_14_chapters.mp4")
@@ -77,6 +78,7 @@ def test_ffmpeg_parse_infos_no_default_stream(util):
         subprocess.check_call(cmd, stderr=stderr)
 
     d = ffmpeg_parse_infos(wmv_filepath)
+    print(d)
 
     for key in (
         "default_video_stream_number",
@@ -119,14 +121,14 @@ def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     # check streams
     streams = d["inputs"]["streams"]
     assert len(streams) == 2
-    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "video"
     assert streams[0]["stream_number"] == 0
     assert streams[0]["fps"] == 24
     assert streams[0]["size"] == [1280, 720]
     assert streams[0]["default"] is True
     assert streams[0]["language"] is None
 
-    assert streams[1]["stream_type"] == "audio"
+    assert streams[1]["stream_type_lower"] == "audio"
     assert streams[1]["stream_number"] == 1
     assert streams[1]["fps"] == 44100
     assert streams[1]["default"] is True
@@ -189,8 +191,8 @@ def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
     assert ignored_stream["input_number"] == 0
 
     # stream type
-    assert default_stream["stream_type"] == "audio"
-    assert ignored_stream["stream_type"] == "audio"
+    assert default_stream["stream_type_lower"] == "audio"
+    assert ignored_stream["stream_type_lower"] == "audio"
 
     # cleanup
     for filepath in [clip_440_filepath, clip_880_filepath, multiple_streams_filepath]:
@@ -270,7 +272,7 @@ def test_ffmpeg_parse_infos_metadata(util, mono_wave):
     # assert streams metadata
     streams = {"audio": None, "video": None}
     for stream in d["inputs"]["streams"]:
-        streams[stream["stream_type"]] = stream
+        streams[stream["stream_type_lower"]] = stream
 
     for stream_type, stream in streams.items():
         for field, value in metadata[stream_type].items():
@@ -317,8 +319,8 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert len(d["inputs"]) == 1
     streams = d["inputs"]["streams"]
     assert len(streams) == 2
-    assert streams[0]["stream_type"] == "audio"
-    assert streams[1]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "audio"
+    assert streams[1]["stream_type_lower"] == "video"
 
     assert len(d["metadata"].keys()) == 7
 
@@ -386,20 +388,20 @@ def test_ffmpeg_parse_infos_multiline_metadata():
                     :
                     : <?xpacket end="w"?>
   Duration: 00:02:10.67, start: 0.000000, bitrate: 26287 kb/s
-    Stream #0:0(eng): Video: mjpeg 768x576 26213 kb/s, 24 fps, 24 tbr (default)
+  Stream #0:0(eng): Video: mjpeg 768x576 26213 kb/s, 24 fps, 24 tbr (default)
     Metadata:
       creation_time   : 2015-09-14 14:57:32
       handler_name    : Foo
                       : Bar
       encoder         : Photo - JPEG
       timecode        : 00:00:00:00
-    Stream #0:1(eng): Audio: aac (mp4a / 0x6), 44100 Hz, mono, fltp, 64 kb/s (default)
+  Stream #0:1(eng): Audio: aac (mp4a / 0x6), 44100 Hz, mono, fltp, 64 kb/s (default)
     Metadata:
       creation_time   : 2015-09-14 14:57:33
       handler_name    : Bar
                       : Foo
       timecode        : 00:00:00:00
-    Stream #0:2(eng): Data: none (tmcd / 0x64636D74) (default)
+  Stream #0:2(eng): Data: none (tmcd / 0x64636D74) (default)
     Metadata:
       creation_time   : 2015-09-14 14:58:24
       handler_name    : Baz
@@ -481,7 +483,7 @@ stDim:unit="pixel"/>
     assert streams[0]["input_number"] == 0
     assert streams[0]["language"] == "eng"
     assert streams[0]["stream_number"] == 0
-    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "video"
     assert streams[0]["size"] == [768, 576]
 
     assert streams[0]["metadata"]["creation_time"] == "2015-09-14 14:57:32"
@@ -495,7 +497,7 @@ stDim:unit="pixel"/>
     assert streams[1]["input_number"] == 0
     assert streams[1]["language"] == "eng"
     assert streams[1]["stream_number"] == 1
-    assert streams[1]["stream_type"] == "audio"
+    assert streams[1]["stream_type_lower"] == "audio"
 
     assert streams[1]["metadata"]["creation_time"] == "2015-09-14 14:57:33"
     assert streams[1]["metadata"]["timecode"] == "00:00:00:00"
@@ -506,7 +508,7 @@ stDim:unit="pixel"/>
     assert streams[2]["input_number"] == 0
     assert streams[2]["language"] == "eng"
     assert streams[2]["stream_number"] == 2
-    assert streams[2]["stream_type"] == "data"
+    assert streams[2]["stream_type_lower"] == "data"
 
     assert streams[2]["metadata"]["creation_time"] == "2015-09-14 14:58:24"
     assert streams[2]["metadata"]["timecode"] == "00:00:00:00"
