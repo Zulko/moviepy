@@ -14,7 +14,7 @@ from moviepy.tools import ffmpeg_escape_filename
 from moviepy.video.compositing.CompositeVideoClip import clips_array
 from moviepy.video.io.ffmpeg_reader import (
     FFMPEG_VideoReader,
-    FFmpegBetterInfosParser,
+    FFmpegInfosParser,
     ffmpeg_parse_infos,
 )
 from moviepy.video.io.ffmpeg_tools import ffmpeg_version
@@ -410,7 +410,7 @@ def test_ffmpeg_parse_infos_multiline_metadata():
 At least one output file must be specified
 """
 
-    d = FFmpegBetterInfosParser(infos, "foo.mkv").parse()
+    d = FFmpegInfosParser(infos, "foo.mkv").parse()
 
     # container data
     assert d["audio_bitrate"] == 64
@@ -524,7 +524,7 @@ def test_not_default_audio_stream_audio_bitrate():
     Stream #0:1: Audio: aac (LC) (...), 48000 Hz, stereo, fltp, 139 kb/s
 """
 
-    d = FFmpegBetterInfosParser(infos, "foo.avi").parse()
+    d = FFmpegInfosParser(infos, "foo.avi").parse()
     assert d["audio_bitrate"] == 139
 
 
@@ -546,7 +546,7 @@ def test_stream_deidentation_not_raises_error():
       vendor_id       : [0][0][0][0]
 At least one output file must be specified"""
 
-    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
     assert len(d["inputs"]["streams"]) == 1
@@ -560,7 +560,7 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0]: Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
     assert len(d["inputs"]["streams"]) == 2
@@ -576,7 +576,7 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0](und): Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
     assert len(d["inputs"]["streams"]) == 2
@@ -592,7 +592,7 @@ Input #0, mpeg, from 'clip.mp4':
     Stream #0:1[0x1c0]: Audio: mp2, 0 channels, s16p
 At least one output file must be specified"""
 
-    d = FFmpegBetterInfosParser(infos, "clip.mp4").parse()
+    d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
     assert len(d["inputs"]["streams"]) == 2

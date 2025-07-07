@@ -327,11 +327,10 @@ def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
     return im
 
 
-class FFmpegBetterInfosParser:
-    """Finite state ffmpeg `-i` command option file information parser.
-    Is designed to parse the output fast, in one loop. Iterates line by
-    line of the `ffmpeg -i <filename> [-f null -]` command output changing
-    the internal state of the parser.
+class FFmpegInfosParser:
+    """An (hopefully) robuste ffmpeg `-i` command option file information parser.
+    Is designed to parse the output by extracting the different blocks of informations,
+    based on the indentation, in order to create an easy to handle block tree
 
     Parameters
     ----------
@@ -371,7 +370,7 @@ class FFmpegBetterInfosParser:
 
         def __init__(self, block_line, indent_level=0):
             self.type = "unknown"
-            self.childs: List[FFmpegBetterInfosParser.InfoBlock] = []
+            self.childs: List[FFmpegInfosParser.InfoBlock] = []
             self.parent = None
             self.indent_level = indent_level
             self.head_line = block_line
@@ -591,7 +590,7 @@ class FFmpegBetterInfosParser:
                 # size, of the form 460x320 (w x h)
                 block.data["size"] = [int(num) for num in match_video_size.groups()]
         except Exception:
-            raise FFmpegBetterInfosParser.ParseDimensionError()
+            raise FFmpegInfosParser.ParseDimensionError()
 
         match_bitrate = re.search(r"(\d+) k(i?)b/s", block.head_line)
         block.data["bitrate"] = int(match_bitrate.group(1)) if match_bitrate else None
@@ -913,7 +912,7 @@ def ffmpeg_parse_infos(
         print(infos)
 
     try:
-        return FFmpegBetterInfosParser(
+        return FFmpegInfosParser(
             infos,
             filename,
             fps_source=fps_source,
