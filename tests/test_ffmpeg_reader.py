@@ -40,7 +40,6 @@ def test_ffmpeg_parse_infos():
     d = ffmpeg_parse_infos("media/crunching.mp3")
     assert d["audio_found"]
     assert d["audio_fps"] == 48000
-    print(d)
     assert d["metadata"]["artist"] == "SoundJay.com Sound Effects"
 
     d = ffmpeg_parse_infos("media/sintel_with_14_chapters.mp4")
@@ -78,7 +77,6 @@ def test_ffmpeg_parse_infos_no_default_stream(util):
         subprocess.check_call(cmd, stderr=stderr)
 
     d = ffmpeg_parse_infos(wmv_filepath)
-    print(d)
 
     for key in (
         "default_video_stream_number",
