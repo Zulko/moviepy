@@ -193,7 +193,11 @@ def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
     assert ignored_stream["stream_type_lower"] == "audio"
 
     # cleanup
-    for filepath in [clip_440_filepath, clip_880_filepath, multiple_streams_filepath]:
+    for filepath in [
+        clip_440_filepath,
+        clip_880_filepath,
+        multiple_streams_filepath,
+    ]:
         os.remove(filepath)
 
 
@@ -729,7 +733,8 @@ def test_release_of_file_via_close(util):
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = os.path.join(
-            util.TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            util.TMP_DIR,
+            "test_release_of_file_via_close_%s.mp4" % int(time.time()),
         )
 
         clip = clips_array([[red, green, blue]]).with_duration(0.5)
@@ -836,9 +841,9 @@ def test_frame_seek():
 def test_side_data():
     infos = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/ajani/Téléchargements/10CAE6A8-1A7A-488F-8DDD-691F0242A5BD_L0_001_1748075354.671342_o_IMG_1977.MOV':
   Metadata:
-    major_brand     : qt  
+    major_brand     : qt
     minor_version   : 0
-    compatible_brands: qt  
+    compatible_brands: qt
     creation_time   : 2025-05-24T08:27:14.000000Z
     com.apple.quicktime.location.accuracy.horizontal: 15.257182
     com.apple.quicktime.full-frame-rate-playback-intent: 0
@@ -882,8 +887,7 @@ def test_side_data():
   Stream #0:6(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
     Metadata:
       creation_time   : 2025-05-24T08:27:14.000000Z
-      handler_name    : Core Media Metadata
-"""
+      handler_name    : Core Media Metadata"""
 
     d = FFmpegInfosParser(infos, "foo.mov").parse()
     assert d["blocks"].childs[1].childs[1].type == "side_data"
