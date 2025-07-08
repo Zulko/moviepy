@@ -1,6 +1,7 @@
 """Let's position some text and images on a video."""
 
-from moviepy import TextClip, VideoFileClip, CompositeVideoClip, ImageClip
+from moviepy import CompositeVideoClip, ImageClip, TextClip, VideoFileClip
+
 
 # We load all the clips we want to compose
 background = VideoFileClip("example2.mp4").subclipped(0, 2)

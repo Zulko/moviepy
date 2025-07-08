@@ -1,7 +1,10 @@
-from PIL import Image, ImageDraw
-import numpy as np
-from moviepy import VideoClip
 import math
+
+import numpy as np
+from PIL import Image, ImageDraw
+
+from moviepy import VideoClip
+
 
 WIDTH, HEIGHT = (128, 128)
 RED = (255, 0, 0)

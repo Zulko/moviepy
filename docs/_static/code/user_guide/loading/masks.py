@@ -1,5 +1,7 @@
-from moviepy import VideoClip, ImageClip, VideoFileClip
 import numpy as np
+
+from moviepy import ImageClip, VideoClip, VideoFileClip
+
 
 # Random RGB noise image of 200x100
 frame_function = lambda t: np.random.rand(100, 200)

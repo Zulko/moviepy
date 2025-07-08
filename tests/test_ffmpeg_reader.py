@@ -833,5 +833,65 @@ def test_frame_seek():
     assert not np.array_equal(frame, frame2)
 
 
+def test_side_data():
+    infos = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/ajani/Téléchargements/10CAE6A8-1A7A-488F-8DDD-691F0242A5BD_L0_001_1748075354.671342_o_IMG_1977.MOV':
+  Metadata:
+    major_brand     : qt  
+    minor_version   : 0
+    compatible_brands: qt  
+    creation_time   : 2025-05-24T08:27:14.000000Z
+    com.apple.quicktime.location.accuracy.horizontal: 15.257182
+    com.apple.quicktime.full-frame-rate-playback-intent: 0
+    com.apple.quicktime.location.ISO6709: +37.8187+127.0583+097.529/
+    com.apple.quicktime.make: Apple
+    com.apple.quicktime.model: iPhone 14
+    com.apple.quicktime.software: 18.3.2
+    com.apple.quicktime.creationdate: 2025-05-24T17:27:14+0900
+  Duration: 00:00:16.10, start: 0.000000, bitrate: 8764 kb/s
+  Stream #0:0(und): Video: hevc (Main 10) (hvc1 / 0x31637668), yuv420p10le(tv, bt2020nc/bt2020/arib-std-b67), 1920x1080, 8540 kb/s, 30 fps, 30 tbr, 600 tbn, 600 tbc (default)
+    Metadata:
+      rotate          : 90
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Video
+      vendor_id       : [0][0][0][0]
+      encoder         : HEVC
+    Side data:
+      DOVI configuration record: version: 1.0, profile: 8, level: 4, rpu flag: 1, el flag: 0, bl flag: 1, compatibility id: 4
+      displaymatrix: rotation of -90.00 degrees
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 157 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Audio
+      vendor_id       : [0][0][0][0]
+  Stream #0:2(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:3(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:4(und): Data: none (mebx / 0x7862656D), 42 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:5(und): Data: none (mebx / 0x7862656D), 2 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:6(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+"""
+
+    d = FFmpegInfosParser(infos, "foo.mov").parse()
+    assert d["blocks"].childs[1].childs[1].type == "side_data"
+    assert (
+        d["blocks"].childs[1].childs[1].data["DOVI configuration record"]
+        == "version: 1.0, profile: 8, level: 4, rpu flag: 1, el flag: 0, bl flag: 1, compatibility id: 4"
+    )
+
+
 if __name__ == "__main__":
     pytest.main()
