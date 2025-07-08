@@ -10,13 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix circular reference in ImageSequenceClip leading to memory leak
 - Fix TextClip broken with Pillow > 11.2
-- `pixel_format` parameter was ignored when calling ffmpeg writer, as referenced in PR #2359 
+- `pixel_format` parameter was ignored when calling ffmpeg writer, as referenced in PR #2359
+- Fix incorrect handling of lines with a format different from "key: value" during FFmpeg infos parsing (see #2311, #1860, #2418, #2470)
 
 ### Added
 - Possibility to select audio track when reading a file (#2429)
 
 ### Changed 
-- Rewrite FFmpegInfosParser to use indentation and block extractions instead of a state machine
+- Rewrite FFmpegInfosParser to use indentation and block extractions instead of a state machine (PR #2470)
 
 ## v2.2.1
 
