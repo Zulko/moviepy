@@ -1,6 +1,7 @@
 # Lets import moviepy, lets also import numpy we will use it a some point
-from moviepy import *
 import numpy as np
+
+from moviepy import *
 
 
 #################
@@ -199,13 +200,28 @@ bunny_clip = bunny_clip.with_effects(
     [vfx.FadeIn(1), vfx.FadeOut(1), afx.AudioFadeIn(1), afx.AudioFadeOut(1)]
 )
 rodents_clip = rodents_clip.with_effects(
-    [vfx.FadeIn(1), vfx.CrossFadeOut(1.5), afx.AudioFadeIn(1), afx.AudioFadeOut(1.5)]
+    [
+        vfx.FadeIn(1),
+        vfx.CrossFadeOut(1.5),
+        afx.AudioFadeIn(1),
+        afx.AudioFadeOut(1.5),
+    ]
 )  # Just fade in, rambo clip will do the cross fade
 rambo_clip = rambo_clip.with_effects(
-    [vfx.CrossFadeIn(1.5), vfx.FadeOut(1), afx.AudioFadeIn(1.5), afx.AudioFadeOut(1)]
+    [
+        vfx.CrossFadeIn(1.5),
+        vfx.FadeOut(1),
+        afx.AudioFadeIn(1.5),
+        afx.AudioFadeOut(1),
+    ]
 )
 rambo_clip = rambo_clip.with_effects(
-    [vfx.CrossFadeIn(1.5), vfx.FadeOut(1), afx.AudioFadeIn(1.5), afx.AudioFadeOut(1)]
+    [
+        vfx.CrossFadeIn(1.5),
+        vfx.FadeOut(1),
+        afx.AudioFadeIn(1.5),
+        afx.AudioFadeOut(1),
+    ]
 )
 
 # Effects are not only for transition, they can also change a clip timing or appearance

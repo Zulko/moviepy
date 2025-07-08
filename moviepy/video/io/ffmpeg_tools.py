@@ -4,7 +4,6 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from typing import Union
 
 from moviepy.config import FFMPEG_BINARY, FFPLAY_BINARY
 from moviepy.decorators import convert_parameter_to_seconds, convert_path_to_string
@@ -213,7 +212,8 @@ def ffmpeg_stabilize_video(
     subprocess_call(cmd, logger=logger)
 
 
-def ffmpeg_copy(input_file: Union[str, Path], output_file: Union[str, Path]):
+@convert_path_to_string(("input_file", "output_file"))
+def ffmpeg_copy(input_file, output_file):
     """
     Re-mix a video file using ffmpeg.
     This may fix issues with corrupted video file.
@@ -235,13 +235,11 @@ def ffmpeg_copy(input_file: Union[str, Path], output_file: Union[str, Path]):
     if not input_path.exists():
         raise FileNotFoundError(f"Input file '{input_file}' not found.")
 
-    if output_path.exists():
-        raise FileExistsError(f"Output file '{output_file}' already exists.")
-
     try:
         # Construct the ffmpeg command
         command = [
             FFMPEG_BINARY,
+            "-y",
             "-i",
             str(input_path),
             "-c",

@@ -50,7 +50,7 @@ and
 
 .. code:: bash
 
-    $ python3 -m flake8 -v --show-source --max-line-length=92 moviepy docs/conf.py examples tests
+    $ python3 -m flake8 -v --show-source --ignore=E501 moviepy docs/conf.py examples tests
 
 Adding Git pre-commit hooks
 -----------------------------
