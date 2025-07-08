@@ -25,3 +25,8 @@ repos:
           - --ignore=E501 # Black will force a line length of 88 when possible
         name: flake8-test
         files: \.py$
+
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.6.3
+    hooks:
+      - id: uv-lock
