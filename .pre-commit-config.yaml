@@ -22,6 +22,6 @@ repos:
           - flake8-rst-docstrings>=0.3
           - flake8-implicit-str-concat==0.4.0
         args:
-          - --max-line-length=92
+          - --ignore=E501 # Black will force a line length of 88 when possible
         name: flake8-test
         files: \.py$

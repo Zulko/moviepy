@@ -1,6 +1,8 @@
-from moviepy import UpdatedVideoClip
-import numpy as np
 import random
+
+import numpy as np
+
+from moviepy import UpdatedVideoClip
 
 
 class CoinFlipWorld:
@@ -9,7 +11,8 @@ class CoinFlipWorld:
     Imagine we want to make a video that become more and more red as we repeat same face
     on coinflip in a row because coinflip are done in real time, we need to wait
     until a winning row is done to be able to make the next frame.
-    This is a world simulating that. Sorry, it's hard to come up with examples..."""
+    This is a world simulating that. Sorry, it's hard to come up with examples...
+    """
 
     def __init__(self, fps):
         """
