@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Possibility to select audio track when reading a file (#2429)
 
+### Changed 
+- Rewrite FFmpegInfosParser to use indentation and block extractions instead of a state machine
+
 ## v2.2.1
 
 ### Fixed
