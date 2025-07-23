@@ -1,0 +1,35 @@
+from moviepy.editor import *
+
+# Percorsi dei file da usare nello script MoviePy
+background_img_path = "/mnt/data/_ (16).jpeg"  # carta plastificata verde
+sunglasses_img_path = "/mnt/data/occhiali_scontornati.png"  # occhiali scontornati
+audio_output_path = "/mnt/data/silent_audio.mp3"  # Audio placeholder se serve
+
+# Durata totale del video
+duration = 3
+
+# Clip sfondo: effetto zoom-out
+bg_clip = (ImageClip(background_img_path, duration=duration)
+           .resize(height=1080)
+           .resize(lambda t: 1.2 - 0.2 * (t / duration)))
+
+# Clip occhiali: fade-in e centrati
+sunglasses_clip = (ImageClip(sunglasses_img_path)
+                   .set_duration(duration - 1)
+                   .set_start(1)
+                   .resize(height=400)
+                   .fadein(1)
+                   .set_position('center'))
+
+# Compositing finale (senza audio per ora)
+final_clip = CompositeVideoClip([bg_clip, sunglasses_clip])
+
+# Placeholder: genera un audio silenzioso se non hai ancora il suono ASMR
+# (MoviePy richiede un audio per alcune esportazioni)
+final_clip = final_clip.set_audio(AudioClip(lambda t: 0, duration=duration, fps=44100))
+
+# Salva il video
+output_path = "/mnt/data/clip_occhiali_apertura.mp4"
+final_clip.write_videofile(output_path, fps=30)
+
+output_path
