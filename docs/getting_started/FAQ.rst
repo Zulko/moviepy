@@ -1,4 +1,31 @@
-FAQ and troubleshooting
+image_path = "IMG-20250719-WA0068.jpg"  # Replace with your image file name
+image = Image.open(image_path)
+image_np = np.array(image)
+
+# Set parameters
+duration = 5  # seconds
+fps = 24
+width, height = image.size
+
+# Simulate gimbal-like smooth pan + slight zoom
+def make_frame(t):
+    max_pan = 50  # pixels side-to-side
+    zoom = 1.05 + 0.02 * np.sin(np.pi * t / duration)
+    pan_offset = int(max_pan * np.sin(2 * np.pi * t / duration))
+
+    # Apply zoom
+    new_w, new_h = int(width / zoom), int(height / zoom)
+    cropped = image.crop(((width - new_w) // 2, (height - new_h) // 2,
+                          (width + new_w) // 2, (height + new_h) // 2))
+
+    # Apply pan
+    pan_crop = cropped.crop((pan_offset, 0, pan_offset + width, height))
+    return np.array(pan_crop)
+
+# Generate video
+video = VideoClip(make_frame, duration=duration)
+video = video.set_fps(fps)
+video.write_videofile("gimbal_motion_video.mp4", codec="libx264", audio=False)FAQ and troubleshooting
 =========================
 
 This section intend to answer the most common questions and errors.
