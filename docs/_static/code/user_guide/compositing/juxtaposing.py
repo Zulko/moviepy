@@ -2,6 +2,7 @@
 
 from moviepy import VideoFileClip, clips_array, vfx
 
+
 # We will use the same clip and transform it in 3 ways
 clip1 = VideoFileClip("example.mp4").with_effects([vfx.Margin(10)])  # add 10px contour
 clip2 = clip1.with_effects([vfx.MirrorX()])  # Flip horizontaly

@@ -1,14 +1,16 @@
+import numpy as np
+
 from moviepy import (
+    AudioClip,
+    AudioFileClip,
+    ColorClip,
+    ImageClip,
+    ImageSequenceClip,
+    TextClip,
     VideoClip,
     VideoFileClip,
-    ImageSequenceClip,
-    ImageClip,
-    TextClip,
-    ColorClip,
-    AudioFileClip,
-    AudioClip,
 )
-import numpy as np
+
 
 # Define some constants for later use
 black = (255, 255, 255)  # RGB for black

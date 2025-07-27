@@ -1,5 +1,6 @@
 from moviepy import VideoFileClip
 
+
 myclip = VideoFileClip("example.mp4")
 
 # video file clips already have fps and duration

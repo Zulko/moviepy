@@ -117,16 +117,16 @@ def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     assert len(d["inputs"]) == 1
 
     # check streams
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 2
-    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "video"
     assert streams[0]["stream_number"] == 0
     assert streams[0]["fps"] == 24
     assert streams[0]["size"] == [1280, 720]
     assert streams[0]["default"] is True
     assert streams[0]["language"] is None
 
-    assert streams[1]["stream_type"] == "audio"
+    assert streams[1]["stream_type_lower"] == "audio"
     assert streams[1]["stream_number"] == 1
     assert streams[1]["fps"] == 44100
     assert streams[1]["default"] is True
@@ -173,10 +173,10 @@ def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
 
     # number of inputs and streams
     assert len(d["inputs"]) == 1
-    assert len(d["inputs"][0]["streams"]) == 2
+    assert len(d["inputs"]["streams"]) == 2
 
-    default_stream = d["inputs"][0]["streams"][0]
-    ignored_stream = d["inputs"][0]["streams"][1]
+    default_stream = d["inputs"]["streams"][0]
+    ignored_stream = d["inputs"]["streams"][1]
 
     # default, only the first
     assert default_stream["default"]
@@ -189,11 +189,15 @@ def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
     assert ignored_stream["input_number"] == 0
 
     # stream type
-    assert default_stream["stream_type"] == "audio"
-    assert ignored_stream["stream_type"] == "audio"
+    assert default_stream["stream_type_lower"] == "audio"
+    assert ignored_stream["stream_type_lower"] == "audio"
 
     # cleanup
-    for filepath in [clip_440_filepath, clip_880_filepath, multiple_streams_filepath]:
+    for filepath in [
+        clip_440_filepath,
+        clip_880_filepath,
+        multiple_streams_filepath,
+    ]:
         os.remove(filepath)
 
 
@@ -269,8 +273,8 @@ def test_ffmpeg_parse_infos_metadata(util, mono_wave):
 
     # assert streams metadata
     streams = {"audio": None, "video": None}
-    for stream in d["inputs"][0]["streams"]:
-        streams[stream["stream_type"]] = stream
+    for stream in d["inputs"]["streams"]:
+        streams[stream["stream_type_lower"]] = stream
 
     for stream_type, stream in streams.items():
         for field, value in metadata[stream_type].items():
@@ -289,7 +293,7 @@ def test_ffmpeg_parse_infos_chapters():
     """Check that `ffmpeg_parse_infos` can parse chapters with their metadata."""
     d = ffmpeg_parse_infos("media/sintel_with_14_chapters.mp4")
 
-    chapters = d["inputs"][0]["chapters"]
+    chapters = d["inputs"]["chapters"]
 
     num_chapters_expected = 14
 
@@ -315,10 +319,10 @@ def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     assert d["audio_fps"] == 44100
 
     assert len(d["inputs"]) == 1
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 2
-    assert streams[0]["stream_type"] == "audio"
-    assert streams[1]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "audio"
+    assert streams[1]["stream_type_lower"] == "video"
 
     assert len(d["metadata"].keys()) == 7
 
@@ -386,20 +390,20 @@ def test_ffmpeg_parse_infos_multiline_metadata():
                     :
                     : <?xpacket end="w"?>
   Duration: 00:02:10.67, start: 0.000000, bitrate: 26287 kb/s
-    Stream #0:0(eng): Video: mjpeg 768x576 26213 kb/s, 24 fps, 24 tbr (default)
+  Stream #0:0(eng): Video: mjpeg 768x576 26213 kb/s, 24 fps, 24 tbr (default)
     Metadata:
       creation_time   : 2015-09-14 14:57:32
       handler_name    : Foo
                       : Bar
       encoder         : Photo - JPEG
       timecode        : 00:00:00:00
-    Stream #0:1(eng): Audio: aac (mp4a / 0x6), 44100 Hz, mono, fltp, 64 kb/s (default)
+  Stream #0:1(eng): Audio: aac (mp4a / 0x6), 44100 Hz, mono, fltp, 64 kb/s (default)
     Metadata:
       creation_time   : 2015-09-14 14:57:33
       handler_name    : Bar
                       : Foo
       timecode        : 00:00:00:00
-    Stream #0:2(eng): Data: none (tmcd / 0x64636D74) (default)
+  Stream #0:2(eng): Data: none (tmcd / 0x64636D74) (default)
     Metadata:
       creation_time   : 2015-09-14 14:58:24
       handler_name    : Baz
@@ -472,7 +476,7 @@ stDim:unit="pixel"/>
     # streams
     assert len(d["inputs"]) == 1
 
-    streams = d["inputs"][0]["streams"]
+    streams = d["inputs"]["streams"]
     assert len(streams) == 3
 
     # video stream
@@ -481,7 +485,7 @@ stDim:unit="pixel"/>
     assert streams[0]["input_number"] == 0
     assert streams[0]["language"] == "eng"
     assert streams[0]["stream_number"] == 0
-    assert streams[0]["stream_type"] == "video"
+    assert streams[0]["stream_type_lower"] == "video"
     assert streams[0]["size"] == [768, 576]
 
     assert streams[0]["metadata"]["creation_time"] == "2015-09-14 14:57:32"
@@ -495,7 +499,7 @@ stDim:unit="pixel"/>
     assert streams[1]["input_number"] == 0
     assert streams[1]["language"] == "eng"
     assert streams[1]["stream_number"] == 1
-    assert streams[1]["stream_type"] == "audio"
+    assert streams[1]["stream_type_lower"] == "audio"
 
     assert streams[1]["metadata"]["creation_time"] == "2015-09-14 14:57:33"
     assert streams[1]["metadata"]["timecode"] == "00:00:00:00"
@@ -506,7 +510,7 @@ stDim:unit="pixel"/>
     assert streams[2]["input_number"] == 0
     assert streams[2]["language"] == "eng"
     assert streams[2]["stream_number"] == 2
-    assert streams[2]["stream_type"] == "data"
+    assert streams[2]["stream_type_lower"] == "data"
 
     assert streams[2]["metadata"]["creation_time"] == "2015-09-14 14:58:24"
     assert streams[2]["metadata"]["timecode"] == "00:00:00:00"
@@ -547,7 +551,7 @@ At least one output file must be specified"""
     d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 1
+    assert len(d["inputs"]["streams"]) == 1
 
 
 def test_stream_square_brackets():
@@ -561,9 +565,9 @@ At least one output file must be specified"""
     d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
-    assert d["inputs"][0]["streams"][0]["language"] is None
-    assert d["inputs"][0]["streams"][1]["language"] is None
+    assert len(d["inputs"]["streams"]) == 2
+    assert d["inputs"]["streams"][0]["language"] is None
+    assert d["inputs"]["streams"][1]["language"] is None
 
 
 def test_stream_square_brackets_and_language():
@@ -577,9 +581,9 @@ At least one output file must be specified"""
     d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
-    assert d["inputs"][0]["streams"][0]["language"] == "eng"
-    assert d["inputs"][0]["streams"][1]["language"] is None
+    assert len(d["inputs"]["streams"]) == 2
+    assert d["inputs"]["streams"][0]["language"] == "eng"
+    assert d["inputs"]["streams"][1]["language"] is None
 
 
 def test_stream_missing_audio_bitrate():
@@ -593,7 +597,7 @@ At least one output file must be specified"""
     d = FFmpegInfosParser(infos, "clip.mp4").parse()
 
     assert d
-    assert len(d["inputs"][0]["streams"]) == 2
+    assert len(d["inputs"]["streams"]) == 2
     assert d["audio_found"]
     assert d["audio_bitrate"] is None
 
@@ -729,7 +733,8 @@ def test_release_of_file_via_close(util):
     for i in range(3):
         # Get the name of a temporary file we can use.
         local_video_filename = os.path.join(
-            util.TMP_DIR, "test_release_of_file_via_close_%s.mp4" % int(time.time())
+            util.TMP_DIR,
+            "test_release_of_file_via_close_%s.mp4" % int(time.time()),
         )
 
         clip = clips_array([[red, green, blue]]).with_duration(0.5)
@@ -831,6 +836,65 @@ def test_frame_seek():
     frame2 = reader.get_frame(0.34)
 
     assert not np.array_equal(frame, frame2)
+
+
+def test_side_data():
+    infos = """Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/home/ajani/Téléchargements/10CAE6A8-1A7A-488F-8DDD-691F0242A5BD_L0_001_1748075354.671342_o_IMG_1977.MOV':
+  Metadata:
+    major_brand     : qt
+    minor_version   : 0
+    compatible_brands: qt
+    creation_time   : 2025-05-24T08:27:14.000000Z
+    com.apple.quicktime.location.accuracy.horizontal: 15.257182
+    com.apple.quicktime.full-frame-rate-playback-intent: 0
+    com.apple.quicktime.location.ISO6709: +37.8187+127.0583+097.529/
+    com.apple.quicktime.make: Apple
+    com.apple.quicktime.model: iPhone 14
+    com.apple.quicktime.software: 18.3.2
+    com.apple.quicktime.creationdate: 2025-05-24T17:27:14+0900
+  Duration: 00:00:16.10, start: 0.000000, bitrate: 8764 kb/s
+  Stream #0:0(und): Video: hevc (Main 10) (hvc1 / 0x31637668), yuv420p10le(tv, bt2020nc/bt2020/arib-std-b67), 1920x1080, 8540 kb/s, 30 fps, 30 tbr, 600 tbn, 600 tbc (default)
+    Metadata:
+      rotate          : 90
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Video
+      vendor_id       : [0][0][0][0]
+      encoder         : HEVC
+    Side data:
+      DOVI configuration record: version: 1.0, profile: 8, level: 4, rpu flag: 1, el flag: 0, bl flag: 1, compatibility id: 4
+      displaymatrix: rotation of -90.00 degrees
+  Stream #0:1(und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 157 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Audio
+      vendor_id       : [0][0][0][0]
+  Stream #0:2(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:3(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:4(und): Data: none (mebx / 0x7862656D), 42 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:5(und): Data: none (mebx / 0x7862656D), 2 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata
+  Stream #0:6(und): Data: none (mebx / 0x7862656D), 0 kb/s (default)
+    Metadata:
+      creation_time   : 2025-05-24T08:27:14.000000Z
+      handler_name    : Core Media Metadata"""
+
+    d = FFmpegInfosParser(infos, "foo.mov").parse()
+    assert d["blocks"].childs[1].childs[1].type == "side_data"
+    assert (
+        d["blocks"].childs[1].childs[1].data["DOVI configuration record"]
+        == "version: 1.0, profile: 8, level: 4, rpu flag: 1, el flag: 0, bl flag: 1, compatibility id: 4"
+    )
 
 
 if __name__ == "__main__":
