@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/zulko/moviepy/tree/master)
 
+### Important Announcements
+For performances reason a very minor change to the API of CompositeVideoClip have been made, setting the default background color as rgb (0, 0, 0), instead of previous None.
+This mean you need to specifically set `bg_color=None` if you want to generate a video with a transparent background.
+
 ### Fixed
+- Strongly improve performances to make them more consistent with thoses of v1
 - Fix circular reference in ImageSequenceClip leading to memory leak
 - Fix TextClip broken with Pillow > 11.2
 - `pixel_format` parameter was ignored when calling ffmpeg writer, as referenced in PR #2359
