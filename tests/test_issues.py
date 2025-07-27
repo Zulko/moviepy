@@ -374,9 +374,13 @@ def test_issue_2269(util):
     ).with_duration(3)
 
     comp1 = CompositeVideoClip(
-        [color_clip, txt_clip_with_margin.with_position(("center", "center"))]
+        [color_clip, txt_clip_with_margin.with_position(("center", "center"))],
+        bg_color=None,  # No background color, so it should be transparent
     )
-    comp2 = CompositeVideoClip([clip, comp1.with_position(("center", "center"))])
+    comp2 = CompositeVideoClip(
+        [clip, comp1.with_position(("center", "center"))],
+        bg_color=None,  # No background color, so it should be transparent
+    )
 
     # If transparency work as expected, this pixel should be pure red at 2 seconds
     frame = comp2.get_frame(2)
@@ -393,10 +397,12 @@ def test_issue_2269_2(util):
     clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
 
     compostite_clip1 = CompositeVideoClip(
-        [clip1, clip2.with_position(("center", "center"))]
+        [clip1, clip2.with_position(("center", "center"))],
+        bg_color=None,
     )
     compostite_clip2 = CompositeVideoClip(
-        [compostite_clip1, clip3.with_position(("center", "center"))]
+        [compostite_clip1, clip3.with_position(("center", "center"))],
+        bg_color=None,
     )
 
     # If transparency work as expected the clip should match thoses colors
@@ -419,10 +425,12 @@ def test_issue_2269_3(util):
     clip3 = ColorClip((50, 50), (0, 0, 255, 76.5)).with_duration(3)
 
     compostite_clip1 = CompositeVideoClip(
-        [clip1, clip2.with_position(("center", "center"))]
+        [clip1, clip2.with_position(("center", "center"))],
+        bg_color=None,
     )
     compostite_clip2 = CompositeVideoClip(
-        [compostite_clip1, clip3.with_position(("center", "center"))]
+        [compostite_clip1, clip3.with_position(("center", "center"))],
+        bg_color=None,
     )
 
     # If transparency work as expected the clip transparency should be between 0.3 and 0.657
