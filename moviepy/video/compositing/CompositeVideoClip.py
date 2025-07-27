@@ -42,6 +42,7 @@ class CompositeVideoClip(VideoClip):
     bg_color
       Color for the unmasked and unfilled regions. Set to None for these
       regions to be transparent (will be slower).
+      Default is black (0, 0, 0).
 
     use_bgclip
       Set to True if the first clip in the list should be used as the
@@ -54,7 +55,7 @@ class CompositeVideoClip(VideoClip):
     """
 
     def __init__(
-        self, clips, size=None, bg_color=None, use_bgclip=False, is_mask=False
+        self, clips, size=None, bg_color=(0, 0, 0), use_bgclip=False, is_mask=False
     ):
         if size is None:
             size = clips[0].size
@@ -169,12 +170,22 @@ class CompositeVideoClip(VideoClip):
             current_img = clip.compose_on(current_img, t)
 
         # Turn Pillow image into a numpy array
-        frame = np.array(current_img)
+        # force contigous for perfs
+        frame = np.ascontiguousarray(current_img)
 
         # If frame have transparency, remove it
         # our mask will take care of it during rendering
         if frame.shape[2] == 4:
-            return frame[:, :, :3]
+            # Manual copy is more performent than np copy
+            # and ensure C order for later rendering
+            h, w = frame.shape[:2]
+            rgb = np.empty((h, w, 3), dtype=frame.dtype, order="C")
+            rgb[..., 0] = frame[..., 0]
+            rgb[..., 1] = frame[..., 1]
+            rgb[..., 2] = frame[..., 2]
+
+            del frame
+            return rgb
 
         return frame
 

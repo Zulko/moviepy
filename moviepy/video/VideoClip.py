@@ -775,9 +775,17 @@ class VideoClip(Clip):
             background.paste(clip_img, pos)
             return background
 
+        # If background has no alpha layer, we can just paste img on top of it
+        # this is far more efficient than alpha compositing
+        if background.mode[-1] != "A":
+            background.paste(clip_img, pos, mask=clip_img)
+            return background
+
         # For images with transparency we must use pillow alpha composite
         # instead of a simple paste, because pillow paste dont work nicely
         # with alpha compositing
+        # Only do this in last resort, as it is slower than a simple paste
+        # and we dont want to use it if we dont have to
         if background.mode[-1] != "A":
             background = background.convert("RGBA")
 
@@ -788,7 +796,10 @@ class VideoClip(Clip):
         # so we must start by making a fully transparent canvas of background's
         # size and paste our clip img into it in position pos, only then can we
         # composite this canvas on top of background
-        canvas = Image.new("RGBA", (background.width, background.height), (0, 0, 0, 0))
+        # Its actually faster to make the canvas in numpy and then convert it to PIL
+        # than to make it in PIL directly
+        canvas_np = np.zeros((background.height, background.width, 4), dtype=np.uint8)
+        canvas = Image.fromarray(canvas_np)
         canvas.paste(clip_img, pos)
         result = Image.alpha_composite(background, canvas)
         return result
@@ -1310,6 +1321,11 @@ class ImageClip(VideoClip):
       Set this parameter to `True` (default) if you want the alpha layer
       of the picture (if it exists) to be used as a mask.
 
+    duration
+      Duration of the clip in seconds. If not provided, the clip will
+      have infinite duration (i.e. it will be displayed until the end of the
+      composition in which it is included).
+
     Attributes
     ----------
 
@@ -1318,9 +1334,7 @@ class ImageClip(VideoClip):
 
     """
 
-    def __init__(
-        self, img, is_mask=False, transparent=True, fromalpha=False, duration=None
-    ):
+    def __init__(self, img, is_mask=False, transparent=True, duration=None):
         VideoClip.__init__(self, is_mask=is_mask, duration=duration)
 
         if not isinstance(img, np.ndarray):
@@ -1329,9 +1343,7 @@ class ImageClip(VideoClip):
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
-                if fromalpha:
-                    img = 1.0 * img[:, :, 3] / 255
-                elif is_mask:
+                if is_mask:
                     img = 1.0 * img[:, :, 0] / 255
                 elif transparent:
                     self.mask = ImageClip(1.0 * img[:, :, 3] / 255, is_mask=True)

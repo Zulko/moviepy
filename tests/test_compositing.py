@@ -117,10 +117,12 @@ def test_compositing_masks(util):
     clip3 = ColorClip((25, 25), (0, 0, 255, 76.5)).with_duration(2)
 
     compostite_clip1 = CompositeVideoClip(
-        [clip1, clip2.with_position(("center", "center"))]
+        [clip1, clip2.with_position(("center", "center"))],
+        bg_color=None,
     )
     compostite_clip2 = CompositeVideoClip(
-        [compostite_clip1, clip3.with_position(("center", "center"))]
+        [compostite_clip1, clip3.with_position(("center", "center"))],
+        bg_color=None,
     )
 
     # Load output file and check transparency
@@ -144,10 +146,12 @@ def test_compositing_with_transparency_colors(util):
     clip3 = ColorClip((25, 25), (0, 0, 255, 76.5)).with_duration(2)
 
     compostite_clip1 = CompositeVideoClip(
-        [clip1, clip2.with_position(("center", "center"))]
+        [clip1, clip2.with_position(("center", "center"))],
+        bg_color=None,  # No background color, so it should be transparent
     )
     compostite_clip2 = CompositeVideoClip(
-        [compostite_clip1, clip3.with_position(("center", "center"))]
+        [compostite_clip1, clip3.with_position(("center", "center"))],
+        bg_color=None,
     )
 
     # Load output file and check transparency
