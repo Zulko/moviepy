@@ -123,7 +123,7 @@ class CompositeVideoClip(VideoClip):
 
             if use_bgclip and self.bg.mask:
                 maskclips = [self.bg.mask] + maskclips
-
+ 
             self.mask = CompositeVideoClip(
                 maskclips, self.size, is_mask=True, bg_color=0.0
             )
@@ -139,39 +139,36 @@ class CompositeVideoClip(VideoClip):
 
             return mask
 
-        # Try doing clip merging with pillow
+        # Try doing clip merging without pillow
         bg_t = t - self.bg.start
         bg_frame = self.bg.get_frame(bg_t).astype("uint8")
-        bg_img = Image.fromarray(bg_frame)
+        clip_height, clip_width = bg_frame.shape[:2]
 
         if self.bg.mask:
             bgm_t = t - self.bg.mask.start
-            bg_mask = (self.bg.mask.get_frame(bgm_t) * 255).astype("uint8")
-            bg_mask_img = Image.fromarray(bg_mask).convert("L")
+            bg_mask = self.bg.mask.get_frame(bgm_t)
 
-            # Resize bg_mask_img to match bg_img, always use top left corner
-            if bg_mask_img.size != bg_img.size:
-                mask_width, mask_height = bg_mask_img.size
-                img_width, img_height = bg_img.size
+            # Resize bg_mask to match bg_frame, always use top left corner
+            if bg_frame.shape[:2] != bg_mask.shape[:2] :
+                mask_height, mask_width = bg_mask.shape[:2]
 
-                if mask_width > img_width or mask_height > img_height:
-                    bg_mask_img = bg_mask_img.crop((0, 0, img_width, img_height))
-                else:
-                    new_mask = Image.new("L", (img_width, img_height), 0)
-                    new_mask.paste(bg_mask_img, (0, 0))
-                    bg_mask_img = new_mask
+                # If mask is larger, crop it
+                if mask_width > clip_width or mask_height > clip_height:
+                    bg_mask = bg_mask[:clip_height, :clip_width]
 
-            bg_img = bg_img.convert("RGBA")
-            bg_img.putalpha(bg_mask_img)
+                # If mask is smaller, fill it with zeros
+                if mask_width < clip_width or mask_height < clip_height :
+                    new_mask = np.zeros((clip_height, clip_width), dtype=bg_mask.dtype)
+                    new_mask[:mask_height, :mask_width] = bg_mask
+                    bg_mask = new_mask
 
         # For each clip apply on top of current img
-        current_img = bg_img
+        current_img = bg_frame
+        current_mask = bg_mask if self.bg.mask else None
         for clip in self.playing_clips(t):
-            current_img = clip.compose_on(current_img, t)
+            current_img, current_mask = clip.compose_on(current_img, t, current_mask)
 
-        # Turn Pillow image into a numpy array
-        # force contigous for perfs
-        frame = np.ascontiguousarray(current_img)
+        frame = current_img
 
         # If frame have transparency, remove it
         # our mask will take care of it during rendering
