@@ -896,7 +896,7 @@ class VideoClip(Clip):
         safe_alpha = np.where(final_alpha == 0, 1.0, final_alpha)
         result = (frame * alpha_clip + bg * alpha_bg * (1 - alpha_clip)) / safe_alpha
 
-        bg_copy[y1_bg:y2_bg, x1_bg:x2_bg] = result.astype(np.uint8)
+        bg_copy[y1_bg:y2_bg, x1_bg:x2_bg] = np.round(result).astype(np.uint8)
 
         bg_mask_copy[y1_bg:y2_bg, x1_bg:x2_bg] = final_alpha.squeeze()
         return (bg_copy, bg_mask_copy)
