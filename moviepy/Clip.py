@@ -74,7 +74,7 @@ class Clip:
         t : float or tuple or str
           Moment of the clip whose frame will be returned.
 
-        
+
         """
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
