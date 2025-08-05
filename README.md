@@ -56,7 +56,7 @@ Intall moviepy with `pip install moviepy`. For additional installation options, 
 
 # Documentation
 
-The online documentation ([here](https://zulko.github.io/moviepy/)) is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install moviepy[doc]`, then go to the `docs` folder and run `make html`.
+The online documentation ([here](https://zulko.github.io/moviepy/)) is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install "moviepy[doc]"`, then go to the `docs` folder and run `make html`.
 
 # Contribute
 
