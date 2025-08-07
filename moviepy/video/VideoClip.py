@@ -496,8 +496,8 @@ class VideoClip(Clip):
         loop : int, optional
           Repeat the clip using ``loop`` iterations in the resulting GIF.
 
-        progress_bar
-          If True, displays a progress bar
+        logger
+          Either ``"bar"`` for progress bar or ``None`` or any Proglog logger.
 
 
         Notes
