@@ -2,8 +2,7 @@ import numbers
 from dataclasses import dataclass
 from typing import Union
 
-import numpy as np
-from PIL import Image
+import cv2
 
 from moviepy.Effect import Effect
 
@@ -46,11 +45,15 @@ class Resize(Effect):
     apply_to_mask: bool = True
 
     def resizer(self, pic, new_size):
-        """Resize the image using PIL."""
-        new_size = list(map(int, new_size))
-        pil_img = Image.fromarray(pic)
-        resized_pil = pil_img.resize(new_size, Image.Resampling.LANCZOS)
-        return np.array(resized_pil)
+        """Resize the image using openCV."""
+        lx, ly = int(new_size[0]), int(new_size[1])
+        if lx > pic.shape[1] or ly > pic.shape[0]:
+            # For upsizing use linear for good quality & decent speed
+            interpolation = cv2.INTER_LINEAR
+        else:
+            # For dowsizing use area to prevent aliasing
+            interpolation = cv2.INTER_AREA
+        return cv2.resize(+pic.astype("uint8"), (lx, ly), interpolation=interpolation)
 
     def apply(self, clip):
         """Apply the effect to the clip."""

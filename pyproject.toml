@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "moviepy"
-version = "2.1.2"
+version = "2.2.0"
 description = "Video editing with Python"
 readme = "README.md"
 license = { text = "MIT License" }
@@ -35,6 +35,7 @@ dependencies = [
     "proglog<=1.0.0",
     "python-dotenv>=0.10",
     "pillow>=9.2.0",
+    "opencv-python-headless>=4.0.0",
 ]
 
 [project.optional-dependencies]

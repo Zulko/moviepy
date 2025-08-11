@@ -3,7 +3,6 @@
 from functools import reduce
 
 import numpy as np
-from PIL import Image
 
 from moviepy.audio.AudioClip import CompositeAudioClip
 from moviepy.video.VideoClip import ColorClip, VideoClip
@@ -50,12 +49,29 @@ class CompositeVideoClip(VideoClip):
       have the same size as the final clip. If it has no transparency, the final
       clip will have no mask.
 
+    is_mask
+      Set to True if the composite clip is a mask.
+
+    memoize_mask
+        Set to True if the mask of the composite clip should be memoized during
+        frame generation. This is useful for performances in speed with the trafe-off
+        beeing a larger memory usage. If set to False, the mask will be
+        recomputed at each frame generation. Default is False.
+
+
+
     The clip with the highest FPS will be the FPS of the composite clip.
 
     """
 
     def __init__(
-        self, clips, size=None, bg_color=(0, 0, 0), use_bgclip=False, is_mask=False
+        self,
+        clips,
+        size=None,
+        bg_color=(0, 0, 0),
+        use_bgclip=False,
+        is_mask=False,
+        memoize_mask=True,
     ):
         if size is None:
             size = clips[0].size
@@ -83,6 +99,7 @@ class CompositeVideoClip(VideoClip):
         self.is_mask = is_mask
         self.clips = clips
         self.bg_color = bg_color
+        self.memoize_mask = memoize_mask
 
         # Use first clip as background if necessary, else use color
         # either set by user or previously generated
@@ -125,69 +142,71 @@ class CompositeVideoClip(VideoClip):
                 maskclips = [self.bg.mask] + maskclips
 
             self.mask = CompositeVideoClip(
-                maskclips, self.size, is_mask=True, bg_color=0.0
+                maskclips,
+                self.size,
+                is_mask=True,
+                bg_color=0.0,
+                memoize_mask=memoize_mask,
             )
+
+        if self.memoize_mask and self.is_mask:
+            # Memoize the mask to speed up frame generation
+            self.precomputed = {}
 
     def frame_function(self, t):
         """The clips playing at time `t` are blitted over one another."""
         # For the mask we recalculate the final transparency we'll need
         # to apply on the result image
         if self.is_mask:
+            if (
+                self.memoize_mask
+                and t in self.precomputed
+                and self.precomputed[t] is not None
+            ):
+                mask = self.precomputed[t].copy()
+                del self.precomputed[t]  # Free memory as soon as possible
+                return mask
+
             mask = np.zeros((self.size[1], self.size[0]), dtype=float)
             for clip in self.playing_clips(t):
                 mask = clip.compose_mask(mask, t)
 
             return mask
 
-        # Try doing clip merging with pillow
+        # Clip merging in pure numpy
         bg_t = t - self.bg.start
         bg_frame = self.bg.get_frame(bg_t).astype("uint8")
-        bg_img = Image.fromarray(bg_frame)
+        clip_height, clip_width = bg_frame.shape[:2]
 
         if self.bg.mask:
             bgm_t = t - self.bg.mask.start
-            bg_mask = (self.bg.mask.get_frame(bgm_t) * 255).astype("uint8")
-            bg_mask_img = Image.fromarray(bg_mask).convert("L")
+            bg_mask = self.bg.mask.get_frame(bgm_t)
 
-            # Resize bg_mask_img to match bg_img, always use top left corner
-            if bg_mask_img.size != bg_img.size:
-                mask_width, mask_height = bg_mask_img.size
-                img_width, img_height = bg_img.size
+            # Resize bg_mask to match bg_frame, always use top left corner
+            if bg_frame.shape[:2] != bg_mask.shape[:2]:
+                mask_height, mask_width = bg_mask.shape[:2]
 
-                if mask_width > img_width or mask_height > img_height:
-                    bg_mask_img = bg_mask_img.crop((0, 0, img_width, img_height))
-                else:
-                    new_mask = Image.new("L", (img_width, img_height), 0)
-                    new_mask.paste(bg_mask_img, (0, 0))
-                    bg_mask_img = new_mask
+                # If mask is larger, crop it
+                if mask_width > clip_width or mask_height > clip_height:
+                    bg_mask = bg_mask[:clip_height, :clip_width]
 
-            bg_img = bg_img.convert("RGBA")
-            bg_img.putalpha(bg_mask_img)
+                # If mask is smaller, fill it with zeros
+                if mask_width < clip_width or mask_height < clip_height:
+                    new_mask = np.zeros((clip_height, clip_width), dtype=bg_mask.dtype)
+                    new_mask[:mask_height, :mask_width] = bg_mask
+                    bg_mask = new_mask
 
         # For each clip apply on top of current img
-        current_img = bg_img
+        current_frame = bg_frame
+        current_mask = bg_mask if self.bg.mask else None
         for clip in self.playing_clips(t):
-            current_img = clip.compose_on(current_img, t)
+            current_frame, current_mask = clip.compose_on(
+                current_frame, t, current_mask
+            )
+            if self.mask and self.memoize_mask:
+                self.mask.precomputed[t] = current_mask
 
-        # Turn Pillow image into a numpy array
-        # force contigous for perfs
-        frame = np.ascontiguousarray(current_img)
-
-        # If frame have transparency, remove it
-        # our mask will take care of it during rendering
-        if frame.shape[2] == 4:
-            # Manual copy is more performent than np copy
-            # and ensure C order for later rendering
-            h, w = frame.shape[:2]
-            rgb = np.empty((h, w, 3), dtype=frame.dtype, order="C")
-            rgb[..., 0] = frame[..., 0]
-            rgb[..., 1] = frame[..., 1]
-            rgb[..., 2] = frame[..., 2]
-
-            del frame
-            return rgb
-
-        return frame
+        return current_frame
 
     def playing_clips(self, t=0):
         """Returns a list of the clips in the composite clips that are

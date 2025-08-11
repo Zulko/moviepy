@@ -64,7 +64,7 @@ class Clip:
         return _copy.copy(self)
 
     @convert_parameter_to_seconds(["t"])
-    def get_frame(self, t):
+    def get_frame(self, t) -> np.ndarray:
         """Gets a numpy array representing the RGB picture of the clip,
         or (mono or stereo) value for a sound clip, at time ``t``.
 
@@ -73,6 +73,8 @@ class Clip:
 
         t : float or tuple or str
           Moment of the clip whose frame will be returned.
+
+
         """
         # Coming soon: smart error handling for debugging at this point
         if self.memoize:
