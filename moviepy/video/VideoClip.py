@@ -8,7 +8,7 @@ import copy as _copy
 import os
 import threading
 from numbers import Real
-from typing import TYPE_CHECKING, Callable, List, Union
+from typing import TYPE_CHECKING, Callable, List, Tuple, Union
 
 import numpy as np
 import proglog
@@ -718,8 +718,8 @@ class VideoClip(Clip):
         return post_array
 
     def compose_on(
-        self, background: np.ndarray, t, background_mask: np.ndarray | None = None
-    ) -> np.ndarray:
+        self, background: np.ndarray, t, background_mask: Union[np.ndarray, None] = None
+    ) -> Tuple[np.ndarray, Union[np.ndarray, None]]:
         """Returns the result of the clip's frame at time `t` on top
         on the given `picture`, the position of the clip being given
         by the clip's ``pos`` attribute. Meant for compositing.
@@ -747,9 +747,9 @@ class VideoClip(Clip):
 
         Return
         -------
-        np.ndarray | (np.ndarray, np.ndarray)
-          The background image with the clip applied on top of it
-          if the background image is transparent it will be returned as a RGBA image
+        (np.ndarray, np.ndarray|None)
+          A tuple with the new image and a mask if applicable, or None
+
 
         """
         ct = t - self.start  # clip time
