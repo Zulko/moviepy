@@ -158,7 +158,11 @@ class CompositeVideoClip(VideoClip):
         # For the mask we recalculate the final transparency we'll need
         # to apply on the result image
         if self.is_mask:
-            if self.memoize_mask and t in self.precomputed:
+            if (
+                self.memoize_mask
+                and t in self.precomputed
+                and self.precomputed[t] is not None
+            ):
                 mask = self.precomputed[t].copy()
                 del self.precomputed[t]  # Free memory as soon as possible
                 return mask
@@ -169,7 +173,7 @@ class CompositeVideoClip(VideoClip):
 
             return mask
 
-        # Try doing clip merging without pillow
+        # Clip merging in pure numpy
         bg_t = t - self.bg.start
         bg_frame = self.bg.get_frame(bg_t).astype("uint8")
         clip_height, clip_width = bg_frame.shape[:2]

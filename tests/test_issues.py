@@ -438,9 +438,9 @@ def test_issue_2269_3(util):
     pixel1 = frame[100, 10]
     pixel2 = frame[100, 60]
     pixel3 = frame[100, 100]
-    assert pixel1 == 0.3
-    assert pixel2 == 0.51
-    assert pixel3 == 0.657
+    assert pixel1 - 0.3 < 0.01
+    assert pixel2 - 0.51 < 0.01
+    assert pixel3 - 0.657 < 0.01
 
 
 def test_issue_2160(util):

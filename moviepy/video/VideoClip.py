@@ -1551,9 +1551,9 @@ class ColorClip(ImageClip):
                 )
             shape = (h, w, len(color))
 
-        super().__init__(
-            np.tile(color, w * h).reshape(shape), is_mask=is_mask, duration=duration
-        )
+        arr = np.tile(color, w * h).reshape(shape)
+        arr = arr.astype(np.float32) if is_mask else arr.astype(np.uint8)
+        super().__init__(arr, is_mask=is_mask, duration=duration)
 
 
 class TextClip(ImageClip):
@@ -2196,7 +2196,7 @@ class BitmapClip(VideoClip):
             output_frame = []
             for row in input_frame:
                 output_frame.append([self.color_dict[color] for color in row])
-            frame_list.append(np.array(output_frame))
+            frame_list.append(np.array(output_frame, dtype=np.uint8))
 
         frame_array = np.array(frame_list)
         self.total_frames = len(frame_array)

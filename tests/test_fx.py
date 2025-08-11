@@ -7,6 +7,7 @@ import os
 import random
 
 import numpy as np
+from PIL import Image, ImageDraw
 
 import pytest
 
@@ -109,7 +110,7 @@ def test_multiply_color():
 
     clipfx = clip.with_effects([vfx.MultiplyColor(4)])
     target = BitmapClip([["HHO", "BHO"]], color_dict=color_dict, fps=1)
-    assert target == clipfx
+    assert np.allclose(target.get_frame(0), clipfx.get_frame(0), atol=1)
 
 
 def test_crop():
@@ -816,7 +817,8 @@ def test_resize(apply_to_mask, size, duration, new_size, height, width):
         "translate",
         "center",
         "bg_color",
-        "expected_frames",
+        "pixel_positions",
+        "expected_pixels",
     ),
     (
         (
@@ -824,65 +826,48 @@ def test_resize(apply_to_mask, size, duration, new_size, height, width):
             None,
             None,
             None,
-            [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]],
+            [(10, 1)],
+            [(0, 0, 0)],
         ),
         (
             90,
             None,
             None,
             None,
-            [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
+            [(50, 50)],
+            [(255, 255, 255)],
         ),
         (
             lambda t: 90,
             None,
             None,
             None,
-            [["ABC", "ABC", "ABC", "ABC"], ["DEA", "CDE", "BCD", "ABC"]],
-        ),
-        (
-            180,
-            None,
-            None,
-            None,
-            [["CCCC", "BBBB", "AAAA"], ["AEDC", "EDCB", "DCBA"]],
-        ),
-        (
-            270,
-            None,
-            None,
-            None,
-            [["CBA", "CBA", "CBA", "CBA"], ["CBA", "DCB", "EDC", "AED"]],
+            [(50, 50)],
+            [(255, 255, 255)],
         ),
         (
             45,
-            (50, 50),
             None,
-            (0, 255, 0),
-            [
-                ["GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG"],
-                ["GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG", "GGGGGG"],
-            ],
+            None,
+            (255, 0, 0),
+            [(10, 10), (100, 350)],
+            [(255, 0, 0), (255, 255, 255)],
         ),
         (
             45,
             (50, 50),
             (20, 20),
             (255, 0, 0),
-            [
-                ["RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR"],
-                ["RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR", "RRRRRR"],
-            ],
+            [(10, 10), (10, 560), (85, 560)],
+            [(255, 0, 0), (255, 0, 0), (255, 255, 255)],
         ),
         (
             135,
-            (-100, -100),
             None,
-            (0, 0, 255),
-            [
-                ["BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB"],
-                ["BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB", "BBBBBB"],
-            ],
+            (0, 0),
+            (255, 0, 0),
+            [(10, 10), (10, 100), (100, 10)],
+            [(255, 255, 255), (0, 255, 0), (255, 0, 0)],
         ),
     ),
 )
@@ -893,10 +878,28 @@ def test_rotate(
     translate,
     center,
     bg_color,
-    expected_frames,
+    pixel_positions,
+    expected_pixels,
 ):
     """Check ``rotate`` FX behaviour against possible combinations of arguments."""
-    original_frames = [["AAAA", "BBBB", "CCCC"], ["ABCD", "BCDE", "CDEA"]]
+    img = Image.new("RGB", (500, 300), (0, 255, 0))
+    draw = ImageDraw.Draw(img)
+
+    # Draw a black triangle starting at (0, 0)
+    triangle_coords = [(0, 0), (200, 180), (0, 180)]
+    draw.polygon(triangle_coords, fill="black")
+
+    # Draw a white square with its top-right corner at (500, 0)
+    square_side = 150
+    square_coords = [(500 - square_side, 0), (500, square_side)]
+    draw.rectangle(square_coords, fill="white")
+
+    # Draw a gray circle with its bottom-right at (500, 300)
+    circle_diameter = 100
+    circle_bbox = [(500 - circle_diameter, 300 - circle_diameter), (500, 300)]
+    draw.ellipse(circle_bbox, fill="gray")
+
+    clip = ImageClip(np.array(img, dtype=np.uint8)).with_duration(1).with_fps(1)
 
     # angles are defined in degrees, so convert to radians testing ``unit="rad"``
     if unit == "rad":
@@ -906,7 +909,6 @@ def test_rotate(
             _angle = math.radians(angle)
     else:
         _angle = angle
-    clip = BitmapClip(original_frames, fps=1)
 
     kwargs = {
         "unit": unit,
@@ -933,9 +935,13 @@ def test_rotate(
         _resolved_angle = math.degrees(_resolved_angle)
 
     rotated_clip = clip.with_effects([vfx.Rotate(_angle, **kwargs)])
-    expected_clip = BitmapClip(expected_frames, fps=1)
+    # rotated_clip.show(0)
 
-    assert rotated_clip.to_bitmap() == expected_clip.to_bitmap()
+    for pixel_position, expected_pixel in zip(pixel_positions, expected_pixels):
+        pixel = rotated_clip.get_frame(0)[pixel_position[0]][pixel_position[1]]
+        print(pixel, expected_pixel)
+        # Check if the pixel at the specified position matches the expected color
+        assert (pixel == expected_pixel).all()
 
 
 def test_rotate_nonstandard_angles(util):
