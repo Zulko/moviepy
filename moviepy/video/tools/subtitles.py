@@ -195,4 +195,7 @@ def file_to_subtitles(filename, encoding=None):
                 current_times, current_text = None, ""
             elif current_times:
                 current_text += line
+        # Fix the issue where the subtitle is not added to times_texts when it is the last line in an SRT file and the loop ends.
+        if current_times is not None:
+            times_texts.append((current_times, current_text.strip("\n")))
     return times_texts
