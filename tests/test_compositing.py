@@ -163,19 +163,19 @@ def test_compositing_with_transparency_colors(util):
     # For possible rounding errors
     color1 = frame[50, 10]
     opacity1 = mask[50, 10]
-    assert np.allclose(color1, [255, 0, 0], rtol=0.01)
+    assert np.allclose(color1, [255, 0, 0], atol=1)
     assert abs(opacity1 - 0.3) < 0.01
 
     # With 2 layers
     color2 = frame[50, 30]
     opacity2 = mask[50, 30]
-    assert np.allclose(color2, [105, 150, 0], rtol=0.01)
+    assert np.allclose(color2, [105, 150, 0], atol=1)
     assert abs(opacity2 - 0.51) < 0.01
 
     # With 3 layers
     color3 = frame[50, 50]
     opacity3 = mask[50, 50]
-    assert np.allclose(color3, [57, 82, 116], rtol=0.01)
+    assert np.allclose(color3, [56, 81, 116], atol=1)
     assert abs(opacity3 - 0.657) < 0.01
 
 
