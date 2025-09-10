@@ -1,3 +1,39 @@
+from moviepy.editor import ImageClip, AudioFileClip, concatenate_videoclips, CompositeAudioClip
+
+# Durasi per scene (detik)
+durations = [5, 20, 20, 15]  # opening, scene1, scene2, scene3
+
+# Gambar ilustrasi (ganti dengan file gambar Anda)
+images = [
+    "scene1_judul.png",   # Judul
+    "scene2_boneka.png",  # Anak bermain boneka
+    "scene3_tubuh.png",   # Anak menunjuk kepala/tangan/kaki
+    "scene4_senyum.png"   # Anak tersenyum pesan penutup
+]
+
+# Audio narasi (satu file gabungan hasil TTS)
+narasi = AudioFileClip("narasi_bunga.mp3")
+
+# Musik latar (loop otomatis agar pas durasi narasi)
+musik = AudioFileClip("musik_ceria.mp3").volumex(0.2)
+
+# Buat video per scene
+clips = []
+for img, dur in zip(images, durations):
+    clip = ImageClip(img).set_duration(dur)
+    clips.append(clip)
+
+# Gabungkan gambar jadi video
+video = concatenate_videoclips(clips, method="compose")
+
+# Gabungkan narasi + musik
+final_audio = CompositeAudioClip([narasi.volumex(1.0), musik.set_duration(narasi.duration)])
+
+# Tambahkan audio ke video
+final_video = video.set_audio(final_audio)
+
+# Export ke MP4
+final_video.write_videofile("Tubuhku_Milikku_Draft.mp4", fps=24)
 :notoc:
 
 ***********************
