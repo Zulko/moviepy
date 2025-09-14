@@ -2,6 +2,8 @@
 
 import os
 
+import numpy as np
+
 import pytest
 
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
@@ -40,3 +42,23 @@ def test_2():
 
 if __name__ == "__main__":
     pytest.main()
+
+
+def test_no_repeat_frames():
+    # set of frames that are all different levels of grey
+    frames = [np.ones((400, 400, 3)) * f for f in np.linspace(0, 1, 20)]
+
+    for frames_per_second in range(1, 31):
+        movie = ImageSequenceClip(frames, fps=frames_per_second)
+        c = np.array([f[0, 0, 0] for f in movie.iter_frames()])
+        assert np.all(c[1:] != c[:-1])
+
+
+def test_correct_number_of_frames():
+    # set of frames that are all different levels of grey
+    frames = [np.ones((400, 400, 3)) * f for f in np.linspace(0, 1, 20)]
+
+    for frames_per_second in range(1, 31):
+        movie = ImageSequenceClip(frames, fps=frames_per_second)
+        c = np.array([f[0, 0, 0] for f in movie.iter_frames()])
+        assert len(c) == 20
