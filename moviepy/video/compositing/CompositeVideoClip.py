@@ -56,7 +56,7 @@ class CompositeVideoClip(VideoClip):
         Set to True if the mask of the composite clip should be memoized during
         frame generation. This is useful for performances in speed with the trafe-off
         beeing a larger memory usage. If set to False, the mask will be
-        recomputed at each frame generation. Default is False.
+        recomputed at each frame generation. Default is True.
 
 
 
