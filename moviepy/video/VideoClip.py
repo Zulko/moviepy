@@ -1452,9 +1452,9 @@ class ImageClip(VideoClip):
 
         # if the image was just a 2D mask, it should arrive here
         # unchanged
-        self.frame_function = lambda t: img
+        self.frame_function = lambda t: self.img
         self.size = img.shape[:2][::-1]
-        self.img = img
+        self.img = +img
 
     def transform(self, func, apply_to=None, keep_duration=True):
         """General transformation filter.
@@ -1484,8 +1484,8 @@ class ImageClip(VideoClip):
             apply_to = []
         arr = image_func(self.get_frame(0))
         self.size = arr.shape[:2][::-1]
-        self.frame_function = lambda t: arr
-        self.img = arr
+        self.img = +arr
+        self.frame_function = lambda t: self.img
 
         for attr in apply_to:
             a = getattr(self, attr, None)
