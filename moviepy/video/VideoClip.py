@@ -1615,7 +1615,7 @@ class TextClip(ImageClip):
       Either :
         - 'label' (default), the picture will be autosized so as to fit the text
           either by auto-computing font size if width is provided or auto-computing
-          width and eight if font size is defined
+          width and height if font size is defined
 
         - 'caption' the text will be drawn in a picture with fixed size provided
           with the ``size`` argument. The text will be wrapped automagically,
