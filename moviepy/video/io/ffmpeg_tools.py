@@ -328,5 +328,8 @@ def ffplay_version():
     result = subprocess.run(cmd, capture_output=True, text=True, check=True)
     # Extract the version number from the first line of output
     full_version = result.stdout.splitlines()[0].split()[2]
+    #On Arch linux ffmpeg versions start with n, then the version number, this makes sure that no errors occur.
+    if full_version.startswith("n"):
+        full_version = full_version[1:]
     numeric_version = re.match(r"^[0-9.]+", full_version).group(0)
     return (full_version, numeric_version)
