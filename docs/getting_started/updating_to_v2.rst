@@ -1,4 +1,4 @@
-.. _updating_to_v2:
+background = ImageClip("cfae39e9-fc69-4a6a-a7f1-bc0abe3dde65.png").set_durati.. _updating_to_v2:
 
 Updating from v1.X to v2.X
 ==========================
