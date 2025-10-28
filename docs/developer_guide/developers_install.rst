@@ -1,67 +1,48 @@
-.. _developers_install:
+from moviepy.editor import ImageClip, TextClip, CompositeVideoClip, concatenate_videoclips
 
-Installation for MoviePy developers
-======================================
+# Lista de imagens do Guarujá (substitua pelos caminhos reais)
+imagens = [
+    "enseada.jpg",
+    "tombo.jpg",
+    "pitangueiras.jpg",
+    "por_do_sol.jpg"
+]
 
-.. warning::
-    This part is only destined to people who want to build the MoviePy documentation by themselves, or to contribute to MoviePy. Normal users don't need it.
+# Textos correspondentes
+textos = [
+    "Vamos à praia…",
+    "Sol, mar e tranquilidade te esperam.",
+    "Deixe o cotidiano para trás e venha sentir.",
+    "Partiu Guarujá!"
+]
 
-In addition to MoviePy main libraries, MoviePy developers will also need to install additional libraries to be able to run MoviePy tests and build the MoviePy documentation.
+# Duração de cada cena em segundos
+duracoes = [10, 20, 20, 10]  # total = 60s
 
-Libraries for documentation
------------------------------
+# Lista de cores para cada legenda (estilo verão)
+cores = ['#FFD700', '#00BFFF', '#FF6347', '#FF69B4']
 
-You can install the libraries required to build documentation with: 
+clips = []
 
-.. code:: bash
+for img, txt, dur, cor in zip(imagens, textos, duracoes, cores):
+    # Cria o clip de imagem
+    clip_img = ImageClip(img).set_duration(dur).resize(height=1080).resize(width=1920)
 
-    $ (sudo) pip install moviepy[doc]
+    # Cria o clip de texto animado com deslizamento suave
+    txt_clip = (TextClip(txt, fontsize=70, color=cor, font='Arial-Bold')
+                .set_position(lambda t: ('center', 500 + 30*(1-t/dur)))  # desliza suavemente de cima para baixo
+                .set_duration(dur)
+                .crossfadein(1)
+                .crossfadeout(1))
 
-Once libraries installed you can build the documentation with:
+    # Combina imagem e texto
+    clip = CompositeVideoClip([clip_img, txt_clip])
+    clips.append(clip)
 
-.. code:: bash
+# Combina todos os clips em sequência
+video = concatenate_videoclips(clips)
 
-    $ python setup.py build_docs
-
-
-Libraries for testing and linting
--------------------------------------
-
-You can install the libraries required for testing and linting with:
-
-.. code:: bash
-
-    $ (sudo) pip install moviepy[test]
-    $ (sudo) pip install moviepy[lint]
-
-Once libraries installed you can test with:
-
-.. code:: bash
-
-    $ python -m pytest
-
-And you can lint with:
-
-.. code:: bash
-
-    $ python -m black .
-
-and 
-
-.. code:: bash
-
-    $ python3 -m flake8 -v --show-source --ignore=E501 moviepy docs/conf.py examples tests
-
-Adding Git pre-commit hooks
------------------------------
-
-Running linter manually is painfull and error prone, instead you should consider adding a pre-commit hook.
-To do so you can simply go in your local moviepy directory, and run :
-
-.. code:: bash
-    $ pre-commit install
-
-This will enable a git hooks using python pre-commit framework.
-
+# Exporta o vídeo em 1080p
+video.write_videofile("partiu_guaruja.mp4", fps=24)
 
 
