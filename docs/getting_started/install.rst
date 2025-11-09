@@ -31,6 +31,9 @@ There are a couple of environment variables used by MoviePy that allow you to co
 
 To set up any of these variables, the easiest way is to do it in Python before importing objects from MoviePy. For example:
 
+.. warning::
+    You must set environment variables *before* importing from Moviepy, otherwise they will be ignored.
+
 .. code-block:: python
 
     import os
