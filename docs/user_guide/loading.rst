@@ -1,3 +1,14 @@
+from moviepy.editor import VideoFileClip, ImageClip, concatenate_videoclips
+
+video = VideoFileClip("video.mp4")
+image = ImageClip("image.png").set_duration(2).resize(video.size)
+
+final = concatenate_videoclips([image, video])
+final.write_videofile(
+    "video_finale.mp4",
+    codec="libx264",
+    audio_codec="aac"
+)
 .. _loading:
 
 Loading Resources as Clips
