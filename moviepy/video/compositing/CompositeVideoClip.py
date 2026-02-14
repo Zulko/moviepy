@@ -203,7 +203,7 @@ class CompositeVideoClip(VideoClip):
             current_frame, current_mask = clip.compose_on(
                 current_frame, t, current_mask
             )
-            if self.mask and self.memoize_mask:
+            if self.mask and self.memoize_mask and hasattr(self.mask, "precomputed"):
                 self.mask.precomputed[t] = current_mask
 
         return current_frame
