@@ -3,4 +3,6 @@ try:
 
     __version__ = version("moviepy")
 except Exception:
-    __version__ = "2.1.2"  # Fallback version if import fails
+    # Fallback version if importlib.metadata is not available (e.g. running from
+    # source without installing). Keep this in sync with pyproject.toml.
+    __version__ = "2.2.0"
