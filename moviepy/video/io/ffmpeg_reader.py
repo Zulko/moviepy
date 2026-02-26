@@ -284,6 +284,13 @@ class FFMPEG_VideoReader:
                 self.proc.stdout.close()
                 self.proc.stderr.close()
                 self.proc.wait()
+            else:
+                # Process already terminated; still close the pipe handles to
+                # avoid ResourceWarning on unclosed files from the finaliser.
+                if self.proc.stdout:
+                    self.proc.stdout.close()
+                if self.proc.stderr:
+                    self.proc.stderr.close()
             self.proc = None
         if delete_lastread and hasattr(self, "last_read"):
             del self.last_read

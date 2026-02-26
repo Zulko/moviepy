@@ -306,6 +306,13 @@ class FFMPEG_AudioReader:
                 self.proc.stdout.close()
                 self.proc.stderr.close()
                 self.proc.wait()
+            else:
+                # Process already terminated; still close the pipe handles to
+                # avoid ResourceWarning on unclosed files from the finaliser.
+                if self.proc.stdout:
+                    self.proc.stdout.close()
+                if self.proc.stderr:
+                    self.proc.stderr.close()
             self.proc = None
 
     def __del__(self):
