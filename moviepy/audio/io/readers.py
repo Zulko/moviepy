@@ -223,19 +223,23 @@ class FFMPEG_AudioReader:
 
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
-            frames = np.round((self.fps * tt)).astype(int)[in_time]
+            all_frames = np.round((self.fps * tt)).astype(int)
+            frames = all_frames[in_time]
+
+            # Handle edge case where no frames are in valid time range
+            if len(frames) == 0:
+                return np.zeros((len(tt), self.nchannels))
+
             fr_min, fr_max = frames.min(), frames.max()
 
             # if min and max frames don't fit the buffer, it results in IndexError
-            # we avoid that by recursively calling this function on smaller length
-            # and concatenate the results:w
-            max_frame_threshold = fr_min + self.buffersize // 2
-            threshold_idx = np.searchsorted(frames, max_frame_threshold, side="right")
-            if threshold_idx != len(frames):
-                in_time_head = in_time[0:threshold_idx]
-                in_time_tail = in_time[threshold_idx:]
+            # we avoid that by recursively calling this function on smaller chunks
+            # and concatenate the results
+            if fr_max - fr_min > self.buffersize // 2:
+                # Find the midpoint in the original tt array to split
+                mid_idx = len(tt) // 2
                 return np.concatenate(
-                    [self.get_frame(in_time_head), self.get_frame(in_time_tail)]
+                    [self.get_frame(tt[:mid_idx]), self.get_frame(tt[mid_idx:])]
                 )
 
             if not (0 <= (fr_min - self.buffer_startframe) < len(self.buffer)):
@@ -259,7 +263,12 @@ class FFMPEG_AudioReader:
                     UserWarning,
                 )
 
+                # Handle empty buffer edge case
+                if len(self.buffer) == 0:
+                    return np.zeros((len(tt), self.nchannels))
+
                 # repeat the last frame instead
+                indices[indices < 0] = 0
                 indices[indices >= len(self.buffer)] = len(self.buffer) - 1
                 result[in_time] = self.buffer[indices]
                 return result
