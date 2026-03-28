@@ -452,5 +452,34 @@ def test_issue_2160(util):
     clip.write_videofile(output_video_filepath)
 
 
+def test_issue_2548(util):
+    """Test that Loop effect works with long durations (> 64 seconds).
+
+    Regression test for https://github.com/Zulko/moviepy/issues/2548
+    The bug caused an IndexError when looping a video with audio beyond ~64 seconds
+    due to incorrect array slicing in the audio reader's get_frame method.
+    """
+    # Create a short video clip with audio
+    clip = VideoFileClip("media/big_buck_bunny_432_433.webm")
+
+    # Loop the clip to a duration longer than the ~64 second threshold
+    # that triggered the original bug
+    loop_duration = 70  # seconds, beyond the original bug threshold
+    looped_clip = clip.with_effects([vfx.Loop(duration=loop_duration)])
+
+    # This should not raise IndexError
+    output_path = os.path.join(util.TMP_DIR, "issue_2548_loop.mp4")
+    looped_clip.write_videofile(output_path, fps=24, audio_codec="aac", logger=None)
+
+    # Verify the output has the expected duration
+    result_clip = VideoFileClip(output_path)
+    assert abs(result_clip.duration - loop_duration) < 0.5  # Allow small tolerance
+
+    # Clean up
+    clip.close()
+    looped_clip.close()
+    result_clip.close()
+
+
 if __name__ == "__main__":
     pytest.main()
