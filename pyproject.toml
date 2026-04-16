@@ -21,6 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Multimedia",
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
@@ -49,7 +50,7 @@ doc = [
 test = [
     "coveralls>=3.0,<4.0",
     "pytest-cov>=2.5.1,<3.0",
-    "pytest>=3.0.0,<7.0.0",
+    "pytest>=3.0.0,<10.0.0",
 ]
 lint = [
     "black>=23.7.0",
