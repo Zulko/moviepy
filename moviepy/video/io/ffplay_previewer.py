@@ -60,7 +60,7 @@ class FFPLAY_VideoPreviewer:
         except IOError as err:
             _, ffplay_error = self.proc.communicate()
             if ffplay_error is not None:
-                ffplay_error = ffplay_error.decode()
+                ffplay_error = ffplay_error.decode("utf8", errors="replace")
 
             error = (
                 f"{err}\n\nMoviePy error: FFPLAY encountered the following error while "
