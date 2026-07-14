@@ -384,6 +384,17 @@ def test_loop(util, video):
     # assert concatenate_audioclips([clip, clip]) == clip1
 
 
+def test_loop_handles_audio_timestamps_after_wrapping(video):
+    clip = video()
+    looped = clip.with_effects([vfx.Loop(duration=65)])
+
+    total_samples = sum(
+        len(chunk) for chunk in looped.audio.iter_chunks(chunksize=2000, logger=None)
+    )
+    assert total_samples == int(looped.audio.duration * looped.audio.fps)
+    clip.close()
+
+
 def test_lum_contrast(util, video):
     clip = video()
     clip1 = clip.with_effects([vfx.LumContrast()])

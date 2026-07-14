@@ -221,6 +221,16 @@ class FFMPEG_AudioReader:
                     + "with clip duration=%f seconds, " % self.duration
                 )
 
+            valid_times = tt[in_time]
+            if np.any(np.diff(valid_times) < 0):
+                # Time transformations such as Loop can make timestamps wrap.
+                # Process each forward-moving sequence with the buffer logic.
+                result = np.zeros((len(tt), self.nchannels))
+                split_indices = np.where(np.diff(valid_times) < 0)[0] + 1
+                for indices in np.split(np.flatnonzero(in_time), split_indices):
+                    result[indices] = self.get_frame(tt[indices])
+                return result
+
             # The np.round in the next line is super-important.
             # Removing it results in artifacts in the noise.
             frames = np.round((self.fps * tt)).astype(int)[in_time]
