@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw
 import pytest
 
 from moviepy import *
-from moviepy.tools import convert_to_seconds
+from moviepy.tools import compute_position, convert_to_seconds
 
 
 def test_accel_decel():
@@ -990,6 +990,41 @@ def test_rotate_supported_PIL_kwargs(
 
 def test_scroll():
     pass
+
+
+@pytest.mark.parametrize(
+    "side, expected_start, expected_end",
+    [
+        ("left", (-100, 0), (-100, 0)),
+        ("right", (100, 0), (100, 0)),
+        ("top", (0, -60), (0, -60)),
+        ("bottom", (0, 60), (0, 60)),
+    ],
+)
+@pytest.mark.parametrize("reverse_effect_order", [False, True])
+def test_slidein_and_slideout_can_be_combined(
+    side, expected_start, expected_end, reverse_effect_order
+):
+    clip = ColorClip(size=(100, 60), color=(255, 0, 0), duration=4)
+    effects = [vfx.SlideIn(1, side), vfx.SlideOut(1, side)]
+    if reverse_effect_order:
+        effects.reverse()
+
+    slided_clip = clip.with_effects(effects)
+
+    def resolved_position(t):
+        return compute_position(
+            slided_clip.size,
+            slided_clip.size,
+            slided_clip.pos(t),
+            slided_clip.relative_pos,
+        )
+
+    assert resolved_position(0) == expected_start
+    assert resolved_position(0.5) == tuple(value // 2 for value in expected_start)
+    assert resolved_position(2) == (0, 0)
+    assert resolved_position(3.5) == tuple(value // 2 for value in expected_end)
+    assert resolved_position(4) == expected_end
 
 
 def test_multiply_speed():
