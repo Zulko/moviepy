@@ -1907,11 +1907,7 @@ class TextClip(ImageClip):
 
         # We try to break on spaces as much as possible
         # if a text dont contain spaces (ex chinese), we will break when possible
-        last_space = 0
-        for index, char in enumerate(text):
-            if char == " ":
-                last_space = index
-
+        for char in text:
             temp_line = current_line + char
             temp_left, temp_top, temp_right, temp_bottom = draw.multiline_textbbox(
                 (0, 0),
@@ -1923,25 +1919,28 @@ class TextClip(ImageClip):
             )
             temp_width = temp_right - temp_left
 
-            if temp_width >= width:
-                # If we had a space previously, add everything up to the space
-                # and reset last_space and current_line else add everything up
-                # to previous char
-                if last_space:
-                    lines.append(temp_line[0:last_space])
-                    current_line = temp_line[last_space + 1 : index + 1]
-                    last_space = 0
+            if temp_width >= width and current_line:
+                # Break on the last space of the current line if there is one,
+                # else hard-break at the current char (e.g. chinese, long words)
+                last_space = current_line.rfind(" ")
+                if char == " ":
+                    # Breaking exactly on a space: drop it, it would otherwise
+                    # become a leading/trailing space on one of the lines
+                    lines.append(current_line)
+                    current_line = ""
+                elif last_space != -1:
+                    lines.append(current_line[:last_space])
+                    current_line = current_line[last_space + 1 :] + char
                 else:
-                    lines.append(current_line[0:index])
+                    lines.append(current_line)
                     current_line = char
-                    last_space = 0
             else:
                 current_line = temp_line
 
         if current_line:
             lines.append(current_line)
 
-        return lines
+        return [line.rstrip() for line in lines]
 
     def __find_text_size(
         self,
