@@ -225,7 +225,7 @@ class FFMPEG_VideoReader:
                 result = np.frombuffer(s, dtype="uint8")
             else:
                 result = np.fromstring(s, dtype="uint8")
-            result.shape = (h, w, len(s) // (w * h))  # reshape((h, w, len(s)//(w*h)))
+            result = result.reshape((h, w, len(s) // (w * h)))
             self.last_read = result
 
         # We have to do this down here because `self.pos` is used in the warning above

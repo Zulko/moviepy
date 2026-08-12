@@ -1,8 +1,10 @@
 """FFmpeg reader tests meant to be run with pytest."""
 
+import io
 import os
 import subprocess
 import time
+import warnings
 
 import numpy as np
 
@@ -629,6 +631,44 @@ def test_sequential_frame_pos():
     skip_frame = reader.get_frame(4)
     assert reader.pos == 5
     assert np.array_equal(skip_frame, [[[255, 255, 255]]])
+
+
+def test_read_frame_does_not_assign_to_array_shape(monkeypatch):
+    class ShapeAssignmentProbe:
+        def __init__(self):
+            self._shape = None
+
+        @property
+        def shape(self):
+            return self._shape
+
+        @shape.setter
+        def shape(self, value):
+            warnings.warn("direct shape assignment", DeprecationWarning)
+            self._shape = value
+
+        def reshape(self, shape):
+            self._shape = shape
+            return self
+
+    probe = ShapeAssignmentProbe()
+    monkeypatch.setattr(np, "frombuffer", lambda *args, **kwargs: probe)
+
+    reader = FFMPEG_VideoReader.__new__(FFMPEG_VideoReader)
+    reader.size = (1, 1)
+    reader.depth = 3
+    reader.pos = 0
+    reader.proc = type("Process", (), {"stdout": io.BytesIO(bytes([1, 2, 3]))})()
+
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", DeprecationWarning)
+            frame = reader.read_frame()
+    finally:
+        reader.proc = None
+
+    assert frame is probe
+    assert frame.shape == (1, 1, 3)
 
 
 def test_unusual_order_frame_pos():
