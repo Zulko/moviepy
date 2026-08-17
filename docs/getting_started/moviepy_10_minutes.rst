@@ -58,7 +58,7 @@ To create our trailer, we will focus on presenting the main characters, so we ne
    :language: python
    :lines: 13-25
 
-Here, we use the ``subclip`` method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format ``HH:MM:SS.µS``) for each scene. The extracted clips are stored in their respective variables (``intro_clip``, ``bird_clip``, etc.).
+Here, we use the ``subclipped`` method to extract specific scenes from the main video. We provide the start and end times (in seconds or as text with the format ``HH:MM:SS.µS``) for each scene. The extracted clips are stored in their respective variables (``intro_clip``, ``bird_clip``, etc.).
 
 Step 3: Take a First Look with Preview
 --------------------------------------
@@ -83,13 +83,13 @@ By using the preview, you may have noticed that our clips not only contain video
 Step 4: Modify a Clip by Cutting Out a Part of It
 --------------------------------------------------
 
-After previewing the clips, we notice that the rodents' scene is a bit long. Let's modify the clip by removing a specific part. It would be nice to remove parts of the scene that we don't need. This is also quite a common task in video editing. To do so, we are going to use the ``with_effects`` method to remove a portion of the clip between ``00:06:00`` to ``00:10:00``.
+After previewing the clips, we notice that the rodents' scene is a bit long. Let's modify the clip by removing a specific part. It would be nice to remove parts of the scene that we don't need. This is also quite a common task in video editing. To do so, we are going to use the ``with_section_cut_out`` method to remove a portion of the clip between ``00:06:00`` to ``00:10:00``.
 
 .. literalinclude:: /_static/code/getting_started/moviepy_10_minutes/trailer.py
    :language: python
    :lines: 41-54
 
-In that particular case, we have used the ``with_effects``, but this is only one of the many clip manipulation methods starting with ``with_``. We will see a few others in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see :ref:`reference_manual`.
+In that particular case, we have used the ``with_section_cut_out``, but this is only one of the many clip manipulation methods starting with ``with_``. We will see a few others in this tutorial, but we will miss a lot more. If you want an exhaustive list, go see :ref:`reference_manual`.
 
 .. note::
    You may have noticed that we have reassigned the ``rodents_clip`` variable instead of just calling a method on it. This is because in MoviePy, any function starting with ``with_`` is out-of-place instead of in-place, meaning it does not modify the original data but instead copies it and modifies/returns the copy. So you need to store the result of the method and, if necessary, reassign the original variable to update your clip.
@@ -108,7 +108,7 @@ In our case, we want to create text clips to add text overlays between the video
 As you can see, ``ImageClip`` is quite simple, but ``TextClip`` is a rather complicated object. Don't hesitate to explore the arguments it accepts.
 
 .. note::
-   In our example, we have used the ``resize`` method to resize our image clips. This method works just like any ``with_*`` method, but because resizing is such a common task, the name has been shortened to ``resize``. The same is true for ``crop`` and ``rotate``.
+   In our example, we have used the ``resized`` method to resize our image clips. This method works just like any ``with_*`` method, but because resizing is such a common task, the name has been shortened to ``resized``. The same is true for ``cropped`` and ``rotated``.
 
 Feel free to experiment with different effects and transitions to achieve the desired trailer effect.
 
