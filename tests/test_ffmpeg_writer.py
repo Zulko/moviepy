@@ -35,6 +35,11 @@ from moviepy.video.tools.drawing import color_gradient
     ),
 )
 @pytest.mark.parametrize(
+    "pixel_format",
+    (None, "yuv444p", "rgb24"),
+    ids=("pixel_format=None", "pixel_format=yuv444p", "pixel_format=rgb24"),
+)
+@pytest.mark.parametrize(
     "bitrate",
     (None, "5000k"),
     ids=("bitrate=None", "bitrate=5000k"),
@@ -51,6 +56,7 @@ def test_ffmpeg_write_video(
     ext,
     write_logfile,
     with_mask,
+    pixel_format,
     bitrate,
     threads,
 ):
@@ -77,6 +83,8 @@ def test_ffmpeg_write_video(
     )
     if codec is not None:
         kwargs["codec"] = codec
+    if pixel_format is not None:
+        kwargs["pixel_format"] = pixel_format
     if bitrate is not None:
         kwargs["bitrate"] = bitrate
     if threads is not None:
