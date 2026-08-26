@@ -62,17 +62,24 @@ class FFPLAY_VideoPreviewer:
             if ffplay_error is not None:
                 ffplay_error = ffplay_error.decode()
 
+            if self.proc.returncode == 0:
+                return False
+
             error = (
                 f"{err}\n\nMoviePy error: FFPLAY encountered the following error while "
-                f"previewing clip :\n\n {ffplay_error}"
+                "previewing clip:\n\n "
+                f"{ffplay_error}"
             )
 
             raise IOError(error)
 
+        return True
+
     def close(self):
         """Closes the writer, terminating the subprocess if is still alive."""
         if self.proc:
-            self.proc.stdin.close()
+            if self.proc.stdin and not self.proc.stdin.closed:
+                self.proc.stdin.close()
             if self.proc.stderr is not None:
                 self.proc.stderr.close()
             self.proc.wait()
@@ -123,7 +130,10 @@ def ffplay_preview_video(
     with FFPLAY_VideoPreviewer(clip.size, fps, pixel_format) as previewer:
         first_frame = True
         for t, frame in clip.iter_frames(with_times=True, fps=fps, dtype="uint8"):
-            previewer.show_frame(frame)
+            if not previewer.show_frame(frame):
+                if video_flag:
+                    video_flag.set()
+                break
 
             # After first frame is shown, if we have audio/video flag, set video ready
             # and wait for audio
