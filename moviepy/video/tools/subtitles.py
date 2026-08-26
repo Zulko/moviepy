@@ -43,13 +43,18 @@ class SubtitlesClip(VideoClip):
     .. code:: python
 
         from moviepy.video.tools.subtitles import SubtitlesClip
-        from moviepy.video.io.VideoFileClip import VideoFileClip
-        generator = lambda text: TextClip(text, font='./path/to/font.ttf',
-                                        font_size=24, color='white')
-        sub = SubtitlesClip("subtitles.srt", make_textclip=generator, encoding='utf-8')
-        myvideo = VideoFileClip("myvideo.avi")
+        from moviepy import TextClip, CompositeVideoClip, VideoFileClip
+        generator = lambda text: TextClip(
+            text=text, font="./path/to/font.ttf", font_size=24, color="white"
+        )
+        subtitles = SubtitlesClip("media/subtitles.srt", make_textclip=generator, encoding="utf-8")
+        clip = VideoFileClip("./media/chaplin.mp4")
         final = CompositeVideoClip([clip, subtitles])
-        final.write_videofile("final.mp4", fps=myvideo.fps)
+        final.write_videofile("final.mp4", fps=clip.fps)
+        subtitles = SubtitlesClip("subtitles.srt", make_textclip=generator, encoding='utf-8')
+        clip = VideoFileClip("myvideo.avi")
+        final = CompositeVideoClip([clip, subtitles])
+        final.write_videofile("final.mp4", fps=clip.fps)
 
     """
 
