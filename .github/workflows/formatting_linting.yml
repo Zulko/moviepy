@@ -24,7 +24,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Run Black
-        uses: psf/black@24.4.2
+        uses: psf/black@26.3.0
         with:
           options: "--version --check --diff --color" # default: "--check --diff"
 
