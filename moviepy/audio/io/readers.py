@@ -206,6 +206,18 @@ class FFMPEG_AudioReader:
           array of frames corresponding to each timestamp is returned.
         """
         if isinstance(tt, np.ndarray):
+            # A looped clip (e.g. vfx.Loop) can hand us a chunk whose
+            # timestamps wrap back to the start mid-array, so `tt` is not
+            # monotonically increasing. The chunking logic below assumes
+            # sorted input (it uses np.searchsorted), so split at the wrap
+            # point(s) first and recurse on each monotonic sub-range.
+            wrap_at = np.flatnonzero(np.diff(tt) < 0)
+            if len(wrap_at) > 0:
+                split_pos = wrap_at[0] + 1
+                return np.concatenate(
+                    [self.get_frame(tt[:split_pos]), self.get_frame(tt[split_pos:])]
+                )
+
             # lazy implementation, but should not cause problems in
             # 99.99 %  of the cases
 
@@ -232,10 +244,13 @@ class FFMPEG_AudioReader:
             max_frame_threshold = fr_min + self.buffersize // 2
             threshold_idx = np.searchsorted(frames, max_frame_threshold, side="right")
             if threshold_idx != len(frames):
-                in_time_head = in_time[0:threshold_idx]
-                in_time_tail = in_time[threshold_idx:]
+                # threshold_idx indexes into `frames`/`in_time.nonzero()`, not
+                # into `tt` directly (frames only holds the in-range entries).
+                # Map it back to a `tt`-space split point before recursing, and
+                # recurse with the actual timestamps, not the boolean mask.
+                split_pos = np.flatnonzero(in_time)[threshold_idx]
                 return np.concatenate(
-                    [self.get_frame(in_time_head), self.get_frame(in_time_tail)]
+                    [self.get_frame(tt[:split_pos]), self.get_frame(tt[split_pos:])]
                 )
 
             if not (0 <= (fr_min - self.buffer_startframe) < len(self.buffer)):
