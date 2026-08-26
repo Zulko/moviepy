@@ -141,5 +141,20 @@ def test_no_font(util):
     assert clip.size[0] > 10
 
 
+def test_caption_keeps_words_together_when_wrapping(util):
+    text = "one two three four five six seven eight nine ten"
+    clip = TextClip(
+        text=text,
+        size=(100, None),
+        method="caption",
+        font=util.FONT,
+        font_size=20,
+        color="white",
+    )
+
+    assert clip.text.replace("\n", " ").split() == text.split()
+    clip.close()
+
+
 if __name__ == "__main__":
     pytest.main()
