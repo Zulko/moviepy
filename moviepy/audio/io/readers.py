@@ -303,9 +303,12 @@ class FFMPEG_AudioReader:
         if self.proc:
             if self.proc.poll() is None:
                 self.proc.terminate()
-                self.proc.stdout.close()
-                self.proc.stderr.close()
-                self.proc.wait()
+            # Close the pipes before wait()'ing: if the subprocess is blocked
+            # writing to a full stdout/stderr pipe, waiting on it first would
+            # deadlock instead of letting it unblock and exit.
+            self.proc.stdout.close()
+            self.proc.stderr.close()
+            self.proc.wait()
             self.proc = None
 
     def __del__(self):
