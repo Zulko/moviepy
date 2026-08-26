@@ -4,6 +4,7 @@ import numpy as np
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -24,13 +25,20 @@ class FadeIn(Effect):
         if self.initial_color is None:
             self.initial_color = 0 if clip.is_mask else [0, 0, 0]
 
-        self.initial_color = np.array(self.initial_color)
+        initial_color = np.array(self.initial_color)
 
         def filter(get_frame, t):
             if t >= self.duration:
                 return get_frame(t)
             else:
                 fading = 1.0 * t / self.duration
-                return fading * get_frame(t) + (1 - fading) * self.initial_color
+                frame = get_frame(t)
+                if cupy_utils.is_cuda_array(frame):
+                    cp = cupy_utils.cupy()
+                    init = initial_color
+                    if not cupy_utils.is_cuda_array(init):
+                        init = cp.asarray(init)
+                    return fading * frame + (1 - fading) * init
+                return fading * frame + (1 - fading) * initial_color
 
         return clip.transform(filter)

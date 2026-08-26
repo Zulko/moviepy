@@ -5,6 +5,7 @@ import numpy as np
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -26,7 +27,52 @@ class HeadBlur(Effect):
             self.intensity = int(2 * self.radius / 3)
 
         def filter(get_frame, t):
-            im = get_frame(t).copy()
+            im = get_frame(t)
+            is_cuda = cupy_utils.is_cuda_array(im)
+            cp = cupy_utils.cupy() if is_cuda else None
+
+            # Best-effort GPU-native path.
+            if is_cuda:
+                try:
+                    from cupyx.scipy.ndimage import (  # type: ignore
+                        gaussian_filter as _gaussian_filter,
+                    )
+
+                    im_cp = im
+                    if im_cp.dtype != cp.uint8:
+                        # Keep behavior close to the CPU path which always
+                        # returns uint8.
+                        im_cp = cp.clip(im_cp, 0, 255).astype(
+                            cp.uint8
+                        )
+
+                    im_f = im_cp.astype(cp.float32)
+                    h, w = int(im_f.shape[0]), int(im_f.shape[1])
+                    x, y = int(self.fx(t)), int(self.fy(t))
+                    r = float(self.radius)
+
+                    # Approximate OpenCV's sigmaX=0 behavior.
+                    k = int(self.intensity * 6)
+                    k = (k + 1) if (k % 2 == 0) else k
+                    sigma = 0.3 * (((k - 1) * 0.5) - 1.0) + 0.8
+                    sigma = float(max(0.01, sigma))
+
+                    # Build circular mask on GPU.
+                    yy, xx = cp.ogrid[:h, :w]
+                    mask = (xx - x) * (xx - x) + (yy - y) * (yy - y) <= (r * r)
+
+                    blurred = _gaussian_filter(
+                        im_f, sigma=(sigma, sigma, 0.0), mode="nearest"
+                    )
+                    out = cp.where(mask[:, :, None], blurred, im_f)
+                    return cp.clip(out + 0.5, 0.0, 255.0).astype(cp.uint8)
+                except Exception:
+                    pass
+
+                # Fallback: CPU OpenCV.
+                im = cp.asnumpy(im)
+
+            im = im.copy()
             h, w, d = im.shape
             x, y = int(self.fx(t)), int(self.fy(t))
             # Create a mask for the blur area
@@ -47,6 +93,7 @@ class HeadBlur(Effect):
             blur_mask = cv2.cvtColor(blur_mask, cv2.COLOR_GRAY2BGR)
 
             res = np.where(blur_mask == 255, blurred_im, im)
-            return np.array(res, dtype=np.uint8)
+            res = np.array(res, dtype=np.uint8)
+            return cp.asarray(res) if is_cuda else res
 
         return clip.transform(filter)

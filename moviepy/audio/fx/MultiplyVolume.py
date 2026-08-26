@@ -57,13 +57,20 @@ class MultiplyVolume(Effect):
 
     def _multiply_volume_in_range(self, factor, start_time, end_time, nchannels):
         def factors_filter(factor, t):
-            return np.array([factor if start_time <= t_ <= end_time else 1 for t_ in t])
+            # `t` is usually a NumPy array (audio chunk times). Keep this fast and
+            # avoid Python loops.
+            if np.isscalar(t):
+                return factor if (start_time <= t <= end_time) else 1.0
+            t_arr = np.asarray(t)
+            mask = (t_arr >= start_time) & (t_arr <= end_time)
+            return np.where(mask, factor, 1.0)
 
         def multiply_stereo_volume(get_frame, t):
-            return np.multiply(
-                get_frame(t),
-                np.array([factors_filter(factor, t) for _ in range(nchannels)]).T,
-            )
+            a = factors_filter(factor, t)
+            fr = get_frame(t)
+            if np.isscalar(a):
+                return np.multiply(fr, a)
+            return np.multiply(fr, a[:, None])
 
         def multiply_mono_volume(get_frame, t):
             return np.multiply(get_frame(t), factors_filter(factor, t))

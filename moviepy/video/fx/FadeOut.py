@@ -4,6 +4,7 @@ import numpy as np
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -27,13 +28,20 @@ class FadeOut(Effect):
         if self.final_color is None:
             self.final_color = 0 if clip.is_mask else [0, 0, 0]
 
-        self.final_color = np.array(self.final_color)
+        final_color = np.array(self.final_color)
 
         def filter(get_frame, t):
             if (clip.duration - t) >= self.duration:
                 return get_frame(t)
             else:
                 fading = 1.0 * (clip.duration - t) / self.duration
-                return fading * get_frame(t) + (1 - fading) * self.final_color
+                frame = get_frame(t)
+                if cupy_utils.is_cuda_array(frame):
+                    cp = cupy_utils.cupy()
+                    fin = final_color
+                    if not cupy_utils.is_cuda_array(fin):
+                        fin = cp.asarray(fin)
+                    return fading * frame + (1 - fading) * fin
+                return fading * frame + (1 - fading) * final_color
 
         return clip.transform(filter)

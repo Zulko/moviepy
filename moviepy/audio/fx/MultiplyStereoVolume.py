@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import numpy as np
+
 from moviepy.Clip import Clip
 from moviepy.decorators import audio_video_effect
 from moviepy.Effect import Effect
@@ -34,11 +36,42 @@ class MultiplyStereoVolume(Effect):
 
         def stereo_volume(get_frame, t):
             frame = get_frame(t)
-            if len(frame) == 1:  # mono
-                frame *= self.left if self.left is not None else self.right
-            else:  # stereo, stereo surround...
-                for i in range(len(frame[0])):  # odd channels are left
-                    frame[:, i] *= self.left if i % 2 == 0 else self.right
+            left = self.left if self.left is not None else self.right
+            right = self.right if self.right is not None else self.left
+            if frame is None:
+                return frame
+
+            # Historical MoviePy audio frame_functions may return a list/tuple of
+            # per-channel arrays (or scalars). Normalize that efficiently.
+            if isinstance(frame, (list, tuple)):
+                # Keep list semantics for mono clips for backward compatibility:
+                # list * int replicates channels (as in older behavior/tests).
+                if len(frame) == 1:
+                    scale = left
+                    if isinstance(scale, (int, np.integer)):
+                        return list(frame) * int(scale)
+                    return [np.asarray(frame[0]) * scale]
+
+                out = []
+                for i, ch in enumerate(frame):
+                    scale = left if (i % 2 == 0) else right
+                    out.append(np.asarray(ch) * scale)
+                return out
+
+            # Support both scalar-time frames (shape (C,)) and chunk frames
+            # (shape (N, C)).
+            if getattr(frame, "ndim", 0) == 1:
+                if frame.shape[0] == 1:
+                    frame *= left
+                else:
+                    frame[::2] *= left
+                    frame[1::2] *= right
+            else:
+                if frame.shape[1] == 1:
+                    frame *= left
+                else:
+                    frame[:, ::2] *= left
+                    frame[:, 1::2] *= right
             return frame
 
         return clip.transform(stereo_volume)

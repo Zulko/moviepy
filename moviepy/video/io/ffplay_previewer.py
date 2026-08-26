@@ -5,6 +5,8 @@ out of VideoClips
 
 import subprocess as sp
 
+import numpy as np
+
 from moviepy.config import FFPLAY_BINARY
 from moviepy.tools import cross_platform_popen_params
 
@@ -56,7 +58,23 @@ class FFPLAY_VideoPreviewer:
     def show_frame(self, img_array):
         """Writes one frame in the file."""
         try:
-            self.proc.stdin.write(img_array.tobytes())
+            # Accept CuPy arrays (or other CUDA arrays) by downloading once here.
+            if hasattr(img_array, "__cuda_array_interface__"):
+                try:
+                    import cupy as cp
+
+                    img_array = cp.asnumpy(img_array)
+                except Exception:
+                    # Fall back to the old behavior which will raise a helpful error.
+                    pass
+
+            # ffplay expects C-contiguous raw bytes.
+            if isinstance(img_array, np.ndarray) and (
+                not img_array.flags["C_CONTIGUOUS"]
+            ):
+                img_array = np.ascontiguousarray(img_array)
+
+            self.proc.stdin.write(memoryview(img_array))
         except IOError as err:
             _, ffplay_error = self.proc.communicate()
             if ffplay_error is not None:
@@ -120,18 +138,51 @@ def ffplay_preview_video(
       A thread event that video will set after first frame has been shown. If not
       provided, we simply ignore
     """
+    # Optional GPU compositor: keep compositing on GPU (CuPy) and download
+    # only at the ffplay boundary.
+    try:
+        from moviepy.video.tools import gpu_render
+    except Exception:
+        gpu_render = None
+
     with FFPLAY_VideoPreviewer(clip.size, fps, pixel_format) as previewer:
         first_frame = True
-        for t, frame in clip.iter_frames(with_times=True, fps=fps, dtype="uint8"):
-            previewer.show_frame(frame)
+        if (
+            (gpu_render is not None)
+            and gpu_render.is_enabled()
+            and gpu_render.is_available()
+        ):
+            import numpy as np
 
-            # After first frame is shown, if we have audio/video flag, set video ready
-            # and wait for audio
-            if first_frame:
-                first_frame = False
+            n_frames = int(clip.duration * fps)
+            for frame_index in range(n_frames):
+                t = np.float64(frame_index) / fps
+                frame = gpu_render._composite_rgb_gpu(clip, t)
+                previewer.show_frame(frame)
 
-                if video_flag:
-                    video_flag.set()  # say to the audio: video is ready
+                if first_frame:
+                    first_frame = False
 
-                if audio_flag:
-                    audio_flag.wait()  # wait for the audio to be ready
+                    if video_flag:
+                        video_flag.set()
+
+                    if audio_flag:
+                        audio_flag.wait()
+        else:
+            for t, frame in clip.iter_frames(
+                with_times=True,
+                fps=fps,
+                dtype="uint8",
+            ):
+                previewer.show_frame(frame)
+
+                # After first frame is shown, if we have audio/video flag,
+                # set video ready and wait for audio
+                if first_frame:
+                    first_frame = False
+
+                    if video_flag:
+                        video_flag.set()  # say to the audio: video is ready
+
+                    if audio_flag:
+                        audio_flag.wait()  # wait for the audio to be ready

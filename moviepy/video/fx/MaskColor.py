@@ -4,6 +4,7 @@ import numpy as np
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -27,7 +28,7 @@ class MaskColor(Effect):
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""
-        color = np.array(self.color)
+        color_np = np.array(self.color)
 
         def hill(x):
             if self.threshold:
@@ -38,6 +39,14 @@ class MaskColor(Effect):
                 return 1.0 * (x != 0)
 
         def flim(im):
+            if cupy_utils.is_cuda_array(im):
+                cp = cupy_utils.cupy()
+                color = cp.asarray(color_np)
+                diff = im.astype(cp.float64) - color[None, None, :]
+                dist = cp.sqrt(cp.sum(diff * diff, axis=2))
+                return hill(dist)
+
+            color = color_np
             return hill(np.sqrt(((im - color) ** 2).sum(axis=2)))
 
         mask = clip.image_transform(flim)

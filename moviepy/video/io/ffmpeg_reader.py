@@ -4,6 +4,7 @@ import os
 import re
 import subprocess as sp
 import warnings
+from functools import lru_cache
 from typing import List
 
 import numpy as np
@@ -15,6 +16,133 @@ from moviepy.tools import (
     ffmpeg_escape_filename,
 )
 from moviepy.video.io.errors import VideoCorruptedError
+
+
+# Default hwaccel preference. The first available acceleration method reported
+# by `ffmpeg -hwaccels` will be used.
+_HWACCEL_PREFERENCE = (
+    "cuda",
+    "qsv",
+    "d3d11va",
+    "dxva2",
+    "videotoolbox",
+    "vaapi",
+    "vdpau",
+    "opencl",
+)
+
+
+def _env_flag(name: str, default: str = "0") -> bool:
+    val = os.environ.get(name, default)
+    if val is None:
+        return False
+    val = str(val).strip().lower()
+    return val not in {"", "0", "false", "off", "no", "none"}
+
+
+@lru_cache(maxsize=1)
+def _ffmpeg_hwaccels() -> set[str]:
+    """Return the set of hwaccels supported by the configured ffmpeg binary."""
+    try:
+        proc = sp.run(
+            [FFMPEG_BINARY, "-hide_banner", "-hwaccels"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except Exception:
+        return set()
+
+    out = (proc.stdout or "") + "\n" + (proc.stderr or "")
+    accels: set[str] = set()
+    for line in out.splitlines():
+        line = line.strip()
+        if not line or line.lower().startswith("hardware acceleration methods"):
+            continue
+        # ffmpeg prints one accel per line, e.g. "cuda", "qsv", ...
+        token = line.split()[0].strip()
+        if token:
+            accels.add(token)
+    return accels
+
+
+@lru_cache(maxsize=1)
+def _default_hwaccel() -> str | None:
+    """Pick the best available hwaccel based on preference order."""
+    available = _ffmpeg_hwaccels()
+    for accel in _HWACCEL_PREFERENCE:
+        if accel in available:
+            return accel
+    return None
+
+
+def _get_hwaccel_for_reader() -> str | None:
+    """Resolve hwaccel setting for readers.
+
+    Precedence:
+    - MOVIEPY_DISABLE_HWACCEL=1 disables hwaccel.
+    - MOVIEPY_FFMPEG_HWACCEL explicitly sets the hwaccel ("none" disables).
+    - Otherwise, use preferred available hwaccel if any.
+    """
+    if os.getenv("MOVIEPY_DISABLE_HWACCEL"):
+        return None
+
+    explicit = os.getenv("MOVIEPY_FFMPEG_HWACCEL")
+    if explicit is not None:
+        explicit = explicit.strip()
+        if not explicit or explicit.lower() in {"0", "false", "none", "off"}:
+            return None
+        return explicit
+
+    return _default_hwaccel()
+
+
+def _hwaccel_output_format_for(hwaccel: str) -> str | None:
+    """Return the corresponding hwframes pixel format for a hwaccel.
+
+    This is used with ffmpeg's `-hwaccel_output_format` option.
+    """
+    # Values are pixel formats in ffmpeg.
+    mapping = {
+        "cuda": "cuda",
+        "qsv": "qsv",
+        "d3d11va": "d3d11",
+        "vaapi": "vaapi",
+        "videotoolbox": "videotoolbox",
+        "vdpau": "vdpau",
+    }
+    return mapping.get(hwaccel)
+
+
+def _get_hwaccel_output_format(hwaccel: str | None) -> str | None:
+    """Resolve whether to request ffmpeg hwframes output.
+
+    Precedence:
+    - MOVIEPY_FFMPEG_HWACCEL_OUTPUT_FORMAT sets an explicit value.
+      * "auto"/"1" enables a best-effort mapping.
+      * "none"/"0" disables.
+    - MOVIEPY_GPU_DECODE_E2E=1 enables best-effort mapping.
+
+    When enabled, ffmpeg will output frames in GPU memory (hwframes), and the
+    reader must insert `hwdownload` before piping rawvideo.
+    """
+    if not hwaccel:
+        return None
+
+    explicit = os.getenv("MOVIEPY_FFMPEG_HWACCEL_OUTPUT_FORMAT")
+    if explicit is not None:
+        explicit_s = explicit.strip().lower()
+        if not explicit_s or explicit_s in {"0", "false", "none", "off"}:
+            return None
+        if explicit_s in {"1", "true", "on", "auto"}:
+            return _hwaccel_output_format_for(hwaccel)
+        # User provided an explicit pixel format.
+        return explicit.strip()
+
+    if _env_flag("MOVIEPY_GPU_DECODE_E2E", "0"):
+        return _hwaccel_output_format_for(hwaccel)
+
+    return None
 
 
 class FFMPEG_VideoReader:
@@ -31,16 +159,18 @@ class FFMPEG_VideoReader:
         target_resolution=None,
         resize_algo="bicubic",
         fps_source="fps",
+        infos=None,
     ):
         self.filename = filename
         self.proc = None
-        infos = ffmpeg_parse_infos(
-            filename,
-            check_duration=check_duration,
-            fps_source=fps_source,
-            decode_file=decode_file,
-            print_infos=print_infos,
-        )
+        if infos is None:
+            infos = ffmpeg_parse_infos(
+                filename,
+                check_duration=check_duration,
+                fps_source=fps_source,
+                decode_file=decode_file,
+                print_infos=print_infos,
+            )
         # If framerate is unavailable, assume 1.0 FPS to avoid divide-by-zero errors.
         self.fps = infos.get("video_fps", 1.0)
         # If frame size is unavailable, set 1x1 divide-by-zero errors.
@@ -69,6 +199,11 @@ class FFMPEG_VideoReader:
         self.bitrate = infos.get("video_bitrate", 0)
 
         self.infos = infos
+
+        # Internal flag used to decide whether we must request a scaler filter.
+        # When no target resolution is requested, using a scale filter is typically
+        # a no-op (scale to the same size) and can add avoidable overhead.
+        self._needs_scaler = target_resolution is not None
 
         self.pixel_format = pixel_format
         self.depth = 4 if pixel_format[-1] == "a" else 3
@@ -125,6 +260,32 @@ class FFMPEG_VideoReader:
         else:
             i_arg = ["-i", ffmpeg_escape_filename(self.filename)]
 
+        # Hardware-accelerated decode: enabled by default when available.
+        # For alpha videos (rgba), some hw decode paths may drop the alpha plane.
+        # To preserve feature correctness, default hwaccel is disabled when
+        # decoding with alpha unless explicitly requested by the user.
+        hwaccel = _get_hwaccel_for_reader()
+        if (self.depth == 4) and (os.getenv("MOVIEPY_FFMPEG_HWACCEL") is None):
+            hwaccel = None
+        hwaccel_output_format = _get_hwaccel_output_format(hwaccel)
+
+        hw_device = os.getenv("MOVIEPY_FFMPEG_HWACCEL_DEVICE")
+        i_arg_hw_basic = None
+        i_arg_hw_e2e = None
+
+        if hwaccel:
+            i_arg_hw_basic = ["-hwaccel", hwaccel] + i_arg
+
+            if hwaccel_output_format:
+                i_arg_hw_e2e = ["-hwaccel", hwaccel]
+                if hw_device:
+                    i_arg_hw_e2e += ["-hwaccel_device", hw_device]
+                # Keep decoded frames on the accelerator until we explicitly download.
+                i_arg_hw_e2e += ["-hwaccel_output_format", hwaccel_output_format]
+                # A small pool helps avoid stalls on some drivers.
+                i_arg_hw_e2e += ["-extra_hw_frames", "64"]
+                i_arg_hw_e2e += i_arg
+
         # For webm video (vp8 and vp9) with transparent layer, force libvpx/libvpx-vp9
         # as ffmpeg native webm decoder dont decode alpha layer
         # (see
@@ -137,25 +298,77 @@ class FFMPEG_VideoReader:
             elif codec_name == "vp8":
                 i_arg = ["-c:v", "libvpx"] + i_arg
 
-        cmd = (
-            [FFMPEG_BINARY]
-            + i_arg
-            + [
+        def _build_cmd(
+            i_arg_local,
+            *,
+            vf_override: str | None = None,
+            sws_flags: str | None = None,
+        ):
+            cmd_local = [FFMPEG_BINARY] + i_arg_local
+            cmd_local += [
                 "-loglevel",
                 "error",
                 "-f",
                 "image2pipe",
-                "-vf",
-                "scale=%d:%d" % tuple(self.size),
-                "-sws_flags",
-                self.resize_algo,
+            ]
+
+            if vf_override is not None:
+                cmd_local += ["-vf", vf_override]
+                if sws_flags:
+                    cmd_local += ["-sws_flags", sws_flags]
+            elif self._needs_scaler:
+                cmd_local += [
+                    "-vf",
+                    "scale=%d:%d" % tuple(self.size),
+                    "-sws_flags",
+                    self.resize_algo,
+                ]
+
+            cmd_local += [
                 "-pix_fmt",
                 self.pixel_format,
                 "-vcodec",
                 "rawvideo",
                 "-",
             ]
-        )
+            return cmd_local
+
+        cmd_candidates = []
+
+        # Candidate 1: end-to-end hwaccel (hwframes) with explicit download.
+        if i_arg_hw_e2e is not None:
+            if (
+                hwaccel == "cuda"
+                and self._needs_scaler
+                and _env_flag("MOVIEPY_GPU_DECODE_SCALE", "1")
+            ):
+                # Scale on GPU when available, then download.
+                vf = "scale_cuda=%d:%d,hwdownload,format=%s" % (
+                    self.size[0],
+                    self.size[1],
+                    self.pixel_format,
+                )
+                cmd_candidates.append(_build_cmd(i_arg_hw_e2e, vf_override=vf))
+            else:
+                # Download then (optionally) scale on CPU and convert to output format.
+                vf_parts = ["hwdownload"]
+                if self._needs_scaler:
+                    vf_parts.append("scale=%d:%d" % tuple(self.size))
+                vf_parts.append("format=%s" % self.pixel_format)
+                cmd_candidates.append(
+                    _build_cmd(
+                        i_arg_hw_e2e,
+                        vf_override=",".join(vf_parts),
+                        sws_flags=self.resize_algo if self._needs_scaler else None,
+                    )
+                )
+
+        # Candidate 2: basic hwaccel (software filters/output), existing behavior.
+        if i_arg_hw_basic is not None:
+            cmd_candidates.append(_build_cmd(i_arg_hw_basic))
+
+        # Candidate 3: pure software decode.
+        cmd_candidates.append(_build_cmd(i_arg))
 
         popen_params = cross_platform_popen_params(
             {
@@ -165,16 +378,40 @@ class FFMPEG_VideoReader:
                 "stdin": sp.DEVNULL,
             }
         )
-        self.proc = sp.Popen(cmd, **popen_params)
-        self.last_read = self.read_frame()
+
+        def _spawn_and_preread(cmd_to_run):
+            self.proc = sp.Popen(cmd_to_run, **popen_params)
+            self.last_read = self.read_frame()
+
+        last_exc = None
+        for cmd_to_try in cmd_candidates:
+            try:
+                _spawn_and_preread(cmd_to_try)
+                last_exc = None
+                break
+            except Exception as exc:
+                last_exc = exc
+                try:
+                    self.close(delete_lastread=False)
+                except Exception:
+                    pass
+
+        if last_exc is not None:
+            raise last_exc
 
     def skip_frames(self, n=1):
         """Reads and throws away n frames"""
         w, h = self.size
-        for i in range(n):
-            self.proc.stdout.read(self.depth * w * h)
-
-            # self.proc.stdout.flush()
+        nbytes = self.depth * w * h
+        # Skip in larger chunks to avoid Python-level loops.
+        # This preserves the previous semantics (including at EOF).
+        to_skip = n * nbytes
+        chunk_size = max(nbytes, 1024 * 1024)  # at least one frame, at least 1MiB
+        while to_skip > 0:
+            data = self.proc.stdout.read(min(chunk_size, to_skip))
+            if not data:
+                break
+            to_skip -= len(data)
         self.pos += n
 
     def read_frame(self):
@@ -279,17 +516,46 @@ class FFMPEG_VideoReader:
     def close(self, delete_lastread=True):
         """Closes the reader terminating the process, if is still open."""
         if self.proc:
-            if self.proc.poll() is None:
-                self.proc.terminate()
-                self.proc.stdout.close()
-                self.proc.stderr.close()
-                self.proc.wait()
+            proc = self.proc
             self.proc = None
+
+            try:
+                alive = proc.poll() is None
+            except OSError:
+                # On some platforms (notably Windows) subprocess handles can become
+                # invalid during interpreter shutdown/GC.
+                alive = False
+
+            if alive:
+                try:
+                    proc.terminate()
+                except Exception:
+                    pass
+
+            for stream in (
+                getattr(proc, "stdout", None),
+                getattr(proc, "stderr", None),
+            ):
+                try:
+                    if stream is not None:
+                        stream.close()
+                except Exception:
+                    pass
+
+            try:
+                if alive:
+                    proc.wait()
+            except Exception:
+                pass
         if delete_lastread and hasattr(self, "last_read"):
             del self.last_read
 
     def __del__(self):
-        self.close()
+        try:
+            self.close()
+        except Exception:
+            # Never raise from a destructor.
+            pass
 
 
 def ffmpeg_read_image(filename, with_mask=True, pixel_format=None):
@@ -901,11 +1167,22 @@ def ffmpeg_parse_infos(
     )
 
     proc = sp.Popen(cmd, **popen_params)
-    (output, error) = proc.communicate()
-    infos = error.decode("utf8", errors="ignore")
-
-    proc.terminate()
-    del proc
+    try:
+        (output, error) = proc.communicate()
+        infos = error.decode("utf8", errors="ignore")
+    finally:
+        # `communicate()` already waits for the process, but be defensive on
+        # Windows where handles can become invalid during GC/shutdown.
+        for stream in (getattr(proc, "stdout", None), getattr(proc, "stderr", None)):
+            try:
+                if stream is not None:
+                    stream.close()
+            except Exception:
+                pass
+        try:
+            proc.wait(timeout=0)
+        except Exception:
+            pass
 
     if print_infos:
         # print the whole info text returned by FFMPEG

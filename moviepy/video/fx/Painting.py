@@ -5,6 +5,7 @@ from PIL import Image, ImageFilter
 
 from moviepy.Clip import Clip
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -30,6 +31,11 @@ class Painting(Effect):
 
         np_image : a numpy image
         """
+        is_cuda = cupy_utils.is_cuda_array(np_image)
+        cp = cupy_utils.cupy() if is_cuda else None
+        if is_cuda:
+            np_image = cp.asnumpy(np_image)
+
         image = Image.fromarray(np_image)
         image = image.filter(ImageFilter.EDGE_ENHANCE_MORE)
 
@@ -54,7 +60,7 @@ class Painting(Effect):
         # Convert the pixel values to unsigned 8-bit integers
         painting = painting.astype("uint8")
 
-        return painting
+        return cp.asarray(painting) if is_cuda else painting
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""

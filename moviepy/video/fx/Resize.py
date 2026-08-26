@@ -5,6 +5,7 @@ from typing import Union
 import cv2
 
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -45,7 +46,58 @@ class Resize(Effect):
     apply_to_mask: bool = True
 
     def resizer(self, pic, new_size):
-        """Resize the image using openCV."""
+        """Resize the image.
+
+        If the input is a CUDA array, try a GPU-native CuPy/CuPyX path first
+        (best-effort) to keep effect chains on the GPU.
+        """
+        if cupy_utils.is_cuda_array(pic):
+            cp = cupy_utils.cupy()
+            lx, ly = int(new_size[0]), int(new_size[1])
+
+            # Best-effort GPU resize.
+            try:
+                from cupyx.scipy.ndimage import zoom as _zoom  # type: ignore
+
+                h0, w0 = int(pic.shape[0]), int(pic.shape[1])
+                if h0 <= 0 or w0 <= 0:
+                    return pic
+
+                zx = float(lx) / float(w0)
+                zy = float(ly) / float(h0)
+                if pic.ndim == 3:
+                    factors = (zy, zx, 1.0)
+                else:
+                    factors = (zy, zx)
+
+                # Use order=1 (bilinear) as a good default. This doesn't
+                # perfectly match OpenCV's AREA downsampling, but keeps data
+                # on-GPU and is generally high quality.
+                src_dtype = pic.dtype
+                work = pic.astype(cp.float32, copy=False)
+                out = _zoom(
+                    work,
+                    factors,
+                    order=1,
+                    mode="nearest",
+                    prefilter=False,
+                )
+
+                if src_dtype == cp.uint8:
+                    out = cp.clip(out + 0.5, 0.0, 255.0).astype(cp.uint8)
+                else:
+                    out = out.astype(src_dtype, copy=False)
+
+                return out
+            except Exception:
+                # Fall back to CPU OpenCV path.
+                pic = cp.asnumpy(pic)
+                cp_out = cp
+            else:
+                cp_out = cp
+        else:
+            cp_out = None
+
         lx, ly = int(new_size[0]), int(new_size[1])
         if lx > pic.shape[1] or ly > pic.shape[0]:
             # For upsizing use linear for good quality & decent speed
@@ -53,7 +105,15 @@ class Resize(Effect):
         else:
             # For dowsizing use area to prevent aliasing
             interpolation = cv2.INTER_AREA
-        return cv2.resize(+pic.astype("uint8"), (lx, ly), interpolation=interpolation)
+
+        resized = cv2.resize(
+            +pic.astype("uint8"),
+            (lx, ly),
+            interpolation=interpolation,
+        )
+        if cp_out is not None:
+            return cp_out.asarray(resized)
+        return resized
 
     def apply(self, clip):
         """Apply the effect to the clip."""

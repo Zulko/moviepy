@@ -169,14 +169,24 @@ class CompositeVideoClip(VideoClip):
 
             mask = np.zeros((self.size[1], self.size[0]), dtype=float)
             for clip in self.playing_clips(t):
-                mask = clip.compose_mask(mask, t)
+                mask = clip._compose_mask(mask, t, make_copy=False)
 
             return mask
 
         # Clip merging in pure numpy
+        playing = self.playing_clips(t)
         bg_t = t - self.bg.start
-        bg_frame = self.bg.get_frame(bg_t).astype("uint8")
+        bg_frame = self.bg.get_frame(bg_t)
+        if bg_frame.dtype != np.uint8:
+            bg_frame_u8 = bg_frame.astype("uint8")
+        else:
+            bg_frame_u8 = bg_frame
         clip_height, clip_width = bg_frame.shape[:2]
+
+        # Preserve historical behavior: when there are no playing clips,
+        # return a fresh uint8 array (the previous .astype("uint8") always copied).
+        if not playing:
+            return bg_frame_u8.copy() if bg_frame_u8 is bg_frame else bg_frame_u8
 
         if self.bg.mask:
             bgm_t = t - self.bg.mask.start
@@ -197,14 +207,19 @@ class CompositeVideoClip(VideoClip):
                     bg_mask = new_mask
 
         # For each clip apply on top of current img
-        current_frame = bg_frame
+        # Work on a copy once, then composite layers in-place.
+        current_frame = bg_frame_u8.copy() if bg_frame_u8 is bg_frame else bg_frame_u8
         current_mask = bg_mask if self.bg.mask else None
-        for clip in self.playing_clips(t):
-            current_frame, current_mask = clip.compose_on(
-                current_frame, t, current_mask
+        if current_mask is not None:
+            current_mask = current_mask.copy()
+
+        for clip in playing:
+            current_frame, current_mask = clip._compose_on(
+                current_frame, t, background_mask=current_mask, make_copy=False
             )
-            if self.mask and self.memoize_mask:
-                self.mask.precomputed[t] = current_mask
+
+        if self.mask and self.memoize_mask:
+            self.mask.precomputed[t] = current_mask
 
         return current_frame
 
@@ -212,7 +227,20 @@ class CompositeVideoClip(VideoClip):
         """Returns a list of the clips in the composite clips that are
         actually playing at the given time `t`.
         """
-        return [clip for clip in self.clips if clip.is_playing(t)]
+        # Fast path for the common case where `t` is already a scalar seconds value.
+        # This avoids the overhead of the `convert_parameter_to_seconds` decorator
+        # on Clip.is_playing for every clip, on every frame.
+        try:
+            t_s = float(t)
+        except Exception:
+            return [clip for clip in self.clips if clip.is_playing(t)]
+
+        out = []
+        for clip in self.clips:
+            # Mirror Clip.is_playing behavior for scalar times.
+            if (t_s >= clip.start) and ((clip.end is None) or (t_s < clip.end)):
+                out.append(clip)
+        return out
 
     def close(self):
         """Closes the instance, releasing all the resources."""

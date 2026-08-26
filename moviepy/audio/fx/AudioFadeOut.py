@@ -40,7 +40,10 @@ class AudioFadeOut(Effect):
     def _stereo_factor_getter(self, clip_duration, nchannels):
         def getter(t, duration):
             factor = np.minimum(1.0 * (clip_duration - t) / duration, 1)
-            return np.array([factor for _ in range(nchannels)]).T
+            if np.isscalar(factor):
+                return np.full((nchannels,), factor)
+            factor = np.asarray(factor)
+            return np.broadcast_to(factor[:, None], (factor.shape[0], nchannels))
 
         return getter
 

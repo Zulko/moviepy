@@ -39,7 +39,10 @@ class AudioFadeIn(Effect):
     def _stereo_factor_getter(self, nchannels):
         def getter(t, duration):
             factor = np.minimum(t / duration, 1)
-            return np.array([factor for _ in range(nchannels)]).T
+            if np.isscalar(factor):
+                return np.full((nchannels,), factor)
+            factor = np.asarray(factor)
+            return np.broadcast_to(factor[:, None], (factor.shape[0], nchannels))
 
         return getter
 

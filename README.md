@@ -54,6 +54,47 @@ This makes MoviePy very flexible and approachable, albeit slower than using ffmp
 
 Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
 
+## Hardware-accelerated decode (optional)
+
+MoviePy can ask ffmpeg to use hardware-accelerated decoding when available. This is best-effort and falls back to software decoding if it fails.
+
+Environment variables:
+
+- `MOVIEPY_FFMPEG_HWACCEL` to force a specific hwaccel (e.g. `cuda`, `qsv`, `d3d11va`) or disable (`none`).
+- `MOVIEPY_GPU_DECODE_E2E=1` to try an end-to-end GPU decode path (decode into GPU surfaces and only then download for the Python pipe).
+- `MOVIEPY_FFMPEG_HWACCEL_OUTPUT_FORMAT=auto` (or a specific pixel format) to enable `-hwaccel_output_format`.
+- `MOVIEPY_FFMPEG_HWACCEL_DEVICE` to pass a `-hwaccel_device` value.
+- `MOVIEPY_GPU_DECODE_SCALE=1` (default) to attempt CUDA scaling via `scale_cuda` when using `cuda` and resizing.
+
+### True GPU-resident decode (optional backend)
+
+If you have a GPU decode library installed, MoviePy can also decode frames directly into GPU memory (no ffmpeg stdout pipe), and feed those GPU frames into the experimental CuPy compositor.
+
+Currently supported (optional):
+
+- `decord` (NVDEC) when available.
+
+Controls:
+
+- `MOVIEPY_GPU_RENDER=1` enables the experimental GPU compositor (required).
+- `MOVIEPY_GPU_DECODE_BACKEND=auto|decord|none` (default: `auto`).
+- `MOVIEPY_DISABLE_GPU_DECODE=1` to disable this path.
+- `MOVIEPY_GPU_DEVICE=0` to pick a GPU index.
+
+Fallbacks are automatic: if the GPU decode backend is unavailable or fails to initialize, MoviePy falls back to the regular OpenCV/ffmpeg readers.
+
+## GPU-native encode (optional backend)
+
+If you have NVIDIA's NVENC Python bindings installed (PyNvCodec), MoviePy can optionally encode the final video stream directly from GPU-resident frames (CuPy) without downloading each frame to the CPU. This is best-effort and always falls back to the regular FFmpeg stdin writer.
+
+Controls:
+
+- `MOVIEPY_GPU_RENDER=1` enables the experimental GPU compositor (required).
+- `MOVIEPY_GPU_ENCODE_BACKEND=auto|pynvcodec|none` (default: `auto`).
+- `MOVIEPY_DISABLE_GPU_ENCODE=1` disables this path.
+- `MOVIEPY_GPU_ENCODE_STRICT=1` makes failures raise instead of falling back.
+- `MOVIEPY_GPU_DEVICE=0` selects the GPU index.
+
 # Documentation
 
 The online documentation ([here](https://zulko.github.io/moviepy/)) is automatically built at every push to the master branch. To build the documentation locally, install the extra dependencies via `pip install "moviepy[doc]"`, then go to the `docs` folder and run `make html`.

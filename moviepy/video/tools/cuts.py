@@ -7,6 +7,17 @@ import numpy as np
 from moviepy.decorators import convert_parameter_to_seconds, use_clip_fps_by_default
 
 
+def _as_numpy_if_cuda_array(arr):
+    if arr is None or not hasattr(arr, "__cuda_array_interface__"):
+        return arr
+    try:
+        import cupy as cp
+
+        return cp.asnumpy(arr)
+    except Exception:
+        return arr
+
+
 @use_clip_fps_by_default
 @convert_parameter_to_seconds(["start_time"])
 def find_video_period(clip, fps=None, start_time=0.3):
@@ -39,7 +50,7 @@ def find_video_period(clip, fps=None, start_time=0.3):
     """
 
     def frame(t):
-        return clip.get_frame(t).flatten()
+        return _as_numpy_if_cuda_array(clip.get_frame(t)).flatten()
 
     timings = np.arange(start_time, clip.duration, 1 / fps)[1:]
     ref = frame(0)
@@ -260,6 +271,7 @@ class FramesMatches(list):
         matching_frames = []  # the final result.
 
         for t, frame in clip.iter_frames(with_times=True, logger=logger):
+            frame = _as_numpy_if_cuda_array(frame)
             flat_frame = 1.0 * frame.flatten()
             F_norm_sq = dot_product(flat_frame, flat_frame)
             F_norm = np.sqrt(F_norm_sq)
@@ -504,7 +516,8 @@ def detect_scenes(
     """
     if luminosities is None:
         luminosities = [
-            f.sum() for f in clip.iter_frames(fps=fps, dtype="uint32", logger=logger)
+            float(_as_numpy_if_cuda_array(f).sum())
+            for f in clip.iter_frames(fps=fps, dtype="uint32", logger=logger)
         ]
 
     luminosities = np.array(luminosities, dtype=float)

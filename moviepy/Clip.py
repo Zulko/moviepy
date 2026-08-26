@@ -131,6 +131,89 @@ class Clip:
         # mf = copy(self.frame_function)
         new_clip = self.with_updated_frame_function(lambda t: func(self.get_frame, t))
 
+        # Internal ffmpeg fast-path metadata is only valid for raw reader clips.
+        # Any transform/effect makes it unsafe.
+        for _attr in (
+            "_ffmpeg_source_filename",
+            "_ffmpeg_source_start",
+            "_ffmpeg_source_target_resolution",
+            "_ffmpeg_source_resize_algorithm",
+        ):
+            try:
+                if hasattr(new_clip, _attr):
+                    delattr(new_clip, _attr)
+            except Exception:
+                pass
+
+        # Batch GPU decode hooks are only safe for raw reader clips.
+        # Any transform makes them unsafe (it would bypass the transform).
+        try:
+            if hasattr(new_clip, "_gpu_frame_function_batch_by_index"):
+                delattr(new_clip, "_gpu_frame_function_batch_by_index")
+            new_clip._gpu_batch_safe = False
+        except Exception:
+            pass
+
+        # Best-effort internal GPU frame-function propagation.
+        #
+        # If the experimental GPU render path is enabled, it can use this to keep
+        # effect chains on the GPU when their operations are CuPy-aware.
+        #
+        # This never changes public APIs and is only used opportunistically.
+        try:
+            def _gpu_frame_function(t):
+                from moviepy.video.tools import cupy_utils
+
+                cp = cupy_utils.cupy()
+
+                def _is_gpu_frame_object(x):
+                    # Support non-array GPU frame carriers (e.g. NV12 wrappers)
+                    # by recognizing the protocol PyNvVideoCodec expects.
+                    return callable(getattr(x, "cuda", None))
+
+                def _gf(tt):
+                    src_gpu_fn = getattr(self, "_gpu_frame_function", None)
+                    if src_gpu_fn is not None:
+                        try:
+                            v = src_gpu_fn(tt)
+                            if cupy_utils.is_cuda_array(v) or _is_gpu_frame_object(v):
+                                return v
+                            # Allow passing plane tuples/lists through.
+                            if isinstance(v, (tuple, list)) and v and all(
+                                cupy_utils.is_cuda_array(p) for p in v
+                            ):
+                                return v
+                            return cp.asarray(v)
+                        except Exception:
+                            pass
+
+                    v = self.get_frame(tt)
+                    if cupy_utils.is_cuda_array(v) or _is_gpu_frame_object(v):
+                        return v
+                    if isinstance(v, (tuple, list)) and v and all(
+                        cupy_utils.is_cuda_array(p) for p in v
+                    ):
+                        return v
+                    return cp.asarray(v)
+
+                try:
+                    out = func(_gf, t)
+                except Exception:
+                    # Fallback: compute on CPU, then upload.
+                    out = func(self.get_frame, t)
+
+                if cupy_utils.is_cuda_array(out) or _is_gpu_frame_object(out):
+                    return out
+                if isinstance(out, (tuple, list)) and out and all(
+                    cupy_utils.is_cuda_array(p) for p in out
+                ):
+                    return out
+                return cp.asarray(out)
+
+            new_clip._gpu_frame_function = _gpu_frame_function
+        except Exception:
+            pass
+
         if not keep_duration:
             new_clip.duration = None
             new_clip.end = None
@@ -455,6 +538,22 @@ class Clip:
             new_clip.duration = end_time - start_time
             new_clip.end = new_clip.start + new_clip.duration
 
+        # Internal ffmpeg fast-path metadata propagation.
+        # If this clip is a raw VideoFileClip (or already a raw subclip of one),
+        # keep track of the source file and absolute trim window.
+        try:
+            src = getattr(self, "_ffmpeg_source_filename", None)
+            src_start = getattr(self, "_ffmpeg_source_start", None)
+            src_target_res = getattr(self, "_ffmpeg_source_target_resolution", None)
+            src_resize_algo = getattr(self, "_ffmpeg_source_resize_algorithm", None)
+            if src is not None and src_start is not None:
+                new_clip._ffmpeg_source_filename = src
+                new_clip._ffmpeg_source_target_resolution = src_target_res
+                new_clip._ffmpeg_source_resize_algorithm = src_resize_algo
+                new_clip._ffmpeg_source_start = float(src_start) + float(start_time)
+        except Exception:
+            pass
+
         return new_clip
 
     @convert_parameter_to_seconds(["start_time", "end_time"])
@@ -555,16 +654,89 @@ class Clip:
                   for frame in myclip.iter_frames()])
         """
         logger = proglog.default_bar_logger(logger)
-        for frame_index in logger.iter_bar(
-            frame_index=np.arange(0, int(self.duration * fps))
-        ):
-            # int is used to ensure that floating point errors are rounded
-            # down to the nearest integer
-            t = frame_index / fps
+
+        # Normalize dtype to a numpy dtype to support common inputs like "uint8".
+        # This also avoids triggering an unnecessary .astype() for every frame.
+        target_dtype = None if dtype is None else np.dtype(dtype)
+
+        # int() ensures floating point errors are rounded down.
+        n_frames = int(self.duration * fps)
+
+        for frame_index in logger.iter_bar(frame_index=range(n_frames)):
+            # Use numpy float arithmetic for t to preserve historical behavior.
+            # Some algorithms use exact float keys (e.g. in moviepy.video.tools.cuts),
+            # so we avoid small rounding differences from precomputed reciprocals.
+            t = np.float64(frame_index) / fps
 
             frame = self.get_frame(t)
-            if (dtype is not None) and (frame.dtype != dtype):
-                frame = frame.astype(dtype)
+
+            # Public API: iter_frames yields NumPy arrays. If a clip returns
+            # a CuPy/CUDA array internally, download it best-effort here.
+            if hasattr(frame, "__cuda_array_interface__"):
+                try:
+                    import cupy as cp
+
+                    frame = cp.asnumpy(frame)
+                except Exception:
+                    pass
+            if (target_dtype is not None) and (frame.dtype != target_dtype):
+                frame = frame.astype(target_dtype)
+
+            if with_times:
+                yield t, frame
+            else:
+                yield frame
+
+    @requires_duration
+    @use_clip_fps_by_default
+    def iter_frames_gpu(self, fps=None, with_times=False, logger=None, dtype=None):
+        """Iterate over frames, yielding GPU arrays (CuPy) when possible.
+
+        This is a best-effort internal helper intended for GPU-accelerated export
+        and custom pipelines. If CuPy is unavailable, it yields NumPy frames.
+
+        Unlike `iter_frames`, this method does not force frames onto the CPU.
+        """
+        logger = proglog.default_bar_logger(logger)
+        target_dtype = None if dtype is None else np.dtype(dtype)
+        n_frames = int(self.duration * fps)
+
+        cp = None
+        try:
+            from moviepy.video.tools import cupy_utils
+
+            cp = cupy_utils.cupy()
+        except Exception:
+            cp = None
+
+        gpu_fn = getattr(self, "_gpu_frame_function", None)
+
+        for frame_index in logger.iter_bar(frame_index=range(n_frames)):
+            t = np.float64(frame_index) / fps
+            frame = None
+
+            if cp is None:
+                frame = self.get_frame(t)
+            else:
+                try:
+                    frame = gpu_fn(t) if gpu_fn is not None else self.get_frame(t)
+                    if not hasattr(frame, "__cuda_array_interface__"):
+                        frame = cp.asarray(frame)
+                except Exception:
+                    frame = self.get_frame(t)
+                    if not hasattr(frame, "__cuda_array_interface__"):
+                        frame = cp.asarray(frame)
+
+            if (
+                (target_dtype is not None)
+                and hasattr(frame, "dtype")
+                and (frame.dtype != target_dtype)
+            ):
+                try:
+                    frame = frame.astype(target_dtype)
+                except Exception:
+                    pass
+
             if with_times:
                 yield t, frame
             else:

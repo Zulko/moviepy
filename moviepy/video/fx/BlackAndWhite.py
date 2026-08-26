@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from moviepy.Effect import Effect
+from moviepy.video.tools import cupy_utils
 
 
 @dataclass
@@ -32,7 +33,11 @@ class BlackAndWhite(Effect):
         )
 
         def filter(im):
+            xp = np
+            if cupy_utils.is_cuda_array(im):
+                xp = cupy_utils.cupy()
+
             im = R * im[:, :, 0] + G * im[:, :, 1] + B * im[:, :, 2]
-            return np.dstack(3 * [im]).astype("uint8")
+            return xp.dstack(3 * [im]).astype(xp.uint8)
 
         return clip.image_transform(filter)

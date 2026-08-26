@@ -40,11 +40,31 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+accelerate = [
+    "numba>=0.59",
+]
+
+# GPU compositing is optional and best-effort.
+# We ship CuPy GPU kernels; OpenCV-CUDA support requires a custom OpenCV build
+# (PyPI wheels generally don't include CUDA). We still keep OpenCV as a base
+# dependency for CPU video decoding.
+gpu = [
+    "cupy-cuda13x>=13.0.0",
+    # Optional: NVIDIA's pip-distributed Video Codec SDK bindings (encode/decode).
+    # Note: runtime requires compatible NVIDIA drivers / CUDA libraries.
+    "pynvvideocodec>=2.0.0; platform_system != 'Darwin'",
+    # On Windows, PyNvVideoCodec wheels currently depend on the CUDA 12 runtime DLL
+    # `cudart64_12.dll`. Installing this package provides it.
+    "nvidia-cuda-runtime-cu12>=12.0; platform_system == 'Windows'",
+]
 doc = [
     "numpydoc<2.0",
     "Sphinx==6.*",
     "pydata-sphinx-theme==0.13",
     "sphinx_design",
+    # PyNvVideoCodec wheels depend on CUDA 12 runtime DLLs (e.g. cudart64_12.dll).
+    # On Windows, this is most reliably satisfied via the pip runtime package.
+    "nvidia-cuda-runtime-cu12>=12.0.0; platform_system == 'Windows'",
 ]
 test = [
     "coveralls>=3.0,<4.0",

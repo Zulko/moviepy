@@ -181,6 +181,17 @@ class FFMPEG_VideoWriter:
     def write_frame(self, img_array):
         """Writes one frame in the file."""
         try:
+            # Accept CuPy arrays (or other CUDA arrays) by downloading once here.
+            if hasattr(img_array, "__cuda_array_interface__"):
+                try:
+                    import cupy as cp
+
+                    img_array = cp.asnumpy(img_array)
+                except Exception:
+                    # If conversion fails for any reason, fall back to the old
+                    # behavior which will raise a helpful error.
+                    pass
+
             # ffmpeg expects the data to be in C order, so we ensure that
             # the input array is contiguous in memory.
             if not img_array.flags["C_CONTIGUOUS"]:
@@ -286,7 +297,243 @@ def ffmpeg_write_video(
 
     logger(message="MoviePy - Writing video %s\n" % filename)
 
+    def _raise_ffmpeg_error(err, ffmpeg_error):
+        ext = str(filename).split(".")[-1] if ("." in str(filename)) else ""
+        error = (
+            f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
+            f"writing file {filename}: \n\n {ffmpeg_error}"
+        )
+
+        if "Unknown encoder" in ffmpeg_error or "Unknown decoder" in ffmpeg_error:
+            error += (
+                "\n\nThe video export failed because FFMPEG didn't find the "
+                "specified codec for video or audio. "
+                "Please install this codec or change the codec when calling "
+                "write_videofile.\nFor instance:\n"
+                "  >>> clip.write_videofile('myvid.webm', audio='myaudio.mp3', "
+                "codec='libvpx', audio_codec='aac')"
+            )
+
+        elif "incorrect codec parameters ?" in ffmpeg_error:
+            error += (
+                "\n\nThe video export failed, possibly because the codec "
+                f"specified for the video {codec} is not compatible with "
+                f"the given extension {ext}.\n"
+                "Please specify a valid 'codec' argument in write_videofile.\n"
+                "This would be 'libx264' or 'mpeg4' for mp4, "
+                "'libtheora' for ogv, 'libvpx for webm.\n"
+                "Another possible reason is that the audio codec was not "
+                "compatible with the video codec. For instance, the video "
+                "extensions 'ogv' and 'webm' only allow 'libvorbis' (default) as a"
+                "video codec."
+            )
+
+        elif "bitrate not specified" in ffmpeg_error:
+            error += (
+                "\n\nThe video export failed, possibly because the bitrate "
+                "specified was too high or too low for the video codec."
+            )
+
+        elif "Invalid encoder type" in ffmpeg_error:
+            error += (
+                "\n\nThe video export failed because the codec "
+                "or file extension you provided is not suitable for video"
+            )
+
+        raise IOError(error)
+
+    def _try_ffmpeg_direct_fastpath():
+        """Best-effort ffmpeg fast-path for raw VideoFileClip (optionally subclipped).
+
+        This bypasses Python frame iteration entirely by invoking ffmpeg directly
+        on the source file when we can prove the clip is still a raw reader clip.
+        """
+        src = getattr(clip, "_ffmpeg_source_filename", None)
+        if not src:
+            return False
+
+        # Avoid interacting with user-provided complex filtergraphs.
+        if ffmpeg_params:
+            lowered = [str(x).lower() for x in ffmpeg_params]
+            if any(x in {"-vf", "-filter:v", "-filter_complex"} for x in lowered):
+                return False
+
+        # Only handle straightforward video-only clips (no alpha/mask).
+        # Any transforms should have cleared the metadata.
+        if getattr(clip, "mask", None) is not None:
+            return False
+        if getattr(clip, "rotation", 0) not in (0, None):
+            return False
+
+        src_target_res = getattr(clip, "_ffmpeg_source_target_resolution", None)
+        needs_scale = src_target_res is not None
+
+        # Require known duration, and keep fps behavior conservative.
+        if clip.duration is None:
+            return False
+        try:
+            src_fps = float(getattr(clip, "fps", fps))
+            if abs(float(fps) - src_fps) > 1e-3:
+                return False
+        except Exception:
+            return False
+
+        try:
+            start = float(getattr(clip, "_ffmpeg_source_start", 0.0))
+        except Exception:
+            start = 0.0
+        if start < 0:
+            return False
+
+        duration = float(clip.duration)
+        if duration <= 0:
+            return False
+
+        if write_logfile:
+            logdest = logfile
+            loglevel = "info"
+        else:
+            logdest = sp.PIPE
+            loglevel = "error"
+
+        cmd = [
+            FFMPEG_BINARY,
+            "-y",
+            "-loglevel",
+            loglevel,
+        ]
+
+        # Fast seek + bounded transcode window.
+        cmd.extend(["-ss", f"{start:.06f}", "-t", f"{duration:.06f}"])
+        cmd.extend(["-i", ffmpeg_escape_filename(src)])
+
+        if needs_scale:
+            w, h = int(clip.size[0]), int(clip.size[1])
+            cmd.extend(["-vf", f"scale={w}:{h}"])
+            resize_algo = getattr(clip, "_ffmpeg_source_resize_algorithm", None)
+            if resize_algo:
+                cmd.extend(["-sws_flags", str(resize_algo)])
+
+        if audiofile is not None:
+            if audio_codec is None:
+                acodec = "copy"
+            else:
+                acodec = audio_codec
+            cmd.extend(["-i", ffmpeg_escape_filename(audiofile), "-acodec", acodec])
+            # Make stream selection explicit to avoid accidentally picking
+            # the source audio stream.
+            cmd.extend(["-map", "0:v:0", "-map", "1:a:0", "-shortest"])
+        else:
+            cmd.extend(["-an"])
+
+        if codec == "h264_nvenc":
+            cmd.extend(["-c:v", codec])
+        else:
+            cmd.extend(["-vcodec", codec])
+
+        # Preserve existing behavior: always pass preset, like FFMPEG_VideoWriter.
+        cmd.extend(["-preset", preset])
+
+        if ffmpeg_params is not None:
+            cmd.extend(ffmpeg_params)
+
+        if bitrate is not None:
+            cmd.extend(["-b", bitrate])
+
+        if threads is not None:
+            cmd.extend(["-threads", str(threads)])
+
+        # Preserve compatibility defaults similar to FFMPEG_VideoWriter.
+        if pixel_format is not None:
+            cmd.extend(["-pix_fmt", pixel_format])
+        else:
+            w, h = int(clip.size[0]), int(clip.size[1])
+            if (
+                (codec in {"libx264", "h264_nvenc"})
+                and (w % 2 == 0)
+                and (h % 2 == 0)
+            ):
+                cmd.extend(["-pix_fmt", "yuv420p"])
+
+        cmd.append(ffmpeg_escape_filename(filename))
+
+        popen_params = cross_platform_popen_params(
+            {"stdout": sp.DEVNULL, "stderr": logdest, "stdin": sp.DEVNULL}
+        )
+        proc = sp.Popen(cmd, **popen_params)
+        _out, err = proc.communicate()
+
+        if proc.returncode:
+            if err is not None:
+                ffmpeg_error = err.decode(errors="replace")
+            else:
+                logfile.seek(0)
+                ffmpeg_error = logfile.read()
+            _raise_ffmpeg_error(
+                IOError(f"FFMPEG failed with return code {proc.returncode}"),
+                ffmpeg_error,
+            )
+
+        return True
+
+    # Fast-path: avoid Python frame iteration when the clip is a raw file clip.
+    try:
+        if _try_ffmpeg_direct_fastpath():
+            if write_logfile:
+                logfile.close()
+            logger(message="MoviePy - Done !")
+            return
+    except Exception:
+        # Any failure should fall back to the existing writers.
+        pass
+
+    def _as_numpy_if_cuda_array(arr):
+        if arr is None or not hasattr(arr, "__cuda_array_interface__"):
+            return arr
+        try:
+            import cupy as cp
+
+            return cp.asnumpy(arr)
+        except Exception:
+            return arr
+
     has_mask = clip.mask is not None
+
+    # Experimental GPU render: keep compositing math on GPU (CuPy) and download
+    # once per output frame. Controlled via env vars in
+    # moviepy.video.tools.gpu_render.
+    try:
+        from moviepy.video.tools import gpu_render
+    except Exception:
+        gpu_render = None
+
+    # Best-effort GPU-native encode (NVENC) using PyNvCodec/PyNvVideoCodec,
+    # with FFmpeg for mux. In auto mode, this is opportunistic: it will fall
+    # back silently if deps/hardware aren't present.
+    try:
+        from moviepy.video.io.pynvcodec_writer import try_write_video_pynvcodec
+
+        wrote = try_write_video_pynvcodec(
+            clip=clip,
+            filename=filename,
+            fps=fps,
+            codec=codec,
+            bitrate=bitrate,
+            preset=preset,
+            audiofile=audiofile,
+            audio_codec=audio_codec,
+            logger=logger,
+            gpu_render=gpu_render,
+            pixel_format=pixel_format,
+        )
+        if wrote:
+            if write_logfile:
+                logfile.close()
+            logger(message="MoviePy - Done !")
+            return
+    except Exception:
+        # Any failure here should fall back to the standard writer.
+        pass
 
     with FFMPEG_VideoWriter(
         filename,
@@ -303,16 +550,32 @@ def ffmpeg_write_video(
         ffmpeg_params=ffmpeg_params,
         pixel_format=pixel_format,
     ) as writer:
-        for t, frame in clip.iter_frames(
-            logger=logger, with_times=True, fps=fps, dtype="uint8"
+        if (
+            (gpu_render is not None)
+            and gpu_render.is_enabled()
+            and gpu_render.is_available()
         ):
-            if clip.mask is not None:
-                mask = 255 * clip.mask.get_frame(t)
-                if mask.dtype != "uint8":
-                    mask = mask.astype("uint8")
-                frame = np.dstack([frame, mask])
+            # Mirror Clip.iter_frames time arithmetic for compatibility.
+            n_frames = int(clip.duration * fps)
+            for frame_index in logger.iter_bar(frame_index=range(n_frames)):
+                t = np.float64(frame_index) / fps
+                # CuPy-native pipeline: keep frames on GPU and only download
+                # inside writer.write_frame.
+                frame = gpu_render.get_frame_for_export_uint8_gpu(clip, t)
+                writer.write_frame(frame)
+        else:
+            for t, frame in clip.iter_frames(
+                logger=logger, with_times=True, fps=fps, dtype=np.uint8
+            ):
+                if has_mask:
+                    frame = _as_numpy_if_cuda_array(frame)
+                    mask = _as_numpy_if_cuda_array(clip.mask.get_frame(t))
+                    mask = 255 * mask
+                    if mask.dtype != np.uint8:
+                        mask = mask.astype(np.uint8)
+                    frame = np.dstack([frame, mask])
 
-            writer.write_frame(frame)
+                writer.write_frame(frame)
 
     if write_logfile:
         logfile.close()
@@ -340,8 +603,19 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
         if the image data contains an alpha channel (``"rgba"``) or not
         (``"rgb24"``).
     """
+    if hasattr(image, "__cuda_array_interface__"):
+        try:
+            import cupy as cp
+
+            image = cp.asnumpy(image)
+        except Exception:
+            pass
+
     if image.dtype != "uint8":
         image = image.astype("uint8")
+
+    if not image.flags["C_CONTIGUOUS"]:
+        image = np.ascontiguousarray(image)
 
     if not pixel_format:
         pixel_format = "rgba" if (image.shape[2] == 4) else "rgb24"
@@ -370,7 +644,7 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     )
 
     proc = sp.Popen(cmd, **popen_params)
-    out, err = proc.communicate(image.tobytes())
+    out, err = proc.communicate(input=memoryview(image))
 
     if proc.returncode:
         error = (
