@@ -60,5 +60,12 @@ class SlideOut(Effect):
             "top": lambda t: ("center", min(0, h * (-(t - ts) / self.duration))),
             "bottom": lambda t: ("center", max(0, h * ((t - ts) / self.duration))),
         }
+        previous_position = clip.pos
+        slide_position = pos_dict[self.side]
 
-        return clip.with_position(pos_dict[self.side])
+        def position(t):
+            if t < ts:
+                return previous_position(t)
+            return slide_position(t)
+
+        return clip.with_position(position)
