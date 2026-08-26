@@ -43,7 +43,7 @@ def subprocess_call(cmd, logger="bar"):
 
     if proc.returncode:
         logger(message="MoviePy - Command returned an error")
-        raise IOError(err.decode("utf8"))
+        raise IOError(err.decode("utf8", errors='replace'))
     else:
         logger(message="MoviePy - Command successful")
 
