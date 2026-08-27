@@ -134,6 +134,44 @@ def test_label_autosizing(util):
     assert not np.allclose(last_three_columns, [0, 0, 0], rtol=0.01)
 
 
+def test_break_text_wraps_within_width(util):
+    """Wrapped caption lines must never exceed the requested width and must
+    preserve every word (regression test for absolute-index bug in
+    ``__break_text`` that shredded words mid-character after the first line).
+    """
+    from PIL import Image, ImageDraw, ImageFont
+
+    text = (
+        "the quick brown fox jumps over the lazy dog "
+        "and then keeps on running far beyond the fence line"
+    )
+    width = 200
+    font_size = 40
+
+    break_text = TextClip._TextClip__break_text
+    lines = break_text(
+        TextClip.__new__(TextClip),
+        width=width,
+        text=text,
+        font=util.FONT,
+        font_size=font_size,
+        stroke_width=0,
+        align="left",
+        spacing=4,
+    )
+
+    draw = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    pil_font = ImageFont.truetype(util.FONT, font_size)
+
+    # No line may render wider than the requested width
+    for line in lines:
+        line_width = draw.textbbox((0, 0), line, font=pil_font)[2]
+        assert line_width < width, f"line {line!r} is {line_width}px >= {width}px"
+
+    # No word may be lost, duplicated or split
+    assert " ".join(lines).split() == text.split()
+
+
 def test_no_font(util):
     # Try make a clip with default font
     clip = TextClip(text="Hello world !", font_size=20, color="white")

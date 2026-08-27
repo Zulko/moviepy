@@ -12,6 +12,7 @@ For performances reason a very minor change to the API of CompositeVideoClip hav
 This mean you need to specifically set `bg_color=None` if you want to generate a video with a transparent background.
 
 ### Fixed
+- Fix `TextClip` caption word-wrapping: after the first line break, a stale absolute index caused words to be split mid-character and lines to overflow the requested width (text clipped at image edge). Wrapping now breaks on the last space of the current line, preserves all words, and hard-breaks only when a single word/CJK text exceeds the width.
 - Strongly improve performances to make them more consistent with thoses of v1
 - Fix circular reference in ImageSequenceClip leading to memory leak
 - Fix TextClip broken with Pillow > 11.2
