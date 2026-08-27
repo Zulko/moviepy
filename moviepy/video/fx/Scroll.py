@@ -46,8 +46,18 @@ class Scroll(Effect):
         if self.w is None:
             self.w = clip.w
 
-        x_max = self.w - 1
-        y_max = self.h - 1
+        # If the clip is smaller than the output, there isn't anything to scroll over.
+        # If the clip is bigger than the desired output then there is something to scroll over
+        #       and we want to stop when we have scrolled through the whole content or we have
+        #       run out of time.
+        x_max = 0
+        y_max = 0
+
+        if clip.w > self.w:
+            x_max = (clip.w - 1) - self.w
+
+        if clip.h > self.h:
+            y_max = (clip.h - 1) - self.h
 
         def filter(get_frame, t):
             x = int(max(0, min(x_max, self.x_start + round(self.x_speed * t))))
