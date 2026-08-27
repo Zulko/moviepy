@@ -51,6 +51,19 @@ def test_audioclip_io(util):
     assert (output_array[len(input_array) :] == 0).all()
 
 
+def test_audioclip_reads_8bit_audio(util, mono_wave):
+    filename = os.path.join(util.TMP_DIR, "audioclip-8bit.wav")
+    source = AudioClip(mono_wave(440), duration=0.1, fps=8000)
+    source.write_audiofile(filename, fps=8000, nbytes=2, codec="pcm_s16le", logger=None)
+
+    with AudioFileClip(filename, fps=8000, nbytes=1) as clip:
+        assert clip.reader.format == "s8"
+        assert clip.reader.codec == "pcm_s8"
+        frames = np.array([clip.get_frame(t) for t in (0.01, 0.02, 0.03)])
+
+    assert np.max(np.abs(frames)) > 0.1
+
+
 def test_concatenate_audioclips_render(util, mono_wave):
     """Concatenated AudioClips through ``concatenate_audioclips`` should return
     a clip that can be rendered to a file.

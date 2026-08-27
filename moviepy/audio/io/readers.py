@@ -58,8 +58,8 @@ class FFMPEG_AudioReader:
         self.filename = filename
         self.nbytes = nbytes
         self.fps = fps
-        self.format = "s%dle" % (8 * nbytes)
-        self.codec = "pcm_s%dle" % (8 * nbytes)
+        self.format = "s8" if nbytes == 1 else "s%dle" % (8 * nbytes)
+        self.codec = "pcm_s8" if nbytes == 1 else "pcm_s%dle" % (8 * nbytes)
         self.nchannels = nchannels
         infos = ffmpeg_parse_infos(
             filename, decode_file=decode_file, print_infos=print_infos
