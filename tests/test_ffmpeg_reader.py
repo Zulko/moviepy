@@ -897,5 +897,31 @@ def test_side_data():
     )
 
 
+def test_ffmpeg_parse_infos_invalid_utf8():
+    """Regression test for issue #2563: invalid UTF-8 bytes in FFmpeg output
+    should not raise UnicodeDecodeError."""
+    from unittest.mock import MagicMock, patch
+
+    # Bytes containing a valid ffmpeg info structure but with invalid UTF-8
+    # embedded in a handler_name tag (0xce alone is not valid UTF-8)
+    invalid_utf8_bytes = (
+        b"Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'test.mov':\n"
+        b"  Metadata:\n"
+        b"    handler_name    : \xce\xd0\xd1\xd1\xd2\n"
+        b"  Duration: 00:00:01.00, start: 0.000000, bitrate: 1000 kb/s\n"
+        b"  Stream #0:0: Video: h264, yuv420p, 320x240, 25 fps, 25 tbr (default)\n"
+        b"At least one output file must be specified\n"
+    )
+
+    mock_proc = MagicMock()
+    mock_proc.communicate.return_value = (b"", invalid_utf8_bytes)
+
+    with patch("moviepy.video.io.ffmpeg_reader.sp.Popen", return_value=mock_proc):
+        d = ffmpeg_parse_infos("test.mov")
+
+    assert d["video_found"]
+    assert d["video_size"] == [320, 240]
+
+
 if __name__ == "__main__":
     pytest.main()
