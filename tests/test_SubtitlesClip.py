@@ -66,5 +66,37 @@ def test_file_to_subtitles_unicode():
     )
 
 
+def test_duration_aware_subtitles(util):
+    def duration_aware_generator(txt, start=None, end=None):
+        duration = end - start if start is not None and end is not None else None
+        return TextClip(
+            text=txt,
+            font=util.FONT,
+            size=(800, 600),
+            font_size=24,
+            method="caption",
+            color="white",
+            duration=duration,
+        )
+
+    subtitles = SubtitlesClip(
+        "media/subtitles.srt", make_textclip=duration_aware_generator
+    )
+
+    clip1 = subtitles.get_frame(0.5)
+    assert clip1 is not None
+
+    first_sub = ((0.0, 1.0), "Red!")
+    assert first_sub in subtitles.textclips
+    assert subtitles.textclips[first_sub].duration == 1.0
+
+    clip2 = subtitles.get_frame(2.5)
+    assert clip2 is not None
+
+    second_sub = ((2.0, 3.5), "More Red!")
+    assert second_sub in subtitles.textclips
+    assert pytest.approx(subtitles.textclips[second_sub].duration, rel=1e-6) == 1.5
+
+
 if __name__ == "__main__":
     pytest.main()

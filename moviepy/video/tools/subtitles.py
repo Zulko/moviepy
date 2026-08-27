@@ -30,7 +30,8 @@ class SubtitlesClip(VideoClip):
         will be generated.
 
         The function must take a text as argument and return a VideoClip
-        to be used as caption
+        to be used as caption. start and end are optional arguments to calculate
+        duration of text clip.
 
     encoding
         Optional, specifies srt file encoding.
@@ -71,7 +72,7 @@ class SubtitlesClip(VideoClip):
             if self.font is None:
                 raise ValueError("Argument font is required if make_textclip is None.")
 
-            def make_textclip(txt):
+            def make_textclip(txt, start=None, end=None):
                 return TextClip(
                     font=self.font,
                     text=txt,
@@ -79,6 +80,9 @@ class SubtitlesClip(VideoClip):
                     color="#ffffff",
                     stroke_color="#000000",
                     stroke_width=1,
+                    duration=(end - start)
+                    if start is not None and end is not None
+                    else None,
                 )
 
         self.make_textclip = make_textclip
@@ -106,7 +110,11 @@ class SubtitlesClip(VideoClip):
                     return False
             sub = sub[0]
             if sub not in self.textclips.keys():
-                self.textclips[sub] = self.make_textclip(sub[1])
+                (start, end), text = sub
+                try:
+                    self.textclips[sub] = self.make_textclip(text, start, end)
+                except TypeError:
+                    self.textclips[sub] = self.make_textclip(text)
 
             return sub
 
