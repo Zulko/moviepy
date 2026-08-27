@@ -1908,6 +1908,7 @@ class TextClip(ImageClip):
         # We try to break on spaces as much as possible
         # if a text dont contain spaces (ex chinese), we will break when possible
         last_space = 0
+        last_break = 0
         for index, char in enumerate(text):
             if char == " ":
                 last_space = index
@@ -1923,23 +1924,26 @@ class TextClip(ImageClip):
             )
             temp_width = temp_right - temp_left
 
-            if temp_width >= width:
+            if temp_width >= width or char == "\n":
                 # If we had a space previously, add everything up to the space
                 # and reset last_space and current_line else add everything up
                 # to previous char
-                if last_space:
-                    lines.append(temp_line[0:last_space])
-                    current_line = temp_line[last_space + 1 : index + 1]
-                    last_space = 0
-                else:
-                    lines.append(current_line[0:index])
+                if last_space==0 or char == "\n":
+                    lines.append(current_line[:index-last_break])
                     current_line = char
-                    last_space = 0
+                    last_break = index
+                else:
+                    lines.append(temp_line[:last_space-last_break])
+                    current_line = temp_line[last_space-last_break:]
+                    last_break = last_space
+                last_space = 0
             else:
                 current_line = temp_line
 
         if current_line:
             lines.append(current_line)
+
+        lines = [line.replace("\n", "").strip() for line in lines]
 
         return lines
 
