@@ -5,6 +5,7 @@ import math
 import numbers
 import os
 import random
+from typing import get_args, get_type_hints
 
 import numpy as np
 from PIL import Image, ImageDraw
@@ -185,6 +186,26 @@ def test_fadeout(util, video):
     clip = video(end_time=0.5)
     clip1 = clip.with_effects([vfx.FadeOut(0.5)])
     clip1.write_videofile(os.path.join(util.TMP_DIR, "fadeout1.webm"))
+
+
+@pytest.mark.parametrize(
+    ("effect_class", "color_parameter", "effect", "expected_frames"),
+    (
+        (vfx.FadeIn, "initial_color", vfx.FadeIn(1, initial_color=0.0), (0.0, 1.0)),
+        (vfx.FadeOut, "final_color", vfx.FadeOut(1, final_color=0.0), (1.0, 0.0)),
+    ),
+)
+def test_fade_mask_accepts_scalar_color(
+    effect_class, color_parameter, effect, expected_frames
+):
+    color_types = get_args(get_type_hints(effect_class)[color_parameter])
+    assert float in color_types
+
+    mask = ColorClip((1, 1), color=1.0, is_mask=True, duration=1)
+    faded_mask = mask.with_effects([effect])
+
+    np.testing.assert_array_equal(faded_mask.get_frame(0), [[expected_frames[0]]])
+    np.testing.assert_array_equal(faded_mask.get_frame(1), [[expected_frames[1]]])
 
 
 @pytest.mark.parametrize(

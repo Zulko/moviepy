@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Union
 
 import numpy as np
 
@@ -17,7 +18,7 @@ class FadeOut(Effect):
     """
 
     duration: float
-    final_color: list = None
+    final_color: Union[list, tuple, float, None] = None
 
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""
