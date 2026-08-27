@@ -94,14 +94,13 @@ class ImageSequenceClip(VideoClip):
 
         self.fps = fps
         if fps is not None:
-            durations = [1.0 / fps for image in sequence]
-            self.images_starts = [
-                1.0 * i / fps - np.finfo(np.float32).eps for i in range(len(sequence))
-            ]
+            self.durations = [1.0 / fps for image in sequence]
+            self.images_starts = [i / fps for i in range(len(sequence))]
+            self.duration = len(sequence) / fps
         else:
-            self.images_starts = [0] + list(np.cumsum(durations))
-        self.durations = durations
-        self.duration = sum(durations)
+            self.durations = durations
+            self.images_starts = [0] + list(np.cumsum(self.durations[:-1]))
+            self.duration = sum(durations)
         self.end = self.duration
         self.sequence = sequence
 
