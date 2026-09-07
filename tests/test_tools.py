@@ -65,6 +65,18 @@ def test_subprocess_call(command):
             tools.subprocess_call(command, logger=None)
 
 
+@pytest.mark.skipif(not shutil.which("sh"), reason="not in Unix")
+def test_subprocess_call_invalid_utf8_stderr():
+    """A failing command whose stderr isn't valid UTF-8 (as ffmpeg's can be,
+    e.g. when a media file has non-UTF-8 metadata) should still raise a
+    plain IOError with the decoded message, not a UnicodeDecodeError.
+    """
+    command = ["sh", "-c", "printf '\\xce' >&2; exit 1"]
+    with pytest.raises(IOError) as exc:
+        tools.subprocess_call(command, logger=None)
+    assert "�" in str(exc.value)
+
+
 @pytest.mark.parametrize(
     "given, expected",
     [

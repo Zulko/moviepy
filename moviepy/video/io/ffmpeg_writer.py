@@ -190,7 +190,7 @@ class FFMPEG_VideoWriter:
         except IOError as err:
             _, ffmpeg_error = self.proc.communicate()
             if ffmpeg_error is not None:
-                ffmpeg_error = ffmpeg_error.decode()
+                ffmpeg_error = ffmpeg_error.decode(errors="replace")
             else:
                 # The error was redirected to a logfile with `write_logfile=True`,
                 # so read the error from that file instead
@@ -375,7 +375,8 @@ def ffmpeg_write_image(filename, image, logfile=False, pixel_format=None):
     if proc.returncode:
         error = (
             f"{err}\n\nMoviePy error: FFMPEG encountered the following error while "
-            f"writing file {filename} with command {cmd}: \n\n {err.decode()}"
+            f"writing file {filename} with command {cmd}: \n\n "
+            f"{err.decode(errors='replace')}"
         )
 
         raise IOError(error)
