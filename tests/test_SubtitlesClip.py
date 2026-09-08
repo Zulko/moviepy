@@ -66,5 +66,26 @@ def test_file_to_subtitles_unicode():
     )
 
 
+def test_write_srt_outputs_parser_compatible_srt(tmp_path):
+    """Write numbered SRT cues with rounded timestamps that parse again."""
+    subtitles = object.__new__(SubtitlesClip)
+    subtitles.subtitles = [
+        ([0, 1.5], "Welcome aboard"),
+        ([59.9996, 61], "Doors closing"),
+    ]
+    output = tmp_path / "subtitles.srt"
+
+    subtitles.write_srt(output)
+
+    assert output.read_text() == (
+        "1\n00:00:00,000 --> 00:00:01,500\nWelcome aboard\n\n"
+        "2\n00:01:00,000 --> 00:01:01,000\nDoors closing\n\n"
+    )
+    assert file_to_subtitles(output) == [
+        ([0.0, 1.5], "Welcome aboard"),
+        ([60.0, 61.0], "Doors closing"),
+    ]
+
+
 if __name__ == "__main__":
     pytest.main()
