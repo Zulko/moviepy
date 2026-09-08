@@ -95,7 +95,13 @@ class FFMPEG_AudioReader:
                 "%.05f" % offset,
             ]
         else:
-            i_arg = ["-i", ffmpeg_escape_filename(self.filename), "-vn"]
+            i_arg = [
+                "-i",
+                ffmpeg_escape_filename(self.filename),
+                "-map",
+                "0:a:%d" % self.audio_stream_index,
+                "-vn",
+            ]
 
         cmd = (
             [FFMPEG_BINARY]

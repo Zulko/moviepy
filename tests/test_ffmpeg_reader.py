@@ -9,6 +9,8 @@ import numpy as np
 import pytest
 
 from moviepy.audio.AudioClip import AudioClip
+from moviepy.audio.io import readers as audio_readers
+from moviepy.audio.io.readers import FFMPEG_AudioReader
 from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import ffmpeg_escape_filename
 from moviepy.video.compositing.CompositeVideoClip import clips_array
@@ -20,6 +22,35 @@ from moviepy.video.io.ffmpeg_reader import (
 from moviepy.video.io.ffmpeg_tools import ffmpeg_version
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from moviepy.video.VideoClip import BitmapClip, ColorClip
+
+
+def test_ffmpeg_audio_reader_maps_stream_at_start(monkeypatch):
+    """The requested audio stream must be selected without seeking."""
+    reader = object.__new__(FFMPEG_AudioReader)
+    reader.proc = None
+    reader.filename = "multiple-audio-streams.mp4"
+    reader.audio_stream_index = 1
+    reader.format = "s16le"
+    reader.codec = "pcm_s16le"
+    reader.fps = 44100
+    reader.nchannels = 2
+    reader.buffersize = 4096
+    commands = []
+
+    def fake_popen(command, **kwargs):
+        commands.append(command)
+        return object()
+
+    monkeypatch.setattr(audio_readers.sp, "Popen", fake_popen)
+
+    try:
+        reader.initialize()
+
+        assert ["-map", "0:a:1"] == commands[0][
+            commands[0].index("-map") : commands[0].index("-map") + 2
+        ]
+    finally:
+        reader.proc = None
 
 
 def test_ffmpeg_parse_infos():
