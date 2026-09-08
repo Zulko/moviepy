@@ -164,7 +164,9 @@ class SubtitlesClip(VideoClip):
     def match_expr(self, expr):
         """Matches a regular expression against the subtitles of the clip."""
         return SubtitlesClip(
-            [sub for sub in self.subtitles if re.findall(expr, sub[1]) != []]
+            [sub for sub in self.subtitles if re.findall(expr, sub[1]) != []],
+            font=self.font,
+            make_textclip=self.make_textclip,
         )
 
     def write_srt(self, filename):

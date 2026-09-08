@@ -66,5 +66,16 @@ def test_file_to_subtitles_unicode():
     )
 
 
+def test_match_expr_preserves_custom_textclip_generator():
+    """Filtered subtitles keep a renderer that does not need a font path."""
+    generator = lambda text: ColorClip((1, 1), color=(0, 0, 0), duration=1)
+    subtitles = SubtitlesClip(MEDIA_SUBTITLES_DATA, make_textclip=generator)
+
+    filtered = subtitles.match_expr("Green")
+
+    assert filtered.subtitles == [([5.0, 6.0], "Green!")]
+    assert filtered.make_textclip is generator
+
+
 if __name__ == "__main__":
     pytest.main()
