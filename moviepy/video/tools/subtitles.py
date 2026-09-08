@@ -127,18 +127,22 @@ class SubtitlesClip(VideoClip):
         from start_time to end_time. The first and last times will be cropped so as
         to be exactly start_time and end_time if possible.
         """
+        if start_time is not None and end_time is not None and end_time <= start_time:
+            return []
 
         def is_in_subclip(t1, t2):
-            try:
-                return (start_time <= t1 < end_time) or (start_time < t2 <= end_time)
-            except Exception:
+            if start_time is not None and t2 <= start_time:
                 return False
+            if end_time is not None and t1 >= end_time:
+                return False
+            return True
 
         def try_cropping(t1, t2):
-            try:
-                return max(t1, start_time), min(t2, end_time)
-            except Exception:
-                return t1, t2
+            if start_time is not None:
+                t1 = max(t1, start_time)
+            if end_time is not None:
+                t2 = min(t2, end_time)
+            return t1, t2
 
         return [
             (try_cropping(t1, t2), txt)

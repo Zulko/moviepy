@@ -66,5 +66,19 @@ def test_file_to_subtitles_unicode():
     )
 
 
+def test_in_subclip_keeps_cue_spanning_requested_interval():
+    """Keep overlapping cues while rejecting empty or reversed intervals."""
+    subtitles = object.__new__(SubtitlesClip)
+    subtitles.subtitles = [((0, 10), "Opening caption")]
+
+    assert subtitles.in_subclip(2, 5) == [((2, 5), "Opening caption")]
+    assert subtitles.in_subclip(None, 5) == [((0, 5), "Opening caption")]
+    assert subtitles.in_subclip(2, None) == [((2, 10), "Opening caption")]
+    assert subtitles.in_subclip(10, 12) == []
+    assert subtitles.in_subclip(-2, 0) == []
+    assert subtitles.in_subclip(5, 5) == []
+    assert subtitles.in_subclip(6, 5) == []
+
+
 if __name__ == "__main__":
     pytest.main()
