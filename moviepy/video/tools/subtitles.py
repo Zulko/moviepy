@@ -185,7 +185,7 @@ class SubtitlesClip(VideoClip):
         )
 
     def write_srt(self, filename):
-        """Writes an ``.srt`` file with the content of the clip."""
+        """Write numbered SRT cues with millisecond timestamps."""
         with open(filename, "w+") as file:
             file.write(str(self))
 
