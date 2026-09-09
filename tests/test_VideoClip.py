@@ -17,6 +17,55 @@ def test_aspect_ratio():
     assert clip.aspect_ratio == 1.5
 
 
+@pytest.mark.parametrize("as_string", (False, True))
+@pytest.mark.parametrize(
+    ("mode", "extension"),
+    (("L", "png"), ("RGB", "png"), ("RGBA", "png"), ("I;16", "tiff")),
+)
+def test_imageclip_file_mask(tmp_path, mode, extension, as_string):
+    dtype = np.uint16 if mode == "I;16" else np.uint8
+    maximum = np.iinfo(dtype).max
+    pixels = np.array([[0, maximum // 2, maximum]], dtype=dtype)
+    image = Image.fromarray(pixels)
+    if mode in ("RGB", "RGBA"):
+        image = image.convert(mode)
+    filename = tmp_path / ("mask." + extension)
+    image.save(filename)
+    source = str(filename) if as_string else filename
+
+    with ImageClip(source, is_mask=True, duration=1) as mask:
+        np.testing.assert_allclose(mask.get_frame(0), [[0, 0.5, 1]], atol=0.002)
+        clip = ColorClip((3, 1), color=(255, 255, 255), duration=1).with_mask(mask)
+        with CompositeVideoClip([clip], bg_color=(0, 0, 0)) as composite:
+            np.testing.assert_array_equal(
+                composite.get_frame(0), [[[0, 0, 0], [127, 127, 127], [255, 255, 255]]]
+            )
+        clip.close()
+
+
+@pytest.mark.parametrize(
+    "pixels",
+    (
+        np.array([[0, 0.5, 1]], dtype=np.float32),
+        np.array([[0, 1, 1]], dtype=np.uint8),
+        np.array([[False, True, True]]),
+    ),
+)
+def test_imageclip_mask_array_unchanged(pixels):
+    with ImageClip(pixels, is_mask=True) as mask:
+        np.testing.assert_array_equal(mask.get_frame(0), pixels)
+        assert mask.get_frame(0).dtype == pixels.dtype
+
+
+def test_imageclip_grayscale_file_without_mask(tmp_path):
+    pixels = np.array([[0, 127, 255]], dtype=np.uint8)
+    filename = tmp_path / "grayscale.png"
+    Image.fromarray(pixels).save(filename)
+    with ImageClip(filename) as clip:
+        np.testing.assert_array_equal(clip.get_frame(0), pixels)
+        assert clip.get_frame(0).dtype == pixels.dtype
+
+
 @pytest.mark.parametrize(
     ("duration", "fps", "expected_n_frames"),
     (

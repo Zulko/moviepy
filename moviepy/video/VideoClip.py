@@ -1439,6 +1439,13 @@ class ImageClip(VideoClip):
         if not isinstance(img, np.ndarray):
             # img is a string or path-like object, so read it in from disk
             img = imread_v2(img)  # We use v2 imread cause v3 fail with gif
+            if (
+                is_mask
+                and img.ndim == 2
+                and np.issubdtype(img.dtype, np.unsignedinteger)
+            ):
+                # Grayscale image files store intensities, not mask values in [0, 1].
+                img = img / np.iinfo(img.dtype).max
 
         if len(img.shape) == 3:  # img is (now) a RGB(a) numpy array
             if img.shape[2] == 4:
