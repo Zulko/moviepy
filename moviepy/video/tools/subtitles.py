@@ -153,13 +153,30 @@ class SubtitlesClip(VideoClip):
         return self.subtitles[k]
 
     def __str__(self):
-        def to_srt(sub_element):
-            (start_time, end_time), text = sub_element
-            formatted_start_time = convert_to_seconds(start_time)
-            formatted_end_time = convert_to_seconds(end_time)
-            return "%s - %s\n%s" % (formatted_start_time, formatted_end_time, text)
+        def format_timestamp(time):
+            milliseconds = round(convert_to_seconds(time) * 1000)
+            hours, milliseconds = divmod(milliseconds, 3600000)
+            minutes, milliseconds = divmod(milliseconds, 60000)
+            seconds, milliseconds = divmod(milliseconds, 1000)
+            return "%02d:%02d:%02d,%03d" % (
+                hours,
+                minutes,
+                seconds,
+                milliseconds,
+            )
 
-        return "\n\n".join(to_srt(sub) for sub in self.subtitles)
+        def to_srt(index, sub_element):
+            (start_time, end_time), text = sub_element
+            return "%d\n%s --> %s\n%s" % (
+                index,
+                format_timestamp(start_time),
+                format_timestamp(end_time),
+                text,
+            )
+
+        return "\n\n".join(
+            to_srt(index, sub) for index, sub in enumerate(self.subtitles, 1)
+        ) + "\n\n"
 
     def match_expr(self, expr):
         """Matches a regular expression against the subtitles of the clip."""
@@ -168,7 +185,7 @@ class SubtitlesClip(VideoClip):
         )
 
     def write_srt(self, filename):
-        """Writes an ``.srt`` file with the content of the clip."""
+        """Write numbered SRT cues with millisecond timestamps."""
         with open(filename, "w+") as file:
             file.write(str(self))
 
