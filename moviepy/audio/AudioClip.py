@@ -344,7 +344,7 @@ class AudioArrayClip(AudioClip):
             if isinstance(t, np.ndarray):
                 array_inds = np.round(self.fps * t).astype(int)
                 in_array = (array_inds >= 0) & (array_inds < len(self.array))
-                result = np.zeros((len(t), 2))
+                result = np.zeros((len(t), self.array.shape[1]))
                 result[in_array] = self.array[array_inds[in_array]]
                 return result
             else:
