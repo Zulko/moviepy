@@ -1,6 +1,7 @@
 """Image sequencing clip tests meant to be run with pytest."""
 
 import os
+import wave
 
 import numpy as np
 
@@ -49,6 +50,28 @@ def test_audioclip_io(util):
         output_array[: len(input_array)], input_array, decimal=4
     )
     assert (output_array[len(input_array) :] == 0).all()
+
+
+def test_audioclip_mono_io(util):
+    """A mono (Nx1) AudioArrayClip must be written at its own speed, not
+    interleaved as stereo samples, which played it at half speed (#2597).
+    """
+    filename = os.path.join(util.TMP_DIR, "random_mono.wav")
+
+    input_array = np.random.random((22050, 1)) * 1.98 - 0.99
+    clip = AudioArrayClip(input_array, fps=44100)
+    assert clip.nchannels == 1
+    assert clip.get_frame(np.array([0, 0.5 / 44100, 1.0 / 44100])).shape == (3, 1)
+    clip.write_audiofile(filename, logger=None)
+
+    with wave.open(filename) as wav:
+        assert wav.getnchannels() == 1
+        assert wav.getsampwidth() == 2
+        assert wav.getnframes() == len(input_array)
+        frames = wav.readframes(wav.getnframes())
+
+    output_array = np.frombuffer(frames, dtype="<i2") / 2**15
+    np.testing.assert_array_almost_equal(output_array, input_array[:, 0], decimal=4)
 
 
 def test_concatenate_audioclips_render(util, mono_wave):

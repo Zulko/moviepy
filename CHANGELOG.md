@@ -17,6 +17,7 @@ This mean you need to specifically set `bg_color=None` if you want to generate a
 - Fix TextClip broken with Pillow > 11.2
 - `pixel_format` parameter was ignored when calling ffmpeg writer, as referenced in PR #2359
 - Fix incorrect handling of lines with a format different from "key: value" during FFmpeg infos parsing (see #2311, #1860, #2418, #2470)
+- Fix mono (Nx1) `AudioArrayClip` being written as interleaved stereo samples, which played it at half speed (#2597)
 
 ### Added
 - Possibility to select audio track when reading a file (#2429)
