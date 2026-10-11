@@ -344,7 +344,9 @@ class AudioArrayClip(AudioClip):
             if isinstance(t, np.ndarray):
                 array_inds = np.round(self.fps * t).astype(int)
                 in_array = (array_inds >= 0) & (array_inds < len(self.array))
-                result = np.zeros((len(t), 2))
+                # One column per channel of the array (Nx1 for mono, Nx2 for
+                # stereo), so mono frames are not padded to stereo.
+                result = np.zeros((len(t), self.array.shape[1]))
                 result[in_array] = self.array[array_inds[in_array]]
                 return result
             else:
