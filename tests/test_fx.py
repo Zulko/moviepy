@@ -1329,6 +1329,84 @@ def test_multiply_volume_videoclip():
             assert not np.array_equal(frame, expected_silence)
 
 
+@pytest.mark.parametrize(
+    ("frame", "expected"),
+    (
+        ([0.1, 0.2], [0.05, 0.4]),
+        ([0.1, 0.2, 0.3, 0.4], [0.05, 0.4, 0.15, 0.8]),
+        ([0.1, 0.2, 0.3, 0.4, 0.5, 0.6], [0.05, 0.4, 0.15, 0.8, 0.25, 1.2]),
+    ),
+)
+@pytest.mark.parametrize("t", (0.25, np.array([0.25]), np.array([0.25, 0.5, 0.75])))
+def test_multiply_stereo_volume_frame_shapes(frame, expected, t):
+    """Channel factors must not depend on the number of samples in a batch."""
+
+    def frame_function(t):
+        if isinstance(t, np.ndarray):
+            return np.tile(frame, (len(t), 1))
+        return np.array(frame)
+
+    clip = AudioClip(frame_function, duration=1, fps=40)
+    adjusted = clip.with_effects([afx.MultiplyStereoVolume(left=0.5, right=2)])
+    if isinstance(t, np.ndarray):
+        expected = np.tile(expected, (len(t), 1))
+    np.testing.assert_allclose(adjusted.get_frame(t), expected)
+
+
+@pytest.mark.parametrize("as_array", (False, True))
+@pytest.mark.parametrize(
+    ("left", "right", "expected"), ((0.5, 1, 0.125), (None, 2, 0.5))
+)
+@pytest.mark.parametrize("t", (0.25, np.array([0.25]), np.array([0.25, 0.5, 0.75])))
+def test_multiply_stereo_volume_mono_frame_shapes(as_array, left, right, expected, t):
+    """Mono clips accept scalar samples and both vectorized mono array shapes."""
+
+    def frame_function(t):
+        if isinstance(t, np.ndarray):
+            return np.full((len(t), 1) if as_array else len(t), 0.25)
+        return np.array([0.25]) if as_array else 0.25
+
+    clip = AudioClip(frame_function, duration=1, fps=40)
+    adjusted = clip.with_effects([afx.MultiplyStereoVolume(left=left, right=right)])
+    expected = np.full(np.shape(frame_function(t)), expected)
+    np.testing.assert_allclose(adjusted.get_frame(t), expected)
+
+
+@pytest.mark.parametrize("readonly", (False, True))
+def test_multiply_stereo_volume_preserves_source_frames(readonly):
+    """Effects must not mutate source views or compound on repeated reads."""
+    frames = np.array([[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]])
+    original = frames.copy()
+    if readonly:
+        frames.setflags(write=False)
+
+    clip = AudioClip(
+        lambda t: frames if isinstance(t, np.ndarray) else frames[0],
+        duration=1,
+        fps=40,
+    )
+    adjusted = clip.with_effects([afx.MultiplyStereoVolume(left=0.5, right=2)])
+    times = np.array([0, 0.25, 0.5])
+    result = adjusted.get_frame(times)
+    np.testing.assert_array_equal(frames, original)
+    np.testing.assert_allclose(result, [[0.05, 0.4], [0.15, 0.8], [0.25, 1.2]])
+    np.testing.assert_array_equal(adjusted.get_frame(times), result)
+
+
+def test_multiply_stereo_volume_single_sample_chunks():
+    """One-sample audio chunks must retain the unmuted right channel."""
+
+    def frame_function(t):
+        if isinstance(t, np.ndarray):
+            return np.tile([0.25, -0.25], (len(t), 1))
+        return np.array([0.25, -0.25])
+
+    clip = AudioClip(frame_function, duration=0.1, fps=40)
+    adjusted = clip.with_effects([afx.MultiplyStereoVolume(left=0, right=1)])
+    result = np.vstack(tuple(adjusted.iter_chunks(chunksize=1)))
+    np.testing.assert_array_equal(result, [[0, -0.25]] * 4)
+
+
 def test_multiply_stereo_volume():
     clip = AudioFileClip("media/crunching.mp3")
 
@@ -1352,7 +1430,7 @@ def test_multiply_stereo_volume():
     assert np.array_equal(left_channel_doubled, expected_left_channel_doubled)
 
     # mono muted
-    sinus_wave = lambda t: [np.sin(440 * 2 * np.pi * t)]
+    sinus_wave = lambda t: np.sin(440 * 2 * np.pi * t)
     mono_clip = AudioClip(sinus_wave, duration=1, fps=22050)
     muted_mono_clip = mono_clip.with_effects([afx.MultiplyStereoVolume(left=0)])
     mono_channel_muted = muted_mono_clip.to_soundarray()

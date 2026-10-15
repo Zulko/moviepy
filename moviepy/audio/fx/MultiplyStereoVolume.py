@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+import numpy as np
+
 from moviepy.Clip import Clip
 from moviepy.decorators import audio_video_effect
 from moviepy.Effect import Effect
@@ -31,14 +33,16 @@ class MultiplyStereoVolume(Effect):
     @audio_video_effect
     def apply(self, clip: Clip) -> Clip:
         """Apply the effect to the clip."""
+        if clip.nchannels == 1:
+            volume = self.left if self.left is not None else self.right
+        else:
+            volume = np.array(
+                [self.left if i % 2 == 0 else self.right for i in range(clip.nchannels)]
+            )
 
         def stereo_volume(get_frame, t):
-            frame = get_frame(t)
-            if len(frame) == 1:  # mono
-                frame *= self.left if self.left is not None else self.right
-            else:  # stereo, stereo surround...
-                for i in range(len(frame[0])):  # odd channels are left
-                    frame[:, i] *= self.left if i % 2 == 0 else self.right
-            return frame
+            # Broadcast over channels for scalar samples and batches alike.
+            # Out-of-place multiplication preserves shared or read-only frames.
+            return np.asarray(get_frame(t)) * volume
 
         return clip.transform(stereo_volume)
