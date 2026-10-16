@@ -795,6 +795,14 @@ class VideoClip(Clip):
         x1_bg = max(x_start, 0)
         x2_bg = min(x_start + clip_width, background_width)
 
+        # Disjoint rectangles have no pixels to blend. Negative slice ends
+        # otherwise wrap around and can produce mismatched source/destination shapes.
+        if x1_bg >= x2_bg or y1_bg >= y2_bg:
+            return (
+                background.copy(),
+                None if background_mask is None else background_mask.copy(),
+            )
+
         # Corresponding source region in clip
         y1_clip = max(-y_start, 0)
         y2_clip = y1_clip + (y2_bg - y1_bg)
@@ -934,6 +942,10 @@ class VideoClip(Clip):
         y2_bg = min(y_start + clip_h, bg_h)
         x1_bg = max(x_start, 0)
         x2_bg = min(x_start + clip_w, bg_w)
+
+        # A fully offscreen mask cannot affect the background.
+        if x1_bg >= x2_bg or y1_bg >= y2_bg:
+            return background_mask.copy()
 
         # Corresponding source region in clip
         y1_clip = max(-y_start, 0)

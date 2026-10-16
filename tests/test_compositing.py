@@ -316,3 +316,104 @@ def test_concatenate_with_masks(util):
 
 if __name__ == "__main__":
     pytest.main()
+
+
+@pytest.mark.parametrize(
+    "position",
+    [
+        (-4, 0),
+        (-5, 0),
+        (-20, 0),
+        (10, 0),
+        (20, 0),
+        (0, -4),
+        (0, -5),
+        (0, -20),
+        (0, 10),
+        (0, 20),
+    ],
+)
+@pytest.mark.parametrize("clip_opacity", [None, 0.5])
+@pytest.mark.parametrize("background_opacity", [None, 0.25, 1.0])
+def test_compose_on_fully_offscreen(position, clip_opacity, background_opacity):
+    """A clip outside the frame must leave its background unchanged."""
+    background = np.full((10, 10, 3), 50, dtype=np.uint8)
+    mask = None if background_opacity is None else np.full((10, 10), background_opacity)
+    clip = ColorClip((4, 4), color=(255, 0, 0)).with_position(position)
+    if clip_opacity is not None:
+        clip = clip.with_opacity(clip_opacity)
+
+    result, result_mask = clip.compose_on(background, 0, mask)
+
+    np.testing.assert_array_equal(result, background)
+    assert not np.shares_memory(result, background)
+    if mask is None:
+        assert result_mask is None
+    else:
+        np.testing.assert_array_equal(result_mask, mask)
+        assert not np.shares_memory(result_mask, mask)
+
+
+@pytest.mark.parametrize(
+    "position",
+    [
+        (-4, 0),
+        (-5, 0),
+        (-20, 0),
+        (10, 0),
+        (20, 0),
+        (0, -4),
+        (0, -5),
+        (0, -20),
+        (0, 10),
+        (0, 20),
+    ],
+)
+def test_compose_mask_fully_offscreen(position):
+    """Offscreen mask slices must not wrap around the background."""
+    background = np.full((10, 10), 0.25)
+    clip = ColorClip((4, 4), color=0.5, is_mask=True).with_position(position)
+
+    result = clip.compose_mask(background, 0)
+
+    np.testing.assert_array_equal(result, background)
+    assert not np.shares_memory(result, background)
+
+
+@pytest.mark.parametrize("position", [(-3, 0), (9, 0), (0, -3), (0, 9)])
+def test_compose_partially_offscreen(position):
+    """A partially visible clip still blends only its intersecting pixels."""
+    background = np.zeros((10, 10, 3), dtype=np.uint8)
+    clip = ColorClip((4, 4), color=(200, 100, 50)).with_opacity(0.5)
+    clip = clip.with_position(position)
+    x, y = position
+    region = (slice(max(y, 0), min(y + 4, 10)), slice(max(x, 0), min(x + 4, 10)))
+    expected = background.copy()
+    expected[region] = (100, 50, 25)
+
+    result, mask = clip.compose_on(background, 0)
+    np.testing.assert_array_equal(result, expected)
+    assert mask is None
+
+    expected_mask = np.full((10, 10), 0.25)
+    expected_mask[region] = 0.625
+    np.testing.assert_array_equal(
+        clip.mask.with_position(position).compose_mask(np.full((10, 10), 0.25), 0),
+        expected_mask,
+    )
+
+
+def test_composite_clip_can_move_outside_and_back():
+    """Animating a clip across the left edge must not break frame generation."""
+    clip = (
+        ColorClip((4, 4), color=(200, 100, 50))
+        .with_opacity(0.5)
+        .with_position(lambda t: (-5 + 5 * t, 0))
+        .with_duration(4)
+    )
+    with CompositeVideoClip([clip], size=(10, 10), bg_color=(0, 0, 0)) as video:
+        np.testing.assert_array_equal(video.get_frame(0), np.zeros((10, 10, 3)))
+        expected = np.zeros((10, 10, 3))
+        expected[:4, :4] = (100, 50, 25)
+        np.testing.assert_array_equal(video.get_frame(1), expected)
+        np.testing.assert_array_equal(video.get_frame(3), np.zeros((10, 10, 3)))
