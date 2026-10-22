@@ -47,7 +47,13 @@ If it prints ``False``, you can either:
 * install FriBiDi, for instance with ``sudo apt install libfribidi0`` on Debian and Ubuntu.
   On Windows, see `Pillow's installation notes`_. On Apple Silicon Macs, Pillow does not
   look in Homebrew's ``/opt/homebrew/lib``, so ``brew install fribidi`` alone is not enough.
-* or use a text clip that shapes the text itself, such as the drop-in ``TextClip`` from khatt_.
+* or use a text clip that shapes the text itself, such as the drop-in ``TextClip`` from
+  khatt_::
+
+      pip install "khatt[video]"
+
+  then import it with ``from khatt.video import TextClip`` instead of
+  ``from moviepy import TextClip``.
 
 The common workaround of passing the text through ``arabic_reshaper`` and ``python-bidi``
 first only works while Raqm is missing: once Pillow can use Raqm, the text is processed
