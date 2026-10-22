@@ -659,8 +659,9 @@ class FFmpegInfosParser:
 
     def _parse_chapter(self, block: InfoBlock):
         # extract chapter data
+        # Consume the complete timestamps, including fractional seconds.
         chapter_data_match = re.search(
-            r"^Chapter #(\d+):(\d+): start (\d+\.?\d+?), end (\d+\.?\d+?)",
+            r"^Chapter #(\d+):(\d+): start (\d+(?:\.\d+)?), end (\d+(?:\.\d+)?)",
             block.head_line.strip(),
         )
         input_number, chapter_number, start, end = chapter_data_match.groups()

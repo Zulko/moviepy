@@ -306,6 +306,36 @@ def test_ffmpeg_parse_infos_chapters():
         assert isinstance(chapters[num]["metadata"]["title"], str)
 
 
+@pytest.mark.parametrize(
+    "start, end",
+    [
+        ("0.000000", "0.125000"),
+        ("1.234567", "12.345678"),
+        ("0.000000", "4322.185000"),
+        ("0", "9"),
+        ("0.000000", "0.100000"),
+    ],
+)
+def test_ffmpeg_parse_infos_chapter_timestamp_precision(start, end):
+    """Chapter timestamps retain every digit of the FFmpeg output."""
+    infos = """Input #0, matroska,webm, from 'chapters.mkv':
+  Duration: 01:12:03.00, start: 0.000000, bitrate: 100 kb/s
+  Chapters:
+    Chapter #0:0: start {start}, end {end}
+      Metadata:
+        title           : Chapter 1
+At least one output file must be specified
+""".format(
+        start=start, end=end
+    )
+    result = FFmpegInfosParser(infos, "chapters.mkv").parse()
+    chapter = result["inputs"]["chapters"][0]
+
+    assert chapter["start"] == float(start)
+    assert chapter["end"] == float(end)
+    assert chapter["metadata"]["title"] == "Chapter 1"
+
+
 def test_ffmpeg_parse_infos_metadata_with_attached_pic():
     """Check that the parser can parse audios with attached pictures.
 
