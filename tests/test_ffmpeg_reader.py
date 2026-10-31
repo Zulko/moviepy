@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 
 from moviepy.audio.AudioClip import AudioClip
+from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.config import FFMPEG_BINARY
 from moviepy.tools import ffmpeg_escape_filename
 from moviepy.video.compositing.CompositeVideoClip import clips_array
@@ -131,6 +132,123 @@ def test_ffmpeg_parse_infos_decode_file(decode_file, expected_duration):
     assert streams[1]["fps"] == 44100
     assert streams[1]["default"] is True
     assert streams[1]["language"] is None
+
+
+def write_mp3_without_xing_header(filename, *sources, cover_art=False):
+    """Writes a VBR MP3 FFmpeg has to estimate the length of, from two audio sources."""
+    inputs = []
+    for source in sources:
+        inputs += ["-f", "lavfi", "-i", source]
+    cover_args = ["-id3v2_version", "0"]
+    if cover_art:
+        inputs += ["-f", "lavfi", "-i", "color=c=red:s=16x16:r=25:d=0.04"]
+        cover_args = [
+            "-map",
+            "2:v",
+            "-c:v",
+            "mjpeg",
+            "-disposition:v",
+            "attached_pic",
+            "-id3v2_version",
+            "3",
+        ]
+    cmd = [
+        FFMPEG_BINARY,
+        "-y",
+        "-loglevel",
+        "error",
+        *inputs,
+        "-filter_complex",
+        "[0:a][1:a]concat=n=2:v=0:a=1[out]",
+        "-map",
+        "[out]",
+        *cover_args,
+        "-c:a",
+        "libmp3lame",
+        "-q:a",
+        "2",
+        "-write_xing",
+        "0",
+        filename,
+    ]
+    subprocess.run(cmd, check=True)
+
+
+@pytest.mark.parametrize(
+    "first, second, cover_art",
+    (
+        # the loud start sets a high bitrate: the estimate is far too short
+        ("anoisesrc=r=44100:d=5:a=0.7", "anullsrc=r=44100:cl=mono:d=25", False),
+        ("anoisesrc=r=44100:d=5:a=0.7", "anullsrc=r=44100:cl=mono:d=25", True),
+        # the silent start sets a low bitrate: the estimate is too long
+        ("anullsrc=r=44100:cl=mono:d=25", "anoisesrc=r=44100:d=5:a=0.7", False),
+    ),
+)
+def test_estimated_audio_duration(util, first, second, cover_art):
+    """A VBR MP3 without Xing header has a length FFmpeg can only estimate."""
+    filename = os.path.join(util.TMP_DIR, "estimated_duration.mp3")
+    write_mp3_without_xing_header(filename, first, second, cover_art=cover_art)
+
+    assert ffmpeg_parse_infos(filename)["duration"] == pytest.approx(30, abs=0.1)
+
+    clip = AudioFileClip(filename)
+    assert clip.duration == pytest.approx(30, abs=0.1)
+    # raised an `OSError` while the estimated duration was used
+    assert len(clip.with_duration(29).to_soundarray(fps=44100)) == 29 * 44100
+    clip.close()
+
+
+def test_decoded_duration_replaces_estimate(util):
+    filename = os.path.join(util.TMP_DIR, "estimated_duration.mp3")
+    write_mp3_without_xing_header(
+        filename, "anoisesrc=r=44100:d=5:a=0.7", "anullsrc=r=44100:cl=mono:d=25"
+    )
+
+    infos = ffmpeg_parse_infos(filename, decode_file=True)
+    assert infos["duration"] == pytest.approx(30, abs=0.1)
+
+
+def test_estimated_duration_of_video(util):
+    filename = os.path.join(util.TMP_DIR, "estimated_duration.mkv")
+    cmd = [
+        FFMPEG_BINARY,
+        "-y",
+        "-loglevel",
+        "error",
+        "-f",
+        "lavfi",
+        "-i",
+        "anoisesrc=r=44100:d=5:a=0.7",
+        "-f",
+        "lavfi",
+        "-i",
+        "anullsrc=r=44100:cl=mono:d=25",
+        "-f",
+        "lavfi",
+        "-i",
+        "color=c=red:s=16x16:r=5:d=30",
+        "-filter_complex",
+        "[0:a][1:a]concat=n=2:v=0:a=1[out]",
+        "-map",
+        "[out]",
+        "-map",
+        "2:v",
+        "-c:v",
+        "mpeg4",
+        "-c:a",
+        "libmp3lame",
+        "-q:a",
+        "2",
+        "-live",
+        "1",
+        filename,
+    ]
+    subprocess.run(cmd, check=True)
+
+    clip = VideoFileClip(filename)
+    assert clip.duration == pytest.approx(30, abs=0.3)
+    assert clip.audio.duration == pytest.approx(30, abs=0.1)
+    clip.close()
 
 
 def test_ffmpeg_parse_infos_multiple_audio_streams(util, mono_wave):
