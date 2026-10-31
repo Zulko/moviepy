@@ -394,7 +394,7 @@ class FFmpegInfosParser:
         self.filename = filename
         self.check_duration = check_duration
         self.fps_source = fps_source
-        self.duration_tag_separator = "time=" if decode_file else "Duration: "
+        self.decode_file = decode_file
         self.blocks = None
         self.video_stream = None
         self.audio_stream = None
@@ -676,7 +676,19 @@ class FFmpegInfosParser:
     def _parse_blocks(self, root: InfoBlock):
         for key, data in root.data.items():
             if key == "Duration":
-                self.result["duration"] = self._parse_duration(data)
+                # When the file was read, the last progress line holds the real
+                # length, while the "Duration" header can be a mere estimation.
+                # It stays at zero if FFmpeg followed a stream with no length,
+                # like the cover art of an MP3.
+                decoded_times = (
+                    re.findall(r"time=([0-9:.]+)", self.infos)
+                    if self.decode_file
+                    else []
+                )
+                decoded_duration = (
+                    self._parse_duration(decoded_times[-1]) if decoded_times else 0
+                )
+                self.result["duration"] = decoded_duration or self._parse_duration(data)
 
                 bitrate_match = re.search(r"bitrate: (\d+) k(i?)b/s", data)
                 self.result["bitrate"] = (
@@ -885,11 +897,12 @@ def ffmpeg_parse_infos(
       Indicates if the whole file must be read to retrieve their duration.
       This is needed for some files in order to get the correct duration (see
       https://github.com/Zulko/moviepy/pull/1222).
+      A file whose duration FFmpeg can only estimate is always read, without
+      decoding it.
     """
     # Open the file in a pipe, read output
     cmd = [FFMPEG_BINARY, "-hide_banner", "-i", ffmpeg_escape_filename(filename)]
-    if decode_file:
-        cmd.extend(["-f", "null", "-"])
+    null_output = ["-f", "null", "-"]
 
     popen_params = cross_platform_popen_params(
         {
@@ -900,12 +913,22 @@ def ffmpeg_parse_infos(
         }
     )
 
-    proc = sp.Popen(cmd, **popen_params)
-    (output, error) = proc.communicate()
-    infos = error.decode("utf8", errors="ignore")
+    def run_ffmpeg(args):
+        proc = sp.Popen(cmd + args, **popen_params)
+        (output, error) = proc.communicate()
+        proc.terminate()
+        return error.decode("utf8", errors="ignore")
 
-    proc.terminate()
-    del proc
+    infos = run_ffmpeg(null_output if decode_file else [])
+
+    # With no duration header (e.g. a VBR MP3 without Xing header) FFmpeg guesses the
+    # length from the bitrate, which can be far off. Copying the streams gives the
+    # real one without decoding, and "V" leaves out cover art, which has no length.
+    read_progress = decode_file
+    estimated = "Estimating duration from bitrate" in infos
+    if check_duration and estimated and not decode_file:
+        read_progress = True
+        infos = run_ffmpeg(["-map", "0:V?", "-map", "0:a?", "-c", "copy"] + null_output)
 
     if print_infos:
         # print the whole info text returned by FFMPEG
@@ -917,7 +940,7 @@ def ffmpeg_parse_infos(
             filename,
             fps_source=fps_source,
             check_duration=check_duration,
-            decode_file=decode_file,
+            decode_file=read_progress,
         ).parse()
     except VideoCorruptedError:
         raise
