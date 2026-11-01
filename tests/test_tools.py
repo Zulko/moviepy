@@ -233,3 +233,20 @@ def test_decorators_argument_converters_consistency(
 
 if __name__ == "__main__":
     pytest.main()
+
+
+def test_subprocess_call_non_utf8_error(monkeypatch):
+    from unittest.mock import MagicMock
+    import subprocess
+    from moviepy.tools import subprocess_call
+
+    mock_proc = MagicMock()
+    mock_proc.returncode = 1
+    mock_proc.communicate.return_value = (b"", b"Error with invalid bytes: \xce\xe1\xf0\xe0\n")
+    mock_proc.stderr = MagicMock()
+
+    monkeypatch.setattr(subprocess, "Popen", lambda *args, **kwargs: mock_proc)
+
+    with pytest.raises(IOError) as excinfo:
+        subprocess_call(["fake_cmd"])
+    assert "Error with invalid bytes:" in str(excinfo.value)
