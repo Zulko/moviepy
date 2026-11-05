@@ -1,4 +1,31 @@
-.. _user_guide:
+.. from moviepy import ImageClip, concatenate_videoclips
+
+# الصور التي ستدخل في الفيديو
+images = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg"
+]
+
+clips = []
+
+for image in images:
+    clip = ImageClip(image).with_duration(3)
+    clip = clip.resized(height=720)
+    clips.append(clip)
+
+# دمج الصور في فيديو
+video = concatenate_videoclips(clips, method="compose")
+
+# حفظ الفيديو
+video.write_videofile(
+    "my_video.mp4",
+    fps=24,
+    codec="libx264"
+)
+
+print("Video created successfully!")
+:
 
 The MoviePy User Guide
 ------------------------------
