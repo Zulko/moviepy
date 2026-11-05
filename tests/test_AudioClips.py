@@ -6,6 +6,7 @@ import numpy as np
 
 import pytest
 
+from moviepy import ColorClip, CompositeVideoClip, afx
 from moviepy.audio.AudioClip import (
     AudioArrayClip,
     AudioClip,
@@ -218,6 +219,73 @@ def test_audioclip_stereo_max_volume(nchannels, channel_muted):
                 assert channel_max_volume == 0
             else:
                 assert channel_max_volume > 0
+
+
+@pytest.mark.parametrize("as_list", (False, True), ids=("flat", "list"))
+def test_CompositeAudioClip_mono_keeps_one_sample_per_time(mono_wave, as_list):
+    """Composing mono clips should not turn a batch of N times into an N x N
+    array, which would write N times more audio than the clips contain. Both
+    ``t -> f_t`` and ``t -> [f_t]`` are valid mono frame functions.
+    """
+    fps = 1000
+    wave = mono_wave(440)
+    clip = AudioClip((lambda t: [wave(t)]) if as_list else wave, duration=1, fps=fps)
+    tt = np.arange(0, 1, 1 / fps)
+
+    composite = CompositeAudioClip([clip])
+    assert composite.nchannels == 1
+    np.testing.assert_allclose(composite.get_frame(tt), wave(tt), atol=1e-9)
+
+    # the second clip only plays, and adds to the first, from 0.5s on
+    sound = CompositeAudioClip([clip, clip.with_start(0.5)]).to_soundarray(fps=fps)
+    assert sound.shape == (1500,)
+    overlapped = wave(tt[500:]) + wave(tt[:500])
+    np.testing.assert_allclose(sound[:500], wave(tt[:500]), atol=1e-9)
+    np.testing.assert_allclose(sound[500:1000], overlapped, atol=1e-9)
+    np.testing.assert_allclose(sound[1000:], wave(tt[500:]), atol=1e-9)
+
+
+def test_mono_clips_through_what_uses_CompositeAudioClip(mono_wave):
+    """Everything built on top of CompositeAudioClip should keep the length of
+    a mono sound.
+    """
+    fps = 1000
+    clip = AudioClip(mono_wave(440), duration=1, fps=fps)
+
+    assert concatenate_audioclips([clip, clip]).to_soundarray(fps=fps).shape == (2000,)
+    looped = clip.with_effects([afx.AudioLoop(n_loops=2)])
+    assert looped.to_soundarray(fps=fps).shape == (2000,)
+    delayed = clip.with_effects([afx.AudioDelay(offset=0.5, n_repeats=1)])
+    assert delayed.to_soundarray(fps=fps).shape == (1500,)
+    video = CompositeVideoClip([ColorClip((2, 2), duration=1).with_audio(clip)])
+    assert video.audio.to_soundarray(fps=fps).shape == (1000,)
+
+
+def test_concatenate_audioclips_mono_file_duration(util, mono_wave):
+    """A file rendered from concatenated mono clips should last as long as the
+    clips do.
+    """
+    filename = os.path.join(util.TMP_DIR, "concatenate_audioclips_mono.wav")
+    clip = AudioClip(mono_wave(440), duration=0.5, fps=8000)
+
+    concatenate_audioclips([clip, clip]).write_audiofile(filename, logger=None)
+
+    written = AudioFileClip(filename)
+    assert written.duration == 1
+    written.close()
+
+
+def test_CompositeAudioClip_mono_and_stereo(mono_wave, stereo_wave):
+    """A mono clip composed with a stereo clip should play on both channels."""
+    fps = 1000
+    mono = AudioClip(mono_wave(440), duration=1, fps=fps)
+    stereo = AudioClip(stereo_wave(left_freq=220, right_freq=880), duration=1, fps=fps)
+    tt = np.arange(0, 1, 1 / fps)
+
+    sound = CompositeAudioClip([mono, stereo]).get_frame(tt)
+
+    expected = stereo.get_frame(tt) + mono_wave(440)(tt)[:, None]
+    np.testing.assert_allclose(sound, expected, atol=1e-9)
 
 
 if __name__ == "__main__":

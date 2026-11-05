@@ -405,19 +405,28 @@ class CompositeAudioClip(AudioClip):
     def frame_function(self, t):
         """Renders a frame for the composition for the time ``t``."""
         played_parts = [clip.is_playing(t) for clip in self.clips]
+        is_batch = isinstance(t, np.ndarray)
 
-        sounds = [
-            clip.get_frame(t - clip.start) * np.array([part]).T
-            for clip, part in zip(self.clips, played_parts)
-            if (part is not False)
-        ]
+        sounds = []
+        for clip, part in zip(self.clips, played_parts):
+            if part is False:
+                continue
+            sound = clip.get_frame(t - clip.start)
+            if is_batch and clip.nchannels == 1:
+                # A mono clip gives one value per time. Make it a column, or
+                # multiplying by the column ``part`` broadcasts to N x N.
+                sound = np.reshape(sound, (len(t), -1))
+            sounds.append(sound * np.array([part]).T)
 
-        if isinstance(t, np.ndarray):
+        if is_batch:
             zero = np.zeros((len(t), self.nchannels))
         else:
             zero = np.zeros(self.nchannels)
 
-        return zero + sum(sounds)
+        mix = zero + sum(sounds)
+
+        # Mono frames are flat, the same as those of a plain mono AudioClip.
+        return mix[:, 0] if is_batch and self.nchannels == 1 else mix
 
 
 def concatenate_audioclips(clips):
