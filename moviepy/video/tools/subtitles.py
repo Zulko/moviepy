@@ -168,9 +168,22 @@ class SubtitlesClip(VideoClip):
         )
 
     def write_srt(self, filename):
-        """Writes an ``.srt`` file with the content of the clip."""
+        """Write numbered SRT cues with timestamps rounded to milliseconds."""
+
+        def format_timestamp(time):
+            milliseconds = round(convert_to_seconds(time) * 1000)
+            seconds, milliseconds = divmod(milliseconds, 1000)
+            minutes, seconds = divmod(seconds, 60)
+            hours, minutes = divmod(minutes, 60)
+            return f"{hours:02d}:{minutes:02d}:{seconds:02d},{milliseconds:03d}"
+
         with open(filename, "w+") as file:
-            file.write(str(self))
+            for index, ((start, end), text) in enumerate(self.subtitles, start=1):
+                file.write(
+                    f"{index}\n"
+                    f"{format_timestamp(start)} --> {format_timestamp(end)}\n"
+                    f"{text}\n\n"
+                )
 
 
 @convert_path_to_string("filename")
