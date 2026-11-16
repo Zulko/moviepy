@@ -139,7 +139,7 @@ class AudioClip(Clip):
 
             max_duration = 1 * buffersize / fps
             if self.duration > max_duration:
-                stacker = np.vstack if self.nchannels == 2 else np.hstack
+                stacker = np.concatenate
                 return stacker(
                     tuple(
                         self.iter_chunks(
