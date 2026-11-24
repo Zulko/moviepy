@@ -899,3 +899,15 @@ def test_side_data():
 
 if __name__ == "__main__":
     pytest.main()
+
+
+def test_ffmpeg_parse_infos_interrupted_recording(util):
+    # A recording cut off before its moov atom was written (e.g. the camera lost power)
+    with open("media/chaplin.mp4", "rb") as f:
+        data = f.read()
+    filename = os.path.join(util.TMP_DIR, "interrupted.mp4")
+    with open(filename, "wb") as f:
+        f.write(data[: len(data) // 2])
+
+    with pytest.raises(IOError, match="no moov atom"):
+        ffmpeg_parse_infos(filename)
