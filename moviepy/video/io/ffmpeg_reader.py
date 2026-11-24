@@ -926,4 +926,11 @@ def ffmpeg_parse_infos(
             raise IsADirectoryError(f"'{filename}' is a directory")
         elif not os.path.exists(filename):
             raise FileNotFoundError(f"'{filename}' not found")
+        elif "moov atom not found" in infos:
+            raise IOError(
+                f"'{filename}' has no moov atom (its index): the recording was "
+                "probably interrupted before it was written, for example because "
+                "the camera lost power or the card was removed. The video data may "
+                "still be in the file."
+            ) from exc
         raise IOError(f"Error passing `ffmpeg -i` command output: \n\n{infos}") from exc
