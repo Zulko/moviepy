@@ -52,7 +52,7 @@ This makes MoviePy very flexible and approachable, albeit slower than using ffmp
 
 # Installation
 
-Intall moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone that repo locally and install with `pip install -e .`
+Install moviepy with `pip install moviepy`. For additional installation options, such as a custom FFMPEG or for previewing, see [this section](https://zulko.github.io/moviepy/getting_started/install.html). For development, clone the repo locally and install with `pip install -e .`
 
 # Documentation
 
@@ -63,7 +63,7 @@ The online documentation ([here](https://zulko.github.io/moviepy/)) is automatic
 MoviePy is open-source software originally written by
 [Zulko](https://github.com/Zulko) and released under the MIT licence.
 The project is hosted on [GitHub](https://github.com/Zulko/moviepy),
-where everyone is welcome to contribute and open issues or give feedback Please read our [Contributing
+where everyone is welcome to contribute and open issues or give feedback. Please read our [Contributing
 Guidelines](https://github.com/Zulko/moviepy/blob/master/CONTRIBUTING.md).
 To ask for help or simply discuss usage and examples, use [our Reddit channel](https://www.reddit.com/r/moviepy/).
 
